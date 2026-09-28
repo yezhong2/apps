@@ -8,19 +8,21 @@
 :root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--sub:#8b93a3;--acc:#00a884;--acc2:#ffb020;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:30px;}
-header{background:linear-gradient(160deg,#0d2b24,#0f1115 70%);padding:36px 20px 24px;text-align:center;}
+header{background:linear-gradient(160deg,#0d2b24,#0f1115 70%);padding:24px 20px 16px;text-align:center;}
 h1{font-size:26px;letter-spacing:1px;}
 .tag{color:var(--acc2);font-size:14px;margin-top:8px;}
 .sub{color:var(--sub);font-size:12px;margin-top:6px;}
 .tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto;scrollbar-width:none;}
 .tabs::-webkit-scrollbar{display:none}
-.tab{flex-shrink:0;padding:8px 16px;border-radius:18px;background:var(--card);border:1px solid var(--line);color:var(--sub);font-size:13px;cursor:pointer;}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:18px;background:var(--card);border:1px solid var(--line);color:var(--sub);font-size:13px;cursor:pointer;position:relative;}
 .tab.active{background:var(--acc);border-color:var(--acc);color:#fff;}
+.tab::after{content:"▶";position:absolute;right:8px;top:50%;transform:translateY(-50%);display:none;}
+.tab.active::after{display:block;}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 16px;}
 .card h3{font-size:15px;margin-bottom:10px;color:var(--acc2);}
 .chip{display:inline-block;padding:6px 12px;border-radius:14px;background:#232835;border:1px solid var(--line);margin:4px 6px 4px 0;font-size:13px;cursor:pointer;transition:.15s;}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff;}
-.btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-size:15px;cursor:pointer;margin-top:12px;}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-size:15px;cursor:pointer;margin-top:12px;position:relative;}
 .btn:active{opacity:.85;}
 .recipe{background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;display:none;}
 .recipe.show{display:block;}
@@ -33,9 +35,18 @@ h1{font-size:26px;letter-spacing:1px;}
 .lock{display:flex;align-items:center;gap:8px;color:var(--sub);font-size:13px;margin-top:12px;padding:10px;border:1px dashed var(--line);border-radius:10px;}
 .unlock{text-align:center;padding:24px 16px;margin:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,#1a2b26,#171a21);}
 .unlock h3{color:var(--acc2);font-size:17px;margin-bottom:8px;}
-.unlock p{font-size:13px;color:var(--sub);margin-bottom:10px;}
-.unlock img{width:200px;border-radius:12px;border:2px solid var(--line);}
+.unlock p{font-size:13px;color:var(--sub);margin-bottom:10px;position:relative;padding-left:20px;}
+.unlock p::before{content:"✓";position:absolute;left:0;top:0;color:var(--acc);font-weight:bold;}
+.unlock img{width:200px;border-radius:12px;border:2px solid var(--line);margin-bottom:12px;}
 .unlock .wx{font-size:13px;margin-top:10px;color:#fff;}
+.unlock .price{display:flex;justify-content:space-between;margin:16px 0 12px;padding:0 12px;}
+.unlock .price-item{flex:1;text-align:center;padding:8px;background:rgba(0,0,0,0.2);border-radius:8px;margin:0 4px;}
+.unlock .price-item strong{display:block;font-size:14px;color:var(--acc2);margin-top:4px;}
+.unlock .steps{display:flex;justify-content:space-between;margin:16px 0 0;}
+.unlock .step{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;padding:0 8px;}
+.unlock .step:not(:last-child)::after{content:"→";position:absolute;right:-8px;top:20px;color:var(--sub);}
+.unlock .step-num{width:30px;height:30px;border-radius:50%;background:var(--card);border:2px solid var(--line);display:flex;align-items:center;justify-content:center;margin-bottom:8px;font-weight:bold;}
+.unlock .step-txt{font-size:12px;color:var(--sub);}
 .cal-row{display:flex;gap:8px;margin-top:10px;}
 .cal-row input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;}
 #calOut{font-size:13px;color:var(--acc2);margin-top:10px;min-height:18px;}
@@ -57,6 +68,7 @@ h1{font-size:26px;letter-spacing:1px;}
 <div id="p-rec">
   <div class="card">
     <h3>我有这些食材，能做什么？</h3>
+    <div class="sub" style="margin-bottom:12px">选择1-2种你有的食材，获取智能推荐</div>
     <div id="ingList"></div>
     <button class="btn" id="btnGo">推荐食谱</button>
     <div id="recOut"></div>
@@ -66,6 +78,7 @@ h1{font-size:26px;letter-spacing:1px;}
 <div id="p-cal" style="display:none">
   <div class="card">
     <h3>今日摄入热量估算</h3>
+    <div class="sub" style="margin-bottom:12px">选择食物并输入重量，计算总热量</div>
     <div id="foodList"></div>
     <div class="cal-row"><input id="calInput" type="number" placeholder="输入重量（克）"><button class="btn" style="margin:0;width:auto;padding:10px 18px" id="btnAdd">＋添加</button></div>
     <div id="calOut">已选 0 项 · 共 0 千卡</div>
@@ -75,6 +88,7 @@ h1{font-size:26px;letter-spacing:1px;}
 <div id="p-drink" style="display:none">
   <div class="card">
     <h3>家庭饮品 DIY 指南</h3>
+    <div class="sub" style="margin-bottom:12px">简单几步，在家制作咖啡特饮</div>
     <div id="drinkList"></div>
   </div>
 </div>
@@ -83,11 +97,43 @@ h1{font-size:26px;letter-spacing:1px;}
 
 <div class="unlock">
   <h3>解锁完整版</h3>
-  <p>解锁高级功能，让饮食更健康</p>
+  <p>解锁更多健康饮食秘诀，获得个性化营养方案</p>
+  
+  <div class="price">
+    <div class="price-item">
+      <div>月度版</div>
+      <strong>¥29</strong>
+    </div>
+    <div class="price-item">
+      <div>季度版</div>
+      <strong>¥69</strong>
+      <div style="color:var(--acc2);font-size:11px;margin-top:4px">省¥18</div>
+    </div>
+    <div class="price-item">
+      <div>年度版</div>
+      <strong>¥199</strong>
+      <div style="color:var(--acc2);font-size:11px;margin-top:4px">省¥67</div>
+    </div>
+  </div>
+  
   <img src="shoukuan.png" alt="收款码">
+  
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-txt">扫码付款</div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-txt">添加微信</div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-txt">解锁使用</div>
+    </div>
+  </div>
+  
   <div class="wx">联系开发者，微信：wxid_mztr7tpuejg212</div>
-  <button class="btn" style="margin-top:16px" id="btnPrice">查看完整版价格</button>
-  <p style="font-size:12px;margin-top:10px">付款后即刻解锁</p>
 </div>
 
 <script>
@@ -135,7 +181,7 @@ document.getElementById("btnGo").onclick = function(){
   var out = document.getElementById("recOut");
   var keys = Object.keys(sel);
   if(!keys.length){ 
-    out.innerHTML = '<div class="recipe show"><h4>💡 先选 1-2 种你有的食材</h4><p>选择上方食材标签，系统将为您推荐匹配的食谱</p></div>'; 
+    out.innerHTML = '<div class="recipe show"><h4>💡 先选 1-2 种你有的食材</h4><div class="k">点击食材标签选择，或解锁完整版获得更多组合推荐。</div></div>'; 
     return; 
   }
   var hit = RECIPES.filter(function(r){
@@ -154,11 +200,7 @@ function renderFoods(){
     return '<span class="chip" data-f="'+f.n+'">'+f.n+' '+f.c+'千卡/100g</span>';
   }).join("");
   box.querySelectorAll(".chip").forEach(function(c){
-    c.onclick = function(){ 
-      document.getElementById("calInput").placeholder = c.getAttribute("data-f")+" · 输入克数";
-      c.classList.add('on');
-      setTimeout(() => c.classList.remove('on'), 300);
-    };
+    c.onclick = function(){ document.getElementById("calInput").placeholder = c.getAttribute("data-f")+" · 输入克数"; };
   });
 }
 var total = 0;
@@ -193,11 +235,6 @@ document.querySelectorAll(".tab").forEach(function(t){
     });
   };
 });
-
-// ===== 价格按钮 =====
-document.getElementById("btnPrice").onclick = function(){
-  alert("完整版：¥99/年\n包含：无限食谱组合、每周定制计划、营养师在线答疑、专属健康饮食方案\n支持微信/支付宝支付");
-};
 
 renderIngs(); renderFoods(); renderDrinks();
 </script>
