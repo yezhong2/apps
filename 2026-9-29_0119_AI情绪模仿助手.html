@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI情绪模仿助手</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6200ee;
+            --accent-hover: #7c4dff;
+            --locked: #ff5252;
+            --success: #4caf50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 10px 0;
+        }
+        
+        .nav-tab {
+            padding: 10px 20px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 20px;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab:hover {
+            background-color: var(--accent);
+            color: var(--text-primary);
+        }
+        
+        .nav-tab.active {
+            background-color: var(--accent);
+            color: var(--text-primary);
+        }
+        
+        .content-area {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            min-height: 400px;
+        }
+        
+        .content-section {
+            display: none;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        .emotion-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .emotion-icon {
+            font-size: 40px;
+        }
+        
+        .emotion-info h3 {
+            margin-bottom: 5px;
+        }
+        
+        .emotion-info p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .mode-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .mode-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .mode-card:hover {
+            transform: translateY(-5px);
+            background-color: var(--accent);
+        }
+        
+        .mode-card.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .lock-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: var(--locked);
+            font-size: 20px;
+        }
+        
+        .dialog-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .dialog-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .dialog-content {
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 100px;
+        }
+        
+        .dialog-input {
+            width: 100%;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-primary);
+            margin-top: 10px;
+        }
+        
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+        }
+        
+        .emoji-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .emoji-card:hover {
+            transform: scale(1.1);
+            background-color: var(--accent);
+        }
+        
+        .emoji-card.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .voice-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .slider-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .slider {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .unlock-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .unlock-section.hidden {
+            display: none;
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 20px 0;
+        }
+        
+        .unlock-image {
+            width: 200px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .unlock-info {
+            margin: 20px 0;
+            color: var(--text-secondary);
+        }
+        
+        .unlock-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .unlock-input {
+            background-color: var(--bg-primary);
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+        }
+        
+        .unlock-button {
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .unlock-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .activated-message {
+            color: var(--success);
+            font-size: 14px;
+        }
+        
+        .button {
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--bg-tertiary);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, 20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="logo">AI情绪模仿助手</div>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-section="home">首页</button>
+                    <button class="nav-tab" data-section="analysis">情绪分析</button>
+                    <button class="nav-tab" data-section="mode">模式切换</button>
+                    <button class="nav-tab" data-section="dialog">对话生成</button>
+                    <button class="nav-tab" data-section="emoji">表情库</button>
+                    <button class="nav-tab" data-section="voice">语音调整</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <!-- 首页 -->
+            <div id="home" class="content-section active">
+                <h2>当前情绪状态</h2>
+                <div class="emotion-card">
+                    <div class="emotion-icon">😊</div>
+                    <div class="emotion-info">
+                        <h3>开心</h3>
+                        <p>情绪指数: 85%</p>
+                        <p>推荐模式: 活跃型</p>
+                    </div>
+                </div>
+                
+                <h3>推荐功能</h3>
+                <div class="mode-grid">
+                    <div class="mode-card">
+                        <div class="mode-icon">🎭</div>
+                        <div class="mode-name">情绪识别</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🔄</div>
+                        <div class="mode-name">模式切换</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">💬</div>
+                        <div class="mode-name">对话生成</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 情绪分析 -->
+            <div id="analysis" class="content-section">
+                <h2>情绪识别与分析</h2>
+                <div class="emotion-card">
+                    <div class="emotion-icon">😊</div>
+                    <div class="emotion-info">
+                        <h3>开心</h3>
+                        <p>置信度: 92%</p>
+                        <p>持续时间: 15分钟</p>
+                    </div>
+                </div>
+                
+                <div class="emotion-card">
+                    <div class="emotion-icon">😐</div>
+                    <div class="emotion-info">
+                        <h3>平静</h3>
+                        <p>置信度: 78%</p>
+                        <p>持续时间: 2小时</p>
+                    </div>
+                </div>
+                
+                <div class="emotion-card">
+                    <div class="emotion-icon">😔</div>
+                    <div class="emotion-info">
+                        <h3>低落</h3>
+                        <p>置信度: 65%</p>
+                        <p>持续时间: 30分钟</p>
+                    </div>
+                </div>
+                
+                <button class="button" onclick="startAnalysis()">开始实时分析</button>
+            </div>
+
+            <!-- 模式切换 -->
+            <div id="mode" class="content-section">
+                <h2>情绪模式切换</h2>
+                <div class="mode-grid">
+                    <div class="mode-card">
+                        <div class="mode-icon">🌞</div>
+                        <div class="mode-name">活跃型</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🌙</div>
+                        <div class="mode-name">安静型</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🎵</div>
+                        <div class="mode-name">文艺型</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🎯</div>
+                        <div class="mode-name">专注型</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🎭</div>
+                        <div class="mode-name">社交型</div>
+                    </div>
+                    <div class="mode-card">
+                        <div class="mode-icon">🧘</div>
+                        <div class="mode-name">冥想型</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话生成 -->
+            <div id="dialog" class="content-section">
+                <h2>情感对话生成</h2>
+                <div class="dialog-box">
+                    <div class="dialog-header">
+                        <h3>当前对话</h3>
+                        <button class="button" onclick="generateDialog()">生成新对话</button>
+                    </div>
+                    <div class="dialog-content" id="dialogContent">
+                        <p>你好！今天感觉怎么样？</p>
+                        <p>我今天心情不错，谢谢关心！</p>
+                    </div>
+                    <input type="text" class="dialog-input" placeholder="输入消息..." id="dialogInput">
+                </div>
+            </div>
+
+            <!-- 表情库 -->
+            <div id="emoji" class="content-section">
+                <h2>个性化表情库</h2>
+                <div class="emoji-grid">
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">😍</div>
+                        <div class="emoji-name">喜爱</div>
+                    </div>
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">🤔</div>
+                        <div class="emoji-name">思考</div>
+                    </div>
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">😂</div>
+                        <div class="emoji-name">大笑</div>
+                    </div>
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">😎</div>
+                        <div class="emoji-name">酷炫</div>
+                    </div>
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">🥰</div>
+                        <div class="emoji-name">喜爱</div>
+                    </div>
+                    <div class="emoji-card locked">
+                        <span class="lock-icon">🔒</span>
+                        <div class="emoji-icon">😴</div>
+                        <div class="emoji-name">困倦</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 语音调整 -->
+            <div id="voice" class="content-section">
+                <h2>语音情感调整</h2>
+                <div class="voice-controls">
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>语速</span>
+                            <span id="speedValue">50%</span>
+                        </div>
+                        <input type="range" class="slider" id="speedSlider" min="0" max="100" value="50">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>音调</span>
+                            <span id="pitchValue">50%</span>
+                        </div>
+                        <input type="range" class="slider" id="pitchSlider" min="0" max="100" value="50">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>音量</span>
+                            <span id="volumeValue">70%</span>
+                        </div>
+                        <input type="range" class="slider" id="volumeSlider" min="0" max="100" value="70">
+                    </div>
+                    
+                    <div class="slider-container">
+                        <div class="slider-label">
+                            <span>情感强度</span>
+                            <span id="emotionValue">60%</span>
+                        </div>
+                        <input type="range" class="slider" id="emotionSlider" min="0" max="100" value="60">
+                    </div>
+                    
+                    <button class="button" onclick="previewVoice()">预览语音效果</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 解锁区域 -->
+        <div id="unlockSection" class="unlock-section">
+            <div class="price">¥9.9</div>
+            <img class="unlock-image" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4wEWCwcl3zQaAAAAAhJREFUGNNj/P//PwMhwgBMzAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD
