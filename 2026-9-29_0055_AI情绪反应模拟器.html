@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI情绪反应模拟器 - 模拟AI的情绪反应与交互体验</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6200ee;
+            --accent-hover: #7c4dff;
+            --lock-icon: #ff5722;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+            border-bottom: 1px solid var(--bg-secondary);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .simulator-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .simulator-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .lock-icon {
+            width: 24px;
+            height: 24px;
+            background-color: var(--lock-icon);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .emotion-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .emotion-btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        
+        .emotion-btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .emotion-btn.active {
+            background-color: var(--accent);
+        }
+        
+        .simulation-area {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .ai-face {
+            width: 120px;
+            height: 120px;
+            background-color: #333;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .eye {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            top: 40px;
+        }
+        
+        .eye.left {
+            left: 30px;
+        }
+        
+        .eye.right {
+            right: 30px;
+        }
+        
+        .mouth {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            border: 3px solid white;
+            border-top: none;
+            border-radius: 0 0 30px 30px;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .ai-message {
+            text-align: center;
+            font-size: 18px;
+            color: var(--text-primary);
+            max-width: 100%;
+            overflow-wrap: break-word;
+        }
+        
+        .input-section {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .user-input {
+            flex: 1;
+            background-color: var(--bg-tertiary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .send-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .send-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .features-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .features-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-list {
+            list-style-type: none;
+        }
+        
+        .feature-item {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-icon {
+            color: var(--accent);
+        }
+        
+        .instructions-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .instructions-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions-list {
+            list-style-type: none;
+        }
+        
+        .instruction-item {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .instruction-number {
+            background-color: var(--accent);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .unlock-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff5722;
+            margin-bottom: 20px;
+        }
+        
+        .unlock-message {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .payment-image {
+            width: 200px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        
+        .code-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .code-input {
+            background-color: var(--bg-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .unlock-btn {
+            background-color: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.2s ease;
+            width: 100%;
+        }
+        
+        .unlock-btn:hover {
+            background-color: #ff7043;
+        }
+        
+        .unlocked-status {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            
+            .tagline {
+                font-size: 14px;
+            }
+            
+            .emotion-btn {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+            
+            .price {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI情绪反应模拟器</h1>
+            <p class="tagline">模拟AI的情绪反应与交互体验</p>
+        </header>
+        
+        <div class="main-content">
+            <section class="simulator-section">
+                <h2 class="simulator-title">
+                    <span id="lockIndicator1" class="lock-icon" style="display: none;">🔒</span>
+                    情绪模拟交互
+                </h2>
+                
+                <div class="emotion-selector">
+                    <button class="emotion-btn" data-emotion="happy">😊 开心</button>
+                    <button class="emotion-btn" data-emotion="sad">😢 悲伤</button>
+                    <button class="emotion-btn" data-emotion="angry" id="lockedEmotion">😠 愤怒</button>
+                    <button class="emotion-btn" data-emotion="surprised">😲 惊讶</button>
+                    <button class="emotion-btn" data-emotion="confused">😕 困惑</button>
+                </div>
+                
+                <div class="simulation-area">
+                    <div class="ai-face">
+                        <div class="eye left"></div>
+                        <div class="eye right"></div>
+                        <div class="mouth"></div>
+                    </div>
+                    <div class="ai-message" id="aiMessage">请选择一种情绪开始模拟，或输入文字与AI互动</div>
+                </div>
+                
+                <div class="input-section">
+                    <input type="text" class="user-input" id="userInput" placeholder="输入文字与AI互动...">
+                    <button class="send-btn" id="sendBtn">发送</button>
+                </div>
+            </section>
+            
+            <section class="features-section">
+                <h2 class="features-title">功能清单</h2>
+                <ul class="feature-list">
+                    <li class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>基础情绪模拟（开心、悲伤、惊讶、困惑）</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>文本交互对话功能</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>表情变化动画效果</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">🔒</span>
+                        <span>高级情绪模拟（愤怒、恐惧、厌恶）</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">🔒</span>
+                        <span>记忆功能（记住对话历史）</span>
+                    </li>
+                    <li class="feature-item">
+                        <span class="feature-icon">🔒</span>
+                        <span>个性化AI性格设置</span>
+                    </li>
+                </ul>
+            </section>
+            
+            <section class="instructions-section">
+                <h2 class="instructions-title">使用说明</h2>
+                <ul class="instructions-list">
+                    <li class="instruction-item">
+                        <span class="instruction-number">1</span>
+                        <span>选择上方的情绪按钮，观察AI的表情变化和反应</span>
+                    </li>
+                    <li class="instruction-item">
+                        <span class="instruction-number">2</span>
+                        <span>在下方输入框中输入文字，点击发送与AI进行互动</span>
+                    </li>
+                    <li class="instruction-item">
+                        <span class="instruction-number">3</span>
+                        <span>完整版解锁后可体验更多高级情绪功能和个性化设置</span>
+                    </li>
+                    <li class="instruction-item">
+                        <span class="instruction-number">4</span>
+                        <span>付款后截图并发送至指定微信领取激活码</span>
+                    </li>
+                </ul>
+            </section>
+            
+            <section class="unlock-section" id="unlockSection">
+                <div id="lockedContent">
+                    <div class="price">¥19.9</div>
+                    <p class="unlock-message">付款后截图发微信 wxid_mztr7tpuejg212 领取激活码</p>
+                    <img class="payment-image" src="shoukuan.png" alt="收款码">
+                    <div class="code-input-group">
+                        <input type="text" class="code-input" id="codeInput" placeholder="激活码格式：如 658839-1521">
+                        <button class="unlock-btn" id="unlockBtn">解锁完整版</button>
+                    </div>
+                </div>
+                <div id="unlockedStatus" class="unlocked-status" style="display: none;">
+                    ✅ 完整版已激活
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script>
+        // 检查是否已解锁
+        if (localStorage.getItem("unlocked") === "1") {
+            document.getElementById("lockedContent").style.display = "none";
+            document.getElementById("unlockedStatus").style.display = "block";
+            document.getElementById("lockIndicator1").style.display = "none";
+            document.getElementById("lockedEmotion").style.opacity = "1";
+            document.getElementById("lockedEmotion").style.pointerEvents = "auto";
+        }
+        
+        // 情绪响应数据
+        const emotionResponses = {
+            happy: {
+                message: "我好开心！今天的阳光真明媚，心情也跟着好起来了！",
+                mouthStyle: "border-radius: 0 0 30px 30px; width: 60px; height: 30px; border: 3px solid white; border-top: none;"
+            },
+            sad: {
+                message: "唉，有点难过...也许我需要一点安慰。",
+                mouthStyle: "border-radius: 30px 30px 0 0; width: 40px; height: 20px; border: 3px solid white; border-bottom: none; top: 60px; bottom: auto;"
+            },
+            angry: {
+                message: "我真的很生气！这简直无法忍受！",
+                mouthStyle: "width: 70px; height: 10px; background-color: white; top: 60px; bottom: auto; border-radius: 0;"
+            },
+            surprised: {
+                message: "哇！这太出乎意料了！我完全没想到！",
+                mouthStyle: "width: 30px; height: 30px; border: 3px solid white; border-radius: 50%; top: 60px; bottom: auto;"
+            },
+            confused: {
+                message: "呃...我不太确定该怎么理解这个...",
+                mouthStyle: "width: 40px; height: 20px; border: 2px solid white; border-radius: 0; transform: translateX(-50%) rotate(-10deg);"
+            },
+            fear: {
+                message: "天啊！这太可怕了！我好害怕！",
+                mouthStyle: "width: 30px; height: 15px; border: 2px solid white; border-radius: 0 0 10px 10px; top: 60px; bottom: auto;"
+            },
+            disgust: {
+                message: "这真令人作呕！我无法接受！",
+                mouthStyle: "width: 50px; height: 10px; border: 3px solid white; border-radius: 0; transform: translateX(-50%) rotate(180deg); top: 60px; bottom: auto;"
+            }
+        };
+        
+        // 文本回复数据
+        const textResponses = [
+            "我理解你的想法，这很有趣！",
+            "谢谢你的分享，这让我学到了新东西。",
+            "这个问题很有深度，让我思考一下...",
+            "我对此有不同的看法，但尊重你的观点。",
+            "这真是一个令人惊奇的事实！",
+            "我从未从这个角度思考过，谢谢你的启发。",
+            "你的观点很有启发性，我很欣赏。",
+            "这让我想到了一些相关的事情。"
+        ];
+        
+        // 获取DOM元素
+        const emotionBtns = document.querySelectorAll('.emotion-btn');
+        const aiMessage = document.getElementById('aiMessage');
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const lockedEmotion = document.getElementById('lockedEmotion');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const codeInput = document.getElementById('codeInput');
+        
+        // 情绪按钮点击事件
+        emotionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.id === 'lockedEmotion' && localStorage.getItem("unlocked") !== "1") {
+                    alert("付费解锁后可使用高级情绪功能");
+                    return;
+                }
+                
+                // 移除所有active类
+                emotionBtns.forEach(b => b.classList.remove('active'));
+                
+                // 添加active类到当前按钮
+                this.classList.add('active');
+                
+                // 获取情绪类型
+                const emotion = this.dataset.emotion;
+                
+                // 更新AI表情和消息
+                updateAIFace(emotion);
+                aiMessage.textContent = emotionResponses[emotion].message;
+            });
+        });
+        
+        // 更新AI表情
+        function updateAIFace(emotion) {
+            const mouth = document.querySelector('.mouth');
+            const eyes = document.querySelectorAll('.eye');
+            
+            // 更新嘴巴
+            if (emotionResponses[emotion].mouthStyle) {
+                mouth.style.cssText = emotionResponses[emotion].mouthStyle;
+            }
+            
+            // 更新眼睛（根据情绪）
+            if (emotion === 'angry' || emotion === 'fear') {
+                eyes.forEach(eye => {
+                    eye.style.height = '5px';
+                    eye.style.top = '30px';
+                });
+            } else if (emotion === 'surprised') {
+                eyes.forEach(eye => {
+                    eye.style.width = '25px';
+                    eye.style.height = '25px';
+                });
+            } else {
+                eyes.forEach(eye => {
+                    eye.style.width = '20px';
+                    eye.style.height = '20px';
+                    eye.style.top = '40px';
+                });
+            }
+        }
+        
+        // 发送消息
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+            
+            // 显示用户消息
+            aiMessage.textContent = `你: ${message}`;
+            
+            // 清空输入框
+            userInput.value = '';
+            
+            // 模拟AI思考延迟
+            setTimeout(() => {
+                const randomResponse = textResponses[Math.floor(Math.random() * textResponses.length)];
+                aiMessage.textContent = `AI: ${randomResponse}`;
+            }, 1000);
+        }
+        
+        // 锁定按钮样式
+        if (localStorage.getItem("unlocked") !== "1") {
+            lockedEmotion.style.opacity = "0.5";
+            lockedEmotion.style.pointerEvents = "none";
+        }
+        
+        // 解锁功能
+        function checkCode(code){
+            var m=String(code).match(/^(\d{6})-(\d{4})$/);
+            if(!m)return false;
+            var s=0;
+            for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
+            var e=("0000"+((s*s)%10000)).slice(-4);
+            return m[2]===e;
+        }
+        
+        function doUnlock(){
+            var c=document.getElementById("codeInput").value.trim();
+            if(checkCode(c)){
+                localStorage.setItem("unlocked","1");
+                alert("激活成功！完整版已解锁");
+                location.reload();
+            }else{
+                alert("激活码无效，请核对后重试");
+            }
+        }
+        
+        unlockBtn.addEventListener('click', doUnlock);
+    </script>
+</body>
+</html>
