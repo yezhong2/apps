@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI食谱助手 · 智能健康饮食</title>
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--sub:#8b93a3;--acc:#00a884;--acc2:#ffb020;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:30px;}
+header{background:linear-gradient(160deg,#0d2b24,#0f1115 70%);padding:36px 20px 24px;text-align:center;}
+h1{font-size:26px;letter-spacing:1px;}
+.tag{color:var(--acc2);font-size:14px;margin-top:8px;}
+.sub{color:var(--sub);font-size:12px;margin-top:6px;}
+.tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:18px;background:var(--card);border:1px solid var(--line);color:var(--sub);font-size:13px;cursor:pointer;}
+.tab.active{background:var(--acc);border-color:var(--acc);color:#fff;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 16px;}
+.card h3{font-size:15px;margin-bottom:10px;color:var(--acc2);}
+.chip{display:inline-block;padding:6px 12px;border-radius:14px;background:#232835;border:1px solid var(--line);margin:4px 6px 4px 0;font-size:13px;cursor:pointer;transition:.15s;}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-size:15px;cursor:pointer;margin-top:12px;}
+.btn:active{opacity:.85;}
+.recipe{background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;display:none;}
+.recipe.show{display:block;}
+.recipe h4{font-size:15px;color:#fff;margin-bottom:6px;}
+.recipe .k{font-size:12px;color:var(--sub);line-height:1.8;}
+.recipe .k b{color:var(--acc2);font-weight:600;}
+.drink{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;background:#0c0e13;}
+.drink h4{font-size:14px;margin-bottom:4px;}
+.drink p{font-size:12px;color:var(--sub);line-height:1.7;}
+.lock{display:flex;align-items:center;gap:8px;color:var(--sub);font-size:13px;margin-top:12px;padding:10px;border:1px dashed var(--line);border-radius:10px;}
+.unlock{text-align:center;padding:24px 16px;margin:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,#1a2b26,#171a21);}
+.unlock h3{color:var(--acc2);font-size:17px;margin-bottom:8px;}
+.unlock p{font-size:13px;color:var(--sub);margin-bottom:10px;}
+.unlock img{width:200px;border-radius:12px;border:2px solid var(--line);}
+.unlock .wx{font-size:13px;margin-top:10px;color:#fff;}
+.cal-row{display:flex;gap:8px;margin-top:10px;}
+.cal-row input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;}
+#calOut{fon
+t-size:13px;color:var(--txt);}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI食谱助手</h1>
+  <p class="tag">智能健康饮食新体验</p>
+  <p class="sub">限时免费，错过再无！</p>
+  <div class="tabs">
+    <div class="tab active">健康饮食</div>
+    <div class="tab">食谱推荐</div>
+    <div class="tab">饮食计划</div>
+  </div>
+</header>
+<main>
+  <div class="card">
+    <h3>健康饮食</h3>
+    <p>选择你的饮食偏好，AI助手为你定制健康食谱。</p>
+    <button class="btn">立即体验</button>
+  </div>
+  <div class="card">
+    <h3>食谱推荐</h3>
+    <p>精选食谱，简单易做，让你轻松享瘦！</p>
+    <button class="btn">查看食谱</button>
+  </div>
+  <div class="card">
+    <h3>饮食计划</h3>
+    <p>个性化饮食计划，助你养成健康饮食习惯。</p>
+    <button class="btn">定制计划</button>
+  </div>
+</main>
+<div class="unlock">
+  <h3>解锁更多特色功能</h3>
+  <p>解锁更多特色功能，让健康饮食更简单！</p>
+  <img src="shoukuan.png" alt="收款码">
+  <p class="wx">微信号：wxid_mztr7tpuejg212</p>
+</div>
+</body>
+</html>
