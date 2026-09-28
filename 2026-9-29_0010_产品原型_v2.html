@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能语音助手</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    color: #fff;
+    background-color: #333;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #555;
+    border-radius: 10px;
+  }
+  h1 {
+    color: #ff6347;
+    text-align: center;
+  }
+  p {
+    color: #ddd;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .feature {
+    background-color: #777;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .feature h2 {
+    color: #ff6347;
+  }
+  .feature p {
+    color: #ccc;
+  }
+  .button {
+    background-color: #ff6347;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin-top: 10px;
+  }
+  .button:hover {
+    background-color: #ff4500;
+  }
+  .features-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .features-list li {
+    background-color: #888;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+  }
+  .instructions {
+    background-color: #777;
+    padding: 10px;
+    margin-top: 20px;
+  }
+  .instructions h3 {
+    color: #ff6347;
+  }
+  .instructions p {
+    color: #ccc;
+  }
+  .unlock-block {
+    background-color: #444;
+    padding: 10px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .unlock-block img {
+    width: 200px;
+    height: auto;
+    margin: 10px 0;
+  }
+  .unlock-block .placeholder {
+    color: #aaa;
+  }
+  .developer-info {
+    color: #aaa;
+    margin-top: 5px;
+  }
+  .price-info {
+    background-color: #666;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+  }
+  .price-info h3 {
+    color: #ff6347;
+    margin-top: 0;
+  }
+  .price-info p {
+    color: #ccc;
+    margin: 5px 0;
+  }
+  .success-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: none;
+    margin-top: 10px;
+  }
+  .next-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    display: block;
+    margin: 15px auto;
+  }
+  .next-button:hover {
+    background-color: #45a049;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>智能语音助手</h1>
+  <p>让科技更懂你</p>
+  
+  <div class="instructions">
+    <h3>使用说明</h3>
+    <p>1. 点击开始对话按钮。</p>
+    <p>2. 对智能语音助手说出你的需求。</p>
+    <p>3. 享受智能语音助手带来的便捷服务。</p>
+    <button class="next-button" onclick="showCoreFeatures()">下一步</button>
+  </div>
+  
+  <div class="feature" id="core-features" style="display: none;">
+    <h2>核心功能</h2>
+    <p>简单点击，即刻体验智能语音助手带来的便捷。</p>
+    <button class="button" onclick="alert('智能语音助手正在聆听，请说："你好智能语音助手"')">开始对话</button>
+  </div>
+  
+  <div class="price-info">
+    <h3>版本对比</h3>
+    <p><strong>免费版：</strong>基础语音识别与回应</p>
+    <p><strong>付费版：</strong>全功能解锁，包括日程提醒、智能问答、天气预报等</p>
+  </div>
+  
+  <ul class="features-list">
+    <li>语音识别与回应</li>
+    <li>日程提醒</li>
+    <li>智能问答</li>
+    <li>天气预报</li>
+  </ul>
+  
+  <div class="unlock-block">
+    <h3>解锁更多功能，开启智能生活！</h3>
+    <img src="shoukuan.png" alt="收款码">
+    <p class="placeholder">请稍后，收款码正在加载...</p>
+    <button class="button" onclick="processPayment()">立即解锁</button>
+    <div class="success-message" id="payment-success">
+      支付成功，感谢支持！
+    </div>
+    <p class="developer-info">联系开发者，微信：wxid_mztr7tpuejg212</p>
+  </div>
+</div>
+
+<script>
+  function showCoreFeatures() {
+    document.getElementById('core-features').style.display = 'block';
+    document.querySelector('.instructions').style.display = 'none';
+  }
+  
+  function processPayment() {
+    // 模拟支付处理
+    setTimeout(function() {
+      document.getElementById('payment-success').style.display = 'block';
+      document.querySelector('.unlock-block .placeholder').textContent = '支付成功，功能已解锁！';
+    }, 1000);
+  }
+</script>
+</body>
+</html>
