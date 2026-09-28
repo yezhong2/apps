@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeSentry</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  header {
+    background-color: #444;
+    padding: 10px 0;
+    text-align: center;
+  }
+  nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .code-input {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    width: calc(100% - 20px);
+  }
+  .result, .warnings, .logs {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+  }
+  .locked {
+    position: relative;
+  }
+  .lock-icon {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    font-size: 24px;
+    color: #ff0000;
+  }
+  .unlocked {
+    display: none;
+  }
+  .price {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .bottom-section {
+    display: none;
+    background-color: #444;
+    padding: 20px;
+    text-align: center;
+  }
+  .unlocked .bottom-section {
+    display: block;
+  }
+  .shoukuan {
+    display: inline-block;
+    width: 200px;
+    height: auto;
+  }
+  input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    width: calc(100% - 20px);
+  }
+  .unlock-btn {
+    padding: 10px 20px;
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  .unlock-btn:hover {
+    background-color: #ff3333;
+  }
+  .activated {
+    color: #00ff00;
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="#">首页</a>
+    <a href="#">我的代码</a>
+    <a href="#">安全报告</a>
+    <a href="#">设置</a>
+  </nav>
+</header>
+<div class="container">
+  <input type="text" class="code-input" placeholder="请输入代码进行检测...">
+  <div class="result">安全检测结果将显示在这里</div>
+  <div class="warnings">漏洞预警及修复建议将显示在这里</div>
+  <div class="locked">
+    <div class="logs">代码审查日志列表将显示在这里</div>
+    <span class="lock-icon">🔒</span>
+  </div>
+  <div class="unlocked">
+    <div class="logs">代码审查日志列表将显示在这里</div>
+  </div>
+  <div class="bottom-section">
+    <div class="price">¥19.9</div>
+    <img src="shoukuan.png" class="shoukuan" alt="收款码">
+    <p>付款后截图发微信 wxid_mztr7tpuejg212 领取激活码</p>
+    <input type="text" id="codeInput" placeholder="激活码格式：如 658839-1521">
+    <button class="unlock-btn" onclick="doUnlock()">解锁</button>
+    <div class="activated">✅ 完整版已激活</div>
+  </div>
+</div>
+<script>
+function checkCode(code){
+  var m=String(code).match(/^(\d{6})-(\d{4})$/);
+  if(!m)return false;
+  var s=0;
+  for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
+  var e=("0000"+((s*s)%10000)).slice(-4);
+  return m[2]===e;
+}
+function doUnlock(){
+  var c=document.getElementById("codeInput").value.trim();
+  if(checkCode(c)){
+    localStorage.setItem("unlocked","1");
+    alert("激活成功！完整版已解锁");
+    location.reload();
+  }else{
+    alert("激活码无效，请核对后重试");
+  }
+}
+window.onload = function() {
+  if (localStorage.getItem("unlocked") === "1") {
+    document.querySelector('.lock-icon').style.display = 'none';
+    document.querySelector('.bottom-section').style.display = 'none';
+    document.querySelector('.unlocked').style.display = 'block';
+  }
+};
+</script>
+</body>
+</html>
