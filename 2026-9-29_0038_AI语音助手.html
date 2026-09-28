@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智语AI - 您的智能语音助手</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --lock-color: #ef4444;
+            --success: #10b981;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+        
+        .feature-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-list {
+            list-style: none;
+        }
+        
+        .feature-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--bg-tertiary);
+        }
+        
+        .feature-item:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-name {
+            display: flex;
+            align-items: center;
+        }
+        
+        .lock-icon {
+            width: 20px;
+            height: 20px;
+            margin-left: 8px;
+            color: var(--lock-color);
+            display: none;
+        }
+        
+        .feature-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .feature-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .feature-btn:disabled {
+            background: var(--bg-tertiary);
+            cursor: not-allowed;
+        }
+        
+        .feature-area {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-display {
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 150px;
+            margin-bottom: 15px;
+        }
+        
+        .voice-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.3s;
+        }
+        
+        .voice-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .voice-btn.recording {
+            background: var(--lock-color);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        
+        .instructions {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .instructions h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .instructions ol {
+            padding-left: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .unlock-section {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            position: sticky;
+            bottom: 0;
+        }
+        
+        .unlock-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .unlock-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .unlock-img {
+            display: block;
+            margin: 0 auto 15px;
+            width: 200px;
+        }
+        
+        .unlock-note {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .unlock-input-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .unlock-input {
+            flex: 1;
+            background: var(--bg-primary);
+            border: 1px solid var(--bg-secondary);
+            border-radius: 8px;
+            padding: 10px;
+            color: var(--text-primary);
+        }
+        
+        .unlock-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+        
+        .unlock-btn:hover {
+            background: var(--accent-hover);
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">智语AI</div>
+        <div class="tagline">您的智能语音助手，随时为您服务</div>
+    </header>
+    
+    <section class="feature-section">
+        <h2 class="feature-title">核心功能</h2>
+        <ul class="feature-list">
+            <li class="feature-item">
+                <div class="feature-name">
+                    <span>语音对话</span>
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <button class="feature-btn" id="voiceBtn" onclick="toggleVoice()">开始对话</button>
+            </li>
+            <li class="feature-item">
+                <div class="feature-name">
+                    <span>智能提醒</span>
+                    <span class="lock-icon">🔒</span>
+                </div>
+                <button class="feature-btn" id="reminderBtn" onclick="showReminder()">设置提醒</button>
+            </li>
+            <li class="feature-item">
+                <div class="feature-name">
+                    <span>信息查询</span>
+                </div>
+                <button class="feature-btn" onclick="searchInfo()">搜索</button>
+            </li>
+            <li class="feature-item">
+                <div class="feature-name">
+                    <span>日程管理</span>
+                </div>
+                <button class="feature-btn" onclick="manageSchedule()">查看日程</button>
+            </li>
+        </ul>
+    </section>
+    
+    <section class="feature-area">
+        <h2 class="feature-title">语音助手演示</h2>
+        <div class="feature-display" id="voiceDisplay">
+            <p>点击下方按钮开始与AI语音助手对话</p>
+        </div>
+        <button class="voice-btn" id="recordBtn" onclick="toggleRecording()">🎤</button>
+    </section>
+    
+    <section class="instructions">
+        <h3>使用说明</h3>
+        <ol>
+            <li>点击"开始对话"按钮启动语音助手</li>
+            <li>对着麦克风说出您的需求或问题</li>
+            <li>AI助手将识别您的语音并提供回应</li>
+            <li>使用"智能提醒"功能设置重要事项</li>
+            <li>通过"信息查询"获取各类知识</li>
+            <li>使用"日程管理"安排您的计划</li>
+        </ol>
+    </section>
+    
+    <section class="unlock-section">
+        <h2 class="unlock-title">解锁完整版功能</h2>
+        <div class="unlock-price">¥9.9</div>
+        <img src="shoukuan.png" alt="收款码" class="unlock-img">
+        <div class="unlock-note">付款后截图发微信 wxid_mztr7tpuejg212 领取激活码</div>
+        <div class="unlock-input-group">
+            <input type="text" id="codeInput" class="unlock-input" placeholder="请输入激活码">
+            <button class="unlock-btn" onclick="doUnlock()">解锁</button>
+        </div>
+    </section>
+    
+    <script>
+        // 检查是否已解锁
+        if (localStorage.getItem("unlocked") === "1") {
+            document.querySelectorAll(".lock-icon").forEach(icon => {
+                icon.style.display = "none";
+            });
+            
+            document.getElementById("voiceBtn").disabled = false;
+            document.getElementById("reminderBtn").disabled = false;
+            
+            // 修改已解锁功能的按钮样式
+            document.querySelectorAll(".lock-icon").forEach(icon => {
+                icon.parentElement.parentElement.querySelector('.feature-btn').style.background = 'var(--accent)';
+            });
+        } else {
+            // 锁定功能
+            document.getElementById("voiceBtn").disabled = true;
+            document.getElementById("reminderBtn").disabled = true;
+            
+            // 为锁定功能添加点击事件
+            document.getElementById("voiceBtn").addEventListener('click', () => {
+                alert("付费解锁后可使用语音对话功能");
+            });
+            
+            document.getElementById("reminderBtn").addEventListener('click', () => {
+                alert("付费解锁后可使用智能提醒功能");
+            });
+            
+            // 显示锁图标
+            document.querySelectorAll(".lock-icon").forEach(icon => {
+                icon.style.display = "inline";
+            });
+        }
+        
+        // 语音对话功能
+        let isRecording = false;
+        let voiceActive = false;
+        
+        function toggleVoice() {
+            voiceActive = !voiceActive;
+            const display = document.getElementById("voiceDisplay");
+            
+            if (voiceActive) {
+                display.innerHTML = "<p>语音助手已启动，请说出您的问题...</p>";
+            } else {
+                display.innerHTML = "<p>语音助手已关闭</p>";
+            }
+        }
+        
+        function toggleRecording() {
+            if (voiceActive) {
+                isRecording = !isRecording;
+                const btn = document.getElementById("recordBtn");
+                const display = document.getElementById("voiceDisplay");
+                
+                if (isRecording) {
+                    btn.classList.add("recording");
+                    display.innerHTML = "<p>正在聆听...（请说出您的问题）</p>";
+                    
+                    // 模拟AI回应
+                    setTimeout(() => {
+                        if (isRecording) {
+                            display.innerHTML = "<p>AI助手：您好！我是智语AI，请问有什么可以帮助您的吗？</p>";
+                        }
+                    }, 2000);
+                } else {
+                    btn.classList.remove("recording");
+                    display.innerHTML += "<p><br>您：今天天气怎么样？</p>";
+                    
+                    // 模拟AI回应
+                    setTimeout(() => {
+                        if (voiceActive) {
+                            display.innerHTML += "<p>AI助手：今天天气晴朗，温度23度，适合外出活动。</p>";
+                        }
+                    }, 1500);
+                }
+            } else {
+                alert("请先开启语音对话功能");
+            }
+        }
+        
+        function showReminder() {
+            const display = document.getElementById("voiceDisplay");
+            display.innerHTML = "<p>提醒功能：请输入提醒内容和时间</p>";
+        }
+        
+        function searchInfo() {
+            const display = document.getElementById("voiceDisplay");
+            display.innerHTML = "<p>AI助手：请告诉我您想查询什么信息？</p>";
+        }
+        
+        function manageSchedule() {
+            const display = document.getElementById("voiceDisplay");
+            display.innerHTML = "<p>今日日程：<br>09:00 - 团队会议<br>14:00 - 客户拜访<br>18:00 - 健身</p>";
+        }
+        
+        function checkCode(code){
+            var m=String(code).match(/^(\d{6})-(\d{4})$/);
+            if(!m)return false;
+            var s=0;
+            for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
+            var e=("0000"+((s*s)%10000)).slice(-4);
+            return m[2]===e;
+        }
+        
+        function doUnlock(){
+            var c=document.getElementById("codeInput").value.trim();
+            if(checkCode(c)){
+                localStorage.setItem("unlocked","1");
+                alert("激活成功！完整版已解锁");
+                location.reload();
+            }else{
+                alert("激活码无效，请核对后重试");
+            }
+        }
+    </script>
+</body>
+</html>
