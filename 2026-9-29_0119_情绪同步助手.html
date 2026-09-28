@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>情绪同步助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6200ee;
+            --accent-hover: #7c4dff;
+            --locked: #ff5252;
+            --border: #333333;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 180px;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--accent), #03dac6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent);
+            border-radius: 50%;
+        }
+        
+        .button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .button:active {
+            transform: scale(0.98);
+        }
+        
+        .emotion-result {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: rgba(98, 0, 238, 0.1);
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .emotion-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .emotion-text {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .emotion-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .share-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        
+        .share-button {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px 12px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .share-button:hover {
+            background-color: rgba(98, 0, 238, 0.2);
+            border-color: var(--accent);
+        }
+        
+        .share-icon {
+            font-size: 24px;
+        }
+        
+        .share-text {
+            font-size: 12px;
+        }
+        
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .lock-icon {
+            font-size: 36px;
+            color: var(--locked);
+            margin-bottom: 10px;
+        }
+        
+        .lock-text {
+            font-size: 16px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .tips-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .tip-item {
+            background-color: rgba(98, 0, 238, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 14px;
+        }
+        
+        .unlock-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .unlock-section.hidden {
+            transform: translateY(calc(100% - 40px));
+        }
+        
+        .unlock-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .unlock-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .unlock-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .unlock-image {
+            width: 200px;
+            height: auto;
+        }
+        
+        .unlock-instruction {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .unlock-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .unlock-input {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .unlock-button {
+            background-color: var(--locked);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .unlock-button:hover {
+            background-color: #ff6b6b;
+        }
+        
+        .activated-text {
+            text-align: center;
+            color: #4caf50;
+            font-size: 14px;
+        }
+        
+        .community-list, .profile-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .community-item, .profile-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+        }
+        
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .item-info {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .item-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .item-action {
+            background-color: var(--accent);
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .mood-emoji {
+            font-size: 24px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>情绪同步助手</h1>
+            <p class="subtitle">识别、分享、共鸣，与自己的情绪和平共处</p>
+        </header>
+        
+        <!-- 情绪识别 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="card-icon">😊</span>
+                情绪识别
+            </h2>
+            <button class="button" id="emotionBtn">识别我的情绪</button>
+            <div class="emotion-result" id="emotionResult">
+                <div class="emotion-icon" id="emotionIcon"></div>
+                <div class="emotion-text" id="emotionText"></div>
+                <div class="emotion-desc" id="emotionDesc"></div>
+            </div>
+        </section>
+        
+        <!-- 情绪分享 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="card-icon">🤝</span>
+                情绪分享与匹配
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">上传你的情绪表情，找到共鸣者</p>
+            <div class="share-options">
+                <button class="share-button" data-mood="happy">
+                    <span class="share-icon">😄</span>
+                    <span class="share-text">开心</span>
+                </button>
+                <button class="share-button" data-mood="sad">
+                    <span class="share-icon">😢</span>
+                    <span class="share-text">悲伤</span>
+                </button>
+                <button class="share-button" data-mood="angry">
+                    <span class="share-icon">😠</span>
+                    <span class="share-text">愤怒</span>
+                </button>
+                <button class="share-button" data-mood="anxious">
+                    <span class="share-icon">😰</span>
+                    <span class="share-text">焦虑</span>
+                </button>
+                <button class="share-button" data-mood="calm">
+                    <span class="share-icon">😌</span>
+                    <span class="share-text">平静</span>
+                </button>
+            </div>
+            <div id="matchResult" style="margin-top: 16px; padding: 12px; background-color: rgba(98, 0, 238, 0.1); border-radius: 8px; display: none;">
+                <p style="font-weight: 500;">找到 <span id="matchCount">0</span> 位共鸣者</p>
+                <div class="community-list" id="matchList"></div>
+            </div>
+        </section>
+        
+        <!-- 心理小贴士 -->
+        <section class="card" id="tipsCard">
+            <h2 class="card-title">
+                <span class="card-icon">💡</span>
+                心理小贴士
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">获取专业心理建议，解锁更多情绪小贴士</p>
+            <div class="tips-container" id="tipsContainer">
+                <div class="tip-item">📌 每天给自己5分钟时间，静坐并关注呼吸，有助于缓解压力</div>
+                <div class="tip-item">📌 记录情绪日记，可以帮助你更好地理解自己的情绪模式</div>
+            </div>
+            <div class="lock-overlay" id="tipsLock">
+                <div class="lock-icon">🔒</div>
+                <div class="lock-text">付费解锁后可<br>获取专业心理建议</div>
+            </div>
+        </section>
+        
+        <!-- 社群互动 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="card-icon">👥</span>
+                社群互动
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">加入社群，与志同道合的人交流</p>
+            <div class="community-list">
+                <div class="community-item">
+                    <div class="avatar">A</div>
+                    <div class="item-info">
+                        <div class="item-name">焦虑互助小组</div>
+                        <div class="item-desc">1,234 位成员 · 今日活跃</div>
+                    </div>
+                    <button class="item-action">加入</button>
+                </div>
+                <div class="community-item">
+                    <div class="avatar">B</div>
+                    <div class="item-info">
+                        <div class="item-name">积极生活圈</div>
+                        <div class="item-desc">2,456 位成员 · 热门社群</div>
+                    </div>
+                    <button class="item-action">加入</button>
+                </div>
+                <div class="community-item">
+                    <div class="avatar">C</div>
+                    <div class="item-info">
+                        <div class="item-name">情绪管理工作室</div>
+                        <div class="item-desc">987 位成员 · 专业指导</div>
+                    </div>
+                    <button class="item-action">加入</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 个人档案 -->
+        <section class="card">
+            <h2 class="card-title">
+                <span class="card-icon">👤</span>
+                个人档案管理
+            </h2>
+            <p style="color: var(--text-secondary); margin-bottom: 16px;">创建或编辑个人档案，记录情绪变化</p>
+            <div class="profile-list">
+                <div class="profile-item">
+                    <div class="avatar">📊</div>
+                    <div class="item-info">
+                        <div class="item-name">情绪趋势</div>
+                        <div class="item-desc">查看最近30天的情绪变化</div>
+                    </div>
+                    <button class="item-action">查看</button>
+                </div>
+                <div class="profile-item">
+                    <div class="avatar">📝</div>
+                    <div class="item-info">
+                        <div class="item-name">情绪日记</div>
+                        <div class="item-desc">记录你的每日情绪</div>
+                    </div>
+                    <button class="item-action">编辑</button>
+                </div>
+                <div class="profile-item">
+                    <div class="avatar">🎯</div>
+                    <div class="item-info">
+                        <div class="item-name">情绪目标</div>
+                        <div class="item-desc">设定和追踪你的情绪改善目标</div>
+                    </div>
+                    <button class="item-action">设置</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 解锁区块 -->
+    <div class="unlock-section" id="unlockSection">
+        <div class="unlock-content">
+            <div class="unlock-title">解锁完整版功能</div>
+            <div class="unlock-price">¥9.9</div>
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAABRWlDQ1BJQ0MgUHJvZmlsZQAAKJFjYGASSSwoyGFhYGDIzsp5QjEdN0PtDs6Cj4FhYGUYIFHic7Zcgv7Lhl3YBggsQAwMeRwB14EGpUPBVjUlgI3F2lWAwWdQh6Xk0vY4x4MB4Mbt3YzRSKsgAUZbw1ZCdYyZTgW9A5eyhpOgGBqRmsBxRiRBvsFxkZm0GEA2VyGn5Kc7Z6QzWcmRnOHDh2QKxYjFs8XZsmbJbtm3LzAkZs7N1MqYUd8a2z2ZxtV1yJzvR2d2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2Zd2
