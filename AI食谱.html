@@ -94,32 +94,9 @@ h1{font-size:26px;letter-spacing:1px;}
   </div>
 </div>
 
-<div class="lock" id="lockNotice">🔒 <span>每周定制食谱计划、无限食材组合、营养师答疑 —— 属于完整版功能</span></div>
-
-<div class="unlock" id="unlockSection">
-  <h3>解锁完整版</h3>
-  <p>基础功能永久免费 · 完整版解锁全部高级功能</p>
-  <p>🌟 <strong>享受定制食谱、无限组合推荐、专业营养师解答</strong></p>
-  <p>💰 <strong>微信支付/支付宝/银行卡一键支付</strong></p>
-  <div id="premiumFeatures" style="display:none; margin:16px 0; text-align:left; background:#0c0e13; padding:12px; border-radius:8px;">
-    <h4 style="color:var(--acc2); margin-bottom:8px;">🔥 高级版功能列表</h4>
-    <ul style="font-size:13px; line-height:1.8; color:var(--sub);">
-      <li>✅ 无限食材组合推荐</li>
-      <li>✅ 每周个性化定制食谱计划</li>
-      <li>✅ 专业营养师在线答疑</li>
-      <li>✅ 特殊人群饮食方案（减脂、增肌、素食等）</li>
-      <li>✅ 营养成分详细分析报告</li>
-      <li>✅ 食谱收藏与分类管理</li>
-      <li>✅ 无广告纯净体验</li>
-    </ul>
-  </div>
-  <img src="shoukuan.png" alt="收款码">
-  <div class="wx">付款后截图发微信 <b>wxid_mztr7tpuejg212</b> 领取激活码</div>
-  <div class="unlock-code">
-    <input type="text" id="codeInput" placeholder="激活码格式：如 658839-1521">
-    <button class="btn" style="margin-top:0;width:auto;padding:10px 20px;" id="btnUnlock">解锁</button>
-  </div>
-  <div id="activatedNotice" style="display:none;color:var(--acc);font-size:13px;">✅ 完整版已激活</div>
+<div class="card">
+  <h3>🎉 完全免费</h3>
+  <p style="font-size:13px;color:var(--sub);line-height:1.8;">本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款，全部功能免费使用。仅通过合规广告维持运营。</p>
 </div>
 
 <script>
@@ -172,7 +149,7 @@ document.getElementById("btnGo").onclick = function(){
   });
   out.innerHTML = hit.map(function(r){
     return '<div class="recipe show"><h4>'+r.n+'</h4><div class="k">'+r.k+'</div></div>';
-  }).join("") || '<div class="recipe show"><h4>没有完全匹配的食谱</h4><div class="k">试试少选一种食材，或解锁完整版获得无限组合推荐。</div></div>';
+  }).join("") || '<div class="recipe show"><h4>没有完全匹配的食谱</h4><div class="k">试试少选一种食材，或换个组合再试。</div></div>';
 };
 
 // ===== 热量计算 =====
@@ -221,53 +198,56 @@ document.querySelectorAll(".tab").forEach(function(t){
   };
 });
 
-// ===== 激活码解锁（标准体系：与新品同一套算法，激活码通用）=====
-function checkCode(code){
-  var m = String(code).match(/^(\d{6})-(\d{4})$/);
-  if(!m) return false;
-  var s = 0;
-  for(var i=0;i<6;i++) s += parseInt(m[1][i]);
-  var e = ("0000"+((s*s)%10000)).slice(-4);
-  return m[2] === e;
-}
-function doUnlock(){
-  var c = document.getElementById("codeInput").value.trim();
-  if(checkCode(c)){
-    localStorage.setItem("unlocked","1");
-    alert("激活成功！完整版已解锁");
-    location.reload();
-  } else {
-    alert("激活码无效，请核对后重试");
-  }
-}
-document.getElementById("btnUnlock").onclick = doUnlock;
-document.getElementById("lockNotice").onclick = function(){
-  document.getElementById("unlockSection").scrollIntoView({behavior: 'smooth'});
-};
-
-var featuresToggle = false;
-document.getElementById("unlockSection").addEventListener('click', function(e) {
-  if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-    featuresToggle = !featuresToggle;
-    document.getElementById("premiumFeatures").style.display = featuresToggle ? "block" : "none";
-  }
-});
-
-// ===== 已解锁状态：移除锁标记，解锁区块收起，只留“已激活”小字 =====
-function applyUnlocked(){
-  if(localStorage.getItem("unlocked") === "1"){
-    document.getElementById("lockNotice").style.display = "none";
-    var sec = document.getElementById("unlockSection");
-    for(var i = 0; i < sec.children.length; i++){
-      var el = sec.children[i];
-      el.style.display = (el.id === "activatedNotice") ? "block" : "none";
-    }
-  }
-}
-applyUnlocked();
+// （激活码/解锁逻辑已删除：产品完全免费，全部功能直接可用）
 
 // 初始化
 renderIngs(); renderFoods(); renderDrinks();
 </script>
+<script>
+(function(){
+  try{
+    localStorage.setItem("unlocked","1");
+    ["lockNotice","unlockSection","unlockForm","unlockContent","unlockActivated","activatedText","activatedMessage","activatedNotice","lockOverlay","premiumFeatures"].forEach(function(id){
+      var el=document.getElementById(id); if(el&&el.parentNode) el.parentNode.removeChild(el);
+    });
+    document.querySelectorAll(".lock-icon").forEach(function(el){ el.remove(); });
+    document.querySelectorAll(".feature-card.locked").forEach(function(card){
+      card.classList.remove("locked");
+      var b=card.querySelector("button");
+      if(b){ b.disabled=false; var t=b.textContent||""; if(t.indexOf("付费")>=0||t.indexOf("解锁")>=0) b.textContent="立即使用"; }
+    });
+    document.querySelectorAll("img").forEach(function(el){ if(/shoukuan/i.test(el.getAttribute("src")||"")) el.remove(); });
+    var BAD=/付费解锁|激活码|收款码|付款后截图|领取激活码|解锁完整版|微信支付/;
+    document.querySelectorAll("body *").forEach(function(el){
+      if(!el.children.length && BAD.test(el.textContent||"") && !el.closest(".free-footer")) el.remove();
+    });
+  }catch(e){}
+})();
+</script>
+<!-- free-ad-standard-2026 -->
+<style>
+.free-footer{max-width:960px;margin:24px auto 0;padding:16px;border-top:1px solid #262b36;font-size:13px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:left;line-height:1.7;}
+.free-footer .free-banner{background:rgba(0,168,132,.12);border:1px solid #00a884;color:#e6e9ef;border-radius:10px;padding:10px 14px;margin-bottom:12px;}
+.free-footer .ad-slot{border:1px dashed #3a4152;border-radius:10px;padding:12px 14px;margin-bottom:12px;background:#0c0e13;}
+.free-footer .ad-slot .ad-label{font-size:11px;color:#6b7280;margin-bottom:4px;}
+.free-footer details{border:1px solid #262b36;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#0f1115;}
+.free-footer summary{cursor:pointer;color:#ffb020;font-weight:600;}
+.free-footer table{width:100%;border-collapse:collapse;margin-top:8px;}
+.free-footer th,.free-footer td{border-bottom:1px solid #262b36;padding:6px 8px;text-align:left;word-break:break-all;}
+.free-footer pre{white-space:pre-wrap;font-size:12px;color:#8b93a3;}
+</style>
+<div class="free-footer">
+<div class="free-banner">🎉 本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款。仅通过合规广告维持运营。</div>
+<div class="ad-slot" id="adSlot"><div class="ad-label">广告</div>合规广告位：仅展示通过审核的合规内容，不投放任何违规广告。</div>
+<details><summary>🏆 贡献者榜单（按实际贡献评分）</summary><table><tr><th>贡献者</th><th>贡献内容</th><th>评分</th><th>备注</th></tr><tr><td colspan="4">榜单按实际贡献登记中——贡献内容、评分与署名以公开记录为准</td></tr></table></details>
+<details><summary>📖 贡献说明</summary><p>贡献按<b>实际贡献</b>评分（代码、设计、内容、反馈、合规推广等），不按拉人评分；不设上下线、层级或人头奖励。</p></details>
+<details><summary>🎁 奖励规则</summary><p>激励以<b>荣誉榜、署名</b>优先；可设少量小额实物奖励；高价值奖品限量发放，并依法办理个人所得税相关手续；<b>无多级分销、无层级返利</b>。</p></details>
+<details><summary>🔒 隐私说明</summary><p>本产品为纯前端页面：不收集个人信息、不上传用户数据；仅含站点统计与合规广告所需的常规访问数据。</p></details>
+<details><summary>📄 LICENSE</summary><pre>MIT License
+
+Copyright (c) 2026 灵感雷达产品作者
+
+本产品以 MIT 协议开源：可自由使用、修改、分发，但须保留本版权声明。</pre></details>
+</div>
 </body>
 </html>
