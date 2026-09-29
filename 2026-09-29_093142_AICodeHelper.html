@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AICodeHelper - 智能代码助手</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #3a8eef;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+            --border: #333333;
+            --locked: #ff5252;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-bottom: 100px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 标题栏 */
+        .header {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .header .version {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+        
+        /* 主内容区 */
+        .main-content {
+            padding: 20px 0;
+        }
+        
+        /* 代码输入区域 */
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-area {
+            width: 100%;
+            min-height: 150px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .input-area:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .generate-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .generate-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .generate-btn:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        
+        /* 代码预览区域 */
+        .preview-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .preview-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-preview {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 12px;
+            min-height: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            color: var(--text-primary);
+            position: relative;
+        }
+        
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        .lock-icon {
+            font-size: 48px;
+            color: var(--locked);
+            margin-bottom: 10px;
+        }
+        
+        .lock-text {
+            font-size: 16px;
+            color: white;
+            text-align: center;
+        }
+        
+        /* 错误提示框 */
+        .error-box {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--error);
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-box.show {
+            display: block;
+        }
+        
+        .error-title {
+            font-weight: 600;
+            color: var(--error);
+            margin-bottom: 5px;
+        }
+        
+        .error-message {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .fix-btn {
+            background-color: var(--error);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .fix-btn:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* 版本管理区域 */
+        .version-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .version-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .version-list {
+            list-style: none;
+        }
+        
+        .version-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .version-info {
+            flex-grow: 1;
+        }
+        
+        .version-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .version-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .version-btn {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .version-btn:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        
+        /* 智能补全提示 */
+        .autocomplete-popup {
+            position: absolute;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 8px 0;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+            width: 300px;
+        }
+        
+        .autocomplete-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .autocomplete-item:hover {
+            background-color: var(--bg-primary);
+        }
+        
+        .autocomplete-item.active {
+            background-color: var(--accent);
+        }
+        
+        /* 解锁区块 */
+        .unlock-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 20px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+        }
+        
+        .unlock-section.hidden {
+            transform: translateY(100%);
+        }
+        
+        .unlock-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .unlock-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .unlock-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .unlock-img {
+            margin: 15px 0;
+        }
+        
+        .unlock-img img {
+            width: 200px;
+            height: auto;
+        }
+        
+        .unlock-hint {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+        
+        .unlock-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .unlock-input {
+            flex-grow: 1;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+        
+        .unlock-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .unlock-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .unlock-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .activated-text {
+            font-size: 14px;
+            color: var(--success);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .generate-btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .unlock-form {
+                flex-direction: column;
+            }
+            
+            .unlock-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>
+                <span>🤖</span>
+                AICodeHelper
+                <span class="version">v1.0</span>
+            </h1>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="main-content">
+            <!-- 代码输入区域 -->
+            <div class="input-section">
+                <h2>
+                    <span>✏️</span>
+                    输入你的需求
+                </h2>
+                <textarea id="codeInput" class="input-area" placeholder="请描述你想要生成的代码，例如：创建一个登录页面，包含用户名和密码输入框，以及登录按钮"></textarea>
+                <button id="generateBtn" class="generate-btn">
+                    <span>⚡</span>
+                    生成代码
+                </button>
+            </div>
+            
+            <!-- 错误提示框 -->
+            <div id="errorBox" class="error-box">
+                <div class="error-title">检测到代码错误</div>
+                <div id="errorMessage" class="error-message"></div>
+                <button id="fixBtn" class="fix-btn">修复错误</button>
+            </div>
+            
+            <!-- 代码预览区域 -->
+            <div class="preview-section">
+                <h2>
+                    <span>💻</span>
+                    生成的代码
+                    <span id="lockIcon" class="lock-icon">🔒</span>
+                </h2>
+                <div id="codePreview" class="code-preview">
+                    <!-- 生成的代码将显示在这里 -->
+                    点击"生成代码"按钮开始生成代码模板...
+                </div>
+                <div id="lockOverlay" class="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <div class="lock-text">付费解锁后可使用高级定制功能</div>
+                </div>
+            </div>
+            
+            <!-- 版本管理区域 -->
+            <div class="version-section">
+                <h2>
+                    <span>📝</span>
+                    版本管理
+                </h2>
+                <ul id="versionList" class="version-list">
+                    <!-- 版本历史将显示在这里 -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 智能补全提示 -->
+    <div id="autocompletePopup" class="autocomplete-popup"></div>
+    
+    <!-- 解锁区块 -->
+    <div id="unlockSection" class="unlock-section">
+        <div class="unlock-content">
+            <div class="unlock-title">解锁高级定制功能</div>
+            <div class="unlock-price">¥9.9</div>
+            <div class="unlock-img">
+                <img src="shoukuan.png" alt="收款码">
+            </div>
+            <div class="unlock-hint">付款后截图发微信 wxid_mztr7tpuejg212 领取激活码</div>
+            <div id="unlockForm" class="unlock-form">
+                <input id="codeInput" type="text" class="unlock-input" placeholder="激活码格式：如 658839-1521">
+                <button id="unlockBtn" class="unlock-btn">解锁</button>
+            </div>
+            <div id="activatedText" class="activated-text" style="display: none;">✅ 完整版已激活</div>
+        </div>
+    </div>
+    
+    <script>
+        // 检查是否已解锁
+        function checkUnlockStatus() {
+            const unlocked = localStorage.getItem("unlocked") === "1";
+            const unlockSection = document.getElementById("unlockSection");
+            const unlockForm = document.getElementById("unlockForm");
+            const activatedText = document.getElementById("activatedText");
+            const lockOverlay = document.getElementById("lockOverlay");
+            const lockIcon = document.getElementById("lockIcon");
+            
+            if (unlocked) {
+                unlockSection.classList.add("hidden");
+                unlockForm.style.display = "none";
+                activatedText.style.display = "block";
+                lockOverlay.style.display = "none";
+                lockIcon.style.display = "none";
+            } else {
+                unlockSection.classList.remove("hidden");
+                unlockForm.style.display = "flex";
+                activatedText.style.display = "none";
+                lockOverlay.style.display = "flex";
+                lockIcon.style.display = "inline";
+            }
+        }
+        
+        // 页面加载时检查解锁状态
+        window.addEventListener('DOMContentLoaded', checkUnlockStatus);
+        
+        // 生成代码功能
+        document.getElementById("generateBtn").addEventListener("click", function() {
+            const input = document.getElementById("codeInput").value.trim();
+            const preview = document.getElementById("codePreview");
+            const errorBox = document.getElementById("errorBox");
+            const errorMessage = document.getElementById("errorMessage");
+            
+            if (!input) {
+                errorMessage.textContent = "请输入你的需求描述";
+                errorBox.classList.add("show");
+                return;
+            }
+            
+            // 隐藏错误框
+            errorBox.classList.remove("show");
+            
+            // 显示加载状态
+            this.disabled = true;
+            this.innerHTML = "<span>⏳</span> 生成中...";
+            
+            // 模拟生成代码
+            setTimeout(() => {
+                // 简单的代码生成逻辑
+                const generatedCode = generateCodeTemplate(input);
+                preview.textContent = generatedCode;
+                
+                // 添加到版本历史
+                addToVersionHistory(input, generatedCode);
+                
+                // 恢复按钮状态
+                this.disabled = false;
+                this.innerHTML = "<span>⚡</span> 生成代码";
+                
+                // 检查代码错误
+                checkCodeErrors(generatedCode);
+            }, 1000);
+        });
+        
+        // 生成代码模板
+        function generateCodeTemplate(description) {
+            // 简单的代码生成逻辑
+            const templates = {
+                "登录": `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .login-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3a8eef;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>用户登录</h2>
+        <form>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">登录</button>
+        </form>
+    </div>
+</body>
+</html>`,
+                "注册": `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+        .register-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            width: 350px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3a8eef;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h2>用户注册</h2>
+        <form>
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">邮箱</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">确认密码</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+            </div>
+            <button type="submit">注册</button>
+        </form>
+    </div>
+</body>
+</html>`,
+                "首页": `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #444;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .hero {
+            background-color: #4a9eff;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        .hero p {
+            font-size: 18px;
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .feature {
+            flex: 1;
+            min-width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .feature h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>我的网站</h1>
+    </header>
+    <nav>
+        <a href="#">首页</a>
+        <a href="#">关于我们</a>
+        <a href="#">服务</a>
+        <a href="#">联系我们</a>
+    </nav>
+    <div class="container">
+        <div class="hero">
+            <h1>欢迎来到我的网站</h1>
+            <p>这是一个示例首页，展示网站的主要内容</p>
+        </div>
+        <div class="features">
+            <div class="feature">
+                <h3>功能一</h3>
+                <p>这是第一个功能的描述，详细介绍这个功能的特点和优势。</p>
+            </div>
+            <div class="feature">
+                <h3>功能二</h3>
+                <p>这是第二个功能的描述，详细介绍这个功能的特点和优势。</p>
+            </div>
+            <div class="feature">
+                <h3>功能三</h3>
+                <p>这是第三个功能的描述，详细介绍这个功能的特点和优势。</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 我的网站. 保留所有权利。</p>
+    </footer>
+</body>
+</html>`
+            };
+            
+            // 根据关键词选择模板
+            if (description.includes("登录")) {
+                return templates["登录"];
+            } else if (description.includes("注册")) {
+                return templates["注册"];
+            } else if (description.includes("首页") || description.includes("主页")) {
+                return templates["首页"];
+            }
+            
+            // 默认生成一个简单的HTML模板
+            return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成的页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>生成的页面</h1>
+        </header>
+        <main>
+            <h2>根据您的需求生成的内容</h2>
+            <p>${description}</p>
+        </main>
+        <footer>
+            <p>&copy; 2023 AICodeHelper. 保留所有权利。</p>
+        </footer>
+    </div>
+</body>
+</html>`;
+        }
+        
+        // 添加到版本历史
+        function addToVersionHistory(description, code) {
+            const versionList = document.getElementById("versionList");
+            const now = new Date();
+            const timeString = now.toLocaleString();
+            
+            const versionItem = document.createElement("li");
+            versionItem.className = "version-item";
+            versionItem.innerHTML = `
+                <div class="version-info">
+                    <div>需求: ${description}</div>
+                    <div class="version-time">${timeString}</div>
+                </div>
+                <div class="version-actions">
+                    <button class="version-btn">查看</button>
+                    <button class="version-btn">恢复</button>
+                </div>
+            `;
+            
+            // 添加事件监听
+            versionItem.querySelector(".version-btn").addEventListener("click", function() {
+                alert("查看版本功能需要高级版解锁");
+            });
+            
+            versionItem.querySelectorAll(".version-btn")[1].addEventListener("click", function() {
+                document.getElementById("codePreview").textContent = code;
+                alert("已恢复到此版本");
+            });
+            
+            versionList.insertBefore(versionItem, versionList.firstChild);
+        }
+        
+        // 检查代码错误
+        function checkCodeErrors(code) {
+            const errorBox = document.getElementById("errorBox");
+            const errorMessage = document.getElementById("errorMessage");
+            
+            // 简单的错误检测逻辑
+            const errors = [];
+            
+            // 检查HTML标签是否闭合
+            const openTags = (code.match(/<\w+[^>]*>/g) || []).length;
+            const closeTags = (code.match(/<\/\w+>/g) || []).length;
+            
+            if (openTags !== closeTags) {
+                errors.push(`标签未闭合: ${openTags} 个开始标签，${closeTags} 个结束标签`);
+            }
+            
+            // 检查是否缺少DOCTYPE声明
+            if (!code.includes("<!DOCTYPE html>")) {
+                errors.push("缺少DOCTYPE声明");
+            }
+            
+            // 检查是否缺少head和body标签
+            if (!code.includes("<head>") || !code.includes("</head>")) {
+                errors.push("缺少head标签");
+            }
+            
+            if (!code.includes("<body>") || !code.includes("</body>")) {
+                errors.push("缺少body标签");
+            }
+            
+            if (errors.length > 0) {
+                errorMessage.textContent = errors.join("; ");
+                errorBox.classList.add("show");
+            } else {
+                errorBox.classList.remove("show");
+            }
+        }
+        
+        // 修复错误按钮
+        document.getElementById("fixBtn").addEventListener("click", function() {
+            const code = document.getElementById("codePreview").textContent;
+            const fixedCode = fixCodeErrors(code);
+            document.getElementById("codePreview").textContent = fixedCode;
+            
+            // 添加到版本历史
+            const input = document.getElementById("codeInput").value.trim();
+            addToVersionHistory(`修复错误后的代码: ${input}`, fixedCode);
+            
+            // 隐藏错误框
+            document.getElementById("errorBox").classList.remove("show");
+        });
+        
+        // 修复代码错误
+        function fixCodeErrors(code) {
+            let fixedCode = code;
+            
+            // 添加DOCTYPE声明
+            if (!fixedCode.includes("<!DOCTYPE html>")) {
+                fixedCode = "<!DOCTYPE html>\n" + fixedCode;
+            }
+            
+            // 添加缺失的head标签
+            if (!fixedCode.includes("<head>")) {
+                fixedCode = fixedCode.replace(/<html[^>]*>/, "<html>\n<head>\n</head>\n<body>");
+            }
+            
+            // 添加缺失的body标签
+            if (!fixedCode.includes("<body>")) {
+                fixedCode = fixedCode.replace(/<\/html>/, "</body>\n</html>");
+            }
+            
+            // 简单的标签闭合修复
+            const openTags = (fixedCode.match(/<\w+[^>]*>/g) || []).length;
+            const closeTags = (fixedCode.match(/<\/\w+>/g) || []).length;
+            
+            if (openTags > closeTags) {
+                // 添加缺少的结束标签
+                const tagNames = fixedCode.match(/<(\w+)[^>]*>/g) || [];
+                const lastOpenTag = tagNames[tagNames.length - 1];
+                const tagName = lastOpenTag.match(/<(\w+)/)[1];
+                
+                if (!fixedCode.includes(`</${tagName}>`)) {
+                    fixedCode = fixedCode.replace(/<\/html>/, `</${tagName}>\n</html>`);
+                }
+            }
+            
+            return fixedCode;
+        }
+        
+        // 智能补全功能
+        const inputArea = document.getElementById("codeInput");
+        const autocompletePopup = document.getElementById("autocompletePopup");
+        
+        inputArea.addEventListener("input", function() {
+            const value = this.value;
+            const cursorPos = this.selectionStart;
+            const beforeCursor = value.substring(0, cursorPos);
+            
+            // 检查是否需要显示补全建议
+            if (beforeCursor.length > 2) {
+                showAutocomplete(beforeCursor);
+            } else {
+                hideAutocomplete();
+            }
+        });
+        
+        function showAutocomplete(text) {
+            const suggestions = [
+                { text: "创建一个登录页面", icon: "🔐" },
+                { text: "设计一个注册表单", icon: "📝" },
+                { text: "构建响应式导航栏", icon: "🧭" },
+                { text: "制作一个产品展示页面", icon: "📦" },
+                { text: "开发一个联系表单", icon: "📧" },
+                { text: "实现一个购物车功能", icon: "🛒" },
+                { text: "设计一个博客文章列表", icon: "📰" },
+                { text: "创建一个用户个人资料页", icon: "👤" }
+            ].filter(item => item.text.includes(text));
+            
+            if (suggestions.length > 0) {
+                autocompletePopup.innerHTML = "";
+                suggestions.forEach(suggestion => {
+                    const item = document.createElement("div");
+                    item.className = "autocomplete-item";
+                    item.innerHTML = `<span>${suggestion.icon}</span> ${suggestion.text}`;
+                    item.addEventListener("click", function() {
+                        inputArea.value = suggestion.text;
+                        hideAutocomplete();
+                    });
+                    autocompletePopup.appendChild(item);
+                });
+                
+                // 定位弹出框
+                const rect = inputArea.getBoundingClientRect();
+                autocompletePopup.style.top = `${rect.bottom + 5}px`;
+                autocompletePopup.style.left = `${rect.left}px`;
+                autocompletePopup.style.display = "block";
+            } else {
+                hideAutocomplete();
+            }
+        }
+        
+        function hideAutocomplete() {
+            autocompletePopup.style.display = "none";
+        }
+        
+        // 点击其他地方隐藏补全弹出框
+        document.addEventListener("click", function(e) {
+            if (!inputArea.contains(e.target) && !autocompletePopup.contains(e.target)) {
+                hideAutocomplete();
+            }
+        });
+        
+        // 激活码检查函数
+        function checkCode(code){
+            var m=String(code).match(/^(\d{6})-(\d{4})$/);
+            if(!m)return false;
+            var s=0;
+            for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
+            var e=("0000"+((s*s)%10000)).slice(-4);
+            return m[2]===e;
+        }
+        
+        function doUnlock(){
+            var c=document.getElementById("codeInput").value.trim();
+            if(checkCode(c)){
+                localStorage.setItem("unlocked","1");
+                alert("激活成功！完整版已解锁");
+                location.reload();
+            }else{
+                alert("激活码无效，请核对后重试");
+            }
+        }
+        
+        // 解锁按钮
+        document.getElementById("unlockBtn").addEventListener("click", doUnlock);
+    </script>
+</body>
+</html>
