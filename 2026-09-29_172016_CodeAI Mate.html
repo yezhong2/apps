@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeAI Mate - 智能代码助手</title>
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #357abd;
+            --border: #333333;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .login-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        main {
+            padding: 2rem 0;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .lock-icon {
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+
+        .code-editor {
+            width: 100%;
+            min-height: 200px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .results {
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 100px;
+        }
+
+        .result-item {
+            padding: 0.75rem;
+            border-left: 3px solid var(--accent);
+            background-color: rgba(74, 158, 255, 0.1);
+            margin-bottom: 0.75rem;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .result-item.error {
+            border-left-color: var(--error);
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .result-item.warning {
+            border-left-color: var(--warning);
+            background-color: rgba(255, 152, 0, 0.1);
+        }
+
+        .result-item.success {
+            border-left-color: var(--success);
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .version-history {
+            margin-top: 1rem;
+        }
+
+        .version-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .version-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .team-members {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .member-card {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background-color: var(--bg-tertiary);
+            padding: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .member-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .invite-member {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .invite-member input {
+            flex: 1;
+            padding: 0.5rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .unlock-section {
+            background-color: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .unlock-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .unlock-image {
+            margin: 1.5rem 0;
+        }
+
+        .unlock-image img {
+            width: 200px;
+            max-width: 100%;
+        }
+
+        .unlock-instructions {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .unlock-input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .unlock-input {
+            flex: 1;
+            padding: 0.75rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .unlock-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .unlock-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .activated-message {
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        .tab-container {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left: 3px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 3px solid var(--error);
+        }
+
+        .notification.warning {
+            border-left: 3px solid var(--warning);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .version-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .version-actions {
+                margin-top: 0.5rem;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">CodeAI Mate</div>
+                <nav class="nav-links">
+                    <a href="#upload">代码上传</a>
+                    <a href="#analysis">代码分析</a>
+                    <a href="#version">版本管理</a>
+                    <a href="#security">安全检测</a>
+                    <a href="#team">团队协作</a>
+                    <a href="#settings">设置</a>
+                </nav>
+                <button class="login-btn" id="loginBtn">登录/注册</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <section id="upload" class="section">
+                <h2 class="section-title">代码上传/导入</h2>
+                <div class="file-upload">
+                    <button class="btn btn-secondary">选择文件</button>
+                    <input type="file" id="fileInput" style="display: none;" accept=".js,.ts,.jsx,.tsx,.py,.java,.c,.cpp,.cs" />
+                    <span id="fileName">未选择文件</span>
+                </div>
+                <textarea class="code-editor" id="codeEditor" placeholder="在此粘贴或输入您的代码..."></textarea>
+                <div style="margin-top: 1rem;">
+                    <button class="btn" id="analyzeBtn">分析代码</button>
+                </div>
+            </section>
+
+            <section id="analysis" class="section">
+                <h2 class="section-title">代码分析</h2>
+                <div class="tab-container">
+                    <div class="tab active" data-tab="error">错误检测</div>
+                    <div class="tab" data-tab="optimize">性能优化</div>
+                </div>
+                
+                <div class="tab-content active" id="error-tab">
+                    <h3>代码智能纠错</h3>
+                    <div class="results" id="errorResults">
+                        <p style="color: var(--text-secondary);">请上传代码并点击"分析代码"按钮开始纠错...</p>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="optimize-tab">
+                    <h3>代码性能优化建议 <span class="lock-icon">🔒</span></h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">付费解锁后可使用</p>
+                    <div class="results" id="optimizeResults">
+                        <p style="color: var(--text-secondary);">此功能需要付费解锁...</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="version" class="section">
+                <h2 class="section-title">代码版本控制</h2>
+                <div class="version-history" id="versionHistory">
+                    <div class="version-item">
+                        <div>
+                            <div>初始版本</div>
+                            <div class="version-date">2023-06-15 14:30</div>
+                        </div>
+                        <div class="version-actions">
+                            <button class="btn btn-small btn-secondary">查看</button>
+                            <button class="btn btn-small btn-secondary">回滚</button>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                    <button class="btn" id="saveVersionBtn">保存当前版本</button>
+                </div>
+            </section>
+
+            <section id="security" class="section">
+                <h2 class="section-title">代码安全检测</h2>
+                <h3>安全漏洞检测 <span class="lock-icon">🔒</span></h3>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">付费解锁后可使用</p>
+                <div class="results" id="securityResults">
+                    <p style="color: var(--text-secondary);">此功能需要付费解锁...</p>
+                </div>
+            </section>
+
+            <section id="team" class="section">
+                <h2 class="section-title">团队协作管理</h2>
+                <div class="team-members" id="teamMembers">
+                    <div class="member-card">
+                        <div class="member-avatar">张</div>
+                        <div>
+                            <div>张三</div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">开发者</div>
+                        </div>
+                    </div>
+                    <div class="member-card">
+                        <div class="member-avatar">李</div>
+                        <div>
+                            <div>李四</div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">审查者</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="invite-member">
+                    <input type="email" placeholder="输入成员邮箱地址..." id="inviteInput">
+                    <button class="btn" id="inviteBtn">邀请成员</button>
+                </div>
+            </section>
+
+            <section id="settings" class="section">
+                <h2 class="section-title">设置与帮助中心</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-secondary">账户设置</button>
+                    <button class="btn btn-secondary">通知设置</button>
+                    <button class="btn btn-secondary">帮助文档</button>
+                </div>
+            </section>
+
+            <section class="unlock-section" id="unlockSection">
+                <h2>解锁完整版功能</h2>
+                <div class="unlock-price">¥9.9</div>
+                <div class="unlock-instructions">付款后截图发微信 <strong>wxid_mztr7tpuejg212</strong> 领取激活码</div>
+                <div class="unlock-image">
+                    <img src="shoukuan.png" alt="收款码">
+                </div>
+                <div class="unlock-input-group">
+                    <input type="text" class="unlock-input" id="codeInput" placeholder="激活码格式：如 658839-1521">
+                    <button class="unlock-btn" id="unlockBtn">解锁</button>
+                </div>
+                <div class="activated-message" id="activatedMessage" style="display: none;">✅ 完整版已激活</div>
+            </section>
+        </div>
+    </main>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // 检查是否已解锁
+        if (localStorage.getItem("unlocked") === "1") {
+            document.getElementById("unlockSection").style.display = "none";
+            document.getElementById("activatedMessage").style.display = "block";
+            document.getElementById("activatedMessage").textContent = "✅ 完整版已激活";
+            
+            // 移除所有锁标记
+            document.querySelectorAll('.lock-icon').forEach(lock => {
+                lock.remove();
+            });
+            
+            // 显示付费功能内容
+            document.querySelector('#optimize-tab p').textContent = "分析代码性能并提供优化建议...";
+            document.querySelector('#securityResults p').textContent = "扫描代码，识别潜在安全风险并提供修复建议...";
+        }
+
+        // 通知功能
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 文件上传功能
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('codeEditor').value = e.target.result;
+                };
+                reader.readAsText(file);
+            }
+        });
+
+        document.querySelector('.btn-secondary').addEventListener('click', function() {
+            document.getElementById('fileInput').click();
+        });
+
+        // 分析代码功能
+        document.getElementById('analyzeBtn').addEventListener('click', function() {
+            const code = document.getElementById('codeEditor').value;
+            if (!code) {
+                showNotification('请先输入或上传代码', 'error');
+                return;
+            }
+
+            // 模拟错误检测
+            const errorResults = document.getElementById('errorResults');
+            errorResults.innerHTML = '';
+            
+            // 模拟一些常见的错误
+            const errors = [
+                { type: 'error', title: '未定义变量', description: '变量 "undefinedVar" 在第5行未定义' },
+                { type: 'warning', title: '未使用的变量', description: '变量 "unusedVar" 在第8行声明但未使用' },
+                { type: 'success', title: '代码风格良好', description: '代码缩进和命名规范符合标准' }
+            ];
+            
+            errors.forEach(error => {
+                const item = document.createElement('div');
+                item.className = `result-item ${error.type}`;
+                item.innerHTML = `
+                    <div class="result-title">${error.title}</div>
+                    <div class="result-description">${error.description}</div>
+                `;
+                errorResults.appendChild(item);
+            });
+            
+            // 如果已解锁，显示性能优化建议
+            if (localStorage.getItem("unlocked") === "1") {
+                const optimizeResults = document.getElementById('optimizeResults');
+                optimizeResults.innerHTML = '';
+                
+                const optimizations = [
+                    { type: 'success', title: '循环优化', description: '第15行的for循环可以优化为forEach以提高可读性' },
+                    { type: 'warning', title: '内存使用', description: '第22行的大数组创建可能导致内存问题，考虑分批处理' },
+                    { type: 'success', title: '异步处理', description: '第30行的异步操作已正确使用await关键字' }
+                ];
+                
+                optimizations.forEach(opt => {
+                    const item = document.createElement('div');
+                    item.className = `result-item ${opt.type}`;
+                    item.innerHTML = `
+                        <div class="result-title">${opt.title}</div>
+                        <div class="result-description">${opt.description}</div>
+                    `;
+                    optimizeResults.appendChild(item);
+                });
+            }
+            
+            showNotification('代码分析完成');
+        });
+
+        // 标签切换功能
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.getAttribute('data-tab');
+                
+                // 切换标签激活状态
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 切换内容显示
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // 保存版本功能
+        document.getElementById('saveVersionBtn').addEventListener('click', function() {
+            const code = document.getElementById('codeEditor').value;
+            if (!code) {
+                showNotification('没有代码可保存', 'error');
+                return;
+            }
+            
+            const versionHistory = document.getElementById('versionHistory');
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            const versionItem = document.createElement('div');
+            versionItem.className = 'version-item';
+            versionItem.innerHTML = `
+                <div>
+                    <div>版本 ${versionHistory.children.length + 1}</div>
+                    <div class="version-date">${dateStr}</div>
+                </div>
+                <div class="version-actions">
+                    <button class="btn btn-small btn-secondary">查看</button>
+                    <button class="btn btn-small btn-secondary">回滚</button>
+                </div>
+            `;
+            
+            versionHistory.insertBefore(versionItem, versionHistory.firstChild);
+            showNotification('版本已保存');
+        });
+
+        // 邀请成员功能
+        document.getElementById('inviteBtn').addEventListener('click', function() {
+            const email = document.getElementById('inviteInput').value;
+            if (!email) {
+                showNotification('请输入邮箱地址', 'error');
+                return;
+            }
+            
+            // 模拟添加成员
+            const teamMembers = document.getElementById('teamMembers');
+            const names = ['王五', '赵六', '钱七', '孙八'];
+            const roles = ['开发者', '审查者', '测试员', '设计师'];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomRole = roles[Math.floor(Math.random() * roles.length)];
+            
+            const memberCard = document.createElement('div');
+            memberCard.className = 'member-card';
+            memberCard.innerHTML = `
+                <div class="member-avatar">${randomName.charAt(0)}</div>
+                <div>
+                    <div>${randomName}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">${randomRole}</div>
+                </div>
+            `;
+            
+            teamMembers.appendChild(memberCard);
+            document.getElementById('inviteInput').value = '';
+            showNotification(`已邀请 ${email}`);
+        });
+
+        // 登录功能
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            showNotification('登录功能开发中...');
+        });
+
+        // 安全检测功能（已解锁时可用）
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem("unlocked") === "1") {
+                // 模拟安全检测
+                const securityBtn = document.createElement('button');
+                securityBtn.className = 'btn';
+                securityBtn.textContent = '运行安全检测';
+                securityBtn.style.marginTop = '1rem';
+                securityBtn.addEventListener('click', function() {
+                    const securityResults = document.getElementById('securityResults');
+                    securityResults.innerHTML = '';
+                    
+                    const securityIssues = [
+                        { type: 'error', title: 'SQL注入风险', description: '第45行的SQL查询未使用参数化查询，存在注入风险' },
+                        { type: 'warning', title: 'XSS防护', description: '第58行输出用户输入前未进行HTML转义' },
+                        { type: 'success', title: '密码安全', description: '密码哈希使用bcrypt算法，符合安全标准' }
+                    ];
+                    
+                    securityIssues.forEach(issue => {
+                        const item = document.createElement('div');
+                        item.className = `result-item ${issue.type}`;
+                        item.innerHTML = `
+                            <div class="result-title">${issue.title}</div>
+                            <div class="result-description">${issue.description}</div>
+                        `;
+                        securityResults.appendChild(item);
+                    });
+                    
+                    showNotification('安全检测完成');
+                });
+                
+                document.querySelector('#security .section').appendChild(securityBtn);
+            }
+        });
+
+        // 激活码检查功能
+        function checkCode(code){
+            var m=String(code).match(/^(\d{6})-(\d{4})$/);
+            if(!m)return false;
+            var s=0;
+            for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
+            var e=("0000"+((s*s)%10000)).slice(-4);
+            return m[2]===e;
+        }
+
+        function doUnlock(){
+            var c=document.getElementById("codeInput").value.trim();
+            if(checkCode(c)){
+                localStorage.setItem("unlocked","1");
+                alert("激活成功！完整版已解锁");
+                location.reload();
+            }else{
+                alert("激活码无效，请核对后重试");
+            }
+        }
+
+        document.getElementById('unlockBtn').addEventListener('click', doUnlock);
+    </script>
+</body>
+</html>
