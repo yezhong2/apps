@@ -1,55 +1,273 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI行为模仿助手</title>
+<title>AI食谱助手 · 智能健康饮食</title>
 <style>
-  body { font-family: Arial, sans-serif; color: #fff; background-color: #333; margin: 0; padding: 0; }
-  .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #444; border-radius: 10px; }
-  .header { text-align: center; }
-  .header h1 { margin: 0; }
-  .header p { margin: 10px 0; font-size: 18px; }
-  .features, .instructions { background-color: #555; padding: 15px; border-radius: 5px; margin-top: 20px; }
-  .features ul { list-style: none; padding: 0; }
-  .features li { background-color: #666; padding: 10px; border-radius: 5px; margin-top: 5px; }
-  .instructions { margin-top: 40px; }
-  .button { background-color: #0275d8; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; display: inline-block; margin-top: 10px; }
-  .button:hover { background-color: #0056b3; }
-  .unlock { background-color: #777; padding: 20px; text-align: center; margin-top: 40px; }
-  .unlock img { width: 200px; height: auto; }
-  .unlock span { color: #ddd; font-size: 12px; display: block; margin-top: 10px; }
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--sub:#8b93a3;--acc:#00a884;--acc2:#ffb020;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:30px;}
+header{background:linear-gradient(160deg,#0d2b24,#0f1115 70%);padding:36px 20px 24px;text-align:center;animation:fadeIn 1s ease-in-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+h1{font-size:26px;letter-spacing:1px;}
+.tag{color:var(--acc2);font-size:14px;margin-top:8px;}
+.sub{color:var(--sub);font-size:12px;margin-top:6px;}
+.tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:18px;background:var(--card);border:1px solid var(--line);color:var(--sub);font-size:13px;cursor:pointer;transition:all 0.3s ease;}
+.tab:hover{transform:translateY(-2px);border-color:var(--acc2);}
+.tab.active{background:var(--acc);border-color:var(--acc);color:#fff;animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,168,132,0.4);}70%{box-shadow:0 0 0 10px rgba(0,168,132,0);}100%{box-shadow:0 0 0 0 rgba(0,168,132,0);}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 16px;animation:slideUp 0.8s ease-out forwards;opacity:0;transform:translateY(20px);}
+@keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+.card h3{font-size:15px;margin-bottom:10px;color:var(--acc2);}
+.chip{display:inline-block;padding:6px 12px;border-radius:14px;background:#232835;border:1px solid var(--line);margin:4px 6px 4px 0;font-size:13px;cursor:pointer;transition:.15s;}
+.chip:hover{transform:scale(1.05);background:#2a2f3a;}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-size:15px;cursor:pointer;margin-top:12px;position:relative;overflow:hidden;transition:all 0.3s ease;}
+.btn:active{opacity:.85;transform:scale(0.98);}
+.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s;}
+.btn:active::after{width:300px;height:300px;}
+.recipe{background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;display:none;animation:fadeIn 0.5s ease-in-out;}
+.recipe.show{display:block;}
+.recipe h4{font-size:15px;color:#fff;margin-bottom:6px;}
+.recipe .k{font-size:12px;color:var(--sub);line-height:1.8;}
+.recipe .k b{color:var(--acc2);font-weight:600;}
+.drink{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;background:#0c0e13;animation:fadeIn 0.6s ease-in-out;}
+.drink h4{font-size:14px;margin-bottom:4px;}
+.drink p{font-size:12px;color:var(--sub);line-height:1.7;}
+.lock{display:flex;align-items:center;gap:8px;color:var(--sub);font-size:13px;margin-top:12px;padding:10px;border:1px dashed var(--line);border-radius:10px;cursor:pointer;transition:all 0.3s ease;}
+.lock:hover{background:rgba(255,176,32,0.1);border-color:var(--acc2);}
+.unlock{text-align:center;padding:24px 16px;margin:16px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(160deg,#1a2b26,#171a21);animation:fadeIn 1.2s ease-in-out;}
+.unlock h3{color:var(--acc2);font-size:17px;margin-bottom:8px;}
+.unlock p{font-size:13px;color:var(--sub);margin-bottom:10px;animation:fadeIn 1.4s ease-in-out;}
+.unlock img{width:200px;border-radius:12px;border:2px solid var(--line);transition:transform 0.3s ease;}
+.unlock img:hover{transform:scale(1.05);}
+.unlock .wx{font-size:13px;margin-top:10px;color:#fff;animation:fadeIn 1.6s ease-in-out;}
+.cal-row{display:flex;gap:8px;margin-top:10px;}
+.cal-row input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;transition:border-color 0.3s ease;}
+.cal-row input:focus{border-color:var(--acc2);}
+.unlock-code{display:flex;gap:8px;margin-top:10px;align-items:center;}
+.unlock-code input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;transition:border-color 0.3s ease;}
+.unlock-code input:focus{border-color:var(--acc2);}
+#calOut{font-size:13px;color:var(--acc2);margin-top:10px;min-height:18px;transition:all 0.3s ease;}
+#calOut.calChange{animation:highlight 0.5s ease-in-out;}
+@keyframes highlight{0%{transform:scale(1);}50%{transform:scale(1.05);color:#fff;}100%{transform:scale(1);}}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <h1>AI行为模仿助手</h1>
-    <p>让AI帮你模仿人类行为，轻松应对各种场合</p>
-  </div>
-  <button class="button" onclick="simulate()">模拟行为</button>
-  <div class="features">
-    <ul>
-      <li>识别多种情绪和行为模式</li>
-      <li>定制化模仿你的动作</li>
-      <li>实时反馈调整</li>
-    </ul>
-  </div>
-  <div class="instructions">
-    <p>使用说明：</p>
-    <p>1. 点击“模拟行为”按钮。</p>
-    <p>2. 观察AI助手的行为模仿。</p>
-    <p>3. 根据需要进行调整。</p>
-  </div>
-  <div class="unlock">
-    <img src="shoukuan.png" alt="收款码" onerror="this.onerror=null; this.src='占位提示文字';">
-    <span>联系开发者，微信：wxid_mztr7tpuejg212</span>
+<header>
+  <h1>🥗 AI食谱助手</h1>
+  <div class="tag">智能健康饮食 · 吃对每一餐</div>
+  <div class="sub">输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY</div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-p="rec">🍳 食谱推荐</div>
+  <div class="tab" data-p="cal">🔥 热量计算</div>
+  <div class="tab" data-p="drink">☕ 饮品 DIY</div>
+</div>
+
+<div id="p-rec">
+  <div class="card">
+    <h3>我有这些食材，能做什么？</h3>
+    <div id="ingList"></div>
+    <button class="btn" id="btnGo">推荐食谱</button>
+    <div id="recOut"></div>
   </div>
 </div>
+
+<div id="p-cal" style="display:none">
+  <div class="card">
+    <h3>今日摄入热量估算</h3>
+    <div id="foodList"></div>
+    <div class="cal-row"><input id="calInput" type="number" placeholder="输入重量（克）"><button class="btn" style="margin:0;width:auto;padding:10px 18px" id="btnAdd">＋添加</button></div>
+    <div id="calOut">已选 0 项 · 共 0 千卡</div>
+  </div>
+</div>
+
+<div id="p-drink" style="display:none">
+  <div class="card">
+    <h3>家庭饮品 DIY 指南</h3>
+    <div id="drinkList"></div>
+  </div>
+</div>
+
+<div class="lock" id="lockNotice">🔒 <span>每周定制食谱计划、无限食材组合、营养师答疑 —— 属于完整版功能</span></div>
+
+<div class="unlock" id="unlockSection">
+  <h3>解锁完整版</h3>
+  <p>基础功能永久免费 · 完整版解锁全部高级功能</p>
+  <p>🌟 <strong>享受定制食谱、无限组合推荐、专业营养师解答</strong></p>
+  <p>💰 <strong>微信支付/支付宝/银行卡一键支付</strong></p>
+  <div id="premiumFeatures" style="display:none; margin:16px 0; text-align:left; background:#0c0e13; padding:12px; border-radius:8px;">
+    <h4 style="color:var(--acc2); margin-bottom:8px;">🔥 高级版功能列表</h4>
+    <ul style="font-size:13px; line-height:1.8; color:var(--sub);">
+      <li>✅ 无限食材组合推荐</li>
+      <li>✅ 每周个性化定制食谱计划</li>
+      <li>✅ 专业营养师在线答疑</li>
+      <li>✅ 特殊人群饮食方案（减脂、增肌、素食等）</li>
+      <li>✅ 营养成分详细分析报告</li>
+      <li>✅ 食谱收藏与分类管理</li>
+      <li>✅ 无广告纯净体验</li>
+    </ul>
+  </div>
+  <img src="shoukuan.png" alt="收款码">
+  <div class="wx">付款后截图发微信 <b>wxid_mztr7tpuejg212</b> 领取激活码</div>
+  <div class="unlock-code">
+    <input type="text" id="codeInput" placeholder="激活码格式：如 658839-1521">
+    <button class="btn" style="margin-top:0;width:auto;padding:10px 20px;" id="btnUnlock">解锁</button>
+  </div>
+  <div id="activatedNotice" style="display:none;color:var(--acc);font-size:13px;">✅ 完整版已激活</div>
+</div>
+
 <script>
-function simulate() {
-  alert("正在模拟行为，请稍等...");
+// ===== 数据 =====
+var RECIPES = [
+  {n:"番茄炒蛋", ing:["番茄","鸡蛋"], k:"<b>食材：</b>番茄2个、鸡蛋3个、葱、盐、糖<br><b>步骤：</b>①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅<br><b>热量：</b>约 260 千卡/份"},
+  {n:"鸡胸肉蔬菜沙拉", ing:["鸡胸肉","生菜"], k:"<b>食材：</b>鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁<br><b>步骤：</b>①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀<br><b>热量：</b>约 320 千卡/份"},
+  {n:"燕麦牛奶早餐", ing:["燕麦","牛奶","鸡蛋"], k:"<b>食材：</b>燕麦40g、牛奶250ml、鸡蛋1个、坚果少许<br><b>步骤：</b>①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果<br><b>热量：</b>约 380 千卡/份"},
+  {n:"清蒸鲈鱼", ing:["鱼","鲈鱼"], k:"<b>食材：</b>鲈鱼1条、姜、葱、蒸鱼豉油<br><b>步骤：</b>①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油<br><b>热量：</b>约 280 千卡/份"},
+  {n:"冬瓜虾仁汤", ing:["冬瓜","虾"], k:"<b>食材：</b>冬瓜300g、虾仁150g、姜<br><b>步骤：</b>①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟<br><b>热量：</b>约 150 千卡/份"},
+  {n:"麻婆豆腐", ing:["豆腐","肉末"], k:"<b>食材：</b>豆腐1盒、肉末100g、豆瓣酱、花椒<br><b>步骤：</b>①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花<br><b>热量：</b>约 420 千卡/份"},
+  {n:"蒜蓉西兰花", ing:["西兰花"], k:"<b>食材：</b>西兰花1颗、蒜、蚝油<br><b>步骤：</b>①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒<br><b>热量：</b>约 120 千卡/份"},
+  {n:"杂粮饭", ing:["米饭","糙米"], k:"<b>食材：</b>大米、糙米、小米 1:1:1<br><b>步骤：</b>①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式<br><b>热量：</b>约 200 千卡/碗"}
+];
+var FOODS = [
+  {n:"米饭", c:116},{n:"馒头", c:223},{n:"面条(熟)", c:110},{n:"鸡胸肉", c:133},{n:"鸡蛋", c:144},
+  {n:"牛肉", c:125},{n:"猪肉", c:395},{n:"鱼", c:110},{n:"豆腐", c:81},{n:"牛奶", c:54},
+  {n:"苹果", c:52},{n:"香蕉", c:93},{n:"西兰花", c:36},{n:"番茄", c:20},{n:"土豆", c:81}
+];
+var DRINKS = [
+  {n:"冰美式", d:"浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。"},
+  {n:"生椰拿铁", d:"浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。"},
+  {n:"柠檬气泡水", d:"柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。"},
+  {n:"绿豆牛乳冰", d:"熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。"}
+];
+
+// ===== 食材选择 =====
+var sel = {};
+function renderIngs(){
+  var box = document.getElementById("ingList");
+  var all = [];
+  RECIPES.forEach(function(r){ r.ing.forEach(function(i){ if(all.indexOf(i)<0) all.push(i); }); });
+  box.innerHTML = all.map(function(i){
+    return '<span class="chip'+(sel[i]?' on':'')+'" data-i="'+i+'">'+i+'</span>';
+  }).join("");
+  box.querySelectorAll(".chip").forEach(function(c){
+    c.onclick = function(){
+      var i = c.getAttribute("data-i");
+      if(sel[i]) delete sel[i]; else sel[i]=1;
+      renderIngs();
+    };
+  });
 }
+document.getElementById("btnGo").onclick = function(){
+  var out = document.getElementById("recOut");
+  var keys = Object.keys(sel);
+  if(!keys.length){ out.innerHTML = '<div class="recipe show"><h4>💡 先选 1-2 种你有的食材</h4></div>'; return; }
+  var hit = RECIPES.filter(function(r){
+    return keys.some(function(k){ return r.ing.indexOf(k)>=0; });
+  });
+  out.innerHTML = hit.map(function(r){
+    return '<div class="recipe show"><h4>'+r.n+'</h4><div class="k">'+r.k+'</div></div>';
+  }).join("") || '<div class="recipe show"><h4>没有完全匹配的食谱</h4><div class="k">试试少选一种食材，或解锁完整版获得无限组合推荐。</div></div>';
+};
+
+// ===== 热量计算 =====
+var chosen = [];
+function renderFoods(){
+  var box = document.getElementById("foodList");
+  box.innerHTML = FOODS.map(function(f){
+    return '<span class="chip" data-f="'+f.n+'">'+f.n+' '+f.c+'千卡/100g</span>';
+  }).join("");
+  box.querySelectorAll(".chip").forEach(function(c){
+    c.onclick = function(){ document.getElementById("calInput").placeholder = c.getAttribute("data-f")+" · 输入克数"; };
+  });
+}
+var total = 0;
+document.getElementById("btnAdd").onclick = function(){
+  var inp = document.getElementById("calInput");
+  var w = parseFloat(inp.value);
+  var ph = inp.placeholder;
+  if(!w || ph.indexOf("·")<0) return;
+  var name = ph.split(" ·")[0];
+  var f = FOODS.filter(function(x){return x.n===name;})[0];
+  if(!f) return;
+  total += Math.round(f.c * w / 100);
+  chosen.push(name + " " + w + "g");
+  document.getElementById("calOut").textContent = "已选 " + chosen.length + " 项 · 共 " + total + " 千卡";
+  document.getElementById("calOut").classList.add("calChange");
+  setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+  inp.value = "";
+};
+
+// ===== 饮品 =====
+function renderDrinks(){
+  document.getElementById("drinkList").innerHTML = DRINKS.map(function(d){
+    return '<div class="drink"><h4>'+d.n+'</h4><p>'+d.d+'</p></div>';
+  }).join("");
+}
+
+// ===== Tab =====
+document.querySelectorAll(".tab").forEach(function(t){
+  t.onclick = function(){
+    document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});
+    t.classList.add("active");
+    ["rec","cal","drink"].forEach(function(p){
+      document.getElementById("p-"+p).style.display = p===t.getAttribute("data-p") ? "block":"none";
+    });
+  };
+});
+
+// ===== 激活码解锁（标准体系：与新品同一套算法，激活码通用）=====
+function checkCode(code){
+  var m = String(code).match(/^(\d{6})-(\d{4})$/);
+  if(!m) return false;
+  var s = 0;
+  for(var i=0;i<6;i++) s += parseInt(m[1][i]);
+  var e = ("0000"+((s*s)%10000)).slice(-4);
+  return m[2] === e;
+}
+function doUnlock(){
+  var c = document.getElementById("codeInput").value.trim();
+  if(checkCode(c)){
+    localStorage.setItem("unlocked","1");
+    alert("激活成功！完整版已解锁");
+    location.reload();
+  } else {
+    alert("激活码无效，请核对后重试");
+  }
+}
+document.getElementById("btnUnlock").onclick = doUnlock;
+document.getElementById("lockNotice").onclick = function(){
+  document.getElementById("unlockSection").scrollIntoView({behavior: 'smooth'});
+};
+
+var featuresToggle = false;
+document.getElementById("unlockSection").addEventListener('click', function(e) {
+  if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+    featuresToggle = !featuresToggle;
+    document.getElementById("premiumFeatures").style.display = featuresToggle ? "block" : "none";
+  }
+});
+
+// ===== 已解锁状态：移除锁标记，解锁区块收起，只留“已激活”小字 =====
+function applyUnlocked(){
+  if(localStorage.getItem("unlocked") === "1"){
+    document.getElementById("lockNotice").style.display = "none";
+    var sec = document.getElementById("unlockSection");
+    for(var i = 0; i < sec.children.length; i++){
+      var el = sec.children[i];
+      el.style.display = (el.id === "activatedNotice") ? "block" : "none";
+    }
+  }
+}
+applyUnlocked();
+
+// 初始化
+renderIngs(); renderFoods(); renderDrinks();
 </script>
 </body>
 </html>
