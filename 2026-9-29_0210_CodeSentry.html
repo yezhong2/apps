@@ -45,54 +45,10 @@
     color: #fff;
     padding: 10px;
   }
-  .locked {
-    position: relative;
-  }
-  .lock-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    font-size: 24px;
-    color: #ff0000;
-  }
-  .unlocked {
-    display: none;
-  }
-  .price {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  .bottom-section {
-    display: none;
-    background-color: #444;
-    padding: 20px;
-    text-align: center;
-  }
-  .unlocked .bottom-section {
-    display: block;
-  }
-  .shoukuan {
-    display: inline-block;
-    width: 200px;
-    height: auto;
-  }
   input[type="text"] {
     margin: 10px 0;
     padding: 10px;
     width: calc(100% - 20px);
-  }
-  .unlock-btn {
-    padding: 10px 20px;
-    background-color: #ff0000;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-  }
-  .unlock-btn:hover {
-    background-color: #ff3333;
-  }
-  .activated {
-    color: #00ff00;
   }
 </style>
 <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
@@ -109,48 +65,53 @@
   <input type="text" class="code-input" placeholder="请输入代码进行检测...">
   <div class="result">安全检测结果将显示在这里</div>
   <div class="warnings">漏洞预警及修复建议将显示在这里</div>
-  <div class="locked">
-    <div class="logs">代码审查日志列表将显示在这里</div>
-    <span class="lock-icon">🔒</span>
-  </div>
-  <div class="unlocked">
-    <div class="logs">代码审查日志列表将显示在这里</div>
-  </div>
-  <div class="bottom-section">
-    <div class="price">¥19.9</div>
-    <img src="shoukuan.png" class="shoukuan" alt="收款码">
-    <p>付款后截图发微信 wxid_mztr7tpuejg212 领取激活码</p>
-    <input type="text" id="codeInput" placeholder="激活码格式：如 658839-1521">
-    <button class="unlock-btn" onclick="doUnlock()">解锁</button>
-    <div class="activated">✅ 完整版已激活</div>
-  </div>
+  <div class="logs">代码审查日志列表将显示在这里</div>
 </div>
 <script>
-function checkCode(code){
-  var m=String(code).match(/^(\d{6})-(\d{4})$/);
-  if(!m)return false;
-  var s=0;
-  for(var i=0;i<6;i++)s+=parseInt(m[1][i]);
-  var e=("0000"+((s*s)%10000)).slice(-4);
-  return m[2]===e;
-}
-function doUnlock(){
-  var c=document.getElementById("codeInput").value.trim();
-  if(checkCode(c)){
+(function(){
+  try{
     localStorage.setItem("unlocked","1");
-    alert("激活成功！完整版已解锁");
-    location.reload();
-  }else{
-    alert("激活码无效，请核对后重试");
-  }
-}
-window.onload = function() {
-  if (localStorage.getItem("unlocked") === "1") {
-    document.querySelector('.lock-icon').style.display = 'none';
-    document.querySelector('.bottom-section').style.display = 'none';
-    document.querySelector('.unlocked').style.display = 'block';
-  }
-};
+    ["lockNotice","unlockSection","unlockForm","unlockContent","unlockActivated","activatedText","activatedMessage","activatedNotice","lockOverlay","premiumFeatures"].forEach(function(id){
+      var el=document.getElementById(id); if(el&&el.parentNode) el.parentNode.removeChild(el);
+    });
+    document.querySelectorAll(".lock-icon").forEach(function(el){ el.remove(); });
+    document.querySelectorAll(".feature-card.locked").forEach(function(card){
+      card.classList.remove("locked");
+      var b=card.querySelector("button");
+      if(b){ b.disabled=false; var t=b.textContent||""; if(t.indexOf("付费")>=0||t.indexOf("解锁")>=0) b.textContent="立即使用"; }
+    });
+    document.querySelectorAll("img").forEach(function(el){ if(/shoukuan/i.test(el.getAttribute("src")||"")) el.remove(); });
+    var BAD=/付费解锁|激活码|收款码|付款后截图|领取激活码|解锁完整版|微信支付/;
+    document.querySelectorAll("body *").forEach(function(el){
+      if(!el.children.length && BAD.test(el.textContent||"") && !el.closest(".free-footer")) el.remove();
+    });
+  }catch(e){}
+})();
 </script>
+<!-- free-ad-standard-2026 -->
+<style>
+.free-footer{max-width:960px;margin:24px auto 0;padding:16px;border-top:1px solid #262b36;font-size:13px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:left;line-height:1.7;}
+.free-footer .free-banner{background:rgba(0,168,132,.12);border:1px solid #00a884;color:#e6e9ef;border-radius:10px;padding:10px 14px;margin-bottom:12px;}
+.free-footer .ad-slot{border:1px dashed #3a4152;border-radius:10px;padding:12px 14px;margin-bottom:12px;background:#0c0e13;}
+.free-footer .ad-slot .ad-label{font-size:11px;color:#6b7280;margin-bottom:4px;}
+.free-footer details{border:1px solid #262b36;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#0f1115;}
+.free-footer summary{cursor:pointer;color:#ffb020;font-weight:600;}
+.free-footer table{width:100%;border-collapse:collapse;margin-top:8px;}
+.free-footer th,.free-footer td{border-bottom:1px solid #262b36;padding:6px 8px;text-align:left;word-break:break-all;}
+.free-footer pre{white-space:pre-wrap;font-size:12px;color:#8b93a3;}
+</style>
+<div class="free-footer">
+<div class="free-banner">🎉 本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款。仅通过合规广告维持运营。</div>
+<div class="ad-slot" id="adSlot"><div class="ad-label">广告</div>合规广告位：仅展示通过审核的合规内容，不投放任何违规广告。</div>
+<details><summary>🏆 贡献者榜单（按实际贡献评分）</summary><table><tr><th>贡献者</th><th>贡献内容</th><th>评分</th><th>备注</th></tr><tr><td colspan="4">榜单按实际贡献登记中——贡献内容、评分与署名以公开记录为准</td></tr></table></details>
+<details><summary>📖 贡献说明</summary><p>贡献按<b>实际贡献</b>评分（代码、设计、内容、反馈、合规推广等），不按拉人评分；不设上下线、层级或人头奖励。</p></details>
+<details><summary>🎁 奖励规则</summary><p>激励以<b>荣誉榜、署名</b>优先；可设少量小额实物奖励；高价值奖品限量发放，并依法办理个人所得税相关手续；<b>无多级分销、无层级返利</b>。</p></details>
+<details><summary>🔒 隐私说明</summary><p>本产品为纯前端页面：不收集个人信息、不上传用户数据；仅含站点统计与合规广告所需的常规访问数据。</p></details>
+<details><summary>📄 LICENSE</summary><pre>MIT License
+
+Copyright (c) 2026 灵感雷达产品作者
+
+本产品以 MIT 协议开源：可自由使用、修改、分发，但须保留本版权声明。</pre></details>
+</div>
 </body>
 </html>
