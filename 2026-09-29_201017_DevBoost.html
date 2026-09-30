@@ -51,7 +51,137 @@
             line-height: 1.6;
         }
         
-        /* ... rest of the styles ... */
+        /* Header styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        /* Main content styles */
+        main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .result-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .copy-button {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .copy-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .copy-message.show {
+            opacity: 1;
+        }
+        
+        .result-content {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 100px;
+        }
         
         /* Add theme switch button */
         .theme-switcher {
@@ -64,14 +194,86 @@
             cursor: pointer;
         }
         
-        /* ... rest of the styles ... */
+        /* Footer styles */
+        footer {
+            max-width: 960px;
+            margin: 40px auto 0;
+            padding: 20px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
     </style>
 <script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
 <body>
     <!-- Theme switch button -->
     <div class="theme-switcher" onclick="toggleTheme()">切换主题</div>
     
-    <!-- ... rest of the HTML ... -->
+    <!-- Header -->
+    <header>
+        <h1>DevBoost - 智能开发助手</h1>
+        <p class="subtitle">提升您的开发效率，智能生成代码与解决方案</p>
+    </header>
+    
+    <!-- Main content -->
+    <main>
+        <!-- Input section -->
+        <section class="input-section">
+            <label class="input-label" for="userInput">请输入您的需求或问题描述：</label>
+            <textarea id="userInput" placeholder="例如：请帮我写一个JavaScript函数，用于数组去重..."></textarea>
+            <div class="button-group">
+                <button onclick="processInput()">生成解决方案</button>
+            </div>
+        </section>
+        
+        <!-- Result section -->
+        <section class="result-section" id="resultSection" style="display: none;">
+            <div class="result-header">
+                <h2 class="result-title">解决方案</h2>
+                <button class="copy-button" onclick="copyResult()">一键复制结果</button>
+            </div>
+            <div class="result-content" id="resultContent"></div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>© 2026 DevBoost - 智能开发助手</p>
+            <div class="footer-links">
+                <a href="#">关于我们</a>
+                <a href="#">使用指南</a>
+                <a href="#">联系我们</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Copy message -->
+    <div class="copy-message" id="copyMessage">已复制到剪贴板</div>
+    
+    <!-- free-ad-standard-2026 --><style>.free-footer{max-width:960px;margin:24px auto 0;padding:16px;border-top:1px solid #262b36;font-size:13px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:left;line-height:1.7;}.free-footer .free-banner{background:rgba(0,168,132,.12);border:1px solid #00a884;color:#e6e9ef;border-radius:10px;padding:10px 14px;margin-bottom:12px;}.free-footer .ad-slot{border:1px dashed #3a4152;border-radius:10px;padding:12px 14px;margin-bottom:12px;background:#0c0e13;}.free-footer .ad-slot .ad-label{font-size:11px;color:#6b7280;margin-bottom:4px;}.free-footer details{border:1px solid #262b36;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#0f1115;}.free-footer summary{cursor:pointer;color:#ffb020;font-weight:600;}.free-footer table{width:100%;border-collapse:collapse;margin-top:8px;}.free-footer th,.free-footer td{border-bottom:1px solid #262b36;padding:6px 8px;text-align:left;word-break:break-all;}.free-footer pre{white-space:pre-wrap;font-size:12px;color:#8b93a3;}</style><div class="free-footer"><div class="free-banner">🎉 本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款。仅通过合规广告维持运营。</div><div class="ad-slot" id="adSlot"><div class="ad-label">广告</div>合规广告位：仅展示通过审核的合规内容，不投放任何违规广告。</div><details><summary>🏆 贡献者榜单（按实际贡献评分）</summary><table><tr><th>贡献者</th><th>贡献内容</th><th>评分</th><th>备注</th></tr><tr><td colspan="4">榜单按实际贡献登记中——贡献内容、评分与署名以公开记录为准</td></tr></table></details><details><summary>📖 贡献说明</summary><p>贡献按<b>实际贡献</b>评分（代码、设计、内容、反馈、合规推广等），不按拉人评分；不设上下线、层级或人头奖励。</p></details><details><summary>💡 提意见</summary><p>有想法或改进建议？<a href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">点这里提交意见</a>。意见被采纳后按实际贡献评分，自动登上贡献者榜单。</p></details><details><summary>🎁 奖励规则</summary><p>激励以<b>荣誉榜、署名</b>优先；可设少量小额实物奖励；高价值奖品限量发放，并依法办理个人所得税相关手续；<b>无多级分销、无层级返利</b>。</p></details><details><summary>🔒 隐私说明</summary><p>本产品为纯前端页面：不收集个人信息、不上传用户数据；仅含站点统计与合规广告所需的常规访问数据。</p></details><details><summary>📄 LICENSE</summary><pre>MIT License
+
+Copyright (c) 2026 灵感雷达产品作者
+
+本产品以 MIT 协议开源：可自由使用、修改、分发，但须保留本版权声明。</pre></details></div>
     
     <script>
         // Toggle theme function
@@ -86,13 +288,70 @@
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
         
-        // ... rest of the JavaScript ... -->
+        // Process user input
+        function processInput() {
+            const userInput = document.getElementById('userInput').value;
+            
+            if (!userInput.trim()) {
+                alert('请输入您的需求或问题描述');
+                return;
+            }
+            
+            // Simulate processing
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+            
+            // Show loading state
+            resultContent.textContent = '正在生成解决方案...';
+            resultSection.style.display = 'block';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // Mock result - in a real app, this would come from an API
+                const mockResult = `根据您的需求"${userInput}"，我为您提供了以下解决方案：
+
+function uniqueArray(arr) {
+    return [...new Set(arr)];
+}
+
+// 使用示例
+const arrayWithDuplicates = [1, 2, 2, 3, 4, 4, 5];
+const uniqueArrayResult = uniqueArray(arrayWithDuplicates);
+console.log(uniqueArrayResult); // 输出: [1, 2, 3, 4, 5]
+
+这个解决方案使用了 ES6 的 Set 数据结构，它自动去除重复值。然后使用展开运算符 [...] 将 Set 转换回数组。
+
+如果您需要针对特定数据类型的去重，或者有其他需求，请告诉我！`;
+                
+                resultContent.textContent = mockResult;
+            }, 1500);
+        }
+        
+        // Copy result to clipboard
+        function copyResult() {
+            const resultContent = document.getElementById('resultContent');
+            const copyMessage = document.getElementById('copyMessage');
+            
+            // Create a temporary textarea to hold the text
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = resultContent.textContent;
+            document.body.appendChild(tempTextarea);
+            
+            // Select and copy the text
+            tempTextarea.select();
+            document.execCommand('copy');
+            
+            // Remove the temporary textarea
+            document.body.removeChild(tempTextarea);
+            
+            // Show copy message
+            copyMessage.classList.add('show');
+            
+            // Hide message after 2 seconds
+            setTimeout(() => {
+                copyMessage.classList.remove('show');
+            }, 2000);
+        }
     </script>
-    
-    <!-- ... rest of the HTML ... -->
-<!-- free-ad-standard-2026 --><style>.free-footer{max-width:960px;margin:24px auto 0;padding:16px;border-top:1px solid #262b36;font-size:13px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:left;line-height:1.7;}.free-footer .free-banner{background:rgba(0,168,132,.12);border:1px solid #00a884;color:#e6e9ef;border-radius:10px;padding:10px 14px;margin-bottom:12px;}.free-footer .ad-slot{border:1px dashed #3a4152;border-radius:10px;padding:12px 14px;margin-bottom:12px;background:#0c0e13;}.free-footer .ad-slot .ad-label{font-size:11px;color:#6b7280;margin-bottom:4px;}.free-footer details{border:1px solid #262b36;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#0f1115;}.free-footer summary{cursor:pointer;color:#ffb020;font-weight:600;}.free-footer table{width:100%;border-collapse:collapse;margin-top:8px;}.free-footer th,.free-footer td{border-bottom:1px solid #262b36;padding:6px 8px;text-align:left;word-break:break-all;}.free-footer pre{white-space:pre-wrap;font-size:12px;color:#8b93a3;}</style><div class="free-footer"><div class="free-banner">🎉 本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款。仅通过合规广告维持运营。</div><div class="ad-slot" id="adSlot"><div class="ad-label">广告</div>合规广告位：仅展示通过审核的合规内容，不投放任何违规广告。</div><details><summary>🏆 贡献者榜单（按实际贡献评分）</summary><table><tr><th>贡献者</th><th>贡献内容</th><th>评分</th><th>备注</th></tr><tr><td colspan="4">榜单按实际贡献登记中——贡献内容、评分与署名以公开记录为准</td></tr></table></details><details><summary>📖 贡献说明</summary><p>贡献按<b>实际贡献</b>评分（代码、设计、内容、反馈、合规推广等），不按拉人评分；不设上下线、层级或人头奖励。</p></details><details><summary>💡 提意见</summary><p>有想法或改进建议？<a href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">点这里提交意见</a>。意见被采纳后按实际贡献评分，自动登上贡献者榜单。</p></details><details><summary>🎁 奖励规则</summary><p>激励以<b>荣誉榜、署名</b>优先；可设少量小额实物奖励；高价值奖品限量发放，并依法办理个人所得税相关手续；<b>无多级分销、无层级返利</b>。</p></details><details><summary>🔒 隐私说明</summary><p>本产品为纯前端页面：不收集个人信息、不上传用户数据；仅含站点统计与合规广告所需的常规访问数据。</p></details><details><summary>📄 LICENSE</summary><pre>MIT License
-
-Copyright (c) 2026 灵感雷达产品作者
-
-本产品以 MIT 协议开源：可自由使用、修改、分发，但须保留本版权声明。</pre></details></div></body>
+</body>
 </html>
