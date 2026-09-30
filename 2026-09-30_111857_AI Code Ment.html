@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Mentor - 免费智能代码助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --error: #ff4a4a;
+            --success: #4aff88;
+            --border: #333333;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏 */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+        }
+        
+        /* 主内容区 */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .free-notice {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+            border: 1px solid var(--accent);
+        }
+        
+        .free-notice span {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        /* 代码输入区 */
+        .code-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .code-input {
+            width: 100%;
+            min-height: 200px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        .code-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a8eef;
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        /* 分析结果区 */
+        .result-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+        
+        .result-section.active {
+            display: block;
+        }
+        
+        .result-card {
+            background-color: var(--bg-primary);
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .error-card {
+            border-left-color: var(--error);
+        }
+        
+        .success-card {
+            border-left-color: var(--success);
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-content {
+            color: var(--text-secondary);
+        }
+        
+        /* 代码模板区 */
+        .templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .template-card {
+            background-color: var(--bg-primary);
+            border-radius: 6px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        
+        .template-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .template-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .template-lang {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        /* 代码对比区 */
+        .compare-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .compare-column {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border-radius: 6px;
+            padding: 1rem;
+        }
+        
+        .compare-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .compare-code {
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            min-height: 150px;
+        }
+        
+        /* 知识库查询 */
+        .search-container {
+            margin-bottom: 1rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .knowledge-results {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .knowledge-item {
+            background-color: var(--bg-primary);
+            border-radius: 6px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .knowledge-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .knowledge-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .knowledge-snippet {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        #adSlot {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            width: 100%;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .compare-container {
+                flex-direction: column;
+            }
+            
+            .templates-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">AI Code Mentor</div>
+            <ul class="nav-links">
+                <li><a href="#" class="active">首页</a></li>
+                <li><a href="#code-analysis">代码分析</a></li>
+                <li><a href="#smart-fix">智能纠错</a></li>
+                <li><a href="#code-templates">代码模板</a></li>
+                <li><a href="#code-compare">代码对比</a></li>
+                <li><a href="#knowledge-base">知识库</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>AI Code Mentor</h1>
+            <p>您的免费智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。</p>
+            <div class="free-notice">
+                <span>完全免费 · 永久免费</span> - 不收费、无激活码、无收款
+            </div>
+        </section>
+
+        <section id="code-analysis" class="code-section">
+            <h2 class="section-title">
+                <span>📝</span> 代码输入与分析
+            </h2>
+            <textarea id="codeInput" class="code-input" placeholder="在此输入或粘贴您的代码..."></textarea>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="analyzeCode()">分析代码</button>
+                <button class="btn btn-secondary" onclick="clearCode()">清空代码</button>
+            </div>
+        </section>
+
+        <section id="analysis-result" class="result-section">
+            <h2 class="section-title">
+                <span>🔍</span> 代码分析结果
+            </h2>
+            <div id="analysisContent"></div>
+        </section>
+
+        <section id="smart-fix" class="result-section">
+            <h2 class="section-title">
+                <span>🔧</span> 智能纠错建议
+            </h2>
+            <div id="fixContent"></div>
+        </section>
+
+        <section id="code-templates" class="code-section">
+            <h2 class="section-title">
+                <span>📋</span> 代码模板
+            </h2>
+            <div class="templates-grid" id="templatesGrid"></div>
+        </section>
+
+        <section id="code-compare" class="code-section">
+            <h2 class="section-title">
+                <span>🔀</span> 代码对比
+            </h2>
+            <div class="compare-container">
+                <div class="compare-column">
+                    <div class="compare-title">原始代码</div>
+                    <textarea id="originalCode" class="compare-code" placeholder="输入原始代码..."></textarea>
+                </div>
+                <div class="compare-column">
+                    <div class="compare-title">修改后代码</div>
+                    <textarea id="modifiedCode" class="compare-code" placeholder="输入修改后代码..."></textarea>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="compareCode()">对比代码</button>
+                <button class="btn btn-secondary" onclick="clearCompare()">清空对比</button>
+            </div>
+            <div id="compareResult" class="result-section" style="margin-top: 1.5rem;"></div>
+        </section>
+
+        <section id="knowledge-base" class="code-section">
+            <h2 class="section-title">
+                <span>📚</span> 知识库查询
+            </h2>
+            <div class="search-container">
+                <input type="text" id="knowledgeSearch" class="search-input" placeholder="搜索编程知识、函数、API等...">
+            </div>
+            <div class="knowledge-results" id="knowledgeResults"></div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="free-notice">
+                    <span>完全免费 · 永久免费</span> - 不收费、无激活码、无收款
+                </div>
+                <div id="adSlot">
+                    广告 - 免费编程学习资源推荐
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 初始化代码模板
+        const codeTemplates = [
+            { title: "React 函数组件", lang: "React", code: "import React from 'react';\n\nconst ComponentName = () => {\n  const [state, setState] = React.useState();\n  \n  const handleFunction = () => {\n    // 处理逻辑\n  };\n  \n  return (\n    <div>\n      {/* JSX 内容 */}\n    </div>\n  );\n};\n\nexport default ComponentName;" },
+            { title: "Express 服务器", lang: "Node.js", code: "const express = require('express');\nconst app = express();\nconst port = 3000;\n\napp.use(express.json());\n\napp.get('/', (req, res) => {\n  res.send('Hello World!');\n});\n\napp.listen(port, () => {\n  console.log(`Server running at http://localhost:${port}`);\n});" },
+            { title: "Python 类定义", lang: "Python", code: "class MyClass:\n    def __init__(self, param1, param2):\n        self.param1 = param1\n        self.param2 = param2\n    \n    def method1(self):\n        # 方法实现\n        pass\n    \n    @staticmethod\n    def static_method():\n        # 静态方法\n        pass" },
+            { title: "CSS Flexbox 布局", lang: "CSS", code: ".container {\n  display: flex;\n  flex-direction: row;\n  justify-content: center;\n  align-items: center;\n  flex-wrap: wrap;\n  gap: 10px;\n}\n\n.item {\n  flex: 1 1 200px;\n  min-height: 100px;\n}" },
+            { title: "Java 接口实现", lang: "Java", code: "public interface MyInterface {\n    void method1();\n    \n    default void defaultMethod() {\n        System.out.println(\"Default method\");\n    }\n}\n\npublic class MyClass implements MyInterface {\n    @Override\n    public void method1() {\n        // 实现方法\n    }\n}" },
+            { title: "Vue 组件", lang: "Vue", code: "<template>\n  <div>\n    <h1>{{ title }}</h1>\n    <button @click=\"handleClick\">点击我</button>\n  </div>\n</template>\n\n<script>\nexport default {\n  data() {\n    return {\n      title: 'Vue 组件'\n    }\n  },\n  methods: {\n    handleClick() {\n      // 处理点击事件\n    }\n  }\n}\n</script>\n\n<style scoped>\n/* 组件样式 */\n</style>" }
+        ];
+
+        // 知识库数据
+        const knowledgeBase = [
+            { title: "JavaScript 异步编程", snippet: "Promise、async/await、回调函数是处理JavaScript异步操作的主要方式。" },
+            { title: "React Hooks 使用", snippet: "useState、useEffect、useContext等Hooks允许在函数组件中使用状态和其他React特性。" },
+            { title: "CSS Flexbox 布局", snippet: "Flexbox是一种一维布局模型，可以轻松实现元素的排列、对齐和分配空间。" },
+            { title: "Node.js 事件循环", snippet: "Node.js使用事件驱动、非阻塞I/O模型，使其轻量且高效。" },
+            { title: "Python 装饰器", snippet: "装饰器是一种设计模式，允许在不修改函数或类定义的情况下添加新功能。" },
+            { title: "Git 版本控制", snippet: "Git是分布式版本控制系统，用于跟踪代码变更和协作开发。" },
+            { title: "RESTful API 设计", snippet: "REST是一种架构风格，使用HTTP方法操作资源，无状态通信。" },
+            { title: "TypeScript 类型系统", snippet: "TypeScript是JavaScript的超集，添加了静态类型检查。" }
+        ];
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTemplates();
+            setupKnowledgeSearch();
+        });
+
+        // 渲染代码模板
+        function renderTemplates() {
+            const templatesGrid = document.getElementById('templatesGrid');
+            templatesGrid.innerHTML = '';
+            
+            codeTemplates.forEach(template => {
+                const templateCard = document.createElement('div');
+                templateCard.className = 'template-card';
+                templateCard.innerHTML = `
+                    <div class="template-title">${template.title}</div>
+                    <div class="template-lang">${template.lang}</div>
+                `;
+                templateCard.onclick = () => useTemplate(template.code);
+                templatesGrid.appendChild(templateCard);
+            });
+        }
+
+        // 使用模板
+        function useTemplate(code) {
+            document.getElementById('codeInput').value = code;
+            document.getElementById('codeInput').focus();
+        }
+
+        // 分析代码
+        function analyzeCode() {
+            const code = document.getElementById('codeInput').value;
+            if (!code.trim()) {
+                showNotification('请输入要分析的代码', 'error');
+                return;
+            }
+
+            const analysisResult = document.getElementById('analysis-result');
+            const analysisContent = document.getElementById('analysisContent');
+            
+            // 模拟AI分析结果
+            analysisContent.innerHTML = `
+                <div class="result-card success-card">
+                    <div class="result-title">代码质量评分: 85/100</div>
+                    <div class="result-content">您的代码整体结构良好，变量命名清晰，逻辑流程合理。</div>
+                </div>
+                <div class="result-card">
+                    <div class="result-title">优化建议</div>
+                    <div class="result-content">
+                        1. 考虑将重复代码提取为函数<br>
+                        2. 添加适当的注释解释复杂逻辑<br>
+                        3. 考虑使用更现代的语法特性
+                    </div>
+                </div>
+                <div class="result-card">
+                    <div class="result-title">性能分析</div>
+                    <div class="result-content">
+                        代码执行效率良好，没有明显的性能瓶颈。循环和递归操作已优化。
+                    </div>
+                </div>
+            `;
+            
+            analysisResult.classList.add('active');
+            
+            // 同时显示纠错建议
+            showFixSuggestions(code);
+            
+            // 滚动到结果区域
+            analysisResult.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 显示纠错建议
+        function showFixSuggestions(code) {
+            const fixSection = document.getElementById('smart-fix');
+            const fixContent = document.getElementById('fixContent');
+            
+            // 模拟AI纠错结果
+            const issues = [
+                { type: 'warning', message: '未使用的变量: tempVar', suggestion: '删除未使用的变量或添加注释说明其用途' },
+                { type: 'error', message: '潜在空指针异常', suggestion: '在使用对象前检查是否为null' },
+                { type: 'info', message: '可以考虑使用更简洁的写法', suggestion: '将if-else简化为三元表达式' }
+            ];
+            
+            fixContent.innerHTML = issues.map(issue => `
+                <div class="result-card ${issue.type === 'error' ? 'error-card' : ''}">
+                    <div class="result-title">${issue.type.toUpperCase()}: ${issue.message}</div>
+                    <div class="result-content">${issue.suggestion}</div>
+                </div>
+            `).join('');
+            
+            fixSection.classList.add('active');
+        }
+
+        // 清空代码
+        function clearCode() {
+            document.getElementById('codeInput').value = '';
+            document.getElementById('analysis-result').classList.remove('active');
+            document.getElementById('smart-fix').classList.remove('active');
+        }
+
+        // 对比代码
+        function compareCode() {
+            const originalCode = document.getElementById('originalCode').value;
+            const modifiedCode = document.getElementById('modifiedCode').value;
+            
+            if (!originalCode.trim() || !modifiedCode.trim()) {
+                showNotification('请输入要对比的代码', 'error');
+                return;
+            }
+            
+            const compareResult = document.getElementById('compareResult');
+            
+            // 模拟代码差异
+            compareResult.innerHTML = `
+                <div class="result-card">
+                    <div class="result-title">代码差异分析</div>
+                    <div class="result-content">
+                        <p>检测到 <span style="color: var(--accent);">5</span> 处修改：</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>第3行: 变量名从 <code style="color: var(--accent);">oldName</code> 更改为 <code style="color: var(--accent);">newName</code></li>
+                            <li>第7行: 添加了新的函数 <code style="color: var(--accent);">calculate()</code></li>
+                            <li>第12行: 修改了条件判断逻辑</li>
+                            <li>第15行: 删除了未使用的代码块</li>
+                            <li>第20行: 优化了循环结构</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="result-card success-card">
+                    <div class="result-title">修改评价</div>
+                    <div class="result-content">
+                        修改整体提高了代码的可读性和性能，建议保留这些更改。
+                    </div>
+                </div>
+            `;
+            
+            compareResult.classList.add('active');
+            compareResult.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 清空对比
+        function clearCompare() {
+            document.getElementById('originalCode').value = '';
+            document.getElementById('modifiedCode').value = '';
+            document.getElementById('compareResult').classList.remove('active');
+        }
+
+        // 设置知识库搜索
+        function setupKnowledgeSearch() {
+            const searchInput = document.getElementById('knowledgeSearch');
+            const resultsContainer = document.getElementById('knowledgeResults');
+            
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (query.length === 0) {
+                    resultsContainer.innerHTML = '';
+                    return;
+                }
+                
+                const filteredResults = knowledgeBase.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.snippet.toLowerCase().includes(query)
+                );
+                
+                if (filteredResults.length > 0) {
+                    resultsContainer.innerHTML = filteredResults.map(item => `
+                        <div class="knowledge-item">
+                            <div class="knowledge-title">${item.title}</div>
+                            <div class="knowledge-snippet">${item.snippet}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    resultsContainer.innerHTML = '<div class="knowledge-item">未找到相关结果</div>';
+                }
+            });
+        }
+
+        // 显示通知
+        function showNotification(message, type = 'info') {
+            // 创建通知元素
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: ${type === 'error' ? 'var(--error)' : 'var(--accent)'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 6px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 1000;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            // 添加动画样式
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            document.body.appendChild(notification);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => {
+                    notification.remove();
+                    style.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // 平滑滚动到锚点
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+<!-- free-ad-standard-2026 --><style>.free-footer{max-width:960px;margin:24px auto 0;padding:16px;border-top:1px solid #262b36;font-size:13px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;text-align:left;line-height:1.7;}.free-footer .free-banner{background:rgba(0,168,132,.12);border:1px solid #00a884;color:#e6e9ef;border-radius:10px;padding:10px 14px;margin-bottom:12px;}.free-footer .ad-slot{border:1px dashed #3a4152;border-radius:10px;padding:12px 14px;margin-bottom:12px;background:#0c0e13;}.free-footer .ad-slot .ad-label{font-size:11px;color:#6b7280;margin-bottom:4px;}.free-footer details{border:1px solid #262b36;border-radius:10px;padding:10px 14px;margin-bottom:8px;background:#0f1115;}.free-footer summary{cursor:pointer;color:#ffb020;font-weight:600;}.free-footer table{width:100%;border-collapse:collapse;margin-top:8px;}.free-footer th,.free-footer td{border-bottom:1px solid #262b36;padding:6px 8px;text-align:left;word-break:break-all;}.free-footer pre{white-space:pre-wrap;font-size:12px;color:#8b93a3;}</style><div class="free-footer"><div class="free-banner">🎉 本产品<b>完全免费 · 永久免费</b>：不收费、无激活码、无收款。仅通过合规广告维持运营。</div><div class="ad-slot" id="adSlot"><div class="ad-label">广告</div>合规广告位：仅展示通过审核的合规内容，不投放任何违规广告。</div><details><summary>🏆 贡献者榜单（按实际贡献评分）</summary><table><tr><th>贡献者</th><th>贡献内容</th><th>评分</th><th>备注</th></tr><tr><td colspan="4">榜单按实际贡献登记中——贡献内容、评分与署名以公开记录为准</td></tr></table></details><details><summary>📖 贡献说明</summary><p>贡献按<b>实际贡献</b>评分（代码、设计、内容、反馈、合规推广等），不按拉人评分；不设上下线、层级或人头奖励。</p></details><details><summary>💡 提意见</summary><p>有想法或改进建议？<a href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">点这里提交意见</a>。意见被采纳后按实际贡献评分，自动登上贡献者榜单。</p></details><details><summary>🎁 奖励规则</summary><p>激励以<b>荣誉榜、署名</b>优先；可设少量小额实物奖励；高价值奖品限量发放，并依法办理个人所得税相关手续；<b>无多级分销、无层级返利</b>。</p></details><details><summary>🔒 隐私说明</summary><p>本产品为纯前端页面：不收集个人信息、不上传用户数据；仅含站点统计与合规广告所需的常规访问数据。</p></details><details><summary>📄 LICENSE</summary><pre>MIT License
+
+Copyright (c) 2026 灵感雷达产品作者
+
+本产品以 MIT 协议开源：可自由使用、修改、分发，但须保留本版权声明。</pre></details></div></body>
+</html>
