@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BrainWaveHealthAnalyzer - 脑波健康分析器</title>
+    <style>
+        :root {
+            --primary-color: #4a6cf7;
+            --secondary-color: #6c63ff;
+            --accent-color: #f97316;
+            --bg-dark: #121212;
+            --bg-medium: #1e1e1e;
+            --bg-light: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --error-color: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--bg-medium);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-item {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--bg-light);
+        }
+
+        .main-content {
+            padding: 40px 0;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .feature-card {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .feature-desc {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .device-connection {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .device-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: var(--error-color);
+        }
+
+        .status-indicator.connected {
+            background-color: var(--success-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .device-list {
+            margin-top: 20px;
+        }
+
+        .device-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-light);
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .connect-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .connect-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .connect-btn.connected {
+            background-color: var(--success-color);
+        }
+
+        .brainwave-monitor {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .waveform-container {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 20px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .waveform {
+            width: 100%;
+            height: 100%;
+        }
+
+        .brain-stats {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .assessment-results {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .result-date {
+            color: var(--text-secondary);
+        }
+
+        .score-container {
+            margin: 30px 0;
+        }
+
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .score-bar {
+            height: 20px;
+            background-color: var(--bg-light);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .score-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 10px;
+        }
+
+        .health-recommendations {
+            margin-top: 40px;
+        }
+
+        .recommendation-item {
+            background-color: var(--bg-light);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .recommendation-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-medium);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .settings-section {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .settings-group {
+            margin-bottom: 30px;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: var(--bg-light);
+            border-radius: 13px;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background-color: var(--primary-color);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+
+        .notification-list {
+            margin-top: 20px;
+        }
+
+        .notification-item {
+            background-color: var(--bg-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .notification-time {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-medium);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            animation: modalFadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+
+        .floating-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 28px;
+            }
+
+            .brainwave-monitor {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🧠</div>
+                    <div class="logo-text">BrainWaveHealthAnalyzer</div>
+                </div>
+                <nav>
+                    <ul class="nav-menu">
+                        <li class="nav-item active" data-section="home">首页</li>
+                        <li class="nav-item" data-section="device">设备连接</li>
+                        <li class="nav-item" data-section="monitor">脑波监测</li>
+                        <li class="nav-item" data-section="assessment">评估结果</li>
+                        <li class="nav-item" data-section="recommendations">健康建议</li>
+                        <li class="nav-item" data-section="settings">个人设置</li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- 首页 -->
+            <section id="home" class="section active">
+                <div class="hero-section">
+                    <h1 class="hero-title">脑波健康分析器</h1>
+                    <p class="hero-subtitle">通过先进的脑波监测技术，实时分析您的心理健康状态，提供个性化健康建议，帮助您保持最佳身心状态。</p>
+                </div>
+
+                <div class="feature-cards">
+                    <div class="feature-card" data-section="device">
+                        <div class="feature-icon">🔌</div>
+                        <h3 class="feature-title">设备连接</h3>
+                        <p class="feature-desc">连接脑波监测设备，开始实时监测您的脑波活动</p>
+                    </div>
+
+                    <div class="feature-card" data-section="monitor">
+                        <div class="feature-icon">📊</div>
+                        <h3 class="feature-title">脑波监测</h3>
+                        <p class="feature-desc">实时监测和分析您的脑波活动，获取精确的健康数据</p>
+                    </div>
+
+                    <div class="feature-card" data-section="assessment">
+                        <div class="feature-icon">🔍</div>
+                        <h3 class="feature-title">心理健康评估</h3>
+                        <p class="feature-desc">基于脑波数据，定期进行全面的心理健康评估</p>
+                    </div>
+
+                    <div class="feature-card" data-section="recommendations">
+                        <div class="feature-icon">💡</div>
+                        <h3 class="feature-title">健康建议</h3>
+                        <p class="feature-desc">根据分析结果，提供个性化的健康改善建议</p>
+                    </div>
+
+                    <div class="feature-card" data-section="settings">
+                        <div class="feature-icon">⚙️</div>
+                        <h3 class="feature-title">智能提醒</h3>
+                        <p class="feature-desc">设置个性化提醒，帮助您保持健康的生活习惯</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">😴</div>
+                        <h3 class="feature-title">睡眠分析</h3>
+                        <p class="feature-desc">监测和分析您的睡眠质量，提供改善建议</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 设备连接 -->
+            <section id="device" class="section">
+                <h2 style="margin-bottom: 30px;">设备连接</h2>
+                
+                <div class="device-connection">
+                    <div class="device-status">
+                        <div class="status-indicator" id="statusIndicator"></div>
+                        <span id="statusText">未连接设备</span>
+                    </div>
+                    
+                    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                        请确保您的脑波监测设备已开启并处于可连接状态，然后点击扫描按钮搜索设备。
+                    </p>
+                    
+                    <button class="connect-btn" id="scanBtn" style="width: 100%; margin-bottom: 20px;">
+                        扫描设备
+                    </button>
+                    
+                    <div class="device-list" id="deviceList">
+                        <!-- 设备列表将动态生成 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 脑波监测 -->
+            <section id="monitor" class="section">
+                <h2 style="margin-bottom: 30px;">脑波监测</h2>
+                
+                <div class="brainwave-monitor">
+                    <div class="waveform-container">
+                        <canvas class="waveform" id="waveform"></canvas>
+                    </div>
+                    
+                    <div class="brain-stats">
+                        <h3 style="margin-bottom: 20px;">脑波数据</h3>
+                        
+                        <div class="stat-item">
+                            <span class="stat-label">α波 (放松状态)</span>
+                            <span class="stat-value" id="alphaValue">0 Hz</span>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <span class="stat-label">β波 (专注状态)</span>
+                            <span class="stat-value" id="betaValue">0 Hz</span>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <span class="stat-label">θ波 (冥想状态)</span>
+                            <span class="stat-value" id="thetaValue">0 Hz</span>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <span class="stat-label">δ波 (深度睡眠)</span>
+                            <span class="stat-value" id="deltaValue">0 Hz</span>
+                        </div>
+                        
+                        <div class="stat-item">
+                            <span class="stat-label">压力指数</span>
+                            <span class="stat-value" id="stressValue">0%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 30px; display: flex; gap: 15px;">
+                    <button class="connect-btn" id="startMonitor" style="flex: 1;">
+                        开始监测
+                    </button>
+                    <button class="connect-btn" id="stopMonitor" style="flex: 1; background-color: var(--error-color);">
+                        停止监测
+                    </button>
+                </div>
+            </section>
+
+            <!-- 评估结果 -->
+            <section id="assessment" class="section">
+                <h2 style="margin-bottom: 30px;">心理健康评估</h2>
+                
+                <div class="assessment-results">
+                    <div class="result-header">
+                        <h3>综合健康评估</h3>
+                        <span class="result-date">2023年11月15日</span>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score-label">
+                            <span>心理健康指数</span>
+                            <span id="mentalScore">75/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="mentalScoreBar" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score-label">
+                            <span>压力水平</span>
+                            <span id="stressScore">45/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="stressScoreBar" style="width: 45%; background: linear-gradient(90deg, #ff9800, #f44336);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score-label">
+                            <span>专注度</span>
+                            <span id="focusScore">82/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="focusScoreBar" style="width: 82%;"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="score-container">
+                        <div class="score-label">
+                            <span>放松程度</span>
+                            <span id="relaxScore">68/100</span>
+                        </div>
+                        <div class="score-bar">
+                            <div class="score-fill" id="relaxScoreBar" style="width: 68%; background: linear-gradient(90deg, #4caf50, #8bc34a);"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <h4 style="margin-bottom: 15px;">评估总结</h4>
+                        <p style="color: var(--text-secondary); line-height: 1.8;">
+                            根据您的脑波数据分析，您目前的心理状态总体良好，心理健康指数处于正常范围。
+                            您的专注度较高，但压力水平略高，建议适当放松，减少压力。
+                            睡眠质量正常，但深度睡眠时间可以增加。
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 健康建议 -->
+            <section id="recommendations" class="section">
+                <h2 style="margin-bottom: 30px;">健康建议</h2>
+                
+                <div class="health-recommendations">
+                    <h3 style="margin-bottom: 20px;">个性化健康建议</h3>
+                    
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">🧘</div>
+                        <div>
+                            <h4>冥想练习</h4>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">
+                                建议每天进行10-15分钟的冥想练习，可以帮助降低压力水平，提高放松程度。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">💤</div>
+                        <div>
+                            <h4>改善睡眠质量</h4>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">
+                                保持规律的睡眠时间，睡前避免使用电子设备，创造良好的睡眠环境。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">🏃</div>
+                        <div>
+                            <h4>适量运动</h4>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">
+                                每周进行3-5次中等强度的有氧运动，如快走、游泳或骑自行车，有助于改善心理健康。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">🍎</div>
+                        <div>
+                            <h4>均衡饮食</h4>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">
+                                增加富含Omega-3脂肪酸的食物，如鱼类、坚果和亚麻籽，有助于改善大脑功能。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation-item">
+                        <div class="recommendation-icon">📱</div>
+                        <div>
+                            <h4>数字排毒</h4>
+                            <p style="color: var(--text-secondary); margin-top: 5px;">
+                                每天设定"无屏幕时间"，减少社交媒体使用，增加面对面交流。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 个人设置 -->
+            <section id="settings" class="section">
+                <h2 style="margin-bottom: 30px;">个人设置</h2>
+                
+                <div class="settings-section">
+                    <div class="settings-group">
+                        <h3 class="settings-title">监测设置</h3>
+                        
+                        <div class="setting-item">
+                            <div>
+                                <h4>自动开始监测</h4>
+                                <p style="color: var(--text-secondary); font-size: 14px;">连接设备后自动开始监测</p>
+                            </div>
+                            <div class="toggle-switch" id="autoStartToggle"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div>
+                                <h4>监测提醒</h4>
+                                <p style="color: var(--text-secondary); font-size: 14px;">定时提醒进行监测</p>
+                            </div>
+                            <div class="toggle-switch active" id="reminderToggle"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3 class="settings-title">通知设置</h3>
+                        
+                        <div class="setting-item">
+                            <div>
+                                <h4>健康报告通知</h4>
+                                <p style="color: var(--text-secondary); font-size: 14px;">每周接收健康报告</p>
+                            </div>
+                            <div class="toggle-switch active" id="reportToggle"></div>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div>
+                                <h4>异常情况提醒</h4>
+                                <p style="color: var(--text-secondary); font-size: 14px;">检测到异常时立即通知</p>
+                            </div>
+                            <div class="toggle-switch active" id="alertToggle"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3 class="settings-title">提醒设置</h3>
+                        
+                        <button class="connect-btn" id="addReminderBtn" style="width: 100%; margin-bottom: 20px;">
+                            添加新提醒
+                        </button>
+                        
+                        <div class="notification-list" id="notificationList">
+                            <div class="notification-item">
+                                <div>
+                                    <h4>冥想提醒</h4>
+                                    <p style="color: var(--text-secondary); font-size: 14px;">每天 10:00</p>
+                                </div>
+                                <span class="notification-time">每天</span>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div>
+                                    <h4>喝水提醒</h4>
+                                    <p style="color: var(--text-secondary); font-size: 14px;">每 2 小时</p>
+                                </div>
+                                <span class="notification-time">全天</span>
+                            </div>
+                            
+                            <div class="notification-item">
+                                <div>
+                                    <h4>睡眠提醒</h4>
+                                    <p style="color: var(--text-secondary); font-size: 14px;">22:30</p>
+                                </div>
+                                <span class="notification-time">每天</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 添加提醒模态框 -->
+    <div class="modal" id="reminderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>添加新提醒</h3>
+                <span class="modal-close" id="closeModal">&times;</span>
+            </div>
+            
+            <form id="reminderForm">
+                <div class="form-group">
+                    <label class="form-label">提醒名称</label>
+                    <input type="text" class="form-input" id="reminderName" placeholder="例如：冥想提醒" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">提醒时间</label>
+                    <input type="time" class="form-input" id="reminderTime" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">重复频率</label>
+                    <select class="form-input" id="reminderFrequency">
+                        <option value="daily">每天</option>
+                        <option value="weekdays">工作日</option>
+                        <option value="weekends">周末</option>
+                        <option value="weekly">每周</option>
+                        <option value="monthly">每月</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn-primary">添加提醒</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 浮动操作按钮 -->
+    <div class="floating-btn" id="floatingBtn">+</div>
+
+    <script>
+        // 导航功能
+        document.querySelectorAll('.nav-item, .feature-card').forEach(item => {
+            item.addEventListener('click', function() {
+                const targetSection = this.getAttribute('data-section');
+                if (targetSection) {
+                    showSection(targetSection);
+                    
+                    // 更新导航活动状态
+                    document.querySelectorAll('.nav-item').forEach(nav => {
+                        nav.classList.remove('active');
+                    });
+                    document.querySelector(`.nav-item[data-section="${targetSection}"]`).classList.add('active');
+                }
+            });
+        });
+
+        // 显示指定部分
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // 设备连接功能
+        let deviceConnected = false;
+        const scanBtn = document.getElementById('scanBtn');
+        const statusIndicator = document.getElementById('statusIndicator');
+        const statusText = document.getElementById('statusText');
+        const deviceList = document.getElementById('deviceList');
+
+        scanBtn.addEventListener('click', function() {
+            scanBtn.textContent = '扫描中...';
+            scanBtn.disabled = true;
+            
+            // 模拟设备扫描
+            setTimeout(() => {
+                deviceList.innerHTML = `
+                    <div class="device-item">
+                        <div>
+                            <h4>BrainWave Pro X1</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px;">已配对</p>
+                        </div>
+                        <button class="connect-btn" id="connectBtn1">连接</button>
+                    </div>
+                    <div class="device-item">
+                        <div>
+                            <h4>MindLink 3000</h4>
+                            <p style="color: var(--text-secondary); font-size: 14px;">新设备</p>
+                        </div>
+                        <button class="connect-btn" id="connectBtn2">连接</button>
+                    </div>
+                `;
+                
+                scanBtn.textContent = '扫描设备';
+                scanBtn.disabled = false;
+                
+                // 为连接按钮添加事件监听器
+                document.getElementById('connectBtn1').addEventListener('click', function() {
+                    connectDevice(this, 'BrainWave Pro X1');
+                });
+                
+                document.getElementById('connectBtn2').addEventListener('click', function() {
+                    connectDevice(this, 'MindLink 3000');
+                });
+            }, 2000);
+        });
+
+        // 连接设备
+        function connectDevice(btn, deviceName) {
+            if (!deviceConnected) {
+                btn.textContent = '连接中...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    deviceConnected = true;
+                    btn.textContent = '已连接';
+                    btn.classList.add('connected');
+                    statusIndicator.classList.add('connected');
+                    statusText.textContent = `已连接: ${deviceName}`;
+                    
+                    // 显示成功消息
+                    showNotification(`成功连接到 ${deviceName}`, 'success');
+                }, 1500);
+            }
+        }
+
+        // 脑波监测功能
+        const startMonitorBtn = document.getElementById('startMonitor');
+        const stopMonitorBtn = document.getElementById('stopMonitor');
+        const waveformCanvas = document.getElementById('waveform');
+        const ctx = waveformCanvas.getContext('2d');
+        let isMonitoring = false;
+        let animationId;
+
+        // 设置画布大小
+        function resizeCanvas() {
+            waveformCanvas.width = waveformCanvas.offsetWidth;
+            waveformCanvas.height = waveformCanvas.offsetHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // 绘制脑波图
+        function drawWaveform() {
+            if (!isMonitoring) return;
+            
+            ctx.clearRect(0, 0, waveformCanvas.width, waveformCanvas.height);
+            
+            // 绘制网格
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 0.5;
+            
+            for (let i = 0; i < waveformCanvas.width; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(i, 0);
+                ctx.lineTo(i, waveformCanvas.height);
+                ctx.stroke();
+            }
+            
+            for (let i = 0; i < waveformCanvas.height; i += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, i);
+                ctx.lineTo(waveformCanvas.width, i);
+                ctx.stroke();
+            }
+            
+            // 绘制脑波
+            ctx.beginPath();
+            ctx.strokeStyle = '#4a6cf7';
+            ctx.lineWidth = 2;
+            
+            const amplitude = 30;
+            const frequency = 0.02;
+            
+            for (let x = 0; x < waveformCanvas.width; x++) {
+                const y = waveformCanvas.height / 2 + 
+                          Math.sin(x * frequency) * amplitude * Math.sin(Date.now() / 1000) +
+                          Math.sin(x * frequency * 2.5) * amplitude * 0.3;
+                
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            ctx.stroke();
+            
+            // 更新脑波数据
+            updateBrainwaveData();
+            
+            animationId = requestAnimationFrame(drawWaveform);
+        }
+
+        // 更新脑波数据
+        function updateBrainwaveData() {
+            const alphaValue = (8 + Math.random() * 2).toFixed(1);
+            const betaValue = (12 + Math.random() * 5).toFixed(1);
+            const thetaValue = (4 + Math.random() * 2).toFixed(1);
+            const deltaValue = (0.5 + Math.random() * 1).toFixed(1);
+            const stressValue = Math.floor(30 + Math.random() * 40);
+            
+            document.getElementById('alphaValue').textContent = `${alphaValue} Hz`;
+            document.getElementById('betaValue').textContent = `${betaValue} Hz`;
+            document.getElementById('thetaValue').textContent = `${thetaValue} Hz`;
+            document.getElementById('deltaValue').textContent = `${deltaValue} Hz`;
+            document.getElementById('stressValue').textContent = `${stressValue}%`;
+        }
+
+        startMonitorBtn.addEventListener('click', function() {
+            if (!deviceConnected) {
+                showNotification('请先连接设备', 'error');
+                return;
+            }
+            
+            isMonitoring = true;
+            drawWaveform();
+            startMonitorBtn.textContent = '停止监测';
+            stopMonitorBtn.style.display = 'inline-block';
+            showNotification('开始脑波监测', 'success');
+        });
+
+        stopMonitorBtn.addEventListener('click', function() {
+            isMonitoring = false;
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            startMonitorBtn.textContent = '开始监测';
+            stopMonitorBtn.style.display = 'none';
+            showNotification('已停止脑波监测', 'info');
+        });
+
+        // 数据导出功能
+        exportDataBtn.addEventListener('click', function() {
+            if (brainwaveData.length === 0) {
+                showNotification('没有可导出的数据', 'warning');
+                return;
+            }
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "时间,Alpha,Beta,Theta,Delta,压力指数\n";
+            
+            const now = new Date();
+            brainwaveData.forEach(data => {
+                const time = new Date(now.getTime() - (brainwaveData.length - brainwaveData.indexOf(data)) * 1000);
+                csvContent += `${time.toLocaleTimeString()},${data.alpha},${data.beta},${data.theta},${data.delta},${data.stress}\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `脑波数据_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('数据导出成功', 'success');
+        });
+
+        // 设备连接状态检查
+        function checkDeviceConnection() {
+            if (deviceConnected) {
+                connectionStatus.innerHTML = '<span class="connected">已连接</span>';
+                connectBtn.textContent = '断开连接';
+                connectBtn.classList.remove('connect');
+                connectBtn.classList.add('disconnect');
+            } else {
+                connectionStatus.innerHTML = '<span class="disconnected">未连接</span>';
+                connectBtn.textContent = '连接设备';
+                connectBtn.classList.remove('disconnect');
+                connectBtn.classList.add('connect');
+            }
+        }
+
+        // 通知系统
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // 初始化
+        checkDeviceConnection();
+        updateBrainwaveData();
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+</html>
