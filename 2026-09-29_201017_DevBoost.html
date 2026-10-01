@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevBoost - 智能开发助手</title>
+    <title>DevBoost - 智能开发助手</title><meta name="description" content="Free online tool: DevBoost - 智能开发助手. No signup, no payment — free forever.">
+<meta property="og:title" content="DevBoost - 智能开发助手">
+<meta property="og:description" content="Free online tool: DevBoost - 智能开发助手. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-09-29_201017_DevBoost.html">
+<meta name="theme-color" content="#333333">
+
     <style>
         :root {
             --bg-primary: #121212;
@@ -81,6 +87,7 @@
             border-radius: 8px;
             padding: 20px;
             margin-bottom: 20px;
+            position: relative;
         }
         
         .input-label {
@@ -194,6 +201,36 @@
             cursor: pointer;
         }
         
+        /* Guide arrow */
+        .guide-arrow {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
         /* Footer styles */
         footer {
             max-width: 960px;
@@ -221,15 +258,35 @@
         .footer-links a:hover {
             color: var(--accent);
         }
+        
+        /* Feature highlight */
+        .feature-highlight {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        /* Free service badge */
+        .free-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
     </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
     <!-- Theme switch button -->
     <div class="theme-switcher" onclick="toggleTheme()">切换主题</div>
     
     <!-- Header -->
     <header>
-        <h1>DevBoost - 智能开发助手</h1>
+        <h1>DevBoost - 智能开发助手 <span class="free-badge">免费服务</span></h1>
         <p class="subtitle">提升您的开发效率，智能生成代码与解决方案</p>
     </header>
     
@@ -240,8 +297,9 @@
             <label class="input-label" for="userInput">请输入您的需求或问题描述：</label>
             <textarea id="userInput" placeholder="例如：请帮我写一个JavaScript函数，用于数组去重..."></textarea>
             <div class="button-group">
-                <button onclick="processInput()">生成解决方案</button>
+                <button onclick="processInput()">生成解决方案<span class="feature-highlight">核心功能</span></button>
             </div>
+            <div class="guide-arrow" onclick="processInput()">↓</div>
         </section>
         
         <!-- Result section -->
@@ -268,6 +326,100 @@
     
     <!-- Copy message -->
     <div class="copy-message" id="copyMessage">已复制到剪贴板</div>
-    
-    <!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"DevBoost - 智能开发助手":"DevBoost - 智能开发助手","DevBoost - 智能开发助手 免费服务":"DevBoost - 智能开发助手 免费服务","提升您的开发效率，智能生成代码与解决方案":"提升您的开发效率，智能生成代码与解决方案","请输入您的需求或问题描述：":"请输入您的需求或问题描述：","生成解决方案 核心功能":"生成解决方案 核心功能","解决方案":"解决方案","一键复制结果":"一键复制结果","© 2026 DevBoost - 智能开发助手":"© 2026 DevBoost - 智能开发助手","关于我们":"关于我们","使用指南":"使用指南","联系我们":"联系我们","__title__":"DevBoost - 智能开发助手"},"zh-CN":{"DevBoost - 智能开发助手":"DevBoost - 智能开发助手","DevBoost - 智能开发助手 免费服务":"DevBoost - 智能开发助手 免费服务","提升您的开发效率，智能生成代码与解决方案":"提升您的开发效率，智能生成代码与解决方案","请输入您的需求或问题描述：":"请输入您的需求或问题描述：","生成解决方案 核心功能":"生成解决方案 核心功能","解决方案":"解决方案","一键复制结果":"一键复制结果","© 2026 DevBoost - 智能开发助手":"© 2026 DevBoost - 智能开发助手","关于我们":"关于我们","使用指南":"使用指南","联系我们":"联系我们","__title__":"DevBoost - 智能开发助手"},"es":{"DevBoost - 智能开发助手":"DevBoost - Asistente de desarrollo inteligente","DevBoost - 智能开发助手 免费服务":"DevBoost - Asistente de desarrollo inteligente servicio gratuito","提升您的开发效率，智能生成代码与解决方案":"Mejore su eficiencia en desarrollo, genere código y soluciones inteligentes","请输入您的需求或问题描述：":"Ingrese sus necesidades o describa su problema:","生成解决方案 核心功能":"Generar soluciones funciónes centrales","解决方案":"Solución","一键复制结果":"Copiar resultado con un solo clic","© 2026 DevBoost - 智能开发助手":"© 2026 DevBoost - Asistente de desarrollo inteligente","关于我们":"Acerca de nosotros","使用指南":"Guía de uso","联系我们":"Contactarnos","__title__":"DevBoost - Asistente de desarrollo inteligente"},"ja":{"DevBoost - 智能开发助手":"DevBoost - 智能開発アシスタント","DevBoost - 智能开发助手 免费服务":"DevBoost - 智能開発アシスタント 免费サービス","提升您的开发效率，智能生成代码与解决方案":"あなたの開発効率を向上させ、スマートにコードとソリューションを生成","请输入您的需求或问题描述：":"あなたの要件または問題の説明を入力してください：","生成解决方案 核心功能":"ソリューションの生成 核心機能","解决方案":"ソリューション","一键复制结果":"1クリックでコピーする結果","© 2026 DevBoost - 智能开发助手":"© 2026 DevBoost - 智能開発アシスタント","关于我们":"关于我们","使用指南":"使用指南","联系我们":"联系我们","__title__":"DevBoost - 智能開発アシスタント"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
