@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI食谱助手 · 智能健康饮食</title>
+<title>AI食谱助手 · 智能健康饮食</title><meta name="description" content="Free online tool: AI食谱助手 · 智能健康饮食. No signup, no payment — free forever.">
+
+<meta property="og:title" content="AI食谱助手 · 智能健康饮食">
+<meta property="og:description" content="输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY">
+<meta name="theme-color" content="#0f1115">
 <style>
 :root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--sub:#8b93a3;--acc:#00a884;--acc2:#ffb020;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -55,7 +59,7 @@ h1{font-size:26px;letter-spacing:1px;}
 #calOut.calChange{animation:highlight 0.5s ease-in-out;}
 @keyframes highlight{0%{transform:scale(1);}50%{transform:scale(1.05);color:#fff;}100%{transform:scale(1);}}
 </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc",autoTrack:true})</script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
 <header>
   <h1>🥗 AI食谱助手</h1>
@@ -127,14 +131,14 @@ function renderIngs(){
   box.innerHTML = all.map(function(i){
     return '<span class="chip'+(sel[i]?' on':'')+'" data-i="'+i+'">'+i+'</span>';
   }).join("");
-  box.querySelectorAll(".chip").forEach(function(c){
-    c.onclick = function(){
-      var i = c.getAttribute("data-i");
-      if(sel[i]) delete sel[i]; else sel[i]=1;
-      renderIngs();
-    };
-  });
 }
+document.getElementById("ingList").addEventListener("click", function(e) {
+  if(e.target.classList.contains("chip")) {
+    var i = e.target.getAttribute("data-i");
+    if(sel[i]) delete sel[i]; else sel[i]=1;
+    renderIngs();
+  }
+});
 document.getElementById("btnGo").onclick = function(){
   var out = document.getElementById("recOut");
   var keys = Object.keys(sel);
@@ -154,10 +158,12 @@ function renderFoods(){
   box.innerHTML = FOODS.map(function(f){
     return '<span class="chip" data-f="'+f.n+'">'+f.n+' '+f.c+'千卡/100g</span>';
   }).join("");
-  box.querySelectorAll(".chip").forEach(function(c){
-    c.onclick = function(){ document.getElementById("calInput").placeholder = c.getAttribute("data-f")+" · 输入克数"; };
-  });
 }
+document.getElementById("foodList").addEventListener("click", function(e) {
+  if(e.target.classList.contains("chip")) {
+    document.getElementById("calInput").placeholder = e.target.getAttribute("data-f")+" · 输入克数";
+  }
+});
 var total = 0;
 document.getElementById("btnAdd").onclick = function(){
   var inp = document.getElementById("calInput");
@@ -196,5 +202,111 @@ document.querySelectorAll(".tab").forEach(function(t){
 // 初始化
 renderIngs(); renderFoods(); renderDrinks();
 </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI食谱助手 · 智能健康饮食":"AI Recipe Assistant · Intelligent Healthy Diet","🥗 AI食谱助手":"🥗 AI Recipe Assistant","我有这些食材，能做什么？":"What can I make with these ingredients?","推荐食谱":"Recommended Recipes","🔥 今日摄入热量估算":"🔥 Estimated Daily Caloric Intake","＋添加":"+ Add","☕ 家庭饮品 DIY 指南":"☕ DIY Home Drink Guide","__title__":"AI Recipe Assistant · Intelligent Healthy Diet"},"zh-CN":{"AI食谱助手 · 智能健康饮食":"AI食谱助手 · 智能健康饮食","🥗 AI食谱助手":"🥗 AI食谱助手","我有这些食材，能做什么？":"我有这些食材，能做什么？","推荐食谱":"推荐食谱","🔥 今日摄入热量估算":"🔥 今日摄入热量估算","＋添加":"＋添加","☕ 家庭饮品 DIY 指南":"☕ 家庭饮品 DIY 指南","__title__":"AI食谱助手 · 智能健康饮食"},"es":{"AI食谱助手 · 智能健康饮食":"Asistente de recetas de IA · Alimentación saludable inteligente","🥗 AI食谱助手":"🥗 Asistente de recetas de IA","我有这些食材，能做什么？":"¿Qué puedo hacer con estos ingredientes?","推荐食谱":"Recetas recomendadas","🔥 今日摄入热量估算":"Estimación de calorías ingeridas hoy","＋添加":"＋Agregar","☕ 家庭饮品 DIY 指南":"Guía DIY de bebidas familiares ☕","__title__":"Asistente de recetas de IA · Alimentación saludable inteligente"},"ja":{"AI食谱助手 · 智能健康饮食":"AIレシピアシスタント · 智能健康食事","🥗 AI食谱助手":"🥗 AIレシピアシスタント","我有这些食材，能做什么？":"これらの食材で何を作れる？","推荐食谱":"おすすめレシピ","🔥 今日摄入热量估算":"🔥 今日の摂取カロリー推定","＋添加":"＋追加","☕ 家庭饮品 DIY 指南":"☕ 家庭飲料 DIY ナビガーション","__title__":"AIレシピアシスタント · 智能健康食事"},"ko":{"AI食谱助手 · 智能健康饮食":"AI식谱어시스턴트 · 지능 건강 식사","🥗 AI食谱助手":"🥗 AI식谱어시스턴트","我有这些食材，能做什么？":"저는 이 재료를 가지고 뭐를 만들 수 있을까?","推荐食谱":"추천 식사","🔥 今日摄入热量估算":"🔥 오늘 섭취 칼로리 추산","＋添加":"＋추가","☕ 家庭饮品 DIY 指南":"☕ 가정飲料 DIY 지침","__title__":"AI식谱어시스턴트 · 지능 건강 식사"},"fr":{"AI食谱助手 · 智能健康饮食":"AI Cuisinier Assistant · Système Intelligent de Nutrition Saine","🥗 AI食谱助手":"🥗 AI Cuisinier Assistant","我有这些食材，能做什么？":"J'ai ces ingrédients, que puis-je faire ?","推荐食谱":"Recettes recommandées","🔥 今日摄入热量估算":"🔥 Estimation des calories consommées aujourd'hui","＋添加":"＋Ajouter","☕ 家庭饮品 DIY 指南":"☕ Guide DIY des Boissons pour la Famille","__title__":"AI Cuisinier Assistant · Système Intelligent de Nutrition Saine"},"de":{"AI食谱助手 · 智能健康饮食":"AI-Rezeptassistent · Intelligente gesunde Ernährung","🥗 AI食谱助手":"🥗 AI-Rezeptassistent","我有这些食材，能做什么？":"Ich habe diese Zutaten, was kann ich kochen?","推荐食谱":"Empfohlene Rezepte","🔥 今日摄入热量估算":"🔥 Heutige Kalorienaufnahme","＋添加":"＋Hinzufügen","☕ 家庭饮品 DIY 指南":"☕ Familiengetränke DIY-Leitfaden","__title__":"AI-Rezeptassistent · Intelligente gesunde Ernährung"},"ru":{"AI食谱助手 · 智能健康饮食":"AI食谱助手 · Искусственный интеллект помощник по здоровому питанию","🥗 AI食谱助手":"🥗 AI食谱助手","我有这些食材，能做什么？":"У меня есть эти продукты, что можно приготовить?","推荐食谱":"Рекомендованные рецепты","🔥 今日摄入热量估算":"🔥 Оценка потребления калорий за сегодня","＋添加":"＋Добавить","☕ 家庭饮品 DIY 指南":"☕ DIY руководство по домашним напиткам","__title__":"AI食谱助手 · Искусственный интеллект помощник по здоровому питанию"},"pt":{"AI食谱助手 · 智能健康饮食":"Assistente de Receitas de AI · Alimentação Saudável Inteligente","🥗 AI食谱助手":"🥗 Assistente de Receitas de AI","我有这些食材，能做什么？":"Tenho esses ingredientes, o que posso fazer?","推荐食谱":"Receitas Recomendadas","🔥 今日摄入热量估算":"Estimativa de Calorias Ingeridas Hoje","＋添加":"＋Adicionar","☕ 家庭饮品 DIY 指南":"Guia de Bebidas Domésticas DIY","__title__":"Assistente de Receitas de AI · Alimentação Saudável Inteligente"},"ar":{"AI食谱助手 · 智能健康饮食":"مساعد وصفات الذكاء الاصطناعي · نظام غذائي ذكي","🥗 AI食谱助手":"مساعد وصفات الذكاء الاصطناعي","我有这些食材，能做什么？":"لدي هذه المكونات، ماذا يمكنني أن أقوم به؟","推荐食谱":"وصفات موصى بها","🔥 今日摄入热量估算":"تقدير كمية السعرات الحرارية اليومية","＋添加":"＋إضافة","☕ 家庭饮品 DIY 指南":"دليل تحضير مشروبات المنزل بنفسك","__title__":"مساعد وصفات الذكاء الاصطناعي · نظام غذائي ذكي"},"hi":{"AI食谱助手 · 智能健康饮食":"AI स्किप मददकार · उच्च आरोग्य आहार","🥗 AI食谱助手":"🥗 AI स्किप मददकार","我有这些食材，能做什么？":"मैंने ये सामग्री हैं, मैं क्या कर सकता हूं?","推荐食谱":"अनुसंधान किया हुआ स्किप","🔥 今日摄入热量估算":"🔥 आज के दिन की इन्कोम माइन लवन मेटाबोलिक गणना","＋添加":"＋ जोड़ें","☕ 家庭饮品 DIY 指南":"☕ घरेलू द्रव्य डीआईवी निर्देशिका","__title__":"AI स्किप मददकार · उच्च आरोग्य आहार"},"id":{"AI食谱助手 · 智能健康饮食":"AI Pintu Masak · Makanan Sehat Intelligensi","🥗 AI食谱助手":"🥗 AI Pintu Masak","我有这些食材，能做什么？":"Saya mempunyai bahan ini, dapat membuat apa?","推荐食谱":"Resep Rekomendasi","🔥 今日摄入热量估算":"🔥 Estimasi Kalori Masuk Hari Ini","＋添加":"＋Tambah","☕ 家庭饮品 DIY 指南":"☕ Pedoman Buat Sendiri Minuman Keluarga","__title__":"AI Pintu Masak · Makanan Sehat Intelligensi"},"vi":{"AI食谱助手 · 智能健康饮食":"AI食谱助手 · 智能健康飲食","🥗 AI食谱助手":"🥗 AI食谱助手","我有这些食材，能做什么？":"Tôi có những nguyên liệu này, có thể làm gì?","推荐食谱":" 推荐食譜","🔥 今日摄入热量估算":"🔥 估算 lượng calo tiêu thụ hôm nay","＋添加":"＋ thêm","☕ 家庭饮品 DIY 指南":"☕ Hướng dẫn DIY đồ uống gia đình","__title__":"AI食谱助手 · 智能健康飲食"},"th":{"AI食谱助手 · 智能健康饮食":"AI โรงแรมเสริม · ระบบอาหารสุขภาพที่มีสมอง","🥗 AI食谱助手":"🥗 AI โรงแรมเสริม","我有这些食材，能做什么？":"ฉันมีสิ่งใดไหม จะทำอะไรได้?","推荐食谱":"แนะนำบริเวณ","🔥 今日摄入热量估算":"🔥 การประเมินความเร่งเข้าของดัชนีการทาน","＋添加":"＋เพิ่ม","☕ 家庭饮品 DIY 指南":"☕ คู่มือการต้มเครื่องดื่มให้แก่ครอบครัว","__title__":"AI โรงแรมเสริม · ระบบอาหารสุขภาพที่มีสมอง"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
