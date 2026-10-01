@@ -528,6 +528,53 @@
             text-align: center;
         }
         
+        .carousel-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            margin: 20px 0;
+            border-radius: 12px;
+        }
+        
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            opacity: 0;
+            transition: opacity 1s;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .carousel-slide.active {
+            opacity: 1;
+        }
+        
+        .carousel-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .carousel-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .carousel-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 80%;
+        }
+        
         @media (min-width: 768px) {
             .container {
                 max-width: 768px;
@@ -545,7 +592,12 @@
                 <div class="logo-text">HealthMindAI</div>
                 <div class="logo-subtext">Your AI-powered mental health companion for emotional wellness and mindfulness</div>
             </div>
-            <button class="btn" id="get-started-btn">Get Started</button>
+            <div class="card" style="margin-top: 20px;">
+                <div class="card-content" style="text-align: center; font-size: 18px;">
+                    免费使用，无需注册
+                </div>
+            </div>
+            <button class="btn" id="get-started-btn">开始使用</button>
         </div>
 
         <!-- Login/Registration Screen -->
@@ -555,19 +607,19 @@
                 <div class="logo-text">HealthMindAI</div>
             </div>
             <div class="card">
-                <div class="card-header">Welcome Back</div>
+                <div class="card-header">欢迎回来</div>
                 <div class="card-content">
                     <div class="input-group">
-                        <label>Email</label>
-                        <input type="email" id="login-email" placeholder="Enter your email">
+                        <label>邮箱</label>
+                        <input type="email" id="login-email" placeholder="请输入您的邮箱">
                     </div>
                     <div class="input-group">
-                        <label>Password</label>
-                        <input type="password" id="login-password" placeholder="Enter your password">
+                        <label>密码</label>
+                        <input type="password" id="login-password" placeholder="请输入您的密码">
                     </div>
-                    <button class="btn" id="login-btn">Login</button>
+                    <button class="btn" id="login-btn">登录</button>
                     <div class="divider"></div>
-                    <button class="btn btn-outline" id="register-btn">Create Account</button>
+                    <button class="btn btn-outline" id="start-using-btn">开始使用</button>
                 </div>
             </div>
         </div>
@@ -575,61 +627,61 @@
         <!-- Home Screen -->
         <div id="home-screen" class="screen">
             <div class="card">
-                <div class="card-header">How are you feeling today?</div>
+                <div class="card-header">今天感觉如何？</div>
                 <div class="mood-selector" id="mood-selector">
                     <div class="mood-option" data-mood="happy">
                         <div class="mood-emoji">😊</div>
-                        <div class="mood-label">Happy</div>
+                        <div class="mood-label">开心</div>
                     </div>
                     <div class="mood-option" data-mood="sad">
                         <div class="mood-emoji">😢</div>
-                        <div class="mood-label">Sad</div>
+                        <div class="mood-label">悲伤</div>
                     </div>
                     <div class="mood-option" data-mood="anxious">
                         <div class="mood-emoji">😰</div>
-                        <div class="mood-label">Anxious</div>
+                        <div class="mood-label">焦虑</div>
                     </div>
                     <div class="mood-option" data-mood="angry">
                         <div class="mood-emoji">😠</div>
-                        <div class="mood-label">Angry</div>
+                        <div class="mood-label">愤怒</div>
                     </div>
                     <div class="mood-option" data-mood="calm">
                         <div class="mood-emoji">😌</div>
-                        <div class="mood-label">Calm</div>
+                        <div class="mood-label">平静</div>
                     </div>
                     <div class="mood-option" data-mood="energetic">
                         <div class="mood-emoji">💪</div>
-                        <div class="mood-label">Energetic</div>
+                        <div class="mood-label">精力充沛</div>
                     </div>
                 </div>
-                <button class="btn" id="submit-mood-btn">Submit Mood</button>
+                <button class="btn" id="submit-mood-btn">提交心情</button>
             </div>
 
             <div class="feature-grid">
                 <div class="feature-card" id="mental-assessment-card">
                     <div class="feature-icon">🧠</div>
-                    <div class="feature-title">Mental Assessment</div>
-                    <div class="feature-desc">AI-powered emotional analysis</div>
+                    <div class="feature-title">心理健康评估</div>
+                    <div class="feature-desc">AI驱动的情感分析</div>
                 </div>
                 <div class="feature-card" id="knowledge-base-card">
                     <div class="feature-icon">📚</div>
-                    <div class="feature-title">Knowledge Base</div>
-                    <div class="feature-desc">Mental health resources</div>
+                    <div class="feature-title">知识库</div>
+                    <div class="feature-desc">心理健康资源</div>
                 </div>
                 <div class="feature-card" id="sleep-monitor-card">
                     <div class="feature-icon">😴</div>
-                    <div class="feature-title">Sleep Monitor</div>
-                    <div class="feature-desc">Track and improve sleep</div>
+                    <div class="feature-title">睡眠监测</div>
+                    <div class="feature-desc">跟踪并改善睡眠</div>
                 </div>
                 <div class="feature-card" id="breathing-card">
                     <div class="feature-icon">🧘</div>
-                    <div class="feature-title">Breathing Exercises</div>
-                    <div class="feature-desc">Guided meditation</div>
+                    <div class="feature-title">呼吸练习</div>
+                    <div class="feature-desc">引导式冥想</div>
                 </div>
                 <div class="feature-card" id="psych-test-card">
                     <div class="feature-icon">📝</div>
-                    <div class="feature-title">Psychological Tests</div>
-                    <div class="feature-desc">Assess your mental state</div>
+                    <div class="feature-title">心理测试</div>
+                    <div class="feature-desc">评估您的心理状态</div>
                 </div>
             </div>
         </div>
@@ -637,32 +689,32 @@
         <!-- Mental Health Knowledge Base Screen -->
         <div id="knowledge-base-screen" class="screen">
             <div class="card">
-                <div class="card-header">Mental Health Resources</div>
+                <div class="card-header">心理健康资源</div>
                 <div class="article-list">
                     <div class="article-item" data-article="1">
-                        <div class="article-title">Understanding Anxiety Disorders</div>
-                        <div class="article-desc">Learn about the different types of anxiety disorders and their symptoms</div>
-                        <div class="article-meta">5 min read • Updated 2 days ago</div>
+                        <div class="article-title">了解焦虑障碍</div>
+                        <div class="article-desc">了解不同类型的焦虑障碍及其症状</div>
+                        <div class="article-meta">5分钟阅读 • 2天前更新</div>
                     </div>
                     <div class="article-item" data-article="2">
-                        <div class="article-title">Techniques for Managing Stress</div>
-                        <div class="article-desc">Effective strategies to cope with daily stressors</div>
-                        <div class="article-meta">7 min read • Updated 1 week ago</div>
+                        <div class="article-title">压力管理技巧</div>
+                        <div class="article-desc">有效应对日常压力的策略</div>
+                        <div class="article-meta">7分钟阅读 • 1周前更新</div>
                     </div>
                     <div class="article-item" data-article="3">
-                        <div class="article-title">The Science of Sleep</div>
-                        <div class="article-desc">How sleep affects your mental health and ways to improve it</div>
-                        <div class="article-meta">6 min read • Updated 3 days ago</div>
+                        <div class="article-title">睡眠的科学</div>
+                        <div class="article-desc">睡眠如何影响您的心理健康以及改善方法</div>
+                        <div class="article-meta">6分钟阅读 • 3天前更新</div>
                     </div>
                     <div class="article-item" data-article="4">
-                        <div class="article-title">Mindfulness for Beginners</div>
-                        <div class="article-desc">Introduction to mindfulness practices and their benefits</div>
-                        <div class="article-meta">8 min read • Updated 5 days ago</div>
+                        <div class="article-title">正念入门</div>
+                        <div class="article-desc">正念实践介绍及其益处</div>
+                        <div class="article-meta">8分钟阅读 • 5天前更新</div>
                     </div>
                     <div class="article-item" data-article="5">
-                        <div class="article-title">Building Emotional Resilience</div>
-                        <div class="article-desc">Strategies to strengthen your emotional well-being</div>
-                        <div class="article-meta">9 min read • Updated 1 week ago</div>
+                        <div class="article-title">建立情绪韧性</div>
+                        <div class="article-desc">加强您情绪健康的策略</div>
+                        <div class="article-meta">9分钟阅读 • 1周前更新</div>
                     </div>
                 </div>
             </div>
@@ -671,32 +723,36 @@
         <!-- Sleep Quality Monitoring Screen -->
         <div id="sleep-monitor-screen" class="screen">
             <div class="card">
-                <div class="card-header">Sleep Quality Analysis</div>
+                <div class="card-header">睡眠质量分析</div>
                 <div class="sleep-stats">
                     <div class="sleep-stat">
                         <div class="sleep-value">7.2</div>
-                        <div class="sleep-label">Hours</div>
+                        <div class="sleep-label">小时</div>
                     </div>
                     <div class="sleep-stat">
                         <div class="sleep-value">85%</div>
-                        <div class="sleep-label">Quality</div>
+                        <div class="sleep-label">质量</div>
                     </div>
                     <div class="sleep-stat">
                         <div class="sleep-value">3</div>
-                        <div class="sleep-label">Awakenings</div>
+                        <div class="sleep-label">醒来次数</div>
                     </div>
                 </div>
                 <div class="chart-container" id="sleep-chart">
                     <!-- Chart will be generated by JavaScript -->
                 </div>
-                <button class="btn" id="start-sleep-btn">Start Tonight's Sleep Tracking</button>
+                <button class="btn" id="start-sleep-btn">今夜开始睡眠追踪</button>
+                <div class="divider"></div>
+                <div style="text-align: center; margin: 15px 0; color: var(--text-secondary);">
+                    完全免费，无隐藏收费
+                </div>
             </div>
         </div>
 
         <!-- Breathing Meditation Screen -->
         <div id="breathing-screen" class="screen">
             <div class="card">
-                <div class="card-header">Breathing Exercise</div>
+                <div class="card-header">呼吸练习</div>
                 <div class="breathing-circle">
                     <div class="breathing-inner" id="breathing-inner"></div>
                     <div class="timer" id="breathing-timer">4:00</div>
@@ -704,102 +760,137 @@
                 <div class="progress-container">
                     <div class="progress-bar" id="breathing-progress"></div>
                 </div>
-                <div class="progress-text" id="breathing-instruction">Inhale for 4 seconds</div>
-                <button class="btn" id="start-breathing-btn">Start Breathing Exercise</button>
-                <button class="btn btn-secondary" id="stop-breathing-btn">Stop Exercise</button>
+                <div class="progress-text" id="breathing-instruction">吸气4秒</div>
+                <button class="btn" id="start-breathing-btn">开始呼吸练习</button>
+                <button class="btn btn-secondary" id="stop-breathing-btn">停止练习</button>
             </div>
         </div>
 
         <!-- Psychological Test Screen -->
         <div id="psych-test-screen" class="screen">
             <div class="card">
-                <div class="card-header">Mental Health Assessment</div>
+                <div class="card-header">心理健康评估</div>
                 <div id="quiz-container">
-                    <div id="quiz-question">How often do you feel down, depressed, or hopeless?</div>
+                    <div id="quiz-question">您多久会感到沮丧、抑郁或绝望？</div>
                     <div id="quiz-options">
-                        <div class="quiz-option" data-value="1">Not at all</div>
-                        <div class="quiz-option" data-value="2">Several days</div>
-                        <div class="quiz-option" data-value="3">More than half the days</div>
-                        <div class="quiz-option" data-value="4">Nearly every day</div>
+                        <div class="quiz-option" data-value="1">完全没有</div>
+                        <div class="quiz-option" data-value="2">几天</div>
+                        <div class="quiz-option" data-value="3">超过一半天数</div>
+                        <div class="quiz-option" data-value="4">几乎每天</div>
                     </div>
                 </div>
                 <div id="quiz-progress">
                     <div class="progress-container">
                         <div class="progress-bar" id="quiz-progress-bar"></div>
                     </div>
-                    <div class="progress-text" id="quiz-progress-text">Question 1 of 9</div>
+                    <div class="progress-text" id="quiz-progress-text">问题 1/9</div>
                 </div>
-                <button class="btn" id="next-question-btn" disabled>Next Question</button>
+                <button class="btn" id="next-question-btn" disabled>下一题</button>
             </div>
         </div>
 
         <!-- Settings Screen -->
         <div id="settings-screen" class="screen">
             <div class="card">
-                <div class="card-header">Settings</div>
+                <div class="card-header">设置</div>
                 <div class="setting-item">
-                    <div class="setting-label">Daily Reminders</div>
+                    <div class="setting-label">每日提醒</div>
                     <div class="toggle" id="reminders-toggle">
                         <div class="toggle-slider"></div>
                     </div>
                 </div>
                 <div class="setting-item">
-                    <div class="setting-label">Dark Mode</div>
+                    <div class="setting-label">深色模式</div>
                     <div class="toggle active" id="dark-mode-toggle">
                         <div class="toggle-slider"></div>
                     </div>
                 </div>
                 <div class="setting-item">
-                    <div class="setting-label">Data Sharing</div>
+                    <div class="setting-label">数据共享</div>
                     <div class="toggle" id="data-sharing-toggle">
                         <div class="toggle-slider"></div>
                     </div>
                 </div>
                 <div class="setting-item">
-                    <div class="setting-label">Notifications</div>
+                    <div class="setting-label">通知</div>
                     <div class="toggle active" id="notifications-toggle">
                         <div class="toggle-slider"></div>
                     </div>
                 </div>
                 <div class="setting-item">
-                    <div class="setting-label">Help & Support</div>
+                    <div class="setting-label">帮助与支持</div>
                 </div>
                 <div class="setting-item">
-                    <div class="setting-label">About HealthMindAI</div>
+                    <div class="setting-label">关于 HealthMindAI</div>
                 </div>
-                <button class="btn btn-secondary" id="logout-btn" style="margin-top: 20px;">Logout</button>
+                <button class="btn btn-secondary" id="logout-btn" style="margin-top: 20px;">退出登录</button>
             </div>
         </div>
-    </div>
 
-    <!-- Navigation Bar -->
-    <div class="nav-bar" id="nav-bar">
-        <div class="nav-item active" data-screen="home-screen">
-            <div class="nav-icon">🏠</div>
-            <div class="nav-label">Home</div>
+        <!-- Product Overview Carousel -->
+        <div id="carousel-screen" class="screen">
+            <div class="carousel-container">
+                <div class="carousel-slide active">
+                    <div class="carousel-icon">🧠</div>
+                    <div class="carousel-title">情绪分析</div>
+                    <div class="carousel-desc">通过AI技术分析您的情绪模式，提供个性化的心理健康建议</div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="carousel-icon">📚</div>
+                    <div class="carousel-title">知识资源</div>
+                    <div class="carousel-desc">访问丰富的心理健康文章和资源，学习应对压力和焦虑的技巧</div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="carousel-icon">😴</div>
+                    <div class="carousel-title">睡眠监测</div>
+                    <div class="carousel-desc">跟踪您的睡眠质量，获得改善睡眠的专业建议</div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="carousel-icon">🧘</div>
+                    <div class="carousel-title">呼吸练习</div>
+                    <div class="carousel-desc">通过引导式呼吸练习减轻压力，提高专注力</div>
+                </div>
+                <div class="carousel-slide">
+                    <div class="carousel-icon">📝</div>
+                    <div class="carousel-title">心理评估</div>
+                    <div class="carousel-desc">完成专业的心理健康评估，了解您的心理状态</div>
+                </div>
+            </div>
+            <div style="text-align: center;">
+                <button class="btn" id="skip-carousel-btn">跳过</button>
+            </div>
         </div>
-        <div class="nav-item" data-screen="knowledge-base-screen">
-            <div class="nav-icon">📚</div>
-            <div class="nav-label">Knowledge</div>
-        </div>
-        <div class="nav-item" data-screen="sleep-monitor-screen">
-            <div class="nav-icon">😴</div>
-            <div class="nav-label">Sleep</div>
-        </div>
-        <div class="nav-item" data-screen="breathing-screen">
-            <div class="nav-icon">🧘</div>
-            <div class="nav-label">Breath</div>
-        </div>
-        <div class="nav-item" data-screen="psych-test-screen">
-            <div class="nav-icon">📝</div>
-            <div class="nav-label">Tests</div>
-        </div>
-    </div>
 
-    <!-- Notification -->
-    <div class="notification" id="notification">
-        <div class="notification-title" id="notification-title">Notification</div>
-        <div class="notification-message" id="notification-message">This is a notification</div>
+        <!-- Navigation Bar -->
+        <div class="nav-bar" id="nav-bar">
+            <div class="nav-item active" data-screen="home-screen">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">主页</div>
+            </div>
+            <div class="nav-item" data-screen="knowledge-base-screen">
+                <div class="nav-icon">📚</div>
+                <div class="nav-label">知识</div>
+            </div>
+            <div class="nav-item" data-screen="sleep-monitor-screen">
+                <div class="nav-icon">😴</div>
+                <div class="nav-label">睡眠</div>
+            </div>
+            <div class="nav-item" data-screen="breathing-screen">
+                <div class="nav-icon">🧘</div>
+                <div class="nav-label">呼吸</div>
+            </div>
+            <div class="nav-item" data-screen="psych-test-screen">
+                <div class="nav-icon">📝</div>
+                <div class="nav-label">测试</div>
+            </div>
+        </div>
+
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            <div class="notification-title" id="notification-title">通知</div>
+            <div class="notification-message" id="notification-message">这是一个通知</div>
+        </div>
+
     </div>
 
     <script>
@@ -812,46 +903,48 @@
             breathingInterval: null,
             breathingTimer: 240, // 4 minutes in seconds
             breathingPhase: 'inhale', // inhale, hold, exhale, hold
-            breathingProgress: 0
+            breathingProgress: 0,
+            carouselInterval: null,
+            currentSlide: 0
         };
 
         // Quiz Questions
         const quizQuestions = [
             {
-                question: "How often do you feel down, depressed, or hopeless?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会感到沮丧、抑郁或绝望？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you have trouble falling or staying asleep, or sleeping too much?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会遇到入睡困难、睡眠过多或睡眠不足的情况？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you feel tired or have little energy?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会感到疲劳或精力不足？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you have poor appetite or overeat?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会食欲不振或暴饮暴食？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会对自己感到不满，觉得自己是个失败者，或者让自己或家人失望？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you have trouble concentrating on things such as reading or watching television?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会难以集中注意力，比如阅读或看电视时？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you move or speak so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会行动或说话缓慢到别人注意到？或者相反 - 坐立不安，比平时活动得多？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you think that you would be better off dead or of hurting yourself in some way?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会觉得死掉或伤害自己会更好？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             },
             {
-                question: "How often do you feel bothered by things that usually don't bother you?",
-                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+                question: "您多久会被通常不会打扰到你的事情所困扰？",
+                options: ["完全没有", "几天", "超过一半天数", "几乎每天"]
             }
         ];
 
@@ -876,6 +969,8 @@
                 initSleepChart();
             } else if (screenId === 'psych-test-screen') {
                 resetQuiz();
+            } else if (screenId === 'carousel-screen') {
+                startCarousel();
             }
         }
 
@@ -893,7 +988,7 @@
 
         // Event Listeners
         document.getElementById('get-started-btn').addEventListener('click', () => {
-            showScreen('login-screen');
+            showScreen('carousel-screen');
         });
 
         document.getElementById('login-btn').addEventListener('click', () => {
@@ -901,15 +996,16 @@
             const password = document.getElementById('login-password').value;
             
             if (email && password) {
-                showNotification('Login Successful', 'Welcome back to HealthMindAI!');
+                showNotification('登录成功', '欢迎回到 HealthMindAI！');
                 showScreen('home-screen');
             } else {
-                showNotification('Login Failed', 'Please enter your email and password');
+                showNotification('登录失败', '请输入您的邮箱和密码');
             }
         });
 
-        document.getElementById('register-btn').addEventListener('click', () => {
-            showNotification('Registration', 'Registration feature coming soon!');
+        document.getElementById('start-using-btn').addEventListener('click', () => {
+            showNotification('欢迎使用', '开始您的心理健康之旅！');
+            showScreen('home-screen');
         });
 
         // Mood Selection
@@ -925,16 +1021,16 @@
 
         document.getElementById('submit-mood-btn').addEventListener('click', () => {
             if (app.selectedMood) {
-                showNotification('Mood Recorded', `Thank you for sharing your mood: ${app.selectedMood}`);
+                showNotification('心情已记录', `感谢分享您的心情: ${app.selectedMood}`);
                 // In a real app, this would send the mood data to the backend
             } else {
-                showNotification('Select Mood', 'Please select your current mood');
+                showNotification('请选择心情', '请选择您当前的心情');
             }
         });
 
         // Feature Cards
         document.getElementById('mental-assessment-card').addEventListener('click', () => {
-            showNotification('Mental Assessment', 'This feature analyzes your emotional patterns based on your mood history');
+            showNotification('心理健康评估', '此功能基于您的心情历史分析您的情绪模式');
         });
 
         document.getElementById('knowledge-base-card').addEventListener('click', () => {
@@ -967,187 +1063,181 @@
             chartContainer.innerHTML = '';
             
             // Generate sample sleep data for the last 7 days
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const hours = [6.5, 7.2, 6.8, 7.5, 6.3, 8.1, 7.2];
+            const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+            const hours = [6.5, 7.2, 6.8, 7.5, 6.2, 8.1, 7.8];
             
+            // Create canvas element
+            const canvas = document.createElement('canvas');
+            canvas.width = chartContainer.offsetWidth;
+            canvas.height = 300;
+            chartContainer.appendChild(canvas);
+            
+            // Draw bar chart
+            const ctx = canvas.getContext('2d');
+            const barWidth = canvas.width / days.length - 20;
             const maxHours = Math.max(...hours);
             
-            days.forEach((day, index) => {
-                const barHeight = (hours[index] / maxHours) * 100;
+            ctx.fillStyle = '#4a6fa5';
+            hours.forEach((hour, index) => {
+                const barHeight = (hour / maxHours) * (canvas.height - 50);
+                const x = index * (barWidth + 20) + 10;
+                const y = canvas.height - barHeight - 30;
                 
-                const bar = document.createElement('div');
-                bar.className = 'chart-bar';
-                bar.style.height = `${barHeight}%`;
-                bar.style.left = `${index * 14}%`;
+                // Draw bar
+                ctx.fillRect(x, y, barWidth, barHeight);
                 
-                const label = document.createElement('div');
-                label.className = 'chart-label';
-                label.textContent = day;
-                label.style.left = `${index * 14}%`;
-                
-                chartContainer.appendChild(bar);
-                chartContainer.appendChild(label);
+                // Draw label
+                ctx.fillStyle = '#333';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(days[index], x + barWidth/2, canvas.height - 10);
+                ctx.fillText(hour + 'h', x + barWidth/2, y - 5);
+                ctx.fillStyle = '#4a6fa5';
             });
+            
+            // Draw title
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('最近一周睡眠时长', canvas.width/2, 20);
         }
 
-        document.getElementById('start-sleep-btn').addEventListener('click', () => {
-            showNotification('Sleep Tracking', 'Sleep tracking started. Place your phone on the nightstand.');
-        });
+        // Initialize sleep chart when sleep screen is shown
+        document.getElementById('sleep-monitor-screen').addEventListener('show', initSleepChart);
 
         // Breathing Exercise
-        document.getElementById('start-breathing-btn').addEventListener('click', function() {
-            this.disabled = true;
-            document.getElementById('stop-breathing-btn').disabled = false;
-            app.breathingTimer = 240;
-            app.breathingProgress = 0;
-            
-            app.breathingInterval = setInterval(() => {
-                updateBreathingExercise();
-            }, 1000);
-        });
+        let breathingInterval;
+        let breathingPhase = 'inhale';
+        let breathingCount = 0;
 
-        document.getElementById('stop-breathing-btn').addEventListener('click', function() {
-            clearInterval(app.breathingInterval);
-            this.disabled = true;
-            document.getElementById('start-breathing-btn').disabled = false;
+        function startBreathingExercise() {
+            const circle = document.getElementById('breathing-circle');
+            const instructions = document.getElementById('breathing-instructions');
+            const startBtn = document.getElementById('start-breathing');
+            const stopBtn = document.getElementById('stop-breathing');
             
-            // Reset breathing circle
-            document.getElementById('breathing-inner').classList.remove('breathing-in', 'breathing-out');
-            document.getElementById('breathing-timer').textContent = '4:00';
-            document.getElementById('breathing-progress').style.width = '0%';
-            document.getElementById('breathing-instruction').textContent = 'Inhale for 4 seconds';
+            startBtn.style.display = 'none';
+            stopBtn.style.display = 'block';
             
-            showNotification('Exercise Complete', 'Great job! You completed a 4-minute breathing exercise.');
-        });
-
-        function updateBreathingExercise() {
-            const minutes = Math.floor(app.breathingTimer / 60);
-            const seconds = app.breathingTimer % 60;
-            document.getElementById('breathing-timer').textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-            
-            const breathingInner = document.getElementById('breathing-inner');
-            const instruction = document.getElementById('breathing-instruction');
-            const progressBar = document.getElementById('breathing-progress');
-            
-            // Breathing pattern: Inhale 4s, Hold 4s, Exhale 6s, Hold 2s (16s total cycle)
-            const cyclePosition = (240 - app.breathingTimer) % 16;
-            
-            if (cyclePosition < 4) {
-                // Inhale phase
-                breathingInner.classList.add('breathing-in');
-                breathingInner.classList.remove('breathing-out');
-                instruction.textContent = 'Inhale for 4 seconds';
-                app.breathingProgress = (cyclePosition / 4) * 25;
-            } else if (cyclePosition < 8) {
-                // Hold after inhale
-                breathingInner.classList.remove('breathing-in');
-                instruction.textContent = 'Hold for 4 seconds';
-                app.breathingProgress = 25 + ((cyclePosition - 4) / 4) * 25;
-            } else if (cyclePosition < 14) {
-                // Exhale phase
-                breathingInner.classList.add('breathing-out');
-                instruction.textContent = 'Exhale for 6 seconds';
-                app.breathingProgress = 50 + ((cyclePosition - 8) / 6) * 50;
-            } else {
-                // Hold after exhale
-                breathingInner.classList.remove('breathing-out');
-                instruction.textContent = 'Hold for 2 seconds';
-                app.breathingProgress = 100;
-            }
-            
-            progressBar.style.width = `${app.breathingProgress}%`;
-            
-            // Update breathing color based on phase
-            if (cyclePosition < 4 || (cyclePosition >= 8 && cyclePosition < 14)) {
-                breathingInner.style.backgroundColor = '#4CAF50'; // Green for inhale/exhale
-            } else {
-                breathingInner.style.backgroundColor = '#2196F3'; // Blue for hold
-            }
-        }
-    },
-    
-    // Meditation timer functions
-    meditationTimer: {
-        duration: 600, // Default 10 minutes in seconds
-        remaining: 600,
-        interval: null,
-        
-        start: function() {
-            this.remaining = this.duration;
-            this.interval = setInterval(() => {
-                this.remaining--;
-                app.updateMeditationDisplay();
-                
-                if (this.remaining <= 0) {
-                    this.stop();
-                    app.showNotification('Meditation session completed!');
+            breathingInterval = setInterval(() => {
+                if (breathingPhase === 'inhale') {
+                    circle.style.transform = 'scale(1.5)';
+                    instructions.textContent = '吸气...';
+                    breathingPhase = 'hold';
+                } else if (breathingPhase === 'hold') {
+                    instructions.textContent = '保持...';
+                    breathingPhase = 'exhale';
+                } else {
+                    circle.style.transform = 'scale(1)';
+                    instructions.textContent = '呼气...';
+                    breathingPhase = 'inhale';
+                    breathingCount++;
+                    
+                    if (breathingCount >= 10) {
+                        stopBreathingExercise();
+                        showNotification('练习完成', '您已完成10次呼吸练习，感觉如何？');
+                    }
                 }
-            }, 1000);
-        },
-        
-        stop: function() {
-            if (this.interval) {
-                clearInterval(this.interval);
-                this.interval = null;
-            }
-        },
-        
-        updateDisplay: function() {
-            const minutes = Math.floor(this.remaining / 60);
-            const seconds = this.remaining % 60;
-            document.getElementById('meditation-timer').textContent = 
-                `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            }, 3000);
         }
-    },
-    
-    // Notification system
-    showNotification: function(message) {
-        const notification = document.getElementById('notification');
-        notification.textContent = message;
-        notification.classList.add('show');
-        
-        setTimeout(() => {
-            notification.classList.remove('show');
-        }, 3000);
-    },
-    
-    // Initialize app
-    init: function() {
-        // Set up event listeners
-        document.getElementById('start-breathing').addEventListener('click', () => {
-            app.breathingTimer.start();
-        });
-        
-        document.getElementById('stop-breathing').addEventListener('click', () => {
-            app.breathingTimer.stop();
-        });
-        
-        document.getElementById('start-meditation').addEventListener('click', () => {
-            app.meditationTimer.start();
-        });
-        
-        document.getElementById('stop-meditation').addEventListener('click', () => {
-            app.meditationTimer.stop();
-        });
-        
-        document.getElementById('meditation-duration').addEventListener('change', (e) => {
-            const minutes = parseInt(e.target.value);
-            app.meditationTimer.duration = minutes * 60;
-            app.meditationTimer.remaining = minutes * 60;
-            app.meditationTimer.updateDisplay();
-        });
-        
-        // Initialize displays
-        app.meditationTimer.updateDisplay();
-    }
-};
 
-// Initialize app when DOM is fully loaded
-document.addEventListener('DOMContentLoaded', () => {
-    app.init();
-});
+        function stopBreathingExercise() {
+            clearInterval(breathingInterval);
+            breathingPhase = 'inhale';
+            breathingCount = 0;
+            
+            const circle = document.getElementById('breathing-circle');
+            const instructions = document.getElementById('breathing-instructions');
+            const startBtn = document.getElementById('start-breathing');
+            const stopBtn = document.getElementById('stop-breathing');
+            
+            circle.style.transform = 'scale(1)';
+            instructions.textContent = '点击开始按钮开始呼吸练习';
+            startBtn.style.display = 'block';
+            stopBtn.style.display = 'none';
+        }
+
+        // Breathing exercise buttons
+        document.getElementById('start-breathing').addEventListener('click', startBreathingExercise);
+        document.getElementById('stop-breathing').addEventListener('click', stopBreathingExercise);
+
+        // Psychological Test
+        const testQuestions = [
+            { question: "最近一周，我感到心情低落或沮丧的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
+            { question: "我对日常活动的兴趣和乐趣？", options: ["没有减少", "有些减少", "明显减少", "完全丧失"] },
+            { question: "我感到疲劳或精力不足的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
+            { question: "我难以入睡或保持睡眠的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
+            { question: "我感到自己毫无价值或过度自责的频率是？", options: ["从不", "偶尔", "经常", "总是"] }
+        ];
+
+        let currentQuestion = 0;
+        let testScores = [];
+
+        function showTestQuestion() {
+            const questionContainer = document.getElementById('test-question');
+            const optionsContainer = document.getElementById('test-options');
+            
+            if (currentQuestion < testQuestions.length) {
+                questionContainer.textContent = testQuestions[currentQuestion].question;
+                optionsContainer.innerHTML = '';
+                
+                testQuestions[currentQuestion].options.forEach((option, index) => {
+                    const optionBtn = document.createElement('button');
+                    optionBtn.className = 'option-btn';
+                    optionBtn.textContent = option;
+                    optionBtn.addEventListener('click', () => {
+                        testScores.push(index + 1);
+                        currentQuestion++;
+                        showTestQuestion();
+                    });
+                    optionsContainer.appendChild(optionBtn);
+                });
+            } else {
+                // Calculate and display results
+                const totalScore = testScores.reduce((sum, score) => sum + score, 0);
+                const resultContainer = document.getElementById('test-result');
+                resultContainer.innerHTML = '';
+                
+                let resultText = '';
+                if (totalScore <= 8) {
+                    resultText = '您的心理状态良好，请继续保持积极的生活态度。';
+                } else if (totalScore <= 15) {
+                    resultText = '您可能有些压力或轻度情绪困扰，建议尝试放松技巧或寻求支持。';
+                } else {
+                    resultText = '您的情绪状态可能需要关注，建议寻求专业心理健康服务。';
+                }
+                
+                resultContainer.innerHTML = `<h3>测试结果</h3><p>${resultText}</p><button class="btn-primary" onclick="showScreen('home-screen')">返回首页</button>`;
+            }
+        }
+
+        // Initialize test when test screen is shown
+        document.getElementById('psych-test-screen').addEventListener('show', () => {
+            currentQuestion = 0;
+            testScores = [];
+            showTestQuestion();
+        });
+
+        // Notification system
+        function showNotification(title, message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <h3>${title}</h3>
+                <p>${message}</p>
+                <button class="btn-close" onclick="this.parentElement.remove()">关闭</button>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Initialize app
+        showScreen('home-screen');
     </script>
-<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Your Mental Health Companion","Get Started":"Get Started","Email":"Email","Password":"Password","Login":"Login","Create Account":"Create Account","Submit Mood":"Submit Mood","Start Tonight's Sleep Tracking":"Start Tonight's Sleep Tracking","Start Breathing Exercise":"Start Breathing Exercise","Stop Exercise":"Stop Exercise","Next Question":"Next Question","Logout":"Logout","How often do you feel down, depressed, or hopeless?":"How often do you feel down, depressed, or hopeless?","Not at all":"Not at all","Several days":"Several days","More than half the days":"More than half the days","Nearly every day":"Nearly every day","How often do you have trouble falling or staying asleep, or sleeping too much?":"How often do you have trouble falling or staying asleep, or sleeping too much?","How often do you feel tired or have little energy?":"How often do you feel tired or have little energy?","How often do you have poor appetite or overeat?":"How often do you have poor appetite or overeat?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?","How often do you have trouble concentrating on things such as reading or watching television?":"How often do you have trouble concentrating on things such as reading or watching television?","How often do you think that you would be better off dead or of hurting yourself in some way?":"How often do you think that you would be better off dead or of hurting yourself in some way?","How often do you feel bothered by things that usually don't bother you?":"How often do you feel bothered by things that usually don't bother you?","Login Successful":"Login Successful","Welcome back to HealthMindAI!":"Welcome back to HealthMindAI!","Login Failed":"Login Failed","Please enter your email and password":"Please enter your email and password","Registration feature coming soon!":"Registration feature coming soon!","Mood Recorded":"Mood Recorded","Select Mood":"Select Mood","Please select your current mood":"Please select your current mood","Mental Assessment":"Mental Assessment","This feature analyzes your emotional patterns based on your mood history":"This feature analyzes your emotional patterns based on your mood history","Sleep Tracking":"Sleep Tracking","Sleep tracking started. Place your phone on the nightstand.":"Sleep tracking started. Place your phone on the nightstand.","Inhale for 4 seconds":"Inhale for 4 seconds","Exercise Complete":"Exercise Complete","Great job! You completed a 4-minute breathing exercise.":"Great job! You completed a 4-minute breathing exercise.","Hold for 4 seconds":"Hold for 4 seconds","Exhale for 6 seconds":"Exhale for 6 seconds","Hold for 2 seconds":"Hold for 2 seconds","__title__":"HealthMindAI - Your Mental Health Companion"},"pt":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Seu Companheiro de Bem-Estar Mental","Get Started":"Comece","Email":"E-mail","Password":"Senha","Login":"Entrar","Create Account":"Criar Conta","Submit Mood":"Enviar Humor","Start Tonight's Sleep Tracking":"Iniciar o Rastreamento do Sono Hoje à Noite","Start Breathing Exercise":"Iniciar Exercício de Respiração","Stop Exercise":"Parar Exercício","Next Question":"Próxima Pergunta","Logout":"Sair","How often do you feel down, depressed, or hopeless?":"Com que frequência você se sente desanimado, deprimido ou sem esperança?","Not at all":"De forma alguma","Several days":"Muitos dias","More than half the days":"Mais da metade dos dias","Nearly every day":"Praticamente todos os dias","How often do you have trouble falling or staying asleep, or sleeping too much?":"Com que frequência você tem dificuldade para adormecer, manter o sono ou dormir muito?","How often do you feel tired or have little energy?":"Com que frequência você se sente cansado ou com pouca energia?","How often do you have poor appetite or overeat?":"Com que frequência você tem má apetite ou come em excesso?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Com que frequência você se sente mal sobre si mesmo ou se sente um fracassado ou que decepcionou você mesmo ou sua família?","How often do you have trouble concentrating on things such as reading or watching television?":"Com que frequência você tem dificuldade para se concentrar em coisas como ler ou assistir TV?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Com que frequência você pensa que seria melhor estar morto ou ferir-se de alguma forma?","How often do you feel bothered by things that usually don't bother you?":"Com que frequência você se sente perturbado por coisas que geralmente não o perturbam?","Login Successful":"Login bem-sucedido","Welcome back to HealthMindAI!":"Bem-vindo de volta ao HealthMindAI!","Login Failed":"Login falhou","Please enter your email and password":"Por favor, insira seu e-mail e senha","Registration feature coming soon!":"Funcionalidade de registro em breve!","Mood Recorded":"Humor registrado","Select Mood":"Selecione seu humor atual","Please select your current mood":"Por favor, selecione seu humor atual","Mental Assessment":"Avaliação Mental","This feature analyzes your emotional patterns based on your mood history":"Esta funcionalidade analisa seus padrões emocionais com base em seu histórico de humor","Sleep Tracking":"Rastreamento do Sono","Sleep tracking started. Place your phone on the nightstand.":"O rastreamento do sono começou. Coloque seu telefone na mesa de cabeceira.","Inhale for 4 seconds":"Inale por 4 segundos","Exercise Complete":"Exercício concluído","Great job! You completed a 4-minute breathing exercise.":"Ótimo trabalho! Você completou um exercício de respiração de 4 minutos.","Hold for 4 seconds":"Mantenha por 4 segundos","Exhale for 6 seconds":"Exale por 6 segundos","Hold for 2 seconds":"Mantenha por 2 segundos","__title__":"HealthMindAI - Seu Companheiro de Bem-Estar Mental"},"ar":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - شريكك في صحة عقلك","Get Started":"ابدأ الآن","Email":"البريد الإلكتروني","Password":"كلمة المرور","Login":"تسجيل الدخول","Create Account":"إنشاء حساب","Submit Mood":"إرسال المزاج","Start Tonight's Sleep Tracking":"إبدأ تتبع النوم الليلي","Start Breathing Exercise":"إبدأ التمرين التنفسي","Stop Exercise":"توقف عن التمرين","Next Question":"السؤال التالي","Logout":"خروج","How often do you feel down, depressed, or hopeless?":"كم من المرات تشعر بالحزن، أو الاكتئاب، أو الأمل بالنصاد؟","Not at all":"ليس أبدًا","Several days":"عدة أيام","More than half the days":"أكثر من نصف الأيام","Nearly every day":"كما يشبه اليوم","How often do you have trouble falling or staying asleep, or sleeping too much?":"كم من المرات تعاني من صعوبة النوم، أو التشديد في النوم، أو النوم بشكل مفرط؟","How often do you feel tired or have little energy?":"كم من المرات تشعر بالتعب أو نقص الطاقة؟","How often do you have poor appetite or overeat?":"كم من المرات تقل في شهيتك أو تفرط في تناول الطعام؟","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"كم من المرات تشعر بعدم الارتياح بنفسك أو تشعر بأنك فاشل أو أنه فشلك أو دمرك عائلتك؟","How often do you have trouble concentrating on things such as reading or watching television?":"كم من المرات تواجه صعوبة التركيز في أشياء مثل القراءة أو مشاهدة التلفزيون؟","How often do you think that you would be better off dead or of hurting yourself in some way?":"كم من المرات تظن بأنك أفضل ميتا أو أن إصابة نفسك بطريقة ما ستكون أفضل؟","How often do you feel bothered by things that usually don't bother you?":"كم من المرات تشعر بالزعج بشيء لا يزعجك عادة؟","Login Successful":"نجاح تسجيل الدخول","Welcome back to HealthMindAI!":"مرحبًا بك مرة أخرى في HealthMindAI!","Login Failed":"فشل تسجيل الدخول","Please enter your email and password":"يرجى إدخال بريدك الإلكتروني وكلمة المرور","Registration feature coming soon!":"ميزة التسجيل قريبةً من الان","Mood Recorded":"تم تسجيل المزاج","Select Mood":"حدد مزاجك الحالي","Please select your current mood":"يرجى تحديد مزاجك الحالي","Mental Assessment":"هذه الميزة تحلل نمط مشاعرك بناءً على تاريخ مزاجك","Sleep Tracking":"بدء تتبع النوم","Sleep tracking started. Place your phone on the nightstand.":"بدأ تتبع النوم. ضع هاتفك على المنضدة الليلية.","Inhale for 4 seconds":"امضغ لل 4 ثوانٍ","Exercise Complete":"التمرين مكتمل","Great job! You completed a 4-minute breathing exercise.":"أحسنت! قمت بتمرين التنفس لمدة 4 دقائق.","hold for 4 seconds":"انتظر لل 4 ثوانٍ","Exhale for 6 seconds":"استنشق لل 6 ثوانٍ","hold for 2 seconds":"انتظر لل 2 ثانية","__title__":"HealthMindAI - شريكك في صحة عقلك"},"id":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Teman Kesehatan Mental Anda","Get Started":"Mulai Sekarang","Email":"Email","Password":"Kata Sandi","Login":"Masuk","Create Account":"Buat Akun","Submit Mood":"Kirim Mood","Start Tonight's Sleep Tracking":"Mulai Pemantauan Tidur Malam Ini","Start Breathing Exercise":"Mulai Latihan Pernapasan","Stop Exercise":"Hentikan Latihan","Next Question":"Pertanyaan Selanjutnya","Logout":"Keluar","How often do you feel down, depressed, or hopeless?":"Seberapa sering Anda merasa sedih, depresi, atau putus asa?","Not at all":"Tidak sama sekali","Several days":"Beberapa hari","More than half the days":"Lebih dari setengah hari","Nearly every day":"Hampir setiap hari","How often do you have trouble falling or staying asleep, or sleeping too much?":"Seberapa sering Anda mengalami kesulitan tidur, atau terlalu banyak tidur?","How often do you feel tired or have little energy?":"Seberapa sering Anda merasa lelah atau memiliki sedikit energi?","How often do you have poor appetite or overeat?":"Seberapa sering Anda memiliki nafsu makan yang buruk atau makan berlebihan?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Seberapa sering Anda merasa buruk tentang diri Anda atau merasa Anda adalah seorang gagal atau telah mengecewakan diri Anda atau keluarga Anda?","How often do you have trouble concentrating on things such as reading or watching television?":"Seberapa sering Anda kesulitan berkonsentrasi pada hal seperti membaca atau menonton televisi?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Seberapa sering Anda berpikir bahwa Anda akan lebih baik mati atau menyakiti diri Anda dengan cara tertentu?","How often do you feel bothered by things that usually don't bother you?":"Seberapa sering Anda merasa terganggu oleh hal-hal yang biasanya tidak mengganggu Anda?","Login Successful":"Login Berhasil","Welcome back to HealthMindAI!":"Selamat datang kembali ke HealthMindAI!","Login Failed":"Login Gagal","Please enter your email and password":"Masukkan email dan kata sandi Anda","Registration feature coming soon!":"Fitur pendaftaran segera hadir!","Mood Recorded":"Mood Tercatat","Select Mood":"Pilih Mood","Please select your current mood":"Pilih mood Anda saat ini","Mental Assessment":"Evaluasi Mental","This feature analyzes your emotional patterns based on your mood history":"Fitur ini menganalisis pola emosi Anda berdasarkan riwayat mood Anda","Sleep Tracking":"Pemantauan Tidur","Sleep tracking started. Place your phone on the nightstand.":"Pemantauan tidur dimulai. Letakkan ponsel Anda di meja samping tempat tidur.","Inhale for 4 seconds":"Inspirasikan selama 4 detik","Exercise Complete":"Latihan Selesai","Great job! You completed a 4-minute breathing exercise.":"Bagus! Anda menyelesaikan latihan pernapasan 4 menit.","Hold for 4 seconds":"Tahan selama 4 detik","Exhale for 6 seconds":"Ekspirasikan selama 6 detik","Hold for 2 seconds":"Tahan selama 2 detik","__title__":"HealthMindAI - Teman Kesehatan Mental Anda"},"vi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Người Bạn Đồng Hành Sức Khỏe Tinh Thần","Get Started":"Bắt Đầu","Email":"Email","Password":"Mật Khẩu","Login":"Đăng Nhập","Create Account":"Tạo Tài Khoản","Submit Mood":"Gửi Tâm Trạng","Start Tonight's Sleep Tracking":"Bắt ĐTheo Dõi Giấc Ngài Hôm Nay","Start Breathing Exercise":"Bắt Đầu Tập Thở","Stop Exercise":"Dừng Tập Thử","Next Question":"Câu Hỏi Tiếp Theo","Logout":"Đăng Xuất","How often do you feel down, depressed, or hopeless?":"Bạn cảm thấy buồn bã, trầm cảm, hay tuyệt vọng thường xuyên như thế nào?","Not at all":"Không hề","Several days":"Vài ngày","More than half the days":"Hơn một nửa số ngày","Nearly every day":"Gần như mỗi ngày","How often do you have trouble falling or staying asleep, or sleeping too much?":"Bạn gặp khó khăn khi đi vào giấc ngủ, duy trì giấc ngủ, hoặc ngủ quá nhiều thường xuyên như thế nào?","How often do you feel tired or have little energy?":"Bạn cảm thấy mệt mỏi hoặc ít năng lượng thường xuyên như thế nào?","How often do you have poor appetite or overeat?":"Bạn có cảm giác thèm ăn kém hoặc ăn quá thường xuyên như thế nào?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Bạn cảm thấy mình tồi tệ, thất bại, hoặc làm thất vọng bản thân hoặc gia đình thường xuyên như thế nào?","How often do you have trouble concentrating on things such as reading or watching television?":"Bạn gặp khó khăn khi tập trung vào việc như đọc sách hoặc xem truyền hình thường xuyên như thế nào?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Bạn nghĩ rằng mình sẽ tốt hơn nếu chết hoặc tự làm tổn thương mình thường xuyên như thế nào?","How often do you feel bothered by things that usually don't bother you?":"Bạn cảm thấy phiền lòng bởi những điều thường thì không làm phiền bạn thường xuyên như thế nào?","Login Successful":"Đăng Nhập Thành Công","Welcome back to HealthMindAI!":"Chào mừng trở lại HealthMindAI!","Login Failed":"Đăng Nhập Thất Bại","Please enter your email and password":"Vui lòng nhập email và mật khẩu của bạn","Registration feature coming soon!":"Tính năng đăng ký sắp ra mắt!","Mood Recorded":"Tâm Trạng Đã Ghi Nhận","Select Mood":"Chọn Tâm Trạng","Please select your current mood":"Vui lòng chọn tâm trạng hiện tại của bạn","Mental Assessment":"Đánh Giá Tinh Thần","This feature analyzes your emotional patterns based on your mood history":"Tính năng này phân tích các kiểu cảm xúc của bạn dựa trên lịch sử tâm trạng","Sleep Tracking":"Theo Dõi Giấc Ngủ","Sleep tracking started. Place your phone on the nightstand.":"Bắt đầu theo dõi giấc ngủ. Đặt điện thoại của bạn trên bàn đầu giường.","Inhale for 4 seconds":"Hít vào trong 4 giây","Exercise Complete":"Hoàn Thành Bài Tập","Great job! You completed a 4-minute breathing exercise.":"Làm tốt! Bạn đã hoàn thành bài tập thở 4 phút.","Hold for 4 seconds":"Giữ trong 4 giây","Exhale for 6 seconds":"Thở ra trong 6 giây","Hold for 2 seconds":"Giữ trong 2 giây","__title__":"HealthMindAI - Người Bạn Đồng Hành Sức Khỏe Tinh Thần"},"th":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - ผู้ช่วยด้านสุขภาพจิตของคุณ","Get Started":"เริ่มต้น","Email":"อีเมล","Password":"รหัสผ่าน","Login":"เข้าสู่ระบบ","Create Account":"สร้างบัญชี","Submit Mood":"บันทึกอารมณ์","Start Tonight's Sleep Tracking":"เริ่มติดตาการนอนคืนนี้","Start Breathing Exercise":"เริ่มการออกกำลังกายด้วยการหายใจ","Stop Exercise":"หยุดการออกกำลังกาย","Next Question":"คำถามถัดไป","Logout":"ออกจากระบบ","How often do you feel down, depressed, or hopeless?":"คุณรู้สึกซึมเศร้า หรือสิ้นหวังบ่อยแค่ไหน?","Not at all":"ไม่เลย","Several days":"หลายวัน","More than half the days":"มากกว่าครึ่งหนึ่งของวัน","Nearly every day":"เกือบทุกวัน","How often do you have trouble falling or staying asleep, or sleeping too much?":"คุณมีปัญหาในการนอนหลับ หรือนอนมากเกินไปบ่อยแค่ไหน?","How often do you feel tired or have little energy?":"คุณรู้สึกเหนื่อยล้า หรือขาดพลังงานบ่อยแค่ไหน?","How often do you have poor appetite or overeat?":"คุณมีอาการขาดความอยากอาหาร หรือกินเกินไปบ่อยแค่ไหน?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"คุณรู้สึกไม่พอใจกับตัวเอง หรือรู้สึกว่าล้มเหลว หรือทำให้ตัวเองหรือครอบครัวผิดหวังบ่อยแค่ไหน?","How often do you have trouble concentrating on things such as reading or watching television?":"คุณมีปัญหาในการเข้มงวดกับสิ่งต่างๆ เช่นการอ่านหนังสือ หรือดูโทรทัศน์บ่อยแค่ไหน?","How often do you think that you would be better off dead or of hurting yourself in some way?":"คุณคิดว่าการตายจะดีกว่า หรือคิดทำร้ายตัวเองบ่อยแค่ไหน?","How often do you feel bothered by things that usually don't bother you?":"คุณรู้สึกรำคาญกับสิ่งที่ปกติไม่รำคาญบ่อยแค่ไหน?","Login Successful":"เข้าสู่ระบบสำเร็จ","Welcome back to HealthMindAI!":"ยินดีต้อนรับกลับสู่ HealthMindAI!","Login Failed":"เข้าสู่ระบบไม่สำเร็จ","Please enter your email and password":"กรุณาป้อนอีเมลและรหัสผ่าน","Registration feature coming soon!":"ฟีเจอร์การลงทะเบียนเดี๋ยวจะมาถึงเร็วๆ นี้!","Mood Recorded":"บันทึกอารมณ์แล้ว","Select Mood":"เลือกอารมณ์","Please select your current mood":"กรุณาเลือกอารมณ์ปัจจุบันของคุณ","Mental Assessment":"การประเมินสุขภาพจิต","This feature analyzes your emotional patterns based on your mood history":"ฟีเจอร์นี้วิเคราะห์รูปแบบอารมณ์ของคุณตามประวัติอารมณ์","Sleep Tracking":"การติดตาการนอนหลับ","Sleep tracking started. Place your phone on the nightstand.":"เริ่มติดตาการนอนหลับแล้ว วางโทรศัพท์บนโต๊ะข้างเตียง","Inhale for 4 seconds":"หายใจเข้าเวลา 4 วินาที","Exercise Complete":"การออกกำลังกายเสร็จสิ้น","Great job! You completed a 4-minute breathing exercise.":"ทำได้ดี! คุณได้ทำการออกกำลังกายด้วยการหายใจเป็นเวลา 4 นาทีแล้ว","Hold for 4 seconds":"รักษาไว้เวลา 4 วินาที","Exhale for 6 seconds":"หายใจออกเวลา 6 วินาที","Hold for 2 seconds":"รักษาไว้เวลา 2 วินาที","__title__":"HealthMindAI - ผู้ช่วยด้านสุขภาพจิตของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Your Mental Health Companion","开始使用":"Start Using","邮箱":"Email","密码":"Password","登录":"Login","提交心情":"Submit Mood","今夜开始睡眠追踪":"Start Sleep Tracking Tonight","开始呼吸练习":"Start Breathing Exercise","停止练习":"Stop Exercise","下一题":"Next Question","退出登录":"Logout","跳过":"Skip","bold 16px Arial":"bold 16px Arial","吸气...":"Inhale...","保持...":"Hold...","呼气...":"Exhale...","__title__":"HealthMindAI - Your Mental Health Companion"},"zh-CN":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 您的心理健康伴侣","开始使用":"开始使用","邮箱":"邮箱","密码":"密码","登录":"登录","提交心情":"提交心情","今夜开始睡眠追踪":"今夜开始睡眠追踪","开始呼吸练习":"开始呼吸练习","停止练习":"停止练习","下一题":"下一题","退出登录":"退出登录","跳过":"跳过","bold 16px Arial":"粗体 16px Arial","吸气...":"吸气...","保持...":"保持...","呼气...":"呼气...","__title__":"HealthMindAI - 您的心理健康伴侣"},"es":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Tu Compañero de Salud Mental","开始使用":"Comienza a usar","邮箱":"Correo electrónico","密码":"Contraseña","登录":"Iniciar sesión","提交心情":"Enviar tu estado de ánimo","今夜开始睡眠追踪":"Empieza a rastrear tu sueño esta noche","开始呼吸练习":"Comienza el ejercicio de respiración","停止练习":"Detener el ejercicio","下一题":"Siguiente pregunta","退出登录":"Salir de la sesión","跳过":"Saltar","bold 16px Arial":"Negrita 16px Arial","吸气...":"Inhalar...","保持...":"Mantener...","呼气...":"Exhalar...","__title__":"HealthMindAI - Tu Compañero de Salud Mental"},"ja":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - あなたのメンタルヘルスのコンパニオン","开始使用":"使用を開始する","邮箱":"メールアドレス","密码":"パスワード","登录":"ログイン","提交心情":"気分を提出する","今夜开始睡眠追踪":"今夜から睡眠トラッキングを開始する","开始呼吸练习":"呼吸練習を開始する","停止练习":"練習を停止する","下一题":"次の問題へ","退出登录":"ログアウトする","跳过":"スキップ","bold 16px Arial":"太字 16px Arial","吸气...":"吸気...","保持...":"保持...","呼气...":"呼気...","__title__":"HealthMindAI - あなたのメンタルヘルスのコンパニオン"},"ko":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 귀하의 심리 건강 동반자","开始使用":"사용 시작","邮箱":"이메일","密码":"비밀번호","登录":"로그인","提交心情":"감정 제출","今夜开始睡眠追踪":"이 夜부터 잠 추적 시작","开始呼吸练习":"호흡 연습 시작","停止练习":"연습 중지","下一题":"다음 문제","退出登录":"로그아웃","跳过":"건너뛰기","bold 16px Arial":"굵게 16px Arial","吸气...":"吸入...","保持...":"유지...","呼气...":"呼出...","__title__":"HealthMindAI - 귀하의 심리 건강 동반자"},"fr":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Votre compagnon de santé mentale","开始使用":"Commencer à utiliser","邮箱":"Email","密码":"Mot de passe","登录":"Se connecter","提交心情":"Soumettre votre humeur","今夜开始睡眠追踪":"Commencer le suivi du sommeil cette nuit","开始呼吸练习":"Commencer l'exercice de respiration","停止练习":"Arrêter l'exercice","下一题":"Prochain question","退出登录":"Se déconnecter","跳过":"Skip","bold 16px Arial":"Gras 16px Arial","吸气...":"Inhaler...","保持...":"Maintenir...","呼气...":"Expirer...","__title__":"HealthMindAI - Votre compagnon de santé mentale"},"de":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter","开始使用":"Beginnen Sie mit der Nutzung","邮箱":"E-Mail","密码":"Passwort","登录":"Anmelden","提交心情":"Mood einreichen","今夜开始睡眠追踪":"Ab heute Nacht die Schlafverfolgung starten","开始呼吸练习":"Atmungsbewegung beginnen","停止练习":"Übung beenden","下一题":"Nächste Frage","退出登录":"Abmelden","跳过":"Überspringen","bold 16px Arial":"fett 16px Arial","吸气...":"Einatmen...","保持...":"Behalten Sie...","呼气...":"Austreten...","__title__":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter"},"ru":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ваш компаньон по психическому здоровью","开始使用":"Начать использовать","邮箱":"Электронная почта","密码":"Пароль","登录":"Войти","提交心情":"Отправить настроение","今夜开始睡眠追踪":"Начать отслеживание сна сегодня вечером","开始呼吸练习":"Начать дыхательную практику","停止练习":"Остановить практику","下一题":"Следующее задание","退出登录":"Выйти из системы","跳过":"Пропустить","bold 16px Arial":"жирным шрифтом 16px Arial","吸气...":"Вдох...","保持...":"Поддерживать...","呼气...":"Выдох...","__title__":"HealthMindAI - Ваш компаньон по психическому здоровью"},"pt":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Seu Companheiro de Bem-Estar Mental","开始使用":"Começar a Usar","邮箱":"E-mail","密码":"Senha","登录":"Login","提交心情":"Submeter Humor","今夜开始睡眠追踪":"Iniciar o Rastreamento do Sono Hoje à Noite","开始呼吸练习":"Começar o Exercício de Respiração","停止练习":"Parar o Exercício","下一题":"Próxima Pergunta","退出登录":"Sair do Login","跳过":"Pular","bold 16px Arial":"Negrito 16px Arial","吸气...":"Inalar...","保持...":"Manter...","呼气...":"Exalar...","__title__":"HealthMindAI - Seu Companheiro de Bem-Estar Mental"},"ar":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - مرشدك الصحي النفسي","开始使用":"ابدأ في الاستخدام","邮箱":"البريد الإلكتروني","密码":"كلمة المرور","登录":"تسجيل الدخول","提交心情":"تقديم مشاعرك","今夜开始睡眠追踪":"بدء تتبع النوم الليلة","开始呼吸练习":"بدء ممارسة التنفس","停止练习":"توقف عن التمرين","下一题":"السؤال التالي","退出登录":"خروج من التسجيل","跳过":"تخطي","bold 16px Arial":"عريض 16 بكسل Arial","吸气...":"استنشاق...","保持...":"ابقاء...","呼气...":"تنفس...","__title__":"HealthMindAI - مرشدك الصحي النفسي"},"hi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी","开始使用":"शुरू करें","邮箱":"ईमेल","密码":"पासवर्ड","登录":"लॉगिन","提交心情":"भावना सबमिट करें","今夜开始睡眠追踪":"आज रात से सोमाना ट्रैक करना शुरू करें","开始呼吸练习":"श्वास अभ्यास शुरू करें","停止练习":"अभ्यास रोकें","下一题":"अगला प्रश्न","退出登录":"लॉग आउट","跳过":"सक्रिय करें","bold 16px Arial":"बोल्ड 16px Arial","吸气...":"श्वास गिराएं...","保持...":"रखें...","呼气...":"श्वास उठाएं...","__title__":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी"},"id":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Peneliti Kesehatan Mental Anda","开始使用":"Mulai Memakai","邮箱":"Email","密码":"Sandi","登录":"Masuk","提交心情":"Kirim Sentimen","今夜开始睡眠追踪":"Mulai Track Pemancingan Tidur Malam Ini","开始呼吸练习":"Mulai Melakukan Latihan Nafas","停止练习":"Berhenti Melakukan Prajanjian","下一题":"Soal Berikutnya","退出登录":"Keluar Dari Login","跳过":"Lewati","bold 16px Arial":"Bergaris Tebal 16px Arial","吸气...":"Nasih...","保持...":"Tetapkan...","呼气...":"Pusih... ","__title__":"HealthMindAI - Peneliti Kesehatan Mental Anda"},"vi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Bạn đồng hành Sức khỏe Tâm lý của bạn","开始使用":"Bắt đầu sử dụng","邮箱":"Email","密码":"Mật khẩu","登录":"Đăng nhập","提交心情":"Gửi cảm xúc","今夜开始睡眠追踪":"Bắt đầu theo dõi giấc ngủ từ đêm nay","开始呼吸练习":"Bắt đầu bài tập thở","停止练习":"Dừng bài tập","下一题":"Câu hỏi tiếp theo","退出登录":"Thoát đăng nhập","跳过":"Bỏ qua","bold 16px Arial":"in đậm 16px Arial","吸气...":"Hít thở...","保持...":"Giữ...","呼气...":"Thở ra...","__title__":"HealthMindAI - Bạn đồng hành Sức khỏe Tâm lý của bạn"},"th":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - พร้อมดูแลสุขภาพจิตของคุณ","开始使用":"เริ่มใช้","邮箱":"อีเมล","密码":"รหัสผ่าน","登录":"เข้าสู่ระบบ","提交心情":"ส่งมอบความรู้สึก","今夜开始睡眠追踪":"เริ่มตามสลัดหลับตั้งแต่คืนนี้","开始呼吸练习":"เริ่มประกาศิตตาน","停止练习":"หยุดประกาศิตตาน","下一题":"ข้อต่อไป","退出登录":"ออกจากระบบ","跳过":"ข้าม","bold 16px Arial":"bold 16px Arial","吸气...":"เข้าอากาศ...","保持...":"รักษา...","呼气...":"ออกอากาศ...","__title__":"HealthMindAI - พร้อมดูแลสุขภาพจิตของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -1253,5 +1343,5 @@ document.addEventListener("DOMContentLoaded",init);
 init();
 }
 watchMutations();
-})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+})();</script><!-- radar-i18n-end --></body>
 </html>
