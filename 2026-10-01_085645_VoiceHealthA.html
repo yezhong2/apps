@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoiceHealthAssist</title>
+    <title>VoiceHealthAssist — Voice Health Tools</title>
+    <meta name="description" content="Voice health tools: sound health assessment, breath training guidance, habit tracking and personalized management plans.">
+    <meta property="og:title" content="VoiceHealthAssist — Voice Health Tools">
+    <meta property="og:description" content="Assess, train and track your voice health with tools and guidance.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-01_085645_VoiceHealthA.html">
+    <meta name="theme-color" content="#333333">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -46,14 +52,29 @@
             display: inline-block;
             padding: 10px 20px;
             margin-top: 20px;
-            background-color: #666;
-            color: #fff;
+            background-color: #00a884;
+            color: #0f1115;
             text-decoration: none;
+            border: none;
             border-radius: 5px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
             transition: background-color 0.3s;
         }
         .button:hover {
-            background-color: #777;
+            background-color: #00c69b;
+        }
+        .button:disabled {
+            background-color: #666;
+            color: #ccc;
+            cursor: default;
+        }
+        .status {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #b8e6da;
+            min-height: 18px;
         }
         .score {
             margin-top: 20px;
@@ -83,11 +104,12 @@
             margin-top: 10px;
         }
     </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+    
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
     <header>
         <h1>Welcome to VoiceHealthAssist</h1>
-        <p>Improve your voice health with our free tools and guidance.</p>
+        <p>Improve your voice health with our tools and guidance.</p>
     </header>
     <div class="container">
         <nav>
@@ -100,42 +122,283 @@
         <section id="assessment">
             <h2>Sound Health Assessment</h2>
             <p>Complete your daily sound health assessment.</p>
-            <button class="button">Start Assessment</button>
+            <button class="button" id="btn-assess">Start Assessment</button>
             <div class="score">
-                <p>Score: <span id="score">0</span>/10</p>
+                <p>Score: <span id="score">-</span>/10</p>
                 <p>Advice: <span id="advice">N/A</span></p>
             </div>
         </section>
         <section id="training">
             <h2>Breath Training Guidance</h2>
             <p>Start your breath training session.</p>
-            <button class="button">Start Training</button>
-            <button class="button">Pause</button>
-            <button class="button">Complete</button>
+            <button class="button" id="btn-train-start">Start Training</button>
+            <button class="button" id="btn-train-pause">Pause</button>
+            <button class="button" id="btn-train-done">Complete</button>
+            <p class="status" id="training-status">Ready. A guided session lasts 60 seconds.</p>
         </section>
         <section id="tracking">
             <h2>Sound Habit Tracking</h2>
             <p>Record your daily sound usage and view trends.</p>
-            <button class="button">Record</button>
-            <button class="button">View Trends</button>
+            <button class="button" id="btn-record">Record</button>
+            <button class="button" id="btn-trends">View Trends</button>
+            <p class="status" id="track-status">No records yet.</p>
         </section>
         <section id="consultation">
             <h2>Professional Doctor Advice</h2>
             <p>Ask questions and receive professional advice.</p>
-            <button class="button">Ask Question</button>
+            <button class="button" id="btn-ask">Ask Question</button>
         </section>
         <section id="management">
             <h2>Personalized Voice Health Management</h2>
             <p>Get customized management plans based on your assessment.</p>
-            <button class="button">View Management Plans</button>
+            <button class="button" id="btn-plans">View Management Plans</button>
+            <p class="status" id="plan-status">Complete the assessment to get your plan.</p>
         </section>
     </div>
     <script>
-        // Placeholder functions for interactivity
-        document.querySelector('.button').addEventListener('click', function() {
-            document.getElementById('score').innerText = Math.floor(Math.random() * 10);
-            document.getElementById('advice').innerText = 'Good job!';
+    (function () {
+        'use strict';
+
+        // ---- Sound Health Assessment ----
+        var scoreEl = document.getElementById('score');
+        var adviceEl = document.getElementById('advice');
+        var lastScore = null;
+
+        function setScore(v) {
+            lastScore = v;
+            scoreEl.innerText = v;
+            if (v >= 8) {
+                adviceEl.innerText = 'Excellent! Your voice is in good shape.';
+            } else if (v >= 5) {
+                adviceEl.innerText = 'Fair. Remember to rest your voice and stay hydrated.';
+            } else {
+                adviceEl.innerText = 'Poor. Take a break and avoid raising your voice today.';
+            }
+        }
+
+        var assessBtn = document.getElementById('btn-assess');
+        if (assessBtn) {
+            assessBtn.addEventListener('click', function () {
+                var btn = this;
+                btn.disabled = true;
+                btn.innerText = 'Assessing...';
+                setTimeout(function () {
+                    setScore(Math.floor(Math.random() * 11)); // 0 - 10
+                    btn.disabled = false;
+                    btn.innerText = 'Start Assessment';
+                }, 1200);
+            });
+        }
+
+        // ---- Breath Training ----
+        var trainTimer = null;
+        var trainLeft = 0;
+        var trainStatus = document.getElementById('training-status');
+
+        function stopTrain() {
+            if (trainTimer) {
+                clearInterval(trainTimer);
+                trainTimer = null;
+            }
+        }
+        function tick() {
+            if (trainLeft <= 0) {
+                stopTrain();
+                trainStatus.innerText = 'Session complete. Well done!';
+                return;
+            }
+            trainStatus.innerText = 'Breathing: ' + trainLeft + 's left';
+            trainLeft--;
+        }
+        document.getElementById('btn-train-start').addEventListener('click', function () {
+            stopTrain();
+            trainLeft = 60;
+            trainStatus.innerText = 'Breathing: ' + trainLeft + 's left';
+            trainTimer = setInterval(tick, 1000);
         });
+        document.getElementById('btn-train-pause').addEventListener('click', function () {
+            if (trainTimer) {
+                stopTrain();
+                trainStatus.innerText = 'Paused.';
+            } else {
+                trainStatus.innerText = 'No session running.';
+            }
+        });
+        document.getElementById('btn-train-done').addEventListener('click', function () {
+            stopTrain();
+            trainStatus.innerText = 'Session completed. Your voice says thanks!';
+        });
+
+        // ---- Sound Habit Tracking (localStorage) ----
+        function todayKey() {
+            var d = new Date();
+            return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+        }
+        function loadUsage() {
+            try {
+                return JSON.parse(localStorage.getItem('vha-usage') || '{}');
+            } catch (e) {
+                return {};
+            }
+        }
+        document.getElementById('btn-record').addEventListener('click', function () {
+            var h = prompt('How many hours did you talk today? (0-24)', '2');
+            if (h === null) {
+                return;
+            }
+            var hours = parseInt(h, 10);
+            if (isNaN(hours) || hours < 0 || hours > 24) {
+                alert('Please enter a number between 0 and 24.');
+                return;
+            }
+            try {
+                var data = loadUsage();
+                data[todayKey()] = hours;
+                localStorage.setItem('vha-usage', JSON.stringify(data));
+                document.getElementById('track-status').innerText = 'Recorded ' + hours + 'h for today.';
+            } catch (e) {
+                document.getElementById('track-status').innerText = 'Could not save: localStorage unavailable.';
+            }
+        });
+        document.getElementById('btn-trends').addEventListener('click', function () {
+            var data = loadUsage();
+            var keys = Object.keys(data);
+            if (!keys.length) {
+                document.getElementById('track-status').innerText = 'No records yet. Tap Record to log your first day.';
+                return;
+            }
+            keys.sort();
+            var out = keys.map(function (k) {
+                return k + ': ' + data[k] + 'h';
+            }).join(' | ');
+            document.getElementById('track-status').innerText = out;
+        });
+
+        // ---- Consultation ----
+        document.getElementById('btn-ask').addEventListener('click', function () {
+            var url = 'https://github.com/yezhong2/apps/issues/new?labels=' +
+                encodeURIComponent('意见') + '&title=' +
+                encodeURIComponent('【咨询】VoiceHealthAssist') + '&body=' +
+                encodeURIComponent('我想咨询：\n');
+            window.open(url, '_blank', 'noopener');
+        });
+
+        // ---- Management Plans ----
+        document.getElementById('btn-plans').addEventListener('click', function () {
+            var el = document.getElementById('plan-status');
+            if (lastScore === null) {
+                el.innerText = 'Please complete the Sound Health Assessment first.';
+                return;
+            }
+            if (lastScore >= 8) {
+                el.innerText = 'Plan: maintain hydration and do a 5-minute warm-up daily.';
+            } else if (lastScore >= 5) {
+                el.innerText = 'Plan: two rest breaks per hour plus 10 minutes of breath training daily.';
+            } else {
+                el.innerText = 'Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.';
+            }
+        });
+
+        // ---- Analytics (guarded) ----
+        if (typeof LA !== 'undefined' && LA.init) {
+            
+        }
+    })();
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VoiceHealthAssist — Voice Health Tools":"VoiceHealthAssist — Voice Health Tools","Welcome to VoiceHealthAssist":"Welcome to VoiceHealthAssist","Improve your voice health with our tools and guidance.":"Improve your voice health with our tools and guidance.","Assessment":"Assessment","Training":"Training","Tracking":"Tracking","Consultation":"Consultation","Management":"Management","Sound Health Assessment":"Sound Health Assessment","Complete your daily sound health assessment.":"Complete your daily sound health assessment.","Start Assessment":"Start Assessment","Score: - /10":"Score: - /10","Advice: N/A":"Advice: N/A","Breath Training Guidance":"Breath Training Guidance","Start your breath training session.":"Start your breath training session.","Start Training":"Start Training","Pause":"Pause","Complete":"Complete","Ready. A guided session lasts 60 seconds.":"Ready. A guided session lasts 60 seconds.","Sound Habit Tracking":"Sound Habit Tracking","Record your daily sound usage and view trends.":"Record your daily sound usage and view trends.","Record":"Record","View Trends":"View Trends","No records yet.":"No records yet.","Professional Doctor Advice":"Professional Doctor Advice","Ask questions and receive professional advice.":"Ask questions and receive professional advice.","Ask Question":"Ask Question","Personalized Voice Health Management":"Personalized Voice Health Management","Get customized management plans based on your assessment.":"Get customized management plans based on your assessment.","View Management Plans":"View Management Plans","Complete the assessment to get your plan.":"Complete the assessment to get your plan.","use strict":"use strict","Excellent! Your voice is in good shape.":"Excellent! Your voice is in good shape.","Fair. Remember to rest your voice and stay hydrated.":"Fair. Remember to rest your voice and stay hydrated.","Poor. Take a break and avoid raising your voice today.":"Poor. Take a break and avoid raising your voice today.","Assessing...":"Assessing...","Session complete. Well done!":"Session complete. Well done!","s left":"s left","Paused.":"Paused.","No session running.":"No session running.","Session completed. Your voice says thanks!":"Session completed. Your voice says thanks!","Please enter a number between 0 and 24.":"Please enter a number between 0 and 24.","h for today.":"h for today.","Could not save: localStorage unavailable.":"Could not save: localStorage unavailable.","No records yet. Tap Record to log your first day.":"No records yet. Tap Record to log your first day.","Please complete the Sound Health Assessment first.":"Please complete the Sound Health Assessment first.","Plan: maintain hydration and do a 5-minute warm-up daily.":"Plan: maintain hydration and do a 5-minute warm-up daily.","Plan: two rest breaks per hour plus 10 minutes of breath training daily.":"Plan: two rest breaks per hour plus 10 minutes of breath training daily.","Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.":"Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.","__title__":"VoiceHealthAssist — Voice Health Tools"},"zh-CN":{"VoiceHealthAssist — Voice Health Tools":"VoiceHealthAssist — 语音健康工具","Welcome to VoiceHealthAssist":"欢迎来到VoiceHealthAssist","Improve your voice health with our tools and guidance.":"通过我们的工具和指导改善您的语音健康。","Assessment":"评估","Training":"训练","Tracking":"跟踪","Consultation":"咨询","Management":"管理","Sound Health Assessment":"声音健康评估","Complete your daily sound health assessment.":"完成您的每日声音健康评估。","Start Assessment":"开始评估","Score: - /10":"得分：- /10","Advice: N/A":"建议：N/A","Breath Training Guidance":"呼吸训练指导","Start your breath training session.":"开始您的呼吸训练课程。","Start Training":"开始训练","Pause":"暂停","Complete":"完成","Ready. A guided session lasts 60 seconds.":"准备好了。指导课程持续60秒。","Sound Habit Tracking":"声音习惯跟踪","Record your daily sound usage and view trends.":"记录您每日的声音使用情况并查看趋势。","Record":"记录","View Trends":"查看趋势","No records yet.":"目前还没有记录。","Professional Doctor Advice":"专业医生建议","Ask questions and receive professional advice.":"提问并接收专业建议。","Ask Question":"提问","Personalized Voice Health Management":"个性化语音健康管理","Get customized management plans based on your assessment.":"根据您的评估获得定制的管理计划。","View Management Plans":"查看管理计划","Complete the assessment to get your plan.":"完成评估以获取您的计划。","use strict":"使用严格","Excellent! Your voice is in good shape.":"太棒了！您的声音状况良好。","Fair. Remember to rest your voice and stay hydrated.":"尚可。记得让您的声音休息并保持水分。","Poor. Take a break and avoid raising your voice today.":"较差。今天休息一下，避免提高音量。","Assessing...":"正在评估...","Session complete. Well done!":"课程完成。做得好！","s left":"秒剩余","Paused.":"已暂停。","No session running.":"没有运行中的课程。","Session completed. Your voice says thanks!":"课程已完成。您的声音表示感谢！","Please enter a number between 0 and 24.":"请输入一个介于0到24之间的数字。","h for today.":"小时","Could not save: localStorage unavailable.":"无法保存：localStorage不可用。","No records yet. Tap Record to log your first day.":"目前还没有记录。轻触记录以记录您的第一天。","Please complete the Sound Health Assessment first.":"请先完成声音健康评估。","Plan: maintain hydration and do a 5-minute warm-up daily.":"计划：保持水分，每天做5分钟的预热。","Plan: two rest breaks per hour plus 10 minutes of breath training daily.":"计划：每小时两次休息，每天进行10分钟的呼吸训练。","Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.":"计划：今天严格禁声，喝温水，不要低声说话。如果持续如此，请就医。","__title__":"VoiceHealthAssist — 语音健康工具"},"es":{"VoiceHealthAssist — Voice Health Tools":"VoiceHealthAssist — Herramientas de Salud de la Voz","Welcome to VoiceHealthAssist":"Bienvenido a VoiceHealthAssist","Improve your voice health with our tools and guidance.":"Mejora tu salud vocal con nuestras herramientas y orientación.","Assessment":"Evaluación","Training":"Entrenamiento","Tracking":"Seguimiento","Consultation":"Consultoría","Management":"Gestión","Sound Health Assessment":"Evaluación de Salud Auditiva","Complete your daily sound health assessment.":"Completa tu evaluación diaria de salud auditiva.","Start Assessment":"Iniciar Evaluación","Score: - /10":"Puntuación: - /10","Advice: N/A":"Consejo: N/A","Breath Training Guidance":"Orientación de Entrenamiento de la Respiración","Start your breath training session.":"Inicia tu sesión de entrenamiento de respiración.","Start Training":"Iniciar Entrenamiento","Pause":"Pausar","Complete":"Completar","Ready. A guided session lasts 60 seconds.":"Listo. Una sesión guiada dura 60 segundos.","Sound Habit Tracking":"Seguimiento del Hábito Auditivo","Record your daily sound usage and view trends.":"Registra tu uso diario de sonido y ve las tendencias.","Record":"Grabar","View Trends":"Ver Tendencias","No records yet.":"Aún sin registros.","Professional Doctor Advice":"Consejo de Médico Profesional","Ask questions and receive professional advice.":"Hacer preguntas y recibir asesoramiento profesional.","Ask Question":"Hacer Pregunta","Personalized Voice Health Management":"Gestión Personalizada de la Salud de la Voz","Get customized management plans based on your assessment.":"Obtén planes de gestión personalizados basados en tu evaluación.","View Management Plans":"Ver Planes de Gestión","Complete the assessment to get your plan.":"Completa la evaluación para obtener tu plan.","use strict":"usar estricto","Excellent! Your voice is in good shape.":"¡Excelente! Tu voz está en buen estado.","Fair. Remember to rest your voice and stay hydrated.":"Correcto. Recuerda descansar tu voz y mantenerte hidratado.","Poor. Take a break and avoid raising your voice today.":"Pobre. Tómate un descanso y evita levantar la voz hoy.","Assessing...":"Evaluando...","Session complete. Well done!":"Sesión completa. ¡Bien hecho!","s left":"restan","Paused.":"Pausado.","No session running.":"Ninguna sesión en curso.","Session completed. Your voice says thanks!":"Sesión completada. Tu voz te lo agradece!","Please enter a number between 0 and 24.":"Por favor, introduce un número entre 0 y 24.","h for today.":"horas para hoy.","Could not save: localStorage unavailable.":"No se pudo guardar: almacenamiento local no disponible.","No records yet. Tap Record to log your first day.":"Aún sin registros. Toca Grabar para registrar tu primer día.","Please complete the Sound Health Assessment first.":"Por favor, completa la Evaluación de Salud Auditiva primero.","Plan: maintain hydration and do a 5-minute warm-up daily.":"Plan: mantener la hidratación y hacer un calentamiento de 5 minutos diariamente.","Plan: two rest breaks per hour plus 10 minutes of breath training daily.":"Plan: dos descansos por hora más 10 minutos de entrenamiento de respiración diariamente.","Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.":"Plan: descanso estricto de la voz hoy, agua tibia, no murmurar. Consulta a un médico si persiste.","__title__":"VoiceHealthAssist — Herramientas de Salud de la Voz"},"ja":{"VoiceHealthAssist — Voice Health Tools":"VoiceHealthAssist — Voice Health Tools","Welcome to VoiceHealthAssist":"VoiceHealthAssistへようこそ","Improve your voice health with our tools and guidance.":"私たちのツールとガイドであなたの声の健康を改善しましょう。","Assessment":"評価","Training":"トレーニング","Tracking":"トラッキング","Consultation":"相談","Management":"管理","Sound Health Assessment":"音の健康評価","Complete your daily sound health assessment.":"あなたの日々の音の健康評価を完了してください。","Start Assessment":"評価を開始","Score: - /10":"スコア: - /10","Advice: N/A":"アドバイス: N/A","Breath Training Guidance":"呼吸トレーニングガイド","Start your breath training session.":"呼吸トレーニングセッションを開始してください。","Start Training":"トレーニングを開始","Pause":"一時停止","Complete":"完了","Ready. A guided session lasts 60 seconds.":"準備はいいですか。ガイド付きセッションは60秒です。","Sound Habit Tracking":"音の習慣トラッキング","Record your daily sound usage and view trends.":"あなたの日々の音の使用状況を記録し、トレンドを確認してください。","Record":"記録","View Trends":"トレンドを確認","No records yet.":"まだ記録はありません。","Professional Doctor Advice":"専門医のアドバイス","Ask questions and receive professional advice.":"質問をして専門的なアドバイスを受けてください。","Ask Question":"質問をする","Personalized Voice Health Management":"パーソナライズされた声の健康管理","Get customized management plans based on your assessment.":"あなたの評価に基づいてカスタマイズされた管理計画を取得してください。","View Management Plans":"管理計画を確認","Complete the assessment to get your plan.":"計画を取得するために評価を完了してください。","use strict":"use strict","Excellent! Your voice is in good shape.":"素晴らしい！あなたの声はとても良い状態です。","Fair. Remember to rest your voice and stay hydrated.":"まあまあです。声を休め、水分を取ることを忘れずに。","Poor. Take a break and avoid raising your voice today.":"悪いです。休憩を取って、今日は声を上げないようにしましょう。","Assessing...":"評価中...","Session complete. Well done!":"セッション完了。素晴らしい！","s left":"残り s","Paused.":"一時停止。","No session running.":"セッションは実行中ではありません。","Session completed. Your voice says thanks!":"セッション完了。あなたの声は感謝しています！","Please enter a number between 0 and 24.":"0から24の間の数字を入力してください。","h for today.":"今日は h 時間。","Could not save: localStorage unavailable.":"保存できません：localStorageが利用できません。","No records yet. Tap Record to log your first day.":"まだ記録はありません。初日を記録するために「記録」をタップしてください。","Please complete the Sound Health Assessment first.":"まずは音の健康評価を完了してください。","Plan: maintain hydration and do a 5-minute warm-up daily.":"計画：水分を取り、毎日5分のウォームアップを行ってください。","Plan: two rest breaks per hour plus 10 minutes of breath training daily.":"計画：1時間に2回の休憩を取り、毎日10分の呼吸トレーニングを行ってください。","Plan: strict voice rest today, warm water, no whispering. See a doctor if it persists.":"計画：今日は声の休息を厳しく行い、温かい水を飲み、ささやかないでください。続く場合は医師に相談してください。","__title__":"VoiceHealthAssist — Voice Health Tools"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
