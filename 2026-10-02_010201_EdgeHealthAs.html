@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EdgeHealthAssistant - Your Personal Health Guardian</title><meta name="description" content="Free online tool: EdgeHealthAssistant - Your Personal Health Guardian. No signup, no payment — free forever.">
+<meta property="og:title" content="EdgeHealthAssistant - Your Personal Health Guardian">
+<meta property="og:description" content="Free online tool: EdgeHealthAssistant - Your Personal Health Guardian. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_010201_EdgeHealthAs.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --border: #475569;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-tertiary);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 70px;
+            z-index: 90;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--text-primary);
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--accent);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        /* Cards */
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        /* Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .metric-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+        }
+        
+        .metric-status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        
+        .status-normal {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        
+        .status-warning {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+        
+        .status-danger {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s, transform 0.1s;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        /* Alerts */
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        
+        .alert-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+        }
+        
+        .alert-warning {
+            background-color: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+        
+        .alert-danger {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+        }
+        
+        /* Device Sync */
+        .device-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .device-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1rem;
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .device-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Health Tips */
+        .tip-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .tip-category {
+            background-color: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+        }
+        
+        /* Knowledge Base */
+        .article-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .article-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 150px;
+            background-color: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--accent);
+        }
+        
+        .article-content {
+            padding: 1.5rem;
+        }
+        
+        .article-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Emergency Contact */
+        .emergency-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .emergency-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .emergency-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .emergency-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-list {
+            margin-top: 1.5rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            margin-bottom: 0.75rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-list {
+                flex-direction: column;
+            }
+            
+            .nav-item {
+                width: 100%;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">⚕️</div>
+                    <span>EdgeHealthAssistant</span>
+                </div>
+                <div class="header-description">
+                    Your personal health guardian using edge computing technology
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="#sync" class="nav-link active" data-section="sync">Sync Data</a></li>
+                <li class="nav-item"><a href="#monitor" class="nav-link" data-section="monitor">Monitor</a></li>
+                <li class="nav-item"><a href="#advice" class="nav-link" data-section="advice">Advice</a></li>
+                <li class="nav-item"><a href="#knowledge" class="nav-link" data-section="knowledge">Knowledge</a></li>
+                <li class="nav-item"><a href="#emergency" class="nav-link" data-section="emergency">Emergency</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="container">
+            <!-- Sync Data Section -->
+            <section id="sync" class="section active">
+                <h1 class="section-title">Health Data Sync</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Connect Your Devices</h2>
+                    <p>Sync your health data from smart devices for personalized health insights.</p>
+                    
+                    <div class="device-list">
+                        <div class="device-item">
+                            <div class="device-icon">⌚</div>
+                            <div>Smart Watch</div>
+                        </div>
+                        <div class="device-item">
+                            <div class="device-icon">🩺</div>
+                            <div>Heart Rate Monitor</div>
+                        </div>
+                        <div class="device-item">
+                            <div class="device-icon">📱</div>
+                            <div>Fitness Tracker</div>
+                        </div>
+                        <div class="device-item">
+                            <div class="device-icon">⚙️</div>
+                            <div>Add New Device</div>
+                        </div>
+                    </div>
+                    
+                    <button id="sync-btn" class="btn btn-full">Sync All Devices</button>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Recent Sync Activity</h2>
+                    <div id="sync-log">
+                        <p>No sync activity yet. Click "Sync All Devices" to get started.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Monitor Section -->
+            <section id="monitor" class="section">
+                <h1 class="section-title">Health Monitoring</h1>
+                
+                <div class="dashboard-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Heart Rate</div>
+                        <div class="metric-value" id="heart-rate">--</div>
+                        <div class="metric-status status-normal">Normal</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Steps</div>
+                        <div class="metric-value" id="steps">--</div>
+                        <div class="metric-status">Today</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Sleep</div>
+                        <div class="metric-value" id="sleep">--</div>
+                        <div class="metric-status">Hours</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Oxygen Level</div>
+                        <div class="metric-value" id="oxygen">--</div>
+                        <div class="metric-status status-normal">Normal</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Health Alerts</h2>
+                    <div id="health-alerts">
+                        <div class="alert alert-success">
+                            All vital signs are within normal range.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Daily Summary</h2>
+                    <div id="daily-summary">
+                        <p>Loading your health data...</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Advice Section -->
+            <section id="advice" class="section">
+                <h1 class="section-title">Personalized Health Advice</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Today's Recommendations</h2>
+                    
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <h3>Nutrition</h3>
+                            <span class="tip-category">Food</span>
+                        </div>
+                        <p id="nutrition-tip">Based on your activity level, try to include more protein in your diet. Consider adding lean meats, fish, or plant-based proteins to your meals.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <h3>Exercise</h3>
+                            <span class="tip-category">Activity</span>
+                        </div>
+                        <p id="exercise-tip">Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.</p>
+                    </div>
+                    
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <h3>Rest</h3>
+                            <span class="tip-category">Sleep</span>
+                        </div>
+                        <p id="sleep-tip">Your sleep quality could be improved. Try to maintain a consistent sleep schedule and avoid screens 1 hour before bedtime.</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Weekly Goals</h2>
+                    <div id="weekly-goals">
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <h4>Step Goal</h4>
+                                <span>70% Complete</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 70%"></div>
+                            </div>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <h4>Water Intake</h4>
+                                <span>85% Complete</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="goal-item">
+                            <div class="goal-header">
+                                <h4>Sleep Quality</h4>
+                                <span>60% Complete</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 60%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Knowledge Section -->
+            <section id="knowledge" class="section">
+                <h1 class="section-title">Health Knowledge Base</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Featured Articles</h2>
+                    <div class="article-list">
+                        <div class="article-card">
+                            <div class="article-image">❤️</div>
+                            <div class="article-content">
+                                <h3 class="article-title">Understanding Heart Health</h3>
+                                <p class="article-excerpt">Learn how to maintain a healthy heart through lifestyle choices and monitoring.</p>
+                                <a href="#" class="btn">Read More</a>
+                            </div>
+                        </div>
+                        <div class="article-card">
+                            <div class="article-image">🏃</div>
+                            <div class="article-content">
+                                <h3 class="article-title">Benefits of Regular Exercise</h3>
+                                <p class="article-excerpt">Discover how physical activity impacts your overall health and wellbeing.</p>
+                                <a href="#" class="btn">Read More</a>
+                            </div>
+                        </div>
+                        <div class="article-card">
+                            <div class="article-image">😴</div>
+                            <div class="article-content">
+                                <h3 class="article-title">The Science of Sleep</h3>
+                                <p class="article-excerpt">Understand why sleep is crucial for health and how to improve your sleep quality.</p>
+                                <a href="#" class="btn">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Search Health Topics</h2>
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="search-input" placeholder="Search for health topics...">
+                    </div>
+                    <button id="search-btn" class="btn">Search</button>
+                    
+                    <div id="search-results" style="margin-top: 1.5rem; display: none;">
+                        <h3>Search Results</h3>
+                        <div class="article-list">
+                            <!-- Search results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Emergency Section -->
+            <section id="emergency" class="section">
+                <h1 class="section-title">Emergency Contact</h1>
+                
+                <div class="alert alert-warning">
+                    <strong>In case of emergency, use the buttons below to quickly contact help.</strong>
+                </div>
+                
+                <div class="emergency-actions">
+                    <button id="emergency-call" class="emergency-btn">
+                        <div class="emergency-icon">🚨</div>
+                        <div>Emergency Services</div>
+                    </button>
+                    <button id="emergency-contact" class="emergency-btn">
+                        <div class="emergency-icon">📞</div>
+                        <div>Contact Family</div>
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Your Emergency Contacts</h2>
+                    <div class="form-group">
+                        <label class="form-label">Add New Contact</label>
+                        <input type="text" class="form-input" id="contact-name" placeholder="Contact Name">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="contact-phone" placeholder="Phone Number">
+                    </div>
+                    <button id="add-contact" class="btn btn-secondary">Add Contact</button>
+                    
+                    <div class="contact-list" id="contact-list">
+                        <!-- Contacts will be populated here -->
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Medical Information</h2>
+                    <p>Having your medical information ready can help emergency responders provide better care.</p>
+                    <button id="medical-info-btn" class="btn">Update Medical Information</button>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>EdgeHealthAssistant</h3>
+                    <p>Your personal health guardian using edge computing technology for real-time health monitoring and insights.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Health Articles</a></li>
+                        <li><a href="#">Device Compatibility</a></li>
+                        <li><a href="#">Health Tips</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EdgeHealthAssistant. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Update active nav
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding section
+                const sectionId = this.getAttribute('data-section');
+                document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+        
+        // Sync functionality
+        document.getElementById('sync-btn').addEventListener('click', function() {
+            const btn = this;
+            const originalText = btn.textContent;
+            btn.innerHTML = '<span class="spinner"></span> Syncing...';
+            btn.disabled = true;
+            
+            // Simulate sync process
+            setTimeout(() => {
+                const syncLog = document.getElementById('sync-log');
+                const now = new Date();
+                const timeString = now.toLocaleTimeString();
+                
+                // Add sync entries
+                syncLog.innerHTML = `
+                    <div class="alert alert-success">
+                        Smart Watch synced successfully at ${timeString}
+                    </div>
+                    <div class="alert alert-success">
+                        Heart Rate Monitor synced successfully at ${timeString}
+                    </div>
+                    <div class="alert alert-warning">
+                        Fitness Tracker connection failed. Please check device.
+                    </div>
+                `;
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                // Update dashboard metrics
+                updateDashboardMetrics();
+            }, 2000);
+        });
+        
+        // Update dashboard metrics
+        function updateDashboardMetrics() {
+            // Simulate real data
+            document.getElementById('heart-rate').textContent = '72';
+            document.getElementById('steps').textContent = '8,542';
+            document.getElementById('sleep').textContent = '7.2';
+            document.getElementById('oxygen').textContent = '98%';
+            
+            // Update daily summary
+            const dailySummary = document.getElementById('daily-summary');
+            dailySummary.innerHTML = `
+                <h3>Today's Health Summary</h3>
+                <p>Your heart rate has been stable throughout the day. You're 1,458 steps short of your daily goal. 
+                Your sleep quality was good last night with 7.2 hours of rest.</p>
+                <div class="alert alert-success">
+                    <strong>Overall Status:</strong> Good
+                </div>
+            `;
+        }
+        
+        // Emergency functionality
+        document.getElementById('emergency-call').addEventListener('click', function() {
+            // In a real app, this would call emergency services
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.innerHTML = '<strong>Emergency services called!</strong> Help is on the way.';
+            
+            const emergencySection = document.getElementById('emergency');
+            emergencySection.insertBefore(alertDiv, emergencySection.firstChild);
+            
+            // Remove after 5 seconds
+            setTimeout(() => alertDiv.remove(), 5000);
+        });
+        
+        document.getElementById('emergency-contact').addEventListener('click', function() {
+            // In a real app, this would call emergency contacts
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-warning';
+            alertDiv.innerHTML = '<strong>Emergency contacts notified!</strong> They have been informed of your situation.';
+            
+            const emergencySection = document.getElementById('emergency');
+            emergencySection.insertBefore(alertDiv, emergencySection.firstChild);
+            
+            // Remove after 5 seconds
+            setTimeout(() => alertDiv.remove(), 5000);
+        });
+        
+        // Add contact functionality
+        document.getElementById('add-contact').addEventListener('click', function() {
+            const nameInput = document.getElementById('contact-name');
+            const phoneInput = document.getElementById('contact-phone');
+            
+            if (nameInput.value && phoneInput.value) {
+                const contactList = document.getElementById('contact-list');
+                const newContact = document.createElement('div');
+                newContact.className = 'contact-item';
+                newContact.innerHTML = `
+                    <div>
+                        <div>${nameInput.value}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">${phoneInput.value}</div>
+                    </div>
+                    <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Remove</button>
+                `;
+                
+                contactList.appendChild(newContact);
+                
+                // Add remove functionality
+                newContact.querySelector('button').addEventListener('click', function() {
+                    newContact.remove();
+                });
+                
+                // Clear inputs
+                nameInput.value = '';
+                phoneInput.value = '';
+            }
+        });
+        
+        // Search functionality
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+            
+            if (searchInput.value) {
+                searchResults.style.display = 'block';
+                
+                // Simulate search results
+                const articles = [
+                    { title: 'Managing High Blood Pressure', icon: '🩺', excerpt: 'Learn about lifestyle changes and treatments for hypertension.' },
+                    { title: 'Heart-Healthy Diet Tips', icon: '🥗', excerpt: 'Discover foods that support cardiovascular health.' },
+                    { title: 'Exercise for Heart Health', icon: '🏃', excerpt: 'Find the best exercises to strengthen your heart.' }
+                ];
+                
+                const resultsHtml = articles.map(article => `
+                    <div class="article-card">
+                        <div class="article-image">${article.icon}</div>
+                        <div class="article-content">
+                            <h3 class="article-title">${article.title}</h3>
+                            <p class="article-excerpt">${article.excerpt}</p>
+                            <a href="#" class="btn">Read More</a>
+                        </div>
+                    </div>
+                `).join('');
+                
+                searchResults.querySelector('.article-list').innerHTML = resultsHtml;
+            }
+        });
+        
+        // Medical info button
+        document.getElementById('medical-info-btn').addEventListener('click', function() {
+            // In a real app, this would open a form for medical information
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success';
+            alertDiv.innerHTML = '<strong>Medical information form opened!</strong> Update your emergency medical details here.';
+            
+            const emergencySection = document.getElementById('emergency');
+            emergencySection.insertBefore(alertDiv, emergencySection.firstChild);
+            
+            // Remove after 5 seconds
+            setTimeout(() => alertDiv.remove(), 5000);
+        });
+        
+        // Initialize with some sample data
+        window.addEventListener('load', function() {
+            // Add sample contacts
+            const sampleContacts = [
+                { name: 'John Doe', phone: '(555) 123-4567' },
+                { name: 'Jane Smith', phone: '(555) 987-6543' }
+            ];
+            
+            const contactList = document.getElementById('contact-list');
+            sampleContacts.forEach(contact => {
+                const contactDiv = document.createElement('div');
+                contactDiv.className = 'contact-item';
+                contactDiv.innerHTML = `
+                    <div>
+                        <div>${contact.name}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary);">${contact.phone}</div>
+                    </div>
+                    <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Remove</button>
+                `;
+                
+                contactList.appendChild(contactDiv);
+                
+                // Add remove functionality
+                contactDiv.querySelector('button').addEventListener('click', function() {
+                    contactDiv.remove();
+                });
+            });
+            
+            // Initialize dashboard
+            updateDashboardMetrics();
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Your Personal Health Guardian","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Sync Data","Monitor":"Monitor","Advice":"Advice","Knowledge":"Knowledge","Emergency":"Emergency","Health Data Sync":"Health Data Sync","Connect Your Devices":"Connect Your Devices","Sync your health data from smart devices for personalized health insights.":"Sync your health data from smart devices for personalized health insights.","Sync All Devices":"Sync All Devices","Recent Sync Activity":"Recent Sync Activity","Health Monitoring":"Health Monitoring","Health Alerts":"Health Alerts","Daily Summary":"Daily Summary","Loading your health data...":"Loading your health data...","Personalized Health Advice":"Personalized Health Advice","Today's Recommendations":"Today's Recommendations","Nutrition":"Nutrition","Food":"Food","Exercise":"Exercise","Activity":"Activity","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.","Rest":"Rest","Sleep":"Sleep","Weekly Goals":"Weekly Goals","Step Goal":"Step Goal","70% Complete":"70% Complete","Water Intake":"Water Intake","85% Complete":"85% Complete","Sleep Quality":"Sleep Quality","60% Complete":"60% Complete","Health Knowledge Base":"Health Knowledge Base","Featured Articles":"Featured Articles","Understanding Heart Health":"Understanding Heart Health","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Learn how to maintain a healthy heart through lifestyle choices and monitoring.","Read More":"Read More","Benefits of Regular Exercise":"Benefits of Regular Exercise","Discover how physical activity impacts your overall health and wellbeing.":"Discover how physical activity impacts your overall health and wellbeing.","The Science of Sleep":"The Science of Sleep","Understand why sleep is crucial for health and how to improve your sleep quality.":"Understand why sleep is crucial for health and how to improve your sleep quality.","Search Health Topics":"Search Health Topics","Search":"Search","Search Results":"Search Results","Emergency Contact":"Emergency Contact","🚨 Emergency Services":"🚨 Emergency Services","📞 Contact Family":"📞 Contact Family","Your Emergency Contacts":"Your Emergency Contacts","Add New Contact":"Add New Contact","Add Contact":"Add Contact","Medical Information":"Medical Information","Having your medical information ready can help emergency responders provide better care.":"Having your medical information ready can help emergency responders provide better care.","Update Medical Information":"Update Medical Information","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Your personal health guardian using edge computing technology for real-time health monitoring and insights.","Resources":"Resources","Health Articles":"Health Articles","Device Compatibility":"Device Compatibility","Health Tips":"Health Tips","FAQ":"FAQ","Support":"Support","Contact Us":"Contact Us","__title__":"EdgeHealthAssistant - Your Personal Health Guardian"},"zh-CN":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - 您的个人健康守护者","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"同步数据","Monitor":"监控","Advice":"建议","Knowledge":"知识","Emergency":"紧急情况","Health Data Sync":"健康数据同步","Connect Your Devices":"连接您的设备","Sync your health data from smart devices for personalized health insights.":"从智能设备同步您的健康数据以获取个性化健康洞察。","Sync All Devices":"同步所有设备","Recent Sync Activity":"最近的同步活动","Health Monitoring":"健康监控","Health Alerts":"健康警报","Daily Summary":"每日摘要","Loading your health data...":"加载您的健康数据...","Personalized Health Advice":"个性化健康建议","Today's Recommendations":"今天的推荐","Nutrition":"营养","Food":"食物","Exercise":"锻炼","Activity":"活动","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"您的步数低于建议的10,000步。尝试在午餐休息期间加入30分钟的步行。","Rest":"休息","Sleep":"睡眠","Weekly Goals":"每周目标","Step Goal":"步数目标","70% Complete":"70% 完成","Water Intake":"水摄入","85% Complete":"85% 完成","Sleep Quality":"睡眠质量","60% Complete":"60% 完成","Health Knowledge Base":"健康知识库","Featured Articles":"特色文章","Understanding Heart Health":"理解心脏健康","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"了解如何通过生活方式选择和监控来保持心脏健康。","Read More":"阅读更多","Benefits of Regular Exercise":"定期锻炼的好处","Discover how physical activity impacts your overall health and wellbeing.":"发现身体活动如何影响您的整体健康和福祉。","The Science of Sleep":"睡眠的科学","Understand why sleep is crucial for health and how to improve your sleep quality.":"了解为什么睡眠对健康至关重要以及如何提高您的睡眠质量。","Search Health Topics":"搜索健康主题","Search":"搜索","Search Results":"搜索结果","Emergency Contact":"紧急联系人","🚨 Emergency Services":"🚨 紧急服务","📞 Contact Family":"📞 联系家人","Your Emergency Contacts":"您的紧急联系人","Add New Contact":"添加新联系人","Add Contact":"添加联系人","Medical Information":"医疗信息","HAVING YOUR MEDICAL INFORMATION READY CAN HELP EMERGENCY RESPONDERS PROVIDE BETTER CARE.":"准备好您的医疗信息可以帮助紧急响应者提供更好的护理。","Update Medical Information":"更新医疗信息","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"您的个人健康守护者，使用边缘计算技术进行实时健康监控和洞察。","Resources":"资源","Health Articles":"健康文章","Device Compatibility":"设备兼容性","Health Tips":"健康提示","FAQ":"常见问题解答","Support":"支持","Contact Us":"联系我们","__title__":"EdgeHealthAssistant - 您的个人健康守护者"},"es":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Tu Guardián de Salud Personal","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Sincronizar Datos","Monitor":"Monitorizar","Advice":"Consejo","Knowledge":"Conocimiento","Emergency":"Emergencia","Health Data Sync":"Sincronización de Datos de Salud","Connect Your Devices":"Conectar Sus Dispositivos","Sync your health data from smart devices for personalized health insights.":"Sincronice sus datos de salud de los dispositivos inteligentes para obtener conocimientos de salud personalizados.","Sync All Devices":"Sincronizar Todos los Dispositivos","Recent Sync Activity":"Actividad de Sincronización Reciente","Health Monitoring":"Monitorización de Salud","Health Alerts":"Alertas de Salud","Daily Summary":"Resumen Diario","Loading your health data...":"Cargando sus datos de salud...","Personalized Health Advice":"Consejo de Salud Personalizado","Today's Recommendations":"Recomendaciones de Hoy","Nutrition":"Nutrición","Food":"Comida","Exercise":"Ejercicio","Activity":"Actividad","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Su recuento de pasos está por debajo de los 10,000 recomendados. Trate de incorporar una caminata de 30 minutos durante su hora de almuerzo.","Rest":"Descanso","Sleep":" Sueño","Weekly Goals":"Objetivos Semanales","Step Goal":"Objetivo de Pasos","70% Complete":"70% Completado","Water Intake":"Ingesta de Agua","85% Complete":"85% Completado","Sleep Quality":"Calidad del Sueño","60% Complete":"60% Completado","Health Knowledge Base":"Base de Conocimiento de Salud","Featured Articles":"Artículos Destacados","Understanding Heart Health":"Entendiendo la Salud del Corazón","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Aprenda cómo mantener un corazón saludable a través de la elección de estilos de vida y el monitoreo.","Read More":"Leer Más","Benefits of Regular Exercise":"Beneficios del Ejercicio Regular","Discover how physical activity impacts your overall health and wellbeing.":"Descubra cómo la actividad física impacta su salud y bienestar general.","The Science of Sleep":"La Ciencia del Sueño","Understand why sleep is crucial for health and how to improve your sleep quality.":"Entienda por qué el sueño es crucial para la salud y cómo mejorar la calidad de su sueño.","Search Health Topics":"Buscar Temas de Salud","Search":"Buscar","Search Results":"Resultados de la Búsqueda","Emergency Contact":"Contacto de Emergencia","🚨 Emergency Services":"🚨 Servicios de Emergencia","📞 Contact Family":"Contactar a la Familia","Your Emergency Contacts":"Sus Contactos de Emergencia","Add New Contact":"Agregar Nuevo Contacto","Add Contact":"Agregar Contacto","Medical Information":"Información Médica","Having your medical information ready can help emergency responders provide better care.":"Tener su información médica lista puede ayudar a que los responders de emergencia proporcionen un mejor cuidado.","Update Medical Information":"Actualizar Información Médica","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Su guardián de salud personal que utiliza tecnología de computación en la nube para monitoreo y conocimientos de salud en tiempo real.","Resources":"Recursos","Health Articles":"Artículos de Salud","Device Compatibility":"Compatibilidad de Dispositivos","Health Tips":"Consejos de Salud","FAQ":"Preguntas Frecuentes","Support":"Soporte","Contact Us":"Contactarnos","__title__":"EdgeHealthAssistant - Tu Guardián de Salud Personal"},"ja":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - あなたのパーソナルヘルスガーディアン","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"データ同期","Monitor":"監視","Advice":"アドバイス","Knowledge":"知識","Emergency":"緊急","Health Data Sync":"ヘルスデータ同期","Connect Your Devices":"デバイスを接続する","Sync your health data from smart devices for personalized health insights.":"スマートデバイスからのヘルスデータを同期し、パーソナライズされたヘルスインサイトを得ましょう。","Sync All Devices":"すべてのデバイスを同期","Recent Sync Activity":"最近の同期アクティビティ","Health Monitoring":"ヘルスモニタリング","Health Alerts":"ヘルスアラート","Daily Summary":"日次要約","Loading your health data...":"あなたのヘルスデータを読み込んでいます...","Personalized Health Advice":"パーソナライズされたヘルスアドバイス","Today's Recommendations":"今日の推奨","Nutrition":"栄養","Food":"食事","Exercise":"運動","Activity":"アクティビティ","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"あなたの歩数は推奨の10,000歩未満です。昼休み中に30分の散歩を取り入れてください。","Rest":"休憩","Sleep":"睡眠","Weekly Goals":"週次目標","Step Goal":"歩数目標","70% Complete":"70% 完了","Water Intake":"水分摂取","85% Complete":"85% 完了","Sleep Quality":"睡眠の質","60% Complete":"60% 完了","Health Knowledge Base":"ヘルス知識ベース","Featured Articles":"注目の記事","Understanding Heart Health":"心臓の健康を理解する","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"ライフスタイルの選択や監視を通じて健康な心を維持する方法を学びましょう。","Read More":"もっと読む","Benefits of Regular Exercise":"定期的な運動の利点","Discover how physical activity impacts your overall health and wellbeing.":"運動が全体の健康と福祉にどのように影響するかを発見しましょう。","The Science of Sleep":"睡眠の科学","Understand why sleep is crucial for health and how to improve your sleep quality.":"睡眠が健康にとってどのように重要であるか、そして睡眠の質を向上させる方法を理解しましょう。","Search Health Topics":"ヘルストピックを検索","Search":"検索","Search Results":"検索結果","Emergency Contact":"緊急連絡先","🚨 Emergency Services":"🚨 緊急サービス","📞 Contact Family":"家族に連絡","Your Emergency Contacts":"あなたの緊急連絡先","Add New Contact":"新しい連絡先を追加","Add Contact":"連絡先を追加","Medical Information":"医療情報","Having your medical information ready can help emergency responders provide better care.":"医療情報を用意しておくことで、緊急対応者はより良いケアを提供できます。","Update Medical Information":"医療情報を更新","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"リアルタイムのヘルスモニタリングとインサイトのためのエッジコンピューティング技術を使用するあなたのパーソナルヘルスガーディアン","Resources":"リソース","Health Articles":"ヘルス記事","Device Compatibility":"デバイス互換性","Health Tips":"ヘルスティップ","FAQ":"FAQ","Support":"サポート","Contact Us":"お問い合わせ","__title__":"EdgeHealthAssistant - あなたのパーソナルヘルスガーディアン"},"ko":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - 당신의 개인 건강 지킴이","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"데이터 동기화","Monitor":"모니터링","Advice":"고의","Knowledge":"지식","Emergency":"응급 상황","Health Data Sync":"건강 데이터 동기화","Connect Your Devices":"장치를 연결하세요","Sync your health data from smart devices for personalized health insights.":"스마트 장치에서 건강 데이터를 동기화하여 맞춤형 건강 인사이트를 제공합니다.","Sync All Devices":"모든 장치 동기화","Recent Sync Activity":"최근 동기화 활동","Health Monitoring":"건강 모니터링","Health Alerts":"건강 알림","Daily Summary":"일간 요약","Loading your health data...":"당신의 건강 데이터를 로드 중...","Personalized Health Advice":"개인 맞춤형 건강 고의","Today's Recommendations":"오늘의 추천","Nutrition":"영양","Food":"식음료","Exercise":"운동","Activity":"활동","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"당신의 걸음 수는 권장된 10,000歩보다 낮습니다. 점심 시간 동안 30분의 산책을 포함시려세요.","Rest":" 휴식","Sleep":" 잠","Weekly Goals":"주간 목표","Step Goal":"걸음 목표","70% Complete":"70% 완료","Water Intake":"수분 섭취","85% Complete":"85% 완료","Sleep Quality":"수면 품질","60% Complete":"60% 완료","Health Knowledge Base":"건강 지식 기반","Featured Articles":"추천 기사","Understanding Heart Health":"심장 건강 이해하기","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"생활 방식 선택과 모니터링을 통해 건강한 심장을 유지하는 방법을 배웁니다.","Read More":"자세히 보기","Benefits of Regular Exercise":"정기적인 운동의 이점","Discover how physical activity impacts your overall health and wellbeing.":"물리적인 활동이 전반적인 건강과 웰빙에 미치는 영향을 발견하세요.","The Science of Sleep":"수면의 과학","Understand why sleep is crucial for health and how to improve your sleep quality.":"수면이 건강에 왜 중요한지 그리고 수면 품질을 높이는 방법을 이해하세요.","Search Health Topics":"건강 주제 검색","Search":"검색","Search Results":"검색 결과","Emergency Contact":"응급 연락처","🚨 Emergency Services":"🚨 응급 서비스","📞 Contact Family":"가족 연락처","Your Emergency Contacts":"당신의 응급 연락처","Add New Contact":"신규 연락처 추가","Add Contact":"연락처 추가","Medical Information":"의료 정보","Having your medical information ready can help emergency responders provide better care.":"의료 정보를 준비해 두면 응급 대응자가 더 나은 돌봄을 제공할 수 있습니다.","Update Medical Information":"의료 정보 업데이트","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"边缘计算 기술을 사용하여 실시간 건강 모니터링 및 인사이트를 제공하는 당신의 개인 건강 지킴이.","Resources":"자원","Health Articles":"건강 기사","Device Compatibility":"장치 호환성","Health Tips":"건강 팁","FAQ":"FAQ","Support":"지원","Contact Us":"联系我们","__title__":"EdgeHealthAssistant - 당신의 개인 건강 지킴이"},"fr":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Votre gardien de santé personnel","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Synchronisation des données","Monitor":"Surveiller","Advice":"Conseil","Knowledge":"Connaissances","Emergency":"Urgence","Health Data Sync":"Synchronisation des données de santé","Connect Your Devices":"Connectez vos appareils","Sync your health data from smart devices for personalized health insights.":"Synchronisez vos données de santé depuis des appareils intelligents pour des insights personnalisés en matière de santé.","Sync All Devices":"Synchroniser tous les appareils","Recent Sync Activity":"Activité de synchronisation récente","Health Monitoring":"Surveillance de la santé","Health Alerts":"Alertes de santé","Daily Summary":"Résumé quotidien","Loading your health data...":"Chargement de vos données de santé...","Personalized Health Advice":"Conseils de santé personnalisés","Today's Recommendations":"Recommandations d'aujourd'hui","Nutrition":"Nutrition","Food":"Alimentation","Exercise":"Exercice","Activity":"Activité","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Le nombre de pas que vous avez fait est inférieur aux 10,000 recommandés. essayez d'intégrer une promenade de 30 minutes pendant votre pause déjeuner.","Rest":"Repos","Sleep":"Sommeil","Weekly Goals":"Objectifs hebdomadaires","Step Goal":"Objectif des pas","70% Complete":"70% Complété","Water Intake":"Consommation d'eau","85% Complete":"85% Complété","Sleep Quality":"Qualité du sommeil","60% Complete":"60% Complété","Health Knowledge Base":"Base de connaissances en santé","Featured Articles":"Articles en vedette","Understanding Heart Health":"Comprendre la santé cardiaque","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Apprenez à maintenir une bonne santé cardiaque grâce à des choix de style de vie et à la surveillance.","Read More":"En savoir plus","Benefits of Regular Exercise":"Avantages de l'exercice régulier","Discover how physical activity impacts your overall health and wellbeing.":"Découvrez comment l'activité physique influence votre santé et votre bien-être global.","The Science of Sleep":"La science du sommeil","Understand why sleep is crucial for health and how to improve your sleep quality.":"Comprenez pourquoi le sommeil est crucial pour la santé et comment améliorer la qualité de votre sommeil.","Search Health Topics":"Recherchez des sujets de santé","Search":"Recherche","Search Results":"Résultats de la recherche","Emergency Contact":"Contact d'urgence","🚨 Emergency Services":"🚨 Services d'urgence","📞 Contact Family":"Contact familial","Your Emergency Contacts":"Vos contacts d'urgence","Add New Contact":"Ajouter un nouveau contact","Add Contact":"Ajouter un contact","Medical Information":"Informations médicales","Having your medical information ready can help emergency responders provide better care.":"Avoir vos informations médicales prêtes peut aider les intervenants d'urgence à fournir un meilleur soin.","Update Medical Information":"Mettre à jour les informations médicales","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Votre gardien de santé personnel utilisant la technologie de calcul en marge pour une surveillance de la santé en temps réel et des insights.","Resources":"Ressources","Health Articles":"Articles sur la santé","Device Compatibility":"Compatibilité des appareils","Health Tips":"Conseils de santé","FAQ":"FAQ","Support":"Support","Contact Us":"Contactez-nous","__title__":"EdgeHealthAssistant - Votre gardien de santé personnel"},"de":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Ihr persönlicher Gesundheitswächter","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Daten synchronisieren","Monitor":"Überwachen","Advice":"Rat","Knowledge":"Wissen","Emergency":"Notfall","Health Data Sync":"Gesundheitsdaten synchronisieren","Connect Your Devices":"Ihre Geräte verbinden","Sync your health data from smart devices for personalized health insights.":"Synchronisieren Sie Ihre Gesundheitsdaten von intelligenten Geräten für persönliche Gesundheitsinsights.","Sync All Devices":"Alle Geräte synchronisieren","Recent Sync Activity":"Letzte Synchronisationsaktivität","Health Monitoring":"Gesundheitsüberwachung","Health Alerts":"Gesundheitswarntöne","Daily Summary":"Täglicher Überblick","Loading your health data...":"Ihre Gesundheitsdaten werden geladen...","Personalized Health Advice":"Personalisierte Gesundheitsberatung","Today's Recommendations":"Heutige Empfehlungen","Nutrition":"Nahrungsergänzung","Food":"Essen","Exercise":"Sport","Activity":"Aktivität","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Ihre Schrittanzahl liegt unter den empfohlenen 10.000 Schritten. Versuchen Sie, eine 30-minütige Spaziergang in Ihrer Mittagspause einzubauen.","Rest":"Ruhe","Sleep":"Schlaf","Weekly Goals":"Wöchentliche Ziele","Step Goal":"Schrittziel","70% Complete":"70% abgeschlossen","Water Intake":"Wasserverbrauch","85% Complete":"85% abgeschlossen","Sleep Quality":"Schlafqualität","60% Complete":"60% abgeschlossen","Health Knowledge Base":"Gesundheitswissenbank","Featured Articles":"Vorgestellte Artikel","Understanding Heart Health":"Verstehen Sie die Gesundheit des Herzens","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Erfahren Sie, wie Sie ein gesundes Herz durch Lebensstilwahlen und Überwachung erhalten.","Read More":"Mehr lesen","Benefits of Regular Exercise":"Vorteile des regelmäßigen Sports","Discover how physical activity impacts your overall health and wellbeing.":"Entdecken Sie, wie körperliche Aktivität Ihre allgemeine Gesundheit und Ihr Wohlbefinden beeinflusst.","The Science of Sleep":"Die Wissenschaft des Schlafens","Understand why sleep is crucial for health and how to improve your sleep quality.":"Verstehen Sie, warum Schlaf für die Gesundheit unerlässlich ist und wie Sie Ihre Schlafqualität verbessern.","Search Health Topics":"Gesundheitsthemen suchen","Search":"Suchen","Search Results":"Suchergebnisse","Emergency Contact":"Notfallkontakt","🚨 Emergency Services":"🚨 Notfallservices","📞 Contact Family":"Familienkontakt","Your Emergency Contacts":"Ihre Notfallkontakte","Add New Contact":"Neuen Kontakt hinzufügen","Add Contact":"Kontakt hinzufügen","Medical Information":"Medizinische Informationen","Having your medical information ready can help emergency responders provide better care.":"Durch Bereithalten Ihrer medizinischen Informationen können Notfallkräfte bessere Pflege leisten.","Update Medical Information":"Medizinische Informationen aktualisieren","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Ihr persönlicher Gesundheitswächter, der Edge Computing-Technologie zur Echtzeit-Gesundheitsüberwachung und -analyse nutzt.","Resources":"Ressourcen","Health Articles":"Gesundheitsartikel","Device Compatibility":"Gerätekompatibilität","Health Tips":"Gesundheitstipps","FAQ":"FAQ","Support":"Support","Contact Us":"Kontaktieren Sie uns","__title__":"EdgeHealthAssistant - Ihr persönlicher Gesundheitswächter"},"ru":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Ваш личный хранитель здоровья","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Синхронизация данных","Monitor":"Мониторинг","Advice":"Рекомендации","Knowledge":"Знания","Emergency":"Экстренная ситуация","Health Data Sync":"Синхронизация данных о здоровье","Connect Your Devices":"Подключите ваши устройства","Sync your health data from smart devices for personalized health insights.":"Синхронизируйте данные о вашем здоровье с умных устройств для получения персонализированных данных о здоровье.","Sync All Devices":"Синхронизация всех устройств","Recent Sync Activity":"Недавняя активность синхронизации","Health Monitoring":"Мониторинг здоровья","Health Alerts":"Сигналы о здоровье","Daily Summary":"Ежедневное резюме","Loading your health data...":"Загрузка ваших данных о здоровье...","Personalized Health Advice":"Персонализированные рекомендации о здоровье","Today's Recommendations":"Рекомендации на сегодня","Nutrition":"Питание","Food":"Еда","Exercise":"Упражнения","Activity":"Активность","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Ваше количество шагов ниже рекомендованных 10 000 шагов. Попробуйте включить 30-минутную прогулку в обеденный перерыв.","Rest":"Отдых","Sleep":"Сон","Weekly Goals":"Еженедельные цели","Step Goal":"Цель по шагам","70% Complete":"70% завершено","Water Intake":"Водопотребление","85% Complete":"85% завершено","Sleep Quality":"Качество сна","60% Complete":"60% завершено","Health Knowledge Base":"База знаний о здоровье","Featured Articles":"Важные статьи","Understanding Heart Health":"Понимание здоровья сердца","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Узнайте, как поддерживать здоровое сердце с помощью выбора образа жизни и мониторинга.","Read More":"Читать дальше","Benefits of Regular Exercise":"Польза регулярных упражнений","Discover how physical activity impacts your overall health and wellbeing.":"Узнайте, как физическая активность влияет на ваше общее здоровье и благополучие.","The Science of Sleep":"Наука о сне","Understand why sleep is crucial for health and how to improve your sleep quality.":"Понимайте, почему сон важен для здоровья и как улучшить качество вашего сна.","Search Health Topics":"Поиск тем о здоровье","Search":"Поиск","Search Results":"Результаты поиска","Emergency Contact":"Экстренная связь","🚨 Emergency Services":"🚨 Экстренные услуги","📞 Contact Family":"Связаться с семьей","Your Emergency Contacts":"Ваши экстренные контакты","Add New Contact":"Добавить новый контакт","Add Contact":"Добавить контакт","Medical Information":"Медицинская информация","Having your medical information ready can help emergency responders provide better care.":"Готовая медицинская информация может помочь экстренным службам предоставлять лучшую помощь.","Update Medical Information":"Обновить медицинскую информацию","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Ваш личный хранитель здоровья, использующий технологию вычислений на границе для реального времени мониторинга и получения данных о здоровье.","Resources":"Ресурсы","Health Articles":"Статьи о здоровье","Device Compatibility":"Совместимость устройств","Health Tips":"Советы по здоровью","FAQ":"Частые вопросы","Support":"Поддержка","Contact Us":"Свяжитесь с нами","__title__":"EdgeHealthAssistant - Ваш личный хранитель здоровья"},"pt":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Seu Guardião de Saúde Pessoal","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Sincronizar Dados","Monitor":"Monitorar","Advice":"Aconselhamento","Knowledge":"Conhecimento","Emergency":"Emergência","Health Data Sync":"Sincronização de Dados de Saúde","Connect Your Devices":"Conecte Seus Dispositivos","Sync your health data from smart devices for personalized health insights.":"Sincronize seus dados de saúde dos dispositivos inteligentes para insights de saúde personalizados.","Sync All Devices":"Sincronizar Todos os Dispositivos","Recent Sync Activity":"Atividade de Sincronização Recente","Health Monitoring":"Monitoramento de Saúde","Health Alerts":"Alertas de Saúde","Daily Summary":"Resumo Diário","Loading your health data...":"Carregando seus dados de saúde...","Personalized Health Advice":"Aconselhamento de Saúde Personalizado","Today's Recommendations":"Recomendações de Hoje","Nutrition":"Nutrição","Food":"Alimento","Exercise":"Exercício","Activity":"Atividade","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Seu número de passos está abaixo dos 10.000 recomendados. Tente incluir uma caminhada de 30 minutos durante o intervalo de almoço.","Rest":"Descanso","Sleep":"Dormir","Weekly Goals":"Objetivos Semanais","Step Goal":"Objetivo de Passos","70% Complete":"70% Concluído","Water Intake":"Ingestão de Água","85% Complete":"85% Concluído","Sleep Quality":"Qualidade do Sono","60% Complete":"60% Concluído","Health Knowledge Base":"Base de Conhecimento de Saúde","Featured Articles":"Artigos em Destaque","Understanding Heart Health":"Compreendendo a Saúde do Coração","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Aprenda como manter um coração saudável através de escolhas de estilo de vida e monitoramento.","Read More":"Leia Mais","Benefits of Regular Exercise":"Benefícios de Exercícios Regulares","Discover how physical activity impacts your overall health and wellbeing.":"Descubra como a atividade física impacta sua saúde e bem-estar geral.","The Science of Sleep":"A Ciência do Sono","Understand why sleep is crucial for health and how to improve your sleep quality.":"Entenda por que o sono é crucial para a saúde e como melhorar a qualidade do seu sono.","Search Health Topics":"Pesquisar Tópicos de Saúde","Search":"Pesquisar","Search Results":"Resultados da Pesquisa","Emergency Contact":"Contato de Emergência","🚨 Emergency Services":"🚨 Serviços de Emergência","📞 Contact Family":"Contato de Família","Your Emergency Contacts":"Seus Contatos de Emergência","Add New Contact":"Adicionar Novo Contato","Add Contact":"Adicionar Contato","Medical Information":"Informações Médicas","Having your medical information ready can help emergency responders provide better care.":"Ter suas informações médicas prontas pode ajudar os respostadores a emergência a fornecerem um melhor cuidado.","Update Medical Information":"Atualizar Informações Médicas","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Seu guardião de saúde pessoal usando tecnologia de computação em borda para monitoramento de saúde em tempo real e insights.","Resources":"Recursos","Health Articles":"Artigos de Saúde","Device Compatibility":"Compatibilidade de Dispositivos","Health Tips":"Dicas de Saúde","FAQ":"Perguntas Frequentes","Support":"Suporte","Contact Us":"Entre em Contato Conosco","__title__":"EdgeHealthAssistant - Seu Guardião de Saúde Pessoal"},"ar":{"EdgeHealthAssistant - Your Personal Health Guardian":"مساعد الصحة Edge - حارس صحة شخصي","EdgeHealthAssistant":"مساعد الصحة Edge","Sync Data":"تزامن البيانات","Monitor":"مراقبة","Advice":"نصائح","Knowledge":"معرفة","Emergency":"طوارئ","Health Data Sync":"تزامن بيانات الصحة","Connect Your Devices":"ربط أجهزتك","Sync your health data from smart devices for personalized health insights.":"زامن بيانات صحتك من الأجهزة الذكية للحصول على رؤى صحية شخصية.","Sync All Devices":"تزامن جميع الأجهزة","Recent Sync Activity":"أنشطة التزامن الأخيرة","Health Monitoring":"مراقبة الصحة","Health Alerts":"تنبيهات الصحة","Daily Summary":"ملخص اليومي","Loading your health data...":"جارٍ تحميل بيانات صحتك...","Personalized Health Advice":"نصائح صحية مخصصة","Today's Recommendations":"التوصيات اليومية","Nutrition":"التغذية","Food":"الطعام","Exercise":"التمارين الرياضية","Activity":"النشاط","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"عدد خطواتك أقل من الموصى به البالغ 10,000 خطوة. حاول تضمين مشي لمدة 30 دقيقة خلال استراحة الغداء.","Rest":"الراحة","Sleep":"النوم","Weekly Goals":"أهداف الأسبوع","Step Goal":"هدف الخطوات","70% Complete":"70% مكتمل","Water Intake":"تناول الماء","85% Complete":"85% مكتمل","Sleep Quality":"جودة النوم","60% Complete":"60% مكتمل","Health Knowledge Base":"قاعدة معرفة الصحة","Featured Articles":"المقالات المميزة","Understanding Heart Health":"فهم صحة القلب","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"تعلم كيفية الحفاظ على قلب صحي من خلال خيارات العيش والمراقبة.","Read More":"اقرأ المزيد","Benefits of Regular Exercise":"فوائد التمارين الرياضية المنتظمة","Discover how physical activity impacts your overall health and wellbeing.":" اكتشف كيف يؤثر النشاط البدني على صحتك العامة والرفاهية.","The Science of Sleep":"علم النوم","Understand why sleep is crucial for health and how to improve your sleep quality.":"فهم لماذا النوم مهم للصحة وكيفية تحسين جودة نومك.","Search Health Topics":"البحث في مواضيع الصحة","Search":"البحث","Search Results":"نتائج البحث","Emergency Contact":"اتصال الطوارئ","🚨 Emergency Services":"🚨 خدمات الطوارئ","📞 Contact Family":"الاتصال بالأسرة","Your Emergency Contacts":"اتصالات الطوارئ الخاصة بك","Add New Contact":"إضافة جهة اتصال جديدة","Add Contact":"إضافة جهة اتصال","Medical Information":"المعلومات الطبية","Having your medical information ready can help emergency responders provide better care.":"تجهيز معلوماتك الطبية يمكن أن يساعد مراكز الطوارئ في تقديم رعاية أفضل.","Update Medical Information":"تحديث المعلومات الطبية","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"حارس صحتك الشخصي الذي يستخدم تقنية الحوسبة على الحافة للمراقبة والرؤى الصحية في الوقت الحقيقي.","Resources":"الموارد","Health Articles":"مقالات الصحة","Device Compatibility":"توافق الأجهزة","Health Tips":"نصائح صحية","FAQ":"أسئلة وأجوبة شائعة","Support":"الدعم","Contact Us":"اتصل بنا","__title__":"مساعد الصحة Edge - حارس صحة شخصي"},"hi":{"EdgeHealthAssistant - Your Personal Health Guardian":"एजहेल्थअसिस्टेंट - आपका व्यक्तिगत स्वास्थ्य रक्षक","EdgeHealthAssistant":"एजहेल्थअसिस्टेंट","Sync Data":"डेटा सिंक करें","Monitor":"निगरानी","Advice":"सलाह","Knowledge":"ज्ञान","Emergency":"आपातकालीन स्थिति","Health Data Sync":"स्वास्थ्य डेटा सिंक","Connect Your Devices":"अपने उपकरणों को कनेक्ट करें","Sync your health data from smart devices for personalized health insights.":"स्मार्ट डिवाइस से अपना स्वास्थ्य डेटा सिंक करें ताकि आपके लिए व्यक्तिगत स्वास्थ्य जानकारी प्राप्त हो सके।","Sync All Devices":"सभी उपकरणों को सिंक करें","Recent Sync Activity":"हालिया सिंक गतिविधि","Health Monitoring":"स्वास्थ्य निगरानी","Health Alerts":"स्वास्थ्य चेतावनी","Daily Summary":"दैनिक सारांश","Loading your health data...":"आपका स्वास्थ्य डेटा लोड हो रहा है...","Personalized Health Advice":"व्यक्तिगत स्वास्थ्य सलाह","Today's Recommendations":"आज की अनुशंसाएं","Nutrition":"पोषण","Food":"खाना","Exercise":"व्यायाम","Activity":"गतिविधि","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"आपकी स्टेप काउंट अनुशंसित 10,000 स्टेप्स से कम है। दोपहर के भोजन के दौरान 30 मिनट की पैदल चलने की कोशिश करें।","Rest":"आराम","Sleep":"नींद","Weekly Goals":"साप्ताहिक लक्ष्य","Step Goal":"स्टेप लक्ष्य","70% Complete":"70% पूर्ण","Water Intake":"पानी का सेवन","85% Complete":"85% पूर्ण","Sleep Quality":"नींद की गुणवत्ता","60% Complete":"60% पूर्ण","Health Knowledge Base":"स्वास्थ्य ज्ञान बेस","Featured Articles":"विशेष लेख","Understanding Heart Health":"हृदय स्वास्थ्य को समझना","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"जीवनशैली के विकल्पों और निगरानी के माध्यम से स्वस्थ हृदय बनाए रखने का तरीका सीखें।","Read More":"और पढ़ें","Benefits of Regular Exercise":"नियमित व्यायाम के लाभ","Discover how physical activity impacts your overall health and wellbeing.":"जानें कि शारीरिक गतिविधि आपके समग्र स्वास्थ्य और भलाई पर कैसे प्रभाव डालती है।","The Science of Sleep":"नींद की विज्ञान","Understand why sleep is crucial for health and how to improve your sleep quality.":"समझें कि नींद स्वास्थ्य के लिए क्यों महत्वपूर्ण है और अपनी नींद की गुणवत्ता कैसे बेहतर करें।","Search Health Topics":"स्वास्थ्य विषयों की खोज","Search":"खोजें","Search Results":"खोज परिणाम","Emergency Contact":"आपातकालीन संपर्क","🚨 Emergency Services":"🚨 आपातकालीन सेवाएं","📞 Contact Family":"📞 परिवार से संपर्क करें","Your Emergency Contacts":"आपके आपातकालीन संपर्क","Add New Contact":"नया संपर्क जोड़ें","Add Contact":"संपर्क जोड़ें","Medical Information":"चिकित्सा जानकारी","Having your medical information ready can help emergency responders provide better care.":"चिकित्सा जानकारी तैयार रखने से आपातकालीन प्रतिक्रियाकर्ताओं को बेहतर देखभाल प्रदान करने में मदद मिल सकती है।","Update Medical Information":"चिकित्सा जानकारी अपडेट करें","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"आपका व्यक्तिगत स्वास्थ्य रक्षक, एज कंप्यूटिंग तकनीक का उपयोग करके वास्तविक समय में स्वास्थ्य निगरानी और जानकारी प्रदान करता है।","Resources":"संसाधन","Health Articles":"स्वास्थ्य लेख","Device Compatibility":"डिवाइस संगतता","Health Tips":"स्वास्थ्य टिप्स","FAQ":"सामान्य प्रश्न","Support":"समर्थन","Contact Us":"संपर्क करें","__title__":"एजहेल्थअसिस्टेंट - आपका व्यक्तिगत स्वास्थ्य रक्षक"},"id":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Penjaga Kesehatan Pribadi Anda","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Sinkronkan Data","Monitor":"Pantau","Advice":"Saran","Knowledge":"Pengetahuan","Emergency":"Darurat","Health Data Sync":"Sinkronisasi Data Kesehatan","Connect Your Devices":"Hubungkan Perangkat Anda","Sync your health data from smart devices for personalized health insights.":"Sinkronkan data kesehatan Anda dari perangkat pintar untuk wawasan kesehatan yang dipersonalisasi.","Sync All Devices":"Sinkronkan Semua Perangkat","Recent Sync Activity":"Aktivitas Sinkronisasi Terbaru","Health Monitoring":"Pemantauan Kesehatan","Health Alerts":"Peringatan Kesehatan","Daily Summary":"Ringkasan Harian","Loading your health data...":"Memuat data kesehatan Anda...","Personalized Health Advice":"Saran Kesehatan yang Dipersonalisasi","Today's Recommendations":"Rekomendasi Hari Ini","Nutrition":"Gizi","Food":"Makanan","Exercise":"Olahraga","Activity":"Aktivitas","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Jumlah langkah Anda di bawah 10.000 langkah yang disarankan. Cobalah untuk menyertakan 30 menit berjalan selama istirahat makan siang Anda.","Rest":"Istirahat","Sleep":"Tidur","Weekly Goals":"Tujuan Mingguan","Step Goal":"Tujuan Langkah","70% Complete":"70% Selesai","Water Intake":"Asupan Air","85% Complete":"85% Selesai","Sleep Quality":"Kualitas Tidur","60% Complete":"60% Selesai","Health Knowledge Base":"Basis Pengetahuan Kesehatan","Featured Articles":"Artikel Unggulan","Understanding Heart Health":"Memahami Kesehatan Jantung","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Pelajari cara menjaga jantung yang sehat melalui pilihan gaya hidup dan pemantauan.","Read More":"Baca Lebih Lanjut","Benefits of Regular Exercise":"Manfaat Olahraga Rutin","Discover how physical activity impacts your overall health and wellbeing.":"Temukan bagaimana aktivitas fisik mempengaruhi kesehatan dan kesejahteraan Anda secara keseluruhan.","The Science of Sleep":"Ilmu Pengetahuan tentang Tidur","Understand why sleep is crucial for health and how to improve your sleep quality.":"Pahami mengapa tidur sangat penting bagi kesehatan dan bagaimana meningkatkan kualitas tidur Anda.","Search Health Topics":"Cari Topik Kesehatan","Search":"Cari","Search Results":"Hasil Pencarian","Emergency Contact":"Kontak Darurat","🚨 Emergency Services":"🚨 Layanan Darurat","📞 Contact Family":"📞 Hubungi Keluarga","Your Emergency Contacts":"Kontak Darurat Anda","Add New Contact":"Tambah Kontak Baru","Add Contact":"Tambah Kontak","Medical Information":"Informasi Medis","Having your medical information ready can help emergency responders provide better care.":"Memiliki informasi medis Anda siap dapat membantu responder darurat memberikan perawatan yang lebih baik.","Update Medical Information":"Perbarui Informasi Medis","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Penjaga kesehatan pribadi Anda menggunakan teknologi komputasi tepi untuk pemantauan kesehatan dan wawasan secara real-time.","Resources":"Sumber Daya","Health Articles":"Artikel Kesehatan","Device Compatibility":"Kompatibilitas Perangkat","Health Tips":"Tips Kesehatan","FAQ":"FAQ","Support":"Dukungan","Contact Us":"Hubungi Kami","__title__":"EdgeHealthAssistant - Penjaga Kesehatan Pribadi Anda"},"vi":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - Người Giám Sóc Sức Khỏe Cá Nhân Của Bạn","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"Đồng Bộ Dữ Liệu","Monitor":"Giám Sát","Advice":"Lời Khuyên","Knowledge":"Kiến Thức","Emergency":"Khẩn Cấp","Health Data Sync":"Đồng Bộ Dữ Liệu Sức Khỏe","Connect Your Devices":"Kết Nối Thiết Bị Của Bạn","Sync your health data from smart devices for personalized health insights.":"Đồng bộ dữ liệu sức khỏe từ thiết bị thông minh để có những thông tin sức khỏe được cá nhân hóa.","Sync All Devices":"Đồng Bộ Tất Cả Thiết Bị","Recent Sync Activity":"Hoạt Động Đồng Bộ Gần Đây","Health Monitoring":"Giám Sát Sức Khỏe","Health Alerts":"Cảnh Báo Sức Khỏe","Daily Summary":"Tóm Tắt Hàng Ngày","Loading your health data...":"Đang tải dữ liệu sức khỏe của bạn...","Personalized Health Advice":"Lời Khuyên Sức Khỏe Cá Nhân","Today's Recommendations":"Khuyến Nghị Hôm Nay","Nutrition":"Dinh Dưỡng","Food":"Đồ Ăn","Exercise":"Tập Thể Dục","Activity":"Hoạt Động","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"Số bước chân của bạn dưới mức đề xuất 10,000 bước. Hãy thử thêm một chuyến đi bộ 30 phút vào giờ nghỉ trưa.","Rest":"Nghỉ Ngơi","Sleep":"Ngủ","Weekly Goals":"Mục Tiêu Hàng Tuần","Step Goal":"Mục Tiêu Bước Chân","70% Complete":"Hoàn Thành 70%","Water Intake":"Lượng Nước Uống","85% Complete":"Hoàn Thành 85%","Sleep Quality":"Chất Lượng Giấc Ngủ","60% Complete":"Hoàn Thành 60%","Health Knowledge Base":"Cơ Sở Kiến Thức Sức Khỏe","Featured Articles":"Bài Viết Nổi Bật","Understanding Heart Health":"Hiểu Về Sức Khỏe Tim Mạch","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"Học cách duy trì trái tim khỏe mạnh thông qua lựa chọn lối sống và giám sát.","Read More":"Đọc Thêm","Benefits of Regular Exercise":"Lợi Ích Của Việc Tập Thể Dục Đều Đặn","Discover how physical activity impacts your overall health and wellbeing.":"Khám phá hoạt động thể tác động đến sức khỏe và sự khỏe mạnh tổng thể của bạn như thế nào.","The Science of Sleep":"Khoa Học Về Giấc Ngủ","Understand why sleep is crucial for health and how to improve your sleep quality.":"Hiểu tại sao giấc ngủ quan trọng đối với sức khỏe và cách cải thiện chất lượng giấc ngủ của bạn.","Search Health Topics":"Tìm Chủ Đề Sức Khỏe","Search":"Tìm Kiếm","Search Results":"Kết Quả Tìm Kiếm","Emergency Contact":"Liên Hệ Khẩn Cấp","🚨 Emergency Services":"🚨 Dịch Vụ Cấp Cứu","📞 Contact Family":"📞 Liên Hệ Gia Đình","Your Emergency Contacts":"Danh Bạ Khẩn Cấp Của Bạn","Add New Contact":"Thêm Liên Hệ Mới","Add Contact":"Thêm Liên Hệ","Medical Information":"Thông Tin Y Tế","Having your medical information ready can help emergency responders provide better care.":"Sẵn có thông tin y tế có thể giúp nhân viên cấp cứu chăm sóc tốt hơn.","Update Medical Information":"Cập Nhật Thông Tin Y Tế","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"Người giám sát sức khỏe cá nhân của bạn sử dụng công nghệ tính toán biên để giám sát sức khỏe thời gian thực và cung cấp thông tin.","Resources":"Tài Nguyên","Health Articles":"Bài Viết Sức Khỏe","Device Compatibility":"Tương Thích Thiết Bị","Health Tips":"Mẹo Sức Khỏe","FAQ":"Câu Hỏi Thường Gặp","Support":"Hỗ Trợ","Contact Us":"Liên Hệ Với Chúng Tôi","__title__":"EdgeHealthAssistant - Người Giám Sóc Sức Khỏe Cá Nhân Của Bạn"},"th":{"EdgeHealthAssistant - Your Personal Health Guardian":"EdgeHealthAssistant - ผู้ดูแลสุขภาพส่วนตัวของคุณ","EdgeHealthAssistant":"EdgeHealthAssistant","Sync Data":"ซิงค์ข้อมูล","Monitor":"ตรวจสอบ","Advice":"คำแนะนำ","Knowledge":"ความรู้","Emergency":"ฉุกเฉิน","Health Data Sync":"ซิงค์ข้อมูลสุขภาพ","Connect Your Devices":"เชื่อมต่ออุปกรณ์ของคุณ","Sync your health data from smart devices for personalized health insights.":"ซิงค์ข้อมูลสุขภาพจากอุปกรณ์อัจฉริดเพื่อข้อมูลสุขภาพที่เป็นรูปเฉพาะบุคคล","Sync All Devices":"ซิงค์ทุกอุปกรณ์","Recent Sync Activity":"กิจกรรมการซิงค์ล่าสุด","Health Monitoring":"การติดตามสุขภาพ","Health Alerts":"การเตือนสุขภาพ","Daily Summary":"สรุปประจำวัน","Loading your health data...":"กำลังโหลดข้อมูลสุขภาพของคุณ...","Personalized Health Advice":"คำแนะนำด้านสุขภาพที่เป็นรูปเฉพาะบุคคล","Today's Recommendations":"คำแนะนำของวันนี้","Nutrition":"โภชนาการ","Food":"อาหาร","Exercise":"ออกกำลังกาย","Activity":"กิจกรรม","Your step count is below the recommended 10,000 steps. Try to incorporate a 30-minute walk during your lunch break.":"จำนวนก้าวของคุณต่ำกว่า 10,000 ก้าวที่แนะนำ ลองเพิ่มการเดิน 30 นาทีในช่วงพักกลางวัน","Rest":"พักผ่อน","Sleep":"นอนหลับ","Weekly Goals":"เป้าหมายประจำสัปดาห์","Step Goal":"เป้าหมายด้านก้าวเดิน","70% Complete":"70% เสร็จสิ้น","Water Intake":"การดื่มน้ำ","85% Complete":"85% เสร็จสิ้น","Sleep Quality":"คุณภาพการนอนหลับ","60% Complete":"60% เสร็จสิ้น","Health Knowledge Base":"ฐานข้อมูลความรู้ด้านสุขภาพ","Featured Articles":"บทความแนะนำ","Understanding Heart Health":"เข้าใจเกี่ยวกับสุขภาพหัวใจ","Learn how to maintain a healthy heart through lifestyle choices and monitoring.":"เรียนรู้วิธีการดูแลหัวใจให้แข็งแรงผ่านการเลือกกลิ่นอายุและการติดตาม","Read More":"อ่านเพิ่มเติม","Benefits of Regular Exercise":"ประโยชน์ของการออกกำลังกายประจำวัน","Discover how physical activity impacts your overall health and wellbeing.":"ค้นพบว่ากิจกรรมทางกายส่งผลต่อสุขภาพและความสุขโดยรวมของคุณอย่างไร","The Science of Sleep":"วิทยาศาสตร์ของการนอนหลับ","Understand why sleep is crucial for health and how to improve your sleep quality.":"เข้าใจว่าทำไมการนอนหลับถึงสำคัญสำหรับสุขภาพและวิธีปรับปรุงคุณภาพการนอนหลับของคุณ","Search Health Topics":"ค้นหาหัวข้อสุขภาพ","Search":"ค้นหา","Search Results":"ผลการค้นหา","Emergency Contact":"การติดต่ฉุกเฉิน","🚨 Emergency Services":"🚨 บริการฉุกเฉิน","📞 Contact Family":"📞 ติดต่อครอบครัว","Your Emergency Contacts":"ผู้ติดต่อฉุกเฉินของคุณ","Add New Contact":"เพิ่มผู้ติดต่อใหม่","Add Contact":"เพิ่มผู้ติดต่อ","Medical Information":"ข้อมูลทางการแพทย์","Having your medical information ready can help emergency responders provide better care.":"เตรียมข้อมูลทางการแพทย์ไว้สามารถช่วยให้ผู้ตอบสนองในภาวะฉุกเฉินให้การดูแลที่ดีขึ้น","Update Medical Information":"อัปเดตข้อมูลทางการแพทย์","Your personal health guardian using edge computing technology for real-time health monitoring and insights.":"ผู้ดูแลสุขภาพส่วนตัวของคุณโดยใช้เทคโนโลยีคอมพิวติ้นกำลังขอบเพื่อการติดตามสุขภาพและข้อมูลเชิงลึกแบบเรียลไทม์","Resources":"ทรัพยากร","Health Articles":"บทความด้านสุขภาพ","Device Compatibility":"ความเข้ากันได้ของอุปกรณ์","Health Tips":"เคล็ดลับด้านสุขภาพ","FAQ":"คำถามที่พบบ่อย","Support":"การสนับสนุน","Contact Us":"ติดต่อเรา","__title__":"EdgeHealthAssistant - ผู้ดูแลสุขภาพส่วนตัวของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
