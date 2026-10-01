@@ -108,9 +108,13 @@
             gap: 0.5rem;
         }
 
-        .lock-icon {
-            color: var(--warning);
-            font-size: 1.2rem;
+        .free-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: normal;
         }
 
         .code-editor {
@@ -270,69 +274,6 @@
             color: var(--text-primary);
         }
 
-        .unlock-section {
-            background-color: var(--bg-tertiary);
-            padding: 1.5rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-
-        .unlock-price {
-            font-size: 2rem;
-            font-weight: bold;
-            color: var(--accent);
-            margin-bottom: 1rem;
-        }
-
-        .unlock-image {
-            margin: 1.5rem 0;
-        }
-
-        .unlock-image img {
-            width: 200px;
-            max-width: 100%;
-        }
-
-        .unlock-instructions {
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-        }
-
-        .unlock-input-group {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .unlock-input {
-            flex: 1;
-            padding: 0.75rem;
-            background-color: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            color: var(--text-primary);
-        }
-
-        .unlock-btn {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: background-color 0.3s;
-        }
-
-        .unlock-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .activated-message {
-            color: var(--success);
-            font-size: 0.9rem;
-        }
-
         .tab-container {
             display: flex;
             gap: 0.5rem;
@@ -434,7 +375,10 @@
     <main>
         <div class="container">
             <section id="upload" class="section">
-                <h2 class="section-title">代码上传/导入</h2>
+                <h2 class="section-title">
+                    代码上传/导入
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <div class="file-upload">
                     <button class="btn btn-secondary">选择文件</button>
                     <input type="file" id="fileInput" style="display: none;" accept=".js,.ts,.jsx,.tsx,.py,.java,.c,.cpp,.cs" />
@@ -447,7 +391,10 @@
             </section>
 
             <section id="analysis" class="section">
-                <h2 class="section-title">代码分析</h2>
+                <h2 class="section-title">
+                    代码分析
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <div class="tab-container">
                     <div class="tab active" data-tab="error">错误检测</div>
                     <div class="tab" data-tab="optimize">性能优化</div>
@@ -462,13 +409,15 @@
                 
                 <div class="tab-content" id="optimize-tab">
                     <h3>代码性能优化建议</h3>
-                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">免费可用</p>
                     <div class="results" id="optimizeResults"></div>
                 </div>
             </section>
 
             <section id="version" class="section">
-                <h2 class="section-title">代码版本控制</h2>
+                <h2 class="section-title">
+                    代码版本控制
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <div class="version-history" id="versionHistory">
                     <div class="version-item">
                         <div>
@@ -487,14 +436,19 @@
             </section>
 
             <section id="security" class="section">
-                <h2 class="section-title">代码安全检测</h2>
+                <h2 class="section-title">
+                    代码安全检测
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <h3>安全漏洞检测</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 1rem;">免费可用</p>
                 <div class="results" id="securityResults"></div>
             </section>
 
             <section id="team" class="section">
-                <h2 class="section-title">团队协作管理</h2>
+                <h2 class="section-title">
+                    团队协作管理
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <div class="team-members" id="teamMembers">
                     <div class="member-card">
                         <div class="member-avatar">张</div>
@@ -518,7 +472,10 @@
             </section>
 
             <section id="settings" class="section">
-                <h2 class="section-title">设置与帮助中心</h2>
+                <h2 class="section-title">
+                    设置与帮助中心
+                    <span class="free-badge">免费功能</span>
+                </h2>
                 <div style="display: flex; gap: 1rem;">
                     <button class="btn btn-secondary">账户设置</button>
                     <button class="btn btn-secondary">通知设置</button>
@@ -532,8 +489,6 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // （原解锁区块已删除：全部功能免费开放）
-
         // 通知功能
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
@@ -592,27 +547,25 @@
                 errorResults.appendChild(item);
             });
             
-            // 如果已解锁，显示性能优化建议
-            if (localStorage.getItem("unlocked") === "1") {
-                const optimizeResults = document.getElementById('optimizeResults');
-                optimizeResults.innerHTML = '';
-                
-                const optimizations = [
-                    { type: 'success', title: '循环优化', description: '第15行的for循环可以优化为forEach以提高可读性' },
-                    { type: 'warning', title: '内存使用', description: '第22行的大数组创建可能导致内存问题，考虑分批处理' },
-                    { type: 'success', title: '异步处理', description: '第30行的异步操作已正确使用await关键字' }
-                ];
-                
-                optimizations.forEach(opt => {
-                    const item = document.createElement('div');
-                    item.className = `result-item ${opt.type}`;
-                    item.innerHTML = `
-                        <div class="result-title">${opt.title}</div>
-                        <div class="result-description">${opt.description}</div>
-                    `;
-                    optimizeResults.appendChild(item);
-                });
-            }
+            // 显示性能优化建议
+            const optimizeResults = document.getElementById('optimizeResults');
+            optimizeResults.innerHTML = '';
+            
+            const optimizations = [
+                { type: 'success', title: '循环优化', description: '第15行的for循环可以优化为forEach以提高可读性' },
+                { type: 'warning', title: '内存使用', description: '第22行的大数组创建可能导致内存问题，考虑分批处理' },
+                { type: 'success', title: '异步处理', description: '第30行的异步操作已正确使用await关键字' }
+            ];
+            
+            optimizations.forEach(opt => {
+                const item = document.createElement('div');
+                item.className = `result-item ${opt.type}`;
+                item.innerHTML = `
+                    <div class="result-title">${opt.title}</div>
+                    <div class="result-description">${opt.description}</div>
+                `;
+                optimizeResults.appendChild(item);
+            });
             
             showNotification('代码分析完成');
         });
@@ -660,7 +613,7 @@
             `;
             
             versionHistory.insertBefore(versionItem, versionHistory.firstChild);
-            showNotification('版本已保存');
+            showNotification('版本保存成功');
         });
 
         // 邀请成员功能
@@ -673,87 +626,43 @@
             
             // 模拟添加成员
             const teamMembers = document.getElementById('teamMembers');
-            const names = ['王五', '赵六', '钱七', '孙八'];
-            const roles = ['开发者', '审查者', '测试员', '设计师'];
-            const randomName = names[Math.floor(Math.random() * names.length)];
-            const randomRole = roles[Math.floor(Math.random() * roles.length)];
-            
             const memberCard = document.createElement('div');
             memberCard.className = 'member-card';
+            
+            const name = email.split('@')[0];
+            const avatar = name.charAt(0).toUpperCase();
+            
             memberCard.innerHTML = `
-                <div class="member-avatar">${randomName.charAt(0)}</div>
+                <div class="member-avatar">${avatar}</div>
                 <div>
-                    <div>${randomName}</div>
-                    <div style="color: var(--text-secondary); font-size: 0.9rem;">${randomRole}</div>
+                    <div>${name}</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">开发者</div>
                 </div>
             `;
             
             teamMembers.appendChild(memberCard);
             document.getElementById('inviteInput').value = '';
-            showNotification(`已邀请 ${email}`);
+            showNotification(`成功邀请 ${email}`);
         });
 
-        // 登录功能
+        // 登录按钮功能
         document.getElementById('loginBtn').addEventListener('click', function() {
-            showNotification('登录功能开发中...');
+            showNotification('登录功能开发中，敬请期待');
         });
 
-        // 安全检测功能（已解锁时可用）
-        document.addEventListener('DOMContentLoaded', function() {
-            if (localStorage.getItem("unlocked") === "1") {
-                // 模拟安全检测
-                const securityBtn = document.createElement('button');
-                securityBtn.className = 'btn';
-                securityBtn.textContent = '运行安全检测';
-                securityBtn.style.marginTop = '1rem';
-                securityBtn.addEventListener('click', function() {
-                    const securityResults = document.getElementById('securityResults');
-                    securityResults.innerHTML = '';
-                    
-                    const securityIssues = [
-                        { type: 'error', title: 'SQL注入风险', description: '第45行的SQL查询未使用参数化查询，存在注入风险' },
-                        { type: 'warning', title: 'XSS防护', description: '第58行输出用户输入前未进行HTML转义' },
-                        { type: 'success', title: '密码安全', description: '密码哈希使用bcrypt算法，符合安全标准' }
-                    ];
-                    
-                    securityIssues.forEach(issue => {
-                        const item = document.createElement('div');
-                        item.className = `result-item ${issue.type}`;
-                        item.innerHTML = `
-                            <div class="result-title">${issue.title}</div>
-                            <div class="result-description">${issue.description}</div>
-                        `;
-                        securityResults.appendChild(item);
-                    });
-                    
-                    showNotification('安全检测完成');
-                });
-                
-                document.querySelector('#security .section').appendChild(securityBtn);
-            }
+        // 设置按钮功能
+        document.querySelectorAll('#settings .btn-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                showNotification(`${this.textContent}功能开发中，敬请期待`);
+            });
         });
 
+        // 版本历史按钮功能
+        document.querySelectorAll('.version-actions .btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                showNotification(`${this.textContent}功能开发中，敬请期待`);
+            });
+        });
     </script>
-<script>
-(function(){
-  try{
-    localStorage.setItem("unlocked","1");
-    ["lockNotice","unlockSection","unlockForm","unlockContent","unlockActivated","activatedText","activatedMessage","activatedNotice","lockOverlay","premiumFeatures"].forEach(function(id){
-      var el=document.getElementById(id); if(el&&el.parentNode) el.parentNode.removeChild(el);
-    });
-    document.querySelectorAll(".lock-icon").forEach(function(el){ el.remove(); });
-    document.querySelectorAll(".feature-card.locked").forEach(function(card){
-      card.classList.remove("locked");
-      var b=card.querySelector("button");
-      if(b){ b.disabled=false; var t=b.textContent||""; if(t.indexOf("付费")>=0||t.indexOf("解锁")>=0) b.textContent="立即使用"; }
-    });
-    document.querySelectorAll("img").forEach(function(el){ if(/shoukuan/i.test(el.getAttribute("src")||"")) el.remove(); });
-    var BAD=/付费解锁|激活码|收款码|付款后截图|领取激活码|解锁完整版|微信支付/;
-    document.querySelectorAll("body *").forEach(function(el){
-      if(!el.children.length && BAD.test(el.textContent||"") && !el.closest(".free-footer")) el.remove();
-    });
-  }catch(e){}
-})();
-</script>
 <!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
 </html>
