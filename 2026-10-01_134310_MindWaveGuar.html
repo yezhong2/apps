@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MindWaveGuard - 脑波健康监测助手</title>
+    <title>MindWaveGuard - 脑波健康监测助手</title><meta name="description" content="Free online tool: MindWaveGuard - 脑波健康监测助手. No signup, no payment — free forever.">
+<meta property="og:title" content="MindWaveGuard - 脑波健康监测助手">
+<meta property="og:description" content="Free online tool: MindWaveGuard - 脑波健康监测助手. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-01_134310_MindWaveGuar.html">
+<meta name="theme-color" content="#333333">
+
     <style>
         * {
             margin: 0;
@@ -159,6 +165,17 @@
         .welcome-description p {
             margin-bottom: 10px;
             color: var(--text-secondary);
+        }
+        
+        .privacy-link {
+            margin-top: 20px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .privacy-link:hover {
+            text-decoration: underline;
         }
         
         /* 脑波监测界面 */
@@ -680,7 +697,7 @@
             }
         }
     </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar">
@@ -717,6 +734,7 @@
             </div>
             
             <button class="btn btn-full" onclick="showPage('brainwave')">开始使用</button>
+            <a href="#" class="privacy-link" onclick="showPrivacyPolicy()">查看隐私政策</a>
         </div>
     </div>
 
@@ -1134,177 +1152,232 @@
         // 设置canvas尺寸
         function resizeCanvas() {
             canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-        }
-        
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        // 绘制脑波
-        function drawBrainwave() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // 绘制网格背景
-            ctx.strokeStyle = 'rgba(255, 255, 255, 01, 0.1)';
-            ctx.lineWidth = 1;
-            
-            for (let x = 0; x < canvas.width; x += 20) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            
-            for (let y = 0; y < canvas.height; y += 20) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
-            
-            // 绘制脑波
-            ctx.strokeStyle = '#00ffcc';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            
-            let lastX = 0;
-            let lastY = canvas.height / 2;
-            
-            for (let x = 0; x < canvas.width; x++) {
-                const y = canvas.height / 2 + Math.sin(x * 0.05) * 50 + Math.sin(x * 0.1) * 30 + Math.random() * 20 - 10;
-                
-                if (x === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                
-                lastX = x;
-                lastY = y;
-            }
-            
-            ctx.stroke();
-        }
+            canvas.height = canvas.offsetHeight;}
         
         // 开始脑波监测
         function startBrainwave() {
-            if (brainwaveInterval) clearInterval(brainwaveInterval);
-            
-            drawBrainwave();
-            brainwaveInterval = setInterval(() => {
-                if (isMonitoring) {
-                    drawBrainwave();
-                }
-            }, 100);
+            resizeCanvas();
+            brainwaveInterval = setInterval(drawBrainwave, 50);
         }
         
         // 停止脑波监测
         function stopBrainwave() {
-            isMonitoring = false;
+            clearInterval(brainwaveInterval);
         }
         
-        // 开始脑波监测
-        startBrainwave();
-        
-        // 脑波控制按钮
-        document.getElementById('brainwaveToggle').addEventListener('click', function() {
-            if (isMonitoring) {
-                stopBrainwave();
-                this.textContent = '开始监测';
-            } else {
-                isMonitoring = true;
-                this.textContent = '停止监测';
-                drawBrainwave();
+        // 绘制脑波
+        function drawBrainwave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + Math.sin(x * 0.05) * 30 + Math.random() * 20 - 10;
+                ctx.lineTo(x, y);
             }
+            
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        
+        // 压力监测功能
+        function updateStressLevel() {
+            const stressValue = Math.floor(Math.random() * 100);
+            const stressBar = document.getElementById('stressBar');
+            stressBar.style.width = stressValue + '%';
+            
+            const stressText = document.getElementById('stressText');
+            let stressStatus = '';
+            let stressColor = '';
+            
+            if (stressValue < 30) {
+                stressStatus = '低';
+                stressColor = '#4CAF50';
+            } else if (stressValue < 70) {
+                stressStatus = '中等';
+                stressColor = '#FFC107';
+            } else {
+                stressStatus = '高';
+                stressColor = '#F44336';
+            }
+            
+            stressText.textContent = stressStatus;
+            stressBar.style.backgroundColor = stressColor;
+        }
+        
+        // 定期更新压力值
+        setInterval(updateStressLevel, 3000);
+        
+        // 初始化
+        window.addEventListener('load', () => {
+            showPage('dashboard');
+            updateStressLevel();
         });
         
-        // 生成报告数据
-        function generateReportData() {
-            const data = {
-                date: new Date().toLocaleDateString(),
-                focusTime: Math.floor(Math.random() * 60) + 30,
-                relaxationScore: Math.floor(Math.random() * 100),
-                stressLevel: Math.floor(Math.random() * 100),
-                productivity: Math.floor(Math.random() * 100),
-                recommendations: [
-                    '建议增加冥想练习时间',
-                    '保持规律作息时间',
-                    '减少咖啡因摄入',
-                    '尝试深呼吸练习'
-                ]
-            };
-            
-            return data;
-        }
+        // 窗口大小改变时调整canvas
+        window.addEventListener('resize', resizeCanvas);
         
-        // 显示报告
-        function showReport() {
-            const data = generateReportData();
-            const reportContent = document.getElementById('reportContent');
-            
-            reportContent.innerHTML = `
-                <div class="report-header">
-                    <h3>脑波分析报告</h3>
-                    <p>生成日期: ${data.date}</p>
-                </div>
-                <div class="report-stats">
-                    <div class="stat-item">
-                        <h4>专注时长</h4>
-                        <p>${data.focusTime} 分钟</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>放松指数</h4>
-                        <p>${data.relaxationScore}%</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>压力水平</h4>
-                        <p>${data.stressLevel}%</p>
-                    </div>
-                    <div class="stat-item">
-                        <h4>生产力</h4>
-                        <p>${data.productivity}%</p>
-                    </div>
-                </div>
-                <div class="recommendations">
-                    <h4>建议</h4>
-                    <ul>
-                        ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
-                    </ul>
-                </div>
-            `;
-            
-            showPage('report');
-        }
-        
-        // 下载报告
+        // 下载报告功能
         function downloadReport() {
-            const data = generateReportData();
-            const reportContent = `
-脑波分析报告
-生成日期: ${data.date}
-
-专注时长: ${data.focusTime} 分钟
-放松指数: ${data.relaxationScore}%
-压力水平: ${data.stressLevel}%
-生产力: ${data.productivity}%
-
-建议:
-${data.recommendations.map(rec => `- ${rec}`).join('\n')}
-            `;
+            const reportContent = document.getElementById('report-content').innerHTML;
+            const blob = new Blob([`
+                <html>
+                    <head>
+                        <title>脑健康监测报告</title>
+                        <style>
+                            body {
+                                font-family: 'Arial', sans-serif;
+                                line-height: 1.6;
+                                color: #333;
+                                max-width: 800px;
+                                margin: 0 auto;
+                                padding: 20px;
+                            }
+                            .header {
+                                text-align: center;
+                                margin-bottom: 30px;
+                            }
+                            .section {
+                                margin-bottom: 25px;
+                            }
+                            .recommendation {
+                                background-color: #f9f9f9;
+                                padding: 15px;
+                                border-left: 4px solid #4CAF50;
+                                margin-bottom: 15px;
+                            }
+                            .recommendation h4 {
+                                margin-top: 0;
+                                color: #2E7D32;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h1>脑健康监测报告</h1>
+                            <p>生成日期: ${new Date().toLocaleDateString()}</p>
+                        </div>
+                        ${reportContent}
+                    </body>
+                </html>
+            `], { type: 'text/html' });
             
-            const blob = new Blob([reportContent], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `脑波分析报告_${new Date().toISOString().split('T')[0]}.txt`;
+            a.download = `脑健康报告_${new Date().toLocaleDateString().replace(/\//g, '-')}.html`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
-        
-        // 初始化显示首页
-        showPage('home');
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><span style="color:#ff9800;font-weight:600">⚠️ 演示模式：本页为产品点子演示，脑波数据为模拟生成，非真实健康监测</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Brainwave Health Monitoring Assistant","首页":"Home","脑波监测":"Brainwave Monitoring","情绪分析":"Emotion Analysis","放松训练":"Relaxation Training","睡眠评估":"Sleep Assessment","健康报告":"Health Report","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Your Brainwave Health Monitoring Assistant","产品介绍":"Product Introduction","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard is a brainwave health monitoring application that provides emotional state analysis, relaxation training guidance, and sleep quality assessment by analyzing your EEG data, helping you better understand and manage your mental health.","使用方法":"How to Use","2. 查看情绪状态分析，了解您的情绪变化":"2. View emotion analysis to understand your emotional changes","3. 根据情绪状态选择合适的放松训练":"3. Choose appropriate relaxation training based on your emotional state","4. 评估您的睡眠质量并获得改善建议":"4. Assess your sleep quality and get improvement suggestions","5. 生成个性化健康报告，追踪您的健康变化":"5. Generate personalized health reports to track your health changes","开始使用":"Get Started","查看隐私政策":"View Privacy Policy","脑波实时监测":"Real-time Brainwave Monitoring","实时脑电波":"Real-time EEG","监测中":"Monitoring","停止监测":"Stop Monitoring","今日脑波数据":"Today's Brainwave Data","情绪状态分析":"Emotion State Analysis","当前情绪状态":"Current Emotion State","情绪分析详情":"Emotion Analysis Details","愉悦度":"Pleasure Level","焦虑度":"Anxiety Level","压力水平":"Stress Level","专注度":"Focus Level","获取放松建议":"Get Relaxation Suggestions","情绪变化趋势":"Emotion Change Trends","基于您的情绪状态推荐":"Recommended Based on Your Emotion State","开始":"Start","暂停":"Pause","重置":"Reset","呼吸放松引导":"Breathing Relaxation Guide","跟随下方的呼吸节奏进行深呼吸":"Follow the breathing rhythm below for deep breathing","吸气...":"Inhale...","放松效果记录":"Relaxation Effect Record","睡眠质量评估":"Sleep Quality Assessment","昨晚睡眠质量":"Last Night's Sleep Quality","改善建议":"Improvement Suggestions","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Maintain a consistent sleep schedule, try to sleep before 23:00","• 睡前1小时避免使用电子设备":"• Avoid electronic devices 1 hour before bedtime","• 保持卧室温度在18-22°C之间":"• Keep bedroom temperature between 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Try bedtime meditation or deep breathing exercises","睡眠趋势分析":"Sleep Trend Analysis","个性化健康报告":"Personalized Health Report","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Your brainwave activity has been relatively stable this week, with a balanced ratio of alpha waves (relaxed state) and beta waves (focused state). Beta wave activity increases in the afternoons on workdays, indicating higher focus during these times.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Your emotional state has remained stable with a high pleasure level. Small fluctuations on Wednesday and Friday may be related to work stress. It is recommended to increase relaxation training during these times.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Your sleep quality is above average with sufficient deep sleep time, but REM sleep is slightly shorter. It is recommended to maintain a regular sleep schedule and avoid electronic devices before bedtime.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Practice 10 minutes of mindfulness meditation daily to improve focus and emotional stability","• 保持23:00前入睡，提高睡眠质量":"• Sleep before 23:00 to improve sleep quality","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Perform brief breathing relaxation exercises during work breaks to relieve stress","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Engage in outdoor activities on weekends to get natural light, which helps regulate your circadian rhythm","下载完整报告":"Download Full Report","__title__":"MindWaveGuard - Brainwave Health Monitoring Assistant"},"zh-CN":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - 脑波健康监测助手","首页":"首页","脑波监测":"脑波监测","情绪分析":"情绪分析","放松训练":"放松训练","睡眠评估":"睡眠评估","健康报告":"健康报告","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"您的脑波健康监测助手","产品介绍":"产品介绍","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。","使用方法":"使用方法","2. 查看情绪状态分析，了解您的情绪变化":"2. 查看情绪状态分析，了解您的情绪变化","3. 根据情绪状态选择合适的放松训练":"3. 根据情绪状态选择合适的放松训练","4. 评估您的睡眠质量并获得改善建议":"4. 评估您的睡眠质量并获得改善建议","5. 生成个性化健康报告，追踪您的健康变化":"5. 生成个性化健康报告，追踪您的健康变化","开始使用":"开始使用","查看隐私政策":"查看隐私政策","脑波实时监测":"脑波实时监测","实时脑电波":"实时脑电波","监测中":"监测中","停止监测":"停止监测","今日脑波数据":"今日脑波数据","情绪状态分析":"情绪状态分析","当前情绪状态":"当前情绪状态","情绪分析详情":"情绪分析详情","愉悦度":"愉悦度","焦虑度":"焦虑度","压力水平":"压力水平","专注度":"专注度","获取放松建议":"获取放松建议","情绪变化趋势":"情绪变化趋势","基于您的情绪状态推荐":"基于您的情绪状态推荐","开始":"开始","暂停":"暂停","重置":"重置","呼吸放松引导":"呼吸放松引导","跟随下方的呼吸节奏进行深呼吸":"跟随下方的呼吸节奏进行深呼吸","吸气...":"吸气...","放松效果记录":"放松效果记录","睡眠质量评估":"睡眠质量评估","昨晚睡眠质量":"昨晚睡眠质量","改善建议":"改善建议","• 保持固定的睡眠时间，尽量在23:00前入睡":"• 保持固定的睡眠时间，尽量在23:00前入睡","• 睡前1小时避免使用电子设备":"• 睡前1小时避免使用电子设备","• 保持卧室温度在18-22°C之间":"• 保持卧室温度在18-22°C之间","• 尝试睡前冥想或深呼吸练习":"• 尝试睡前冥想或深呼吸练习","睡眠趋势分析":"睡眠趋势分析","个性化健康报告":"个性化健康报告","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性","• 保持23:00前入睡，提高睡眠质量":"• 保持23:00前入睡，提高睡眠质量","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• 在工作间隙进行短暂的呼吸放松练习，缓解压力","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• 周末进行户外活动，接触自然光，有助于调节生物钟","下载完整报告":"下载完整报告","__title__":"MindWaveGuard - 脑波健康监测助手"},"es":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Asistente de Monitoreo de Salud de Ondas Cerebrales","首页":"Página Principal","脑波监测":"Monitoreo de Ondas Cerebrales","情绪分析":"Análisis de Emociones","放松训练":"Entrenamiento de Relajación","睡眠评估":"Evaluación del Sueño","健康报告":"Informe de Salud","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Su Asistente de Monitoreo de Salud de Ondas Cerebrales","产品介绍":"Introducción al Producto","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard es una aplicación de monitoreo de salud de ondas cerebrales que analiza sus datos de ondas cerebrales eléctricas para proporcionar análisis de estado emocional, guía de entrenamiento de relajación y evaluación de calidad del sueño, ayudándole a comprender y gestionar mejor su salud mental.","使用方法":"Método de Uso","2. 查看情绪状态分析，了解您的情绪变化":"2. Ver el análisis del estado emocional para entender los cambios en sus emociones","3. 根据情绪状态选择合适的放松训练":"3. Elegir el entrenamiento de relajación adecuado según su estado emocional","4. 评估您的睡眠质量并获得改善建议":"4. Evaluar su calidad del sueño y obtener consejos de mejora","5. 生成个性化健康报告，追踪您的健康变化":"5. Generar informes de salud personalizados para rastrear los cambios en su salud","开始使用":"Comenzar a Usar","查看隐私政策":"Ver la Política de Privacidad","脑波实时监测":"Monitoreo en Tiempo Real de Ondas Cerebrales","实时脑电波":"Ondas Cerebrales en Tiempo Real","监测中":"En Monitoreo","停止监测":"Detener el Monitoreo","今日脑波数据":"Datos de Ondas Cerebrales de Hoy","情绪状态分析":"Análisis del Estado Emocional","当前情绪状态":"Estado Emocional Actual","情绪分析详情":"Detalles del Análisis Emocional","愉悦度":"Placer","焦虑度":"Ansiedad","压力水平":"Nivel de Estrés","专注度":"Nivel de Concentración","获取放松建议":"Obtener Conocimiento de Sugerencias de Relajación","情绪变化趋势":"Tendencia de Cambio Emocional","基于您的情绪状态推荐":"Recomendaciones Basadas en Su Estado Emocional","开始":"Comenzar","暂停":"Pausar","重置":"Reiniciar","呼吸放松引导":"Guiado de Relajación por Respiración","跟随下方的呼吸节奏进行深呼吸":"Siga el ritmo de respiración inferior para realizar respiraciones profundas","吸气...":"Inhalar...","放松效果记录":"Registro de Efecto de Relajación","睡眠质量评估":"Evaluación de Calidad del Sueño","昨晚睡眠质量":"Calidad del Sueño de Ayer Noche","改善建议":"Consejos de Mejora","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Mantener un horario de sueño fijo, intentando dormir antes de las 23:00","• 睡前1小时避免使用电子设备":"• Evitar el uso de dispositivos electrónicos una hora antes de dormir","• 保持卧室温度在18-22°C之间":"• Mantener la temperatura de la habitación entre 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Intentar meditar o practicar respiraciones profundas antes de dormir","睡眠趋势分析":"Análisis de Tendencias del Sueño","个性化健康报告":"Informe de Salud Personalizado","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Esta semana, su actividad de ondas cerebrales ha sido generalmente estable, con una proporción moderada de ondas alpha (estado de relajación) y beta (estado de concentración). Durante la tarde de los días laborables, la actividad de ondas beta se intensifica, lo que indica que es más concentrado en este período.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Su estado emocional ha sido generalmente estable, con un nivel de placer alto. El miércoles y el viernes hubo fluctuaciones ligeras, que podrían estar relacionadas con la presión del trabajo. Se recomienda aumentar el entrenamiento de relajación en estos períodos.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Su calidad del sueño se encuentra en un nivel medio-alto, con un tiempo de sueño profundo suficiente, pero el sueño REM es ligeramente corto. Se recomienda mantener un horario de sueño regular y evitar el uso de dispositivos electrónicos antes de dormir.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Practicar meditación mindfulness de 10 minutos al día ayuda a mejorar la concentración y la estabilidad emocional","• 保持23:00前入睡，提高睡眠质量":"• Mantenerse dormido antes de las 23:00 para mejorar la calidad del sueño","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Practicar ejercicios de respiración de relajación breves durante las pausas laborales para aliviar el estrés","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Realizar actividades al aire libre durante el fin de semana, expuestos a la luz natural, que ayuda a regular el reloj biológico","下载完整报告":"Descargar Informe Completo","__title__":"MindWaveGuard - Asistente de Monitoreo de Salud de Ondas Cerebrales"},"ja":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - 脳波健康モニタリングアシスタント","首页":"ホームページ","脑波监测":"脳波モニタリング","情绪分析":"感情分析","放松训练":"リラクゼーショントレーニング","睡眠评估":"睡眠評価","健康报告":"健康レポート","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"あなたの脳波健康モニタリングアシスタント","产品介绍":"製品紹介","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuardは脳波健康モニタリングアプリケーションであり、脳電波データを分析することで、感情状態分析、リラクゼーショントレーニングの指導、睡眠質の評価を提供し、あなたの心の健康をより良く理解し管理することを支援します。","使用方法":"使用方法","2. 查看情绪状态分析，了解您的情绪变化":"2. 感情状態分析を確認し、感情の変化を理解する","3. 根据情绪状态选择合适的放松训练":"3. 感情状態に応じて適切なリラクゼーショントレーニングを選択する","4. 评估您的睡眠质量并获得改善建议":"4. 睡眠質を評価し、改善の提案を受ける","5. 生成个性化健康报告，追踪您的健康变化":"5. パーソナライズされた健康レポートを作成し、健康の変化を追跡する","开始使用":"使用を開始","查看隐私政策":"プライバシーポリシーの確認","脑波实时监测":"脳波リアルタイムモニタリング","实时脑电波":"リアルタイム脳電波","监测中":"モニタリング中","停止监测":"モニタリング停止","今日脑波数据":"今日の脳波データ","情绪状态分析":"感情状態分析","当前情绪状态":"現在の感情状態","情绪分析详情":"感情分析詳細","愉悦度":"喜び度","焦虑度":"不安度","压力水平":"ストレスレベル","专注度":"集中度","获取放松建议":"リラクゼーションの提案を取得","情绪变化趋势":"感情変化のトレンド","基于您的情绪状态推荐":"あなたの感情状態に基づいた提案","开始":"開始","暂停":"一時停止","重置":"リセット","呼吸放松引导":"呼吸リラクゼーションガイド","跟随下方的呼吸节奏进行深呼吸":"下の呼吸リズムに従って深呼吸する","吸气...":"息を吸う...","放松效果记录":"リラクゼーション効果記録","睡眠质量评估":"睡眠質の評価","昨晚睡眠质量":"昨夜の睡眠質","改善建议":"改善提案","• 保持固定的睡眠时间，尽量在23:00前入睡":"• 一定の就寝時間を維持し、できるだけ23:00前に就寝する","• 睡前1小时避免使用电子设备":"• 就寝の1時間前は電子機器の使用を避ける","• 保持卧室温度在18-22°C之间":"• 寝室の温度を18-22°Cに保つ","• 尝试睡前冥想或深呼吸练习":"• 就寝前の瞑想または深呼吸練習を試みる","睡眠趋势分析":"睡眠傾向分析","个性化健康报告":"パーソナライズされた健康レポート","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"今週のあなたの脳波活動は全体的に安定しており、alpha波（リラックス状態）とbeta波（集中状態）の割合が適切です。平日の午後にはbeta波活動が増強しており、この時間帯に集中力が高いことを示しています。","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"あなたの感情状態は全体的に安定しており、喜び度は高い水準を維持しています。水曜日と金曜日に小幅な変動が見られ、これは仕事のストレスに関連している可能性があります。これらの時間帯にリラクゼーショントレーニングを増やすことをお勧めします。","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"あなたの睡眠質は中程度から上の水準にあり、深い睡眠時間は十分ですが、REM睡眠は少し短いです。規則正しい睡眠時間を維持し、就寝前は電子機器の使用を避けることをお勧めします。","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• 毎日10分間のマインドフル瞑想を行い、集中力と感情の安定性向上に役立つ","• 保持23:00前入睡，提高睡眠质量":"• 23:00前に就寝を維持し、睡眠質を向上させる","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• 仕事の合間に短時間の呼吸リラクゼーション練習を行い、ストレスを軽減する","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• 週末に屋外活動を行い、自然光に触れることで、生体時計を調整するのに役立つ","下载完整报告":"完全なレポートをダウンロード","__title__":"MindWaveGuard - 脳波健康モニタリングアシスタント"},"ko":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - 뇌파 건강 모니터링 어시스턴트","首页":"홈","脑波监测":"뇌파 모니터링","情绪分析":"감정 분석","放松训练":"휴식 훈련","睡眠评估":"수면 평가","健康报告":"건강 보고서","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"당신의 뇌파 건강 모니터링 어시스턴트","产品介绍":"제품 소개","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard는 뇌파 건강 모니터링 애플리케이션으로, 뇌전파 데이터를 분석하여 감정 상태 분석, 휴식 훈련 지침 및 수면 질 평가를 제공하여 사용자의 정신 건강을 더 잘 이해하고 관리할 수 있도록 돕습니다.","使用방법":"사용 방법","2. 查看情绪状态分析，了解您的情绪变化":"2. 감정 상태 분석을 확인하여 감정 변화를 파악합니다","3. 根据情绪状态选择合适的放松训练":"3. 감정 상태에 따라 적절한 휴식 훈련을 선택합니다","4. 评估您的睡眠质量并获得改善建议":"4. 수면 질을 평가하고 개선 방안을 얻습니다","5. 生成个性化健康报告，追踪您的健康变化":"5. 맞춤형 건강 보고서를 생성하고 건강 변화를 추적합니다","开始使用":"시작하기","查看隐私政策":"개인정보처리방침 보기","脑波实时监测":"뇌파 실시간 모니터링","实时脑电波":"실시간 뇌전파","监测中":"모니터링 중","停止监测":"모니터링 중지","今日脑波数据":"오늘의 뇌파 데이터","情绪状态分析":"감정 상태 분석","当前情绪状态":"현재 감정 상태","情绪分析详情":"감정 분석 상세","愉悦度":"즐거움 수준","焦虑度":"불안 수준","压力水平":"스트레스 수준","专注度":"집중도","获取放松建议":"휴식 조언 얻기","情绪变化趋势":"감정 변화 추세","基于您的情绪状态推荐":"귀하의 감정 상태를 기반으로 권장","开始":"시작","暂停":"일시정지","重置":"재설정","呼吸放松引导":"호흡 휴식 가이드","跟随下方的呼吸节奏进行深呼吸":"아래 호흡 리듬에 따라 깊게 숨을 쉬세요","吸气...":"숨 들이쉬기...","放松效果记录":"휴식 효과 기록","睡眠质量评估":"수면 질 평가","昨晚睡眠质量":"어제 밤 수면 질","改善建议":"개선 방안","• 保持固定的睡眠时间，尽量在23:00前入睡":"• 일정한 수면 시간을 유지하고 가능한 23:00 전에 잠자리에 드세요","• 睡前1小时避免使用电子设备":"• 잠자리에 들기 1시간 전에는 전자기기 사용을 피하세요","• 保持卧室温度在18-22°C之间":"• 침실 온도를 18-22°C 사이로 유지하세요","• 尝试睡前冥想或深呼吸练习":"• 잠자리에 들기 전 명상이나 깊은 호흡 연습을 시도해보세요","睡眠趋势分析":"수면 추세 분석","个性化健康报告":"맞춤형 건강 보고서","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"이번 주 뇌파 활동은 전체적으로 안정적이며, alpha파(휴식 상태)와 beta파(집중 상태)의 비율이 적당합니다. 오후 시간대에는 beta파 활동이 증가하여 이 시간대에 집중력이 높은 것으로 나타납니다.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"감정 상태는 전반적으로 안정적이며, 즐거움 수준이 높게 유지됩니다. 수요일과 금요일에는 소폭의 변동이 나타날 수 있으며, 이는 업무 스트레스와 관련이 있을 수 있습니다. 이 시간대에 휴식 훈련을 추가할 것을 권장합니다.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"수면 질은 중상수준이며, 깊은 수면 시간은 충분하지만 REM 수면은 다소 짧습니다. 규칙적인 수면 시간을 유지하고, 잠자리에 들기 전 전자기기 사용을 피할 것을 권장합니다.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• 매일 10분의 마음챙김 명상을 통해 집중력과 감정 안정성을 향상시킬 수 있습니다","• 保持23:00前入睡，提高睡眠质量":"• 23:00 전에 잠자리에 들어 수면 질을 향상시키세요","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• 업무 틈새에서 짧은 호흡 휴식 연습을 하여 스트레스를 완화하세요","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• 주말에 야외 활동을 자연광과 함께 하면 생체리듬을 조절하는 데 도움이 됩니다","下载完整报告":"전체 보고서 다운로드","__title__":"MindWaveGuard - 뇌파 건강 모니터링 어시스턴트"},"de":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Gehirnwellen-Gesundheitsmonitor-Assistent","首页":"Startseite","脑波监测":"Gehirnwellen-Monitoring","情绪分析":"Emotionsanalyse","放松训练":"Entspannungstraining","睡眠评估":"Schlafbewertung","健康报告":"Gesundheitsbericht","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Ihr Gehirnwellen-Gesundheitsmonitor-Assistent","产品介绍":"Produktvorstellung","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard ist eine Gehirnwellen-Gesundheitsmonitor-App, die durch Analyse Ihrer EEG-Daten Emotionszustandsanalysen, Entspannungstrainingsanleitungen und Schlafqualitätsbewertungen bietet, um Ihnen zu helfen, Ihre psychische Gesundheit besser zu verstehen und zu verwalten.","使用方法":"Anwendungsmethode","2. 查看情绪状态分析，了解您的情绪变化":"2. Sehen Sie sich die Emotionszustandsanalyse an, um Ihre Emotionsänderungen zu verstehen","3. 根据情绪状态选择合适的放松训练":"3. Wählen Sie basierend auf Ihrem Emotionszustand das passende Entspannungstraining","4. 评估您的睡眠质量并获得改善建议":"4. Bewerten Sie Ihre Schlafqualität und erhalten Sie Verbesserungsvorschläge","5. 生成个性化健康报告，追踪您的健康变化":"5. Erstellen Sie personalisierte Gesundheitsberichte und verfolgen Sie Ihre Gesundheitsänderungen","开始使用":"Loslegen","查看隐私政策":"Datenschutzrichtlinie anzeigen","脑波实时监测":"Echtzeit-Gehirnwellen-Monitoring","实时脑电波":"Echtzeit-EEG","监测中":"Überwachung aktiv","停止监测":"Überwachung stoppen","今日脑波数据":"Heutige Gehirnwellendaten","情绪状态分析":"Emotionszustandsanalyse","当前情绪状态":"Aktueller Emotionszustand","情绪分析详情":"Detaillierte Emotionsanalyse","愉悦度":"Freudlevel","焦虑度":"Angstlevel","压力水平":"Stresslevel","专注度":"Konzentrationslevel","获取放松建议":"Entspannungsempfehlungen erhalten","情绪变化趋势":"Emotionsänderungstrend","基于您的情绪状态推荐":"Empfehlungen basierend auf Ihrem Emotionszustand","开始":"Starten","暂停":"Pausieren","重置":"Zurücksetzen","呼吸放松引导":"Atementspannungsleitung","跟随下方的呼吸节奏进行深呼吸":"Atmen Sie tief im Takt der folgenden Atemfrequenz ein","吸气...":"Einatmen...","放松效果记录":"Entspannungswirkungsprotokoll","睡眠质量评估":"Schlafqualitätsbewertung","昨晚睡眠质量":"Schlafqualität letzte Nacht","改善建议":"Verbesserungsvorschläge","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Halten Sie feste Schlafzeiten ein und versuchen Sie, vor 23:00 Uhr einzuschlafen","• 睡前1小时避免使用电子设备":"• Vermeiden Sie die Nutzung von elektronischen Geräten 1 Stunde vor dem Schlafengehen","• 保持卧室温度在18-22°C之间":"• Halten Sie die Schlafzimmer-Temperatur zwischen 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Versuchen Sie, vor dem Schlafengehen Meditation oder Atemübungen zu praktizieren","睡眠趋势分析":"Schlafftrendanalyse","个性化健康报告":"Personalisierter Gesundheitsbericht","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Diese Woche war Ihre Gehirnwellenaktivität insgesamt recht stabil, mit einem ausgewogenen Verhältnis von Alpha-Wellen (Entspannungszustand) und Beta-Wellen (Konzentrationszustand). Am Nachmittag der Arbeitstage nahm die Beta-Wellen-Aktivität zu, was darauf hinweist, dass Sie in dieser Zeit konzentrierter sind.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Ihr Emotionszustand ist insgesamt stabil mit einem hohen Freudlevel. Am Mittwoch und Freitag gab es leichte Schwankungen, die möglicherweise mit Arbeitsdruck zusammenhängen. Es wird empfohlen, in dieser Zeit das Entspannungstraining zu erhöhen.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Ihre Schlafqualität ist auf einem mittleren bis guten Niveau, mit ausreichender Tiefschlafzeit, aber etwas kurzem REM-Schlaf. Es wird empfohlen, regelmäßige Schlafzeiten beizubehalten und elektronische Geräte vor dem Schlafengehen zu vermeiden.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• 10 Minuten achtsame Meditation täglich hilft, die Konzentration und emotionale Stabilität zu verbessern","• 保持23:00前入睡，提高睡眠质量":"• Schlafen Sie vor 23:00 Uhr ein, um die Schlafqualität zu verbessern","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Kurzzeitige Atementspannungsübungen in Arbeitspausen zur Stressreduzierung","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Outdoor-Aktivitäten am Wochenende zur natürlichen Lichtexposition zur Regulierung des biologischen Rhythmus","下载完整报告":"Vollständigen Bericht herunterladen","__title__":"MindWaveGuard - Gehirnwellen-Gesundheitsmonitor-Assistent"},"ru":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Помощник по мониторингу здоровья мозговых волн","首页":"Главная","脑波监测":"Мониторинг мозговых волн","情绪分析":"Анализ эмоций","放松训练":"Тренировка расслабления","睡眠评估":"Оценка сна","健康报告":"Отчет о здоровье","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Ваш помощник по мониторингу здоровья мозговых волн","产品介绍":"О продукте","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard - приложение для мониторинга здоровья мозговых волн, которое анализирует данные ваших электроэнцефалограмм, предоставляет анализ эмоционального состояния, руководство по тренировкам расслабления и оценку качества сна, помогая вам лучше понимать и управлять своим психическим здоровьем.","使用方法":"Как использовать","2. 查看情绪状态分析，了解您的情绪变化":"2. Просмотреть анализ эмоционального состояния, чтобы понять изменения в вашем настроении","3. 根据情绪状态选择合适的放松训练":"3. Выбрать подходящую тренировку расслабления в зависимости от вашего эмоционального состояния","4. 评估您的睡眠质量并获得改善建议":"4. Оценить качество вашего сна и получить рекомендации по его улучшению","5. 生成个性化健康报告，追踪您的健康变化":"5. Сгенерировать персонализированный отчет о здоровье и отслеживать изменения в вашем здоровье","开始使用":"Начать использовать","查看隐私政策":"Посмотреть политику конфиденциальности","脑波实时监测":"Мониторинг мозговых волн в реальном времени","实时脑电波":"ЭЭГ в реальном времени","监测中":"Мониторинг","停止监测":"Остановить мониторинг","今日脑波数据":"Данные мозговых волн за сегодня","情绪状态分析":"Анализ эмоционального состояния","当前情绪状态":"Текущее эмоциональное состояние","情绪分析详情":"Подробности анализа эмоций","愉悦度":"Уровень удовольствия","焦虑度":"Уровень тревожности","压力水平":"Уровень стресса","专注度":"Уровень концентрации","获取放松建议":"Получить рекомендации по расслаблению","情绪变化趋势":"Тренды изменений эмоций","基于您的情绪状态推荐":"Рекомендации на основе вашего эмоционального состояния","开始":"Начать","暂停":"Пауза","重置":"Сброс","呼吸放松引导":"Руководство по дыхательному расслаблению","跟随下方的呼吸节奏进行深呼吸":"Дышите глубоко в соответствии с ритмом дыхания ниже","吸气...":"Вдох...","放松效果记录":"Запись эффектов расслабления","睡眠质量评估":"Оценка качества сна","昨晚睡眠质量":"Качество сна昨晚","改善建议":"Рекомендации по улучшению","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Соблюдайте регулярное время сна, старайтесь ложиться спать до 23:00","• 睡前1小时避免使用电子设备":"• Избегайте использования электронных устройств за 1 час до сна","• 保持卧室温度在18-22°C之间":"• Поддерживайте температуру в спальне между 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Попробуйте медитацию или глубокое дыхание перед сном","睡眠趋势分析":"Анализ тенденций сна","个性化健康报告":"Персонализированный отчет о здоровье","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"На этой неделе ваша мозговая активность в целом стабильна, соотношение альфа-волн (состояние расслабления) и бета-волн (состояние концентрации) сбалансировано. В下午ние рабочие часы активность бета-волн усиливается, что указывает на вашу повышенную концентрацию в этот период.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Ваше эмоциональное состояние в целом стабильно, уровень удовольствия сохраняется на высоком уровне. В среду и пятницу наблюдаются незначительные колебания, возможно, связанные с рабочим стрессом. Рекомендуется в эти периоды увеличить количество тренировок расслабления.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Качество вашего сна находится на среднем уровне, время глубокого сна достаточное, но REM-сон немного коротковат. Рекомендуется соблюдать регулярный режим сна и избегать использования электронных устройств перед сном.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Ежедневная 10-минутная медитация осознанности способствует улучшению концентрации и эмоциональной стабильности","• 保持23:00前入睡，提高睡眠质量":"• Ложитесь спать до 23:00 для улучшения качества сна","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Делайте короткие дыхательные упражнения в перерывах между работой для снятия стресса","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Занимайтесь активностью на свежем воздухе в выходные, подвергайтесь естественному свету, это помогает регулировать биоритмы","下载完整报告":"Скачать полный отчет","__title__":"MindWaveGuard - Помощник по мониторингу здоровья мозговых волн"},"pt":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Assistente de Monitoramento de Ondas Cerebrais","首页":"Página Inicial","脑波监测":"Monitoramento de Ondas Cerebrais","情绪分析":"Análise de Emoção","放松训练":"Treinamento de Relaxamento","睡眠评估":"Avaliação do Sono","健康报告":"Relatório de Saúde","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Seu Assistente de Monitoramento de Saúde de Ondas Cerebrais","产品介绍":"Introdução ao Produto","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"O MindWaveGuard é um aplicativo de monitoramento de saúde de ondas cerebrais que analisa seus dados de ondas cerebrais para fornecer análise de estado emocional, orientação de treinamento de relaxamento e avaliação da qualidade do sono, ajudando você a entender e gerenciar melhor sua saúde mental.","使用方法":"Método de Uso","2. 查看情绪状态分析，了解您的情绪变化":"2. Ver análise do estado emocional para entender suas mudanças emocionais","3. 根据情绪状态选择合适的放松训练":"3. Escolha o treinamento de relaxamento adequado com base no seu estado emocional","4. 评估您的睡眠质量并获得改善建议":"4. Avalie a qualidade do seu sono e obtenha sugestões de melhoria","5. 生成个性化健康报告，追踪您的健康变化":"5. Gerar relatórios de saúde personalizados para rastrear suas mudanças de saúde","开始使用":"Começar a Usar","查看隐私政策":"Ver Política de Privacidade","脑波实时监测":"Monitoramento em Tempo Real de Ondas Cerebrais","实时脑电波":"Ondas Cerebrais em Tempo Real","监测中":"Monitorando","停止监测":"Parar de Monitorar","今日脑波数据":"Dados de Ondas Cerebrais de Hoje","情绪状态分析":"Análise de Estado Emocional","当前情绪状态":"Estado Emocional Atual","情绪分析详情":"Detalhes da Análise de Emoção","愉悦度":"Nível de Felicidade","焦虑度":"Nível de Ansiedade","压力水平":"Nível de Pressão","专注度":"Nível de Concentração","获取放松建议":"Obter Sugestões de Relaxamento","情绪变化趋势":"Tendência de Mudança Emocional","基于您的情绪状态推荐":"Recomendações Baseadas no Seu Estado Emocional","开始":"Iniciar","暂停":"Pausar","重置":"Redefinir","呼吸放松引导":"Guia de Relaxamento Pela Respiração","跟随下方的呼吸节奏进行深呼吸":"Siga o ritmo da respiração abaixo para respirar profundamente","吸气...":"Inalar...","放松效果记录":"Registo de Efeitos de Relaxamento","睡眠质量评估":"Avaliação da Qualidade do Sono","昨晚睡眠质量":"Qualidade do Sono ontem à Noite","改善建议":"Sugestões de Melhoria","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Mantenha um horário de sono constante, tentando dormir antes das 23:00","• 睡前1小时避免使用电子设备":"• Evite o uso de dispositivos eletrônicos uma hora antes de dormir","• 保持卧室温度在18-22°C之间":"• Mantenha a temperatura do quarto entre 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Tente meditar ou praticar respiração profunda antes de dormir","睡眠趋势分析":"Análise de Tendência do Sono","个性化健康报告":"Relatório de Saúde Personalizado","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Esta semana, sua atividade de ondas cerebrais foi geralmente estável, com uma proporção apropriada de ondas alpha (estado de relaxamento) e beta (estado de concentração). Durante o período da tarde no trabalho, a atividade de ondas beta aumentou, indicando que você estava mais focado nessa hora.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Seu estado emocional foi geralmente estável, com um nível de felicidade alto. Houveram pequenas flutuações na quarta-feira e sexta-feira, que podem estar relacionadas ao estresse do trabalho. Recomenda-se aumentar o treinamento de relaxamento nesses períodos.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"A qualidade do seu sono está em um nível médio-alto, com tempo suficiente de sono profundo, mas o sono REM é um pouco curto. Recomenda-se manter um horário de sono regular e evitar o uso de dispositivos eletrônicos antes de dormir.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Realize uma meditação mindfulness de 10 minutos diariamente, o que ajuda a melhorar a concentração e a estabilidade emocional","• 保持23:00前入睡，提高睡眠质量":"• Durma antes das 23:00 para melhorar a qualidade do sono","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Realize exercícios de respiração relaxante curtos durante as pausas no trabalho para aliviar o estresse","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Realize atividades ao ar livre ao fim de semana, exposto à luz natural, o que ajuda a regulamentar o relógio biológico","下载完整报告":"Baixar Relatório Completo","__title__":"MindWaveGuard - Assistente de Monitoramento de Ondas Cerebrais"},"ar":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - مساعد مراقبة صحة الدماغ","首页":"الرئيسية","脑波监测":"مراقبة الموجات الدماغية","情绪分析":"تحليل المشاعر","放松训练":"تدريب الاسترخاء","睡眠评估":"تقييم النوم","健康报告":"تقرير الصحة","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"مساعد مراقبة صحة الدماغ الخاص بك","产品介绍":"مقدمة المنتج","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard هو تطبيق لمراقبة صحة الدماغ يقوم بتحليل بيانات الموجات الدماغية الخاصة بك لتوفير تحليل حالات المشاعر، وتوجيه تدريب الاسترخاء، وتقييم جودة النوم، لمساعدتك على فهم وإدارة صحتك النفسية بشكل أفضل.","使用方法":"طريقة الاستخدام","2. 查看情绪状态分析，了解您的情绪变化":"2. عرض تحليل حالات المشاعر لفهم تغيراتك العاطفية","3. 根据情绪状态选择合适的放松训练":"3. اختيار تدريب الاسترخاء المناسب بناءً على حالتك العاطفية","4. 评估您的睡眠质量并获得改善建议":"4. تقييم جودة نومك والحصول على اقتراحات للتحسين","5. 生成个性化健康报告，追踪您的健康变化":"5. إنشاء تقرير صحة مخصص لتتبع تغيراتك الصحية","开始使用":"ابدأ في الاستخدام","查看隐私政策":"عرض سياسة الخصوصية","脑波实时监测":"مراقبة الموجات الدماغية في الوقت الفعلي","实时脑电波":"موجات دماغية في الوقت الفعلي","监测中":"قيد المراقبة","停止监测":"إيقاف المراقبة","今日脑波数据":"بيانات الموجات الدماغية اليوم","情绪状态分析":"تحليل حالات المشاعر","当前情绪状态":"الحالة العاطفية الحالية","情绪分析详情":"تفاصيل تحليل المشاعر","愉悦度":"مستوى السعادة","焦虑度":"مستوى القلق","压力水平":"مستوى التوتر","专注度":"مستوى التركيز","获取放松建议":"الحصول على نصائح للاسترخاء","情绪变化趋势":"اتجاهات تغيرات المشاعر","基于您的情绪状态推荐":"مستند إلى حالتك العاطفية الموصى بها","开始":"ابدأ","暂停":"إيقاف مؤقت","重置":"إعادة تعيين","呼吸放松引导":"دليل التنفس للاسترخاء","跟随下方的呼吸节奏进行深呼吸":"اتبع إيقاع التنفس أدناه للتنفس العميق","吸气...":"شهيق...","放松效果记录":"سجل تأثيرات الاسترخاء","睡眠质量评估":"تقييم جودة النوم","昨晚睡眠质量":"جودة النوم الليلة الماضية","改善建议":"اقتراحات للتحسين","• 保持固定的睡眠时间，尽量在23:00前入睡":"• الحفاظ على وقت نوم ثابت، حاول النوم قبل 23:00","• 睡前1小时避免使用电子设备":"• تجنب使用 الأجهزة الإلكترونية قبل ساعة من النوم","• 保持卧室温度在18-22°C之间":"• الحفاظ على درجة حرارة الغرفة بين 18-22 مئوية","• 尝试睡前冥想或深呼吸练习":"• جرب التأمل أو تمرين التنفس العميق قبل النوم","睡眠趋势分析":"تحليل اتجاهات النوم","个性化健康报告":"تقرير صحة مخصص","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"نشاط الموجات الدماغية لديك هذا الأسبوع بشكل عام مستقر، ونسبة موجة ألفا (حالة الاسترخاء) وموجة بيتا (حالة التركيز) متوسطة. في فترة ما بعد الظهر من أيام العمل، يزداد نشاط موجة بيتا، مما يشير إلى أنك أكثر تركيزاً في هذه الفترة.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"حالتك العاطفية بشكل عام مستقرة، ومستوى السappiness لديك مرتفع. ظهرت تقلبات صغيرة يوم الأربعاء والجمعة،可能与 ضغوط العمل. يُنصح بزيادة تدريب الاسترخاء في هذه الفترات.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"جودة نومك متوسطة إلى أعلى، وقت النوم العميق كافٍ، لكن نوم REM قصير قليلاً. يُنصح بالحفاظ على وقت نوم منتظم وتجنب استخدام الأجهزة الإلكترونية قبل النوم.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• قم بالتأمل الذهني 10 دقائق يومياً،有助于 تحسين التركيز والاستقرار العاطفي","• 保持23:00前入睡，提高睡眠质量":"• الحفاظ على النوم قبل 23:00 لتحسين جودة النوم","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• قم بتمارين تنفس قصيرة أثناء استراحات العمل لتخفيف التوتر","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• قم بأنشطة في الهواء الطلق في نهاية الأسبوع، والتعرض للضوء الطبيعي يساعد على تنظيم الساعة البيولوجية","下载完整报告":"تحميل التقرير الكامل","__title__":"MindWaveGuard - مساعد مراقبة صحة الدماغ"},"id":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Asisten Pemantau Kesehatan Gelombang Otak","首页":"Beranda","脑波监测":"Pemantauan Gelombang Otak","情绪分析":"Analisis Emosi","放松训练":"Latihan Relaksasi","睡眠评估":"Evaluasi Tidur","健康报告":"Laporan Kesehatan","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Asisten Pemantau Kesehatan Gelombang Otak Anda","产品介绍":"Introduk Produk","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard adalah aplikasi pemantauan kesehatan gelombang otak yang dengan menganalisis data gelombang otak Anda, menyediakan analisis keadaan emosi, panduan pelatihan relaksasi, dan evaluasi kualitas tidur, membantu Anda lebih memahami dan mengelola kesehatan mental Anda.","使用方法":"Cara Penggunaan","2. 查看情绪状态分析，了解您的情绪变化":"2. Lihat analisis keadaan emosi untuk memahami perubahan emosi Anda","3. 根据情绪状态选择合适的放松训练":"3. Pilih latihan relaksasi yang sesuai berdasarkan keadaan emosi Anda","4. 评估您的睡眠质量并获得改善建议":"4. Evaluasi kualitas tidur Anda dan dapatkan saran perbaikan","5. 生成个性化健康报告，追踪您的健康变化":"5. Hasilkan laporan kesehatan personal dan lacak perubahan kesehatan Anda","开始使用":"Mulai Menggunakan","查看隐私政策":"Lihat Kebijakan Privasi","脑波实时监测":"Pemantauan Gelombang Otak Real-time","实时脑电波":"Gelombang Otak Real-time","监测中":"Memantau","停止监测":"Hentikan Pemantauan","今日脑波数据":"Data Gelombang Otak Hari Ini","情绪状态分析":"Analisis Keadaan Emosi","当前情绪状态":"Keadaan Emosi Saat Ini","情绪分析详情":"Detail Analisis Emosi","愉悦度":"Tingkah Bahagia","焦虑度":"Tingkat Kecemasan","压力水平":"Tingkat Stres","专注度":"Tingkat Konsentrasi","获取放松建议":"Dapatkan Saran Relaksasi","情绪变化趋势":"Tren Perubahan Emosi","基于您的情绪状态推荐":"Rekomendasi Berdasarkan Keadaan Emosi Anda","开始":"Mulai","暂停":"Jeda","重置":"Reset","呼吸放松引导":"Panduan Relaksasi Pernapasan","跟随下方的呼吸节奏进行深呼吸":"Ikuti ritme napas di bawah untuk bernapas dalam","吸气...":"Menarik napas...","放松效果记录":"Recat Efek Relaksasi","睡眠质量评估":"Evaluasi Kualitas Tidur","昨晚睡眠质量":"Kualitas Tidur Semalam","改善建议":"Saran Perbaikan","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Pertahankan jadwal tidur yang tetap, usahakan tidur sebelum pukul 23:00","• 睡前1小时避免使用电子设备":"• Hindari menggunakan perangkat elektronik 1 jam sebelum tidur","• 保持卧室温度在18-22°C之间":"• Pertahankan suhu kamar antara 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Coba meditasi atau latihan napas sebelum tidur","睡眠趋势分析":"Analisis Tren Tidur","个性化健康报告":"Laporan Kesehatan Personal","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Aktivitas gelombang otak Anda secara umum cukup stabil minggu ini, dengan rasio gelombang alfa (keadaan relaksasi) dan gelombang beta (keadaan fokus) yang seimbang. Pada sore hari kerja, aktivitas gelombang beta meningkat, menunjukkan Anda lebih fokus pada periode ini.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Keadaan emosi Anda secara keseluruhan stabil, dengan tingkah bahagia yang tetap tinggi. Fluktuasi kecil terjadi pada Rabu dan Jumat, mungkin terkait dengan tekanan kerja. Disarankan untuk meningkatkan latihan relaksasi pada periode ini.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Kualitas tidur Anda berada di level menengah ke atas, dengan waktu tidur dalam yang cukup, tetapi tidur REM sedikit lebih singkat. Disarankan untuk mempertahankan jadwal tidur yang teratur dan menghindari penggunaan perangkat elektronik sebelum tidur.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Lakukan meditasi mindfulness 10 menit setiap hari, membantu meningkatkan konsentrasi dan stabilitas emosi","• 保持23:00前入睡，提高睡眠质量":"• Pertahankan tidur sebelum pukul 23:00 untuk meningkatkan kualitas tidur","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Lakukan latihan relaksasi napas singkat di antara jam kerja untuk mengurangi stres","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Lakukan aktivitas di luar ruangan pada akhir pekan, terpapar cahaya alami, membantu mengatur jam biologis","下载完整报告":"Unduh Laporan Lengkap","__title__":"MindWaveGuard - Asisten Pemantau Kesehatan Gelombang Otak"},"vi":{"MindWaveGuard - 脑波健康监测助手":"MindWaveGuard - Công cụ theo dõi sức khỏe sóng não","首页":"Trang chủ","脑波监测":"Giám sát sóng não","情绪分析":"Phân tích cảm xúc","放松训练":"Tập luyện thư giãn","睡眠评估":"Đánh giá chất lượng giấc ngủ","健康报告":"Báo cáo sức khỏe","MindWaveGuard":"MindWaveGuard","您的脑波健康监测助手":"Công cụ theo dõi sức khỏe sóng não của bạn","产品介绍":"Giới thiệu sản phẩm","MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。":"MindWaveGuard là một ứng dụng theo dõi sức khỏe sóng não, thông qua việc phân tích dữ liệu sóng não điện của bạn, cung cấp phân tích trạng thái cảm xúc, hướng dẫn tập luyện thư giãn và đánh giá chất lượng giấc ngủ, giúp bạn hiểu và quản lý sức khỏe tâm lý của mình tốt hơn.","使用方法":"Cách sử dụng","2. 查看情绪状态分析，了解您的情绪变化":"2. Xem phân tích trạng thái cảm xúc, hiểu thay đổi cảm xúc của bạn","3. 根据情绪状态选择合适的放松训练":"3. Chọn bài tập thư giãn phù hợp dựa trên trạng thái cảm xúc","4. 评估您的睡眠质量并获得改善建议":"4. Đánh giá chất lượng giấc ngủ của bạn và nhận được lời khuyên cải thiện","5. 生成个性化健康报告，追踪您的健康变化":"5. Tạo báo cáo sức khỏe cá nhân hóa, theo dõi sự thay đổi sức khỏe của bạn","开始使用":"Bắt đầu sử dụng","查看隐私政策":"Xem chính sách bảo mật","脑波实时监测":"Giám sát sóng não thực thời","实时脑电波":"Sóng não điện thực thời","监测中":"Đang giám sát","停止监测":"Dừng giám sát","今日脑波数据":"Dữ liệu sóng não hôm nay","情绪状态分析":"Phân tích trạng thái cảm xúc","当前情绪状态":"Trạng thái cảm xúc hiện tại","情绪分析详情":"Chi tiết phân tích cảm xúc","愉悦度":"Mức độ vui vẻ","焦虑度":"Mức độ lo lắng","压力水平":"Mức độ căng thẳng","专注度":"Mức độ tập trung","获取放松建议":"Nhận lời khuyên thư giãn","情绪变化趋势":"Trend thay đổi cảm xúc","基于您的情绪状态推荐":"Đề xuất dựa trên trạng thái cảm xúc của bạn","开始":"Bắt đầu","暂停":"Tạm dừng","重置":"Đặt lại","呼吸放松引导":"Hướng dẫn thư giãn thở","跟随下方的呼吸节奏进行深呼吸":"Theo nhịp thở bên dưới để thực hiện thở sâu","吸气...":"Hít vào...","放松效果记录":"Ghi nhận hiệu quả thư giãn","睡眠质量评估":"Đánh giá chất lượng giấc ngủ","昨晚睡眠质量":"Chất lượng giấc ngủ đêm qua","改善建议":"Lời khuyên cải thiện","• 保持固定的睡眠时间，尽量在23:00前入睡":"• Giữ thời gian ngủ cố định, cố gắng đi ngủ trước 23:00","• 睡前1小时避免使用电子设备":"• Tránh sử dụng thiết bị điện tử 1 giờ trước khi đi ngủ","• 保持卧室温度在18-22°C之间":"• Giữ nhiệt độ phòng ngủ ở mức 18-22°C","• 尝试睡前冥想或深呼吸练习":"• Thử thiền hoặc tập thở sâu trước khi đi ngủ","睡眠趋势分析":"Phân tích xu hướng giấc ngủ","个性化健康报告":"Báo cáo sức khỏe cá nhân hóa","本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。":"Hoạt động sóng não của bạn trong tuần này tương đối ổn định, tỷ lệ alpha sóng (trạng thái thư giãn) và beta sóng (trạng thái tập trung) hợp lý. Trong thời gian buổi chiều làm việc, hoạt động beta sóng tăng cường, cho thấy bạn khá tập trung trong thời gian này.","您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。":"Trạng thái cảm xúc của bạn ổn định, mức độ vui vẻ duy trì ở mức cao. Thứ Ba và thứ Năm có sự thay đổi nhỏ, có thể liên quan đến áp lực công việc. Khuyên bạn nên tăng cường tập luyện thư giãn trong những thời điểm này.","您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。":"Chất lượng giấc ngủ của bạn ở mức trung bình trên, thời gian ngủ sâu đủ, nhưng giấc ngủ REM略 ngắn. Khuyên bạn nên duy trì thời gian ngủ đều đặn, tránh sử dụng thiết bị điện tử trước khi đi ngủ.","• 每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性":"• Thực hành thiền định chánh niệm 10 phút mỗi ngày, giúp tăng cường khả năng tập trung và sự ổn định cảm xúc","• 保持23:00前入睡，提高睡眠质量":"• Đi ngủ trước 23:00, nâng cao chất lượng giấc ngủ","• 在工作间隙进行短暂的呼吸放松练习，缓解压力":"• Thực hành tập thở thư giãn ngắn trong thời gian ngắt nghỉ làm việc, giảm căng thẳng","• 周末进行户外活动，接触自然光，有助于调节生物钟":"• Thực hiện hoạt động ngoài trời vào cuối tuần, tiếp xúc với ánh sáng tự nhiên, giúp điều chỉnh đồng hồ sinh học","下载完整报告":"Tải xuống báo cáo đầy đủ","__title__":"MindWaveGuard - Công cụ theo dõi sức khỏe sóng não"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
