@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HealthMindAI - Your Mental Health Companion</title><meta name="description" content="Free online tool: HealthMindAI - Your Mental Health Companion. No signup, no payment — free forever.">
+<meta property="og:title" content="HealthMindAI - Your Mental Health Companion">
+<meta property="og:description" content="Free online tool: HealthMindAI - Your Mental Health Companion. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_030347_HealthMindAI.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #b8b8b8;
+            --accent: #4a7c7e;
+            --accent-hover: #5a9c9e;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border: #2a2a3e;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .card-content {
+            color: var(--text-secondary);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--accent);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s;
+        }
+        
+        .mood-selector {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .mood-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            background-color: var(--bg-tertiary);
+            border: 2px solid transparent;
+        }
+        
+        .mood-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .mood-option.selected {
+            border-color: var(--accent);
+            background-color: rgba(74, 124, 126, 0.2);
+        }
+        
+        .mood-emoji {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+        
+        .mood-label {
+            font-size: 12px;
+        }
+        
+        .breathing-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            margin: 50px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .breathing-inner {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background-color: var(--accent);
+            transition: transform 4s ease-in-out;
+        }
+        
+        .breathing-in {
+            transform: scale(1.2);
+        }
+        
+        .breathing-out {
+            transform: scale(0.8);
+        }
+        
+        .timer {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .sleep-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .sleep-stat {
+            text-align: center;
+        }
+        
+        .sleep-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .sleep-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-around;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s;
+            padding: 5px 15px;
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+        }
+        
+        .nav-icon {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .nav-label {
+            font-size: 12px;
+        }
+        
+        .quiz-option {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .quiz-option:hover {
+            background-color: rgba(74, 124, 126, 0.2);
+        }
+        
+        .quiz-option.selected {
+            background-color: rgba(74, 124, 126, 0.4);
+            border-color: var(--accent);
+        }
+        
+        .article-list {
+            margin: 20px 0;
+        }
+        
+        .article-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .article-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .article-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .article-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .article-meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .setting-label {
+            font-size: 16px;
+        }
+        
+        .toggle {
+            width: 50px;
+            height: 26px;
+            background-color: var(--bg-tertiary);
+            border-radius: 13px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle.active {
+            background-color: var(--accent);
+        }
+        
+        .toggle-slider {
+            width: 22px;
+            height: 22px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+        
+        .toggle.active .toggle-slider {
+            transform: translateX(24px);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .logo {
+            text-align: center;
+            margin: 50px 0;
+        }
+        
+        .logo-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .logo-subtext {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: var(--border);
+            margin: 20px 0;
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border);
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--bg-tertiary);
+            margin: 20px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .score-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .score-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .chart-container {
+            height: 200px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 0;
+            width: 20px;
+            background-color: var(--accent);
+            border-radius: 3px 3px 0 0;
+            transition: height 0.5s;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: -20px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            width: 20px;
+            text-align: center;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 768px;
+                margin: 0 auto;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <!-- Launch Screen -->
+        <div id="launch-screen" class="screen active">
+            <div class="logo">
+                <div class="logo-icon">🧠</div>
+                <div class="logo-text">HealthMindAI</div>
+                <div class="logo-subtext">Your AI-powered mental health companion for emotional wellness and mindfulness</div>
+            </div>
+            <button class="btn" id="get-started-btn">Get Started</button>
+        </div>
+
+        <!-- Login/Registration Screen -->
+        <div id="login-screen" class="screen">
+            <div class="logo">
+                <div class="logo-icon">🧠</div>
+                <div class="logo-text">HealthMindAI</div>
+            </div>
+            <div class="card">
+                <div class="card-header">Welcome Back</div>
+                <div class="card-content">
+                    <div class="input-group">
+                        <label>Email</label>
+                        <input type="email" id="login-email" placeholder="Enter your email">
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="Enter your password">
+                    </div>
+                    <button class="btn" id="login-btn">Login</button>
+                    <div class="divider"></div>
+                    <button class="btn btn-outline" id="register-btn">Create Account</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="screen">
+            <div class="card">
+                <div class="card-header">How are you feeling today?</div>
+                <div class="mood-selector" id="mood-selector">
+                    <div class="mood-option" data-mood="happy">
+                        <div class="mood-emoji">😊</div>
+                        <div class="mood-label">Happy</div>
+                    </div>
+                    <div class="mood-option" data-mood="sad">
+                        <div class="mood-emoji">😢</div>
+                        <div class="mood-label">Sad</div>
+                    </div>
+                    <div class="mood-option" data-mood="anxious">
+                        <div class="mood-emoji">😰</div>
+                        <div class="mood-label">Anxious</div>
+                    </div>
+                    <div class="mood-option" data-mood="angry">
+                        <div class="mood-emoji">😠</div>
+                        <div class="mood-label">Angry</div>
+                    </div>
+                    <div class="mood-option" data-mood="calm">
+                        <div class="mood-emoji">😌</div>
+                        <div class="mood-label">Calm</div>
+                    </div>
+                    <div class="mood-option" data-mood="energetic">
+                        <div class="mood-emoji">💪</div>
+                        <div class="mood-label">Energetic</div>
+                    </div>
+                </div>
+                <button class="btn" id="submit-mood-btn">Submit Mood</button>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card" id="mental-assessment-card">
+                    <div class="feature-icon">🧠</div>
+                    <div class="feature-title">Mental Assessment</div>
+                    <div class="feature-desc">AI-powered emotional analysis</div>
+                </div>
+                <div class="feature-card" id="knowledge-base-card">
+                    <div class="feature-icon">📚</div>
+                    <div class="feature-title">Knowledge Base</div>
+                    <div class="feature-desc">Mental health resources</div>
+                </div>
+                <div class="feature-card" id="sleep-monitor-card">
+                    <div class="feature-icon">😴</div>
+                    <div class="feature-title">Sleep Monitor</div>
+                    <div class="feature-desc">Track and improve sleep</div>
+                </div>
+                <div class="feature-card" id="breathing-card">
+                    <div class="feature-icon">🧘</div>
+                    <div class="feature-title">Breathing Exercises</div>
+                    <div class="feature-desc">Guided meditation</div>
+                </div>
+                <div class="feature-card" id="psych-test-card">
+                    <div class="feature-icon">📝</div>
+                    <div class="feature-title">Psychological Tests</div>
+                    <div class="feature-desc">Assess your mental state</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mental Health Knowledge Base Screen -->
+        <div id="knowledge-base-screen" class="screen">
+            <div class="card">
+                <div class="card-header">Mental Health Resources</div>
+                <div class="article-list">
+                    <div class="article-item" data-article="1">
+                        <div class="article-title">Understanding Anxiety Disorders</div>
+                        <div class="article-desc">Learn about the different types of anxiety disorders and their symptoms</div>
+                        <div class="article-meta">5 min read • Updated 2 days ago</div>
+                    </div>
+                    <div class="article-item" data-article="2">
+                        <div class="article-title">Techniques for Managing Stress</div>
+                        <div class="article-desc">Effective strategies to cope with daily stressors</div>
+                        <div class="article-meta">7 min read • Updated 1 week ago</div>
+                    </div>
+                    <div class="article-item" data-article="3">
+                        <div class="article-title">The Science of Sleep</div>
+                        <div class="article-desc">How sleep affects your mental health and ways to improve it</div>
+                        <div class="article-meta">6 min read • Updated 3 days ago</div>
+                    </div>
+                    <div class="article-item" data-article="4">
+                        <div class="article-title">Mindfulness for Beginners</div>
+                        <div class="article-desc">Introduction to mindfulness practices and their benefits</div>
+                        <div class="article-meta">8 min read • Updated 5 days ago</div>
+                    </div>
+                    <div class="article-item" data-article="5">
+                        <div class="article-title">Building Emotional Resilience</div>
+                        <div class="article-desc">Strategies to strengthen your emotional well-being</div>
+                        <div class="article-meta">9 min read • Updated 1 week ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sleep Quality Monitoring Screen -->
+        <div id="sleep-monitor-screen" class="screen">
+            <div class="card">
+                <div class="card-header">Sleep Quality Analysis</div>
+                <div class="sleep-stats">
+                    <div class="sleep-stat">
+                        <div class="sleep-value">7.2</div>
+                        <div class="sleep-label">Hours</div>
+                    </div>
+                    <div class="sleep-stat">
+                        <div class="sleep-value">85%</div>
+                        <div class="sleep-label">Quality</div>
+                    </div>
+                    <div class="sleep-stat">
+                        <div class="sleep-value">3</div>
+                        <div class="sleep-label">Awakenings</div>
+                    </div>
+                </div>
+                <div class="chart-container" id="sleep-chart">
+                    <!-- Chart will be generated by JavaScript -->
+                </div>
+                <button class="btn" id="start-sleep-btn">Start Tonight's Sleep Tracking</button>
+            </div>
+        </div>
+
+        <!-- Breathing Meditation Screen -->
+        <div id="breathing-screen" class="screen">
+            <div class="card">
+                <div class="card-header">Breathing Exercise</div>
+                <div class="breathing-circle">
+                    <div class="breathing-inner" id="breathing-inner"></div>
+                    <div class="timer" id="breathing-timer">4:00</div>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" id="breathing-progress"></div>
+                </div>
+                <div class="progress-text" id="breathing-instruction">Inhale for 4 seconds</div>
+                <button class="btn" id="start-breathing-btn">Start Breathing Exercise</button>
+                <button class="btn btn-secondary" id="stop-breathing-btn">Stop Exercise</button>
+            </div>
+        </div>
+
+        <!-- Psychological Test Screen -->
+        <div id="psych-test-screen" class="screen">
+            <div class="card">
+                <div class="card-header">Mental Health Assessment</div>
+                <div id="quiz-container">
+                    <div id="quiz-question">How often do you feel down, depressed, or hopeless?</div>
+                    <div id="quiz-options">
+                        <div class="quiz-option" data-value="1">Not at all</div>
+                        <div class="quiz-option" data-value="2">Several days</div>
+                        <div class="quiz-option" data-value="3">More than half the days</div>
+                        <div class="quiz-option" data-value="4">Nearly every day</div>
+                    </div>
+                </div>
+                <div id="quiz-progress">
+                    <div class="progress-container">
+                        <div class="progress-bar" id="quiz-progress-bar"></div>
+                    </div>
+                    <div class="progress-text" id="quiz-progress-text">Question 1 of 9</div>
+                </div>
+                <button class="btn" id="next-question-btn" disabled>Next Question</button>
+            </div>
+        </div>
+
+        <!-- Settings Screen -->
+        <div id="settings-screen" class="screen">
+            <div class="card">
+                <div class="card-header">Settings</div>
+                <div class="setting-item">
+                    <div class="setting-label">Daily Reminders</div>
+                    <div class="toggle" id="reminders-toggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Dark Mode</div>
+                    <div class="toggle active" id="dark-mode-toggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Data Sharing</div>
+                    <div class="toggle" id="data-sharing-toggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Notifications</div>
+                    <div class="toggle active" id="notifications-toggle">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Help & Support</div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">About HealthMindAI</div>
+                </div>
+                <button class="btn btn-secondary" id="logout-btn" style="margin-top: 20px;">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar" id="nav-bar">
+        <div class="nav-item active" data-screen="home-screen">
+            <div class="nav-icon">🏠</div>
+            <div class="nav-label">Home</div>
+        </div>
+        <div class="nav-item" data-screen="knowledge-base-screen">
+            <div class="nav-icon">📚</div>
+            <div class="nav-label">Knowledge</div>
+        </div>
+        <div class="nav-item" data-screen="sleep-monitor-screen">
+            <div class="nav-icon">😴</div>
+            <div class="nav-label">Sleep</div>
+        </div>
+        <div class="nav-item" data-screen="breathing-screen">
+            <div class="nav-icon">🧘</div>
+            <div class="nav-label">Breath</div>
+        </div>
+        <div class="nav-item" data-screen="psych-test-screen">
+            <div class="nav-icon">📝</div>
+            <div class="nav-label">Tests</div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-title" id="notification-title">Notification</div>
+        <div class="notification-message" id="notification-message">This is a notification</div>
+    </div>
+
+    <script>
+        // App State
+        const app = {
+            currentScreen: 'launch-screen',
+            selectedMood: null,
+            quizAnswers: [],
+            quizCurrentQuestion: 0,
+            breathingInterval: null,
+            breathingTimer: 240, // 4 minutes in seconds
+            breathingPhase: 'inhale', // inhale, hold, exhale, hold
+            breathingProgress: 0
+        };
+
+        // Quiz Questions
+        const quizQuestions = [
+            {
+                question: "How often do you feel down, depressed, or hopeless?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you have trouble falling or staying asleep, or sleeping too much?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you feel tired or have little energy?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you have poor appetite or overeat?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you have trouble concentrating on things such as reading or watching television?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you move or speak so slowly that other people could have noticed? Or the opposite - being so fidgety or restless that you have been moving around a lot more than usual?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you think that you would be better off dead or of hurting yourself in some way?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            },
+            {
+                question: "How often do you feel bothered by things that usually don't bother you?",
+                options: ["Not at all", "Several days", "More than half the days", "Nearly every day"]
+            }
+        ];
+
+        // Screen Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenId).classList.add('active');
+            app.currentScreen = screenId;
+
+            // Update nav bar
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-screen') === screenId) {
+                    item.classList.add('active');
+                }
+            });
+
+            // Initialize screen-specific content
+            if (screenId === 'sleep-monitor-screen') {
+                initSleepChart();
+            } else if (screenId === 'psych-test-screen') {
+                resetQuiz();
+            }
+        }
+
+        // Notification System
+        function showNotification(title, message) {
+            const notification = document.getElementById('notification');
+            document.getElementById('notification-title').textContent = title;
+            document.getElementById('notification-message').textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event Listeners
+        document.getElementById('get-started-btn').addEventListener('click', () => {
+            showScreen('login-screen');
+        });
+
+        document.getElementById('login-btn').addEventListener('click', () => {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                showNotification('Login Successful', 'Welcome back to HealthMindAI!');
+                showScreen('home-screen');
+            } else {
+                showNotification('Login Failed', 'Please enter your email and password');
+            }
+        });
+
+        document.getElementById('register-btn').addEventListener('click', () => {
+            showNotification('Registration', 'Registration feature coming soon!');
+        });
+
+        // Mood Selection
+        document.querySelectorAll('.mood-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.mood-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                this.classList.add('selected');
+                app.selectedMood = this.getAttribute('data-mood');
+            });
+        });
+
+        document.getElementById('submit-mood-btn').addEventListener('click', () => {
+            if (app.selectedMood) {
+                showNotification('Mood Recorded', `Thank you for sharing your mood: ${app.selectedMood}`);
+                // In a real app, this would send the mood data to the backend
+            } else {
+                showNotification('Select Mood', 'Please select your current mood');
+            }
+        });
+
+        // Feature Cards
+        document.getElementById('mental-assessment-card').addEventListener('click', () => {
+            showNotification('Mental Assessment', 'This feature analyzes your emotional patterns based on your mood history');
+        });
+
+        document.getElementById('knowledge-base-card').addEventListener('click', () => {
+            showScreen('knowledge-base-screen');
+        });
+
+        document.getElementById('sleep-monitor-card').addEventListener('click', () => {
+            showScreen('sleep-monitor-screen');
+        });
+
+        document.getElementById('breathing-card').addEventListener('click', () => {
+            showScreen('breathing-screen');
+        });
+
+        document.getElementById('psych-test-card').addEventListener('click', () => {
+            showScreen('psych-test-screen');
+        });
+
+        // Navigation Bar
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const targetScreen = this.getAttribute('data-screen');
+                showScreen(targetScreen);
+            });
+        });
+
+        // Sleep Chart
+        function initSleepChart() {
+            const chartContainer = document.getElementById('sleep-chart');
+            chartContainer.innerHTML = '';
+            
+            // Generate sample sleep data for the last 7 days
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const hours = [6.5, 7.2, 6.8, 7.5, 6.3, 8.1, 7.2];
+            
+            const maxHours = Math.max(...hours);
+            
+            days.forEach((day, index) => {
+                const barHeight = (hours[index] / maxHours) * 100;
+                
+                const bar = document.createElement('div');
+                bar.className = 'chart-bar';
+                bar.style.height = `${barHeight}%`;
+                bar.style.left = `${index * 14}%`;
+                
+                const label = document.createElement('div');
+                label.className = 'chart-label';
+                label.textContent = day;
+                label.style.left = `${index * 14}%`;
+                
+                chartContainer.appendChild(bar);
+                chartContainer.appendChild(label);
+            });
+        }
+
+        document.getElementById('start-sleep-btn').addEventListener('click', () => {
+            showNotification('Sleep Tracking', 'Sleep tracking started. Place your phone on the nightstand.');
+        });
+
+        // Breathing Exercise
+        document.getElementById('start-breathing-btn').addEventListener('click', function() {
+            this.disabled = true;
+            document.getElementById('stop-breathing-btn').disabled = false;
+            app.breathingTimer = 240;
+            app.breathingProgress = 0;
+            
+            app.breathingInterval = setInterval(() => {
+                updateBreathingExercise();
+            }, 1000);
+        });
+
+        document.getElementById('stop-breathing-btn').addEventListener('click', function() {
+            clearInterval(app.breathingInterval);
+            this.disabled = true;
+            document.getElementById('start-breathing-btn').disabled = false;
+            
+            // Reset breathing circle
+            document.getElementById('breathing-inner').classList.remove('breathing-in', 'breathing-out');
+            document.getElementById('breathing-timer').textContent = '4:00';
+            document.getElementById('breathing-progress').style.width = '0%';
+            document.getElementById('breathing-instruction').textContent = 'Inhale for 4 seconds';
+            
+            showNotification('Exercise Complete', 'Great job! You completed a 4-minute breathing exercise.');
+        });
+
+        function updateBreathingExercise() {
+            const minutes = Math.floor(app.breathingTimer / 60);
+            const seconds = app.breathingTimer % 60;
+            document.getElementById('breathing-timer').textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            
+            const breathingInner = document.getElementById('breathing-inner');
+            const instruction = document.getElementById('breathing-instruction');
+            const progressBar = document.getElementById('breathing-progress');
+            
+            // Breathing pattern: Inhale 4s, Hold 4s, Exhale 6s, Hold 2s (16s total cycle)
+            const cyclePosition = (240 - app.breathingTimer) % 16;
+            
+            if (cyclePosition < 4) {
+                // Inhale phase
+                breathingInner.classList.add('breathing-in');
+                breathingInner.classList.remove('breathing-out');
+                instruction.textContent = 'Inhale for 4 seconds';
+                app.breathingProgress = (cyclePosition / 4) * 25;
+            } else if (cyclePosition < 8) {
+                // Hold after inhale
+                breathingInner.classList.remove('breathing-in');
+                instruction.textContent = 'Hold for 4 seconds';
+                app.breathingProgress = 25 + ((cyclePosition - 4) / 4) * 25;
+            } else if (cyclePosition < 14) {
+                // Exhale phase
+                breathingInner.classList.add('breathing-out');
+                instruction.textContent = 'Exhale for 6 seconds';
+                app.breathingProgress = 50 + ((cyclePosition - 8) / 6) * 50;
+            } else {
+                // Hold after exhale
+                breathingInner.classList.remove('breathing-out');
+                instruction.textContent = 'Hold for 2 seconds';
+                app.breathingProgress = 100;
+            }
+            
+            progressBar.style.width = `${app.breathingProgress}%`;
+            
+            // Update breathing color based on phase
+            if (cyclePosition < 4 || (cyclePosition >= 8 && cyclePosition < 14)) {
+                breathingInner.style.backgroundColor = '#4CAF50'; // Green for inhale/exhale
+            } else {
+                breathingInner.style.backgroundColor = '#2196F3'; // Blue for hold
+            }
+        }
+    },
+    
+    // Meditation timer functions
+    meditationTimer: {
+        duration: 600, // Default 10 minutes in seconds
+        remaining: 600,
+        interval: null,
+        
+        start: function() {
+            this.remaining = this.duration;
+            this.interval = setInterval(() => {
+                this.remaining--;
+                app.updateMeditationDisplay();
+                
+                if (this.remaining <= 0) {
+                    this.stop();
+                    app.showNotification('Meditation session completed!');
+                }
+            }, 1000);
+        },
+        
+        stop: function() {
+            if (this.interval) {
+                clearInterval(this.interval);
+                this.interval = null;
+            }
+        },
+        
+        updateDisplay: function() {
+            const minutes = Math.floor(this.remaining / 60);
+            const seconds = this.remaining % 60;
+            document.getElementById('meditation-timer').textContent = 
+                `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        }
+    },
+    
+    // Notification system
+    showNotification: function(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    },
+    
+    // Initialize app
+    init: function() {
+        // Set up event listeners
+        document.getElementById('start-breathing').addEventListener('click', () => {
+            app.breathingTimer.start();
+        });
+        
+        document.getElementById('stop-breathing').addEventListener('click', () => {
+            app.breathingTimer.stop();
+        });
+        
+        document.getElementById('start-meditation').addEventListener('click', () => {
+            app.meditationTimer.start();
+        });
+        
+        document.getElementById('stop-meditation').addEventListener('click', () => {
+            app.meditationTimer.stop();
+        });
+        
+        document.getElementById('meditation-duration').addEventListener('change', (e) => {
+            const minutes = parseInt(e.target.value);
+            app.meditationTimer.duration = minutes * 60;
+            app.meditationTimer.remaining = minutes * 60;
+            app.meditationTimer.updateDisplay();
+        });
+        
+        // Initialize displays
+        app.meditationTimer.updateDisplay();
+    }
+};
+
+// Initialize app when DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    app.init();
+});
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Your Mental Health Companion","Get Started":"Get Started","Email":"Email","Password":"Password","Login":"Login","Create Account":"Create Account","Submit Mood":"Submit Mood","Start Tonight's Sleep Tracking":"Start Tonight's Sleep Tracking","Start Breathing Exercise":"Start Breathing Exercise","Stop Exercise":"Stop Exercise","Next Question":"Next Question","Logout":"Logout","How often do you feel down, depressed, or hopeless?":"How often do you feel down, depressed, or hopeless?","Not at all":"Not at all","Several days":"Several days","More than half the days":"More than half the days","Nearly every day":"Nearly every day","How often do you have trouble falling or staying asleep, or sleeping too much?":"How often do you have trouble falling or staying asleep, or sleeping too much?","How often do you feel tired or have little energy?":"How often do you feel tired or have little energy?","How often do you have poor appetite or overeat?":"How often do you have poor appetite or overeat?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?","How often do you have trouble concentrating on things such as reading or watching television?":"How often do you have trouble concentrating on things such as reading or watching television?","How often do you think that you would be better off dead or of hurting yourself in some way?":"How often do you think that you would be better off dead or of hurting yourself in some way?","How often do you feel bothered by things that usually don't bother you?":"How often do you feel bothered by things that usually don't bother you?","Login Successful":"Login Successful","Welcome back to HealthMindAI!":"Welcome back to HealthMindAI!","Login Failed":"Login Failed","Please enter your email and password":"Please enter your email and password","Registration feature coming soon!":"Registration feature coming soon!","Mood Recorded":"Mood Recorded","Select Mood":"Select Mood","Please select your current mood":"Please select your current mood","Mental Assessment":"Mental Assessment","This feature analyzes your emotional patterns based on your mood history":"This feature analyzes your emotional patterns based on your mood history","Sleep Tracking":"Sleep Tracking","Sleep tracking started. Place your phone on the nightstand.":"Sleep tracking started. Place your phone on the nightstand.","Inhale for 4 seconds":"Inhale for 4 seconds","Exercise Complete":"Exercise Complete","Great job! You completed a 4-minute breathing exercise.":"Great job! You completed a 4-minute breathing exercise.","Hold for 4 seconds":"Hold for 4 seconds","Exhale for 6 seconds":"Exhale for 6 seconds","Hold for 2 seconds":"Hold for 2 seconds","__title__":"HealthMindAI - Your Mental Health Companion"},"pt":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Seu Companheiro de Bem-Estar Mental","Get Started":"Comece","Email":"E-mail","Password":"Senha","Login":"Entrar","Create Account":"Criar Conta","Submit Mood":"Enviar Humor","Start Tonight's Sleep Tracking":"Iniciar o Rastreamento do Sono Hoje à Noite","Start Breathing Exercise":"Iniciar Exercício de Respiração","Stop Exercise":"Parar Exercício","Next Question":"Próxima Pergunta","Logout":"Sair","How often do you feel down, depressed, or hopeless?":"Com que frequência você se sente desanimado, deprimido ou sem esperança?","Not at all":"De forma alguma","Several days":"Muitos dias","More than half the days":"Mais da metade dos dias","Nearly every day":"Praticamente todos os dias","How often do you have trouble falling or staying asleep, or sleeping too much?":"Com que frequência você tem dificuldade para adormecer, manter o sono ou dormir muito?","How often do you feel tired or have little energy?":"Com que frequência você se sente cansado ou com pouca energia?","How often do you have poor appetite or overeat?":"Com que frequência você tem má apetite ou come em excesso?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Com que frequência você se sente mal sobre si mesmo ou se sente um fracassado ou que decepcionou você mesmo ou sua família?","How often do you have trouble concentrating on things such as reading or watching television?":"Com que frequência você tem dificuldade para se concentrar em coisas como ler ou assistir TV?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Com que frequência você pensa que seria melhor estar morto ou ferir-se de alguma forma?","How often do you feel bothered by things that usually don't bother you?":"Com que frequência você se sente perturbado por coisas que geralmente não o perturbam?","Login Successful":"Login bem-sucedido","Welcome back to HealthMindAI!":"Bem-vindo de volta ao HealthMindAI!","Login Failed":"Login falhou","Please enter your email and password":"Por favor, insira seu e-mail e senha","Registration feature coming soon!":"Funcionalidade de registro em breve!","Mood Recorded":"Humor registrado","Select Mood":"Selecione seu humor atual","Please select your current mood":"Por favor, selecione seu humor atual","Mental Assessment":"Avaliação Mental","This feature analyzes your emotional patterns based on your mood history":"Esta funcionalidade analisa seus padrões emocionais com base em seu histórico de humor","Sleep Tracking":"Rastreamento do Sono","Sleep tracking started. Place your phone on the nightstand.":"O rastreamento do sono começou. Coloque seu telefone na mesa de cabeceira.","Inhale for 4 seconds":"Inale por 4 segundos","Exercise Complete":"Exercício concluído","Great job! You completed a 4-minute breathing exercise.":"Ótimo trabalho! Você completou um exercício de respiração de 4 minutos.","Hold for 4 seconds":"Mantenha por 4 segundos","Exhale for 6 seconds":"Exale por 6 segundos","Hold for 2 seconds":"Mantenha por 2 segundos","__title__":"HealthMindAI - Seu Companheiro de Bem-Estar Mental"},"ar":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - شريكك في صحة عقلك","Get Started":"ابدأ الآن","Email":"البريد الإلكتروني","Password":"كلمة المرور","Login":"تسجيل الدخول","Create Account":"إنشاء حساب","Submit Mood":"إرسال المزاج","Start Tonight's Sleep Tracking":"إبدأ تتبع النوم الليلي","Start Breathing Exercise":"إبدأ التمرين التنفسي","Stop Exercise":"توقف عن التمرين","Next Question":"السؤال التالي","Logout":"خروج","How often do you feel down, depressed, or hopeless?":"كم من المرات تشعر بالحزن، أو الاكتئاب، أو الأمل بالنصاد؟","Not at all":"ليس أبدًا","Several days":"عدة أيام","More than half the days":"أكثر من نصف الأيام","Nearly every day":"كما يشبه اليوم","How often do you have trouble falling or staying asleep, or sleeping too much?":"كم من المرات تعاني من صعوبة النوم، أو التشديد في النوم، أو النوم بشكل مفرط؟","How often do you feel tired or have little energy?":"كم من المرات تشعر بالتعب أو نقص الطاقة؟","How often do you have poor appetite or overeat?":"كم من المرات تقل في شهيتك أو تفرط في تناول الطعام؟","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"كم من المرات تشعر بعدم الارتياح بنفسك أو تشعر بأنك فاشل أو أنه فشلك أو دمرك عائلتك؟","How often do you have trouble concentrating on things such as reading or watching television?":"كم من المرات تواجه صعوبة التركيز في أشياء مثل القراءة أو مشاهدة التلفزيون؟","How often do you think that you would be better off dead or of hurting yourself in some way?":"كم من المرات تظن بأنك أفضل ميتا أو أن إصابة نفسك بطريقة ما ستكون أفضل؟","How often do you feel bothered by things that usually don't bother you?":"كم من المرات تشعر بالزعج بشيء لا يزعجك عادة؟","Login Successful":"نجاح تسجيل الدخول","Welcome back to HealthMindAI!":"مرحبًا بك مرة أخرى في HealthMindAI!","Login Failed":"فشل تسجيل الدخول","Please enter your email and password":"يرجى إدخال بريدك الإلكتروني وكلمة المرور","Registration feature coming soon!":"ميزة التسجيل قريبةً من الان","Mood Recorded":"تم تسجيل المزاج","Select Mood":"حدد مزاجك الحالي","Please select your current mood":"يرجى تحديد مزاجك الحالي","Mental Assessment":"هذه الميزة تحلل نمط مشاعرك بناءً على تاريخ مزاجك","Sleep Tracking":"بدء تتبع النوم","Sleep tracking started. Place your phone on the nightstand.":"بدأ تتبع النوم. ضع هاتفك على المنضدة الليلية.","Inhale for 4 seconds":"امضغ لل 4 ثوانٍ","Exercise Complete":"التمرين مكتمل","Great job! You completed a 4-minute breathing exercise.":"أحسنت! قمت بتمرين التنفس لمدة 4 دقائق.","hold for 4 seconds":"انتظر لل 4 ثوانٍ","Exhale for 6 seconds":"استنشق لل 6 ثوانٍ","hold for 2 seconds":"انتظر لل 2 ثانية","__title__":"HealthMindAI - شريكك في صحة عقلك"},"id":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Teman Kesehatan Mental Anda","Get Started":"Mulai Sekarang","Email":"Email","Password":"Kata Sandi","Login":"Masuk","Create Account":"Buat Akun","Submit Mood":"Kirim Mood","Start Tonight's Sleep Tracking":"Mulai Pemantauan Tidur Malam Ini","Start Breathing Exercise":"Mulai Latihan Pernapasan","Stop Exercise":"Hentikan Latihan","Next Question":"Pertanyaan Selanjutnya","Logout":"Keluar","How often do you feel down, depressed, or hopeless?":"Seberapa sering Anda merasa sedih, depresi, atau putus asa?","Not at all":"Tidak sama sekali","Several days":"Beberapa hari","More than half the days":"Lebih dari setengah hari","Nearly every day":"Hampir setiap hari","How often do you have trouble falling or staying asleep, or sleeping too much?":"Seberapa sering Anda mengalami kesulitan tidur, atau terlalu banyak tidur?","How often do you feel tired or have little energy?":"Seberapa sering Anda merasa lelah atau memiliki sedikit energi?","How often do you have poor appetite or overeat?":"Seberapa sering Anda memiliki nafsu makan yang buruk atau makan berlebihan?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Seberapa sering Anda merasa buruk tentang diri Anda atau merasa Anda adalah seorang gagal atau telah mengecewakan diri Anda atau keluarga Anda?","How often do you have trouble concentrating on things such as reading or watching television?":"Seberapa sering Anda kesulitan berkonsentrasi pada hal seperti membaca atau menonton televisi?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Seberapa sering Anda berpikir bahwa Anda akan lebih baik mati atau menyakiti diri Anda dengan cara tertentu?","How often do you feel bothered by things that usually don't bother you?":"Seberapa sering Anda merasa terganggu oleh hal-hal yang biasanya tidak mengganggu Anda?","Login Successful":"Login Berhasil","Welcome back to HealthMindAI!":"Selamat datang kembali ke HealthMindAI!","Login Failed":"Login Gagal","Please enter your email and password":"Masukkan email dan kata sandi Anda","Registration feature coming soon!":"Fitur pendaftaran segera hadir!","Mood Recorded":"Mood Tercatat","Select Mood":"Pilih Mood","Please select your current mood":"Pilih mood Anda saat ini","Mental Assessment":"Evaluasi Mental","This feature analyzes your emotional patterns based on your mood history":"Fitur ini menganalisis pola emosi Anda berdasarkan riwayat mood Anda","Sleep Tracking":"Pemantauan Tidur","Sleep tracking started. Place your phone on the nightstand.":"Pemantauan tidur dimulai. Letakkan ponsel Anda di meja samping tempat tidur.","Inhale for 4 seconds":"Inspirasikan selama 4 detik","Exercise Complete":"Latihan Selesai","Great job! You completed a 4-minute breathing exercise.":"Bagus! Anda menyelesaikan latihan pernapasan 4 menit.","Hold for 4 seconds":"Tahan selama 4 detik","Exhale for 6 seconds":"Ekspirasikan selama 6 detik","Hold for 2 seconds":"Tahan selama 2 detik","__title__":"HealthMindAI - Teman Kesehatan Mental Anda"},"vi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Người Bạn Đồng Hành Sức Khỏe Tinh Thần","Get Started":"Bắt Đầu","Email":"Email","Password":"Mật Khẩu","Login":"Đăng Nhập","Create Account":"Tạo Tài Khoản","Submit Mood":"Gửi Tâm Trạng","Start Tonight's Sleep Tracking":"Bắt ĐTheo Dõi Giấc Ngài Hôm Nay","Start Breathing Exercise":"Bắt Đầu Tập Thở","Stop Exercise":"Dừng Tập Thử","Next Question":"Câu Hỏi Tiếp Theo","Logout":"Đăng Xuất","How often do you feel down, depressed, or hopeless?":"Bạn cảm thấy buồn bã, trầm cảm, hay tuyệt vọng thường xuyên như thế nào?","Not at all":"Không hề","Several days":"Vài ngày","More than half the days":"Hơn một nửa số ngày","Nearly every day":"Gần như mỗi ngày","How often do you have trouble falling or staying asleep, or sleeping too much?":"Bạn gặp khó khăn khi đi vào giấc ngủ, duy trì giấc ngủ, hoặc ngủ quá nhiều thường xuyên như thế nào?","How often do you feel tired or have little energy?":"Bạn cảm thấy mệt mỏi hoặc ít năng lượng thường xuyên như thế nào?","How often do you have poor appetite or overeat?":"Bạn có cảm giác thèm ăn kém hoặc ăn quá thường xuyên như thế nào?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"Bạn cảm thấy mình tồi tệ, thất bại, hoặc làm thất vọng bản thân hoặc gia đình thường xuyên như thế nào?","How often do you have trouble concentrating on things such as reading or watching television?":"Bạn gặp khó khăn khi tập trung vào việc như đọc sách hoặc xem truyền hình thường xuyên như thế nào?","How often do you think that you would be better off dead or of hurting yourself in some way?":"Bạn nghĩ rằng mình sẽ tốt hơn nếu chết hoặc tự làm tổn thương mình thường xuyên như thế nào?","How often do you feel bothered by things that usually don't bother you?":"Bạn cảm thấy phiền lòng bởi những điều thường thì không làm phiền bạn thường xuyên như thế nào?","Login Successful":"Đăng Nhập Thành Công","Welcome back to HealthMindAI!":"Chào mừng trở lại HealthMindAI!","Login Failed":"Đăng Nhập Thất Bại","Please enter your email and password":"Vui lòng nhập email và mật khẩu của bạn","Registration feature coming soon!":"Tính năng đăng ký sắp ra mắt!","Mood Recorded":"Tâm Trạng Đã Ghi Nhận","Select Mood":"Chọn Tâm Trạng","Please select your current mood":"Vui lòng chọn tâm trạng hiện tại của bạn","Mental Assessment":"Đánh Giá Tinh Thần","This feature analyzes your emotional patterns based on your mood history":"Tính năng này phân tích các kiểu cảm xúc của bạn dựa trên lịch sử tâm trạng","Sleep Tracking":"Theo Dõi Giấc Ngủ","Sleep tracking started. Place your phone on the nightstand.":"Bắt đầu theo dõi giấc ngủ. Đặt điện thoại của bạn trên bàn đầu giường.","Inhale for 4 seconds":"Hít vào trong 4 giây","Exercise Complete":"Hoàn Thành Bài Tập","Great job! You completed a 4-minute breathing exercise.":"Làm tốt! Bạn đã hoàn thành bài tập thở 4 phút.","Hold for 4 seconds":"Giữ trong 4 giây","Exhale for 6 seconds":"Thở ra trong 6 giây","Hold for 2 seconds":"Giữ trong 2 giây","__title__":"HealthMindAI - Người Bạn Đồng Hành Sức Khỏe Tinh Thần"},"th":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - ผู้ช่วยด้านสุขภาพจิตของคุณ","Get Started":"เริ่มต้น","Email":"อีเมล","Password":"รหัสผ่าน","Login":"เข้าสู่ระบบ","Create Account":"สร้างบัญชี","Submit Mood":"บันทึกอารมณ์","Start Tonight's Sleep Tracking":"เริ่มติดตาการนอนคืนนี้","Start Breathing Exercise":"เริ่มการออกกำลังกายด้วยการหายใจ","Stop Exercise":"หยุดการออกกำลังกาย","Next Question":"คำถามถัดไป","Logout":"ออกจากระบบ","How often do you feel down, depressed, or hopeless?":"คุณรู้สึกซึมเศร้า หรือสิ้นหวังบ่อยแค่ไหน?","Not at all":"ไม่เลย","Several days":"หลายวัน","More than half the days":"มากกว่าครึ่งหนึ่งของวัน","Nearly every day":"เกือบทุกวัน","How often do you have trouble falling or staying asleep, or sleeping too much?":"คุณมีปัญหาในการนอนหลับ หรือนอนมากเกินไปบ่อยแค่ไหน?","How often do you feel tired or have little energy?":"คุณรู้สึกเหนื่อยล้า หรือขาดพลังงานบ่อยแค่ไหน?","How often do you have poor appetite or overeat?":"คุณมีอาการขาดความอยากอาหาร หรือกินเกินไปบ่อยแค่ไหน?","How often do you feel bad about yourself or feel that you are a failure or have let yourself or your family down?":"คุณรู้สึกไม่พอใจกับตัวเอง หรือรู้สึกว่าล้มเหลว หรือทำให้ตัวเองหรือครอบครัวผิดหวังบ่อยแค่ไหน?","How often do you have trouble concentrating on things such as reading or watching television?":"คุณมีปัญหาในการเข้มงวดกับสิ่งต่างๆ เช่นการอ่านหนังสือ หรือดูโทรทัศน์บ่อยแค่ไหน?","How often do you think that you would be better off dead or of hurting yourself in some way?":"คุณคิดว่าการตายจะดีกว่า หรือคิดทำร้ายตัวเองบ่อยแค่ไหน?","How often do you feel bothered by things that usually don't bother you?":"คุณรู้สึกรำคาญกับสิ่งที่ปกติไม่รำคาญบ่อยแค่ไหน?","Login Successful":"เข้าสู่ระบบสำเร็จ","Welcome back to HealthMindAI!":"ยินดีต้อนรับกลับสู่ HealthMindAI!","Login Failed":"เข้าสู่ระบบไม่สำเร็จ","Please enter your email and password":"กรุณาป้อนอีเมลและรหัสผ่าน","Registration feature coming soon!":"ฟีเจอร์การลงทะเบียนเดี๋ยวจะมาถึงเร็วๆ นี้!","Mood Recorded":"บันทึกอารมณ์แล้ว","Select Mood":"เลือกอารมณ์","Please select your current mood":"กรุณาเลือกอารมณ์ปัจจุบันของคุณ","Mental Assessment":"การประเมินสุขภาพจิต","This feature analyzes your emotional patterns based on your mood history":"ฟีเจอร์นี้วิเคราะห์รูปแบบอารมณ์ของคุณตามประวัติอารมณ์","Sleep Tracking":"การติดตาการนอนหลับ","Sleep tracking started. Place your phone on the nightstand.":"เริ่มติดตาการนอนหลับแล้ว วางโทรศัพท์บนโต๊ะข้างเตียง","Inhale for 4 seconds":"หายใจเข้าเวลา 4 วินาที","Exercise Complete":"การออกกำลังกายเสร็จสิ้น","Great job! You completed a 4-minute breathing exercise.":"ทำได้ดี! คุณได้ทำการออกกำลังกายด้วยการหายใจเป็นเวลา 4 นาทีแล้ว","Hold for 4 seconds":"รักษาไว้เวลา 4 วินาที","Exhale for 6 seconds":"หายใจออกเวลา 6 วินาที","Hold for 2 seconds":"รักษาไว้เวลา 2 วินาที","__title__":"HealthMindAI - ผู้ช่วยด้านสุขภาพจิตของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
