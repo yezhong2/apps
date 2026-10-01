@@ -315,6 +315,30 @@
             background-color: var(--info);
         }
         
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: white;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .notification.error {
+            background-color: #f44336;
+        }
+        
+        .notification.success {
+            background-color: #4caf50;
+        }
+        
+        .notification.info {
+            background-color: #2196f3;
+        }
+        
         /* Footer */
         footer {
             background-color: var(--bg-secondary);
@@ -500,158 +524,160 @@
         document.getElementById('logDate').valueAsDate = new Date();
         
         // Health Data Analysis
-        document.getElementById('analyzeBtn').addEventListener('click', function() {
-            const age = parseInt(document.getElementById('age').value);
-            const weight = parseFloat(document.getElementById('weight').value);
-            const height = parseInt(document.getElementById('height').value);
-            const bloodPressure = document.getElementById('bloodPressure').value;
-            const heartRate = parseInt(document.getElementById('heartRate').value);
-            const sleepHours = parseFloat(document.getElementById('sleepHours').value);
-            const exerciseMinutes = parseInt(document.getElementById('exerciseMinutes').value);
-            const stressLevel = parseInt(document.getElementById('stressLevel').value);
-            
-            // Validate inputs
-            if (!age || !weight || !height || !bloodPressure || !heartRate || !sleepHours || !exerciseMinutes || !stressLevel) {
-                showNotification('Please fill in all fields', 'error');
-                return;
-            }
-            
-            // Calculate BMI
-            const heightInMeters = height / 100;
-            const bmi = weight / (heightInMeters * heightInMeters);
-            
-            // Analyze blood pressure
-            const bpValues = bloodPressure.split('/');
-            const systolic = parseInt(bpValues[0]);
-            const diastolic = parseInt(bpValues[1]);
-            
-            // Health status determination
-            let healthStatus = 'Good';
-            let bmiStatus = '';
-            
-            if (bmi < 18.5) {
-                bmiStatus = 'Underweight';
-            } else if (bmi >= 18.5 && bmi < 25) {
-                bmiStatus = 'Normal weight';
-            } else if (bmi >= 25 && bmi < 30) {
-                bmiStatus = 'Overweight';
-            } else {
-                bmiStatus = 'Obese';
-            }
-            
-            // Blood pressure status
-            let bpStatus = '';
-            if (systolic < 120 && diastolic < 80) {
-                bpStatus = 'Normal';
-            } else if (systolic < 130 && diastolic < 80) {
-                bpStatus = 'Elevated';
-            } else if (systolic < 140 || diastolic < 90) {
-                bpStatus = 'Hypertension Stage 1';
-            } else {
-                bpStatus = 'Hypertension Stage 2';
-            }
-            
-            // Heart rate status
-            let hrStatus = '';
-            if (heartRate < 60) {
-                hrStatus = 'Bradycardia';
-            } else if (heartRate >= 60 && heartRate <= 100) {
-                hrStatus = 'Normal';
-            } else {
-                hrStatus = 'Tachycardia';
-            }
-            
-            // Sleep status
-            let sleepStatus = '';
-            if (sleepHours < 7) {
-                sleepStatus = 'Insufficient sleep';
-            } else if (sleepHours >= 7 && sleepHours <= 9) {
-                sleepStatus = 'Optimal sleep';
-            } else {
-                sleepStatus = 'Excessive sleep';
-            }
-            
-            // Exercise status
-            let exerciseStatus = '';
-            if (exerciseMinutes < 30) {
-                exerciseStatus = 'Insufficient exercise';
-            } else if (exerciseMinutes >= 30 && exerciseMinutes <= 60) {
-                exerciseStatus = 'Moderate exercise';
-            } else {
-                exerciseStatus = 'High exercise';
-            }
-            
-            // Stress status
-            let stressStatus = '';
-            if (stressLevel <= 3) {
-                stressStatus = 'Low stress';
-            } else if (stressLevel <= 6) {
-                stressStatus = 'Moderate stress';
-            } else {
-                stressStatus = 'High stress';
-            }
-            
-            // Overall health score (simplified)
-            let healthScore = 100;
-            if (bmiStatus === 'Overweight' || bmiStatus === 'Obese') healthScore -= 10;
-            if (bpStatus !== 'Normal') healthScore -= 15;
-            if (hrStatus !== 'Normal') healthScore -= 10;
-            if (sleepStatus !== 'Optimal sleep') healthScore -= 10;
-            if (exerciseStatus === 'Insufficient exercise') healthScore -= 15;
-            if (stressStatus === 'High stress') healthScore -= 10;
-            
-            if (healthScore >= 80) {
-                healthStatus = 'Excellent';
-            } else if (healthScore >= 60) {
-                healthStatus = 'Good';
-            } else if (healthScore >= 40) {
-                healthStatus = 'Fair';
-            } else {
-                healthStatus = 'Poor';
-            }
-            
-            // Display results
-            const resultsHtml = `
-                <div class="result-card">
-                    <h3>Overall Health Status: ${healthStatus}</h3>
-                    <p>Health Score: ${healthScore}/100</p>
-                </div>
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'analyzeBtn') {
+                const age = parseInt(document.getElementById('age').value);
+                const weight = parseFloat(document.getElementById('weight').value);
+                const height = parseInt(document.getElementById('height').value);
+                const bloodPressure = document.getElementById('bloodPressure').value;
+                const heartRate = parseInt(document.getElementById('heartRate').value);
+                const sleepHours = parseFloat(document.getElementById('sleepHours').value);
+                const exerciseMinutes = parseInt(document.getElementById('exerciseMinutes').value);
+                const stressLevel = parseInt(document.getElementById('stressLevel').value);
                 
-                <div class="result-card">
-                    <h3>BMI Analysis</h3>
-                    <p>BMI: ${bmi.toFixed(1)} - ${bmiStatus}</p>
-                </div>
+                // Validate inputs
+                if (!age || !weight || !height || !bloodPressure || !heartRate || !sleepHours || !exerciseMinutes || !stressLevel) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
                 
-                <div class="result-card">
-                    <h3>Blood Pressure Analysis</h3>
-                    <p>${systolic}/${diastolic} mmHg - ${bpStatus}</p>
-                </div>
+                // Calculate BMI
+                const heightInMeters = height / 100;
+                const bmi = weight / (heightInMeters * heightInMeters);
                 
-                <div class="result-card">
-                    <h3>Heart Rate Analysis</h3>
-                    <p>${heartRate} bpm - ${hrStatus}</p>
-                </div>
+                // Analyze blood pressure
+                const bpValues = bloodPressure.split('/');
+                const systolic = parseInt(bpValues[0]);
+                const diastolic = parseInt(bpValues[1]);
                 
-                <div class="result-card">
-                    <h3>Sleep Analysis</h3>
-                    <p>${sleepHours} hours - ${sleepStatus}</p>
-                </div>
+                // Health status determination
+                let healthStatus = 'Good';
+                let bmiStatus = '';
                 
-                <div class="result-card">
-                    <h3>Exercise Analysis</h3>
-                    <p>${exerciseMinutes} minutes/day - ${exerciseStatus}</p>
-                </div>
+                if (bmi < 18.5) {
+                    bmiStatus = 'Underweight';
+                } else if (bmi >= 18.5 && bmi < 25) {
+                    bmiStatus = 'Normal weight';
+                } else if (bmi >= 25 && bmi < 30) {
+                    bmiStatus = 'Overweight';
+                } else {
+                    bmiStatus = 'Obese';
+                }
                 
-                <div class="result-card">
-                    <h3>Stress Analysis</h3>
-                    <p>Level ${stressLevel}/10 - ${stressStatus}</p>
-                </div>
-            `;
-            
-            document.getElementById('analysisResults').innerHTML = resultsHtml;
-            
-            // Generate suggestions based on analysis
-            generateSuggestions(bmiStatus, bpStatus, hrStatus, sleepStatus, exerciseStatus, stressStatus);
+                // Blood pressure status
+                let bpStatus = '';
+                if (systolic < 120 && diastolic < 80) {
+                    bpStatus = 'Normal';
+                } else if (systolic < 130 && diastolic < 80) {
+                    bpStatus = 'Elevated';
+                } else if (systolic < 140 || diastolic < 90) {
+                    bpStatus = 'Hypertension Stage 1';
+                } else {
+                    bpStatus = 'Hypertension Stage 2';
+                }
+                
+                // Heart rate status
+                let hrStatus = '';
+                if (heartRate < 60) {
+                    hrStatus = 'Bradycardia';
+                } else if (heartRate >= 60 && heartRate <= 100) {
+                    hrStatus = 'Normal';
+                } else {
+                    hrStatus = 'Tachycardia';
+                }
+                
+                // Sleep status
+                let sleepStatus = '';
+                if (sleepHours < 7) {
+                    sleepStatus = 'Insufficient sleep';
+                } else if (sleepHours >= 7 && sleepHours <= 9) {
+                    sleepStatus = 'Optimal sleep';
+                } else {
+                    sleepStatus = 'Excessive sleep';
+                }
+                
+                // Exercise status
+                let exerciseStatus = '';
+                if (exerciseMinutes < 30) {
+                    exerciseStatus = 'Insufficient exercise';
+                } else if (exerciseMinutes >= 30 && exerciseMinutes <= 60) {
+                    exerciseStatus = 'Moderate exercise';
+                } else {
+                    exerciseStatus = 'High exercise';
+                }
+                
+                // Stress status
+                let stressStatus = '';
+                if (stressLevel <= 3) {
+                    stressStatus = 'Low stress';
+                } else if (stressLevel <= 6) {
+                    stressStatus = 'Moderate stress';
+                } else {
+                    stressStatus = 'High stress';
+                }
+                
+                // Overall health score (simplified)
+                let healthScore = 100;
+                if (bmiStatus === 'Overweight' || bmiStatus === 'Obese') healthScore -= 10;
+                if (bpStatus !== 'Normal') healthScore -= 15;
+                if (hrStatus !== 'Normal') healthScore -= 10;
+                if (sleepStatus !== 'Optimal sleep') healthScore -= 10;
+                if (exerciseStatus === 'Insufficient exercise') healthScore -= 15;
+                if (stressStatus === 'High stress') healthScore -= 10;
+                
+                if (healthScore >= 80) {
+                    healthStatus = 'Excellent';
+                } else if (healthScore >= 60) {
+                    healthStatus = 'Good';
+                } else if (healthScore >= 40) {
+                    healthStatus = 'Fair';
+                } else {
+                    healthStatus = 'Poor';
+                }
+                
+                // Display results
+                const resultsHtml = `
+                    <div class="result-card">
+                        <h3>Overall Health Status: ${healthStatus}</h3>
+                        <p>Health Score: ${healthScore}/100</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>BMI Analysis</h3>
+                        <p>BMI: ${bmi.toFixed(1)} - ${bmiStatus}</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Blood Pressure Analysis</h3>
+                        <p>${systolic}/${diastolic} mmHg - ${bpStatus}</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Heart Rate Analysis</h3>
+                        <p>${heartRate} bpm - ${hrStatus}</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Sleep Analysis</h3>
+                        <p>${sleepHours} hours - ${sleepStatus}</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Exercise Analysis</h3>
+                        <p>${exerciseMinutes} minutes/day - ${exerciseStatus}</p>
+                    </div>
+                    
+                    <div class="result-card">
+                        <h3>Stress Analysis</h3>
+                        <p>Level ${stressLevel}/10 - ${stressStatus}</p>
+                    </div>
+                `;
+                
+                document.getElementById('analysisResults').innerHTML = resultsHtml;
+                
+                // Generate suggestions based on analysis
+                generateSuggestions(bmiStatus, bpStatus, hrStatus, sleepStatus, exerciseStatus, stressStatus);
+            }
         });
         
         // Generate health suggestions
@@ -717,36 +743,38 @@
         }
         
         // Health Log Management
-        document.getElementById('addLogBtn').addEventListener('click', function() {
-            const date = document.getElementById('logDate').value;
-            const activity = document.getElementById('logActivity').value;
-            const description = document.getElementById('logDescription').value;
-            
-            if (!date || !description) {
-                showNotification('Please fill in date and description', 'error');
-                return;
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'addLogBtn') {
+                const date = document.getElementById('logDate').value;
+                const activity = document.getElementById('logActivity').value;
+                const description = document.getElementById('logDescription').value;
+                
+                if (!date || !description) {
+                    showNotification('Please fill in date and description', 'error');
+                    return;
+                }
+                
+                // Create log entry
+                const logEntry = {
+                    id: Date.now(),
+                    date: date,
+                    activity: activity,
+                    description: description
+                };
+                
+                // Add to localStorage
+                let logs = JSON.parse(localStorage.getItem('healthLogs') || '[]');
+                logs.unshift(logEntry);
+                localStorage.setItem('healthLogs', JSON.stringify(logs));
+                
+                // Update display
+                displayHealthLogs();
+                
+                // Clear form
+                document.getElementById('logDescription').value = '';
+                
+                showNotification('Health log entry added successfully', 'success');
             }
-            
-            // Create log entry
-            const logEntry = {
-                id: Date.now(),
-                date: date,
-                activity: activity,
-                description: description
-            };
-            
-            // Add to localStorage
-            let logs = JSON.parse(localStorage.getItem('healthLogs') || '[]');
-            logs.unshift(logEntry);
-            localStorage.setItem('healthLogs', JSON.stringify(logs));
-            
-            // Update display
-            displayHealthLogs();
-            
-            // Clear form
-            document.getElementById('logDescription').value = '';
-            
-            showNotification('Health log entry added successfully', 'success');
         });
         
         // Display health logs
@@ -765,14 +793,28 @@
                         <div>${log.description}</div>
                     </div>
                     <div class="log-actions">
-                        <button class="btn btn-small btn-info" onclick="viewLog(${log.id})">View</button>
-                        <button class="btn btn-small btn-danger" onclick="deleteLog(${log.id})">Delete</button>
+                        <button class="btn btn-small btn-info" data-action="view" data-id="${log.id}">View</button>
+                        <button class="btn btn-small btn-danger" data-action="delete" data-id="${log.id}">Delete</button>
                     </div>
                 </div>
             `).join('');
             
             document.getElementById('healthLog').innerHTML = logsHtml;
         }
+        
+        // Handle log entry actions
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-small')) {
+                const action = e.target.getAttribute('data-action');
+                const id = parseInt(e.target.getAttribute('data-id'));
+                
+                if (action === 'view') {
+                    viewLog(id);
+                } else if (action === 'delete') {
+                    deleteLog(id);
+                }
+            }
+        });
         
         // Format date
         function formatDate(dateString) {
@@ -857,95 +899,97 @@
         }
         
         // Disease Risk Analysis
-        document.getElementById('analyzeRiskBtn').addEventListener('click', function() {
-            const familyHistory = document.getElementById('familyHistory').value;
-            const preExistingConditions = document.getElementById('preExistingConditions').value;
-            
-            // Simulated risk analysis based on inputs
-            const risks = [];
-            
-            if (familyHistory) {
-                const conditions = familyHistory.toLowerCase().split(',');
+        document.addEventListener('click', function(e) {
+            if (e.target.id === 'analyzeRiskBtn') {
+                const familyHistory = document.getElementById('familyHistory').value;
+                const preExistingConditions = document.getElementById('preExistingConditions').value;
                 
-                if (conditions.includes('diabetes')) {
-                    risks.push({
-                        condition: 'Type 2 Diabetes',
-                        risk: 'Moderate to High',
-                        description: 'Family history increases risk. Monitor blood sugar levels and maintain a healthy weight.'
-                    });
+                // Simulated risk analysis based on inputs
+                const risks = [];
+                
+                if (familyHistory) {
+                    const conditions = familyHistory.toLowerCase().split(',');
+                    
+                    if (conditions.includes('diabetes')) {
+                        risks.push({
+                            condition: 'Type 2 Diabetes',
+                            risk: 'Moderate to High',
+                            description: 'Family history increases risk. Monitor blood sugar levels and maintain a healthy weight.'
+                        });
+                    }
+                    
+                    if (conditions.includes('heart disease')) {
+                        risks.push({
+                            condition: 'Cardiovascular Disease',
+                            risk: 'Moderate to High',
+                            description: 'Family history is a significant risk factor. Regular check-ups and heart-healthy lifestyle recommended.'
+                        });
+                    }
+                    
+                    if (conditions.includes('hypertension')) {
+                        risks.push({
+                            condition: 'High Blood Pressure',
+                            risk: 'Moderate',
+                            description: 'Genetic predisposition may exist. Monitor blood pressure regularly and reduce sodium intake.'
+                        });
+                    }
                 }
                 
-                if (conditions.includes('heart disease')) {
-                    risks.push({
-                        condition: 'Cardiovascular Disease',
-                        risk: 'Moderate to High',
-                        description: 'Family history is a significant risk factor. Regular check-ups and heart-healthy lifestyle recommended.'
-                    });
+                if (preExistingConditions) {
+                    const conditions = preExistingConditions.toLowerCase().split(',');
+                    
+                    if (conditions.includes('hypertension')) {
+                        risks.push({
+                            condition: 'Heart Disease',
+                            risk: 'High',
+                            description: 'Existing hypertension increases risk of cardiovascular complications. Strict blood pressure control needed.'
+                        });
+                    }
+                    
+                    if (conditions.includes('asthma')) {
+                        risks.push({
+                            condition: 'Respiratory Infections',
+                            risk: 'Moderate',
+                            description: 'Asthma may increase susceptibility to respiratory complications. Keep condition well-managed.'
+                        });
+                    }
                 }
                 
-                if (conditions.includes('hypertension')) {
+                // Add general risks based on age (simplified)
+                const age = parseInt(document.getElementById('age').value);
+                if (age > 50) {
                     risks.push({
-                        condition: 'High Blood Pressure',
+                        condition: 'Age-related Conditions',
                         risk: 'Moderate',
-                        description: 'Genetic predisposition may exist. Monitor blood pressure regularly and reduce sodium intake.'
-                    });
-                }
-            }
-            
-            if (preExistingConditions) {
-                const conditions = preExistingConditions.toLowerCase().split(',');
-                
-                if (conditions.includes('hypertension')) {
-                    risks.push({
-                        condition: 'Heart Disease',
-                        risk: 'High',
-                        description: 'Existing hypertension increases risk of cardiovascular complications. Strict blood pressure control needed.'
+                        description: 'Increased risk of age-related conditions. Regular health screenings recommended.'
                     });
                 }
                 
-                if (conditions.includes('asthma')) {
-                    risks.push({
-                        condition: 'Respiratory Infections',
-                        risk: 'Moderate',
-                        description: 'Asthma may increase susceptibility to respiratory complications. Keep condition well-managed.'
-                    });
-                }
+                // Display risk analysis
+                const riskAlertsHtml = risks.length > 0 ? `
+                    <div class="risk-alert warning">
+                        <h3>Risk Analysis Complete</h3>
+                        <p>${risks.length} potential risk factors identified based on your information.</p>
+                    </div>
+                ` : `
+                    <div class="risk-alert info">
+                        <h3>Risk Analysis Complete</h3>
+                        <p>No significant risk factors identified based on the provided information.</p>
+                    </div>
+                `;
+                
+                document.getElementById('riskAlerts').innerHTML = riskAlertsHtml;
+                
+                const riskResultsHtml = risks.map(risk => `
+                    <div class="result-card">
+                        <h3>${risk.condition}</h3>
+                        <p>Risk Level: ${risk.risk}</p>
+                        <p>${risk.description}</p>
+                    </div>
+                `).join('');
+                
+                document.getElementById('riskResults').innerHTML = riskResultsHtml || '<p class="text-secondary">No specific risk factors identified based on the provided information.</p>';
             }
-            
-            // Add general risks based on age (simplified)
-            const age = parseInt(document.getElementById('age').value);
-            if (age > 50) {
-                risks.push({
-                    condition: 'Age-related Conditions',
-                    risk: 'Moderate',
-                    description: 'Increased risk of age-related conditions. Regular health screenings recommended.'
-                });
-            }
-            
-            // Display risk analysis
-            const riskAlertsHtml = risks.length > 0 ? `
-                <div class="risk-alert warning">
-                    <h3>Risk Analysis Complete</h3>
-                    <p>${risks.length} potential risk factors identified based on your information.</p>
-                </div>
-            ` : `
-                <div class="risk-alert info">
-                    <h3>Risk Analysis Complete</h3>
-                    <p>No significant risk factors identified based on the provided information.</p>
-                </div>
-            `;
-            
-            document.getElementById('riskAlerts').innerHTML = riskAlertsHtml;
-            
-            const riskResultsHtml = risks.map(risk => `
-                <div class="result-card">
-                    <h3>${risk.condition}</h3>
-                    <p>Risk Level: ${risk.risk}</p>
-                    <p>${risk.description}</p>
-                </div>
-            `).join('');
-            
-            document.getElementById('riskResults').innerHTML = riskResultsHtml || '<p class="text-secondary">No specific risk factors identified based on the provided information.</p>';
         });
         
         // Notification system
@@ -953,24 +997,6 @@
             const notification = document.createElement('div');
             notification.className = `notification ${type}`;
             notification.textContent = message;
-            
-            // Add notification styles
-            notification.style.position = 'fixed';
-            notification.style.top = '20px';
-            notification.style.right = '20px';
-            notification.style.padding = '15px 20px';
-            notification.style.borderRadius = '5px';
-            notification.style.color = 'white';
-            notification.style.zIndex = '1000';
-            notification.style.maxWidth = '300px';
-            
-            if (type === 'error') {
-                notification.style.backgroundColor = '#f44336';
-            } else if (type === 'success') {
-                notification.style.backgroundColor = '#4caf50';
-            } else {
-                notification.style.backgroundColor = '#2196f3';
-            }
             
             document.body.appendChild(notification);
             
@@ -986,7 +1012,7 @@
             displayHealthNews();
         });
     </script>
-<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Your Personal Health Analysis Tool","Analyze":"Analyze","Suggestions":"Suggestions","Health Log":"Health Log","News":"News","Risk Analysis":"Risk Analysis","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Health Data Analysis","Enter your health data for analysis:":"Enter your health data for analysis:","Age":"Age","Weight (kg)":"Weight (kg)","Height (cm)":"Height (cm)","Blood Pressure":"Blood Pressure","Heart Rate (bpm)":"Heart Rate (bpm)","Sleep Hours":"Sleep Hours","Exercise Minutes (per day)":"Exercise Minutes (per day)","Stress Level (1-10)":"Stress Level (1-10)","Analyze Health Data":"Analyze Health Data","Personalized Health Suggestions":"Personalized Health Suggestions","After analyzing your health data, personalized suggestions will appear here.":"After analyzing your health data, personalized suggestions will appear here.","Record your daily health activities:":"Record your daily health activities:","Date":"Date","Activity":"Activity","Exercise":"Exercise","Diet":"Diet","Sleep":"Sleep","Meditation":"Meditation","Other":"Other","Description":"Description","Add to Health Log":"Add to Health Log","Latest Health News":"Latest Health News","Disease Risk Analysis":"Disease Risk Analysis","Family History (comma-separated conditions)":"Family History (comma-separated conditions)","Pre-existing Conditions (comma-separated)":"Pre-existing Conditions (comma-separated)","Analyze Risks":"Analyze Risks","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.","Please fill in all fields":"Please fill in all fields","Normal weight":"Normal weight","Hypertension Stage 1":"Hypertension Stage 1","Hypertension Stage 2":"Hypertension Stage 2","Insufficient sleep":"Insufficient sleep","Optimal sleep":"Optimal sleep","Excessive sleep":"Excessive sleep","Insufficient exercise":"Insufficient exercise","Moderate exercise":"Moderate exercise","High exercise":"High exercise","Low stress":"Low stress","Moderate stress":"Moderate stress","High stress":"High stress","Consider increasing your calorie intake with nutrient-dense foods.":"Consider increasing your calorie intake with nutrient-dense foods.","Include strength training exercises to build muscle mass.":"Include strength training exercises to build muscle mass.","Focus on a balanced, calorie-controlled diet.":"Focus on a balanced, calorie-controlled diet.","Increase physical activity to at least 30 minutes daily.":"Increase physical activity to at least 30 minutes daily.","Consider consulting a nutritionist for personalized advice.":"Consider consulting a nutritionist for personalized advice.","Reduce sodium intake in your diet.":"Reduce sodium intake in your diet.","Incorporate more potassium-rich foods like bananas and spinach.":"Incorporate more potassium-rich foods like bananas and spinach.","Practice stress reduction techniques like meditation.":"Practice stress reduction techniques like meditation.","Limit alcohol consumption.":"Limit alcohol consumption.","Consult a healthcare provider for further evaluation.":"Consult a healthcare provider for further evaluation.","Avoid excessive caffeine and stimulants.":"Avoid excessive caffeine and stimulants.","Limit caffeine intake and practice relaxation techniques.":"Limit caffeine intake and practice relaxation techniques.","__title__":"AI Health Mentor - Your Personal Health Analysis Tool"},"zh-CN":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI健康导师 - 您的个人健康分析工具","Analyze":"分析","Suggestions":"建议","Health Log":"健康日志","News":"新闻","Risk Analysis":"风险分析","AI Health Mentor":"AI健康导师","Health Data Analysis":"健康数据分析","Enter your health data for analysis:":"请输入您的健康数据以进行分析：","Age":"年龄","Weight (kg)":"体重 (kg)","Height (cm)":"身高 (cm)","Blood Pressure":"血压","Heart Rate (bpm)":"心率 (bpm)","Sleep Hours":"睡眠小时数","Exercise Minutes (per day)":"运动分钟数（每天）","Stress Level (1-10)":"压力水平（1-10）","Analyze Health Data":"分析健康数据","Personalized Health Suggestions":"个性化健康建议","After analyzing your health data, personalized suggestions will appear here.":"在分析完您的健康数据后，个性化建议将在此显示。","Record your daily health activities:":"记录您的日常健康活动：","Date":"日期","Activity":"活动","Exercise":"锻炼","Diet":"饮食","Sleep":"睡眠","Meditation":"冥想","Other":"其他","Description":"描述","Add to Health Log":"添加到健康日志","Latest Health News":"最新健康新闻","Disease Risk Analysis":"疾病风险评估","Family History (comma-separated conditions)":"家族病史（逗号分隔的条件）","Pre-existing Conditions (comma-separated)":"现有疾病（逗号分隔）","Analyze Risks":"分析风险","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI健康导师。您的健康之旅从这里开始。","Please fill in all fields":"请填写所有字段","Normal weight":"正常体重","Hypertension Stage 1":"高血压第一阶段","Hypertension Stage 2":"高血压第二阶段","Insufficient sleep":"睡眠不足","Optimal sleep":"最佳睡眠","Excessive sleep":"睡眠过多","Insufficient exercise":"锻炼不足","Moderate exercise":"中等锻炼","High exercise":"高锻炼","Low stress":"低压力","Moderate stress":"中等压力","High stress":"高压力","Consider increasing your calorie intake with nutrient-dense foods.":"考虑通过富含营养的食物增加您的卡路里摄入量。","Include strength training exercises to build muscle mass.":"包括力量训练来增加肌肉量。","Focus on a balanced, calorie-controlled diet.":"专注于平衡的、卡路里控制的饮食。","Increase physical activity to at least 30 minutes daily.":"每天至少增加30分钟的体力活动。","Consider consulting a nutritionist for personalized advice.":"考虑咨询营养师以获得个性化建议。","Reduce sodium intake in your diet.":"减少您饮食中的钠摄入量。","Incorporate more potassium-rich foods like bananas and spinach.":"包含更多富含钾的食物，如香蕉和菠菜。","Practice stress reduction techniques like meditation.":"练习如冥想等减压技巧。","Limit alcohol consumption.":"限制酒精摄入。","Consult a healthcare provider for further evaluation.":"咨询医疗保健提供者以进行进一步评估。","Avoid excessive caffeine and stimulants.":"避免过量摄入咖啡因和刺激性物质。","Limit caffeine intake and practice relaxation techniques.":"限制咖啡因摄入并练习放松技巧。","__title__":"AI健康导师 - 您的个人健康分析工具"},"ja":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - あなたのパーソナルヘルス分析ツール","Analyze":"分析","Suggestions":"提案","Health Log":"ヘルスログ","News":"ニュース","Risk Analysis":"リスク分析","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"ヘルスデータ分析","Enter your health data for analysis:":"分析のためのヘルスデータを入力してください：","Age":"年齢","Weight (kg)":"体重(kg)","Height (cm)":"身長(cm)","Blood Pressure":"血圧","Heart Rate (bpm)":"心拍数(bpm)","Sleep Hours":"睡眠時間","Exercise Minutes (per day)":"運動時間（一日あたり）","Stress Level (1-10)":"ストレスレベル（1-10）","Analyze Health Data":"ヘルスデータを分析","Personalized Health Suggestions":"パーソナライズドヘルス提案","After analyzing your health data, personalized suggestions will appear here.":"あなたのヘルスデータを分析した後、パーソナライズド提案がここに表示されます。","Record your daily health activities:":"日々のヘルス活動を記録してください：","Date":"日付","Activity":"活動","Exercise":"運動","Diet":"食事","Sleep":"睡眠","Meditation":"瞑想","Other":"その他","Description":"説明","Add to Health Log":"ヘルスログに追加","Latest Health News":"最新のヘルスニュース","Disease Risk Analysis":"病気リスク分析","Family History (comma-separated conditions)":"家族歴（コンマ区切りの状態）","Pre-existing Conditions (comma-separated)":"既存の状態（コンマ区切りの状態）","Analyze Risks":"リスクを分析","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"© 2023 AI Health Mentor. あなたのウェルネスの旅はここから始まります。","Please fill in all fields":"すべてのフィールドを入力してください","Normal weight":"標準体重","Hypertension Stage 1":"高血圧第1期","Hypertension Stage 2":"高血圧第2期","Insufficient sleep":"睡眠不足","Optimal sleep":"最適な睡眠","Excessive sleep":"睡眠過多","Insufficient exercise":"運動不足","Moderate exercise":"適度な運動","High exercise":"高い運動","Low stress":"低いストレス","Moderate stress":"適度なストレス","High stress":"高いストレス","Consider increasing your calorie intake with nutrient-dense foods.":"栄養豊富な食品を取り入れることでカロリー摂取量を増やすことを検討してください。","Include strength training exercises to build muscle mass.":"筋肉量を増やすために筋力トレーニングを取り入れることを検討してください。","Focus on a balanced, calorie-controlled diet.":"バランスの取れた、カロリー制御された食事に焦点を当ててください。","Increase physical activity to at least 30 minutes daily.":"一日あたり少なくとも30分の運動量を増やしてください。","Consider consulting a nutritionist for personalized advice.":"パーソナライズドアドバイスのために栄養士に相談することを検討してください。","Reduce sodium intake in your diet.":"食事からナトリウム摂取量を減らしてください。","Incorporate more potassium-rich foods like bananas and spinach.":"バナナやキノコなどのカリウム豊富な食品を取り入れることを検討してください。","Practice stress reduction techniques like meditation.":"瞑想などのストレス軽減技術を実践してください。","Limit alcohol consumption.":"アルコール摂取量を制限してください。","Consult a healthcare provider for further evaluation.":"さらなる評価のために医療提供者に相談してください。","Avoid excessive caffeine and stimulants.":"過剰なカフェインや刺激物を避けてください。","Limit caffeine intake and practice relaxation techniques.":"カフェイン摂取量を制限し、リラクゼーション技術を実践してください。","__title__":"AI Health Mentor - あなたのパーソナルヘルス分析ツール"},"ko":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - 개인 건강 분석 도구","Analyze":"분석","Suggestions":"추천","Health Log":"건강 일지","News":"뉴스","Risk Analysis":"위험 분석","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"건강 데이터 분석","Enter your health data for analysis:":"분석을 위해 건강 데이터를 입력하세요:","Age":"연령","Weight (kg)":"체중 (kg)","Height (cm)":"신장 (cm)","Blood Pressure":"혈압","Heart Rate (bpm)":"심장율 (bpm)","Sleep Hours":"수면 시간","Exercise Minutes (per day)":"운동 분 (매일)","Stress Level (1-10)":"스트레스 수준 (1-10)","Analyze Health Data":"건강 데이터 분석","Personalized Health Suggestions":"개인 맞춤형 건강 추천","After analyzing your health data, personalized suggestions will appear here.":"건강 데이터를 분석한 후, 개인 맞춤형 추천이 여기에 표시됩니다.","Record your daily health activities:":"매일의 건강 활동을 기록하세요:","Date":"날짜","Activity":"활동","Exercise":"운동","Diet":"식단","Sleep":"수면","Meditation":"정진","Other":"기타","Description":"설명","Add to Health Log":"건강 일지에 추가","Latest Health News":"최신 건강 뉴스","Disease Risk Analysis":"질환 위험 분석","Family History (comma-separated conditions)":"가족력 (콤마로 구분된 상태)","Pre-existing Conditions (comma-separated)":"이전 상태(콤마로 구분된 상태)","Analyze Risks":"위험 분석","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. 건강한 여정은 여기서 시작됩니다.","Please fill in all fields":"모든 필드를 입력하십시오","Normal weight":"표준 체중","Hypertension Stage 1":"고혈압 1단계","Hypertension Stage 2":"고혈압 2단계","Insufficient sleep":"수면 부족","Optimal sleep":"적절한 수면","Excessive sleep":"과도한 수면","Insufficient exercise":"운동 부족","Moderate exercise":"보통 운동","High exercise":"고强度的 운동","Low stress":"낮은 스트레스","Moderate stress":"보통 스트레스","High stress":"높은 스트레스","Consider increasing your calorie intake with nutrient-dense foods.":"영양소가 풍부한 식품을 통해 칼로리 섭취를 늘리는 것을 고려하세요.","Include strength training exercises to build muscle mass.":" 근력 훈련을 포함하여 근육량을 늘리는 것을 고려하세요.","Focus on a balanced, calorie-controlled diet.":" 균형 잡힌 칼로리 제어 식단에 집중하세요.","Increase physical activity to at least 30 minutes daily.":"매일 최소 30분의 신체 활동을 증가하세요.","Consider consulting a nutritionist for personalized advice.":"개인 맞춤형 조언을 받기 위해 영양사와 상담을 고려하세요.","Reduce sodium intake in your diet.":"식단에서 나트륨 섭취를 줄이세요.","Incorporate more potassium-rich foods like bananas and spinach.":"바나나와 채찍채쌀 같은 칼륨이 풍부한 식품을 더 포함하세요.","Practice stress reduction techniques like meditation.":"정진과 같은 스트레스 감소 기술을 실천하세요.","Limit alcohol consumption.":"알코올 섭취를 제한하세요.","Consult a healthcare provider for further evaluation.":"추가 평가를 위해 의료 전문가와 상담하세요.","Avoid excessive caffeine and stimulants.":"과도한 카페인과 자극제를 피하세요.","Limit caffeine intake and practice relaxation techniques.":"카페인 섭취를 제한하고 쉼을 취하는 기술을 실천하세요.","__title__":"AI Health Mentor - 개인 건강 분석 도구"},"fr":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Votre Outil d'Analyse Personnelle de Santé","Analyze":"Analyser","Suggestions":"Suggestions","Health Log":"Journal de Santé","News":"Nouvelles","Risk Analysis":"Analyse des Risques","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Analyse des Données de Santé","Enter your health data for analysis:":"Entrez vos données de santé pour l'analyse :","Age":"Âge","Weight (kg)":"Poids (kg)","Height (cm)":"Taille (cm)","Blood Pressure":"Pression Artérielle","Heart Rate (bpm)":"Fréquence Cardiaque (bpm)","Sleep Hours":"Heures de Sommeil","Exercise Minutes (per day)":"Minutes d'Exercice (par jour)","Stress Level (1-10)":"Niveau de Stress (1-10)","Analyze Health Data":"Analyser les Données de Santé","Personalized Health Suggestions":"Suggestions de Santé Personnalisées","After analyzing your health data, personalized suggestions will appear here.":"Après l'analyse de vos données de santé, des suggestions personnalisées apparaîtront ici.","Record your daily health activities:":"Enregistrez vos activités de santé quotidiennes :","Date":"Date","Activity":"Activité","Exercise":"Exercice","Diet":"Diète","Sleep":"Sommeil","Meditation":"Méditation","Other":"Autre","Description":"Description","Add to Health Log":"Ajouter au Journal de Santé","Latest Health News":"Dernières Nouvelles de Santé","Disease Risk Analysis":"Analyse des Risques de Maladies","Family History (comma-separated conditions)":"Histoire Familiale (conditions séparées par des virgules)","Pre-existing Conditions (comma-separated)":"Maladies Préexistantes (conditions séparées par des virgules)","Analyze Risks":"Analyser les Risques","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Votre voyage vers le bien-être commence ici.","Please fill in all fields":"Veuillez remplir tous les champs","Normal weight":"Poids Normal","Hypertension Stage 1":"Stade 1 d'Hypertension","Hypertension Stage 2":"Stade 2 d'Hypertension","Insufficient sleep":"Sommeil Insuffisant","Optimal sleep":"Sommeil Optimal","Excessive sleep":"Sommeil Excessif","Insufficient exercise":"Exercice Insuffisant","Moderate exercise":"Exercice Moderé","High exercise":"Exercice Intensif","Low stress":"Stress Faible","Moderate stress":"Stress Modéré","High stress":"Stress Élevé","Consider increasing your calorie intake with nutrient-dense foods.":"Considérez d'augmenter votre apport calorique avec des aliments riches en nutriments.","Include strength training exercises to build muscle mass.":"Incluez des exercices de musculation pour développer la masse musculaire.","Focus on a balanced, calorie-controlled diet.":"Focalisez-vous sur une alimentation équilibrée et contrôlée en calories.","Increase physical activity to at least 30 minutes daily.":"Augmentez votre activité physique à au moins 30 minutes par jour.","Consider consulting a nutritionist for personalized advice.":"Considérez de consulter un nutritionniste pour des conseils personnalisés.","Reduce sodium intake in your diet.":"Réduisez votre apport en sodium dans votre alimentation.","Incorporate more potassium-rich foods like bananas and spinach.":"Incluez plus de aliments riches en potassium comme des bananes et du épinards.","Practice stress reduction techniques like meditation.":"Pratiquez des techniques de réduction du stress comme la méditation.","Limit alcohol consumption.":"Limitez la consommation d'alcool.","Consult a healthcare provider for further evaluation.":"Consultez un professionnel de la santé pour une évaluation supplémentaire.","Avoid excessive caffeine and stimulants.":"Évitez la caféine et les stimulants en excès.","Limit caffeine intake and practice relaxation techniques.":"Limitez l'apport en caféine et pratiquez des techniques de relaxation.","__title__":"AI Health Mentor - Votre Outil d'Analyse Personnelle de Santé"},"de":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Ihr persönlicher Gesundheitsanalyse-Tool","Analyze":"Analyisieren","Suggestions":"Vorschläge","Health Log":"Gesundheitsprotokoll","News":"Nachrichten","Risk Analysis":"Risikoanalyse","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Gesundheitsdatenanalyse","Enter your health data for analysis:":"Geben Sie Ihre Gesundheitsdaten für die Analyse ein:","Age":"Alter","Weight (kg)":"Gewicht (kg)","Height (cm)":"Größe (cm)","Blood Pressure":"Blutdruck","Heart Rate (bpm)":"Herzschlag (bpm)","Sleep Hours":"Schlafstunden","Exercise Minutes (per day)":"Sportminuten (pro Tag)","Stress Level (1-10)":"Stresslevel (1-10)","Analyze Health Data":"Gesundheitsdaten analysieren","Personalized Health Suggestions":"Personalisierte Gesundheitsvorschläge","After analyzing your health data, personalized suggestions will appear here.":"Nach der Analyse Ihrer Gesundheitsdaten werden hier personalisierte Vorschläge angezeigt.","Record your daily health activities:":"Protokollieren Sie Ihre täglichen Gesundheitsaktivitäten:","Date":"Datum","Activity":"Aktivität","Exercise":"Sport","Diet":"Ernährung","Sleep":"Schlaf","Meditation":"Meditation","Other":"Andere","Description":"Beschreibung","Add to Health Log":"Zur Gesundheitsakte hinzufügen","Latest Health News":"Neueste Gesundheitsnachrichten","Disease Risk Analysis":"Krankheitsrisikoanalyse","Family History (comma-separated conditions)":"Familienanamnese (durch Komma getrennte Erkrankungen)","Pre-existing Conditions (comma-separated)":"Vorbestehende Erkrankungen (durch Komma getrennt)","Analyze Risks":"Risiken analysieren","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Ihr Weg zum Wohlbefinden beginnt hier.","Please fill in all fields":"Bitte füllen Sie alle Felder aus","Normal weight":"Normales Gewicht","Hypertension Stage 1":"Hypertonie Stadium 1","Hypertension Stage 2":"Hypertonie Stadium 2","Insufficient sleep":"Unzureichender Schlaf","Optimal sleep":"Optimaler Schlaf","Excessive sleep":"Übermäßiger Schlaf","Insufficient exercise":"Unzureichende körperliche Aktivität","Moderate exercise":"Mäßige körperliche Aktivität","High exercise":"Hohe körperliche Aktivität","Low stress":"Niedriger Stress","Moderate stress":"Mäßiger Stress","High stress":"Hoher Stress","Consider increasing your calorie intake with nutrient-dense foods.":"Überlegen Sie, Ihre Kalorienaufnahme mit nährstoffreichen Lebensmitteln zu erhöhen.","Include strength training exercises to build muscle mass.":"Schließen Sie Krafttraining in Ihre Übungsroutine ein, um Muskelmasse aufzubauen.","Focus on a balanced, calorie-controlled diet.":"Setzen Sie auf eine ausgewogene, kaloriengehaltige Ernährung.","Increase physical activity to at least 30 minutes daily.":"Erhöhen Sie Ihre körperliche Aktivität auf mindestens 30 Minuten täglich.","Consider consulting a nutritionist for personalized advice.":"Berücksichtigen Sie eine Beratung durch einen Ernährungsberater für personalisierte Ratschläge.","Reduce sodium intake in your diet.":"Verringern Sie den Salzkonsum in Ihrer Ernährung.","Incorporate more potassium-rich foods like bananas and spinach.":"Integrieren Sie mehr kaliumreiche Lebensmittel wie Bananen und Spinat.","Practice stress reduction techniques like meditation.":"Praktizieren Sie Stressreduktionsmethoden wie Meditation.","Limit alcohol consumption.":"Beschränken Sie den Alkoholkonsum.","Consult a healthcare provider for further evaluation.":"Beraten Sie sich mit einem medizinischen Fachmann für weitere Bewertung.","Avoid excessive caffeine and stimulants.":"Vermeiden Sie übermäßigen Kaffeeinabus und Stimulanzien.","Limit caffeine intake and practice relaxation techniques.":"Beschränken Sie den Koffeinkonsum und praktizieren Sie Entspannungstechniken.","__title__":"AI Health Mentor - Ihr persönlicher Gesundheitsanalyse-Tool"},"ru":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Ваш личный инструмент анализа здоровья","Analyze":"Анализировать","Suggestions":"Рекомендации","Health Log":"Здоровье","News":"Новости","Risk Analysis":"Анализ риска","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Анализ данных здоровья","Enter your health data for analysis:":"Введите свои данные о здоровье для анализа:","Age":"Возраст","Weight (kg)":"Вес (кг)","Height (cm)":"Рост (см)","Blood Pressure":"Давление крови","Heart Rate (bpm)":"Частота сердечных сокращений (уд/мин)","Sleep Hours":"Часы сна","Exercise Minutes (per day)":"Минуты физических упражнений (в день)","Stress Level (1-10)":"Уровень стресса (1-10)","Analyze Health Data":"Анализировать данные здоровья","Personalized Health Suggestions":"Персонализированные рекомендации по здоровью","After analyzing your health data, personalized suggestions will appear here.":"После анализа ваших данных о здоровье здесь появятся персонализированные рекомендации.","Record your daily health activities:":"Записывайте свои ежедневные здоровые действия:","Date":"Дата","Activity":"Деятельность","Exercise":"Упражнения","Diet":"Диета","Sleep":"Сон","Meditation":"Мeditation","Other":"Другое","Description":"Описание","Add to Health Log":"Добавить в журнал здоровья","Latest Health News":"Новые новости о здоровье","Disease Risk Analysis":"Анализ риска заболевания","Family History (comma-separated conditions)":"Семейный анамнез (условия, разделенные запятыми)","Pre-existing Conditions (comma-separated)":"Пред-existing Conditions (comma-separated)","Analyze Risks":"Анализировать риски","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Ваше путешествие по пути к благополучию начинается здесь.","Please fill in all fields":"Пожалуйста, заполните все поля","Normal weight":"Нормальный вес","Hypertension Stage 1":"1-я стадия гипертонии","Hypertension Stage 2":"2-я стадия гипертонии","Insufficient sleep":"Недостаточный сон","Optimal sleep":"Оптимальный сон","Excessive sleep":" 超","Insufficient exercise":"Недостаточные физические упражнения","Moderate exercise":"Средняя физическая нагрузка","High exercise":"Высокая физическая нагрузка","Low stress":"Низкий уровень стресса","Moderate stress":"Средний уровень стресса","High stress":"Высокий уровень стресса","Consider increasing your calorie intake with nutrient-dense foods.":"Разместите увеличение потребления калорий с высоким содержанием питательных веществ.","Include strength training exercises to build muscle mass.":"Включите силовые тренировки для наращивания мышечной массы.","Focus on a balanced, calorie-controlled diet.":"Фокусируйтесь на сбалансированной, контролируемой по калориям диете.","Increase physical activity to at least 30 minutes daily.":"Увеличьте физическую активность до至少每天 30 минут.","Consider consulting a nutritionist for personalized advice.":"Рассмотрите возможность консультации с нутрициологом для получения индивидуальных рекомендаций.","Reduce sodium intake in your diet.":"Уменьшите потребление натрия в рационе.","Incorporate more potassium-rich foods like bananas and spinach.":"Включите в рацион больше продуктов, богатых калием, например, бананы и шпинат.","Practice stress reduction techniques like meditation.":"Примените техники уменьшения стресса, такие как медитация.","Limit alcohol consumption.":"Ограничьте потребление алкоголя.","Consult a healthcare provider for further evaluation.":"Консультируйтесь с медицинским работником для дальнейшей оценки.","Avoid excessive caffeine and stimulants.":"Избегайте чрезмерного потребления кофеина и стимуляторов.","Limit caffeine intake and practice relaxation techniques.":"Ограничьте потребление кофеина и применяйте техники релаксации.","__title__":"AI Health Mentor - Ваш личный инструмент анализа здоровья"},"pt":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Seu Ferramenta de Análise de Saúde Pessoal","Analyze":"Analisar","Suggestions":"Sugestões","Health Log":"Diário de Saúde","News":"Notícias","Risk Analysis":"Análise de Riscos","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Análise de Dados de Saúde","Enter your health data for analysis:":"Insira seus dados de saúde para análise:","Age":"Idade","Weight (kg)":"Peso (kg)","Height (cm)":"Altura (cm)","Blood Pressure":"Pressão Arterial","Heart Rate (bpm)":"Frequência Cardíaca (bpm)","Sleep Hours":"Horas de Sono","Exercise Minutes (per day)":"Minutos de Exercício (por dia)","Stress Level (1-10)":"Nível de Estresse (1-10)","Analyze Health Data":"Analisar Dados de Saúde","Personalized Health Suggestions":"Sugestões de Saúde Personalizadas","After analyzing your health data, personalized suggestions will appear here.":"Após analisar seus dados de saúde, sugestões personalizadas aparecerão aqui.","Record your daily health activities:":"Registre suas atividades diárias de saúde:","Date":"Data","Activity":"Atividade","Exercise":"Exercício","Diet":"Dieta","Sleep":"Sono","Meditation":"Meditação","Other":"Outro","Description":"Descrição","Add to Health Log":"Adicionar ao Diário de Saúde","Latest Health News":"Últimas Notícias de Saúde","Disease Risk Analysis":"Análise de Risco de Doença","Family History (comma-separated conditions)":"Histórico Familiar (condições separadas por vírgula)","Pre-existing Conditions (comma-separated)":"Condições Pré-existentes (condições separadas por vírgula)","Analyze Risks":"Analisar Riscos","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Sua jornada de bem-estar começa aqui.","Please fill in all fields":"Por favor, preencha todos os campos","Normal weight":"Peso normal","Hypertension Stage 1":"Estágio 1 de Hipertensão","Hypertension Stage 2":"Estágio 2 de Hipertensão","Insufficient sleep":"Sono insuficiente","Optimal sleep":"Sono ótimo","Excessive sleep":"Sono excessivo","Insufficient exercise":"Exercício insuficiente","Moderate exercise":"Exercício moderado","High exercise":"Exercício intenso","Low stress":"Estresse baixo","Moderate stress":"Estresse moderado","High stress":"Estresse alto","Consider increasing your calorie intake with nutrient-dense foods.":"Considere aumentar sua ingestão calórica com alimentos densos em nutrientes.","Include strength training exercises to build muscle mass.":"Inclua exercícios de força para construir massa muscular.","Focus on a balanced, calorie-controlled diet.":"Foco em uma dieta equilibrada, controlada em calorias.","Increase physical activity to at least 30 minutes daily.":"Aumente a atividade física para pelo menos 30 minutos diários.","Consider consulting a nutritionist for personalized advice.":"Considere consultar um nutricionista para obter orientações personalizadas.","Reduce sodium intake in your diet.":"Reduza a ingestão de sódio em sua dieta.","Incorporate more potassium-rich foods like bananas and spinach.":"Inclua mais alimentos ricos em potássio, como bananas e espinafre.","Practice stress reduction techniques like meditation.":"Pratique técnicas de redução do estresse, como a meditação.","Limit alcohol consumption.":"Limite o consumo de álcool.","Consult a healthcare provider for further evaluation.":"Consulte um prestador de serviços de saúde para uma avaliação adicional.","Avoid excessive caffeine and stimulants.":"Evite cafeína e estimulantes em excesso.","Limit caffeine intake and practice relaxation techniques.":"Limite a ingestão de cafeína e pratique técnicas de relaxamento.","__title__":"AI Health Mentor - Seu Ferramenta de Análise de Saúde Pessoal"},"ar":{"AI Health Mentor - Your Personal Health Analysis Tool":"مدير صحة الذكاء الاصطناعي - أداة تحليل صحة شخصيةك","Analyze":"تحليل","Suggestions":"إقتراحات","Health Log":"سجل الصحة","News":"أخبار","Risk Analysis":"تحليل المخاطر","AI Health Mentor":"مدير صحة الذكاء الاصطناعي","Health Data Analysis":"تحليل بيانات الصحة","Enter your health data for analysis:":"أدخل بيانات صحتك لتحليلها:","Age":"العمر","Weight (kg)":"الوزن (كجم)","Height (cm)":"الطول (سم)","Blood Pressure":"ضغط الدم","Heart Rate (bpm)":"سرعة ضربات القلب (بص)","Sleep Hours":"ساعات النوم","Exercise Minutes (per day)":"دقائق التمرين (كل يوم)","Stress Level (1-10)":"مستوى التوتر (1-10)","Analyze Health Data":"تحليل بيانات الصحة","Personalized Health Suggestions":"إقتراحات صحية مخصصة","After analyzing your health data, personalized suggestions will appear here.":"بعد تحليل بيانات صحتك، سيظهر هنا إقتراحات مخصصة.","Record your daily health activities:":"سجل أنشطتك الصحية اليومية:","Date":"التاريخ","Activity":"النشاط","Exercise":"التمرين","Diet":"النظام الغذائي","Sleep":"النوم","Meditation":"الاسترخاء","Other":"آخر","Description":"الوصف","Add to Health Log":"إضافة إلى سجل الصحة","Latest Health News":"أحدث أخبار الصحة","Disease Risk Analysis":"تحليل مخاطر المرض","Family History (comma-separated conditions)":"تاريخ عائلي (مفصول بالكوما أمراض)","Pre-existing Conditions (comma-separated)":"ظروف مسبقة (مفصولة بالكوما)","Analyze Risks":"تحليل المخاطر","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 مدير صحة الذكاء الاصطناعي. رحلتك الصحية تبدأ هنا.","Please fill in all fields":"يرجى ملء جميع الحقول","Normal weight":"وزن طبيعي","Hypertension Stage 1":"مرحلة ارتفاع ضغط الدم 1","Hypertension Stage 2":"مرحلة ارتفاع ضغط الدم 2","Insufficient sleep":"نوم غير كافي","Optimal sleep":"نوم مثالي","Excessive sleep":"نوم زائد","Insufficient exercise":"تمارين غير كافية","Moderate exercise":"تمارين معتدلة","High exercise":"تمارين عالية","Low stress":"توتر منخفض","Moderate stress":"توتر معتدل","High stress":"توتر عالي","Consider increasing your calorie intake with nutrient-dense foods.":"خذ في الاعتبار زيادة استهلاكك للطاقة من خلال الأطعمة الغنية بالمواد الغذائية.","Include strength training exercises to build muscle mass.":"تضمين تمارين القوة لبناء كتلة العضلات.","Focus on a balanced, calorie-controlled diet.":"ركز على نظام غذائي متوازن، وضبط السعرات الحرارية.","Increase physical activity to at least 30 minutes daily.":"زيادة النشاط البدني إلى 30 دقيقة على الأقل يوميًا.","Consider consulting a nutritionist for personalized advice.":"خذ في الاعتبار استشارة خبير تغذية للحصول على نصائح مخصصة.","Reduce sodium intake in your diet.":"تقليل استهلاك الصوديوم في النظام الغذائي.","Incorporate more potassium-rich foods like bananas and spinach.":"تضمين المزيد من الأطعمة الغنية بالبوتاسيوم مثل الموز والسبانخ.","Practice stress reduction techniques like meditation.":"تطبيق تقنيات تقليل التوتر مثل التأمل.","Limit alcohol consumption.":"تقليل استهلاك الكحول.","Consult a healthcare provider for further evaluation.":"استشارة مقدم الرعاية الصحية للاختبار الإضافي.","Avoid excessive caffeine and stimulants.":"تجنب الكافيين والمحفزات الزائدة.","Limit caffeine intake and practice relaxation techniques.":"تقليل استهلاك الكافيين وتطبيق تقنيات الاسترخاء.","__title__":"مدير صحة الذكاء الاصطناعي - أداة تحليل صحة شخصيةك"},"id":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Alat Analisis Kesehatan Pribadi Anda","Analyze":"Menganalisis","Suggestions":"Saran","Health Log":"Catatan Kesehatan","News":"Berita","Risk Analysis":"Analisis Risiko","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Analisis Data Kesehatan","Enter your health data for analysis:":"Masukkan data kesehatan Anda untuk analisis:","Age":"Usia","Weight (kg)":"Berat (kg)","Height (cm)":"Tinggi (cm)","Blood Pressure":"Tekanan Darah","Heart Rate (bpm)":"Denyut Jantung (bpm)","Sleep Hours":"Jam Tidur","Exercise Minutes (per day)":"Menit Olahraga (per hari)","Stress Level (1-10)":"Tingkat Stres (1-10)","Analyze Health Data":"Menganalisis Data Kesehatan","Personalized Health Suggestions":"Saran Kesehatan Personal","After analyzing your health data, personalized suggestions will appear here.":"Setelah menganalisis data kesehatan Anda, saran personal akan muncul di sini.","Record your daily health activities:":"Catat aktivitas kesehatan harian Anda:","Date":"Tanggal","Activity":"Aktivitas","Exercise":"Olahraga","Diet":"Diet","Sleep":"Tidur","Meditation":"Mediasi","Other":"Lainnya","Description":"Deskripsi","Add to Health Log":"Tambahkan ke Catatan Kesehatan","Latest Health News":"Berita Kesehatan Terbaru","Disease Risk Analysis":"Analisis Risiko Penyakit","Family History (comma-separated conditions)":"Riwayat Keluarga (kondisi yang dipisahkan koma)","Pre-existing Conditions (comma-separated)":"Kondisi yang Sudah Ada (dipisahkan koma)","Analyze Risks":"Menganalisis Risiko","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Perjalanan kesehatan Anda dimulai di sini.","Please fill in all fields":"Silakan isi semua kolom","Normal weight":"Berat normal","Hypertension Stage 1":"Hipertensi Tahap 1","Hypertension Stage 2":"Hipertensi Tahap 2","Insufficient sleep":"Tidur tidak cukup","Optimal sleep":"Tidur optimal","Excessive sleep":"Tidur berlebihan","Insufficient exercise":"Olahraga tidak cukup","Moderate exercise":"Olahraga sedang","High exercise":"Olahraga intens","Low stress":"Strendah","Moderate stress":"Stres sedang","High stress":"Stres tinggi","Consider increasing your calorie intake with nutrient-dense foods.":"Pertimbangkan untuk meningkatkan asupan kalori Anda dengan makanan kaya nutrisi.","Include strength training exercises to build muscle mass.":"Sertakan latihan kekuatan untuk membangun massa otot.","Focus on a balanced, calorie-controlled diet.":"Fokus pada diet seimbang dan terkontrol kalori.","Increase physical activity to at least 30 minutes daily.":"Tingkatkan aktivitas fisik setidaknya 30 menit sehari.","Consider consulting a nutritionist for personalized advice.":"Pertimbangkan untuk berkonsultasi dengan ahli gizi untuk saran personal.","Reduce sodium intake in your diet.":"Kurangi asupan natrium dalam diet Anda.","Incorporate more potassium-rich foods like bananas and spinach.":"Sertakan lebih banyak makanan kaya kalium seperti pisang dan bayam.","Practice stress reduction techniques like meditation.":"Praktikkan teknik pengurangan stres seperti mediasi.","Limit alcohol consumption.":"Batasi konsumsi alkohol.","Consult a healthcare provider for further evaluation.":"Konsultasikan dengan penyedia layanan kesehatan untuk evaluasi lebih lanjut.","Avoid excessive caffeine and stimulants.":"Hindari kafein dan stimulan berlebihan.","Limit caffeine intake and practice relaxation techniques.":"Batasi asupan kafein dan praktikkan teknik relaksasi.","__title__":"AI Health Mentor - Alat Analisis Kesehatan Pribadi Anda"},"vi":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Công cụ Phân tích Sức khỏe Cá nhân của Bạn","Analyze":"Phân tích","Suggestions":"Đề xuất","Health Log":"Nhật ký Sức khỏe","News":"Tin tức","Risk Analysis":"Phân tích Rủi ro","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Phân tích Dữ liệu Sức khỏe","Enter your health data for analysis:":"Nhập dữ liệu sức khỏe của bạn để phân tích:","Age":"Tuổi","Weight (kg)":"Cân nặng (kg)","Height (cm)":"Chiều cao (cm)","Blood Pressure":"Huyết áp","Heart Rate (bpm)":"Nhịp tim (lần/phút)","Sleep Hours":"Giờ ngủ","Exercise Minutes (per day)":"Phút tập thể dục (mỗi ngày)","Stress Level (1-10)":"Mức độ căng thẳng (1-10)","Analyze Health Data":"Phân tích Dữ liệu Sức khỏe","Personalized Health Suggestions":"Đề xuất Sức khỏe Cá nhân","After analyzing your health data, personalized suggestions will appear here.":"Sau khi phân tích dữ liệu sức khỏe của bạn, các đề xuất cá nhân sẽ xuất hiện ở đây.","Record your daily health activities:":"Ghi lại các hoạt động sức khỏe hàng ngày của bạn:","Date":"Ngày","Activity":"Hoạt động","Exercise":"Tập thể dục","Diet":"Chế độ ăn","Sleep":"Ngủ","Meditation":"Thiền","Other":"Khác","Description":"Mô tả","Add to Health Log":"Thêm vào Nhật ký Sức khỏe","Latest Health News":"Tin tức Sức khỏe Mới nhất","Disease Risk Analysis":"Phân tích Rủi ro Bệnh tật","Family History (comma-separated conditions)":"Tiền sử gia đình (các bệnh cách nhau bằng dấu phẩy)","Pre-existing Conditions (comma-separated)":"Tình trạng bệnh hiện có (các bệnh cách nhau bằng dấu phẩy)","Analyze Risks":"Phân tích Rủi ro","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Hành trình sức khỏe của bạn bắt đầu từ đây.","Please fill in all fields":"Vui lòng điền đầy đủ tất cả các trường","Normal weight":"Cân nặng bình thường","Hypertension Stage 1":"Huyết áp giai đoạn 1","Hypertension Stage 2":"Huyết áp giai đoạn 2","Insufficient sleep":"Thiếu ngủ","Optimal sleep":"Ngủ tối ưu","Excessive sleep":"Ngữ quá nhiều","Insufficient exercise":"Tập thể dục không đủ","Moderate exercise":"Tập thể dục mức độ trung bình","High exercise":"Tập thể dục cường độ cao","Low stress":"Stress thấp","Moderate stress":"Stress trung bình","High stress":"Stress cao","Consider increasing your calorie intake with nutrient-dense foods.":"Cân nhắc tăng lượng calo bằng thực phẩm giàu dinh dưỡng.","Include strength training exercises to build muscle mass.":"Bao gồm các bài tập sức mạnh để xây dựng khối cơ.","Focus on a balanced, calorie-controlled diet.":"Tập trung vào chế độ ăn cân bằng và kiểm soát calo.","Increase physical activity to at least 30 minutes daily.":"Tăng hoạt động thể chất ít nhất 30 phút mỗi ngày.","Consider consulting a nutritionist for personalized advice.":"Cân nhắc tham vấn chuyên gia dinh dưỡng để có lời khuyên cá nhân.","Reduce sodium intake in your diet.":"Giảm lượng natri trong chế độ ăn của bạn.","Incorporate more potassium-rich foods like bananas and spinach.":"Thêm vào nhiều thực phẩm giàu kali như chuối và rau bina.","Practice stress reduction techniques like meditation.":"Thực hiện các kỹ thuật giảm căng thẳng như thiền.","Limit alcohol consumption.":"Hạn chế tiêu thụ rượu.","Consult a healthcare provider for further evaluation.":"Tham vấn nhà cung cấp dịch vụ chăm sóc sức khỏe để đánh giá thêm.","Avoid excessive caffeine and stimulants.":"Tránh caffeine và chất kích thích quá mức.","Limit caffeine intake and practice relaxation techniques.":"Hạn chế lượng caffeine và thực hiện các kỹ thuật thư giãn.","__title__":"AI Health Mentor - Công cụ Phân tích Sức khỏe Cá nhân của Bạn"},"th":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - เครื่องมือวิเคราะห์สุขภาพส่วนบุคคลของคุณ","Analyze":"วิเคราะห์","Suggestions":"ข้อเสนอแนะ","Health Log":"บันทึกสุขภาพ","News":"ข่าว","Risk Analysis":"วิเคราะห์ความเสี่ยง","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"การวิเคราะห์ข้อมูลสุขภาพ","Enter your health data for analysis:":"กรอกข้อมูลสุขภาพของคุณเพื่อวิเคราะห์:","Age":"อายุ","Weight (kg)":"น้ำหนัก (กิโลกรัม)","Height (cm)":"ส่วนสูง (เซนติเมตร)","Blood Pressure":"ความดันโลหิต","Heart Rate (bpm)":"อัตราการเต้นหัวใจ (ครั้งต่อนาที)","Sleep Hours":"ชั่วโมงการนอน","Exercise Minutes (per day)":"นาทีการออกกำลังกาย (ต่อวัน)","Stress Level (1-10)":"ระดับความเครียด (1-10)","Analyze Health Data":"วิเคราะห์ข้อมูลสุขภาพ","Personalized Health Suggestions":"ข้อเสนอแนะสุขภาพส่วนบุคคล","After analyzing your health data, personalized suggestions will appear here.":"หลังจากวิเคราะห์ข้อมูลสุขภาพของคุณ ข้อเสนอแนะส่วนบุคคลจะปรากฏที่นี่","Record your daily health activities:":"บันทึกกิจกรรมสุขภาประจำวันของคุณ:","Date":"วันที่","Activity":"กิจกรรม","Exercise":"ออกกำลังกาย","Diet":"อาหาร","Sleep":"การนอน","Meditation":"การทำสมาธิ","Other":"อื่นๆ","Description":"รายละเอียด","Add to Health Log":"เพิ่มไปยังบันทึกสุขภาพ","Latest Health News":"ข่าวสุขภาพล่าสุด","Disease Risk Analysis":"วิเคราะห์ความเสี่ยงโรค","Family History (comma-separated conditions)":"ประวัติครอบครัว (เครื่องหมายจุลภาคคั่นรายการโรค)","Pre-existing Conditions (comma-separated)":"โรคประจำตัว (เครื่องหมายจุลภาคคั่นรายการโรค)","Analyze Risks":"วิเคราะห์ความเสี่ยง","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. การเดินทางสู่สุขภาพดีของคุณเริ่มต้นที่นี่","Please fill in all fields":"กรุณากรอกข้อมูลในทุกช่อง","Normal weight":"น้ำหนักปกติ","Hypertension Stage 1":"ความดันโลหิตระดับ 1","Hypertension Stage 2":"ความดันโลหิตระดับ 2","Insufficient sleep":"นอนน้อยเกินไป","Optimal sleep":"นอนพอดี","Excessive sleep":"นอนมากเกินไป","Insufficient exercise":"ออกกำลังกายน้อยเกินไป","Moderate exercise":"ออกกำลังกายปานกลาง","High exercise":"ออกกำลังกายหนัก","Low stress":"ความเครียดต่ำ","Moderate stress":"ความเครียดปานกลาง","High stress":"ความเครียดสูง","Consider increasing your calorie intake with nutrient-dense foods.":"พิจารณาเพิ่มการรับพลังงานจากอาหารที่อุดมด้วยสารอาหาร","Include strength training exercises to build muscle mass.":"รวมการฝึกกล้ามเนื้อเพื่อสร้างมวลกล้ามเนื้อ","Focus on a balanced, calorie-controlled diet.":"เน้นการกินอาหารที่สมดุลควบคุมพลังงาน","Increase physical activity to at least 30 minutes daily.":"เพิ่มกิจกรรมทางกายถึง 30 นาทีต่อวัน","Consider consulting a nutritionist for personalized advice.":"พิจารณาปรึกษนักโภชนาการเพื่อข้อเสนอแนะส่วนบุคคล","Reduce sodium intake in your diet.":"ลดการรับโซเดียมในอาหาร","Incorporate more potassium-rich foods like bananas and spinach.":"รวมอาหารที่อุดมด้วยโพแทสเซียม เช่น กล้วยและผักโขม","Practice stress reduction techniques like meditation.":"ฝึกวิธลดความเครียด เช่น การทำสมาธิ","Limit alcohol consumption.":"จำกัดการดื่มแอลกอฮอล์","Consult a healthcare provider for further evaluation.":"ปรึกษาแพทย์เพื่อการประเมินเพิ่มเติม","Avoid excessive caffeine and stimulants.":"หลีกเลี่ยงการบริโภคคาเฟอีนและสารกระตุ้น","Limit caffeine intake and practice relaxation techniques.":"จำกัดการบริโภคคาเฟอีนและฝึกวิธีการผ่อนคลาย","__title__":"AI Health Mentor - เครื่องมือวิเคราะห์สุขภาพส่วนบุคคลของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Your Personal Health Analysis Tool","Analyze":"Analyze","Suggestions":"Suggestions","Health Log":"Health Log","News":"News","Risk Analysis":"Risk Analysis","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Health Data Analysis","Enter your health data for analysis:":"Enter your health data for analysis:","Age":"Age","Weight (kg)":"Weight (kg)","Height (cm)":"Height (cm)","Blood Pressure":"Blood Pressure","Heart Rate (bpm)":"Heart Rate (bpm)","Sleep Hours":"Sleep Hours","Exercise Minutes (per day)":"Exercise Minutes (per day)","Stress Level (1-10)":"Stress Level (1-10)","Analyze Health Data":"Analyze Health Data","Personalized Health Suggestions":"Personalized Health Suggestions","After analyzing your health data, personalized suggestions will appear here.":"After analyzing your health data, personalized suggestions will appear here.","Record your daily health activities:":"Record your daily health activities:","Date":"Date","Activity":"Activity","Exercise":"Exercise","Diet":"Diet","Sleep":"Sleep","Meditation":"Meditation","Other":"Other","Description":"Description","Add to Health Log":"Add to Health Log","Latest Health News":"Latest Health News","Disease Risk Analysis":"Disease Risk Analysis","Family History (comma-separated conditions)":"Family History (comma-separated conditions)","Pre-existing Conditions (comma-separated)":"Pre-existing Conditions (comma-separated)","Analyze Risks":"Analyze Risks","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.","Please fill in all fields":"Please fill in all fields","Normal weight":"Normal weight","Hypertension Stage 1":"Hypertension Stage 1","Hypertension Stage 2":"Hypertension Stage 2","Insufficient sleep":"Insufficient sleep","Optimal sleep":"Optimal sleep","Excessive sleep":"Excessive sleep","Insufficient exercise":"Insufficient exercise","Moderate exercise":"Moderate exercise","High exercise":"High exercise","Low stress":"Low stress","Moderate stress":"Moderate stress","High stress":"High stress","Consider increasing your calorie intake with nutrient-dense foods.":"Consider increasing your calorie intake with nutrient-dense foods.","Include strength training exercises to build muscle mass.":"Include strength training exercises to build muscle mass.","Focus on a balanced, calorie-controlled diet.":"Focus on a balanced, calorie-controlled diet.","Increase physical activity to at least 30 minutes daily.":"Increase physical activity to at least 30 minutes daily.","Consider consulting a nutritionist for personalized advice.":"Consider consulting a nutritionist for personalized advice.","Reduce sodium intake in your diet.":"Reduce sodium intake in your diet.","Incorporate more potassium-rich foods like bananas and spinach.":"Incorporate more potassium-rich foods like bananas and spinach.","Practice stress reduction techniques like meditation.":"Practice stress reduction techniques like meditation.","Limit alcohol consumption.":"Limit alcohol consumption.","Consult a healthcare provider for further evaluation.":"Consult a healthcare provider for further evaluation.","Avoid excessive caffeine and stimulants.":"Avoid excessive caffeine and stimulants.","Limit caffeine intake and practice relaxation techniques.":"Limit caffeine intake and practice relaxation techniques.","__title__":"AI Health Mentor - Your Personal Health Analysis Tool"},"zh-CN":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI健康导师 - 您的个人健康分析工具","Analyze":"分析","Suggestions":"建议","Health Log":"健康日志","News":"新闻","Risk Analysis":"风险评估","AI Health Mentor":"AI健康导师","Health Data Analysis":"健康数据分析","Enter your health data for analysis:":"请输入您的健康数据进行分析：","Age":"年龄","Weight (kg)":"体重 (kg)","Height (cm)":"身高 (cm)","Blood Pressure":"血压","Heart Rate (bpm)":"心率 (bpm)","Sleep Hours":"睡眠小时数","Exercise Minutes (per day)":"锻炼分钟数（每日）","Stress Level (1-10)":"压力水平（1-10）","Analyze Health Data":"分析健康数据","Personalized Health Suggestions":"个性化健康建议","After analyzing your health data, personalized suggestions will appear here.":"在分析您的健康数据后，个性化的建议将在这里显示。","Record your daily health activities:":"记录您的日常健康活动：","Date":"日期","Activity":"活动","Exercise":"锻炼","Diet":"饮食","Sleep":"睡眠","Meditation":"冥想","Other":"其他","Description":"描述","Add to Health Log":"添加到健康日志","Latest Health News":"最新健康新闻","Disease Risk Analysis":"疾病风险评估","Family History (comma-separated conditions)":"家族病史（逗号分隔的疾病）","Pre-existing Conditions (comma-separated)":"现有疾病（逗号分隔）","Analyze Risks":"分析风险","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI健康导师。您的健康之旅从这里开始。","Please fill in all fields":"请填写所有字段","Normal weight":"正常体重","Hypertension Stage 1":"高血压第一阶段","Hypertension Stage 2":"高血压第二阶段","Insufficient sleep":"睡眠不足","Optimal sleep":"最佳睡眠","Excessive sleep":"睡眠过多","Insufficient exercise":"锻炼不足","Moderate exercise":"适度锻炼","High exercise":"高强度锻炼","Low stress":"低压力","Moderate stress":"中等压力","High stress":"高压力","Consider increasing your calorie intake with nutrient-dense foods.":"考虑通过富含营养的食物增加您的卡路里摄入量。","Include strength training exercises to build muscle mass.":"包括力量训练来增加肌肉量。","Focus on a balanced, calorie-controlled diet.":"关注均衡、控制卡路里的饮食。","Increase physical activity to at least 30 minutes daily.":"每天至少增加30分钟的身体活动。","Consider consulting a nutritionist for personalized advice.":"考虑咨询营养师以获得个性化建议。","Reduce sodium intake in your diet.":"减少饮食中的钠摄入量。","Incorporate more potassium-rich foods like bananas and spinach.":"结合更多富含钾的食物，如香蕉和菠菜。","Practice stress reduction techniques like meditation.":"练习冥想等减压技巧。","Limit alcohol consumption.":"限制酒精摄入。","Consult a healthcare provider for further evaluation.":"咨询医疗服务提供者以进行进一步评估。","Avoid excessive caffeine and stimulants.":"避免过量摄入咖啡因和刺激性物质。","Limit caffeine intake and practice relaxation techniques.":"限制咖啡因摄入并练习放松技巧。","__title__":"AI健康导师 - 您的个人健康分析工具"},"es":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Tu Herramienta de Análisis de Salud Personal","Analyze":"Analizar","Suggestions":"Sugerencias","Health Log":"Bitácora de Salud","News":"Noticias","Risk Analysis":"Análisis de Riesgo","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Análisis de Datos de Salud","Enter your health data for analysis:":"Introduce tus datos de salud para el análisis:","Age":"Edad","Weight (kg)":"Peso (kg)","Height (cm)":"Altura (cm)","Blood Pressure":"Presión Arterial","Heart Rate (bpm)":"Frecuencia Cardíaca (bpm)","Sleep Hours":"Horas de Sueño","Exercise Minutes (per day)":"Minutos de Ejercicio (por día)","Stress Level (1-10)":"Nivel de Estrés (1-10)","Analyze Health Data":"Analizar Datos de Salud","Personalized Health Suggestions":"Sugerencias de Salud Personalizadas","After analyzing your health data, personalized suggestions will appear here.":"Después de analizar tus datos de salud, aquí aparecerán sugerencias personalizadas.","Record your daily health activities:":"Grabar tus actividades diarias de salud:","Date":"Fecha","Activity":"Actividad","Exercise":"Ejercicio","Diet":"Dieta","Sleep":"Sueño","Meditation":"Meditación","Other":"Otro","Description":"Descripción","Add to Health Log":"Agregar a la Bitácora de Salud","Latest Health News":"Últimas Noticias de Salud","Disease Risk Analysis":"Análisis de Riesgo de Enfermedad","Family History (comma-separated conditions)":"Historial Familiar (condiciones separadas por coma)","Pre-existing Conditions (comma-separated)":"Condiciones Preexistentes (condiciones separadas por coma)","Analyze Risks":"Analizar Riesgos","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Tu viaje hacia el bienestar comienza aquí.","Please fill in all fields":"Por favor, rellena todos los campos","Normal weight":"Peso normal","Hypertension Stage 1":"Estadio 1 de Hipertensión","Hypertension Stage 2":"Estadio 2 de Hipertensión","Insufficient sleep":"Sueño insuficiente","Optimal sleep":"Sueño óptimo","Excessive sleep":"Sueño excesivo","Insufficient exercise":"Ejercicio insuficiente","Moderate exercise":"Ejercicio moderado","High exercise":"Ejercicio alto","Low stress":"Bajo estrés","Moderate stress":"Estrés moderado","High stress":"Estrés alto","Consider increasing your calorie intake with nutrient-dense foods.":"Considera aumentar tu ingesta calórica con alimentos nutritivos.","Include strength training exercises to build muscle mass.":"Incluye ejercicios de entrenamiento de fuerza para aumentar la masa muscular.","Focus on a balanced, calorie-controlled diet.":"Enfócate en una dieta equilibrada y controlada en calorías.","Increase physical activity to at least 30 minutes daily.":"Aumenta tu actividad física a al menos 30 minutos diarios.","Consider consulting a nutritionist for personalized advice.":"Considera consultar a un nutricionista para obtener consejos personalizados.","Reduce sodium intake in your diet.":"Reduce la ingesta de sodio en tu dieta.","Incorporate more potassium-rich foods like bananas and spinach.":"Incorpora más alimentos ricos en potasio como plátanos y espinacas.","Practice stress reduction techniques like meditation.":"Practica técnicas de reducción del estrés como la meditación.","Limit alcohol consumption.":"Limita el consumo de alcohol.","Consult a healthcare provider for further evaluation.":"Consulte a un proveedor de atención médica para una evaluación adicional.","Avoid excessive caffeine and stimulants.":"Evite el café en exceso y los estimulantes.","Limit caffeine intake and practice relaxation techniques.":"Limita la ingesta de cafeína y practica técnicas de relajación.","__title__":"AI Health Mentor - Tu Herramienta de Análisis de Salud Personal"},"ja":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - あなたのパーソナルヘルス分析ツール","Analyze":"分析","Suggestions":"提案","Health Log":"ヘルスログ","News":"ニュース","Risk Analysis":"リスク分析","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"ヘルスデータ分析","Enter your health data for analysis:":"分析に使用するヘルスデータを入力してください：","Age":"年齢","Weight (kg)":"体重(kg)","Height (cm)":"身長(cm)","Blood Pressure":"血圧","Heart Rate (bpm)":"心拍数(bpm)","Sleep Hours":"睡眠時間","Exercise Minutes (per day)":"運動時間（一日あたり）","Stress Level (1-10)":"ストレスレベル（1-10）","Analyze Health Data":"ヘルスデータ分析","Personalized Health Suggestions":"パーソナライズドヘルス提案","After analyzing your health data, personalized suggestions will appear here.":"あなたのヘルスデータを分析した後、パーソナライズド提案がここに表示されます。","Record your daily health activities:":"日々のヘルス活動を記録してください：","Date":"日付","Activity":"活動","Exercise":"運動","Diet":"食事","Sleep":"睡眠","Meditation":"瞑想","Other":"その他","Description":"説明","Add to Health Log":"ヘルスログに追加","Latest Health News":"最新のヘルスニュース","Disease Risk Analysis":"病気リスク分析","Family History (comma-separated conditions)":"家族歴（カンマ区切り条件）","Pre-existing Conditions (comma-separated)":"既存の状態（カンマ区切り）","Analyze Risks":"リスク分析","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"© 2023 AI Health Mentor. あなたのウェルネスの旅がここから始まります。","Please fill in all fields":"すべてのフィールドを入力してください","Normal weight":"標準体重","Hypertension Stage 1":"高血圧第1期","Hypertension Stage 2":"高血圧第2期","Insufficient sleep":"睡眠不足","Optimal sleep":"最適な睡眠","Excessive sleep":"睡眠過多","Insufficient exercise":"運動不足","Moderate exercise":"適度な運動","High exercise":"高い運動量","Low stress":"低ストレス","Moderate stress":"適度なストレス","High stress":"高いストレス","Consider increasing your calorie intake with nutrient-dense foods.":"栄養豊富な食事を取り入れてカロリー摂取を増やすことを検討してください。","Include strength training exercises to build muscle mass.":"筋肉量を増やすための筋力トレーニングを取り入れることを検討してください。","Focus on a balanced, calorie-controlled diet.":"バランスの取れた、カロリー制限された食事に焦点を当ててください。","Increase physical activity to at least 30 minutes daily.":"一日あたり少なくとも30分の運動量を増やしてください。","Consider consulting a nutritionist for personalized advice.":"パーソナライズドアドバイスのために栄養士に相談することを検討してください。","Reduce sodium intake in your diet.":"食事でのナトリウム摂取を減らしてください。","Incorporate more potassium-rich foods like bananas and spinach.":"バナナやキヌアなどのカリウム豊富な食品を取り入れることを検討してください。","Practice stress reduction techniques like meditation.":"瞑想などのストレス軽減技術を実践してください。","Limit alcohol consumption.":"アルコール摂取を制限してください。","Consult a healthcare provider for further evaluation.":"さらなる評価のために医療提供者に相談してください。","Avoid excessive caffeine and stimulants.":"過剰なカフェインや刺激物を避けてください。","Limit caffeine intake and practice relaxation techniques.":"カフェイン摂取を制限し、リラクゼーション技術を実践してください。","__title__":"AI Health Mentor - あなたのパーソナルヘルス分析ツール"},"ko":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - 개인 건강 분석 도구","Analyze":"분석","Suggestions":"추천","Health Log":"건강 기록","News":"뉴스","Risk Analysis":"위험 분석","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"건강 데이터 분석","Enter your health data for analysis:":"분석을 위해 건강 데이터를 입력하세요:","Age":"연령","Weight (kg)":"체중 (kg)","Height (cm)":"신장 (cm)","Blood Pressure":"혈압","Heart Rate (bpm)":"심장율 (bpm)","Sleep Hours":"수면 시간","Exercise Minutes (per day)":"운동 분 (매일)","Stress Level (1-10)":"스트레스 수준 (1-10)","Analyze Health Data":"건강 데이터 분석","Personalized Health Suggestions":"개인 맞춤형 건강 추천","After analyzing your health data, personalized suggestions will appear here.":"건강 데이터를 분석한 후, 개인 맞춤형 추천이 여기에 표시됩니다.","Record your daily health activities:":"매일의 건강 활동을 기록하세요:","Date":"날짜","Activity":"활동","Exercise":"운동","Diet":"식사","Sleep":"수면","Meditation":"冥想","Other":"기타","Description":"설명","Add to Health Log":"건강 기록에 추가","Latest Health News":"최신 건강 뉴스","Disease Risk Analysis":"질환 위험 분석","Family History (comma-separated conditions)":"가족 이력 (콤마로 구분된 상태)","Pre-existing Conditions (comma-separated)":"기존 상태(콤마로 구분)","Analyze Risks":"위험 분석","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. 여러분의 건강 여정이 여기서 시작됩니다.","Please fill in all fields":"모든 필드를 입력하십시오","Normal weight":"표준체중","Hypertension Stage 1":"고혈압 1단계","Hypertension Stage 2":"고혈압 2단계","Insufficient sleep":"불충분한 수면","Optimal sleep":"적절한 수면","Excessive sleep":"과도한 수면","Insufficient exercise":"불충분한 운동","Moderate exercise":"适中 운동","High exercise":"고강도 운동","Low stress":"낮은 스트레스","Moderate stress":"适中 스트레스","High stress":"고스트레스","Consider increasing your calorie intake with nutrient-dense foods.":"영양분이 풍부한 음식으로 칼로리 섭취를 증가시키고 고려하세요.","Include strength training exercises to build muscle mass.":" 근력 훈련을 포함하여 근육량을 늘리세요.","Focus on a balanced, calorie-controlled diet.":" 균형 잡힌 칼로리 제어 식사에 집중하세요.","Increase physical activity to at least 30 minutes daily.":" 매일 최소 30분의 체력 활동을 증가시켜주세요.","Consider consulting a nutritionist for personalized advice.":" 개인 맞춤형 조언을 받기 위해 영양사와 상담을 고려하세요.","Reduce sodium intake in your diet.":" 식사에서 나트륨 섭취를 줄이세요.","Incorporate more potassium-rich foods like bananas and spinach.":" 바나나와 셀러리와 같은 칼륨이 풍부한 음식을 더 포함하세요.","Practice stress reduction techniques like meditation.":"冥想과 같은 스트레스 감소 기술을 실천하세요.","Limit alcohol consumption.":" 알코올 섭취를 제한하세요.","Consult a healthcare provider for further evaluation.":" 추가 평가를 위해 의료 전문가와 상담하세요.","Avoid excessive caffeine and stimulants.":" 과도한 카페인과 자극제를 피하세요.","Limit caffeine intake and practice relaxation techniques.":" 카페인 섭취를 제한하고 휴식 기술을 실천하세요.","__title__":"AI Health Mentor - 개인 건강 분석 도구"},"de":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Ihr persönlicher Gesundheitsanalyse-Tool","Analyze":"Analyse","Suggestions":"Vorschläge","Health Log":"Gesundheitsprotokoll","News":"Nachrichten","Risk Analysis":"Risikobewertung","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Gesundheitsdatenanalyse","Enter your health data for analysis:":"Geben Sie Ihre Gesundheitsdaten für die Analyse ein:","Age":"Alter","Weight (kg)":"Gewicht (kg)","Height (cm)":"Größe (cm)","Blood Pressure":"Blutdruck","Heart Rate (bpm)":"Herzschlag (bpm)","Sleep Hours":"Schlafstunden","Exercise Minutes (per day)":"Sportminuten (pro Tag)","Stress Level (1-10)":"Stressniveau (1-10)","Analyze Health Data":"Gesundheitsdaten analysieren","Personalized Health Suggestions":"Personalisierte Gesundheitsvorschläge","After analyzing your health data, personalized suggestions will appear here.":"Nach der Analyse Ihrer Gesundheitsdaten werden hier personalisierte Vorschläge angezeigt.","Record your daily health activities:":"Notieren Sie Ihre täglichen Gesundheitsaktivitäten:","Date":"Datum","Activity":"Aktivität","Exercise":"Sport","Diet":"Ernährung","Sleep":"Schlaf","Meditation":"Meditation","Other":"Andere","Description":"Beschreibung","Add to Health Log":"Zum Gesundheitsprotokoll hinzufügen","Latest Health News":"Neueste Gesundheitsnachrichten","Disease Risk Analysis":"Krankheitsrisikobewertung","Family History (comma-separated conditions)":"Familienanamnese (komma-getrennte Erkrankungen)","Pre-existing Conditions (comma-separated)":"Vorbestehende Erkrankungen (komma-getrennt)","Analyze Risks":"Risiken analysieren","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Ihr Wellness-Weg beginnt hier.","Please fill in all fields":"Bitte füllen Sie alle Felder aus","Normal weight":"Normales Gewicht","Hypertension Stage 1":"Hypertonie Stadium 1","Hypertension Stage 2":"Hypertonie Stadium 2","Insufficient sleep":"Unzureichender Schlaf","Optimal sleep":"Optimaler Schlaf","Excessive sleep":"Überschüssiger Schlaf","Insufficient exercise":"Unzureichende körperliche Aktivität","Moderate exercise":"Mäßige körperliche Aktivität","High exercise":"Hohe körperliche Aktivität","Low stress":"Niedriger Stress","Moderate stress":"Mäßiger Stress","High stress":"Hocher Stress","Consider increasing your calorie intake with nutrient-dense foods.":"Denken Sie daran, Ihre Kalorienaufnahme mit nährstoffreichen Lebensmitteln zu erhöhen.","Include strength training exercises to build muscle mass.":"Schließen Sie Krafttraining in Ihr Programm ein, um Muskelmasse aufzubauen.","Focus on a balanced, calorie-controlled diet.":"Konzentrieren Sie sich auf eine ausgewogene, kaloriengeregelte Ernährung.","Increase physical activity to at least 30 minutes daily.":"Erhöhen Sie Ihre körperliche Aktivität auf mindestens 30 Minuten täglich.","Consider consulting a nutritionist for personalized advice.":"Überlegen Sie sich, einen Ernährungsberater für individuelle Beratung zu konsultieren.","Reduce sodium intake in your diet.":"Verringern Sie den Salzkonsum in Ihrer Ernährung.","Incorporate more potassium-rich foods like bananas and spinach.":"Fügen Sie mehr Kaliumreiche Lebensmittel wie Bananen und Spinat hinzu.","Practice stress reduction techniques like meditation.":"Praktizieren Sie Stressreduktionsmethoden wie Meditation.","Limit alcohol consumption.":"Beschränken Sie den Alkoholkonsum.","Consult a healthcare provider for further evaluation.":"Konsultieren Sie einen Gesundheitsdienstleister für eine weitere Bewertung.","Avoid excessive caffeine and stimulants.":"Vermeiden Sie übermäßigen Koffein- und Stimulanzienkonsum.","Limit caffeine intake and practice relaxation techniques.":"Beschränken Sie den Koffeingebrauch und praktizieren Sie Entspannungstechniken.","__title__":"AI Health Mentor - Ihr persönlicher Gesundheitsanalyse-Tool"},"ru":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Вáš personální nástroj pro analýzu zdraví","Analyze":"Анализировать","Suggestions":"Рекомендации","Health Log":"Здравоохранительный журнал","News":"Новости","Risk Analysis":"Анализ рисков","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Анализ данных о здоровье","Enter your health data for analysis:":"Введи свои данные о здоровье для анализа:","Age":"Возраст","Weight (kg)":"Вес (кг)","Height (cm)":"Рост (см)","Blood Pressure":"Артериальное давление","Heart Rate (bpm)":"Пульс (уд/мин)","Sleep Hours":"Часы сна","Exercise Minutes (per day)":"Минуты тренировки (в день)","Stress Level (1-10)":"Уровень стресса (1-10)","Analyze Health Data":"Анализ данных о здоровье","Personalized Health Suggestions":"Персонализированные рекомендации по здоровью","After analyzing your health data, personalized suggestions will appear here.":"После анализа ваших данных о здоровье здесь появятся персонализированные рекомендации.","Record your daily health activities:":"Записывайте свои ежедневные действия по здоровью:","Date":"Дата","Activity":"Деятельность","Exercise":"Тренировка","Diet":"Рацион","Sleep":"Сон","Meditation":"Мeditation","Other":"Другое","Description":"Описание","Add to Health Log":"Добавить в журнал здоровья","Latest Health News":"Последние новости о здравоохранении","Disease Risk Analysis":"Анализ риска заболевания","Family History (comma-separated conditions)":"Семейный анамнез (состояния, разделенные запятой)","Pre-existing Conditions (comma-separated)":"Существующие заболевания (состояния, разделенные запятой)","Analyze Risks":"Анализ рисков","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Ваше путешествие по дороге к здоровью начинается здесь.","Please fill in all fields":"Пожалуйста, заполните все поля","Normal weight":"Нормальный вес","Hypertension Stage 1":"I.stage гипертонии","Hypertension Stage 2":"II.stage гипертонии","Insufficient sleep":"Недостаток сна","Optimal sleep":"Оптимальный сон","Excessive sleep":"Избыточный сон","Insufficient exercise":"Недостаток физических упражнений","Moderate exercise":"Средний уровень физических упражнений","High exercise":"Высокий уровень физических упражнений","Low stress":"Низкий уровень стресса","Moderate stress":"Средний уровень стресса","High stress":"Высокий уровень стресса","Consider increasing your calorie intake with nutrient-dense foods.":"Раз consider увеличить потребление калорий с высококалорийными продуктами.","Include strength training exercises to build muscle mass.":"Включайте силовые тренировки для наращивания мышечной массы.","Focus on a balanced, calorie-controlled diet.":"Концентрируйтесь на сбалансированной, контролируемой по калориям диете.","Increase physical activity to at least 30 minutes daily.":"Увеличьте физическую активность до mindestens 30 минут в день.","Consider consulting a nutritionist for personalized advice.":"Рассмотрите возможность консультации с диетологом для получения персонализированных рекомендаций.","Reduce sodium intake in your diet.":"Снизьте потребление натрия в рационе.","Incorporate more potassium-rich foods like bananas and spinach.":"Включите в рацион продукты с высоким содержанием калия, например бананы и шпинат.","Practice stress reduction techniques like meditation.":"Практикуйте техники уменьшения стресса, например медитацию.","Limit alcohol consumption.":"Ограничьте потребление алкоголя.","Consult a healthcare provider for further evaluation.":"Консультируйтесь с медицинским работником для дальнейшей оценки.","Avoid excessive caffeine and stimulants.":"Избегайте чрезмерного потребления кофеина и стимуляторов.","Limit caffeine intake and practice relaxation techniques.":"Ограничьте потребление кофеина и практикуйте техники релаксации.","__title__":"AI Health Mentor - Вáš personální nástroj pro analýzu zdraví"},"pt":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Ferramenta de Análise de Saúde Pessoal","Analyze":"Analisar","Suggestions":"Sugestões","Health Log":"Diário de Saúde","News":"Notícias","Risk Analysis":"Análise de Riscos","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Análise de Dados de Saúde","Enter your health data for analysis:":"Insira seus dados de saúde para análise:","Age":"Idade","Weight (kg)":"Peso (kg)","Height (cm)":"Altura (cm)","Blood Pressure":"Pressão Arterial","Heart Rate (bpm)":"Frequência Cardíaca (bpm)","Sleep Hours":"Horas de Sono","Exercise Minutes (per day)":"Minutos de Exercício (por dia)","Stress Level (1-10)":"Nível de Estresse (1-10)","Analyze Health Data":"Analisar Dados de Saúde","Personalized Health Suggestions":"Sugestões de Saúde Personalizadas","After analyzing your health data, personalized suggestions will appear here.":"Após analisar seus dados de saúde, sugestões personalizadas aparecerão aqui.","Record your daily health activities:":"Registre suas atividades diárias de saúde:","Date":"Data","Activity":"Atividade","Exercise":"Exercício","Diet":"Dieta","Sleep":"Sono","Meditation":"Meditação","Other":"Outro","Description":"Descrição","Add to Health Log":"Adicionar ao Diário de Saúde","Latest Health News":"Últimas Notícias de Saúde","Disease Risk Analysis":"Análise de Riscos de Doença","Family History (comma-separated conditions)":"Histórico Familiar (condições separadas por vírgula)","Pre-existing Conditions (comma-separated)":"Condições Pré-existentes (condições separadas por vírgula)","Analyze Risks":"Analisar Riscos","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Sua jornada de bem-estar começa aqui.","Please fill in all fields":"Por favor, preencha todos os campos","Normal weight":"Peso normal","Hypertension Stage 1":"Estágio 1 de Hipertensão","Hypertension Stage 2":"Estágio 2 de Hipertensão","Insufficient sleep":"Sono insuficiente","Optimal sleep":"Sono ótimo","Excessive sleep":"Sono excessivo","Insufficient exercise":"Exercício insuficiente","Moderate exercise":"Exercício moderado","High exercise":"Exercício alto","Low stress":"Estresse baixo","Moderate stress":"Estresse moderado","High stress":"Estresse alto","Consider increasing your calorie intake with nutrient-dense foods.":"Considere aumentar sua ingestão calórica com alimentos nutrientes densos.","Include strength training exercises to build muscle mass.":"Inclua exercícios de treinamento de força para construir massa muscular.","Focus on a balanced, calorie-controlled diet.":"Foco em uma dieta equilibrada e controlada em calorias.","Increase physical activity to at least 30 minutes daily.":"Aumente a atividade física para pelo menos 30 minutos diários.","Consider consulting a nutritionist for personalized advice.":"Considere consultar um nutricionista para obter conselhos personalizados.","Reduce sodium intake in your diet.":"Reduza a ingestão de sódio em sua dieta.","Incorporate more potassium-rich foods like bananas and spinach.":"Incorpore mais alimentos ricos em potássio, como bananas e espinafre.","Practice stress reduction techniques like meditation.":"Pratique técnicas de redução de estresse, como meditação.","Limit alcohol consumption.":"Limite a ingestão de álcool.","Consult a healthcare provider for further evaluation.":"Consulte um provedor de cuidados de saúde para uma avaliação adicional.","Avoid excessive caffeine and stimulants.":"Evite cafeína e estimulantes em excesso.","Limit caffeine intake and practice relaxation techniques.":"Limite a ingestão de cafeína e pratique técnicas de relaxamento.","__title__":"AI Health Mentor - Ferramenta de Análise de Saúde Pessoal"},"ar":{"AI Health Mentor - Your Personal Health Analysis Tool":"مدير صحة الذكاء الاصطناعي - أداة تحليل صحة شخصيةك","Analyze":"تحليل","Suggestions":"إقتراحات","Health Log":"سجل الصحة","News":"أخبار","Risk Analysis":"تحليل المخاطر","AI Health Mentor":"مدير صحة الذكاء الاصطناعي","Health Data Analysis":"تحليل بيانات الصحة","Enter your health data for analysis:":"ادخل بيانات صحتك لتحليلها:","Age":"العمر","Weight (kg)":"الوزن (كجم)","Height (cm)":"الطول (سم)","Blood Pressure":"ضغط الدم","Heart Rate (bpm)":" معدل ضربات القلب (بم)","Sleep Hours":"ساعات النوم","Exercise Minutes (per day)":"دقائق التمرين (كل يوم)","Stress Level (1-10)":"مستوى التوتر (1-10)","Analyze Health Data":"تحليل بيانات الصحة","Personalized Health Suggestions":"إقتراحات صحية مخصصة","After analyzing your health data, personalized suggestions will appear here.":"بعد تحليل بيانات صحتك، سيظهر هنا إقتراحات مخصصة.","Record your daily health activities:":"سجل أنشطتك الصحية اليومية:","Date":"التاريخ","Activity":"النشاط","Exercise":"التمرين","Diet":"النظام الغذائي","Sleep":"النوم","Meditation":"الاسترخاء","Other":"آخر","Description":"الوصف","Add to Health Log":"إضافة إلى سجل الصحة","Latest Health News":"أحدث أخبار الصحة","Disease Risk Analysis":"تحليل مخاطر المرض","Family History (comma-separated conditions)":"تاريخ عائلي (مفصول بالكومياس)","Pre-existing Conditions (comma-separated)":"حالات مسبقة (مفصولة بالكومياس)","Analyze Risks":"تحليل المخاطر","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 مدير صحة الذكاء الاصطناعي. رحلتك إلى الصحة تبدأ هنا.","Please fill in all fields":"الرجاء ملء جميع الحقول","Normal weight":"وزن طبيعي","Hypertension Stage 1":"مرحلة ارتفاع ضغط الدم الأولى","Hypertension Stage 2":"مرحلة ارتفاع ضغط الدم الثانية","Insufficient sleep":"نوم غير كافي","Optimal sleep":"نوم مثالي","Excessive sleep":"نوم زائد","Insufficient exercise":"تمارين غير كافية","Moderate exercise":"تمارين معتدلة","High exercise":"تمارين عالية","Low stress":"توتر منخفض","Moderate stress":"توتر معتدل","High stress":"توتر عالي","Consider increasing your calorie intake with nutrient-dense foods.":"فكر في زيادة استهلاكك للسعرات الحرارية من خلال الأطعمة الغنية بالعناصر الغذائية.","Include strength training exercises to build muscle mass.":"تضمين تمارين القوة لبناء كتلة العضلات.","Focus on a balanced, calorie-controlled diet.":"ركز على نظام غذائي متوازن، يتحكم في السعرات الحرارية.","Increase physical activity to at least 30 minutes daily.":"زيادة النشاط البدني إلى 30 دقيقة على الأقل يوميًا.","Consider consulting a nutritionist for personalized advice.":"فكر في استشارة خبير تغذية للحصول على نصائح مخصصة.","Reduce sodium intake in your diet.":"تقليل استهلاك الصوديوم في نظامك الغذائي.","Incorporate more potassium-rich foods like bananas and spinach.":"تضمين المزيد من الأطعمة الغنية بالبوتاسيوم مثل الموز والسبانخ.","Practice stress reduction techniques like meditation.":"تطبيق تقنيات تقليل التوتر مثل التأمل.","Limit alcohol consumption.":"تقليل استهلاك الكحول.","Consult a healthcare provider for further evaluation.":"استشر مقدم الرعاية الصحية للحصول على تقييم إضافي.","Avoid excessive caffeine and stimulants.":"تجنب الكافيين والمحفزات الزائدة.","Limit caffeine intake and practice relaxation techniques.":"تقليل استهلاك الكافيين وتطبيق تقنيات الاسترخاء.","__title__":"مدير صحة الذكاء الاصطناعي - أداة تحليل صحة شخصيةك"},"id":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - Alat Analisis Kesehatan Pribadi Anda","Analyze":"Analisis","Suggestions":"Saran","Health Log":"Catatan Kesehatan","News":"Berita","Risk Analysis":"Analisis Risiko","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"Analisis Data Kesehatan","Enter your health data for analysis:":"Masukkan data kesehatan Anda untuk analisis:","Age":"Usia","Weight (kg)":"Berat (kg)","Height (cm)":"Tinggi (cm)","Blood Pressure":"Tekanan Darah","Heart Rate (bpm)":"Denyut Jantung (bpm)","Sleep Hours":"Jam Tidur","Exercise Minutes (per day)":"Menit Olahraga (per hari)","Stress Level (1-10)":"Tingkat Stres (1-10)","Analyze Health Data":"Analisis Data Kesehatan","Personalized Health Suggestions":"Saran Kesehatan Personal","After analyzing your health data, personalized suggestions will appear here.":"Setelah menganalisis data kesehatan Anda, saran personal akan muncul di sini.","Record your daily health activities:":"Catat aktivitas kesehatan harian Anda:","Date":"Tanggal","Activity":"Aktivitas","Exercise":"Olahraga","Diet":"Diet","Sleep":"Tidur","Meditation":"Meditasi","Other":"Lainnya","Description":"Deskripsi","Add to Health Log":"Tambahkan ke Catatan Kesehatan","Latest Health News":"Berita Kesehatan Terbaru","Disease Risk Analysis":"Analisis Risiko Penyakit","Family History (comma-separated conditions)":"Riwayat Keluarga (kondisi dipisahkan koma)","Pre-existing Conditions (comma-separated)":"Kondisi yang Ada Sebelumnya (dipisahkan koma)","Analyze Risks":"Analisis Risiko","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. Perjalanan kesehatan Anda dimulai di sini.","Please fill in all fields":"Silakan isi semua bidang","Normal weight":"Berat badan normal","Hypertension Stage 1":"Hipertensi Tahap 1","Hypertension Stage 2":"Hipertensi Tahap 2","Insufficient sleep":"Tidur tidak cukup","Optimal sleep":"Tidur optimal","Excessive sleep":"Tidur berlebihan","Insufficient exercise":"Olahraga tidak cukup","Moderate exercise":"Olahraga sedang","High exercise":"Olahraga intensif","Low stress":"Stress rendah","Moderate stress":"Stress sedang","High stress":"Stress tinggi","Consider increasing your calorie intake with nutrient-dense foods.":"Pertimbangkan untuk meningkatkan asupan kalori dengan makanan kaya nutrisi.","Include strength training exercises to build muscle mass.":"Sertakan latihan kekuatan untuk membangun massa otot.","Focus on a balanced, calorie-controlled diet.":"Fokus pada diet seimbang dan terkontrol kalori.","Increase physical activity to at least 30 minutes daily.":"Tingkatkan aktivitas fisik setidaknya 30 menit sehari.","Consider consulting a nutritionist for personalized advice.":"Pertimbangkan untuk berkonsultasi dengan seorang ahli gizi untuk saran personal.","Reduce sodium intake in your diet.":"Kurangi asupan natrium dalam diet Anda.","Incorporate more potassium-rich foods like bananas and spinach.":"Sertakan lebih banyak makanan kaya kalium seperti pisang dan bayam.","Practice stress reduction techniques like meditation.":"Praktikkan teknik pengurangan stres seperti meditasi.","Limit alcohol consumption.":"Batasi konsumsi alkohol.","Consult a healthcare provider for further evaluation.":"Konsultasi dengan penyedia layanan kesehatan untuk evaluasi lebih lanjut.","Avoid excessive caffeine and stimulants.":"Hindari kafein dan stimulan berlebihan.","Limit caffeine intake and practice relaxation techniques.":"Batasi asupan kafein dan praktikkan teknik relaksasi.","__title__":"AI Health Mentor - Alat Analisis Kesehatan Pribadi Anda"},"th":{"AI Health Mentor - Your Personal Health Analysis Tool":"AI Health Mentor - เครื่องมือวิเคราะห์สุขภาพส่วนบุคคลของคุณ","Analyze":"วิเคราะห์","Suggestions":"ข้อเสนอแนะ","Health Log":"บันทึกสุขภาพ","News":"ข่าวสาร","Risk Analysis":"วิเคราะห์ความเสี่ยง","AI Health Mentor":"AI Health Mentor","Health Data Analysis":"การวิเคราะห์ข้อมูลสุขภาพ","Enter your health data for analysis:":"ป้อนข้อมูลสุขภาพของคุณเพื่อวิเคราะห์:","Age":"อายุ","Weight (kg)":"น้ำหนัก (กก.)","Height (cm)":"ส่วนสูง (ซม.)","Blood Pressure":"ความดันโลหิต","Heart Rate (bpm)":"อัตราการเต้นของหัวใจ (bpm)","Sleep Hours":"ชั่วโมงการนอน","Exercise Minutes (per day)":"นาทีการออกกำลังกาย (ต่อวัน)","Stress Level (1-10)":"ระดับความเครียด (1-10)","Analyze Health Data":"วิเคราะห์ข้อมูลสุขภาพ","Personalized Health Suggestions":"ข้อเสนอแนะสุขภาพที่เป็นรูปธรรมสำหรับคุณ","After analyzing your health data, personalized suggestions will appear here.":"หลังจากวิเคราะห์ข้อมูลสุขภาพของคุณ ข้อเสนอแนะที่เป็นรูปธรรมจะปรากฏที่นี่","Record your daily health activities:":"บันทึกกิจกรรมสุขภาพประจำวันของคุณ:","Date":"วันที่","Activity":"กิจกรรม","Exercise":"ออกกำลังกาย","Diet":"อาหาร","Sleep":"การนอน","Meditation":"การเจริญเจตจำนง","Other":"อื่นๆ","Description":"รายละเอียด","Add to Health Log":"เพิ่มไปยังบันทึกสุขภาพ","Latest Health News":"ข่าวสุขภาพล่าสุด","Disease Risk Analysis":"วิเคราะห์ความเสี่ยงโรค","Family History (comma-separated conditions)":"ประวัติโรคในครอบครัว (เครื่องหมายคั่นคือ comma)","Pre-existing Conditions (comma-separated)":"โรคประจำตัว (เครื่องหมายคั่นคือ comma)","Analyze Risks":"วิเคราะห์ความเสี่ยง","\u0026copy; 2023 AI Health Mentor. Your wellness journey starts here.":"\u0026copy; 2023 AI Health Mentor. การเดินทางสู่สุขภาพที่ดีของคุณเริ่มต้นที่นี่","Please fill in all fields":"กรุณากรอกข้อมูลในทุกช่อง","Normal weight":"น้ำหนักปกติ","Hypertension Stage 1":"ความดันโลหิตสูงระยะที่ 1","Hypertension Stage 2":"ความดันโลหิตสูงระยะที่ 2","Insufficient sleep":"นอนไม่เพียงพอ","Optimal sleep":"การนอนที่เหมาะสม","Excessive sleep":"นอนเกินไป","Insufficient exercise":"ออกกำลังกายไม่เพียงพอ","Moderate exercise":"ออกกำลังกายประเภทปานกลาง","High exercise":"ออกกำลังกายระดับสูง","Low stress":"ความเครียดต่ำ","Moderate stress":"ความเครียดปานกลาง","High stress":"ความเครียดสูง","Consider increasing your calorie intake with nutrient-dense foods.":"ควรพิจารณาเพิ่มการรับประทานแคลลอรีด้วยอาหารที่มีสารอาหารหนาแน่น","Include strength training exercises to build muscle mass.":"รวมการออกกำลังกายเพื่อสร้างกล้ามเนื้อ","Focus on a balanced, calorie-controlled diet.":"เน้นไปที่อาหารที่สมดุลและควบคุมแคลลอรี","Increase physical activity to at least 30 minutes daily.":"เพิ่มกิจกรรมทางกายภาพอย่างน้อย 30 นาทีต่อวัน","Consider consulting a nutritionist for personalized advice.":"ควรพิจารณาปรึกษาผู้เชี่ยวชาญด้านโภชนาการเพื่อขอคำแนะนำที่เฉพาะบุคคล","Reduce sodium intake in your diet.":"ลดการรับประทานโซเดียมในอาหาร","Incorporate more potassium-rich foods like bananas and spinach.":"รวมอาหารที่อุดมด้วยโพแทสเซียม เช่น กล้วยและมะเขือเทศ","Practice stress reduction techniques like meditation.":"ฝึกวิธลดความเครียด เช่น การเจริญเจตจำนง","Limit alcohol consumption.":"จำกัดการดื่มแอลกอฮอล์","Consult a healthcare provider for further evaluation.":"ปรึกษาผู้ให้บริการด้านสุขภาพเพื่อการประเมินเพิ่มเติม","Avoid excessive caffeine and stimulants.":"หลีกเลี่ยงการรับประทานคาเฟอีนและสารกระตุ้นเกินไป","Limit caffeine intake and practice relaxation techniques.":"จำกัดการรับประทานคาเฟอีนและฝึกเทคนิคการผ่อนคลาย","__title__":"AI Health Mentor - เครื่องมือวิเคราะห์สุขภาพส่วนบุคคลของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -1092,5 +1118,5 @@ document.addEventListener("DOMContentLoaded",init);
 init();
 }
 watchMutations();
-})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+})();</script><!-- radar-i18n-end --></body>
 </html>
