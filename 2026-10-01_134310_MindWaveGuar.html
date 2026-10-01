@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindWaveGuard - 脑波健康监测助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #3a8eef;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 20px;
+            margin: 0 auto;
+        }
+        
+        /* 通用按钮样式 */
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .btn-full {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        /* 导航栏 */
+        .navbar {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: none;
+        }
+        
+        /* 页面容器 */
+        .page {
+            display: none;
+            min-height: calc(100vh - 70px);
+            padding: 20px 0;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* 欢迎页 */
+        .welcome-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .welcome-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            color: var(--accent);
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+        
+        .welcome-description {
+            background-color: var(--bg-secondary);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: left;
+            max-width: 500px;
+        }
+        
+        .welcome-description h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .welcome-description p {
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+        }
+        
+        /* 脑波监测界面 */
+        .brainwave-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .brainwave-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .brainwave-status {
+            display: flex;
+            align-items: center;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background-color: var(--success);
+        }
+        
+        .status-indicator.inactive {
+            background-color: var(--danger);
+        }
+        
+        .brainwave-canvas {
+            width: 100%;
+            height: 200px;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .brainwave-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .stat-title {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        /* 情绪状态分析界面 */
+        .emotion-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .emotion-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .emotion-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .emotion-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            background: conic-gradient(
+                var(--accent) 0%,
+                var(--accent) 70%,
+                var(--bg-tertiary) 70%,
+                var(--bg-tertiary) 100%
+            );
+            position: relative;
+        }
+        
+        .emotion-inner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+        }
+        
+        .emotion-label {
+            font-size: 20px;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+        
+        .emotion-details {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .emotion-details h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .emotion-list {
+            list-style: none;
+        }
+        
+        .emotion-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .emotion-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .emotion-bar {
+            background-color: var(--bg-secondary);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .emotion-bar-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 4px;
+        }
+        
+        /* 放松训练界面 */
+        .relaxation-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .relaxation-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .relaxation-timer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .timer-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .relaxation-techniques {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .technique-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .technique-card:hover {
+            background-color: #3a3a3a;
+            transform: translateY(-3px);
+        }
+        
+        .technique-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .technique-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .technique-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .breathing-guide {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            margin: 0 auto 20px;
+            transition: all 4s ease;
+        }
+        
+        .breathing-circle.inhale {
+            transform: scale(1.2);
+        }
+        
+        .breathing-circle.exhale {
+            transform: scale(0.8);
+        }
+        
+        /* 睡眠质量评估界面 */
+        .sleep-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .sleep-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .sleep-score {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: bold;
+            background: conic-gradient(
+                var(--success) 0%,
+                var(--success) 75%,
+                var(--bg-tertiary) 75%,
+                var(--bg-tertiary) 100%
+            );
+        }
+        
+        .score-inner {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .sleep-phases {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .phase-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .phase-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .phase-name {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .phase-duration {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .sleep-tips {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .sleep-tips h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .tip-list {
+            list-style: none;
+        }
+        
+        .tip-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .tip-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .tip-icon {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        /* 健康报告界面 */
+        .report-container {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .report-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .report-date {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+        
+        .report-summary {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .summary-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .summary-stat {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        
+        .summary-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .summary-stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .report-sections {
+            margin-bottom: 20px;
+        }
+        
+        .report-section {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .recommendations {
+            list-style: none;
+        }
+        
+        .recommendations li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .recommendations li:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendation-icon {
+            margin-right: 10px;
+            color: var(--accent);
+        }
+        
+        .download-btn {
+            width: 100%;
+            background-color: var(--success);
+        }
+        
+        .download-btn:hover {
+            background-color: #3e8e41;
+        }
+        
+        /* 响应式设计 */
+        @media (min-width: 768px) {
+            .navbar-content {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+            
+            .nav-links {
+                display: flex;
+                gap: 20px;
+            }
+            
+            .nav-link {
+                color: var(--text-primary);
+                text-decoration: none;
+                transition: color 0.3s ease;
+            }
+            
+            .nav-link:hover {
+                color: var(--accent);
+            }
+            
+            .welcome-title {
+                font-size: 40px;
+            }
+            
+            .welcome-description {
+                max-width: 700px;
+            }
+            
+            .brainwave-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .emotion-display {
+                flex-direction: column;
+            }
+            
+            .relaxation-techniques {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .sleep-phases {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .summary-stats {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="navbar-content container">
+            <div class="logo">MindWaveGuard</div>
+            <div class="nav-links">
+                <a href="#" class="nav-link" data-page="welcome">首页</a>
+                <a href="#" class="nav-link" data-page="brainwave">脑波监测</a>
+                <a href="#" class="nav-link" data-page="emotion">情绪分析</a>
+                <a href="#" class="nav-link" data-page="relaxation">放松训练</a>
+                <a href="#" class="nav-link" data-page="sleep">睡眠评估</a>
+                <a href="#" class="nav-link" data-page="report">健康报告</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 欢迎页 -->
+    <div id="welcome" class="page welcome-page active">
+        <div class="container">
+            <div class="welcome-icon">🧠</div>
+            <h1 class="welcome-title">MindWaveGuard</h1>
+            <p class="welcome-subtitle">您的脑波健康监测助手</p>
+            
+            <div class="welcome-description">
+                <h3>产品介绍</h3>
+                <p>MindWaveGuard 是一款脑波健康监测应用，通过分析您的脑电波数据，提供情绪状态分析、放松训练指导和睡眠质量评估，帮助您更好地了解和管理自己的心理健康。</p>
+                
+                <h3>使用方法</h3>
+                <p>1. 点击"脑波监测"开始实时监测您的脑电波</p>
+                <p>2. 查看情绪状态分析，了解您的情绪变化</p>
+                <p>3. 根据情绪状态选择合适的放松训练</p>
+                <p>4. 评估您的睡眠质量并获得改善建议</p>
+                <p>5. 生成个性化健康报告，追踪您的健康变化</p>
+            </div>
+            
+            <button class="btn btn-full" onclick="showPage('brainwave')">开始使用</button>
+        </div>
+    </div>
+
+    <!-- 脑波监测界面 -->
+    <div id="brainwave" class="page">
+        <div class="container">
+            <h2 class="page-title">脑波实时监测</h2>
+            
+            <div class="brainwave-container">
+                <div class="brainwave-header">
+                    <h3>实时脑电波</h3>
+                    <div class="brainwave-status">
+                        <div class="status-indicator" id="statusIndicator"></div>
+                        <span id="statusText">监测中</span>
+                    </div>
+                </div>
+                
+                <canvas class="brainwave-canvas" id="brainwaveCanvas"></canvas>
+                
+                <div class="brainwave-stats">
+                    <div class="stat-card">
+                        <div class="stat-title">脑波频率</div>
+                        <div class="stat-value" id="frequencyValue">10 Hz</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">活跃度</div>
+                        <div class="stat-value" id="activityValue">75%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">专注度</div>
+                        <div class="stat-value" id="focusValue">60%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">放松度</div>
+                        <div class="stat-value" id="relaxValue">45%</div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-full" id="toggleBrainwave">停止监测</button>
+            </div>
+            
+            <div class="brainwave-container">
+                <h3>今日脑波数据</h3>
+                <div class="brainwave-stats">
+                    <div class="stat-card">
+                        <div class="stat-title">平均频率</div>
+                        <div class="stat-value">12 Hz</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">峰值时间</div>
+                        <div class="stat-value">14:30</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">监测时长</div>
+                        <div class="stat-value">2h 15m</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">数据点数</div>
+                        <div class="stat-value">1,350</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 情绪状态分析界面 -->
+    <div id="emotion" class="page">
+        <div class="container">
+            <h2 class="page-title">情绪状态分析</h2>
+            
+            <div class="emotion-container">
+                <div class="emotion-header">
+                    <h3>当前情绪状态</h3>
+                </div>
+                
+                <div class="emotion-display">
+                    <div>
+                        <div class="emotion-circle">
+                            <div class="emotion-inner">😊</div>
+                        </div>
+                        <div class="emotion-label">愉悦</div>
+                    </div>
+                </div>
+                
+                <div class="emotion-details">
+                    <h3>情绪分析详情</h3>
+                    <ul class="emotion-list">
+                        <li>
+                            <div>愉悦度</div>
+                            <div class="emotion-bar">
+                                <div class="emotion-bar-fill" style="width: 75%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>焦虑度</div>
+                            <div class="emotion-bar">
+                                <div class="emotion-bar-fill" style="width: 30%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>压力水平</div>
+                            <div class="emotion-bar">
+                                <div class="emotion-bar-fill" style="width: 45%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>专注度</div>
+                            <div class="emotion-bar">
+                                <div class="emotion-bar-fill" style="width: 60%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button class="btn btn-full" onclick="showPage('relaxation')">获取放松建议</button>
+            </div>
+            
+            <div class="emotion-container">
+                <h3>情绪变化趋势</h3>
+                <div class="brainwave-stats">
+                    <div class="stat-card">
+                        <div class="stat-title">今日峰值</div>
+                        <div class="stat-value">愉悦</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">波动幅度</div>
+                        <div class="stat-value">中等</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">主要情绪</div>
+                        <div class="stat-value">平静</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">变化次数</div>
+                        <div class="stat-value">5次</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 放松训练界面 -->
+    <div id="relaxation" class="page">
+        <div class="container">
+            <h2 class="page-title">放松训练</h2>
+            
+            <div class="relaxation-container">
+                <div class="relaxation-header">
+                    <h3>基于您的情绪状态推荐</h3>
+                </div>
+                
+                <div class="relaxation-timer">
+                    <div>
+                        <div class="timer-display" id="timerDisplay">05:00</div>
+                        <div>剩余时间</div>
+                    </div>
+                </div>
+                
+                <div class="timer-controls">
+                    <button class="btn btn-secondary" id="startTimer">开始</button>
+                    <button class="btn btn-secondary" id="pauseTimer">暂停</button>
+                    <button class="btn btn-secondary" id="resetTimer">重置</button>
+                </div>
+                
+                <div class="relaxation-techniques">
+                    <div class="technique-card" onclick="selectTechnique('breathing')">
+                        <div class="technique-icon">🌬️</div>
+                        <div class="technique-name">呼吸放松</div>
+                        <div class="technique-desc">通过控制呼吸节奏缓解压力</div>
+                    </div>
+                    <div class="technique-card" onclick="selectTechnique('meditation')">
+                        <div class="technique-icon">🧘</div>
+                        <div class="technique-name">正念冥想</div>
+                        <div class="technique-desc">专注当下，平静内心</div>
+                    </div>
+                    <div class="technique-card" onclick="selectTechnique('visualization')">
+                        <div class="technique-icon">🌅</div>
+                        <div class="technique-name">想象放松</div>
+                        <div class="technique-desc">通过想象场景放松身心</div>
+                    </div>
+                    <div class="technique-card" onclick="selectTechnique('progressive')">
+                        <div class="technique-icon">💪</div>
+                        <div class="technique-name">渐进式放松</div>
+                        <div class="technique-desc">逐部位放松肌肉</div>
+                    </div>
+                </div>
+                
+                <div class="breathing-guide" id="breathingGuide">
+                    <h3>呼吸放松引导</h3>
+                    <p>跟随下方的呼吸节奏进行深呼吸</p>
+                    <div class="breathing-circle" id="breathingCircle"></div>
+                    <p id="breathingText">吸气...</p>
+                </div>
+            </div>
+            
+            <div class="relaxation-container">
+                <h3>放松效果记录</h3>
+                <div class="brainwave-stats">
+                    <div class="stat-card">
+                        <div class="stat-title">今日训练次数</div>
+                        <div class="stat-value">3次</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">平均时长</div>
+                        <div class="stat-value">8分钟</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">压力降低</div>
+                        <div class="stat-value">25%</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">效果评级</div>
+                        <div class="stat-value">良好</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 睡眠质量评估界面 -->
+    <div id="sleep" class="page">
+        <div class="container">
+            <h2 class="page-title">睡眠质量评估</h2>
+            
+            <div class="sleep-container">
+                <div class="sleep-header">
+                    <h3>昨晚睡眠质量</h3>
+                </div>
+                
+                <div class="sleep-score">
+                    <div>
+                        <div class="score-circle">
+                            <div class="score-inner">75</div>
+                        </div>
+                        <div>睡眠质量评分</div>
+                    </div>
+                </div>
+                
+                <div class="sleep-phases">
+                    <div class="phase-card">
+                        <div class="phase-icon">🌙</div>
+                        <div class="phase-name">浅睡</div>
+                        <div class="phase-duration">2h 15m</div>
+                    </div>
+                    <div class="phase-card">
+                        <div class="phase-icon">🌃</div>
+                        <div class="phase-name">深睡</div>
+                        <div class="phase-duration">3h 30m</div>
+                    </div>
+                    <div class="phase-card">
+                        <div class="phase-icon">👁️</div>
+                        <div class="phase-name">REM</div>
+                        <div class="phase-duration">1h 45m</div>
+                    </div>
+                    <div class="phase-card">
+                        <div class="phase-icon">😴</div>
+                        <div class="phase-name">清醒</div>
+                        <div class="phase-duration">30m</div>
+                    </div>
+                </div>
+                
+                <div class="sleep-tips">
+                    <h3>改善建议</h3>
+                    <ul class="tip-list">
+                        <li>
+                            <span class="tip-icon">•</span>
+                            <span>保持固定的睡眠时间，尽量在23:00前入睡</span>
+                        </li>
+                        <li>
+                            <span class="tip-icon">•</span>
+                            <span>睡前1小时避免使用电子设备</span>
+                        </li>
+                        <li>
+                            <span class="tip-icon">•</span>
+                            <span>保持卧室温度在18-22°C之间</span>
+                        </li>
+                        <li>
+                            <span class="tip-icon">•</span>
+                            <span>尝试睡前冥想或深呼吸练习</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="sleep-container">
+                <h3>睡眠趋势分析</h3>
+                <div class="brainwave-stats">
+                    <div class="stat-card">
+                        <div class="stat-title">平均入睡时间</div>
+                        <div class="stat-value">00:15</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">平均睡眠时长</div>
+                        <div class="stat-value">7h 30m</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">本周平均评分</div>
+                        <div class="stat-value">72</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">改善趋势</div>
+                        <div class="stat-value">↗️ 上升</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 健康报告界面 -->
+    <div id="report" class="page">
+        <div class="container">
+            <h2 class="page-title">健康报告</h2>
+            
+            <div class="report-container">
+                <div class="report-header">
+                    <h3>个性化健康报告</h3>
+                    <div class="report-date" id="reportDate">生成日期: 2023年11月15日</div>
+                </div>
+                
+                <div class="report-summary">
+                    <div class="summary-title">本周健康概览</div>
+                    <div class="summary-stats">
+                        <div class="summary-stat">
+                            <div class="summary-stat-label">脑波健康指数</div>
+                            <div class="summary-stat-value">85</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="summary-stat-label">情绪稳定性</div>
+                            <div class="summary-stat-value">良好</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="summary-stat-label">睡眠质量</div>
+                            <div class="summary-stat-value">75</div>
+                        </div>
+                        <div class="summary-stat">
+                            <div class="summary-stat-label">压力水平</div>
+                            <div class="summary-stat-value">中等</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-sections">
+                    <div class="report-section">
+                        <div class="section-title">脑波分析</div>
+                        <p>本周您的脑波活动整体较为平稳，alpha波(放松状态)和beta波(专注状态)比例适中。在工作日下午时段，beta波活动增强，表明您在此时段较为专注。</p>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="section-title">情绪状态</div>
+                        <p>您的情绪状态整体稳定，愉悦度保持在较高水平。周三和周五出现小幅波动，可能与工作压力有关。建议在这些时段增加放松训练。</p>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="section-title">睡眠质量</div>
+                        <p>您的睡眠质量处于中等偏上水平，深睡时间充足，但REM睡眠略短。建议保持规律的睡眠时间，睡前避免使用电子设备。</p>
+                    </div>
+                    
+                    <div class="report-section">
+                        <div class="section-title">改善建议</div>
+                        <ul class="recommendations">
+                            <li>
+                                <span class="recommendation-icon">•</span>
+                                <span>每天进行10分钟的正念冥想，有助于提高专注力和情绪稳定性</span>
+                            </li>
+                            <li>
+                                <span class="recommendation-icon">•</span>
+                                <span>保持23:00前入睡，提高睡眠质量</span>
+                            </li>
+                            <li>
+                                <span class="recommendation-icon">•</span>
+                                <span>在工作间隙进行短暂的呼吸放松练习，缓解压力</span>
+                            </li>
+                            <li>
+                                <span class="recommendation-icon">•</span>
+                                <span>周末进行户外活动，接触自然光，有助于调节生物钟</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <button class="btn download-btn" onclick="downloadReport()">下载完整报告</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面导航
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+            
+            // 如果切换到脑波监测页面，开始绘制脑波
+            if (pageId === 'brainwave') {
+                startBrainwave();
+            }
+        }
+        
+        // 导航链接点击事件
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = e.target.getAttribute('data-page');
+                showPage(pageId);
+            });
+        });
+        
+        // 脑波监测功能
+        let brainwaveInterval;
+        let isMonitoring = true;
+        const canvas = document.getElementById('brainwaveCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 设置canvas尺寸
+        function resizeCanvas() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // 绘制脑波
+        function drawBrainwave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // 绘制网格背景
+            ctx.strokeStyle = 'rgba(255, 255, 255, 01, 0.1)';
+            ctx.lineWidth = 1;
+            
+            for (let x = 0; x < canvas.width; x += 20) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            for (let y = 0; y < canvas.height; y += 20) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+            
+            // 绘制脑波
+            ctx.strokeStyle = '#00ffcc';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            let lastX = 0;
+            let lastY = canvas.height / 2;
+            
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + Math.sin(x * 0.05) * 50 + Math.sin(x * 0.1) * 30 + Math.random() * 20 - 10;
+                
+                if (x === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            ctx.stroke();
+        }
+        
+        // 开始脑波监测
+        function startBrainwave() {
+            if (brainwaveInterval) clearInterval(brainwaveInterval);
+            
+            drawBrainwave();
+            brainwaveInterval = setInterval(() => {
+                if (isMonitoring) {
+                    drawBrainwave();
+                }
+            }, 100);
+        }
+        
+        // 停止脑波监测
+        function stopBrainwave() {
+            isMonitoring = false;
+        }
+        
+        // 开始脑波监测
+        startBrainwave();
+        
+        // 脑波控制按钮
+        document.getElementById('brainwaveToggle').addEventListener('click', function() {
+            if (isMonitoring) {
+                stopBrainwave();
+                this.textContent = '开始监测';
+            } else {
+                isMonitoring = true;
+                this.textContent = '停止监测';
+                drawBrainwave();
+            }
+        });
+        
+        // 生成报告数据
+        function generateReportData() {
+            const data = {
+                date: new Date().toLocaleDateString(),
+                focusTime: Math.floor(Math.random() * 60) + 30,
+                relaxationScore: Math.floor(Math.random() * 100),
+                stressLevel: Math.floor(Math.random() * 100),
+                productivity: Math.floor(Math.random() * 100),
+                recommendations: [
+                    '建议增加冥想练习时间',
+                    '保持规律作息时间',
+                    '减少咖啡因摄入',
+                    '尝试深呼吸练习'
+                ]
+            };
+            
+            return data;
+        }
+        
+        // 显示报告
+        function showReport() {
+            const data = generateReportData();
+            const reportContent = document.getElementById('reportContent');
+            
+            reportContent.innerHTML = `
+                <div class="report-header">
+                    <h3>脑波分析报告</h3>
+                    <p>生成日期: ${data.date}</p>
+                </div>
+                <div class="report-stats">
+                    <div class="stat-item">
+                        <h4>专注时长</h4>
+                        <p>${data.focusTime} 分钟</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>放松指数</h4>
+                        <p>${data.relaxationScore}%</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>压力水平</h4>
+                        <p>${data.stressLevel}%</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>生产力</h4>
+                        <p>${data.productivity}%</p>
+                    </div>
+                </div>
+                <div class="recommendations">
+                    <h4>建议</h4>
+                    <ul>
+                        ${data.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            showPage('report');
+        }
+        
+        // 下载报告
+        function downloadReport() {
+            const data = generateReportData();
+            const reportContent = `
+脑波分析报告
+生成日期: ${data.date}
+
+专注时长: ${data.focusTime} 分钟
+放松指数: ${data.relaxationScore}%
+压力水平: ${data.stressLevel}%
+生产力: ${data.productivity}%
+
+建议:
+${data.recommendations.map(rec => `- ${rec}`).join('\n')}
+            `;
+            
+            const blob = new Blob([reportContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `脑波分析报告_${new Date().toISOString().split('T')[0]}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // 初始化显示首页
+        showPage('home');
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+</html>
