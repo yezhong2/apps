@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthDataSyncer</title><meta name="description" content="Free online tool: HealthDataSyncer. No signup, no payment — free forever.">
+<meta property="og:title" content="HealthDataSyncer">
+<meta property="og:description" content="Free online tool: HealthDataSyncer. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_040039_HealthDataSy.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #4caf50;
+            --accent-hover: #66bb6a;
+            --danger: #f44336;
+            --danger-hover: #ef5350;
+            --warning: #ff9800;
+            --info: #2196f3;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding: 0 16px;
+            margin: 0 auto;
+        }
+        
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            margin-bottom: 24px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--bg-secondary);
+        }
+        
+        .button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            width: 100%;
+            margin-top: 16px;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .button:active {
+            transform: scale(0.98);
+        }
+        
+        .button.secondary {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .button.secondary:hover {
+            background-color: #333;
+        }
+        
+        .button.danger {
+            background-color: var(--danger);
+        }
+        
+        .button.danger:hover {
+            background-color: var(--danger-hover);
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .welcome-section h1 {
+            font-size: 32px;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+        
+        .welcome-section p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 32px;
+        }
+        
+        .logo-container {
+            width: 120px;
+            height: 120px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+        
+        .feature-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .data-source {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .data-source:hover {
+            background-color: #333;
+        }
+        
+        .data-source.selected {
+            background-color: var(--accent);
+        }
+        
+        .data-source-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 20px;
+        }
+        
+        .data-source-info {
+            flex: 1;
+        }
+        
+        .data-source-name {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        
+        .data-source-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            height: 8px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 8px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .chart-container {
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 20px;
+            height: 300px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .chart-bar {
+            position: absolute;
+            bottom: 40px;
+            background-color: var(--accent);
+            border-radius: 4px 4px 0 0;
+            width: 30px;
+            transition: height 0.5s ease;
+        }
+        
+        .chart-label {
+            position: absolute;
+            bottom: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            width: 30px;
+            text-align: center;
+        }
+        
+        .chart-value {
+            position: absolute;
+            top: -25px;
+            font-size: 12px;
+            color: white;
+            width: 30px;
+            text-align: center;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #333;
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .settings-label {
+            font-size: 16px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background-color: var(--bg-tertiary);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .toggle-switch.active {
+            background-color: var(--accent);
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(24px);
+        }
+        
+        .reminder-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .reminder-time {
+            font-size: 18px;
+            font-weight: 500;
+            margin-right: 16px;
+            min-width: 80px;
+        }
+        
+        .reminder-title {
+            flex: 1;
+        }
+        
+        .reminder-actions {
+            display: flex;
+        }
+        
+        .reminder-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            border: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .reminder-action:hover {
+            background-color: #444;
+        }
+        
+        .faq-item {
+            margin-bottom: 20px;
+        }
+        
+        .faq-question {
+            font-weight: 500;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            color: var(--text-secondary);
+            display: none;
+        }
+        
+        .faq-answer.active {
+            display: block;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 90%;
+            width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        .modal-close:hover {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1001;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                max-width: 720px;
+            }
+            
+            .welcome-section h1 {
+                font-size: 40px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="page active">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+            </div>
+            
+            <div class="welcome-section">
+                <div class="logo-container">HDS</div>
+                <h1>Your Health Data, Secured & Synced</h1>
+                <p>HealthDataSyncer is your personal health data manager. Import, sync, and visualize your health information across all platforms with military-grade encryption. Take control of your health journey today.</p>
+                
+                <button class="button" id="getStartedBtn">Get Started</button>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <div class="feature-title">Privacy First</div>
+                    <div class="feature-desc">Your data is encrypted and stored securely with zero-knowledge architecture</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <div class="feature-title">Multi-Platform Sync</div>
+                    <div class="feature-desc">Seamlessly sync your health data across all your devices and services</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Smart Analytics</div>
+                    <div class="feature-desc">Get personalized insights and reports about your health trends</div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <div class="feature-title">Health Reminders</div>
+                    <div class="feature-desc">Set personalized goals and receive timely reminders to maintain healthy habits</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Login/Register Page -->
+    <div id="loginPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+            </div>
+            
+            <div class="card">
+                <h2 style="text-align: center; margin-bottom: 24px;">Welcome Back</h2>
+                
+                <div class="input-group">
+                    <label for="emailInput">Email</label>
+                    <input type="email" id="emailInput" placeholder="Enter your email">
+                </div>
+                
+                <div class="input-group">
+                    <label for="passwordInput">Password</label>
+                    <input type="password" id="passwordInput" placeholder="Enter your password">
+                </div>
+                
+                <button class="button" id="loginBtn">Login</button>
+                <button class="button secondary" id="registerBtn" style="margin-top: 12px;">Create Account</button>
+                
+                <div style="text-align: center; margin-top: 24px; color: var(--text-secondary);">
+                    <p>By continuing, you agree to our Terms of Service and Privacy Policy</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Page -->
+    <div id="mainPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="settingsBtn">⚙️</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Health Dashboard</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Quick Actions</h2>
+                <button class="button" id="syncDataBtn">🔄 Sync Health Data</button>
+                <button class="button secondary" id="viewReportBtn" style="margin-top: 12px;">📊 View Health Report</button>
+                <button class="button secondary" id="viewChartsBtn" style="margin-top: 12px;">📈 View Data Charts</button>
+                <button class="button secondary" id="setRemindersBtn" style="margin-top: 12px;">⏰ Set Health Reminders</button>
+            </div>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Recent Activity</h2>
+                <div style="color: var(--text-secondary); text-align: center; padding: 20px;">
+                    <p>No recent activity</p>
+                    <p style="font-size: 14px; margin-top: 8px;">Sync your data to see your health history</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Sync Page -->
+    <div id="syncPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Sync Health Data</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Select Data Sources</h2>
+                
+                <div class="data-source" id="sourceApple">
+                    <div class="data-source-icon">🍎</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">Apple Health</div>
+                        <div class="data-source-desc">Sync data from your iPhone or Apple Watch</div>
+                    </div>
+                </div>
+                
+                <div class="data-source" id="sourceGoogle">
+                    <div class="data-source-icon">🤖</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">Google Fit</div>
+                        <div class="data-source-desc">Connect your Google Fit account</div>
+                    </div>
+                </div>
+                
+                <div class="data-source" id="sourceSamsung">
+                    <div class="data-source-icon">📱</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">Samsung Health</div>
+                        <div class="data-source-desc">Import data from Samsung devices</div>
+                    </div>
+                </div>
+                
+                <div class="data-source" id="sourceManual">
+                    <div class="data-source-icon">📝</div>
+                    <div class="data-source-info">
+                        <div class="data-source-name">Manual Entry</div>
+                        <div class="data-source-desc">Enter health data manually</div>
+                    </div>
+                </div>
+                
+                <button class="button" id="startSyncBtn" style="margin-top: 24px;">Start Syncing</button>
+            </div>
+            
+            <div class="card" id="syncProgress" style="display: none;">
+                <h2 style="margin-bottom: 16px;">Sync in Progress</h2>
+                <p id="syncStatus">Preparing to sync...</p>
+                <div class="progress-container">
+                    <div class="progress-bar" id="syncProgressBar"></div>
+                </div>
+                <p id="syncDetails" style="text-align: center; margin-top: 16px; color: var(--text-secondary); font-size: 14px;">0 of 4 sources completed</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Privacy Settings Page -->
+    <div id="privacyPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainFromPrivacyBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Privacy Settings</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Data Protection</h2>
+                
+                <div class="settings-item">
+                    <div class="settings-label">End-to-End Encryption</div>
+                    <div class="toggle-switch active" id="encryptionToggle"></div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">Auto-Lock Data</div>
+                    <div class="toggle-switch" id="autoLockToggle"></div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">Share Anonymous Analytics</div>
+                    <div class="toggle-switch" id="analyticsToggle"></div>
+                </div>
+                
+                <button class="button secondary" id="viewPrivacyPolicyBtn" style="margin-top: 16px;">View Privacy Policy</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Health Analysis Page -->
+    <div id="analysisPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainFromAnalysisBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Health Analysis Report</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Overall Health Score</h2>
+                <div style="text-align: center;">
+                    <div style="font-size: 48px; font-weight: bold; color: var(--accent);">82</div>
+                    <div style="color: var(--text-secondary);">Good</div>
+                </div>
+                
+                <div style="margin-top: 24px;">
+                    <h3 style="margin-bottom: 12px;">Key Insights</h3>
+                    <ul style="color: var(--text-secondary); padding-left: 20px;">
+                        <li>Your daily step count has increased by 15% this month</li>
+                        <li>Heart rate variability shows improvement during sleep</li>
+                        <li>Consistent sleep patterns detected over the last 7 days</li>
+                        <li>Hydration levels need improvement - try drinking more water</li>
+                    </ul>
+                </div>
+                
+                <button class="button secondary" id="downloadReportBtn" style="margin-top: 16px;">Download Full Report</button>
+            </div>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Health Trends</h2>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: var(--accent);">↑ 12%</div>
+                        <div style="color: var(--text-secondary); font-size: 14px;">Activity</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: var(--accent);">↑ 8%</div>
+                        <div style="color: var(--text-secondary); font-size: 14px;">Sleep Quality</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold; color: var(--danger);">↓ 5%</div>
+                        <div style="color: var(--text-secondary); font-size: 14px;">Hydration</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Visualization Page -->
+    <div id="chartsPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainFromChartsBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Data Visualization</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Weekly Activity</h2>
+                <div class="chart-container" id="activityChart">
+                    <div class="chart-bar" style="left: 10%;">
+                        <div class="chart-value">5.2k</div>
+                        <div class="chart-label">Mon</div>
+                    </div>
+                    <div class="chart-bar" style="left: 25%;">
+                        <div class="chart-value">7.1k</div>
+                        <div class="chart-label">Tue</div>
+                    </div>
+                    <div class="chart-bar" style="left: 40%;">
+                        <div class="chart-value">6.3k</div>
+                        <div class="chart-label">Wed</div>
+                    </div>
+                    <div class="chart-bar" style="left: 55%;">
+                        <div class="chart-value">8.2k</div>
+                        <div class="chart-label">Thu</div>
+                    </div>
+                    <div class="chart-bar" style="left: 70%;">
+                        <div class="chart-value">7.5k</div>
+                        <div class="chart-label">Fri</div>
+                    </div>
+                    <div class="chart-bar" style="left: 85%;">
+                        <div class="chart-value">4.8k</div>
+                        <div class="chart-label">Sat</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Sleep Pattern</h2>
+                <div class="chart-container" id="sleepChart">
+                    <div class="chart-bar" style="left: 10%; height: 70%; background-color: var(--info);">
+                        <div class="chart-value">7.2h</div>
+                        <div class="chart-label">Mon</div>
+                    </div>
+                    <div class="chart-bar" style="left: 25%; height: 85%; background-color: var(--info);">
+                        <div class="chart-value">8.5h</div>
+                        <div class="chart-label">Tue</div>
+                    </div>
+                    <div class="chart-bar" style="left: 40%; height: 75%; background-color: var(--info);">
+                        <div class="chart-value">7.5h</div>
+                        <div class="chart-label">Wed</div>
+                    </div>
+                    <div class="chart-bar" style="left: 55%; height: 90%; background-color: var(--info);">
+                        <div class="chart-value">9.0h</div>
+                        <div class="chart-label">Thu</div>
+                    </div>
+                    <div class="chart-bar" style="left: 70%; height: 80%; background-color: var(--info);">
+                        <div class="chart-value">8.0h</div>
+                        <div class="chart-label">Fri</div>
+                    </div>
+                    <div class="chart-bar" style="left: 85%; height: 95%; background-color: var(--info);">
+                        <div class="chart-value">9.5h</div>
+                        <div class="chart-label">Sat</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Health Reminders Page -->
+    <div id="remindersPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainFromRemindersBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Health Reminders</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Your Reminders</h2>
+                
+                <div class="reminder-item">
+                    <div class="reminder-time">08:00</div>
+                    <div class="reminder-title">Morning Meditation</div>
+                    <div class="reminder-actions">
+                        <button class="reminder-action">✏️</button>
+                        <button class="reminder-action">🗑️</button>
+                    </div>
+                </div>
+                
+                <div class="reminder-item">
+                    <div class="reminder-time">12:30</div>
+                    <div class="reminder-title">Lunch Walk</div>
+                    <div class="reminder-actions">
+                        <button class="reminder-action">✏️</button>
+                        <button class="reminder-action">🗑️</button>
+                    </div>
+                </div>
+                
+                <div class="reminder-item">
+                    <div class="reminder-time">18:00</div>
+                    <div class="reminder-title">Evening Hydration</div>
+                    <div class="reminder-actions">
+                        <button class="reminder-action">✏️</button>
+                        <button class="reminder-action">🗑️</button>
+                    </div>
+                </div>
+                
+                <button class="button secondary" id="addReminderBtn" style="margin-top: 16px;">+ Add Reminder</button>
+            </div>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Set New Reminder</h2>
+                
+                <div class="input-group">
+                    <label for="reminderTitleInput">Reminder Title</label>
+                    <input type="text" id="reminderTitleInput" placeholder="Enter reminder title">
+                </div>
+                
+                <div class="input-group">
+                    <label for="reminderTimeInput">Time</label>
+                    <input type="time" id="reminderTimeInput">
+                </div>
+                
+                <div class="input-group">
+                    <label for="reminderRepeatInput">Repeat</label>
+                    <select id="reminderRepeatInput" style="width: 100%; padding: 12px; background-color: var(--bg-tertiary); border: 1px solid #444; border-radius: 8px; color: white;">
+                        <option>Every day</option>
+                        <option>Weekdays</option>
+                        <option>Weekends</option>
+                        <option>Custom</option>
+                    </select>
+                </div>
+                
+                <button class="button" id="saveReminderBtn">Save Reminder</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings/Help Page -->
+    <div id="settingsPage" class="page">
+        <div class="container">
+            <div class="header">
+                <div class="logo">HealthDataSyncer</div>
+                <button class="nav-button" id="backToMainFromSettingsBtn">←</button>
+            </div>
+            
+            <h1 style="margin-bottom: 24px;">Settings & Help</h1>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Account</h2>
+                
+                <div class="settings-item">
+                    <div class="settings-label">Email</div>
+                    <div style="color: var(--text-secondary);">user@example.com</div>
+                </div>
+                
+                <div class="settings-item">
+                    <div class="settings-label">Password</div>
+                    <button class="button secondary" style="width: auto; padding: 8px 16px;">Change</button>
+                </div>
+                
+                <button class="button danger" style="margin-top: 16px; width: auto;">Log Out</button>
+            </div>
+            
+            <div class="card">
+                <h2 style="margin-bottom: 16px;">Help & Support</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question" id="faq1">
+                        How do I sync my health data?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Go to the main dashboard and tap "Sync Health Data". Select the platforms you want to sync with and follow the authentication process.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" id="faq2">
+                        Is my data secure?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Yes, we use end-to-end encryption to protect your data. Your information is stored securely with zero-knowledge architecture.
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" id="faq3">
+                        How do I set health reminders?
+                        <span>+</span>
+                    </div>
+                    <div class="faq-answer">
+                        Navigate to the "Set Health Reminders" section, add a new reminder with your desired title and time, and choose your repeat preference.
+                    </div>
+                </div>
+                
+                <button class="button secondary" id="contactSupportBtn" style="margin-top: 16px;">Contact Support</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+    
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Privacy Policy</div>
+                <button class="modal-close" id="closePrivacyModalBtn">×</button>
+            </div>
+            <div style="color: var(--text-secondary); line-height: 1.8;">
+                <p style="margin-bottom: 16px;">HealthDataSyncer is committed to protecting your privacy. This policy outlines how we collect, use, and safeguard your personal information.</p>
+                
+                <h3 style="margin: 20px 0 12px;">Information We Collect</h3>
+                <p style="margin-bottom: 16px;">We collect health data from various sources including fitness trackers, smartwatches, and manual entries. This may include activity levels, sleep patterns, heart rate, and other health metrics.</p>
+                
+                <h3 style="margin: 20px 0 12px;">How We Use Your Information</h3>
+                <p style="margin-bottom: 16px;">We use your health data to provide personalized insights, generate reports, and set health reminders. We never sell your data to third parties.</p>
+                
+                <h3 style="margin: 20px 0 12px;">Data Security</h3>
+                <p style="margin-bottom: 16px;">All data is encrypted both in transit and at rest using industry-standard encryption protocols. We implement strict access controls to ensure only authorized personnel can access your information.</p>
+                
+                <h3 style="margin: 20px0 12px;">Your Rights</h3>
+                <p style="margin-bottom: 16px;">You have the right to access, update, or delete your personal information at any time. You can also export your data in a portable format or request that we cease using your data for certain purposes.</p>
+                
+                <h3 style="margin: 20px 0 12px;">Changes to This Policy</h3>
+                <p style="margin-bottom: 16px;">We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date.</p>
+                
+                <p style="margin-top: 24px;"><strong>Last Updated:</strong> May 15, 2023</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize modals
+            const privacyModal = document.getElementById('privacyModal');
+            const closePrivacyModalBtn = document.getElementById('closePrivacyModalBtn');
+            
+            // Privacy modal event listeners
+            closePrivacyModalBtn.addEventListener('click', function() {
+                privacyModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === privacyModal) {
+                    privacyModal.classList.remove('active');
+                }
+            });
+            
+            // Initialize charts
+            initializeCharts();
+            
+            // Initialize form handlers
+            initializeFormHandlers();
+        });
+        
+        function initializeCharts() {
+            // Chart.js configuration for activity chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            const activityChart = new Chart(activityCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Steps',
+                        data: [8230, 10543, 9321, 11234, 8765, 12321, 9876],
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Weekly Activity'
+                        }
+                    }
+                }
+            });
+            
+            // Chart.js configuration for health metrics chart
+            const metricsCtx = document.getElementById('healthMetricsChart').getContext('2d');
+            const metricsChart = new Chart(metricsCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Heart Rate', 'Sleep', 'Activity', 'Calories'],
+                    datasets: [{
+                        label: 'Current Week',
+                        data: [72, 7.5, 85, 2100],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Health Metrics'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function initializeFormHandlers() {
+            // Health data form submission
+            const healthDataForm = document.getElementById('healthDataForm');
+            if (healthDataForm) {
+                healthDataForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Collect form data
+                    const formData = {
+                        date: document.getElementById('date').value,
+                        weight: document.getElementById('weight').value,
+                        bloodPressure: document.getElementById('bloodPressure').value,
+                        heartRate: document.getElementById('heartRate').value,
+                        sleepHours: document.getElementById('sleepHours').value,
+                        notes: document.getElementById('notes').value
+                    };
+                    
+                    // In a real app, this would be sent to a server
+                    console.log('Health data submitted:', formData);
+                    
+                    // Show success message
+                    showNotification('Health data saved successfully!', 'success');
+                    
+                    // Reset form
+                    healthDataForm.reset();
+                });
+            }
+            
+            // Settings form submission
+            const settingsForm = document.getElementById('settingsForm');
+            if (settingsForm) {
+                settingsForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Collect settings data
+                    const settings = {
+                        notifications: document.getElementById('notifications').checked,
+                        darkMode: document.getElementById('darkMode').checked,
+                        dataSync: document.getElementById('dataSync').checked,
+                        units: document.getElementById('units').value
+                    };
+                    
+                    // In a real app, this would be sent to a server
+                    console.log('Settings updated:', settings);
+                    
+                    // Apply dark mode if selected
+                    if (settings.darkMode) {
+                        document.body.classList.add('dark-mode');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                    }
+                    
+                    // Show success message
+                    showNotification('Settings updated successfully!', 'success');
+                });
+            }
+        }
+        
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            // Add to DOM
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Your Health Data, Secured \u0026 Synced","Get Started":"Get Started","Welcome Back":"Welcome Back","Email":"Email","Password":"Password","Login":"Login","Create Account":"Create Account","By continuing, you agree to our Terms of Service and Privacy Policy":"By continuing, you agree to our Terms of Service and Privacy Policy","Health Dashboard":"Health Dashboard","Quick Actions":"Quick Actions","🔄 Sync Health Data":"🔄 Sync Health Data","📊 View Health Report":"📊 View Health Report","📈 View Data Charts":"📈 View Data Charts","⏰ Set Health Reminders":"⏰ Set Health Reminders","Recent Activity":"Recent Activity","No recent activity":"No recent activity","Sync your data to see your health history":"Sync your data to see your health history","Sync Health Data":"Sync Health Data","Select Data Sources":"Select Data Sources","Start Syncing":"Start Syncing","Sync in Progress":"Sync in Progress","Preparing to sync...":"Preparing to sync...","0 of 4 sources completed":"0 of 4 sources completed","Privacy Settings":"Privacy Settings","Data Protection":"Data Protection","View Privacy Policy":"View Privacy Policy","Health Analysis Report":"Health Analysis Report","Overall Health Score":"Overall Health Score","Key Insights":"Key Insights","Your daily step count has increased by 15% this month":"Your daily step count has increased by 15% this month","Heart rate variability shows improvement during sleep":"Heart rate variability shows improvement during sleep","Consistent sleep patterns detected over the last 7 days":"Consistent sleep patterns detected over the last 7 days","Hydration levels need improvement - try drinking more water":"Hydration levels need improvement - try drinking more water","Download Full Report":"Download Full Report","Health Trends":"Health Trends","Data Visualization":"Data Visualization","Weekly Activity":"Weekly Activity","Sleep Pattern":"Sleep Pattern","Health Reminders":"Health Reminders","Your Reminders":"Your Reminders","+ Add Reminder":"+ Add Reminder","Set New Reminder":"Set New Reminder","Reminder Title":"Reminder Title","Time":"Time","Repeat":"Repeat","Every day":"Every day","Weekdays":"Weekdays","Weekends":"Weekends","Custom":"Custom","Save Reminder":"Save Reminder","Settings \u0026 Help":"Settings \u0026 Help","Account":"Account","Change":"Change","Log Out":"Log Out","Help \u0026 Support":"Help \u0026 Support","Contact Support":"Contact Support","Information We Collect":"Information We Collect","How We Use Your Information":"How We Use Your Information","Data Security":"Data Security","Your Rights":"Your Rights","__title__":"HealthDataSyncer"},"zh-CN":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"您的健康数据，安全同步","Get Started":"开始使用","Welcome Back":"欢迎回来","Email":"邮箱","Password":"密码","Login":"登录","Create Account":"创建账户","By continuing, you agree to our Terms of Service and Privacy Policy":"继续使用即表示您同意我们的服务条款和隐私政策","Health Dashboard":"健康仪表板","Quick Actions":"快速操作","🔄 Sync Health Data":"🔄 同步健康数据","📊 View Health Report":"📊 查看健康报告","📈 View Data Charts":"📈 查看数据图表","⏰ Set Health Reminders":"⏰ 设置健康提醒","Recent Activity":"最近活动","No recent activity":"没有最近的活动","Sync your data to see your health history":"同步您的数据以查看您的健康历史","Sync Health Data":"同步健康数据","Select Data Sources":"选择数据源","Start Syncing":"开始同步","Sync in Progress":"同步进行中","Preparing to sync...":"准备同步...","0 of 4 sources completed":"4个源中的0个已完成","Privacy Settings":"隐私设置","Data Protection":"数据保护","View Privacy Policy":"查看隐私政策","Health Analysis Report":"健康分析报告","Overall Health Score":"整体健康评分","Key Insights":"关键洞察","Your daily step count has increased by 15% this month":"本月您的每日步数增加了15%","Heart rate variability shows improvement during sleep":"心率变异性显示在睡眠期间有所改善","Consistent sleep patterns detected over the last 7 days":"过去7天检测到一致的睡眠模式","Hydration levels need improvement - try drinking more water":"水分水平需要改善 - 尝试多喝水","Download Full Report":"下载完整报告","Health Trends":"健康趋势","Data Visualization":"数据可视化","Weekly Activity":"每周活动","Sleep Pattern":"睡眠模式","Health Reminders":"健康提醒","Your Reminders":"您的提醒","+ Add Reminder":"+ 添加提醒","Set New Reminder":"设置新提醒","Reminder Title":"提醒标题","Time":"时间","Repeat":"重复","Every day":"每天","Weekdays":"工作日","Weekends":"周末","Custom":"自定义","Save Reminder":"保存提醒","Settings \u0026 Help":"设置与帮助","Account":"账户","Change":"更改","Log Out":"登出","Help \u0026 Support":"帮助与支持","Contact Support":"联系支持","Information We Collect":"我们收集的信息","How We Use Your Information":"我们如何使用您的信息","Data Security":"数据安全","Your Rights":"您的权利","__title__":"HealthDataSyncer"},"es":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Sus Datos de Salud, Protegidos y Sincronizados","Get Started":"Comienza","Welcome Back":"Bienvenido de nuevo","Email":"Correo Electrónico","Password":"Contraseña","Login":"Iniciar Sesión","Create Account":"Crear Cuenta","By continuing, you agree to our Terms of Service and Privacy Policy":"Al continuar, aceptas nuestros Términos de Servicio y Política de Privacidad","Health Dashboard":"Panel de Salud","Quick Actions":"Acciones rápidas","🔄 Sync Health Data":"🔄 Sincronizar Datos de Salud","📊 View Health Report":"📊 Ver Informe de Salud","📈 View Data Charts":"📈 Ver Gráficos de Datos","⏰ Set Health Reminders":"⏰ Establecer Recordatorios de Salud","Recent Activity":"Actividad Reciente","No recent activity":"No hay actividad reciente","Sync your data to see your health history":"Sincroniza tus datos para ver tu historia de salud","Sync Health Data":"Sincronizar Datos de Salud","Select Data Sources":"Seleccionar Fuentes de Datos","Start Syncing":"Comenzar a Sincronizar","Sync in Progress":"Sincronización en Progreso","Preparing to sync...":"Preparándose para sincronizar...","0 of 4 sources completed":"0 de 4 fuentes completadas","Privacy Settings":"Ajustes de Privacidad","Data Protection":"Protección de Datos","View Privacy Policy":"Ver Política de Privacidad","Health Analysis Report":"Informe de Análisis de Salud","Overall Health Score":"Puntuación General de Salud","Key Insights":"Insights Clave","Your daily step count has increased by 15% this month":"Tu recuento diario de pasos ha aumentado en un 15% este mes","Heart rate variability shows improvement during sleep":"La variabilidad de la frecuencia cardiaca muestra una mejora durante el sueño","Consistent sleep patterns detected over the last 7 days":"Patrones de sueño consistentes detectados durante los últimos 7 días","Hydration levels need improvement - try drinking more water":"Los niveles de hidratación necesitan mejorar - intenta beber más agua","Download Full Report":"Descargar Informe Completo","Health Trends":"Tendencias de Salud","Data Visualization":"Visualización de Datos","Weekly Activity":"Actividad Semanal","Sleep Pattern":" Patrón de Sueño","Health Reminders":"Recordatorios de Salud","Your Reminders":"Tus Recordatorios","+ Add Reminder":"+ Añadir Recordatorio","Set New Reminder":"Establecer Nuevo Recordatorio","Reminder Title":"Título del Recordatorio","Time":"Tiempo","Repeat":"Repetir","Every day":"Todos los días","Weekdays":"Días laborables","Weekends":"Fines de semana","Custom":"Personalizado","Save Reminder":"Guardar Recordatorio","Settings \u0026 Help":"Ajustes y Ayuda","Account":"Cuenta","Change":"Cambiar","Log Out":"Cerrar Sesión","Help \u0026 Support":"Ayuda y Soporte","Contact Support":"Contactar Soporte","Information We Collect":"Información que Recolectamos","How We Use Your Information":"Cómo Usamos Tu Información","Data Security":"Seguridad de Datos","Your Rights":" Tus Derechos","__title__":"HealthDataSyncer"},"ja":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"あなたの健康データ、安全に同期されています","Get Started":"始めましょう","Welcome Back":"おかえりなさい","Email":"メールアドレス","Password":"パスワード","Login":"ログイン","Create Account":"アカウントを作成","By continuing, you agree to our Terms of Service and Privacy Policy":"このまま進行することで、あなたは我々の利用規約およびプライバシーポリシーに同意したことになります","Health Dashboard":"ヘルスダッシュボード","Quick Actions":"クイックアクション","🔄 Sync Health Data":"🔄 健康データを同期","📊 View Health Report":"📊 健康レポートを表示","📈 View Data Charts":"📈 データグラフを表示","⏰ Set Health Reminders":"⏰ 健康リマインダーを設定","Recent Activity":"最近のアクティビティ","No recent activity":"最近のアクティビティはありません","Sync your data to see your health history":"データを同期して、あなたの健康履歴を確認","Sync Health Data":"健康データを同期","Select Data Sources":"データソースを選択","Start Syncing":"同期を開始","Sync in Progress":"同期中","Preparing to sync...":"同期の準備中...","0 of 4 sources completed":"4つのソースのうち0が完了","Privacy Settings":"プライバシー設定","Data Protection":"データ保護","View Privacy Policy":"プライバシーポリシーを表示","Health Analysis Report":"ヘルス分析レポート","Overall Health Score":"全体の健康スコア","Key Insights":"重要な洞察","Your daily step count has increased by 15% this month":"今月のあなたの一日の歩数は15%増加しました","Heart rate variability shows improvement during sleep":"睡眠中の心拍数の変動が改善されています","Consistent sleep patterns detected over the last 7 days":"過去7日の一定の睡眠パターンが検出されています","Hydration levels need improvement - try drinking more water":"水分補給レベルが改善が必要です - より多くの水を飲んでみてください","Download Full Report":"全レポートをダウンロード","Health Trends":"健康トレンド","Data Visualization":"データ可視化","Weekly Activity":"週次アクティビティ","Sleep Pattern":"睡眠パターン","Health Reminders":"健康リマインダー","Your Reminders":"あなたのリマインダー","+ Add Reminder":"+ リマインダーを追加","Set New Reminder":"新しいリマインダーを設定","Reminder Title":"リマインダータイトル","Time":"時間","Repeat":"繰り返し","Every day":"毎日","Weekdays":"平日","Weekends":"週末","Custom":"カスタム","Save Reminder":"リマインダーを保存","Settings \u0026 Help":"設定とヘルプ","Account":"アカウント","Change":"変更","Log Out":"ログアウト","Help \u0026 Support":"ヘルプとサポート","Contact Support":"サポートに連絡","Information We Collect":"私たちが収集する情報","How We Use Your Information":"あなたの情報の使用方法","Data Security":"データセキュリティ","Your Rights":"あなたの権利","__title__":"HealthDataSyncer"},"ko":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"당신의 건강 데이터, 보안과 동기화됨","Get Started":"시작하기","Welcome Back":"환영합니다","Email":"이메일","Password":"비밀번호","Login":"로그인","Create Account":"계정 생성","By continuing, you agree to our Terms of Service and Privacy Policy":"계속하시면, 저희 이용약관 및 개인정보 보호 정책에 동의합니다","Health Dashboard":"건강 대시보드","Quick Actions":"빠른 작업","🔄 Sync Health Data":"🔄 건강 데이터 동기화","📊 View Health Report":"📊 건강 보고서 보기","📈 View Data Charts":"📈 데이터 차트 보기","⏰ Set Health Reminders":"⏰ 건강 알림 설정","Recent Activity":"최근 활동","No recent activity":"최근 활동 없음","Sync your data to see your health history":"건강 이력을 보려면 데이터를 동기화하세요","Sync Health Data":"건강 데이터 동기화","Select Data Sources":"데이터 소스 선택","Start Syncing":"동기화 시작","Sync in Progress":"동기화 진행 중","Preparing to sync...":"동기화 준비 중...","0 of 4 sources completed":"4개 중 0개 소스 완료","Privacy Settings":"개인정보 설정","Data Protection":"데이터 보호","View Privacy Policy":"개인정보 보호 정책 보기","Health Analysis Report":"건강 분석 보고서","Overall Health Score":"전반적인 건강 점수","Key Insights":"주요 인사이트","Your daily step count has increased by 15% this month":"이 달에 하루 평균 걸음수가 15% 증가했습니다","Heart rate variability shows improvement during sleep":"면에서 심장 박동 변화가 개선되었습니다","Consistent sleep patterns detected over the last 7 days":"최근 7일간 일관된 수면 패턴이 감지되었습니다","Hydration levels need improvement - try drinking more water":"수분 공급 수준이 개선되어야 합니다 - 더 많은 물을 마시세요","Download Full Report":"전체 보고서 다운로드","Health Trends":"건강 추세","Data Visualization":"데이터 시각화","Weekly Activity":"주간 활동","Sleep Pattern":"수면 패턴","Health Reminders":"건강 알림","Your Reminders":"당신의 알림","+ Add Reminder":"+ 알림 추가","Set New Reminder":"새로운 알림 설정","Reminder Title":"알림 제목","Time":"시간","Repeat":"반복","Every day":"매일","Weekdays":"평일","Weekends":"주말","Custom":"사용자 정의","Save Reminder":"알림 저장","Settings \u0026 Help":"설정 및 도움말","Account":"계정","Change":"변경","Log Out":"로그아웃","Help \u0026 Support":"도움말 및 지원","Contact Support":"지원 연락처","Information We Collect":"저희가 수집하는 정보","How We Use Your Information":"저희가 어떻게 정보를 사용하는지","Data Security":"데이터 보안","Your Rights":"당신의 권리","__title__":"HealthDataSyncer"},"fr":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Vos données de santé, sécurisées et synchronisées","Get Started":"Commencez","Welcome Back":"Bienvenue de retour","Email":"Email","Password":"Mot de passe","Login":"Se connecter","Create Account":"Créer un compte","By continuing, you agree to our Terms of Service and Privacy Policy":"En continuant, vous acceptez nos Conditions d'utilisation et Politique de confidentialité","Health Dashboard":"Tableau de bord de la santé","Quick Actions":"Actions rapides","🔄 Sync Health Data":"🔄 Synchroniser les données de santé","📊 View Health Report":"📊 Voir le rapport de santé","📈 View Data Charts":"📈 Voir les graphiques de données","⏰ Set Health Reminders":"⏰ Définir des rappels de santé","Recent Activity":"Activité récente","No recent activity":"Aucune activité récente","Sync your data to see your health history":"Synchronisez vos données pour voir votre historique de santé","Sync Health Data":"Synchroniser les données de santé","Select Data Sources":"Sélectionner les sources de données","Start Syncing":"Démarrer la synchronisation","Sync in Progress":"Synchronisation en cours","Preparing to sync...":"Préparation à la synchronisation...","0 of 4 sources completed":"0 sur 4 sources terminées","Privacy Settings":"Paramètres de confidentialité","Data Protection":"Protection des données","View Privacy Policy":"Voir la Politique de confidentialité","Health Analysis Report":"Rapport d'analyse de santé","Overall Health Score":"Score global de santé","Key Insights":"Insights clés","Your daily step count has increased by 15% this month":"Votre nombre de pas quotidiens a augmenté de 15% ce mois-ci","Heart rate variability shows improvement during sleep":"La variabilité du rythme cardiaque montre une amélioration pendant le sommeil","Consistent sleep patterns detected over the last 7 days":"Des schémas de sommeil cohérents détectés au cours des 7 derniers jours","Hydration levels need improvement - try drinking more water":"Les niveaux d'hydratation nécessitent une amélioration - essayez de boire plus d'eau","Download Full Report":"Télécharger le rapport complet","Health Trends":"Tendances de santé","Data Visualization":"Visualisation des données","Weekly Activity":"Activité hebdomadaire","Sleep Pattern":"Schéma de sommeil","Health Reminders":"Rappels de santé","Your Reminders":"Vos rappels","+ Add Reminder":"+ Ajouter un rappel","Set New Reminder":"Définir un nouveau rappel","Reminder Title":"Titre du rappel","Time":"Heure","Repeat":"Répéter","Every day":"Tous les jours","Weekdays":"Jours ouvrables","Weekends":"Week-ends","Custom":"Personnalisé","Save Reminder":"Enregistrer le rappel","Settings \u0026 Help":"Paramètres et Aide","Account":"Compte","Change":"Changer","Log Out":"Se déconnecter","Help \u0026 Support":"Aide et Support","Contact Support":"Contacter le support","Information We Collect":"Informations que nous collectons","How We Use Your Information":"Comment nous utilisons vos informations","Data Security":"Sécurité des données","Your Rights":"Vos droits","__title__":"HealthDataSyncer"},"de":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Ihre Gesundheit Daten, gesichert und synchronisiert","Get Started":"Erste Schritte","Welcome Back":"Willkommen zurück","Email":"E-Mail","Password":"Passwort","Login":"Anmelden","Create Account":"Konto erstellen","By continuing, you agree to our Terms of Service and Privacy Policy":"Durch die Fortsetzung erklären Sie sich mit unseren Nutzungsbedingungen und Datenschutzbestimmungen einverstanden","Health Dashboard":"Gesundheitsübersicht","Quick Actions":"Schnelle Aktionen","🔄 Sync Health Data":"🔄 Gesundheitsdaten synchronisieren","📊 View Health Report":"📊 Gesundheitsbericht anzeigen","📈 View Data Charts":"📈 Datenberichte anzeigen","⏰ Set Health Reminders":"⏰ Gesundheitserinnerungen einrichten","Recent Activity":"Letzte Aktivitäten","No recent activity":"Keine letzten Aktivitäten","Sync your data to see your health history":"Synchronisieren Sie Ihre Daten, um Ihren Gesundheitsverlauf anzuzeigen","Sync Health Data":"Gesundheitsdaten synchronisieren","Select Data Sources":"Datenquellen auswählen","Start Syncing":"Synchronisieren starten","Sync in Progress":"Synchronisierung im Gange","Preparing to sync...":"Vorbereitung der Synchronisierung...","0 of 4 sources completed":"0 von 4 Quellen abgeschlossen","Privacy Settings":"Datenschutzeinstellungen","Data Protection":"Datenschutz","View Privacy Policy":"Datenschutzbestimmungen anzeigen","Health Analysis Report":"Gesundheitsanalysebericht","Overall Health Score":"Gesamtwohrheitsbewertung","Key Insights":"Wesentliche Erkenntnisse","Your daily step count has increased by 15% this month":"Ihre tägliche Schrittzahl hat sich im Monat um 15% erhöht","Heart rate variability shows improvement during sleep":"Die Variabilität des Herzschlags zeigt während des Schlafes eine Verbesserung","Consistent sleep patterns detected over the last 7 days":"Konsistente Schlafformen in den letzten 7 Tagen erkannt","Hydration levels need improvement - try drinking more water":"Die Hydrationslevels müssen verbessert werden - probieren Sie, mehr Wasser zu trinken","Download Full Report":"Vollständigen Bericht herunterladen","Health Trends":"Gesundheitstrends","Data Visualization":"Datenvisualisierung","Weekly Activity":"Wöchentliche Aktivität","Sleep Pattern":"Schlafmuster","Health Reminders":"Gesundheitserinnerungen","Your Reminders":"Ihre Erinnerungen","+ Add Reminder":"+ Erinnerung hinzufügen","Set New Reminder":"Neue Erinnerung einrichten","Reminder Title":"Erinnerungstitel","Time":"Zeit","Repeat":"Wiederholen","Every day":"Jeden Tag","Weekdays":"Wochentage","Weekends":"Wochenenden","Custom":"Benutzerdefiniert","Save Reminder":"Erinnerung speichern","Settings \u0026 Help":"Einstellungen und Hilfe","Account":"Konto","Change":"Ändern","Log Out":"Ausloggen","Help \u0026 Support":"Hilfe und Support","Contact Support":"Support kontaktieren","Information We Collect":"Informationen, die wir sammeln","How We Use Your Information":"Wie wir Ihre Informationen verwenden","Data Security":"Datensicherheit","Your Rights":"Ihre Rechte","__title__":"HealthDataSyncer"},"ru":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Ваше здоровье данные, защищены и синхронизированы","Get Started":"Начните","Welcome Back":"Добро пожаловать назад","Email":"Электронная почта","Password":"Пароль","Login":"Войти","Create Account":"Создать аккаунт","By continuing, you agree to our Terms of Service and Privacy Policy":"Продолжая, вы соглашаетесь с нашими Условиями обслуживания и Политикой конфиденциальности","Health Dashboard":"Здоровье Панель","Quick Actions":"Скоростные действия","🔄 Sync Health Data":"🔄 Синхронизация здоровых данных","📊 View Health Report":"📊 Просмотр отчета о здоровье","📈 View Data Charts":"📈 Просмотр графиков данных","⏰ Set Health Reminders":"⏰ Установить напоминания о здоровье","Recent Activity":"Недавняя активность","No recent activity":"Нет последней активности","Sync your data to see your health history":"Синхронизируйте свои данные, чтобы увидеть историю вашего здоровья","Sync Health Data":"Синхронизация здоровых данных","Select Data Sources":"Выберите источники данных","Start Syncing":"Начать синхронизацию","Sync in Progress":"Синхронизация в процессе","Preparing to sync...":"Подготовка к синхронизации...","0 of 4 sources completed":"0 из 4 источников завершено","Privacy Settings":"Настройки конфиденциальности","Data Protection":"Защита данных","View Privacy Policy":"Просмотр политики конфиденциальности","Health Analysis Report":"Отчет оhealth анализе","Overall Health Score":"Общий индекс здоровья","Key Insights":"Основные моменты","Your daily step count has increased by 15% this month":"Ваш суточный счет шагов увеличился на 15% за этот месяц","Heart rate variability shows improvement during sleep":"Изменчивость частоты сердечных сокращений показывает улучшение во время сна","Consistent sleep patterns detected over the last 7 days":"Обнаружены постоянные модели сна за последние 7 дней","Hydration levels need improvement - try drinking more water":"Уровни гидратации требуют улучшения - попробуйте пить больше воды","Download Full Report":"Загрузить полный отчет","Health Trends":"Тренды здоровья","Data Visualization":"Визуализация данных","Weekly Activity":"Неделя активность","Sleep Pattern":"Режим сна","Health Reminders":"Здоровье напоминания","Your Reminders":"Ваши напоминания","+ Add Reminder":"+ Добавить напоминание","Set New Reminder":"Установить новое напоминание","Reminder Title":"Заголовок напоминания","Time":"Время","Repeat":"Повторять","Every day":"Каждый день","Weekdays":"Будние дни","Weekends":"Викенды","Custom":"Пользовательский","Save Reminder":"Сохранить напоминание","Settings \u0026 Help":"Настройки и помощь","Account":"Аккаунт","Change":"Изменить","Log Out":"Выйти","Help \u0026 Support":"Помощь и поддержка","Contact Support":"Связаться с поддержкой","Information We Collect":"Информация, которую мы собираем","How We Use Your Information":"Как мы используем вашу информацию","Data Security":"Безопасность данных","Your Rights":"Ваши права","__title__":"HealthDataSyncer"},"pt":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Seus Dados de Saúde, Segurados e Sincronizados","Get Started":"Comece Agora","Welcome Back":"Bem-vindo de Volta","Email":"E-mail","Password":"Senha","Login":"Entrar","Create Account":"Criar Conta","By continuing, you agree to our Terms of Service and Privacy Policy":"Ao continuar, você concorda com nossos Termos de Serviço e Política de Privacidade","Health Dashboard":"Painel de Saúde","Quick Actions":"Ações Rápidas","🔄 Sync Health Data":"🔄 Sincronizar Dados de Saúde","📊 View Health Report":"📊 Visualizar Relatório de Saúde","📈 View Data Charts":"📈 Visualizar Gráficos de Dados","⏰ Set Health Reminders":"⏰ Definir Lembranças de Saúde","Recent Activity":"Atividade Recente","No recent activity":"Nenhuma atividade recente","Sync your data to see your health history":"Sincronize seus dados para ver seu histórico de saúde","Sync Health Data":"Sincronizar Dados de Saúde","Select Data Sources":"Selecione Fontes de Dados","Start Syncing":"Iniciar Sincronização","Sync in Progress":"Sincronização em Progresso","Preparing to sync...":"Preparando para sincronizar...","0 of 4 sources completed":"0 de 4 fontes concluídas","Privacy Settings":"Configurações de Privacidade","Data Protection":"Proteção de Dados","View Privacy Policy":"Visualizar Política de Privacidade","Health Analysis Report":"Relatório de Análise de Saúde","Overall Health Score":"Pontuação Geral de Saúde","Key Insights":"Insights Chave","Your daily step count has increased by 15% this month":"Seu número diário de passos aumentou em 15% neste mês","Heart rate variability shows improvement during sleep":"A variabilidade da frequência cardíaca mostra melhoria durante o sono","Consistent sleep patterns detected over the last 7 days":"Padrões de sono consistentes detectados nos últimos 7 dias","Hydration levels need improvement - try drinking more water":"Os níveis de hidratação precisam de melhoria - tente beber mais água","Download Full Report":"Baixar Relatório Completo","Health Trends":"Tendências de Saúde","Data Visualization":"Visualização de Dados","Weekly Activity":"Atividade Semanal","Sleep Pattern":"Padrão de Sono","Health Reminders":"Lembranças de Saúde","Your Reminders":"Suas Lembranças","+ Add Reminder":"+ Adicionar Lembrança","Set New Reminder":"Definir Nova Lembrança","Reminder Title":"Título da Lembrança","Time":"Hora","Repeat":"Repetir","Every day":"Todos os dias","Weekdays":"Dias úteis","Weekends":"Fins de semana","Custom":"Personalizado","Save Reminder":"Salvar Lembrança","Settings \u0026 Help":"Configurações e Ajuda","Account":"Conta","Change":"Mudar","Log Out":"Sair","Help \u0026 Support":"Ajuda e Suporte","Contact Support":"Contatar Suporte","Information We Collect":"Informações que Coletamos","How We Use Your Information":"Como Usamos Suas Informações","Data Security":"Segurança de Dados","Your Rights":"Seus Direitos","__title__":"HealthDataSyncer"},"ar":{"HealthDataSyncer":"مزامنة بيانات الصحة","Your Health Data, Secured \u0026 Synced":"بيانات صحتك، محمية ومزامنة","Get Started":"ابدأ الآن","Welcome Back":"مرحبًا بعودتك","Email":"البريد الإلكتروني","Password":"كلمة المرور","Login":"الدخول","Create Account":"إنشاء حساب","By continuing, you agree to our Terms of Service and Privacy Policy":"بمتابعة استخدامك، توافق على شروط استخدامنا وشروط سياسة الخصوصية","Health Dashboard":"لوحة تحكم الصحة","Quick Actions":"الأعمال السريعة","🔄 Sync Health Data":"🔄زامنة بيانات الصحة","📊 View Health Report":"📊 عرض تقرير الصحة","📈 View Data Charts":"📈 عرض مخططات البيانات","⏰ Set Health Reminders":"⏰ تعيين تذكيرات الصحة","Recent Activity":" النشاط الأخير","No recent activity":"لا يوجد نشاط حديث","Sync your data to see your health history":"زامن بياناتك لرؤية تاريخ صحتك","Sync Health Data":"زامنة بيانات الصحة","Select Data Sources":"اختيار مصادر البيانات","Start Syncing":"بدء المزامنة","Sync in Progress":"في طور المزامنة","Preparing to sync...":"تحضير المزامنة...","0 of 4 sources completed":"لم يكتمل أي مصدر من أربعة مصادر","Privacy Settings":"إعدادات الخصوصية","Data Protection":"حماية البيانات","View Privacy Policy":"عرض سياسة الخصوصية","Health Analysis Report":"تقرير تحليل الصحة","Overall Health Score":"نسبة الصحة العامة","Key Insights":"مفاتيح المعرفة","Your daily step count has increased by 15% this month":"عدد خطواتك اليومية قد زاد بنسبة 15% هذا الشهر","Heart rate variability shows improvement during sleep":"يظهر تحسن في تنوّع معدل نبض القلب خلال النوم","Consistent sleep patterns detected over the last 7 days":"تم رصد أنماط نوم مستقرة خلال السبعة أيام الماضية","Hydration levels need improvement - try drinking more water":"تحتاج مستويات الترطيب إلى تحسين - جرب شرب المزيد من الماء","Download Full Report":"تنزيل التقرير الكامل","Health Trends":"اتجاهات الصحة","Data Visualization":"تبسيط البيانات","Weekly Activity":" النشاط الأسبوعي","Sleep Pattern":"نمط النوم","Health Reminders":"تذكيرات الصحة","Your Reminders":"تذكيراتك","+ Add Reminder":"+ أضف تذكير","Set New Reminder":"تعيين تذكير جديد","Reminder Title":"عنوان التذكير","Time":"الوقت","Repeat":"تكرار","Every day":"كل يوم","Weekdays":"اليوم الأسبوعي","Weekends":"السبت والأحد","Custom":"مخصص","Save Reminder":"حفظ التذكير","Settings \u0026 Help":"إعدادات والمساعدة","Account":"الحساب","Change":"تغيير","Log Out":" تسجيل الخروج","Help \u0026 Support":"المساعدة والدعم","Contact Support":" الاتصال بالدعم","Information We Collect":"المعلومات التي نجمعها","How We Use Your Information":"كيفية استخدامنا لمعلوماتك","Data Security":"أمان البيانات","Your Rights":"حقوقك","__title__":"مزامنة بيانات الصحة"},"hi":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"आपका हेल्थ डेटा, सुरक्षित और सिंक किया गया","Get Started":"शुरू करें","Welcome Back":"वापसी पर स्वागत","Email":"ईमेल","Password":"पासवर्ड","Login":"लॉग इन","Create Account":"खाता बनाएं","By continuing, you agree to our Terms of Service and Privacy Policy":"जारी रखकर, आप हमारी सेवा की शर्तों और गोपनीयता नीति से सहमत हैं","Health Dashboard":"हेल्थ डैशबोर्ड","Quick Actions":"त्वरित कार्य","🔄 Sync Health Data":"🔄 हेल्थ डेटा सिंक करें","📊 View Health Report":"📊 हेल्थ रिपोर्ट देखें","📈 View Data Charts":"📈 डेटा चार्ट देखें","⏰ Set Health Reminders":"⏰ हेल्थ रिमाइंडर सेट करें","Recent Activity":"हाल की गतिविधि","No recent activity":"को हाल की गतिविधि नहीं","Sync your data to see your health history":"अपना डेटा सिंक करें अपने स्वास्थ्य इतिहास देखने के लिए","Sync Health Data":"हेल्थ डेटा सिंक करें","Select Data Sources":"डेटा स्रोत चुनें","Start Syncing":"सिंक करना शुरू करें","Sync in Progress":"प्रगति में सिंक","Preparing to sync...":"सिंक करने के लिए तैयारी...","0 of 4 sources completed":"4 स्रोतों में से 0 पूर्ण","Privacy Settings":"गोपनीयता सेटिंग्स","Data Protection":"डेटा सुरक्षा","View Privacy Policy":"गोपनीयता नीति देखें","Health Analysis Report":"हेल्थ विश्लेषण रिपोर्ट","Overall Health Score":"समग्र स्वास्थ्य स्कोर","Key Insights":"मुख्य दृष्टिकोण","Your daily step count has increased by 15% this month":"इस महीने आपकी दैनिक स्टेप गिनती में 15% की वृद्धि हुई है","Heart rate variability shows improvement during sleep":"नींद के दौरान हार्ट रेट वेरिएबिलिटी में सुधार दिखाई दे रहा है","Consistent sleep patterns detected over the last 7 days":"पिछले 7 दिनों में स्थिर नींद पैटर्न का पता चला है","Hydration levels need improvement - try drinking more water":"हाइड्रेशन स्तर में सुधार की आवश्यकता है - अधिक पानी पीने का प्रयास करें","Download Full Report":"पूर्ण रिपोर्ट डाउनलोड करें","Health Trends":"हेल्थ ट्रेंड्स","Data Visualization":"डेटा विजुअलाइजेशन","Weekly Activity":"साप्ताहिक गतिविधि","Sleep Pattern":"नींद पैटर्न","Health Reminders":"हेल्थ रिमाइंडर्स","Your Reminders":"आपके रिमाइंडर्स","+ Add Reminder":"+ रिमाइंडर जोड़ें","Set New Reminder":"नया रिमाइंडर सेट करें","Reminder Title":"रिमाइंडर शीर्षक","Time":"समय","Repeat":"दोहराएं","Every day":"हर दिन","Weekdays":"सप्ताह के दिन","Weekends":"सप्ताहांत","Custom":"कस्टम","Save Reminder":"रिमाइंडर सहेजें","Settings \u0026 Help":"सेटिंग्स और मदद","Account":"खाता","Change":"बदलें","Log Out":"लॉग आउट","Help \u0026 Support":"मदद और समर्थन","Contact Support":"समर्थन से संपर्क करें","Information We Collect":"हम जो जानकारी इकट्ठा करते हैं","How We Use Your Information":"हम आपकी जानकारी का उपयोग कैसे करते हैं","Data Security":"डेटा सुरक्षा","Your Rights":"आपके अधिकार","__title__":"HealthDataSyncer"},"id":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Data Kesehatan Anda, Aman \u0026 Disinkronkan","Get Started":"Mulai Sekarang","Welcome Back":"Selamat Kembali","Email":"Email","Password":"Kata Sandi","Login":"Masuk","Create Account":"Buat Akun","By continuing, you agree to our Terms of Service and Privacy Policy":"Dengan melanjutkan, Anda menyetujui Syarat Layanan dan Kebijakan Privasi kami","Health Dashboard":"Dasbor Kesehatan","Quick Actions":"Tindakan Cepat","🔄 Sync Health Data":"🔄 Sinkronkan Data Kesehatan","📊 View Health Report":"📊 Laporan Kesehatan","📈 View Data Charts":"📈 Tabel Data","⏰ Set Health Reminders":"⏰ Atur Pengingat Kesehatan","Recent Activity":"Aktivitas Terbaru","No recent activity":"Tidak ada aktivitas terbaru","Sync your data to see your health history":"Sinkronkan data Anda untuk melihat riwayat kesehatan Anda","Sync Health Data":"Sinkronkan Data Kesehatan","Select Data Sources":"Pilih Sumber Data","Start Syncing":"Mulai Sinkronisasi","Sync in Progress":"Sinkronisasi Sedang Berjalan","Preparing to sync...":"Mempersiapkan sinkronisasi...","0 of 4 sources completed":"0 dari 4 sumber selesai","Privacy Settings":"Pengaturan Privasi","Data Protection":"Proteksi Data","View Privacy Policy":"Lihat Kebijakan Privasi","Health Analysis Report":"Laporan Analisis Kesehatan","Overall Health Score":"Skor Kesehatan Keseluruhan","Key Insights":"Wawasan Kunci","Your daily step count has increased by 15% this month":"Jumlah langkah harian Anda telah meningkat 15% bulan ini","Heart rate variability shows improvement during sleep":"Variabilitas denyut jantung menunjukkan peningkatan saat tidur","Consistent sleep patterns detected over the last 7 days":"Pola tidur konsisten terdeteksi selama 7 hari terakhir","Hydration levels need improvement - try drinking more water":"Tingkat hidrasi perlu ditingkatkan - coba minum lebih banyak air","Download Full Report":"Unduh Laporan Lengkap","Health Trends":"Tren Kesehatan","Data Visualization":"Visualisasi Data","Weekly Activity":"Aktivitas Mingguan","Sleep Pattern":"Pola Tidur","Health Reminders":"Pengingat Kesehatan","Your Reminders":"Pengingat Anda","+ Add Reminder":"+ Tambah Pengingat","Set New Reminder":"Atur Pengingat Baru","Reminder Title":"Judul Pengingat","Time":"Waktu","Repeat":"Ulangi","Every day":"Setiap hari","Weekdays":"Hari Kerja","Weekends":"Akhir Pekan","Custom":"Kustom","Save Reminder":"Simpan Pengingat","Settings \u0026 Help":"Pengaturan \u0026 Bantuan","Account":"Akun","Change":"Ubah","Log Out":"Keluar","Help \u0026 Support":"Bantuan \u0026 Dukungan","Contact Support":"Hubungi Dukungan","Information We Collect":"Informasi yang Kami Kumpulkan","How We Use Your Information":"Bagaimana Kami Menggunakan Informasi Anda","Data Security":"Keamanan Data","Your Rights":"Hak Anda","__title__":"HealthDataSyncer"},"vi":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"Dữ liệu sức khỏe của bạn, Được bảo mật \u0026 Đồng bộ","Get Started":"Bắt đầu","Welcome Back":"Chào mừng bạn trở lại","Email":"Email","Password":"Mật khẩu","Login":"Đăng nhập","Create Account":"Tạo tài khoản","By continuing, you agree to our Terms of Service and Privacy Policy":"Bằng cách tiếp tục, bạn đồng ý với Điều khoản dịch vụ và Chính sách bảo mật của chúng tôi","Health Dashboard":"Bảng điều khiển sức khỏe","Quick Actions":"Hành động nhanh","🔄 Sync Health Data":"🔄 Đồng bộ dữ liệu sức khỏe","📊 View Health Report":"📊 Xem báo cáo sức khỏe","📈 View Data Charts":"📈 Xem biểu đồ dữ liệu","⏰ Set Health Reminders":"⏰ Đặt lời nhắc sức khỏe","Recent Activity":"Hoạt động gần đây","No recent activity":"Không có hoạt động gần đây","Sync your data to see your health history":"Đồng bộ dữ liệu của bạn để xem lịch sử sức khỏe","Sync Health Data":"Đồng bộ dữ liệu sức khỏe","Select Data Sources":"Chọn nguồn dữ liệu","Start Syncing":"Bắt đầu đồng bộ","Sync in Progress":"Đang đồng bộ...","Preparing to sync...":"Chuẩn bị đồng bộ...","0 of 4 sources completed":"0/4 nguồn đã hoàn thành","Privacy Settings":"Cài đặt bảo mật","Data Protection":"Bảo vệ dữ liệu","View Privacy Policy":"Xem Chính sách bảo mật","Health Analysis Report":"Báo cáo phân tích sức khỏe","Overall Health Score":"Điểm sức khỏe tổng thể","Key Insights":"Những thông tin chính","Your daily step count has increased by 15% this month":"Số bước đi hàng ngày của bạn đã tăng 15% trong tháng này","Heart rate variability shows improvement during sleep":"Biến nhịp tim cho thấy sự cải thiện khi ngủ","Consistent sleep patterns detected over the last 7 days":"Phát hiện thấy kiểu ngủ nhất quán trong 7 ngày qua","Hydration levels need improvement - try drinking more water":"Mức độ hydratation cần cải thiện - hãy thử uống nhiều nước hơn","Download Full Report":"Tải xuống báo cáo đầy đủ","Health Trends":"Xu hướng sức khỏe","Data Visualization":"Trực quan hóa dữ liệu","Weekly Activity":"Hoạt động hàng tuần","Sleep Pattern":"Kiểu ngủ","Health Reminders":"Lời nhắc sức khỏe","Your Reminders":"Lời nhắc của bạn","+ Add Reminder":"+ Thêm lời nhắc","Set New Reminder":"Đặt lời nhắc mới","Reminder Title":"Tiêu đề lời nhắc","Time":"Thời gian","Repeat":"Lặp lại","Every day":"Hàng ngày","Weekdays":"Ngày thường","Weekends":"Cuối tuần","Custom":"Tùy chỉnh","Save Reminder":"Lưu lời nhắc","Settings \u0026 Help":"Cài đặt \u0026 Trợ giúp","Account":"Tài khoản","Change":"Thay đổi","Log Out":"Đăng xuất","Help \u0026 Support":"Trợ giúp \u0026 Hỗ trợ","Contact Support":"Liên hệ hỗ trợ","Information We Collect":"Thông tin chúng tôi thu thập","How We Use Your Information":"Chúng tôi sử dụng thông tin của bạn như thế nào","Data Security":"Bảo mật dữ liệu","Your Rights":"Quyền của bạn","__title__":"HealthDataSyncer"},"th":{"HealthDataSyncer":"HealthDataSyncer","Your Health Data, Secured \u0026 Synced":"ข้อมูลสุขภาพของคุณ ปลอดภัยและถูกซิงค์","Get Started":"เริ่มต้นใช้งาน","Welcome Back":"ยินดีต้อนรับกลับมา","Email":"อีเมล","Password":"รหัสผ่าน","Login":"เข้าสู่ระบบ","Create Account":"สร้างบัญชี","By continuing, you agree to our Terms of Service and Privacy Policy":"ด้วยการดำเนินต่อไป คุณยินยอมตามข้อกำหนดการให้บริการและนโยบายความเป็นส่วนตัวของเรา","Health Dashboard":"แดชบอร์ดสุขภาพ","Quick Actions":"การดำเนินการด่วน","🔄 Sync Health Data":"🔄 ซิงค์ข้อมูลสุขภาพ","📊 View Health Report":"📊 ดูรายงานสุขภาพ","📈 View Data Charts":"📈 ดูแผนภูมิข้อมูล","⏰ Set Health Reminders":"⏰ ตั้งเตือนสุขภาพ","Recent Activity":"กิจกรรมล่าสุด","No recent activity":"ไม่มีกิจกรรมล่าสุด","Sync your data to see your health history":"ซิงค์ข้อมูลของคุณเพื่อดูประวัติสุขภาพ","Sync Health Data":"ซิงค์ข้อมูลสุขภาพ","Select Data Sources":"เลือกแหล่งข้อมูล","Start Syncing":"เริ่มการซิงค์","Sync in Progress":"กำลังซิงค์...","Preparing to sync...":"กำลังเตรียมการซิงค์...","0 of 4 sources completed":"เสร็จสิ้น 0 จาก 4 แหล่งข้อมูล","Privacy Settings":"การตั้งค่าความเป็นส่วนตัว","Data Protection":"การปกป้องข้อมูล","View Privacy Policy":"ดูนโยบายความเป็นส่วนตัว","Health Analysis Report":"รายงานวิเคราะห์สุขภาพ","Overall Health Score":"คะแนนสุขภาพโดยรวม","Key Insights":"ข้อมูลสำคัญ","Your daily step count has increased by 15% this month":"จำนวนก้าวเดินประจำวันของคุณเพิ่มขึ้น 15% เดือนนี้","Heart rate variability shows improvement during sleep":"ความผันผันของอัตราการเต้นหัวใจแสดงการปรับปรุงขณะหลับ","Consistent sleep patterns detected over the last 7 days":"พบรูปแบบการนอนหลับที่สม่ำเสมอในช่วง 7 วันที่ผ่านมา","Hydration levels need improvement - try drinking more water":"ระดับการสร้างความชื้นต้องการการปรับปรุง - ลองดื่มน้ำมากขึ้น","Download Full Report":"ดาวน์โหลดรายงานเต็ม","Health Trends":"แนวโน้มสุขภาพ","Data Visualization":"การแสดงผลข้อมูล","Weekly Activity":"กิจกรรมรายสัปดาห์","Sleep Pattern":"รูปแบบการนอนหลับ","Health Reminders":"เตือนสุขภาพ","Your Reminders":"เตือนของคุณ","+ Add Reminder":"+ เพิ่มเตือน","Set New Reminder":"ตั้งเตือนใหม่","Reminder Title":"ชื่อเตือน","Time":"เวลา","Repeat":"ทำซ้ำ","Every day":"ทุกวัน","Weekdays":"วันจันทร์-วันศุกร์","Weekends":"วันเสาร์-วันอาทิตย์","Custom":"กำหนดเอง","Save Reminder":"บันทึกเตือน","Settings \u0026 Help":"การตั้งค่าและช่วยเหลือ","Account":"บัญชี","Change":"เปลี่ยน","Log Out":"ออกจากระบบ","Help \u0026 Support":"ช่วยเหลือและสนับสนุน","Contact Support":"ติดต่อการสนับสนุน","Information We Collect":"ข้อมูลที่เราเก็บรวบรวม","How We Use Your Information":"วิธีที่เราใช้ข้อมูลของคุณ","Data Security":"ความปลอดภัยของข้อมูล","Your Rights":"สิทธิ์ของคุณ","__title__":"HealthDataSyncer"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
