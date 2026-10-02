@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DecisionAI - Smart Decision Making Assistant</title><meta name="description" content="Free online tool: DecisionAI - Smart Decision Making Assistant. No signup, no payment — free forever.">
-<meta property="og:title" content="DecisionAI - Smart Decision Making Assistant">
-<meta property="og:description" content="Free online tool: DecisionAI - Smart Decision Making Assistant. No signup, no payment — free forever.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_023127_DecisionAI.html">
-<meta name="theme-color" content="#333333">
-
+    <title>DecisionAI - Smart Decision Making Assistant</title>
+    <meta name="description" content="Free online tool: DecisionAI - Smart Decision Making Assistant. No signup, no payment — free forever.">
+    <meta property="og:title" content="DecisionAI - Smart Decision Making Assistant">
+    <meta property="og:description" content="Free online tool: DecisionAI - Smart Decision Making Assistant. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_023127_DecisionAI.html">
+    <meta name="theme-color" content="#333333">
+    
     <style>
         * {
             margin: 0;
@@ -44,6 +45,18 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: #4a9eff;
+            display: flex;
+            align-items: center;
+        }
+        
+        .free-badge {
+            background-color: #4caf50;
+            color: white;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            font-weight: normal;
         }
         
         .nav-links {
@@ -59,6 +72,70 @@
         
         .nav-links a:hover {
             color: #4a9eff;
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            background: linear-gradient(135deg, #1a1a2e 0%, #121212 100%);
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #4a9eff;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .feature-desc {
+            color: #b0b0b0;
         }
         
         /* Search Section */
@@ -119,6 +196,65 @@
         
         .search-button:hover {
             background-color: #3a8eef;
+        }
+        
+        /* How to Use Section */
+        .how-to-section {
+            background-color: #1a1a2e;
+            padding: 3rem 0;
+            margin-top: 2rem;
+        }
+        
+        .how-to-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .how-to-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #ffffff;
+        }
+        
+        .steps-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+        
+        .step-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 250px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .step-number {
+            background-color: #4a9eff;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .step-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+        }
+        
+        .step-desc {
+            color: #b0b0b0;
         }
         
         /* Results Section */
@@ -245,10 +381,12 @@
             display: flex;
             gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
         }
         
         .tracker-field {
             flex: 1;
+            min-width: 200px;
         }
         
         .tracker-label {
@@ -310,20 +448,43 @@
                 display: none;
             }
             
-            .search-title {
-                font-size: 1.5rem;
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .steps-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step-card {
+                width: 100%;
+                max-width: 300px;
             }
             
             .tracker-input {
                 flex-direction: column;
             }
+            
+            .tracker-field {
+                width: 100%;
+            }
         }
     </style>
-<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+    <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script>
+</head>
 <body>
     <nav>
         <div class="nav-container">
-            <div class="logo">DecisionAI</div>
+            <div class="logo">
+                DecisionAI
+                <span class="free-badge">FREE</span>
+            </div>
             <div class="nav-links">
                 <a href="#analysis">Analysis</a>
                 <a href="#visualization">Visualization</a>
@@ -334,9 +495,67 @@
         </div>
     </nav>
     
+    <section class="hero-section">
+        <div class="hero-container">
+            <h1 class="hero-title">Make Better Decisions with AI</h1>
+            <p class="hero-subtitle">DecisionAI helps you analyze complex situations, visualize options, and create actionable plans for better decision-making.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🧠</div>
+                    <h3 class="feature-title">Smart Analysis</h3>
+                    <p class="feature-desc">AI-powered insights to evaluate your options</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Data Visualization</h3>
+                    <p class="feature-desc">Visual representation of decision factors</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛤️</div>
+                    <h3 class="feature-title">Action Path</h3>
+                    <p class="feature-desc">Step-by-step implementation guide</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Progress Tracking</h3>
+                    <p class="feature-desc">Monitor your decisions over time</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="how-to-section">
+        <div class="how-to-container">
+            <h2 class="how-to-title">How to Use DecisionAI</h2>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Enter Your Question</h3>
+                    <p class="step-desc">Describe the decision you need to make</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Get Analysis</h3>
+                    <p class="step-desc">Receive AI-powered insights and recommendations</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Visualize Options</h3>
+                    <p class="step-desc">See your options compared in charts</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Create Action Plan</h3>
+                    <p class="step-desc">Follow our step-by-step implementation guide</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
     <section class="search-section">
-        <h1 class="search-title">Make Better Decisions with AI</h1>
-        <p class="search-subtitle">Enter your decision challenge below to get smart recommendations</p>
+        <h1 class="search-title">Make Smarter Decisions</h1>
+        <p class="search-subtitle">Enter your decision challenge below to get AI-powered analysis and recommendations</p>
         <div class="search-container">
             <input type="text" id="decisionInput" class="search-input" placeholder="Enter your decision question...">
             <button id="searchButton" class="search-button">Get Insights</button>
@@ -639,7 +858,7 @@
             `;
         });
     </script>
-<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Smart Decision Making Assistant","Analysis":"Analysis","Visualization":"Visualization","Action Path":"Action Path","Case Study":"Case Study","Project Tracker":"Project Tracker","Make Better Decisions with AI":"Make Better Decisions with AI","Enter your decision challenge below to get smart recommendations":"Enter your decision challenge below to get smart recommendations","Get Insights":"Get Insights","Decision Analysis":"Decision Analysis","Data Visualization":"Data Visualization","Recommended Action Path":"Recommended Action Path","Case Study Analysis":"Case Study Analysis","Analyze Case":"Analyze Case","Project Progress Tracker":"Project Progress Tracker","Project Name":"Project Name","Current Progress (%)":"Current Progress (%)","Timeline Status":"Timeline Status","On Track":"On Track","Delayed":"Delayed","At Risk":"At Risk","Update Tracker":"Update Tracker","Please enter a decision question to receive analysis.":"Please enter a decision question to receive analysis.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Please describe a case or scenario to receive analysis.","This case shows a similar situation where careful planning led to successful implementation.":"This case shows a similar situation where careful planning led to successful implementation.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"The comparison reveals potential pitfalls that can be avoided in your current decision.","Historical data from this case indicates a 75% success rate with similar approaches.":"Historical data from this case indicates a 75% success rate with similar approaches.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Lessons from this case suggest the importance of stakeholder engagement early in the process.","This example demonstrates how to balance short-term needs with long-term objectives.":"This example demonstrates how to balance short-term needs with long-term objectives.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Please enter a project name.","__title__":"DecisionAI - Smart Decision Making Assistant"},"zh-CN":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - 智能决策助手","Analysis":"分析","Visualization":"可视化","Action Path":"行动路径","Case Study":"案例研究","Project Tracker":"项目跟踪器","Make Better Decisions with AI":"用AI做出更好的决策","Enter your decision challenge below to get smart recommendations":"在下方输入您的决策挑战以获得智能推荐","Get Insights":"获取洞察","Decision Analysis":"决策分析","Data Visualization":"数据可视化","Recommended Action Path":"推荐行动路径","Case Study Analysis":"案例研究分析","Analyze Case":"分析案例","Project Progress Tracker":"项目进度跟踪器","Project Name":"项目名称","Current Progress (%)":"当前进度 (%)","Timeline Status":"时间线状态","On Track":"按计划","Delayed":"延迟","At Risk":"有风险","Update Tracker":"更新跟踪器","Please enter a decision question to receive analysis.":"请输入一个决策问题以获得分析。","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"请描述一个案例或场景以获得分析。","This case shows a similar situation where careful planning led to successful implementation.":"这个案例展示了一个类似的情况，通过精心规划导致成功实施。","The comparison reveals potential pitfalls that can be avoided in your current decision.":"比较揭示了在您当前决策中可以避免的潜在陷阱。","Historical data from this case indicates a 75% success rate with similar approaches.":"该案例的历史数据表明，采用类似方法的成功率为75%。","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"从这个案例中吸取的教训表明，在流程早期进行利益相关者参与的重要性。","This example demonstrates how to balance short-term needs with long-term objectives.":"这个例子展示了如何平衡短期需求与长期目标。","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"请输入项目名称。","__title__":"DecisionAI - 智能决策助手"},"hi":{"DecisionAI - Smart Decision Making Assistant":"डिसीजनएआई - स्मार्ट डिसीजन मेकिंग असिस्टेंट","Analysis":"विश्लेषण","Visualization":"विजुअलाइजेशन","Action Path":"एक्शन पैथ","Case Study":"केस स्टडी","Project Tracker":"प्रोजेक्ट ट्रैकर","Make Better Decisions with AI":"एआई के साथ बेहतर निर्णय करें","Enter your decision challenge below to get smart recommendations":"अपनी निर्णय चुनौती को नीचे भरें और स्मार्ट सिफारिश प्राप्त करें","Get Insights":"अंतर्दृष्टि प्राप्त करें","Decision Analysis":"निर्णय विश्लेषण","Data Visualization":"डेटा विजुअलाइजेशन","Recommended Action Path":"अनुशंसित एक्शन पैथ","Case Study Analysis":"केस स्टडी विश्लेषण","Analyze Case":"केस का विश्लेषण करें","Project Progress Tracker":"प्रोजेक्ट प्रगति ट्रैकर","Project Name":"प्रोजेक्ट नाम","Current Progress (%)":"वर्तमान प्रगति (%)","Timeline Status":"टाइमलाइन स्थिति","On Track":"ट्रैक पर","Delayed":"विलंबित","At Risk":"जोखिम में","Update Tracker":"अपडेट ट्रैकर","Please enter a decision question to receive analysis.":"कृपया एक निर्णय प्रश्न भरें ताकि विश्लेषण प्राप्त कर सकें।","margin: 1rem 0; padding-left: 1.5rem;":"मार्गिन: 1rem 0; पैडिंग-लेफ्ट: 1.5rem;","Please describe a case or scenario to receive analysis.":"कृपया एक केस या स्कीम का वर्णन करें ताकि विश्लेषण प्राप्त कर सकें।","This case shows a similar situation where careful planning led to successful implementation.":"इस केस में एक ऐसी अवस्था दिखाई देती है जहां सावधानीपूर्वकीय नियोजन सफल कार्यान्वयन के लिए ले गयी।","The comparison reveals potential pitfalls that can be avoided in your current decision.":"इस तुलना से संभावित खतरे दिखाई देते हैं जो आपके वर्तमान निर्णय में इस्के बिना निवारित किए जा सकते हैं।","Historical data from this case indicates a 75% success rate with similar approaches.":"इस केस से मिले ऐतिहासिक डेटा इस तरह के आयामों के साथ 75% सफलता दर इंगित करते हैं।","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"इस केस से सीखे गए अनुभव से प्रक्रिया के शुरू में हितधारकों के सहभागिता के महत्व को सुझाव देते हैं।","This example demonstrates how to balance short-term needs with long-term objectives.":"यह उदाहरण इस तरह का प्रदर्शन करता है कि कैसे अल्पकालिक आवश्यकताओं को दीर्घकालिक उद्देश्यों के साथ संतुलित किया जा सकता है।","margin-top: 1rem;":"मार्गिन-टॉप: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"मार्गिन: 0.5rem 0; पैडिंग-लेफ्ट: 1.5rem;","Please enter a project name.":"कृपया प्रोजेक्ट का नाम भरें।","__title__":"डिसीजनएआई - स्मार्ट डिसीजन मेकिंग असिस्टेंट"},"id":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Asisten Keputusan Pemikiran cerdas","Analysis":"Analisis","Visualization":"Visualisasi","Action Path":"Jalur Tindakan","Case Study":"Studi Kasus","Project Tracker":"Pemantau Proyek","Make Better Decisions with AI":"Buat Keputusan Lebih Baik dengan AI","Enter your decision challenge below to get smart recommendations":"Masukkan tantangan keputusan Anda di bawah ini untuk mendapatkan rekomendasi cerdas","Get Insights":"Dapatkan Inisiatif","Decision Analysis":"Analisis Keputusan","Data Visualization":"Visualisasi Data","Recommended Action Path":"Jalur Tindakan Yang direkomendasikan","Case Study Analysis":"Analisis Studi Kasus","Analyze Case":"Analisis Kasus","Project Progress Tracker":"Pemantau kemajuan Proyek","Project Name":"Nama Proyek","Current Progress (%)":"Kemajuan Saat Ini (%)","Timeline Status":"Status Jalur Waktu","On Track":"Dalam Jalur","Delayed":"Diterlambat","At Risk":"Berisiko","Update Tracker":"Perbarui Pemantau","Please enter a decision question to receive analysis.":"Silakan masukkan pertanyaan keputusan untuk menerima analisis.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Silakan deskripsikan kasus atau situasi untuk menerima analisis.","This case shows a similar situation where careful planning led to successful implementation.":"Kasus ini menunjukkan situasi yang mirip tempat perencanaan yang teliti memicu pelaksanaan yang sukses.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"Pembandingan mengungkapkan kesan potensial yang dapat dihindari dalam keputusan saat ini Anda.","Historical data from this case indicates a 75% success rate with similar approaches.":"Data historis dari kasus ini menunjukkan tingkat keberhasilan 75% dengan pendekatan yang serupa.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Dari kasus ini, pelajaran menunjukkan pentingnya penglibatan pemegang saham awalnya dalam proses.","This example demonstrates how to balance short-term needs with long-term objectives.":"Contoh ini menunjukkan bagaimana untuk mempertimbangkan kebutuhan jangka pendek dengan tujuan jangka panjang.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Silakan masukkan nama proyek.","__title__":"DecisionAI - Asisten Keputusan Pemikiran cerdas"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Smart Decision Making Assistant","FREE":"FREE","Analysis":"Analysis","Visualization":"Visualization","Action Path":"Action Path","Case Study":"Case Study","Project Tracker":"Project Tracker","Make Better Decisions with AI":"Make Better Decisions with AI","Smart Analysis":"Smart Analysis","AI-powered insights to evaluate your options":"AI-powered insights to evaluate your options","Data Visualization":"Data Visualization","Visual representation of decision factors":"Visual representation of decision factors","Step-by-step implementation guide":"Step-by-step implementation guide","Progress Tracking":"Progress Tracking","Monitor your decisions over time":"Monitor your decisions over time","How to Use DecisionAI":"How to Use DecisionAI","Enter Your Question":"Enter Your Question","Describe the decision you need to make":"Describe the decision you need to make","Get Analysis":"Get Analysis","Receive AI-powered insights and recommendations":"Receive AI-powered insights and recommendations","Visualize Options":"Visualize Options","See your options compared in charts":"See your options compared in charts","Create Action Plan":"Create Action Plan","Follow our step-by-step implementation guide":"Follow our step-by-step implementation guide","Make Smarter Decisions":"Make Smarter Decisions","Enter your decision challenge below to get AI-powered analysis and recommendations":"Enter your decision challenge below to get AI-powered analysis and recommendations","Get Insights":"Get Insights","Decision Analysis":"Decision Analysis","Recommended Action Path":"Recommended Action Path","Case Study Analysis":"Case Study Analysis","Analyze Case":"Analyze Case","Project Progress Tracker":"Project Progress Tracker","Project Name":"Project Name","Current Progress (%)":"Current Progress (%)","Timeline Status":"Timeline Status","On Track":"On Track","Delayed":"Delayed","At Risk":"At Risk","Update Tracker":"Update Tracker","Please enter a decision question to receive analysis.":"Please enter a decision question to receive analysis.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Please describe a case or scenario to receive analysis.","This case shows a similar situation where careful planning led to successful implementation.":"This case shows a similar situation where careful planning led to successful implementation.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"The comparison reveals potential pitfalls that can be avoided in your current decision.","Historical data from this case indicates a 75% success rate with similar approaches.":"Historical data from this case indicates a 75% success rate with similar approaches.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Lessons from this case suggest the importance of stakeholder engagement early in the process.","This example demonstrates how to balance short-term needs with long-term objectives.":"This example demonstrates how to balance short-term needs with long-term objectives.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Please enter a project name.","__title__":"DecisionAI - Smart Decision Making Assistant"},"zh-CN":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - 智能决策助手","FREE":"免费","Analysis":"分析","Visualization":"可视化","Action Path":"行动路径","Case Study":"案例研究","Project Tracker":"项目跟踪器","Make Better Decisions with AI":"使用AI做出更好的决策","Smart Analysis":"智能分析","AI-powered insights to evaluate your options":"AI驱动的洞察力以评估您的选项","Data Visualization":"数据可视化","Visual representation of decision factors":"决策因素的视觉表示","Step-by-step implementation guide":"逐步实施指南","Progress Tracking":"进度跟踪","Monitor your decisions over time":"监控您的决策随时间的变化","How to Use DecisionAI":"如何使用DecisionAI","Enter Your Question":"输入您的问题","Describe the decision you need to make":"描述您需要做出的决策","Get Analysis":"获取分析","Receive AI-powered insights and recommendations":"接收AI驱动的洞察和建议","Visualize Options":"可视化选项","See your options compared in charts":"在图表中比较您的选项","Create Action Plan":"创建行动计划","Follow our step-by-step implementation guide":"遵循我们的逐步实施指南","Make Smarter Decisions":"做出更明智的决策","Enter your decision challenge below to get AI-powered analysis and recommendations":"在下方输入您的决策挑战以获取AI驱动的分析和建议","Get Insights":"获取洞察","Decision Analysis":"决策分析","Recommended Action Path":"推荐行动路径","Case Study Analysis":"案例研究分析","Analyze Case":"分析案例","Project Progress Tracker":"项目进度跟踪器","Project Name":"项目名称","Current Progress (%)":"当前进度 (%)","Timeline Status":"时间线状态","On Track":"按计划","Delayed":"延迟","At Risk":"有风险","Update Tracker":"更新跟踪器","Please enter a decision question to receive analysis.":"请输入一个决策问题以接收分析。","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"请描述一个案例或场景以接收分析。","This case shows a similar situation where careful planning led to successful implementation.":"这个案例显示了一个类似的情况，仔细规划导致了成功的实施。","The comparison reveals potential pitfalls that can be avoided in your current decision.":"比较揭示了可以避免您当前决策中的潜在陷阱。","Historical data from this case indicates a 75% success rate with similar approaches.":"这个案例的历史数据表明，采用类似方法的成功率达到了75%。","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"从这个案例中得出的教训表明，在过程中尽早参与利益相关者的重要性。","This example demonstrates how to balance short-term needs with long-term objectives.":"这个例子演示了如何平衡短期需求与长期目标。","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"请输入项目名称。","__title__":"DecisionAI - 智能决策助手"},"ja":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - 智能决策助手","FREE":"無料","Analysis":"分析","Visualization":"可視化","Action Path":"行動パス","Case Study":"ケーススタディ","Project Tracker":"プロジェクトトラッカー","Make Better Decisions with AI":"AIでより良い決定を下す","Smart Analysis":"スマート分析","AI-powered insights to evaluate your options":"あなたの選択肢を評価するためのAI駆動の洞察","Data Visualization":"データ可視化","Visual representation of decision factors":"決定要因の視覚的表現","Step-by-step implementation guide":"ステップバイステップの実施ガイド","Progress Tracking":"進捗トラッキング","Monitor your decisions over time":"決定を時間通りの監視","How to Use DecisionAI":"DecisionAIの使い方","Enter Your Question":"あなたの質問を入力","Describe the decision you need to make":"必要な決定を説明","Get Analysis":"分析を受ける","Receive AI-powered insights and recommendations":"AI駆動の洞察と推奨を受け取る","Visualize Options":"オプションを可視化","See your options compared in charts":"チャートで比較されたオプションを見る","Create Action Plan":"行動計画を作成","Follow our step-by-step implementation guide":"私たちのステップバイステップの実施ガイドに従う","Make Smarter Decisions":"より賢い決定を下す","Enter your decision challenge below to get AI-powered analysis and recommendations":"以下にあなたの決定課題を入力して、AI駆動の分析と推奨を受ける","Get Insights":"洞察を得る","Decision Analysis":"決定分析","Recommended Action Path":"推奨行動パス","Case Study Analysis":"ケーススタディ分析","Analyze Case":"ケースを分析","Project Progress Tracker":"プロジェクト進捗トラッカー","Project Name":"プロジェクト名","Current Progress (%)":"現在の進捗率 (%)","Timeline Status":"タイムラインステータス","On Track":"計画通り","Delayed":"遅延","At Risk":"リスクにさらされている","Update Tracker":"トラッカーを更新","Please enter a decision question to receive analysis.":"分析を受けるためには、決定質問を入力してください。","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"分析を受けるためには、ケースやシナリオを説明してください。","This case shows a similar situation where careful planning led to successful implementation.":"このケースは、慎重な計画が成功した実施に繋がる類似の状況を示しています。","The comparison reveals potential pitfalls that can be avoided in your current decision.":"比較は、現在の決定で避けられる可能性のある落とし穴を明らかにします。","Historical data from this case indicates a 75% success rate with similar approaches.":"このケースの過去データは、類似のアプローチで75%の成功率を示しています。","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"このケースから学ぶことは、プロセスの早い段階で利害関係者の関与の重要性を示しています。","This example demonstrates how to balance short-term needs with long-term objectives.":"この例は、短期のニーズと長期的な目標をバランスよく取る方法を示しています。","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"プロジェクト名を入力してください。","__title__":"DecisionAI - 智能决策助手"},"ru":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Умный ассистент для принятия решений","FREE":"БЕСПЛАТНО","Analysis":"Анализ","Visualization":"Визуализация","Action Path":"Путь к действию","Case Study":"Кейс-стади","Project Tracker":"Трекер проекта","Make Better Decisions with AI":"Проводите лучшие решения с использованием AI","Smart Analysis":"Умный анализ","AI-powered insights to evaluate your options":"Инсайты, питаемые AI, для оценки ваших вариантов","Data Visualization":"Визуализация данных","Visual representation of decision factors":"Визуальное представление факторов принятия решений","Step-by-step implementation guide":"Пошаговое руководство по внедрению","Progress Tracking":"Трекинг прогресса","Monitor your decisions over time":"Отслеживайте ваши решения со временем","How to Use DecisionAI":"Как использовать DecisionAI","Enter Your Question":"Ввведите ваш вопрос","Describe the decision you need to make":"Опишите решение, которое вам нужно принять","Get Analysis":"Получите анализ","Receive AI-powered insights and recommendations":"Получите insights и рекомендации, питаемые AI","Visualize Options":"Визуализируйте варианты","See your options compared in charts":"Сравните ваши варианты в графиках","Create Action Plan":"Создайте план действий","Follow our step-by-step implementation guide":"Следуйте нашему пошаговому руководству по внедрению","Make Smarter Decisions":"Проводите более умные решения","Enter your decision challenge below to get AI-powered analysis and recommendations":"Введите свою задачу по принятию решения ниже, чтобы получить анализ и рекомендации, питаемые AI","Get Insights":"Получите insights","Decision Analysis":"Анализ принятия решений","Recommended Action Path":"Рекомендованный путь к действию","Case Study Analysis":"Анализ кейса","Analyze Case":"Анализировать случай","Project Progress Tracker":"Трекер прогресса проекта","Project Name":"Название проекта","Current Progress (%)":"Текущий прогресс (%)","Timeline Status":"Статус плана","On Track":"В графике","Delayed":"Опаздывает","At Risk":"Под угрозой","Update Tracker":"Обновить трекер","Please enter a decision question to receive analysis.":"Пожалуйста, введите вопрос по принятию решения, чтобы получить анализ.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Пожалуйста, опишите случай или ситуацию, чтобы получить анализ.","This case shows a similar situation where careful planning led to successful implementation.":"Этот случай показывает相似ую ситуацию, где тщательное планирование привело к успешному внедрению.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"Сравнение показывает потенциальные ошибки, которые можно избежать в вашем текущем решении.","Historical data from this case indicates a 75% success rate with similar approaches.":"Исторические данные из этого случая показывают успех в 75% с подобными подходами.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Уроки из этого случая подчеркивают важность вовлечения заинтересованных сторон на ранних этапах процесса.","This example demonstrates how to balance short-term needs with long-term objectives.":"Этот пример демонстрирует, как сбалансировать краткосрочные потребности и долгосрочные цели.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Пожалуйста, введите имя проекта.","__title__":"DecisionAI - Умный ассистент для принятия решений"},"pt":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Assistente Inteligente de Tomada de Decisão","FREE":"GRÁTIS","Analysis":"Análise","Visualization":"Visualização","Action Path":"Caminho de Ação","Case Study":"Estudo de Caso","Project Tracker":"Rastreador de Projeto","Make Better Decisions with AI":"Tomar Melhores Decisões com IA","Smart Analysis":"Análise Inteligente","AI-powered insights to evaluate your options":"Insights movidos pela IA para avaliar suas opções","Data Visualization":"Visualização de Dados","Visual representation of decision factors":"Representação visual dos fatores de decisão","Step-by-step implementation guide":"Guia de Implementação Passo a Passo","Progress Tracking":"Rastreamento de Progresso","Monitor your decisions over time":"Monitore suas decisões ao longo do tempo","How to Use DecisionAI":"Como Usar DecisionAI","Enter Your Question":"Insira Sua Pergunta","Describe the decision you need to make":"Descreva a decisão que você precisa tomar","Get Analysis":"Obtenha Análise","Receive AI-powered insights and recommendations":"Receba insights e recomendações movidos pela IA","Visualize Options":"Visualize as Opções","See your options compared in charts":"Veja suas opções comparadas em gráficos","Create Action Plan":"Crie um Plano de Ação","Follow our step-by-step implementation guide":"Siga nosso guia de implementação passo a passo","Make Smarter Decisions":"Tomar Decisões Mais Inteligentes","Enter your decision challenge below to get AI-powered analysis and recommendations":"Insira seu desafio de decisão abaixo para obter análise e recomendações movidas pela IA","Get Insights":"Obtenha Insights","Decision Analysis":"Análise de Decisão","Recommended Action Path":"Caminho de Ação Recomendado","Case Study Analysis":"Análise de Estudo de Caso","Analyze Case":"Analisar Caso","Project Progress Tracker":"Rastreador de Progresso do Projeto","Project Name":"Nome do Projeto","Current Progress (%)":"Progresso Atual (%)","Timeline Status":"Status do Cronograma","On Track":"No Prazo","Delayed":"Atrasado","At Risk":"Em Risco","Update Tracker":"Atualizar Rastreador","Please enter a decision question to receive analysis.":"Por favor, insira uma pergunta de decisão para receber análise.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Por favor, descreva um caso ou cenário para receber análise.","This case shows a similar situation where careful planning led to successful implementation.":"Este caso mostra uma situação semelhante onde o planejamento cuidadoso levou à implementação bem-sucedida.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"A comparação revela possíveis armadilhas que podem ser evitadas em sua decisão atual.","Historical data from this case indicates a 75% success rate with similar approaches.":"Os dados históricos deste caso indicam uma taxa de sucesso de 75% com abordagens semelhantes.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"As lições deste caso sugerem a importância da engajamento dos interessados no início do processo.","This example demonstrates how to balance short-term needs with long-term objectives.":"Este exemplo demonstra como equilibrar necessidades de curto prazo com objetivos de longo prazo.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Por favor, insira o nome do projeto.","__title__":"DecisionAI - Assistente Inteligente de Tomada de Decisão"},"ar":{"DecisionAI - Smart Decision Making Assistant":"دائرة الحلول الذكية - مساعد إتخاذ القرارات الذكية","FREE":"gratis","Analysis":"تحليل","Visualization":"تصويري","Action Path":"مسار الفعل","Case Study":"دراسة حالة","Project Tracker":"مسجل المشاريع","Make Better Decisions with AI":"اتخاذ قرارات أفضل باستخدام الذكاء الاصطناعي","Smart Analysis":"تحليل ذكي","AI-powered insights to evaluate your options":"نظرة مستقرة موقرة مدعومة بالذكاء الاصطناعي لتحليل خياراتك","Data Visualization":"تصوير البيانات","Visual representation of decision factors":"تمثيل بصرية لفواصل القرار","Step-by-step implementation guide":"دليل تنفيذ خطوة بخطوة","Progress Tracking":"تتبع التقدم","Monitor your decisions over time":"مراقبة قراراتك على مر الوقت","How to Use DecisionAI":"كيفية استخدام دائرة الحلول الذكية","Enter Your Question":"أدخل سؤالك","Describe the decision you need to make":"صف القرار الذي تحتاج إلى إتخاذه","Get Analysis":"الحصول على تحليل","Receive AI-powered insights and recommendations":"تلقي نظرة مستقرة وموصيات مدعومة بالذكاء الاصطناعي","Visualize Options":"تصوير الخيارات","See your options compared in charts":"شاهد خياراتك مقارنة في الرسوم البيانية","Create Action Plan":"إنشاء خطة العمل","Follow our step-by-step implementation guide":"اتبع دليل تنفيذنا خطوة بخطوة","Make Smarter Decisions":"إتخاذ قرارات أذكى","Enter your decision challenge below to get AI-powered analysis and recommendations":"أدخل تحديات القرار أدناه للحصول على تحليل وموصيات مدعومة بالذكاء الاصطناعي","Get Insights":"الحصول على النظرات","Decision Analysis":"تحليل القرار","Recommended Action Path":"مسار العمل الموصى به","Case Study Analysis":"تحليل دراسة حالة","Analyze Case":"تحليل الحالة","Project Progress Tracker":"متابع تقدم المشاريع","Project Name":"اسم المشروع","Current Progress (%)":"التقدم الحالي (%)","Timeline Status":"حالة جدول الأعمال","On Track":"على المسار","Delayed":"مؤجلة","At Risk":"في خطر","Update Tracker":"تحديث المتعقب","Please enter a decision question to receive analysis.":"الرجاء إدخال سؤال قرار لاستلام التحليل.","margin: 1rem 0; padding-left: 1.5rem;":"حافز: 1rem 0; سماكة اليسار: 1.5rem;","Please describe a case or scenario to receive analysis.":"الرجاء وصف حالة أو سيناريو لاستلام التحليل.","This case shows a similar situation where careful planning led to successful implementation.":"تظهر هذه الحالة حالة مشابهة حيث قاد التخطيط الدقيق إلى تنفيذ ناجح.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"كشف التحليل عن الفخاخ المحتملة التي يمكن تجنبها في قرارك الحالي.","Historical data from this case indicates a 75% success rate with similar approaches.":"أظهرت بيانات تاريخية من هذه الحالة نجاح بنسبة 75% باستخدام مقاربات مشابهة.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"تقترح دروس من هذه الحالة أهمية انخراط المستثمرين في مراحل مبكرة من العملية.","This example demonstrates how to balance short-term needs with long-term objectives.":"يظهر هذا المثال كيفية تحقيق التوازن بين الحاجات قصيرة الأمد وأهداف الطويل.","margin-top: 1rem;":"حافز-الصدارة: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"حافز: 0.5rem 0; سماكة اليسار: 1.5rem;","Please enter a project name.":"الرجاء إدخال اسم المشروع.","__title__":"دائرة الحلول الذكية - مساعد إتخاذ القرارات الذكية"},"id":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Asisten Pembuatan Keputusan Cerdas","FREE":"GRATIS","Analysis":"Analisis","Visualization":"Visualisasi","Action Path":"Jalan Aksi","Case Study":"Studi Kasus","Project Tracker":"Pelacak Proyek","Make Better Decisions with AI":"Buat Keputusan Lebih Baik dengan AI","Smart Analysis":"Analisis Cerdas","AI-powered insights to evaluate your options":"Wawasan berbasis AI untuk mengevaluasi opsi Anda","Data Visualization":"Visualisasi Data","Visual representation of decision factors":"Representasi visual faktor keputusan","Step-by-step implementation guide":"Panduan implementasi langkah demi langkah","Progress Tracking":"Pelacak Kemajuan","Monitor your decisions over time":"Pantau keputusan Anda seiring waktu","How to Use DecisionAI":" Cara Menggunakan DecisionAI","Enter Your Question":"Masukkan Pertanyaan Anda","Describe the decision you need to make":"Jelaskan keputusan yang perlu Anda buat","Get Analysis":"Dapatkan Analisis","Receive AI-powered insights and recommendations":"Terima wawasan dan rekomendasi berbasis AI","Visualize Options":"Visualisasi Opsi","See your options compared in charts":"Lihat opsi Anda dibandingkan dalam diagram","Create Action Plan":"Buat Rencana Aksi","Follow our step-by-step implementation guide":"Ikuti panduan implementasi langkah demi langkah kami","Make Smarter Decisions":"Buat Keputusan Lebih Cerdas","Enter your decision challenge below to get AI-powered analysis and recommendations":"Masukkan tantangan keputusan Anda di bawah untuk mendapatkan analisis dan rekomendasi berbasis AI","Get Insights":"Dapatkan Wawasan","Decision Analysis":"Analisis Keputusan","Recommended Action Path":"Jalan Aksi yang Direkomendasikan","Case Study Analysis":"Analisis Studi Kasus","Analyze Case":"Analisis Kasus","Project Progress Tracker":"Pel Kemajuan Proyek","Project Name":"Nama Proyek","Current Progress (%)":"Kemajuan Saat Ini (%)","Timeline Status":"Status Garis Waktu","On Track":"Tepat Waktu","Delayed":"Terlambat","At Risk":"Berisiko","Update Tracker":"Perbarui Pelacak","Please enter a decision question to receive analysis.":"Silakan masukkan pertanyaan keputusan untuk menerima analisis.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Silakan jelaskan kasus atau skenario untuk menerima analisis.","This case shows a similar situation where careful planning led to successful implementation.":"Kasus ini menunjukkan situasi serupa di mana perencanaan yang hati-hati mengarahkan pada implementasi yang berhasil.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"Perbandingan ini mengungkapkan potensi jebakan yang dapat dihindari dalam keputusan Anda saat ini.","Historical data from this case indicates a 75% success rate with similar approaches.":"Data historis dari kasus ini menunjukkan tingkat keberhasilan 75% dengan pendekatan yang serupa.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Pelajaran dari kasus ini menyarankan pentingnya keterlibatan pemangku kepentingan sejak awal proses.","This example demonstrates how to balance short-term needs with long-term objectives.":"Contoh ini menunjukkan bagaimana menyeimbangkan kebutuhan jangka pendek dengan objektif jangka panjang.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Silakan masukkan nama proyek.","__title__":"DecisionAI - Asisten Pembuatan Keputusan Cerdas"},"vi":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - Trợ lý Ra quyết Thông minh","FREE":"MIỄN PHÍ","Analysis":"Phân tích","Visualization":"Trực quan hóa","Action Path":"Đường hành động","Case Study":"Nghiên cứu trường hợp","Project Tracker":"Theo dõi dự án","Make Better Decisions with AI":"Ra quyết định tốt hơn với AI","Smart Analysis":"Phân tích Thông minh","AI-powered insights to evaluate your options":"Cảm nhận được hỗ trợ bởi AI để đánh giá các lựa chọn của bạn","Data Visualization":"Trực quan hóa dữ liệu","Visual representation of decision factors":"Biểu thị trực quan các yếu tố quyết định","Step-by-step implementation guide":"Hướng dẫn triển khai từng bước","Progress Tracking":"Theo dõi tiến độ","Monitor your decisions over time":"Giám sát các quyết định của bạn theo thời gian","How to Use DecisionAI":"Cách sử dụng DecisionAI","Enter Your Question":"Nhập câu hỏi của bạn","Describe the decision you need to make":"Mô tả quyết định bạn cần đưa ra","Get Analysis":"Nhận Phân tích","Receive AI-powered insights and recommendations":"Nhận cảm nhận được hỗ trợ bởi AI và khuyến nghị","Visualize Options":"Trực quan hóa các lựa chọn","See your options compared in charts":"Xem các lựa chọn của bạn được so sánh trong biểu đồ","Create Action Plan":"Tạo Kế hoạch Hành động","Follow our step-by-step implementation guide":"Làm theo hướng dẫn triển khai từng bước của chúng tôi","Make Smarter Decisions":"Ra quyết định Thông minh hơn","Enter your decision challenge below to get AI-powered analysis and recommendations":"Nhập thách thức quyết định của bạn bên dưới để nhận phân tích được hỗ trợ bởi AI và khuyến nghị","Get Insights":"Nhận Cảm nhận","Decision Analysis":"Phân tích Quyết định","Recommended Action Path":"Đường hành động được đề xuất","Case Study Analysis":"Phân tích Nghiên cứu trường hợp","Analyze Case":"Phân tích trường hợp","Project Progress Tracker":"Theo dõi tiến độ dự án","Project Name":"Tên dự án","Current Progress (%)":"Tiến độ hiện tại (%)","Timeline Status":"Trạng thái thời gian biểu","On Track":"Đúng tiến độ","Delayed":"Trễ","At Risk":"Có nguy cơ","Update Tracker":"Cập nhật theo dõi","Please enter a decision question to receive analysis.":"Vui lòng nhập câu hỏi quyết định để nhận phân tích.","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"Vui lòng mô tả một trường hợp hoặc tình huống để nhận phân tích.","This case shows a similar situation where careful planning led to successful implementation.":"Trường hợp này cho thấy một tình huống tương tự trong đó lập kế hoạch cẩn thận dẫn đến triển khai thành công.","The comparison reveals potential pitfalls that can be avoided in your current decision.":"Sự so sánh tiết lộ các điểm có thể tránh được trong quyết định hiện tại của bạn.","Historical data from this case indicates a 75% success rate with similar approaches.":"Dữ liệu lịch sử từ trường hợp này cho thấy tỷ lệ thành công 75% với các phương pháp tương tự.","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"Bài học từ trường hợp này gợi ý tầm quan trọng của sự tham gia của các bên liên quan sớm trong quá trình.","This example demonstrates how to balance short-term needs with long-term objectives.":"Ví dụ này trình bày cách cân bằng nhu cầu ngắn hạn với mục tiêu dài hạn.","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"Vui lòng nhập tên dự án.","__title__":"DecisionAI - Trợ lý Ra quyết Thông minh"},"th":{"DecisionAI - Smart Decision Making Assistant":"DecisionAI - ผู้ช่วยการตัดสินใจอัจฉริยะ","FREE":"ฟรี","Analysis":"การวิเคราะห์","Visualization":"การแสดงผล","Action Path":"เส้นทางการดำเนินการ","Case Study":"ศึกษากรณี","Project Tracker":"ติดตามโปรเจกต์","Make Better Decisions with AI":"ตัดสินใจดีขึ้นด้วย AI","Smart Analysis":"การวิเคราะห์อัจฉริยะ","AI-powered insights to evaluate your options":"ข้อมูลขั้นสูงจาก AI เพื่อประเมินตัวเลือกของคุณ","Data Visualization":"การแสดงผลข้อมูล","Visual representation of decision factors":"การแสดงผลปัจจัยการตัดสินใจด้วยภาพ","Step-by-step implementation guide":"คู่มือการดำเนินการทีละขั้นตอน","Progress Tracking":"ติดตามความคืบหน้า","Monitor your decisions over time":"ติดตามการตัดสินใจของคุณตลอดเวลา","How to Use DecisionAI":"วิธีการใช้ DecisionAI","Enter Your Question":"ป้อนคำถามของคุณ","Describe the decision you need to make":"อธิบายการตัดสินใจที่คุณต้องการทำ","Get Analysis":"รับการวิเคราะห์","Receive AI-powered insights and recommendations":"รับข้อมูลขั้นสูงและคำแนะนำจาก AI","Visualize Options":"ดูตัวเลือกในรูปแบบแผนภูมิ","See your options compared in charts":"ดูการเปรียบเทียบตัวเลือกของคุณในรูปแบบแผนภูมิ","Create Action Plan":"สร้างแผนการดำเนินการ","Follow our step-by-step implementation guide":"ปฏิบัติตามคู่มือการดำเนินการทีละขั้นตอนของเรา","Make Smarter Decisions":"ทำการตัดสินใจที่ฉลาดขึ้น","Enter your decision challenge below to get AI-powered analysis and recommendations":"ป้อนความท้าทายในการตัดสินใจของคุณด้านล่างเพื่อรับการวิเคราะห์และคำแนะนำจาก AI","Get Insights":"รับข้อมูลขั้นสูง","Decision Analysis":"การวิเคราะห์การตัดสินใจ","Recommended Action Path":"เส้นทางการดำเนินการที่แนะนำ","Case Study Analysis":"การวิเคราะห์ศึกษากรณี","Analyze Case":"วิเคราะห์กรณี","Project Progress Tracker":"ติดตามความคืบหน้าของโปรเจกต์","Project Name":"ชื่อโปรเจกต์","Current Progress (%)":"ความคืบหน้าปัจจุบัน (%)","Timeline Status":"สถานะเวลา","On Track":"อยู่ตามแผน","Delayed":"ล่าช้า","At Risk":"มีความเสี่ยง","Update Tracker":"อัพเดตตัวติดตาม","Please enter a decision question to receive analysis.":"กรุณาป้อนคำถามเกี่ยวกับการตัดสินใจเพื่อรับการวิเคราะห์","margin: 1rem 0; padding-left: 1.5rem;":"margin: 1rem 0; padding-left: 1.5rem;","Please describe a case or scenario to receive analysis.":"กรุณาอธิบายกรณีหรือสถานการณ์เพื่อรับการวิเคราะห์","This case shows a similar situation where careful planning led to successful implementation.":"กรณีนี้แสดงสถานการณ์ที่คล้ายคลึงกันซึ่งการวางแผนอย่างรอบคอบนำไปสู่การดำเนินการที่ประสบความสำเร็จ","The comparison reveals potential pitfalls that can be avoided in your current decision.":"การเปรียบเทียบเปิเผยจุดอ่อนที่สามารถหลีกเลี่ยงได้ในการตัดสินใจปัจจุบันของคุณ","Historical data from this case indicates a 75% success rate with similar approaches.":"ข้อมูลทางประวัติศาสตร์จากกรณีนี้บ่งชี้ว่ามีอัตราสำเร็จ 75% ด้วยวิธีการที่คล้ายคลึงกัน","Lessons from this case suggest the importance of stakeholder engagement early in the process.":"บทเรียนจากกรณีนี้แนะนำถึงความสำคัญของการมีส่วนร่วมของผู้เกี่ยวข้องในระยะเริ่มต้นของกระบวนการ","This example demonstrates how to balance short-term needs with long-term objectives.":"ตัวอย่างนี้สาธิตวิธีการสร้างสมดุลระหว่างความต้องการระยะสั้นกับวัตถุประสงค์ระยะยาว","margin-top: 1rem;":"margin-top: 1rem;","margin: 0.5rem 0; padding-left: 1.5rem;":"margin: 0.5rem 0; padding-left: 1.5rem;","Please enter a project name.":"กรุณาป้อนชื่อโปรเจกต์","__title__":"DecisionAI - ผู้ช่วยการตัดสินใจอัจฉริยะ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="ja">日本語</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -745,5 +964,5 @@ document.addEventListener("DOMContentLoaded",init);
 init();
 }
 watchMutations();
-})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+})();</script><!-- radar-i18n-end --></body>
 </html>
