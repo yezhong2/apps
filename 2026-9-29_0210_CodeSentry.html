@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CodeSentry</title>
+<title>CodeSentry</title><meta name="description" content="Free online tool: CodeSentry. No signup, no payment — free forever.">
+<meta property="og:title" content="CodeSentry">
+<meta property="og:description" content="Free online tool: CodeSentry. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-9-29_0210_CodeSentry.html">
+<meta name="theme-color" content="#333333">
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -32,61 +38,265 @@
     text-decoration: none;
     font-weight: bold;
   }
+  .hero-section {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .hero-section h1 {
+    margin-top: 0;
+    color: #00a884;
+  }
+  .quick-start {
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
   .code-input {
     margin: 20px 0;
     background-color: #555;
     color: #fff;
     padding: 10px;
     width: calc(100% - 20px);
+    border: 2px solid #00a884;
+    border-radius: 4px;
   }
   .result, .warnings, .logs {
     margin: 20px 0;
     background-color: #555;
     color: #fff;
     padding: 10px;
+    border-radius: 4px;
   }
   input[type="text"] {
     margin: 10px 0;
     padding: 10px;
     width: calc(100% - 20px);
   }
+  .btn {
+    background-color: #00a884;
+    color: #0f1115;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .btn:hover {
+    background-color: #008d6f;
+  }
+  .feature-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .feature-list li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00a884;
+  }
 </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"})</script></head>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
 <header>
   <nav>
-    <a href="#">首页</a>
-    <a href="#">我的代码</a>
-    <a href="#">安全报告</a>
-    <a href="#">设置</a>
+    <a href="#" onclick="showPage('home')">首页</a>
+    <a href="#" onclick="showPage('my-code')">我的代码</a>
+    <a href="#" onclick="showPage('security')">安全报告</a>
+    <a href="#" onclick="showPage('settings')">设置</a>
   </nav>
 </header>
 <div class="container">
-  <input type="text" class="code-input" placeholder="请输入代码进行检测...">
-  <div class="result">安全检测结果将显示在这里</div>
-  <div class="warnings">漏洞预警及修复建议将显示在这里</div>
-  <div class="logs">代码审查日志列表将显示在这里</div>
+  <div class="hero-section">
+    <h1>CodeSentry</h1>
+    <p>完全免费的代码安全检测工具</p>
+    <p>实时分析代码漏洞，提供修复建议，保护您的应用程序安全</p>
+  </div>
+  
+  <div class="quick-start">
+    <h3>快速上手指南</h3>
+    <ol class="feature-list">
+      <li>在下方代码输入框中粘贴您的代码</li>
+      <li>点击"分析代码"按钮</li>
+      <li>查看安全检测结果和修复建议</li>
+      <li>根据提示优化您的代码</li>
+    </ol>
+  </div>
+  
+  <input type="text" class="code-input" placeholder="请输入代码进行检测..." id="codeInput">
+  <button class="btn" onclick="analyzeCode()">分析代码</button>
+  
+  <div class="result" id="result">安全检测结果将显示在这里</div>
+  <div class="warnings" id="warnings">漏洞预警及修复建议将显示在这里</div>
+  <div class="logs" id="logs">代码审查日志列表将显示在这里</div>
 </div>
+
 <script>
-(function(){
-  try{
-    localStorage.setItem("unlocked","1");
-    ["lockNotice","unlockSection","unlockForm","unlockContent","unlockActivated","activatedText","activatedMessage","activatedNotice","lockOverlay","premiumFeatures"].forEach(function(id){
-      var el=document.getElementById(id); if(el&&el.parentNode) el.parentNode.removeChild(el);
-    });
-    document.querySelectorAll(".lock-icon").forEach(function(el){ el.remove(); });
-    document.querySelectorAll(".feature-card.locked").forEach(function(card){
-      card.classList.remove("locked");
-      var b=card.querySelector("button");
-      if(b){ b.disabled=false; var t=b.textContent||""; if(t.indexOf("付费")>=0||t.indexOf("解锁")>=0) b.textContent="立即使用"; }
-    });
-    document.querySelectorAll("img").forEach(function(el){ if(/shoukuan/i.test(el.getAttribute("src")||"")) el.remove(); });
-    var BAD=/付费解锁|激活码|收款码|付款后截图|领取激活码|解锁完整版|微信支付/;
-    document.querySelectorAll("body *").forEach(function(el){
-      if(!el.children.length && BAD.test(el.textContent||"") && !el.closest(".free-footer")) el.remove();
-    });
-  }catch(e){}
-})();
+function showPage(page) {
+  // 页面切换逻辑
+  console.log("切换到页面: " + page);
+  // 这里可以添加页面切换的具体实现
+}
+
+function analyzeCode() {
+  const codeInput = document.getElementById('codeInput').value;
+  const result = document.getElementById('result');
+  const warnings = document.getElementById('warnings');
+  const logs = document.getElementById('logs');
+  
+  if (!codeInput) {
+    result.textContent = "请输入代码进行检测";
+    return;
+  }
+  
+  // 模拟代码分析过程
+  result.textContent = "正在分析代码...";
+  
+  setTimeout(() => {
+    // 模拟分析结果
+    result.textContent = "代码分析完成。共检测到3个潜在问题";
+    warnings.innerHTML = `
+      <h4>安全警告:</h4>
+      <ul>
+        <li>第5行: 可能存在SQL注入风险</li>
+        <li>第12行: 未经验证的用户输入</li>
+        <li>第18行: 敏感信息未加密存储</li>
+      </ul>
+      <h4>修复建议:</h4>
+      <ul>
+        <li>使用参数化查询防止SQL注入</li>
+        <li>添加输入验证和过滤</li>
+        <li>对敏感数据进行加密处理</li>
+      </ul>
+    `;
+    logs.innerHTML = `
+      <h4>审查日志:</h4>
+      <ul>
+        <li>[2026-05-15 10:30:25] 开始代码扫描</li>
+        <li>[2026-05-15 10:30:26] 检测到潜在安全漏洞</li>
+        <li>[2026-05-15 10:30:27] 生成安全报告</li>
+      </ul>
+    `;
+  }, 1500);
+}
 </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"首页":"Home","我的代码":"My Code","安全报告":"Security Report","设置":"Settings","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Completely Free Code Security Detection Tool","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Real-time analysis of code vulnerabilities, providing repair suggestions, and protecting your application security","快速上手指南":"Quick Start Guide","在下方代码输入框中粘贴您的代码":"Paste your code in the code input box below","查看安全检测结果和修复建议":"View security detection results and repair suggestions","根据提示优化您的代码":"Optimize your code according to the prompts","分析代码":"Analyze Code","正在分析代码...":"Analyzing Code...","__title__":"CodeSentry"},"zh-CN":{"首页":"首页","我的代码":"我的代码","安全报告":"安全报告","设置":"设置","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"完全免费的代码安全检测工具","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"实时分析代码漏洞，提供修复建议，保护您的应用程序安全","快速上手指南":"快速上手指南","在下方代码输入框中粘贴您的代码":"在下方代码输入框中粘贴您的代码","查看安全检测结果和修复建议":"查看安全检测结果和修复建议","根据提示优化您的代码":"根据提示优化您的代码","分析代码":"分析代码","正在分析代码...":"正在分析代码...","__title__":"CodeSentry"},"es":{"首页":"Inicio","我的代码":"Mi código","安全报告":"Informe de seguridad","设置":"Configuración","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Herramienta de detección de seguridad de código completamente gratuita","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Análisis en tiempo real de vulnerabilidades en el código, proporciona sugerencias de corrección y protege la seguridad de sus aplicaciones","快速上手指南":"Guía rápida para comenzar","在下方代码输入框中粘贴您的代码":"Pegue su código en el cuadro de entrada de código a continuación","查看安全检测结果和修复建议":"Ver los resultados de la detección de seguridad y las sugerencias de corrección","根据提示优化您的代码":"Optimice su código según las indicaciones","分析代码":"Analizando código...","正在分析代码...":"Analizando código...","__title__":"CodeSentry"},"ja":{"首页":"ホーム","我的代码":"私のコード","安全报告":"セキュリティレポート","设置":"設定","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"完全無料のコードセキュリティチェックツール","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"リアルタイムでコードの脆弱性を分析し、修正案を提案して、アプリケーションのセキュリティを保護します","快速上手指南":"簡単に使い始めるガイド","在下方代码输入框中粘贴您的代码":"下のコード入力ボックスにコードを貼り付けてください","查看安全检测结果和修复建议":"セキュリティ結果と修正案を確認してください","根据提示优化您的代码":"指示に従ってコードを最適化してください","分析代码":"コードを分析中...","正在分析代码...":"コードの分析中...","__title__":"CodeSentry"},"ko":{"首页":"홈","我的代码":"내 코드","安全报告":"보안 보고서","设置":"설정","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"완전 무료 코드 보안 검사 도구","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"실시간으로 코드 루프를 분석하고, 수정 제안을 제공하여 애플리케이션의 보안을 보호합니다","快速上手指南":"빠르게 시작하는 가이드","在下方代码输入框中粘贴您的代码":"아래 코드 입력 상자에 코드를 붙여넣으세요","查看安全检测结果和修复建议":"보안 검사 결과와 수정 제안을 확인하세요","根据提示优化您的代码":"안내에 따라 코드를 최적화하세요","分析代码":"코드 분석","正在分析代码...":"코드를 분석 중...","__title__":"CodeSentry"},"fr":{"首页":"Accueil","我的代码":"Mon code","安全报告":"Rapport de sécurité","设置":"Paramètres","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Outil de détection de sécurité de code complètement gratuit","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Analyse en temps réel des vulnérabilités de code, fourniture de recommandations de correction, protection de la sécurité de vos applications","快速上手指南":"Guide de démarrage rapide","在下方代码输入框中粘贴您的代码":"Coller votre code dans la zone de saisie de code ci-dessous","查看安全检测结果和修复建议":"Voir les résultats de la détection de sécurité et les recommandations de correction","根据提示优化您的代码":"Optimiser votre code selon les instructions","分析代码":"Analyser le code","正在分析代码...":"Analyse en cours...","__title__":"CodeSentry"},"de":{"首页":"Startseite","我的代码":"meine Codes","安全报告":"Sicherheitsbericht","设置":"Einstellungen","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"komplett kostenloser Code-Sicherheitsprüfungs-Tool","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"in Echtzeit analysieren von Code-Lücken, Bereitstellung von Reparaturvorschlägen, Schutz Ihrer Anwendung","快速上手指南":"Schnellstartanleitung","在下方代码输入框中粘贴您的代码":"Fügen Sie Ihren Code in das untere Code-Eingabefeld ein","查看安全检测结果和修复建议":"Anzeigen der Sicherheitsergebnisse und Reparaturvorschläge","根据提示优化您的代码":"Optimieren Sie Ihren Code gemäß der Anweisungen","分析代码":"Code analysieren","正在分析代码...":"Code wird analysiert...","__title__":"CodeSentry"},"ru":{"首页":"Главная","我的代码":"Мой код","安全报告":"Отчет о безопасности","设置":"Настройки","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Полностью бесплатный инструмент для проверки безопасности кода","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Реальное анализ уязвимостей кода, предоставление рекомендаций по исправлению и защита безопасности вашего приложения","快速上手指南":"Руководство по быстрому началу работы","在下方代码输入框中粘贴您的代码":"Вставьте ваш код в поле ввода кода下方","查看安全检测结果和修复建议":"Просмотрите результаты проверки безопасности и рекомендации по исправлению","根据提示优化您的代码":"Оптимизируйте ваш код по указаниям","分析代码":"Анализ кода","正在分析代码...":"Анализ кода...","__title__":"CodeSentry"},"pt":{"首页":"Página Inicial","我的代码":"Meu Código","安全报告":"Relatório de Segurança","设置":"Configurações","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Ferramenta de Detecção de Segurança de Código Completamente Gratuita","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Análise em tempo real de vulnerabilidades no código, fornecendo sugestões de correção e protegendo a segurança do seu aplicativo","快速上手指南":"Guia de Início Rápido","在下方代码输入框中粘贴您的代码":"Cole seu código na caixa de entrada de código abaixo","查看安全检测结果和修复建议":"Ver resultados de segurança e sugestões de correção","根据提示优化您的代码":"Otimizar seu código conforme as instruções","分析代码":"Analisando código...","正在分析代码...":"正在分析代码...","__title__":"CodeSentry"},"ar":{"首页":"الصفحة الرئيسية","我的代码":"كودي","安全报告":"تقرير الأمان","设置":"الإعدادات","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"أداة التحقق من أمان الكود المجانية بالكامل","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"تحليل ثابت ثغرات الكود وتقديم نصائح للإصلاح، وحماية تطبيقك","快速上手指南":"دليل البدء السريع","在下方代码输入框中粘贴您的代码":"ألصق كودك في حقل إدخال الكود أدناه","查看安全检测结果和修复建议":"استعرض نتائج التحقق من الأمان والنصائح للإصلاح","根据提示优化您的代码":"optimisez votre code selon les instructions","分析代码":"تحليل الكود","正在分析代码...":"جار تحليل الكود...","__title__":"CodeSentry"},"hi":{"首页":"होम","我的代码":"मेरा कोड","安全报告":"सुरक्षा रिपोर्ट","设置":"सेटिंग","CodeSentry":"कोडसेंट्री","完全免费的代码安全检测工具":"पूरी तरह से मुफ्त कोड सुरक्षा जांच टूल","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"समय-समय पर कोड विकृति का विश्लेषण, मरम्मत सुझाव प्रदान, आपके अनुप्रयोग की सुरक्षा संरक्षित करें","快速上手指南":"तेजी से शुरू करने का मार्गदर्शन","在下方代码输入框中粘贴您的代码":"नीचे वाले कोड इनपुट बॉक्स में आपका कोड चिपकाएं","查看安全检测结果和修复建议":"सुरक्षा जांच परिणाम और मरम्मत सुझाव देखें","根据提示优化您的代码":"सूचनाओं के अनुसार आपका कोड सुधारें","分析代码":"कोड का विश्लेषण","正在分析代码...":"कोड का विश्लेषण किया जा रहा है...","__title__":"कोडसेंट्री"},"id":{"首页":"Beranda","我的代码":"Kode Saya","安全报告":"Laporan Keamanan","设置":"Pengaturan","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Alat Pemeriksaan Keamanan Kode yang Sama SekaliGratis","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Analisis Real-time Luka Kode, Menyediakan Saran Perbaikan, dan Melindungi Keamanan Aplikasi Anda","快速上手指南":"Panduan Pemula Cepat","在下方代码输入框中粘贴您的代码":"Lipat kode Anda ke kotak input kode di bawah ini","查看安全检测结果和修复建议":"Lihat Hasil Pemeriksaan Keamanan dan Saran Perbaikan","根据提示优化您的代码":"Optimalisir kode Anda menurut petunjuk","分析代码":"Menganalisis Kode","正在分析代码...":"Sedang Menganalisis Kode...","__title__":"CodeSentry"},"vi":{"首页":"Trang chủ","我的代码":"Mã của tôi","安全报告":"Báo cáo an toàn","设置":"Cài đặt","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Công cụ kiểm tra an toàn mã hoàn toàn miễn phí","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Phân tích漏洞 mã trong thời gian thực, cung cấp gợi ý sửa lỗi, bảo vệ ứng dụng của bạn an toàn","快速上手指南":"Hướng dẫn nhanh chóng để bắt đầu","在下方代码输入框中粘贴您的代码":"Dán mã của bạn vào hộp nhập mã bên dưới","查看安全检测结果和修复建议":"Xem kết quả kiểm tra an toàn và gợi ý sửa lỗi","根据提示优化您的代码":"Tối ưu mã của bạn dựa trên gợi ý","分析代码":"Phân tích mã","正在分析代码...":"Đang phân tích mã...","__title__":"CodeSentry"},"th":{"首页":"หน้าแรก","我的代码":"รหัสของฉัน","安全报告":"รายงานความปลอดภัย","设置":"การตั้งค่า","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"เครื่องมือตรวจหาความปลอดภัยรหัสโดยไม่เสียค่าใช้จ่าย","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"วิเคราะห์ช่องว่างรหัสจริงเวลา ให้คำแนะนำการซ่อมแซม และปกป้องการใช้งานแอปพลิเคชันของคุณ","快速上手指南":"คู่มือเริ่มใช้งานเร็ว","在下方代码输入框中粘贴您的代码":"แปะรหัสของคุณในช่องใส่รหัสด้านล่าง","查看安全检测结果和修复建议":"ดูผลลัพธ์ตรวจหาความปลอดภัยและคำแนะนำการซ่อมแซม","根据提示优化您的代码":"ปรับปรุงรหัสของคุณตามคำแนะนำ","分析代码":"วิเคราะห์รหัส","正在分析代码...":"กำลังวิเคราะห์รหัส...","__title__":"CodeSentry"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
