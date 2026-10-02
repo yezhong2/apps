@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Script AI - Intelligent Video Creation Assistant</title><meta name="description" content="Free online tool: Video Script AI - Intelligent Video Creation Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="Video Script AI - Intelligent Video Creation Assistant">
+<meta property="og:description" content="Free online tool: Video Script AI - Intelligent Video Creation Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_214721_Video Script.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent);
+        }
+        
+        /* Mobile menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Feature Cards */
+        .features {
+            padding: 2rem 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #333;
+            border-color: #555;
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        /* Results Section */
+        .results {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .result-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: var(--bg-secondary);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0;
+            }
+            
+            .nav-links.show {
+                display: flex;
+            }
+            
+            .nav-links a {
+                padding: 0.75rem;
+                border-bottom: 1px solid #333;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1000;
+            max-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+        
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+        
+        .tab:hover {
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            color: var(--accent);
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Video Script AI</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#script-generator">Script Generator</a></li>
+                <li><a href="#style-recommendation">Style Recommendation</a></li>
+                <li><a href="#editing-guide">Editing Guide</a></li>
+                <li><a href="#keyword-analysis">Keyword Analysis</a></li>
+                <li><a href="#duration-planning">Duration Planning</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Video Script AI</h1>
+            <p>Transform your ideas into compelling video scripts with AI-powered tools. Create professional content faster than ever with our intelligent video creation assistant.</p>
+            <button class="btn" id="getStartedBtn">Get Started</button>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Script Generator</h3>
+                    <p class="feature-description">Generate professional video scripts from your keywords or themes in seconds.</p>
+                    <button class="btn btn-full" id="scriptGeneratorBtn">Generate Script</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">Style Recommendation</h3>
+                    <p class="feature-description">Discover the perfect visual style and scene recommendations for your video.</p>
+                    <button class="btn btn-full" id="styleRecommendationBtn">Explore Styles</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">✂️</div>
+                    <h3 class="feature-title">Editing Guide</h3>
+                    <p class="feature-description">Learn professional editing techniques with our interactive tutorials.</p>
+                    <button class="btn btn-full" id="editingGuideBtn">Watch Tutorial</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Keyword Analysis</h3>
+                    <p class="feature-description">Analyze your video content to identify the most impactful keywords.</p>
+                    <button class="btn btn-full" id="keywordAnalysisBtn">Analyze Keywords</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3 class="feature-title">Duration Planning</h3>
+                    <p class="feature-description">Plan the perfect video length and pacing for maximum engagement.</p>
+                    <button class="btn btn-full" id="durationPlanningBtn">Plan Duration</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script Generator Modal -->
+    <div class="modal" id="scriptGeneratorModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeScriptModal">✕</button>
+            <h2>Script Generator</h2>
+            <p>Enter your keywords or theme to generate a professional video script.</p>
+            
+            <div class="form-group">
+                <label for="scriptKeywords">Keywords or Theme</label>
+                <input type="text" id="scriptKeywords" placeholder="e.g., sustainable living, travel vlog">
+            </div>
+            
+            <div class="form-group">
+                <label for="scriptLength">Video Length</label>
+                <select id="scriptLength">
+                    <option value="short">Short (1-2 minutes)</option>
+                    <option value="medium">Medium (3-5 minutes)</option>
+                    <option value="long">Long (5+ minutes)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="scriptTone">Tone</label>
+                <select id="scriptTone">
+                    <option value="professional">Professional</option>
+                    <option value="casual">Casual</option>
+                    <option value="enthusiastic">Enthusiastic</option>
+                    <option value="informative">Informative</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-full" id="generateScriptBtn">Generate Script</button>
+            
+            <div class="results" id="scriptResults">
+                <h3>Generated Script</h3>
+                <div id="scriptContent"></div>
+                <button class="btn btn-secondary" id="copyScriptBtn">Copy Script</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Style Recommendation Modal -->
+    <div class="modal" id="styleRecommendationModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeStyleModal">✕</button>
+            <h2>Style & Scene Recommendations</h2>
+            <p>Discover the perfect visual style for your video.</p>
+            
+            <div class="tabs" id="styleTabs">
+                <button class="tab active" data-tab="visual">Visual Style</button>
+                <button class="tab" data-tab="scene">Scene Selection</button>
+                <button class="tab" data-tab="lighting">Lighting</button>
+            </div>
+            
+            <div class="tab-content active" id="visualTab">
+                <div class="form-group">
+                    <label for="videoGenre">Video Genre</label>
+                    <select id="videoGenre">
+                        <option value="documentary">Documentary</option>
+                        <option value="vlog">Vlog</option>
+                        <option value="tutorial">Tutorial</option>
+                        <option value="review">Review</option>
+                        <option value="storytelling">Storytelling</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="visualStyle">Visual Style</label>
+                    <select id="visualStyle">
+                        <option value="minimalist">Minimalist</option>
+                        <option value="cinematic">Cinematic</option>
+                        <option value="bright">Bright & Colorful</option>
+                        <option value="dark">Dark Moody</option>
+                        <option value="vintage">Vintage</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-full" id="getVisualStyleBtn">Get Recommendations</button>
+            </div>
+            
+            <div class="tab-content" id="sceneTab">
+                <div class="form-group">
+                    <label for="sceneType">Scene Type</label>
+                    <select id="sceneType">
+                        <option value="indoor">Indoor</option>
+                        <option value="outdoor">Outdoor</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="sceneLocation">Location/Setting</label>
+                    <input type="text" id="sceneLocation" placeholder="e.g., coffee shop, park, studio">
+                </div>
+                
+                <button class="btn btn-full" id="getSceneRecommendationsBtn">Get Recommendations</button>
+            </div>
+            
+            <div class="tab-content" id="lightingTab">
+                <div class="form-group">
+                    <label for="lightingType">Lighting Type</label>
+                    <select id="lightingType">
+                        <option value="natural">Natural Light</option>
+                        <option value="artificial">Artificial Light</option>
+                        <option value="mixed">Mixed Lighting</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lightingTime">Time of Day</label>
+                    <select id="lightingTime">
+                        <option value="morning">Morning</option>
+                        <option value="noon">Noon</option>
+                        <option value="afternoon">Afternoon</option>
+                        <option value="evening">Evening</option>
+                        <option value="night">Night</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-full" id="getLightingRecommendationsBtn">Get Recommendations</button>
+            </div>
+            
+            <div class="results" id="styleResults">
+                <h3>Recommendations</h3>
+                <div id="styleContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editing Guide Modal -->
+    <div class="modal" id="editingGuideModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeEditingModal">✕</button>
+            <h2>Video Editing Guide</h2>
+            <p>Learn professional editing techniques with our interactive tutorials.</p>
+            
+            <div class="tabs" id="editingTabs">
+                <button class="tab active" data-tab="basic">Basic Techniques</button>
+                <button class="tab" data-tab="advanced">Advanced Techniques</button>
+                <button class="tab" data-tab="transitions">Transitions</button>
+            </div>
+            
+            <div class="tab-content active" id="basicEditingTab">
+                <div class="form-group">
+                    <label for="editingTopic">Select Topic</label>
+                    <select id="editingTopic">
+                        <option value="intro">Introduction to Editing</option>
+                        <option value="cuts">Basic Cuts</option>
+                        <option value="audio">Audio Editing</option>
+                        <option value="color">Color Correction</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-full" id="showBasicTutorialBtn">Show Tutorial</button>
+                
+                <div class="results" id="basicResults">
+                    <h3>Tutorial</h3>
+                    <div id="basicContent"></div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="advancedEditingTab">
+                <div class="form-group">
+                    <label for="advancedTopic">Advanced Topic</label>
+                    <select id="advancedTopic">
+                        <option value="motion-graphics">Motion Graphics</option>
+                        <option value="green-screen">Green Screen</option>
+                        <option value="multi-cam">Multi-Camera Editing</option>
+                        <option value="vfx">Basic Visual Effects</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-full" id="showAdvancedTutorialBtn">Show Tutorial</button>
+                
+                <div class="results" id="advancedResults">
+                    <h3>Tutorial</h3>
+                    <div id="advancedContent"></div>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="transitionsTab">
+                <div class="form-group">
+                    <label for="transitionType">Transition Type</label>
+                    <select id="transitionType">
+                        <option value="cut">Basic Cut</option>
+                        <option value="fade">Fade In/Out</option>
+                        <option value="slide">Slide</option>
+                        <option value="zoom">Zoom</option>
+                        <option value="dissolve">Dissolve</option>
+                        <option value="wipe">Wipe</option>
+                    </select>
+                </div>
+                
+                <button class="btn btn-full" id="showTransitionTutorialBtn">Show Tutorial</button>
+                
+                <div class="results" id="transitionResults">
+                    <h3>Transition Tutorial</h3>
+                    <div id="transitionContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keyword Analysis Modal -->
+    <div class="modal" id="keywordAnalysisModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeKeywordModal">✕</button>
+            <h2>Keyword Analysis</h2>
+            <p>Analyze your video content to identify the most impactful keywords.</p>
+            
+            <div class="form-group">
+                <label for="videoContent">Video Content</label>
+                <textarea id="videoContent" placeholder="Paste your video script, description, or content here..."></textarea>
+            </div>
+            
+            <button class="btn btn-full" id="analyzeKeywordsBtn">Analyze Keywords</button>
+            
+            <div class="results" id="keywordResults">
+                <h3>Keyword Analysis Results</h3>
+                <div id="keywordContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Duration Planning Modal -->
+    <div class="modal" id="durationPlanningModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeDurationModal">✕</button>
+            <h2>Duration Planning</h2>
+            <p>Plan the perfect video length and pacing for maximum engagement.</p>
+            
+            <div class="form-group">
+                <label for="videoType">Video Type</label>
+                <select id="videoType">
+                    <option value="social">Social Media</option>
+                    <option value="youtube">YouTube Video</option>
+                    <option value="tutorial">Tutorial</option>
+                    <option value="documentary">Documentary</option>
+                    <option value="commercial">Commercial</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="targetAudience">Target Audience</label>
+                <select id="targetAudience">
+                    <option value="children">Children</option>
+                    <option value="teens">Teens</option>
+                    <option value="young-adults">Young Adults</option>
+                    <option value="adults">Adults</option>
+                    <option value="seniors">Seniors</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="platform">Platform</label>
+                <select id="platform">
+                    <option value="instagram">Instagram</option>
+                    <option value="tiktok">TikTok</option>
+                    <option value="youtube">YouTube</option>
+                    <option value="facebook">Facebook</option>
+                    <option value="website">Website</option>
+                </select>
+            </div>
+            
+            <button class="btn btn-full" id="planDurationBtn">Create Plan</button>
+            
+            <div class="results" id="durationResults">
+                <h3>Duration Plan</h3>
+                <div id="durationContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Video Script AI</h3>
+                    <p>Intelligent video creation assistant for content creators worldwide.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="#script-generator">Script Generator</a></li>
+                        <li><a href="#style-recommendation">Style Recommendation</a></li>
+                        <li><a href="#editing-guide">Editing Guide</a></li>
+                        <li><a href="#keyword-analysis">Keyword Analysis</a></li>
+                        <li><a href="#duration-planning">Duration Planning</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="#help-center">Help Center</a></li>
+                        <li><a href="#feedback">Send Feedback</a></li>
+                        <li><a href="#tutorials">Tutorials</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#cookies">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Navigation functionality
+        const navLinks = document.getElementById('navLinks');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinkElements = document.querySelectorAll('.nav-links a');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('show');
+        });
+        
+        navLinkElements.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Update active state
+                navLinkElements.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Close mobile menu
+                navLinks.classList.remove('show');
+                
+                // Scroll to section
+                const targetId = link.getAttribute('href');
+                if (targetId !== '#home') {
+                    const modalId = targetId.replace('#', '');
+                    const modal = document.getElementById(modalId + 'Modal');
+                    if (modal) {
+                        modal.classList.add('show');
+                    }
+                }
+            });
+        });
+        
+        // Get Started button
+        document.getElementById('getStartedBtn').addEventListener('click', () => {
+            document.getElementById('scriptGeneratorModal').classList.add('show');
+        });
+        
+        // Feature buttons
+        document.getElementById('scriptGeneratorBtn').addEventListener('click', () => {
+            document.getElementById('scriptGeneratorModal').classList.add('show');
+        });
+        
+        document.getElementById('styleRecommendationBtn').addEventListener('click', () => {
+            document.getElementById('styleRecommendationModal').classList.add('show');
+        });
+        
+        document.getElementById('editingGuideBtn').addEventListener('click', () => {
+            document.getElementById('editingGuideModal').classList.add('show');
+        });
+        
+        document.getElementById('keywordAnalysisBtn').addEventListener('click', () => {
+            document.getElementById('keywordAnalysisModal').classList.add('show');
+        });
+        
+        document.getElementById('durationPlanningBtn').addEventListener('click', () => {
+            document.getElementById('durationPlanningModal').classList.add('show');
+        });
+        
+        // Modal close buttons
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.target.closest('.modal').classList.remove('show');
+            });
+        });
+        
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('show');
+                }
+            });
+        });
+        
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Script Generator
+        document.getElementById('generateScriptBtn').addEventListener('click', () => {
+            const keywords = document.getElementById('scriptKeywords').value;
+            const length = document.getElementById('scriptLength').value;
+            const tone = document.getElementById('scriptTone').value;
+            
+            if (!keywords.trim()) {
+                showNotification('Please enter keywords or theme', 'error');
+                return;
+            }
+            
+            // Show loading state
+            const btn = document.getElementById('generateScriptBtn');
+            const originalText = btn.textContent;
+            btn.innerHTML = '<span class="spinner"></span> Generating...';
+            btn.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                const scriptTemplates = {
+                    short: [
+                        `INTRODUCTION: Start with a compelling hook related to ${keywords}. 
+                        
+BODY: Present 2-3 key points about ${keywords} in a ${tone} tone. 
+                        
+CONCLUSION: End with a call to action or thought-provoking question.`,
+                        `OPENING: Grab attention with a surprising fact about ${keywords}. 
+                        
+MIDDLE: Share your personal experience with ${keywords} in a ${tone} manner. 
+                        
+CLOSING: Encourage viewers to try ${keywords} themselves.`
+                    ],
+                    medium: [
+                        `INTRODUCTION (0:00-0:30): 
+Hook viewers with a question or statement about ${keywords}. 
+Introduce yourself and the topic briefly in a ${tone} tone.
+
+BODY (0:30-3:00): 
+Point 1: Explain the first aspect of ${keywords} with examples. 
+Point 2: Discuss the second aspect with personal insights. 
+Point 3: Cover the third point with actionable advice.
+
+CONCLUSION (3:00-3:30): 
+Summarize the key points about ${keywords}. 
+End with a memorable quote or question to engage viewers.`,
+                        `OPENING (0:00-0:30): 
+Start with a relatable story about ${keywords}. 
+Establish credibility and set expectations for the video.
+
+DEVELOPMENT (0:30-3:00): 
+Section 1: Deep dive into ${keywords} - what it is and why it matters. 
+Section 2: Practical application of ${keywords} in daily life. 
+Section 3: Common misconceptions about ${keywords} debunked.
+
+CLOSING (3:00-3:30): 
+Recap the main takeaways about ${keywords}. 
+Provide resources for viewers to learn more.`
+                    ],
+                    long: [
+                        `INTRODUCTION (0:00-1:00): 
+Hook viewers with a compelling narrative or question about ${keywords}. 
+Introduce yourself and establish authority on the topic. 
+Set the stage for what viewers will learn about ${keywords}.
+
+SECTION 1 (1:00-5:00): 
+The fundamentals of ${keywords}. 
+Historical context and evolution of ${keywords}. 
+Why ${keywords} matter in today's world. 
+Expert insights and statistics about ${keywords}.
+
+SECTION 2 (5:00-10:00): 
+Practical applications of ${keywords}. 
+Case studies showing successful implementation of ${keywords}. 
+Step-by-step guide to getting started with ${keywords}. 
+Common challenges and solutions when working with ${keywords}.
+
+SECTION 3 (10:00-15:00): 
+Advanced techniques for ${keywords}. 
+Future trends and innovations in ${keywords}. 
+Expert interviews about ${keywords}. 
+Interactive demonstration of ${keywords} in action.
+
+CONCLUSION (15:00-16:00): 
+Recap the key takeaways about ${keywords}. 
+Call to action for viewers to implement ${keywords} in their lives. 
+Additional resources for continued learning about ${keywords}.`
+                    ]
+                };
+                
+                const scripts = scriptTemplates[length];
+                const randomScript = scripts[Math.floor(Math.random() * scripts.length)];
+                
+                document.getElementById('scriptContent').innerHTML = `<pre>${randomScript}</pre>`;
+                document.getElementById('scriptResults').classList.add('show');
+                
+                btn.textContent = originalText;
+                btn.disabled = false;
+                
+                showNotification('Script generated successfully!', 'success');
+            }, 1500);
+        });
+        
+        // Copy script button
+        document.getElementById('copyScriptBtn').addEventListener('click', () => {
+            const scriptContent = document.getElementById('scriptContent').textContent;
+            navigator.clipboard.writeText(scriptContent).then(() => {
+                showNotification('Script copied to clipboard!', 'success');
+            });
+        });
+        
+        // Style Recommendation Tabs
+        const styleTabs = document.querySelectorAll('#styleTabs .tab');
+        const styleTabContents = document.querySelectorAll('#styleRecommendationModal .tab-content');
+        
+        styleTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                styleTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                styleTabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === tabId + 'Tab') {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Visual Style Recommendations
+        document.getElementById('getVisualStyleBtn').addEventListener('click', () => {
+            const genre = document.getElementById('videoGenre').value;
+            const style = document.getElementById('visualStyle').value;
+            
+            const recommendations = {
+                documentary: {
+                    minimalist: "Clean, simple shots with minimal distractions. Focus on subject with ample negative space. Use neutral colors with occasional accent colors.",
+                    cinematic: "Wide establishing shots, medium close-ups for interviews. Use shallow depth of field to isolate subjects. Color grading with cool tones.",
+                    bright: "Well-lit scenes with natural light. Use high contrast to create visual interest. Vibrant colors to capture attention.",
+                    dark: "Moody lighting with dramatic shadows. Deep blacks and rich tones. Use rim lighting to separate subjects from background.",
+                    vintage: "Film grain effect, warm color grading. Soft focus and lens flares. Classic composition with rule of thirds."
+                },
+                vlog: {
+                    minimalist: "Simple backgrounds, consistent framing. Clean lines and uncluttered spaces. Neutral color palette.",
+                    cinematic: "Dynamic camera movements, cinematic angles. Use depth of field creatively. Color grading with consistent look.",
+                    bright: "Natural lighting, open spaces. High contrast with vibrant colors. Clean and modern aesthetic.",
+                    dark: "Dramatic lighting, deep shadows. Moody atmosphere with selective highlights. Dark color palette with accents.",
+                    vintage: "Soft lighting, warm tones. Film grain effect. Classic composition with personal touches."
+                }
+            };
+            
+            const recommendation = recommendations[genre][style] || "A visually appealing style that suits your content.";
+            
+            document.getElementById('styleContent').innerHTML = `
+                <div class="result-item">
+                    <div class="result-title">Visual Style Recommendation</div>
+                    <p>${recommendation}</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Color Palette</div>
+                    <p>Based on your ${style} style, consider using a color palette that complements your ${genre} content. For ${style} style, try using ${style === 'bright' ? 'vibrant and saturated colors' : style === 'dark' ? 'deep, rich tones with selective highlights' : 'balanced, harmonious colors'}.</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Composition Tips</div>
+                    <p>Use the rule of thirds for balanced composition. Consider leading lines to guide viewer's eye. Maintain consistent framing throughout your video for professional look.</p>
+                </div>
+            `;
+            
+            document.getElementById('styleResults').classList.add('show');
+            showNotification('Style recommendations generated!', 'success');
+        });
+        
+        // Scene Recommendations
+        document.getElementById('getSceneRecommendationsBtn').addEventListener('click', () => {
+            const sceneType = document.getElementById('sceneType').value;
+            const location = document.getElementById('sceneLocation').value;
+            
+            const sceneRecommendations = {
+                indoor: {
+                    coffee_shop: "Natural light from windows, warm lighting. Background elements like coffee machines, books, plants. Consistent color scheme with wood tones and neutrals.",
+                    office: "Clean, organized workspace. Good task lighting. Minimal distractions, professional background. Neutral colors with occasional accent colors.",
+                    living_room: "Comfortable, personal space. Soft lighting, warm tones. Personal elements that reflect your brand. Natural materials and textures."
+                },
+                outdoor: {
+                    park: "Natural lighting, green background. Elements like trees, benches, pathways. Dynamic compositions with depth. Natural color palette.",
+                    urban: "Cityscape elements, architectural features. Golden hour lighting for dramatic effect. Urban color palette with concrete and metal tones.",
+                    beach: "Natural light, blue and tan color palette. Elements like waves, sand, sky. Wide shots to capture the environment. Relaxed, natural feel."
+                },
+                mixed: {
+                    home_office: "Transition from personal to professional elements. Consistent lighting throughout. Balanced composition with both indoor and outdoor elements.",
+                    studio_outdoor: "Controlled indoor setting transitioning to natural outdoor environment. Consistent color scheme. Clear visual separation between spaces."
+                }
+            };
+            
+            const recommendation = sceneRecommendations[sceneType][location] || "Choose a location that aligns with your brand and message. Consider lighting, background elements, and consistency throughout your video.";
+            
+            document.getElementById('styleContent').innerHTML = `
+                <div class="result-item">
+                    <div class="result-title">Scene Recommendation</div>
+                    <p>${recommendation}</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Lighting Tips</div>
+                    <p>For ${sceneType} scenes, use ${sceneType === 'indoor' ? 'soft, diffused lighting to reduce harsh shadows' : sceneType === 'outdoor' ? 'natural light, avoiding harsh midday sun' : 'consistent lighting to maintain visual flow'}.</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Background Elements</div>
+                    <p>Include background elements that complement your content without distracting from the main subject. Ensure elements are relevant to your message and brand identity.</p>
+                </div>
+            `;
+            
+            document.getElementById('styleResults').classList.add('show');
+            showNotification('Scene recommendations generated!', 'success');
+        });
+        
+        // Lighting Recommendations
+        document.getElementById('getLightingRecommendationsBtn').addEventListener('click', () => {
+            const lightingType = document.getElementById('lightingType').value;
+            const timeOfDay = document.getElementById('lightingTime').value;
+            
+            const lightingRecommendations = {
+                natural: {
+                    morning: "Soft, directional light from the east. Cool, blue tones. Use reflectors to fill shadows. Ideal for calm, peaceful content.",
+                    noon: "Harsh, overhead light. Deep shadows. Use diffusers to soften light. Best for high-energy content.",
+                    afternoon: "Warm, golden light from the west. Long shadows. Ideal for creating a relaxed, inviting atmosphere.",
+                    evening: "Soft, warm light. Dramatic silhouettes. Use backlighting to create depth. Perfect for moody, atmospheric content.",
+                    night: "Minimal light sources. High contrast. Use artificial lighting to create specific moods. Great for dramatic effect."
+                },
+                artificial: {
+                    key_light: "Main light source, positioned at 45-degree angle. Provides primary illumination and creates depth.",
+                    fill_light: "Secondary light, positioned opposite key light. Reduces shadows and softens contrast.",
+                    backlight: "Light positioned behind subject. Creates separation from background and adds dimension.",
+                    rim_light: "Light positioned behind subject at an angle. Creates glowing outline effect."
+                },
+                mixed: {
+                    indoor_outdoor: "Balance natural and artificial light. Use artificial to supplement natural light. Maintain consistent color temperature.",
+                    window_light: "Use window as primary light source. Add artificial fill light for balanced exposure. Control shadows with reflectors."
+                }
+            };
+            
+            const recommendation = lightingRecommendations[lightingType][timeOfDay] || "Balance your lighting to create the desired mood and atmosphere. Consider the emotional impact of different lighting techniques.";
+            
+            document.getElementById('styleContent').innerHTML = `
+                <div class="result-item">
+                    <div class="result-title">Lighting Recommendation</div>
+                    <p>${recommendation}</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Lighting Equipment</div>
+                    <p>For ${lightingType} lighting, consider using ${lightingType === 'natural' ? 'reflectors and diffusers to control natural light' : lightingType === 'artificial' ? 'LED panels, softboxes, and reflectors' : 'a combination of natural sources and artificial lighting'}.</p>
+                </div>
+                <div class="result-item">
+                    <div class="result-title">Color Temperature</div>
+                    <p>Maintain consistent color temperature throughout your video. For ${timeOfDay}, aim for ${timeOfDay === 'morning' ? 'cool, blue tones (5500K-6500K)' : timeOfDay === 'evening' ? 'warm, golden tones (2500K-3500K)' : 'neutral white balance (4500K-5500K)'}.</p>
+                </div>
+            `;
+            
+            document.getElementById('styleResults').classList.add('show');
+            showNotification('Lighting recommendations generated!', 'success');
+        });
+        
+        // Editing Guide Tabs
+        const editingTabs = document.querySelectorAll('#editingTabs .tab');
+        const editingTabContents = document.querySelectorAll('#editingGuideModal .tab-content');
+        
+        editingTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                editingTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                editingTabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === tabId + 'EditingTab') {
+                        content.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Basic Editing Tutorial
+        document.getElementById('showBasicTutorialBtn').addEventListener('click', () => {
+            const topic = document.getElementById('editingTopic').value;
+            
+            const tutorials = {
+                intro: {
+                    title: "Introduction to Video Editing",
+                    content: `
+                        <h4>What is Video Editing?</h4>
+                        <p>Video editing is the process of manipulating and rearranging video shots to create a new work. It's a crucial step in post-production that transforms raw footage into a polished final product.</p>
+                        
+                        <h4>Basic Principles</h4>
+                        <ul>
+                            <li><strong>Continuity:</strong> Ensure smooth transitions between shots</li>
+                            <li><strong>Pacing:</strong> Control the rhythm and tempo of your video</li>
+                            <li><strong>Storytelling:</strong> Use editing to convey your message effectively</li>
+                            <li><strong>Visual Flow:</strong> Guide the viewer's attention through composition</li>
+                        </ul>
+                        
+                        <h4>Essential Editing Tools</h4>
+                        <p>Every video editor needs these fundamental tools:</p>
+                        <ul>
+                            <li>Cutting tools for precise editing</li>
+                            <li>Transitions for smooth scene changes</li>
+                            <li>Audio controls for sound mixing</li>
+                            <li>Color correction tools for visual consistency</li>
+                        </ul>
+                    `
+                },
+                cuts: {
+                    title: "Basic Cuts",
+                    content: `
+                        <h4>Types of Cuts</h4>
+                        <ul>
+                            <li><strong>J Cut:</strong> Audio from the next clip plays before the video transition</li>
+                            <li><strong>L Cut:</strong> Video from the next clip plays before the audio transition</li>
+                            <li><strong>Match Cut:</strong> Visual elements match between clips for seamless transition</li>
+                            <li><strong>Jump Cut:</strong> Sudden transition that creates a sense of time passing</li>
+                        </ul>
+                        
+                        <h4>Cutting Techniques</h4>
+                        <p>Master these cutting techniques for professional results:</p>
+                        <ul>
+                            <li><strong>180-degree rule:</strong> Maintain consistent screen direction</li>
+                            <li><strong>Shot reverse shot:</strong> Classic dialogue editing technique</li>
+                            <li><strong>Montage:</strong> Series of short shots to convey information</li>
+                            <li><strong>Cutting on action:</strong> Cut during movement for seamless transition</li>
+                        </ul>
+                        
+                        <h4>Cutting Best Practices</h4>
+                        <ul>
+                            <li>Keep cuts purposeful and meaningful</li>
+                            <li>Maintain consistent pacing throughout</li>
+                            <li>Use cuts to emphasize key points</li>
+                            <li>Avoid over-cutting which can be jarring</li>
+                        </ul>
+                    `
+                },
+                audio: {
+                    title: "Audio Editing",
+                    content: `
+                        <h4>Audio Elements</h4>
+                        <ul>
+                            <li><strong>Dialogue:</strong> Primary audio element for most videos</li>
+                            <li><strong>Music:</strong> Sets mood and enhances emotional impact</li>
+                            <li><strong>SFX:</strong> Sound effects add realism and interest</li>
+                            <li><strong>Ambience:</strong> Background noise establishes environment</li>
+                        </ul>
+                        
+                        <h4>Audio Editing Techniques</h4>
+                        <p>These techniques will improve your audio quality:</p>
+                        <ul>
+                            <li><strong>Level balancing:</strong> Adjust volumes for proper hierarchy</li>
+                            <li><strong>Compression:</strong> Even out volume differences</li>
+                            <li><strong>EQ:</strong> Enhance or reduce specific frequencies</li>
+                            <li><strong>Noise reduction:</strong> Remove unwanted background noise</li>
+                        </ul>
+                        
+                        <h4>Audio Mixing Best Practices</h4>
+                        <ul>
+                            <li>Keep dialogue clear and prominent</li>
+                            <li>Use music to enhance, not distract</li>
+                            <li>Match audio levels to content type</li>
+                            <li>Ensure smooth transitions between audio elements</li>
+                        </ul>
+                    `
+                },
+                color: {
+                    title: "Color Correction",
+                    content: `
+                        <h4>Color Theory Basics</h4>
+                        <ul>
+                            <li><strong>Color wheel:</strong> Understanding color relationships</li>
+                            <li><strong>Color harmony:</strong> Creating pleasing color combinations</li>
+                            <li><strong>Color psychology:</strong> How colors affect viewer emotions</li>
+                            <li><strong>Color temperature:</strong> Warm vs. cool color tones</li>
+                        </ul>
+                        
+                        <h4>Color Correction Techniques</h4>
+                        <p>Essential techniques for professional color work:</p>
+                        <ul>
+                            <li><strong>White balance:</strong> Ensure accurate color reproduction</li>
+                            <li><strong>Exposure:</strong> Adjust brightness and contrast</li>
+                            <li><strong>Saturation:</strong> Control color intensity</li>
+                            <li><strong>Hue shifting:</strong> Change color tones</li>
+                        </ul>
+                        
+                        <h4>Color Grading</h4>
+                        <ul>
+                            <li>Establish a consistent look throughout your video</li>
+                            <li>Create mood and atmosphere through color</li>
+                            <li>Use color to guide viewer attention</li>
+                            <li>Match color between different shots</li>
+                        </ul>
+                    `
+                }
+            };
+            
+            const tutorial = tutorials[topic];
+            
+            document.getElementById('basicContent').innerHTML = `
+                <h3>${tutorial.title}</h3>
+                ${tutorial.content}
+            `;
+            
+            document.getElementById('basicResults').classList.add('show');
+        });
+        
+        // Advanced Editing Tutorial
+        document.getElementById('showAdvancedTutorialBtn').addEventListener('click', () => {
+            const topic = document.getElementById('advancedTopic').value;
+            
+            const tutorials = {
+                'motion-graphics': {
+                    title: "Motion Graphics",
+                    content: `
+                        <h4>Motion Graphics Principles</h4>
+                        <ul>
+                            <li><strong>Timing:</strong> Control the speed and rhythm of animations</li>
+                            <li><strong>Easing:</strong> Use acceleration and deceleration for natural movement</li>
+                            <li><strong>Spacing:</strong> Control the distance between animation keyframes</li>
+                            <li><strong>Follow-through:</strong> Objects continue moving after force stops</li>
+                        </ul>
+                        
+                        <h4>Motion Graphics Techniques</h4>
+                        <p>Advanced techniques for professional motion graphics:</p>
+                        <ul>
+                            <li><strong>3D animation:</strong> Create depth and dimension</li>
+                            <li><strong>Particle effects:</strong> Add dynamic elements</li>
+                            <li><strong>Text animation:</strong> Bring typography to life</li>
+                            <li><strong>Shape morphing:</strong> Transform between different shapes</li>
+                        </ul>
+                        
+                        <h4>Software Recommendations</h4>
+                        <ul>
+                            <li>Adobe After Effects for complex animations</li>
+                            <li>Cinema 4D for 3D motion graphics</li>
+                            <li>Blender for open-source 3D work</li>
+                            <li>DaVinci Resolve for integrated motion graphics</li>
+                        </ul>
+                    `
+                },
+                'green-screen': {
+                    title: "Green Screen Techniques",
+                    content: `
+                        <h4>Green Screen Setup</h4>
+                        <ul>
+                            <li><strong>Lighting:</strong> Even, shadow-free lighting on the screen</li>
+                            <li><strong>Subject lighting:</strong> Separate from screen lighting</li>
+                            <li><strong>Camera settings:</strong> Proper exposure and focus</li>
+                            <li><strong>Screen material:</strong> Choose appropriate green screen fabric</li>
+                        </ul>
+                        
+                        <h4>Keying Techniques</h4>
+                        <p>Professional keying methods for seamless compositing:</p>
+                        <ul>
+                            <li><strong>Primatte:</strong> Advanced color-based keying</li>
+                            <li><strong>Difference keying:</strong> Compare multiple shots</li>
+                            <li><strong>Edge refinement:</strong> Clean up keying artifacts</li>
+                            <li><strong>Spill suppression:</strong> Remove green color from subject</li>
+                        </ul>
+                        
+                        <h4>Compositing Best Practices</h4>
+                        <ul>
+                            <li>Match lighting between subject and background</li>
+                            <li>Add shadows for realistic integration</li>
+                            <li>Consider perspective and depth</li>
+                            <li>Use motion blur for moving elements</li>
+                        </ul>
+                    `
+                },
+                'multi-cam': {
+                    title: "Multi-Camera Editing",
+                    content: `
+                        <h4>Multi-Camera Setup</h4>
+                        <ul>
+                            <li><strong>Synchronization:</strong> Match audio or timecode between cameras</li>
+                            <li><strong>Coverage:</strong> Plan shots for all angles</li>
+                            <li><strong>Camera positioning:</strong> Ensure proper sightlines</li>
+                            <li><strong>Lighting consistency:</strong> Match lighting across cameras</li>
+                        </ul>
+                        
+                        <h4>Multi-Camera Techniques</h4>
+                        <p>Essential techniques for professional multi-camera editing:</p>
+                        <ul>
+                            <li><strong>Switching:</strong> Cut between cameras at optimal moments</li>
+                            <li><strong>J-cutting:</strong> Audio from next camera plays first</li>
+                            <li><strong>Match cuts:</strong> Visual continuity between cameras</li>
+                            <li><strong>Cross-cutting:</strong> Alternate between different scenes</li>
+                        </ul>
+                        
+                        <h4>Multi-Camera Software</h4>
+                        <ul>
+                            <li>Adobe Premiere Pro for professional editing</li>
+                            <li>Final Cut Pro for Mac users</li>
+                            <li>Dainci Resolve for free multi-camera editing</li>
+                            <li>Edius for real-time multi-camera editing</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Color Correction & Grading",
+                    content: `
+                        <h4>Color Theory</h4>
+                        <p>Understanding color theory is essential for effective color grading:</p>
+                        <ul>
+                            <li>Primary colors: Red, Green, Blue (RGB)</li>
+                            <li>Secondary colors: Orange, Purple, Yellow</li>
+                            <li>Tertiary colors: Intermediate between primary and secondary</li>
+                            <li>Color wheel relationships: Complementary, analogous, triadic</li>
+                        </ul>
+                        
+                        <h4>Color Correction vs. Grading</h4>
+                        <ul>
+                            <li><strong>Correction:</strong> Technical adjustment for accuracy</li>
+                            <li><strong>Grading:</strong> Creative adjustment for mood and style</li>
+                            <li><strong>Workflow:</strong> Correct first, then grade</li>
+                        </ul>
+                        
+                        <h4>Color Grading Techniques</h4>
+                        <ul>
+                            <li>Three-way color correction (shadows, midtones, highlights)</li>
+                            <li>Curves adjustments for precise control</li>
+                            <li>Color wheels for intuitive adjustments</li>
+                            <li>Secondary color correction for selective areas</li>
+                            <li>Power windows for targeted adjustments</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Audio Post-Production",
+                    content: `
+                        <h4>Audio Fundamentals</h4>
+                        <ul>
+                            <li>Sample rate: 44.1kHz for CD quality, 48kHz for video</li>
+                            <li>Bit depth: 16-bit for basic, 24-bit for professional</li>
+                            <li>Audio channels: Mono, stereo, surround sound</li>
+                            <li>Dynamic range: Difference between quietest and loudest</li>
+                        </ul>
+                        
+                        <h4>Audio Editing Techniques</h4>
+                        <ul>
+                            <li><strong>Dialogue editing:</strong> Clean up speech, remove noise</li>
+                            <li><strong>Sound effects (SFX):</strong> Add environmental and action sounds</li>
+                            <li><strong>Foley:</strong> Create sounds for actions in post</li>
+                            <li><strong>ADR (Automated Dialogue Replacement):</strong> Re-record problematic dialogue</li>
+                        </ul>
+                        
+                        <h4>Audio Mixing</h4>
+                        <ul>
+                            <li><strong>Levels:</strong> Balance audio elements</li>
+                            <li><strong>Panning:</strong> Position sounds in stereo field</li>
+                            <li><strong>EQ:</strong> Adjust frequency response</li>
+                            <li><strong>Compression:</strong> Control dynamic range</li>
+                            <li><strong>Reverb:</strong> Add space and depth</li>
+                            <li><strong>Mastering:</strong> Final polish for distribution</li>
+                        </ul>
+                    `
+                },
+                {
+                    title: "Exporting & Delivery",
+                    content: `
+                        <h4>Format Selection</h4>
+                        <ul>
+                            <li><strong>Web:</strong> MP4, WebM for streaming</li>
+                            <li><strong>Broadcast:</strong> ProRes, DNxHD for high quality</li>
+                            <li><strong>Archive:</strong> uncompressed or high-bitrate masters</li>
+                            <li><strong>Social media:</strong> Platform-specific optimized formats</li>
+                        </ul>
+                        
+                        <h4>Export Settings</h4>
+                        <ul>
+                            <li>Resolution: 4K, 2K, 1080p, 720p based on needs</li>
+                            <li>Frame rate: 24p, 25p, 30p, 60p based on content</li>
+                            <li>Codec: H.264, H.265, ProRes, DNxHD</li>
+                            <li>Bitrate: Adjust based on quality requirements</li>
+                            <li>Color space: Rec.709, Rec.2020 for HDR</li>
+                        </ul>
+                        
+                        <h4>Delivery Methods</h4>
+                        <ul>
+                            <li>Physical media: USB drives, hard drives, optical discs</li>
+                            <li>Cloud services: Dropbox, Google Drive, Frame.io</li>
+                            <li>FTP/SFTP for professional transfers</li>
+                            <li>Streaming platforms: YouTube, Vimeo, custom platforms</li>
+                        </ul>
+                    `
+                }
+            ];
+
+            // Tab navigation
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach((button, index) => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    tabContents[index].classList.add('active');
+                });
+            });
+
+            // Initialize first tab as active
+            tabButtons[0].classList.add('active');
+            tabContents[0].classList.add('active');
+
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+
+            searchInput.addEventListener('input', (e) => {
+                const query = e.target.value.toLowerCase();
+                
+                if (query.length < 2) {
+                    searchResults.innerHTML = '';
+                    return;
+                }
+
+                const matches = topics.filter(topic => 
+                    topic.title.toLowerCase().includes(query) || 
+                    topic.content.toLowerCase().includes(query)
+                );
+
+                if (matches.length > 0) {
+                    searchResults.innerHTML = matches.map(match => 
+                        `<div class="search-result" onclick="selectTopic(${topics.indexOf(match)})">
+                            <strong>${match.title}</strong>
+                        </div>`
+                    ).join('');
+                } else {
+                    searchResults.innerHTML = '<div class="no-results">No results found</div>';
+                }
+            });
+
+            // Topic selection
+            function selectTopic(index) {
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+
+                // Add active class to selected button and content
+                tabButtons[index].classList.add('active');
+                tabContents[index].classList.add('active');
+
+                // Clear search
+                searchInput.value = '';
+                searchResults.innerHTML = '';
+
+                // Scroll to selected topic
+                tabContents[index].scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    searchInput.value = '';
+                    searchResults.innerHTML = '';
+                }
+            });
+        </script>
+    <!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Intelligent Video Creation Assistant","Home":"Home","Script Generator":"Script Generator","Style Recommendation":"Style Recommendation","Editing Guide":"Editing Guide","Keyword Analysis":"Keyword Analysis","Duration Planning":"Duration Planning","Video Script AI":"Video Script AI","Get Started":"Get Started","Generate professional video scripts from your keywords or themes in seconds.":"Generate professional video scripts from your keywords or themes in seconds.","Generate Script":"Generate Script","Discover the perfect visual style and scene recommendations for your video.":"Discover the perfect visual style and scene recommendations for your video.","Explore Styles":"Explore Styles","Learn professional editing techniques with our interactive tutorials.":"Learn professional editing techniques with our interactive tutorials.","Watch Tutorial":"Watch Tutorial","Analyze your video content to identify the most impactful keywords.":"Analyze your video content to identify the most impactful keywords.","Analyze Keywords":"Analyze Keywords","Plan the perfect video length and pacing for maximum engagement.":"Plan the perfect video length and pacing for maximum engagement.","Plan Duration":"Plan Duration","Enter your keywords or theme to generate a professional video script.":"Enter your keywords or theme to generate a professional video script.","Keywords or Theme":"Keywords or Theme","Video Length":"Video Length","Short (1-2 minutes)":"Short (1-2 minutes)","Medium (3-5 minutes)":"Medium (3-5 minutes)","Long (5+ minutes)":"Long (5+ minutes)","Tone":"Tone","Professional":"Professional","Casual":"Casual","Enthusiastic":"Enthusiastic","Informative":"Informative","Generated Script":"Generated Script","Copy Script":"Copy Script","Style \u0026 Scene Recommendations":"Style \u0026 Scene Recommendations","Discover the perfect visual style for your video.":"Discover the perfect visual style for your video.","Visual Style":"Visual Style","Scene Selection":"Scene Selection","Lighting":"Lighting","Video Genre":"Video Genre","Documentary":"Documentary","Vlog":"Vlog","Tutorial":"Tutorial","Review":"Review","Storytelling":"Storytelling","Minimalist":"Minimalist","Cinematic":"Cinematic","Bright \u0026 Colorful":"Bright \u0026 Colorful","Dark Moody":"Dark Moody","Vintage":"Vintage","Get Recommendations":"Get Recommendations","Scene Type":"Scene Type","Indoor":"Indoor","Outdoor":"Outdoor","Mixed":"Mixed","Location/Setting":"Location/Setting","Lighting Type":"Lighting Type","Natural Light":"Natural Light","Artificial Light":"Artificial Light","Mixed Lighting":"Mixed Lighting","Time of Day":"Time of Day","Morning":"Morning","Noon":"Noon","__title__":"Video Script AI - Intelligent Video Creation Assistant"},"es":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Asistente Inteligente de Creación de Vídeos","Home":"Inicio","Script Generator":"Generador de Guión","Style Recommendation":"Recomendación de Estilo","Editing Guide":"Guía de Edición","Keyword Analysis":"Análisis de Palabras Clave","Duration Planning":"Planificación de Duración","Video Script AI":"Video Script AI","Get Started":"Comienza","Generate professional video scripts from your keywords or themes in seconds.":"Genera guiones de video profesionales a partir de tus palabras clave o temas en segundos.","Generate Script":"Generar Guión","Discover the perfect visual style and scene recommendations for your video.":"Descubre el estilo visual y las recomendaciones de escena perfectas para tu video.","Explore Styles":"Explorar Estilos","Learn professional editing techniques with our interactive tutorials.":"Aprende técnicas de edición profesional con nuestros tutoriales interactivos.","Watch Tutorial":"Ver Tutorial","Analyze your video content to identify the most impactful keywords.":"Analiza el contenido de tu video para identificar las palabras clave más impactantes.","Analyze Keywords":"Analizar Palabras Clave","Plan the perfect video length and pacing for maximum engagement.":"Planifica la duración perfecta y el ritmo del video para una mayor participación.","Plan Duration":"Planificar Duración","Enter your keywords or theme to generate a professional video script.":"Introduce tus palabras clave o tema para generar un guión de video profesional.","Keywords or Theme":"Palabras Clave o Tema","Video Length":"Duración del Video","Short (1-2 minutes)":"Corto (1-2 minutos)","Medium (3-5 minutes)":"Medio (3-5 minutos)","Long (5+ minutes)":"Largo (5+ minutos)","Tone":"Tono","Professional":"Profesional","Casual":"Casual","Enthusiastic":"Enthusiasta","Informative":"Informativo","Generated Script":"Guión Generado","Copy Script":"Copiar Guión","Style \u0026 Scene Recommendations":"Recomendaciones de Estilo y Escena","Discover the perfect visual style for your video.":"Descubre el estilo visual perfecto para tu video.","Visual Style":"Estilo Visual","Scene Selection":"Selección de Escena","Lighting":"Iluminación","Video Genre":"Género de Video","Documentary":"Documental","Vlog":"Vlog","Tutorial":"Tutorial","Review":"Revisión","Storytelling":"Narrativa","Minimalist":"Minimalista","Cinematic":"Cinematográfico","Bright \u0026 Colorful":"Brillante y Colorido","Dark Moody":"Oscuridad Melancólica","Vintage":"Vintage","Get Recommendations":"Obtener Recomendaciones","Scene Type":"Tipo de Escena","Indoor":"Interior","Outdoor":"Exterior","Mixed":"Mezclado","Location/Setting":"Ubicación/Configuración","Lighting Type":"Tipo de Iluminación","Natural Light":"Luz Natural","Artificial Light":"Luz Artificial","Mixed Lighting":"Iluminación Mixta","Time of Day":"Hora del Día","Morning":"Mañana","Noon":"Mediodía","__title__":"Video Script AI - Asistente Inteligente de Creación de Vídeos"},"ja":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - 智能動画作成アシスタント","Home":"ホーム","Script Generator":"脚本生成器","Style Recommendation":"スタイル推奨","Editing Guide":"編集ガイド","Keyword Analysis":"キーワード分析","Duration Planning":"期間計画","Video Script AI":"Video Script AI","Get Started":"始めましょう","Generate professional video scripts from your keywords or themes in seconds.":"キーワードやテーマから数秒でプロフェッショナルな動画脚本を作成します。","Generate Script":"脚本生成","Discover the perfect visual style and scene recommendations for your video.":"あなたの動画のための完璧な視覚スタイルとシーン推奨を発見します。","Explore Styles":"スタイルを探検","Learn professional editing techniques with our interactive tutorials.":"インタラクティブなチュートリアルでプロフェッショナルな編集技術を学びます。","Watch Tutorial":"チュートリアルを見る","Analyze your video content to identify the most impactful keywords.":"動画コンテンツを分析して最も影響力のあるキーワードを特定します。","Analyze Keywords":"キーワード分析","Plan the perfect video length and pacing for maximum engagement.":"最大のエンゲージメントのための完璧な動画長さとペースを計画します。","Plan Duration":"期間計画","Enter your keywords or theme to generate a professional video script.":"キーワードやテーマを入力してプロフェッショナルな動画脚本を作成します。","Keywords or Theme":"キーワードまたはテーマ","Video Length":"動画長さ","Short (1-2 minutes)":"短い（1-2分）","Medium (3-5 minutes)":"中（3-5分）","Long (5+ minutes)":"長い（5分以上）","Tone":"トーン","Professional":"プロフェッショナル","Casual":"カジュアル","Enthusiastic":"熱心","Informative":"情報提供","Generated Script":"生成された脚本","Copy Script":"コピー脚本","Style \u0026 Scene Recommendations":"スタイルとシーン推奨","Discover the perfect visual style for your video.":"あなたの動画のための完璧な視覚スタイルを発見します。","Visual Style":"視覚スタイル","Scene Selection":"シーン選択","Lighting":"照明","Video Genre":"動画ジャンル","Documentary":"ドキュメンタリー","Vlog":"ブログ","Tutorial":"チュートリアル","Review":"レビュー","Storytelling":"物語","Minimalist":"ミニマリスト","Cinematic":"映画風","Bright \u0026 Colorful":"明るくカラフル","Dark Moody":"暗くモody","Vintage":"ヴィンテージ","Get Recommendations":"推奨を取得","Scene Type":"シーンタイプ","Indoor":"屋内","Outdoor":"屋外","Mixed":"ミックス","Location/Setting":"ロケーション/設定","Lighting Type":"照明タイプ","Natural Light":"自然光","Artificial Light":"人工光","Mixed Lighting":"ミックス照明","Time of Day":"一日の時間帯","Morning":"朝","Noon":"昼","__title__":"Video Script AI - 智能動画作成アシスタント"},"fr":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Assistant de Création Vidéo Intelligente","Home":"Accueil","Script Generator":"Générateur de Script","Style Recommendation":"Recommandation de Style","Editing Guide":"Guide d'Édition","Keyword Analysis":"Analyse de Mot-clé","Duration Planning":"Planification de Durée","Video Script AI":"Video Script AI","Get Started":"Commencer","Generate professional video scripts from your keywords or themes in seconds.":"Générez des scripts vidéo professionnels à partir de vos mots-clés ou thèmes en quelques secondes.","Generate Script":"Générer Script","Discover the perfect visual style and scene recommendations for your video.":"Découvrez le style visuel et les recommandations de scène parfaits pour votre vidéo.","Explore Styles":"Explorer les Styles","Learn professional editing techniques with our interactive tutorials.":"Apprenez des techniques d'édition professionnelles avec nos tutoriels interactifs.","Watch Tutorial":"Regardez le Tutoriel","Analyze your video content to identify the most impactful keywords.":"Analysez le contenu de votre vidéo pour identifier les mots-clés les plus impactants.","Analyze Keywords":"Analyser les Mots-clés","Plan the perfect video length and pacing for maximum engagement.":"Planifiez la durée parfaite et le rythme de votre vidéo pour maximiser l'engagement.","Plan Duration":"Planifier la Durée","Enter your keywords or theme to generate a professional video script.":"Entrez vos mots-clés ou thème pour générer un script vidéo professionnel.","Keywords or Theme":"Mots-clés ou Thème","Video Length":"Durée de la Vidéo","Short (1-2 minutes)":"Courte (1-2 minutes)","Medium (3-5 minutes)":"Moyenne (3-5 minutes)","Long (5+ minutes)":"Longue (5+ minutes)","Tone":"Tonalité","Professional":"Professionnel","Casual":"Décontracté","Enthusiastic":"Enthousiaste","Informative":"Informatif","Generated Script":"Script Généré","Copy Script":"Script de Copie","Style \u0026 Scene Recommendations":"Recommandations de Style et de Scène","Discover the perfect visual style for your video.":"Découvrez le style visuel parfait pour votre vidéo.","Visual Style":"Style Visuel","Scene Selection":"Sélection de Scène","Lighting":"Éclairage","Video Genre":" Genre de Vidéo","Documentary":"Documentaire","Vlog":"Vlog","Tutorial":"Tutoriel","Review":"Avis","Storytelling":"Narration","Minimalist":"Minimaliste","Cinematic":"Cinématique","Bright \u0026 Colorful":"Clair et Coloré","Dark Moody":"Noir et Triste","Vintage":"Vintages","Get Recommendations":"Obtenir des Recommandations","Scene Type":"Type de Scène","Indoor":"Intérieur","Outdoor":"Extérieur","Mixed":"Mélangé","Location/Setting":"Lieu/Configuration","Lighting Type":"Type d'Éclairage","Natural Light":"Lumière Naturelle","Artificial Light":"Lumière Artificielle","Mixed Lighting":"Éclairage Mêlé","Time of Day":"Heure de la Journee","Morning":"Matin","Noon":"Midi","__title__":"Video Script AI - Assistant de Création Vidéo Intelligente"},"de":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Intelligenter Videobearbeitungsassistent","Home":"Startseite","Script Generator":"Skriptgenerator","Style Recommendation":"Stilempfehlung","Editing Guide":"Bearbeitungsanleitung","Keyword Analysis":"Schlüsselwortanalyse","Duration Planning":"Dauerplanung","Video Script AI":"Video Script AI","Get Started":"Erste Schritte","Generate professional video scripts from your keywords or themes in seconds.":"Erstellen Sie in Sekunden professionelle Videoskripte aus Ihren Schlüsselwörtern oder Themen.","Generate Script":"Skript generieren","Discover the perfect visual style and scene recommendations for your video.":"Entdecken Sie den perfekten visuellen Stil und Szenenempfehlungen für Ihr Video.","Explore Styles":"Stile erkunden","Learn professional editing techniques with our interactive tutorials.":"Lernen Sie professionelle Bearbeitungstechniken mit unseren interaktiven Tutorials.","Watch Tutorial":"Tutorial ansehen","Analyze your video content to identify the most impactful keywords.":"Analysieren Sie Ihr Videomaterial, um die am stärksten wirkenden Schlüsselwörter zu identifizieren.","Analyze Keywords":"Schlüsselwörter analysieren","Plan the perfect video length and pacing for maximum engagement.":"Planen Sie die perfekte Videolänge und das Tempo für maximale Interaktion.","Plan Duration":"Dauer planen","Enter your keywords or theme to generate a professional video script.":"Geben Sie Ihre Schlüsselwörter oder Themen ein, um ein professionelles Videoskript zu generieren.","Keywords or Theme":"Schlüsselwörter oder Thema","Video Length":"Videolänge","Short (1-2 minutes)":"Kurz (1-2 Minuten)","Medium (3-5 minutes)":"Mittel (3-5 Minuten)","Long (5+ minutes)":"Lang (5+ Minuten)","Tone":"Tonfall","Professional":"Professionell","Casual":"Casual","Enthusiastic":"Begeistert","Informative":"Informierend","Generated Script":"Generiertes Skript","Copy Script":"Kopierskript","Style \u0026 Scene Recommendations":"Stil- und Szenenempfehlungen","Discover the perfect visual style for your video.":"Entdecken Sie den perfekten visuellen Stil für Ihr Video.","Visual Style":"Visueller Stil","Scene Selection":"Szenenauswahl","Lighting":"Beleuchtung","Video Genre":"Videogenre","Documentary":"Dokumentation","Vlog":"Vlog","Tutorial":"Tutorial","Review":"Bewertung","Storytelling":"Erzählung","Minimalist":"Minimalistisch","Cinematic":"Kinematografisch","Bright \u0026 Colorful":"Hell und bunt","Dark Moody":"Dunkel und stimmungsvoll","Vintage":"Vintag","Get Recommendations":"Empfehlungen erhalten","Scene Type":"Szenentyp","Indoor":"Drinnen","Outdoor":"Draußen","Mixed":"Mischung","Location/Setting":"Ort/Setting","Lighting Type":"Beleuchtungstyp","Natural Light":"Natürliches Licht","Artificial Light":"Künstliches Licht","Mixed Lighting":"Gemischte Beleuchtung","Time of Day":"Zeit des Tages","Morning":"Morgen","Noon":"Mittag","__title__":"Video Script AI - Intelligenter Videobearbeitungsassistent"},"ru":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - искусственный интеллект помощник по созданию видео","Home":"Домашняя страница","Script Generator":"Генератор сценария","Style Recommendation":"Рекомендации по стилю","Editing Guide":"Руководство по монтажу","Keyword Analysis":"Анализ ключевых слов","Duration Planning":"Планирование продолжительности","Video Script AI":"Video Script AI","Get Started":"Начните работу","Generate professional video scripts from your keywords or themes in seconds.":"Создайте профессиональные видео-сценарии из ваших ключевых слов или тем за несколько секунд.","Generate Script":"Создать сценарий","Discover the perfect visual style and scene recommendations for your video.":"Обнаружьте идеальный визуальный стиль и рекомендации по сцене для вашего видео.","Explore Styles":"Образцы стилей","Learn professional editing techniques with our interactive tutorials.":"Изучите профессиональные технические приёмы монтажа с нашими интерактивными инструкциями.","Watch Tutorial":"Смотреть учебник","Analyze your video content to identify the most impactful keywords.":"Анализируйте контент вашего видео, чтобы определить наиболее влияющие ключевые слова.","Analyze Keywords":"Анализ ключевых слов","Plan the perfect video length and pacing for maximum engagement.":"Планируйте идеальную продолжительность и темп видео для максимального привлечения внимания.","Plan Duration":"Планирование продолжительности","Enter your keywords or theme to generate a professional video script.":"Введите свои ключевые слова или тему, чтобы создать профессиональный видео-сценарий.","Keywords or Theme":"Ключевые слова или тема","Video Length":"Длина видео","Short (1-2 minutes)":"Короткий (1-2 минуты)","Medium (3-5 minutes)":"Средний (3-5 минут)","Long (5+ minutes)":"Длинный (5+ минут)","Tone":"Тон","Professional":"Профессиональный","Casual":"Casual","Enthusiastic":"Enthusiastic","Informative":"Информативный","Generated Script":"Генерированный сценарий","Copy Script":"Копированный сценарий","Style \u0026 Scene Recommendations":"Рекомендации по стилю и сцене","Discover the perfect visual style for your video.":"Обнаружьте идеальный визуальный стиль для вашего видео.","Visual Style":"Визуальный стиль","Scene Selection":"Выбор сцены","Lighting":"Освещение","Video Genre":"Жанр видео","Documentary":"Документальный","Vlog":"Vlog","Tutorial":"Учебник","Review":"Обзор","Storytelling":"Сказание","Minimalist":"Минималистский","Cinematic":"Кинематографический","Bright \u0026 Colorful":"Яркий и насыщенный","Dark Moody":"Тёмный и мрачный","Vintage":"Винтаж","Get Recommendations":"Получить рекомендации","Scene Type":"Тип сцены","Indoor":"Внутри","Outdoor":"Снаружи","Mixed":"Смешанный","Location/Setting":"Место/сцена","Lighting Type":"Тип освещения","Natural Light":" 自然光是","Artificial Light":"Искусственный свет","Mixed Lighting":"Смешанное освещение","Time of Day":"Время суток","Morning":"Утро","Noon":"День","__title__":"Video Script AI - искусственный интеллект помощник по созданию видео"},"pt":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Assistente Inteligente de Criação de Vídeo","Home":"Início","Script Generator":"Gerador de Roteiro","Style Recommendation":"Recomendação de Estilo","Editing Guide":"Guia de Edição","Keyword Analysis":"Análise de Palavras-chave","Duration Planning":"Planejamento de Duração","Video Script AI":"Video Script AI","Get Started":"Comece Agora","Generate professional video scripts from your keywords or themes in seconds.":"Gere roteiros de vídeo profissionais a partir das suas palavras-chave ou temas em segundos.","Generate Script":"Gerar Roteiro","Discover the perfect visual style and scene recommendations for your video.":"Descubra o estilo visual perfeito e as recomendações de cena para o seu vídeo.","Explore Styles":"Explorar Estilos","Learn professional editing techniques with our interactive tutorials.":"Aprenda técnicas profissionais de edição com nossos tutoriais interativos.","Watch Tutorial":"Assista ao Tutorial","Analyze your video content to identify the most impactful keywords.":"Análise do conteúdo do seu vídeo para identificar as palavras-chave mais impactantes.","Analyze Keywords":"Analisar Palavras-chave","Plan the perfect video length and pacing for maximum engagement.":"Planeje a duração perfeita e o ritmo do vídeo para o engajamento máximo.","Plan Duration":"Planejar Duração","Enter your keywords or theme to generate a professional video script.":"Insira suas palavras-chave ou tema para gerar um roteiro de vídeo profissional.","Keywords or Theme":"Palavras-chave ou Tema","Video Length":"Duração do Vídeo","Short (1-2 minutes)":"Curto (1-2 minutos)","Medium (3-5 minutes)":"Médio (3-5 minutos)","Long (5+ minutes)":"Longo (5+ minutos)","Tone":"Tom","Professional":"Profissional","Casual":"Casual","Enthusiastic":"Entusiasmado","Informative":"Informativo","Generated Script":"Roteiro Gerado","Copy Script":"Roteiro de Cópia","Style \u0026 Scene Recommendations":"Recomendações de Estilo \u0026 Cena","Discover the perfect visual style for your video.":"Descubra o estilo visual perfeito para o seu vídeo.","Visual Style":"Estilo Visual","Scene Selection":"Seleção de Cena","Lighting":"Iluminação","Video Genre":"Gênero de Vídeo","Documentary":"Documentário","Vlog":"Vlog","Tutorial":"Tutorial","Review":"Revisão","Storytelling":"Contação de Histórias","Minimalist":"Minimalista","Cinematic":"Cinematográfico","Bright \u0026 Colorful":"Brilhante e Colorido","Dark Moody":"Escuro e Melancólico","Vintage":"Vintagem","Get Recommendations":"Obter Recomendações","Scene Type":"Tipo de Cena","Indoor":"Interno","Outdoor":"Externo","Mixed":"Misto","Location/Setting":"Localização/Configuração","Lighting Type":"Tipo de Iluminação","Natural Light":"Luz Natural","Artificial Light":"Luz Artificial","Mixed Lighting":"Iluminação Mista","Time of Day":"Hora do Dia","Morning":"Manhã","Noon":"Meio-dia","__title__":"Video Script AI - Assistente Inteligente de Criação de Vídeo"},"hi":{"Video Script AI - Intelligent Video Creation Assistant":"वीडियो स्क्रिप्ट AI - इंटेलिजेंट वीडियो क्रिएशन असिस्टेंट","Home":"होम","Script Generator":"स्क्रिप्ट जेनरेटर","Style Recommendation":"स्टाइल रिकमेंडेशन","Editing Guide":"एडिटिंग गाइड","Keyword Analysis":"कीवर्ड एनालिसिस","Duration Planning":"ड्यूरेशन प्लानिंग","Video Script AI":"वीडियो स्क्रिप्ट AI","Get Started":"शुरू करें","Generate professional video scripts from your keywords or themes in seconds.":"अपने कीवर्ड या थीम से सेकंड्स में प्रोफेशनल वीडियो स्क्रिप्ट जेनरेट करें।","Generate Script":"स्क्रिप्ट जेनरेट करें","Discover the perfect visual style and scene recommendations for your video.":"अपने वीडियो के लिए आदर्श विजुअल स्टाइल और सीन रिकमेंडेशन खोजें।","Explore Styles":"स्टाइल्स एक्सप्लोर करें","Learn professional editing techniques with our interactive tutorials.":"हमारी इंटरैक्टिव ट्यूटोरियल्स के साथ प्रोफेशनल एडिटिंग तकनीक सीखें।","Watch Tutorial":"ट्यूटोरियल देखें","Analyze your video content to identify the most impactful keywords.":"अपने वीडियो कंटेंट का विश्लेषण करें ताकि सबसे प्रभावशाली कीवर्ड की पहचान की जा सके।","Analyze Keywords":"कीवर्ड्स एनालाइज करें","Plan the perfect video length and pacing for maximum engagement.":"अधिकतम इंगेजमेंट के लिए आदर्श वीडियो लंबाई और टेम्पो का योजना बनाएं।","Plan Duration":"ड्यूरेशन प्लान करें","Enter your keywords or theme to generate a professional video script.":"अपने कीवर्ड या थीम दर्ज करें ताकि प्रोफेशनल वीडियो स्क्रिप्ट जेनरेट हो सके।","Keywords or Theme":"कीवर्ड या थीम","Video Length":"वीडियो लेंथ","Short (1-2 minutes)":"शॉर्ट (1-2 मिनट)","Medium (3-5 minutes)":"मीडियम (3-5 मिनट)","Long (5+ minutes)":"लॉन्ग (5+ मिनट)","Tone":"टोन","Professional":"प्रोफेशनल","Casual":"कैजुअल","Enthusiastic":"एंथूसिएस्टिक","Informative":"इन्फॉर्मेटिव","Generated Script":"जेनरेटेड स्क्रिप्ट","Copy Script":"स्क्रिप्ट कॉपी करें","Style \u0026 Scene Recommendations":"स्टाइल एंड सीन रिकमेंडेशन","Discover the perfect visual style for your video.":"अपने वीडियो के लिए आदर्श विजुअल स्टाइल खोजें।","Visual Style":"विजुअल स्टाइल","Scene Selection":"सीन सेलेक्शन","Lighting":"लाइटिंग","Video Genre":"वीडियो जैनर","Documentary":"डॉक्यूमेंट्री","Vlog":"व्लॉग","Tutorial":"ट्यूटोरियल","Review":"रिव्यू","Storytelling":"स्टोरीटेलिंग","Minimalist":"मिनिमालिस्ट","Cinematic":"सिनेमेटिक","Bright \u0026 Colorful":"ब्राइट एंड कलरफुल","Dark Moody":"डार्क मूडी","Vintage":"विंटेज","Get Recommendations":"रिकमेंडेशन प्राप्त करें","Scene Type":"सीन टाइप","Indoor":"इनडोर","Outdoor":"आउटडोर","Mixed":"मिक्स्ड","Location/Setting":"लोकेशन/सेटिंग","Lighting Type":"लाइटिंग टाइप","Natural Light":"नेचुरल लाइट","Artificial Light":"आर्टिफिशियल लाइट","Mixed Lighting":"मिक्स्ड लाइटिंग","Time of Day":"डे का समय","Morning":"सुबह","Noon":"दोपहर","__title__":"वीडियो स्क्रिप्ट AI - इंटेलिजेंट वीडियो क्रिएशन असिस्टेंट"},"id":{"Video Script AI - Intelligent Video Creation Assistant":"Video Script AI - Asisten Pembuatan Video Cerdas","Home":"Beranda","Script Generator":"Generator Naskah","Style Recommendation":"Rekomendasi Gaya","Editing Guide":"Panduan Editing","Keyword Analysis":"Analisis Kata Kunci","Duration Planning":"Perencanaan Durasi","Video Script AI":"Video Script AI","Get Started":"Mulai Sekarang","Generate professional video scripts from your keywords or themes in seconds.":"Hasilkan naskah video profesional dari kata kunci atau tema Anda dalam hitungan detik.","Generate Script":"Hasilkan Naskah","Discover the perfect visual style and scene recommendations for your video.":"Temukan gaya visual yang sempurna dan rekomendasi adegan untuk video Anda.","Explore Styles":"Jelajahi Gaya","Learn professional editing techniques with our interactive tutorials.":"Pelajari teknik editing profesional dengan tutorial interaktif kami.","Watch Tutorial":"Tonton Tutorial","Analyze your video content to identify the most impactful keywords.":"Analisis konten video Anda untuk mengidentifikasi kata kunci yang paling berdampak.","Analyze Keywords":"Analisis Kata Kunci","Plan the perfect video length and pacing for maximum engagement.":"Rencanakan durasi dan tempo video yang sempurna untuk maksimalkan keterlibatan.","Plan Duration":"Rencanakan Durasi","Enter your keywords or theme to generate a professional video script.":"Masukkan kata kunci atau tema Anda untuk menghasilkan naskah video profesional.","Keywords or Theme":"Kata Kunci atau Tema","Video Length":"Durasi Video","Short (1-2 minutes)":"Singkat (1-2 menit)","Medium (3-5 minutes)":"Sedang (3-5 menit)","Long (5+ minutes)":"Panjang (5+ menit)","Tone":"Tone","Professional":"Profesional","Casual":"Santai","Enthusiastic":"Antusias","Informative":"Informatif","Generated Script":"Naskah yang Dihasilkan","Copy Script":"Salin Naskah","Style \u0026 Scene Recommendations":"Rekomendasi Gaya \u0026 Adegan","Discover the perfect visual style for your video.":"Temukan gaya visual yang sempurna untuk video Anda.","Visual Style":"Gaya Visual","Scene Selection":"Pemilihan Adegan","Lighting":"Pencahayaan","Video Genre":"Genre Video","Documentary":"Dokumenter","Vlog":"Vlog","Tutorial":"Tutorial","Review":"Review","Storytelling":"Narasi","Minimalist":"Minimalis","Cinematic":"Sinematik","Bright \u0026 Colorful":"Terang \u0026 Berwarna","Dark Moody":"Gelap \u0026 Mood","Vintage":"Vintage","Get Recommendations":"Dapatkan Rekomendasi","Scene Type":"Jenis Adegan","Indoor":"Indoor","Outdoor":"Outdoor","Mixed":"Campuran","Location/Setting":"Lokasi/Setting","Lighting Type":"Jenis Pencahayaan","Natural Light":"Cahaya Alami","Artificial Light":"Cahaya Buatan","Mixed Lighting":"Pencahayaan Campuran","Time of Day":"Waktu Hari","Morning":"Pagi","Noon":"Siang","__title__":"Video Script AI - Asisten Pembuatan Video Cerdas"},"vi":{"Video Script AI - Intelligent Video Creation Assistant":"Trợ Tạo Video AI - Trợ Lý Tạo Video Thông Minh","Home":"Trang Chủ","Script Generator":"Trình Tạo Kịch Bản","Style Recommendation":"Đề Xuất Phong Cách","Editing Guide":"Hướng Dẫn Chỉnh Sửa","Keyword Analysis":"Phân Từ Khóa","Duration Planning":"Lập Kế Hoạch Thời Lượng","Video Script AI":"Kịch Bản Video AI","Get Started":"Bắt Đầu Ngay","Generate professional video scripts from your keywords or themes in seconds.":"Tạo ra các kịch bản video chuyên nghiệp từ từ khóa hoặc chủ đề của bạn trong vài giây.","Generate Script":"Tạo Kịch Bản","Discover the perfect visual style and scene recommendations for your video.":"Khám phá phong cách hình ảnh hoàn hảo và các gợi ý cảnh cho video của bạn.","Explore Styles":"Khám Phá Phong Cách","Learn professional editing techniques with our interactive tutorials.":"Học các kỹ thuật chỉnh sửa chuyên nghiệp với các hướng dẫn tương tác của chúng tôi.","Watch Tutorial":"Xem Hướng Dẫn","Analyze your video content to identify the most impactful keywords.":"Phân tích nội dung video của bạn để xác định các từ khóa có sức ảnh hưởng mạnh nhất.","Analyze Keywords":"Phân Tích Từ Khóa","Plan the perfect video length and pacing for maximum engagement.":"Lập kế hoạch độ dài và nhịp điệu hoàn hảo cho video để tối đa hóa sự thu hút.","Plan Duration":"Lập Kế Hoạch Thời Lượng","Enter your keywords or theme to generate a professional video script.":"Nhập từ khóa hoặc chủ đề của bạn để tạo một kịch bản video chuyên nghiệp.","Keywords or Theme":"Từ Khóa hoặc Chủ Đề","Video Length":"Độ Dài Video","Short (1-2 minutes)":"Ngắn (1-2 phút)","Medium (3-5 minutes)":"Trung bình (3-5 phút)","Long (5+ minutes)":"Dài (5+ phút)","Tone":"Giọng Điệu","Professional":"Chuyên Nghiệp","Casual":"Thân Thiện","Enthusiastic":"Nhiệt Tình","Informative":"Thông Tin","Generated Script":"Kịch Bản Đã Tạo","Copy Script":"Sao Chép Kịch Bản","Style \u0026 Scene Recommendations":"Đề Xuất Phong Cách \u0026 Cảnh","Discover the perfect visual style for your video.":"Khám phá phong cách hình ảnh hoàn hảo cho video của bạn.","Visual Style":"Phong Cách Hình Ảnh","Scene Selection":"Lựa Chọn Cảnh","Lighting":"Ánh Sáng","Video Genre":"Thể Loại Video","Documentary":"Phim Tài Liệu","Vlog":"Vlog","Tutorial":"Hướng Dẫn","Review":"Đánh Giá","Storytelling":"Kể Chuyện","Minimalist":"Tối Giản","Cinematic":"Điện Ảnh","Bright \u0026 Colorful":"Sáng Đầy Màu Sắc","Dark Moody":"Tối Uất","Vintage":"Cổ Điển","Get Recommendations":"Nhận Đề Xuất","Scene Type":"Loại Cảnh","Indoor":"Trong Nhà","Outdoor":" Ngoài Trời","Mixed":"Hỗn Hợp","Location/Setting":"Địa Điểm/Bối Cảnh","Lighting Type":"Loại Ánh Sáng","Natural Light":"Ánh Sáng Tự Nhiên","Artificial Light":"Ánh Sáng Nhân Tạo","Mixed Lighting":"Ánh Sáng Hỗn Hợp","Time of Day":"Thời Gian Trong Ngày","Morning":"Buổi Sáng","Noon":"Buổi Trưa","__title__":"Trợ Tạo Video AI - Trợ Lý Tạo Video Thông Minh"},"th":{"Video Script AI - Intelligent Video Creation Assistant":"สคริปต์วิดีโอ AI - ผู้ช่วยสร้างวิดีโออัจฉริยะ","Home":"หน้าแรก","Script Generator":"ตัวสร้างสคริปต์","Style Recommendation":"แนะนำสไตล์","Editing Guide":"คู่มือการตัดต่อ","Keyword Analysis":"วิเคราะห์คำค้นหา","Duration Planning":"วางแผนระยะเวลา","Video Script AI":"สคริปต์วิดีโอ AI","Get Started":"เริ่มต้นใช้งาน","Generate professional video scripts from your keywords or themes in seconds.":"สร้างสคริปต์วิดีโออย่างมืออาชีพจากคำค้นหาหรือแนวคิดของคุณในไม่กี่วินาที","Generate Script":"สร้างสคริปต์","Discover the perfect visual style and scene recommendations for your video.":"ค้นพบสไตล์ทางภาพและคำแนะนำการถ่ายภาพที่เหมาะสมสำหรับวิดีโขของคุณ","Explore Styles":"สำรวจสไตล์","Learn professional editing techniques with our interactive tutorials.":"เรียนรู้เทคนิคการตัดต่ออย่างมืออาชีพด้วยบทเรียนแบบโต้ตอบของเรา","Watch Tutorial":"ดูบทเรียน","Analyze your video content to identify the most impactful keywords.":"วิเคราะห์เนื้อหาวิดีโอของคุณเพื่ระบุคำค้นหาที่มีผลกระทบมากที่สุด","Analyze Keywords":"วิเคราะห์คำค้นหา","Plan the perfect video length and pacing for maximum engagement.":"วางแผนความยาวและจังหวะของวิดีโอที่เหมาะสมที่สุดเพื่อความสนใจสูงสุด","Plan Duration":"วางแผนระยะเวลา","Enter your keywords or theme to generate a professional video script.":"ป้อนคำค้นหาหรือแนวคิดของคุณเพื่อสร้างสคริปต์วิดีโออย่างมืออาชีพ","Keywords or Theme":"คำค้นหาหรือแนวคิด","Video Length":"ความยาววิดีโอ","Short (1-2 minutes)":"สั้น (1-2 นาที)","Medium (3-5 minutes)":"ปานกลาง (3-5 นาที)","Long (5+ minutes)":"ยาว (5+ นาที)","Tone":"เสียง","Professional":"มืออาชีพ","Casual":"ไม่เป็นทางการ","Enthusiastic":"กระตือรือร้น","Informative":"เป็นประโยชน์","Generated Script":"สคริปต์ที่สร้างขึ้น","Copy Script":"คัดลอกสคริปต์","Style \u0026 Scene Recommendations":"คำแนะนำเกี่ยวกับสไตล์และฉาก","Discover the perfect visual style for your video.":"ค้นพบสไตล์ทางภาพที่เหมาะสมสำหรับวิดีโอของคุณ","Visual Style":"สไตล์ทางภาพ","Scene Selection":"การเลือกฉาก","Lighting":"แสงสว่าง","Video Genre":"ประเภทวิดีโอ","Documentary":"สารคดี","Vlog":"วีบล็อก","Tutorial":"บทเรียน","Review":"รีวิว","Storytelling":"การเล่าเรื่อง","Minimalist":"นิยมการลดรายละเอียด","Cinematic":"แบบภาพยนตร์","Bright \u0026 Colorful":"สว่างและสีสันชุ่มฉ่ำ","Dark Moody":"มืดและอารมณ์","Vintage":"วินเทจ","Get Recommendations":"รับคำแนะนำ","Scene Type":"ประเภทฉาก","Indoor":"ภายใน","Outdoor":"ภายนอก","Mixed":"ผสม","Location/Setting":"สถานที่/เครื่องแบบ","Lighting Type":"ประเภทแสงสว่าง","Natural Light":"แสงธรรมชาติ","Artificial Light":"แสงประดิษฐ์","Mixed Lighting":"แสงผสม","Time of Day":"เวลาของวัน","Morning":"เช้า","Noon":"เที่ยง","__title__":"สคริปต์วิดีโอ AI - ผู้ช่วยสร้างวิดีโออัจฉริยะ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="es">Español</option><option value="ja">日本語</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
