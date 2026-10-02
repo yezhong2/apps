@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Artist Palette - Transform Your Images into Art</title><meta name="description" content="Free online tool: AI Artist Palette - Transform Your Images into Art. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Artist Palette - Transform Your Images into Art">
+<meta property="og:description" content="Free online tool: AI Artist Palette - Transform Your Images into Art. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_211354_AI Artist Pa.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #bb86fc;
+            --accent-hover: #985eff;
+            --success: #03dac6;
+            --error: #cf6679;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        /* Section Styles */
+        section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* AI Art Generator */
+        .upload-area {
+            border: 2px dashed var(--accent);
+            border-radius: 10px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .upload-area:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+        
+        .upload-area.drag-over {
+            background-color: rgba(187, 134, 252, 0.2);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+            color: var(--bg-primary);
+        }
+        
+        .btn-success:hover {
+            background-color: #00b8a9;
+        }
+        
+        /* Image Preview */
+        .image-preview {
+            display: none;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        /* Generated Art Styles */
+        .art-styles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .art-style {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .art-style:hover {
+            transform: translateY(-5px);
+        }
+        
+        .art-style img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Color Palette */
+        .color-palette {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        
+        .color-item {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .color-item:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-code {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Image Enhancement */
+        .enhancement-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+        
+        .enhancement-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .enhancement-item {
+            text-align: center;
+        }
+        
+        .enhancement-item img {
+            width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Art Style Matching */
+        .style-matching {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .style-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .style-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .style-card img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        
+        .style-match-score {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        
+        .score-bar {
+            flex-grow: 1;
+            height: 8px;
+            background-color: var(--bg-primary);
+            border-radius: 4px;
+            margin: 0 0.5rem;
+            overflow: hidden;
+        }
+        
+        .score-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 4px;
+        }
+        
+        /* Collaborative Art Creation */
+        .collaboration-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .friend-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .friend-item {
+            display: flex;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            padding: 0.8rem 1.2rem;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+        }
+        
+        .friend-item:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .friend-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .art-canvas {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            min-height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .canvas-tools {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--bg-primary);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        
+        .tool-btn:hover {
+            background-color: var(--accent);
+        }
+        
+        .tool-btn.active {
+            background-color: var(--accent);
+        }
+        
+        #drawing-canvas {
+            background-color: white;
+            border-radius: 5px;
+            cursor: crosshair;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .collaboration-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            section {
+                padding: 1.5rem;
+            }
+            
+            .art-styles,
+            .style-matching,
+            .enhancement-preview {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">AI Artist Palette</div>
+            <div class="nav-links">
+                <a href="#generator">Generator</a>
+                <a href="#palette">Colors</a>
+                <a href="#enhancement">Enhance</a>
+                <a href="#styles">Styles</a>
+                <a href="#collaboration">Collaborate</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Transform Your Images into Art with AI</h1>
+        <p style="text-align: center; margin-bottom: 3rem; color: var(--text-secondary);">
+            Upload an image and let AI create artistic variations, suggest color palettes, 
+            enhance quality, and match your preferred styles. Collaborate with friends on unique art projects.
+        </p>
+
+        <!-- AI Art Generator Section -->
+        <section id="generator">
+            <h2>AI Art Generator</h2>
+            <div class="upload-area" id="upload-area">
+                <p>Drag & drop an image here or click to browse</p>
+                <input type="file" id="file-input" accept="image/*">
+                <button class="btn" style="margin-top: 1rem;">Choose Image</button>
+            </div>
+            
+            <div class="image-preview" id="image-preview">
+                <img id="preview-img" src="" alt="Preview">
+                <button class="btn btn-success" id="generate-art">Generate Art Variations</button>
+            </div>
+            
+            <div class="art-styles" id="art-styles"></div>
+        </section>
+
+        <!-- Color Palette Suggestions Section -->
+        <section id="palette">
+            <h2>Color Palette Suggestions</h2>
+            <p style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary);">
+                Based on your image, here are recommended color palettes
+            </p>
+            <div class="color-palette" id="color-palette"></div>
+        </section>
+
+        <!-- Image Enhancement Section -->
+        <section id="enhancement">
+            <h2>Image Enhancement</h2>
+            <p style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary);">
+                Enhance your image with AI-powered improvements
+            </p>
+            <div class="enhancement-controls">
+                <button class="btn" id="enhance-quality">Enhance Quality</button>
+                <button class="btn" id="enhance-clarity">Improve Clarity</button>
+                <button class="btn" id="enhance-colors">Enhance Colors</button>
+                <button class="btn" id="enhance-details">Add Details</button>
+            </div>
+            <div class="enhancement-preview" id="enhancement-preview"></div>
+        </section>
+
+        <!-- Art Style Matching Section -->
+        <section id="styles">
+            <h2>Art Style Matching</h2>
+            <p style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary);">
+                AI recommends art styles based on your preferences
+            </p>
+            <div class="style-matching" id="style-matching"></div>
+        </section>
+
+        <!-- Collaborative Art Creation Section -->
+        <section id="collaboration">
+            <h2>Collaborative Art Creation</h2>
+            <p style="text-align: center; margin-bottom: 1rem; color: var(--text-secondary);">
+                Invite friends to create art together in real-time
+            </p>
+            
+            <div class="collaboration-container">
+                <div>
+                    <h3>Invite Friends</h3>
+                    <div class="friend-list" id="friend-list">
+                        <div class="friend-item">
+                            <div class="friend-avatar">A</div>
+                            <span>Alice</span>
+                        </div>
+                        <div class="friend-item">
+                            <div class="friend-avatar">B</div>
+                            <span>Bob</span>
+                        </div>
+                        <div class="friend-item">
+                            <div class="friend-avatar">C</div>
+                            <span>Charlie</span>
+                        </div>
+                    </div>
+                    <button class="btn" id="invite-friend">Invite More Friends</button>
+                </div>
+                
+                <div class="art-canvas">
+                    <h3>Collaborative Canvas</h3>
+                    <div class="canvas-tools">
+                        <button class="tool-btn active" id="brush-tool">✏️</button>
+                        <button class="tool-btn" id="eraser-tool">🧹</button>
+                        <button class="tool-btn" id="shape-tool">⬜</button>
+                        <button class="tool-btn" id="color-picker">🎨</button>
+                        <button class="tool-btn" id="clear-canvas">🗑️</button>
+                    </div>
+                    <canvas id="drawing-canvas" width="800" height="400"></canvas>
+                </div>
+                
+                <div class="collaboration-actions">
+                    <button class="btn" id="save-collaboration">Save Artwork</button>
+                    <button class="btn btn-success" id="share-collaboration">Share</button>
+                    <button class="btn btn-secondary" id="new-canvas">New Canvas</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Initialize variables
+        let uploadedImage = null;
+        let canvas, ctx;
+        let isDrawing = false;
+        let currentTool = 'brush';
+        let currentColor = '#000000';
+        
+        // DOM Elements
+        const uploadArea = document.getElementById('upload-area');
+        const fileInput = document.getElementById('file-input');
+        const imagePreview = document.getElementById('image-preview');
+        const previewImg = document.getElementById('preview-img');
+        const generateArtBtn = document.getElementById('generate-art');
+        const artStylesContainer = document.getElementById('art-styles');
+        const colorPaletteContainer = document.getElementById('color-palette');
+        const enhancementPreview = document.getElementById('enhancement-preview');
+        const styleMatchingContainer = document.getElementById('style-matching');
+        const drawingCanvas = document.getElementById('drawing-canvas');
+        
+        // AI Art Generator
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleImageUpload(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageUpload(e.target.files[0]);
+            }
+        });
+        
+        function handleImageUpload(file) {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    uploadedImage = e.target.result;
+                    previewImg.src = uploadedImage;
+                    imagePreview.style.display = 'block';
+                    generateArtStyles();
+                    generateColorPalette();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        generateArtBtn.addEventListener('click', generateArtStyles);
+        
+        function generateArtStyles() {
+            if (!uploadedImage) return;
+            
+            artStylesContainer.innerHTML = '<div class="spinner"></div>';
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                artStylesContainer.innerHTML = '';
+                
+                const styles = [
+                    { name: 'Impressionism', description: 'Soft brushstrokes and light' },
+                    { name: 'Cubism', description: 'Geometric shapes and perspectives' },
+                    { name: 'Surrealism', description: 'Dreamlike and imaginative' },
+                    { name: 'Pop Art', description: 'Bold colors and popular culture' },
+                    { name: 'Abstract', description: 'Non-representational forms' },
+                    { name: 'Watercolor', description: 'Fluid and transparent effects' }
+                ];
+                
+                styles.forEach((style, index) => {
+                    const styleElement = document.createElement('div');
+                    styleElement.className = 'art-style';
+                    styleElement.innerHTML = `
+                        <img src="${uploadedImage}" alt="${style.name}" style="filter: url(#filter-${index})">
+                        <h4>${style.name}</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">${style.description}</p>
+                        <button class="btn" style="margin-top: 0.5rem; font-size: 0.9rem;" onclick="downloadArt('${style.name}')">Download</button>
+                    `;
+                    artStylesContainer.appendChild(styleElement);
+                });
+                
+                // Add SVG filters for different art styles
+                const svgFilters = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svgFilters.style.display = 'none';
+                svgFilters.innerHTML = `
+                    <defs>
+                        <filter id="filter-0">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="5" result="turbulence" seed="1"/>
+                            <feComposite in="turbulence" in2="SourceGraphic" operator="screen" result="composite"/>
+                            <feColorMatrix in="composite" type="saturate" values="0.5" result="color"/>
+                            <feComponentTransfer in="color" result="final">
+                                <feFuncA type="discrete" tableValues="0 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 1"/>
+                            </feComponentTransfer>
+                        </filter>
+                        <filter id="filter-1">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" result="turbulence" seed="2"/>
+                            <feColorMatrix in="turbulence" type="saturate" values="0.1"/>
+                            <feComposite operator="over" in2="SourceGraphic"/>
+                        </filter>
+                        <filter id="filter-2">
+                            <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence" seed="3"/>
+                            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="20"/>
+                            <feColorMatrix type="saturate" values="2"/>
+                        </filter>
+                        <filter id="filter-3">
+                            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="turbulence" seed="4"/>
+                            <feColorMatrix in="turbulence" type="saturate" values="0.5"/>
+                            <feComponentTransfer in="turbulence" result="mono">
+                                <feFuncA type="discrete" tableValues="0 0.5 0.5 0.5 0.5 0.5 0.5 0.5 0.5 1"/>
+                            </feComponentTransfer>
+                            <feComposite operator="arithmetic" k1="0.5" k2="0.5" k3="0.5" k4="0.5" in="SourceGraphic" in2="mono" result="composite"/>
+                        </filter>
+                        <filter id="filter-4">
+                            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="2" result="turbulence" seed="5"/>
+                            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="5"/>
+                            <feColorMatrix type="saturate" values="0.5"/>
+                        </filter>
+                        <filter id="filter-5">
+                            <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence" seed="6"/>
+                            <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="10"/>
+                            <feColorMatrix type="saturate" values="1.5"/>
+                        </filter>
+                    </defs>
+                `;
+                document.body.appendChild(svgFilters);
+            }, 1500);
+        }
+        
+        function downloadArt(styleName) {
+            // Simulate download functionality
+            const link = document.createElement('a');
+            link.href = uploadedImage;
+            link.download = `AI-Art-${styleName}.jpg`;
+            link.click();
+        }
+        
+        // Color Palette Suggestions
+        function generateColorPalette() {
+            if (!uploadedImage) return;
+            
+            // Simulate color extraction
+            colorPaletteContainer.innerHTML = '<div class="spinner"></div>';
+            
+            setTimeout(() => {
+                colorPaletteContainer.innerHTML = '';
+                
+                // Generate random colors for demonstration
+                const colors = [
+                    { hex: '#FF6B6B', rgb: 'rgb(255, 107, 107)' },
+                    { hex: '#4ECDC4', rgb: 'rgb(78, 205, 196)' },
+                    { hex: '#FFE66D', rgb: 'rgb(255, 230, 109)' },
+                    { hex: '#1A535C', rgb: 'rgb(26, 83, 92)' },
+                    { hex: '#FF9F1C', rgb: 'rgb(255, 159, 28)' },
+                    { hex: '#2EC4B6', rgb: 'rgb(46, 196, 182)' }
+                ];
+                
+                colors.forEach(color => {
+                    const colorElement = document.createElement('div');
+                    colorElement.className = 'color-item';
+                    colorElement.style.backgroundColor = color.hex;
+                    colorElement.innerHTML = `<span class="color-code">${color.hex}</span>`;
+                    colorElement.addEventListener('click', () => {
+                        currentColor = color.hex;
+                        document.querySelectorAll('.tool-btn').forEach(btn => {
+                            if (btn.id === 'color-picker') {
+                                btn.style.backgroundColor = color.hex;
+                            }
+                        });
+                    });
+                    colorPaletteContainer.appendChild(colorElement);
+                });
+            }, 1000);
+        }
+        
+        // Image Enhancement
+        document.getElementById('enhance-quality').addEventListener('click', () => enhanceImage('quality'));
+        document.getElementById('enhance-clarity').addEventListener('click', () => enhanceImage('clarity'));
+        document.getElementById('enhance-colors').addEventListener('click', () => enhanceImage('colors'));
+        document.getElementById('enhance-details').addEventListener('click', () => enhanceImage('details'));
+        
+        function enhanceImage(type) {
+            enhancementPreview.innerHTML = '<div class="spinner"></div>';
+            
+            setTimeout(() => {
+                enhancementPreview.innerHTML = '';
+                
+                // Create enhanced image preview
+                const enhancementItem = document.createElement('div');
+                enhancementItem.className = 'enhancement-item';
+                
+                const img = document.createElement('img');
+                img.src = uploadedImage;
+                
+                // Apply different filters based on enhancement type
+                switch(type) {
+                    case 'quality':
+                        img.style.filter = 'contrast(1.1) brightness(1.05)';
+                        break;
+                    case 'clarity':
+                        img.style.filter = 'contrast(1.2) saturate(1.1)';
+                        break;
+                    case 'colors':
+                        img.style.filter = 'saturate(1.3) hue-rotate(5deg)';
+                        break;
+                    case 'details':
+                        img.style.filter = 'contrast(1.15) sharpen(10px)';
+                        break;
+                }
+                
+                const title = document.createElement('h4');
+                title.textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Enhanced';
+                
+                const downloadBtn = document.createElement('button');
+                downloadBtn.className = 'btn';
+                downloadBtn.textContent = 'Download';
+                downloadBtn.onclick = () => downloadEnhancedImage(type);
+                
+                enhancementItem.appendChild(img);
+                enhancementItem.appendChild(title);
+                enhancementItem.appendChild(downloadBtn);
+                enhancementPreview.appendChild(enhancementItem);
+            }, 1500);
+        }
+        
+        function downloadEnhancedImage(type) {
+            const link = document.createElement('a');
+            link.href = uploadedImage;
+            link.download = `Enhanced-${type}.jpg`;
+            link.click();
+        }
+        
+        // Art Style Matching
+        function generateStyleMatching() {
+            styleMatchingContainer.innerHTML = '<div class="spinner"></div>';
+            
+            setTimeout(() => {
+                styleMatchingContainer.innerHTML = '';
+                
+                const styles = [
+                    { name: 'Van Gogh Inspired', match: 92, description: 'Bold brushstrokes and vibrant colors' },
+                    { name: 'Monet Style', match: 87, description: 'Impressionist water landscapes' },
+                    { name: 'Picasso Cubism', match: 78, description: 'Geometric shapes and fragmented forms' },
+                    { name: 'Dali Surrealism', match: 85, description: 'Dreamlike and imaginative scenes' },
+                    { name: 'Warhol Pop Art', match: 73, description: 'Bold colors and popular culture' },
+                    { name: 'Matisse Style', match: 80, description: 'Colorful and expressive compositions' }
+                ];
+                
+                styles.forEach(style => {
+                    const styleCard = document.createElement('div');
+                    styleCard.className = 'style-card';
+                    styleCard.innerHTML = `
+                        <img src="${uploadedImage}" alt="${style.name}" style="filter: url(#filter-${Math.floor(Math.random() * 6)})">
+                        <h4>${style.name}</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary);">${style.description}</p>
+                        <div class="style-match-score">
+                            <span>Match:</span>
+                            <div class="score-bar">
+                                <div class="score-fill" style="width: ${style.match}%"></div>
+                            </div>
+                            <span>${style.match}%</span>
+                        </div>
+                        <button class="btn" style="margin-top: 0.8rem; font-size: 0.9rem;" onclick="applyStyle('${style.name}')">Apply Style</button>
+                    `;
+                    styleMatchingContainer.appendChild(styleCard);
+                });
+            }, 1200);
+        }
+        
+        generateStyleMatching();
+        
+        function applyStyle(styleName) {
+            // Simulate style application
+            alert(`Applied ${styleName} style to your artwork. Download the result to save.`);
+        }
+        
+        // Collaborative Art Creation
+        canvas = drawingCanvas;
+        ctx = canvas.getContext('2d');
+        
+        // Set canvas size for mobile
+        function resizeCanvas() {
+            const containerWidth = canvas.parentElement.clientWidth - 48; // Account for padding
+            canvas.width = Math.min(800, containerWidth);
+            canvas.height = Math.min(400, containerWidth * 0.5);
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        
+        // Drawing tools
+        document.getElementById('brush-tool').addEventListener('click', function() {
+            currentTool = 'brush';
+            updateToolButtons(this);
+        });
+        
+        document.getElementById('eraser-tool').addEventListener('click', function() {
+            currentTool = 'eraser';
+            updateToolButtons(this);
+        });
+        
+        document.getElementById('shape-tool').addEventListener('click', function() {
+            currentTool = 'shape';
+            updateToolButtons(this);
+        });
+        
+        document.getElementById('color-picker').addEventListener('click', function() {
+            currentTool = 'colorPicker';
+            updateToolButtons(this);
+        });
+        
+        document.getElementById('clear-canvas').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        
+        function updateToolButtons(activeButton) {
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            activeButton.classList.add('active');
+        }
+        
+        // Drawing functionality
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        // Touch events for mobile
+        canvas.addEventListener('touchstart', handleTouch);
+        canvas.addEventListener('touchmove', handleTouch);
+        canvas.addEventListener('touchend', stopDrawing);
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.lineWidth = currentTool === 'eraser' ? 20 : 5;
+            ctx.lineCap = 'round';
+            
+            if (currentTool === 'brush') {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.strokeStyle = currentColor;
+            } else if (currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+            }
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        
+        function stopDrawing() {
+            if (!isDrawing) return;
+            isDrawing = false;
+            ctx.beginPath();
+        }
+        
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            canvas.dispatchEvent(mouseEvent);
+        }
+        
+        // Collaboration actions
+        document.getElementById('invite-friend').addEventListener('click', function() {
+            const friendNames = ['David', 'Emma', 'Frank', 'Grace', 'Henry'];
+            const randomName = friendNames[Math.floor(Math.random() * friendNames.length)];
+            const randomInitial = randomName.charAt(0);
+            
+            const friendItem = document.createElement('div');
+            friendItem.className = 'friend-item';
+            friendItem.innerHTML = `
+                <div class="friend-avatar">${randomInitial}</div>
+                <span>${randomName}</span>
+            `;
+            
+            document.getElementById('friend-list').appendChild(friendItem);
+        });
+        
+        document.getElementById('save-collaboration').addEventListener('click', function() {
+            const link = document.createElement('a');
+            link.download = 'Collaborative-Artwork.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        });
+        
+        document.getElementById('share-collaboration').addEventListener('click', function() {
+            // Simulate sharing
+            const shareText = 'Check out this amazing artwork I created with AI Artist Palette!';
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'AI Artist Palette Artwork',
+                    text: shareText,
+                    url: window.location.href
+                });
+            } else {
+                // Fallback for browsers that don't support Web Share API
+                navigator.clipboard.writeText(shareText + ' ' + window.location.href);
+                alert('Link copied to clipboard!');
+            }
+        });
+        
+        document.getElementById('new-canvas').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Transform Your Images into Art","Generator":"Generator","Colors":"Colors","Enhance":"Enhance","Styles":"Styles","Collaborate":"Collaborate","Transform Your Images into Art with AI":"Transform Your Images into Art with AI","AI Art Generator":"AI Art Generator","Drag \u0026 drop an image here or click to browse":"Drag \u0026 drop an image here or click to browse","Choose Image":"Choose Image","Generate Art Variations":"Generate Art Variations","Color Palette Suggestions":"Color Palette Suggestions","Based on your image, here are recommended color palettes":"Based on your image, here are recommended color palettes","Image Enhancement":"Image Enhancement","Enhance your image with AI-powered improvements":"Enhance your image with AI-powered improvements","Enhance Quality":"Enhance Quality","Improve Clarity":"Improve Clarity","Enhance Colors":"Enhance Colors","Add Details":"Add Details","Art Style Matching":"Art Style Matching","AI recommends art styles based on your preferences":"AI recommends art styles based on your preferences","Collaborative Art Creation":"Collaborative Art Creation","Invite friends to create art together in real-time":"Invite friends to create art together in real-time","Invite Friends":"Invite Friends","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Invite More Friends","Collaborative Canvas":"Collaborative Canvas","Save Artwork":"Save Artwork","Share":"Share","New Canvas":"New Canvas","Soft brushstrokes and light":"Soft brushstrokes and light","Geometric shapes and perspectives":"Geometric shapes and perspectives","Dreamlike and imaginative":"Dreamlike and imaginative","Pop Art":"Pop Art","Bold colors and popular culture":"Bold colors and popular culture","Non-representational forms":"Non-representational forms","Fluid and transparent effects":"Fluid and transparent effects","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Van Gogh Inspired","Bold brushstrokes and vibrant colors":"Bold brushstrokes and vibrant colors","Monet Style":"Monet Style","Impressionist water landscapes":"Impressionist water landscapes","Picasso Cubism":"Picasso Cubism","Geometric shapes and fragmented forms":"Geometric shapes and fragmented forms","Dali Surrealism":"Dali Surrealism","Dreamlike and imaginative scenes":"Dreamlike and imaginative scenes","Warhol Pop Art":"Warhol Pop Art","Matisse Style":"Matisse Style","Colorful and expressive compositions":"Colorful and expressive compositions","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Check out this amazing artwork I created with AI Artist Palette!","AI Artist Palette Artwork":"AI Artist Palette Artwork","Link copied to clipboard!":"Link copied to clipboard!","__title__":"AI Artist Palette - Transform Your Images into Art"},"zh-CN":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - 将您的图像转化为艺术","Generator":"生成器","Colors":"颜色","Enhance":"增强","Styles":"样式","Collaborate":"协作","Transform Your Images into Art with AI":"用AI将您的图像转化为艺术","AI Art Generator":"AI艺术生成器","Drag \u0026 drop an image here or click to browse":"将图片拖至此处或点击浏览","Choose Image":"选择图片","Generate Art Variations":"生成艺术变体","Color Palette Suggestions":"颜色调色板建议","Based on your image, here are recommended color palettes":"根据您的图片，以下是推荐的颜色调色板","Image Enhancement":"图像增强","Enhance your image with AI-powered improvements":"使用AI增强改善您的图像","Enhance Quality":"提高质量","Improve Clarity":"提高清晰度","Enhance Colors":"增强颜色","Add Details":"添加细节","Art Style Matching":"艺术风格匹配","AI recommends art styles based on your preferences":"AI根据您的喜好推荐艺术风格","Collaborative Art Creation":"协作艺术创作","Invite friends to create art together in real-time":"邀请朋友一起实时创建艺术","Invite Friends":"邀请朋友","Alice":"爱丽丝","Bob":"鲍勃","Charlie":"查理","Invite More Friends":"邀请更多朋友","Collaborative Canvas":"协作画布","Save Artwork":"保存艺术品","Share":"分享","New Canvas":"新画布","Soft brushstrokes and light":"柔软的笔触和光线","Geometric shapes and perspectives":"几何形状和透视","Dreamlike and imaginative":"梦幻般和富有想象力的","Pop Art":"波普艺术","Bold colors and popular culture":"鲜艳的颜色和流行文化","Non-representational forms":"非具象形式","Fluid and transparent effects":"流动和透明效果","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; 字体大小: 0.9rem;","Van Gogh Inspired":"凡高启发","Bold brushstrokes and vibrant colors":"大胆的笔触和鲜艳的颜色","Monet Style":"莫奈风格","Impressionist water landscapes":"印象派水景","Picasso Cubism":"毕加索立体主义","Geometric shapes and fragmented forms":"几何形状和破碎形式","Dali Surrealism":"达利超现实主义","Dreamlike and imaginative scenes":"梦幻般和富有想象力的场景","Warhol Pop Art":"沃霍尔波普艺术","Matisse Style":"马蒂斯风格","Colorful and expressive compositions":"多彩和富有表现力的构图","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; 字体大小: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"看看我用AI Artist Palette创作的这幅惊人的艺术品吧！","AI Artist Palette Artwork":"AI Artist Palette 艺术品","Link copied to clipboard!":"链接已复制到剪贴板！","__title__":"AI Artist Palette - 将您的图像转化为艺术"},"es":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Transforme sus imágenes en arte","Generator":"Generador","Colors":"Colores","Enhance":"Mejorar","Styles":"Estilos","Collaborate":"Colaborar","Transform Your Images into Art with AI":"Transforma tus imágenes en arte con IA","AI Art Generator":"Generador de arte IA","Drag \u0026 drop an image here or click to browse":"Arrastra una imagen aquí o haz clic para explorar","Choose Image":"Elegir imagen","Generate Art Variations":"Generar variaciones de arte","Color Palette Suggestions":"Sugerencias de paleta de colores","Based on your image, here are recommended color palettes":"Basado en tu imagen, aquí tienes paletas de colores recomendadas","Image Enhancement":"Mejora de imagen","Enhance your image with AI-powered improvements":"Mejora tu imagen con mejoras impulsadas por IA","Enhance Quality":"Mejorar calidad","Improve Clarity":"Mejorar claridad","Enhance Colors":"Mejorar colores","Add Details":"Añadir detalles","Art Style Matching":"Coincidencia de estilo de arte","AI recommends art styles based on your preferences":"IA recomienda estilos de arte basados en tus preferencias","Collaborative Art Creation":"Creación colaborativa de arte","Invite friends to create art together in real-time":"Invita a tus amigos a crear arte juntos en tiempo real","Invite Friends":"Invitar amigos","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Invitar más amigos","Collaborative Canvas":"Pizarrón colaborativo","Save Artwork":"Guardar obra de arte","Share":"Compartir","New Canvas":"Nuevo lienzo","Soft brushstrokes and light":"Brochazos suaves y luz","Geometric shapes and perspectives":"Formas geométricas y perspectivas","Dreamlike and imaginative":"Soñador e imaginativo","Pop Art":"Arte pop","Bold colors and popular culture":"Colores audaces y cultura popular","Non-representational forms":"Formas no representativas","Fluid and transparent effects":"Efectos fluidos y transparentes","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Inspirado en Van Gogh","Bold brushstrokes and vibrant colors":"Brochazos audaces y colores vibrantes","Monet Style":"Estilo de Monet","Impressionist water landscapes":"Paisajes acuáticos impresionistas","Picasso Cubism":"Cubismo de Picasso","Geometric shapes and fragmented forms":"Formas geométricas y fragmentadas","Dali Surrealism":"Surrealismo de Dalí","Dreamlike and imaginative scenes":"Escenas soñadoras e imaginativas","Warhol Pop Art":"Arte pop de Warhol","Matisse Style":"Estilo de Matisse","Colorful and expressive compositions":"Composiciones coloridas y expresivas","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"¡Mira esta increíble obra de arte que creé con AI Artist Palette!","AI Artist Palette Artwork":"Obra de arte de AI Artist Palette","Link copied to clipboard!":"¡Enlace copiado al portapapeles!","__title__":"AI Artist Palette - Transforme sus imágenes en arte"},"ja":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - 画像をアートに変換する","Generator":"生成器","Colors":"色","Enhance":"強化","Styles":"スタイル","Collaborate":"協力","Transform Your Images into Art with AI":"AIを使って画像をアートに変換する","AI Art Generator":"AIアート生成器","Drag \u0026 drop an image here or click to browse":"ここに画像をドラッグ＆ドロップまたはクリックしてブラウズ","Choose Image":"画像を選択","Generate Art Variations":"アートのバリエーションを生成","Color Palette Suggestions":"カラーパレットの提案","Based on your image, here are recommended color palettes":"あなたの画像に基づいて、おすすめのカラーパレットがここにあります","Image Enhancement":"画像の強化","Enhance your image with AI-powered improvements":"AIで強化された改善で画像を強化","Enhance Quality":"品質を強化","Improve Clarity":"鮮明さを向上","Enhance Colors":"色を強化","Add Details":"詳細を追加","Art Style Matching":"アートスタイルのマッチング","AI recommends art styles based on your preferences":"AIはあなたの好みに基づいてアートスタイルを推薦","Collaborative Art Creation":"協力アート作成","Invite friends to create art together in real-time":"フレンドを招待してリアルタイムでアートを作成","Invite Friends":"フレンドを招待","Alice":"アリス","Bob":"ボブ","Charlie":"チャーリー","Invite More Friends":"もっとフレンドを招待","Collaborative Canvas":"協力キャンバス","Save Artwork":"アートワークを保存","Share":"シェア","New Canvas":"新しいキャンバス","Soft brushstrokes and light":"柔らかい筆跡と光","Geometric shapes and perspectives":"幾何形状と視点","Dreamlike and imaginative":"夢のような想像的","Pop Art":"ポップアート","Bold colors and popular culture":"大胆な色とポップカルチャー","Non-representational forms":"表現しない形","Fluid and transparent effects":"流動的で透明な効果","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"ヴァン・ゴッホにインスパイアされた","Bold brushstrokes and vibrant colors":"大胆な筆跡と鮮やかな色","Monet Style":"モネスタイル","Impressionist water landscapes":"印象派の水風景","Picasso Cubism":"ピカソの立体主義","Geometric shapes and fragmented forms":"幾何形状と断片化された形","Dali Surrealism":"ダリの超現実主義","Dreamlike and imaginative scenes":"夢のような想像的なシーン","Warhol Pop Art":"ウォーホルのポップアート","Matisse Style":"マティススタイル","Colorful and expressive compositions":"色鮮やかで表現豊かな構成","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"AI Artist Paletteで作成した驚くべきアートワークを見てください！","AI Artist Palette Artwork":"AI Artist Palette アートワーク","Link copied to clipboard!":"リンクがクリップボードにコピーされました！","__title__":"AI Artist Palette - 画像をアートに変換する"},"ko":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - 이미지를 예술로 변환하세요","Generator":"생성기","Colors":"색상","Enhance":"증강","Styles":"스타일","Collaborate":"협력","Transform Your Images into Art with AI":"AI를 사용하여 이미지를 예술로 변환하세요","AI Art Generator":"AI 예술 생성기","Drag \u0026 drop an image here or click to browse":"이곳에 이미지를 드래그 앤 드롭하거나 클릭하여 탐색하세요","Choose Image":"이미지 선택","Generate Art Variations":"예술 변형 생성","Color Palette Suggestions":"색상 팔레트 제안","Based on your image, here are recommended color palettes":"귀하의 이미지를 기반으로 추천하는 색상 팔레트가 있습니다","Image Enhancement":"이미지 증강","Enhance your image with AI-powered improvements":"AI로 인한 개선을 통해 이미지를 증강하세요","Enhance Quality":"품질 증강","Improve Clarity":" 명확도 개선","Enhance Colors":"색상 증강","Add Details":"상세 정보 추가","Art Style Matching":"예술 스타일 매칭","AI recommends art styles based on your preferences":"AI는 귀하의 선호도에 따라 예술 스타일을 추천합니다","Collaborative Art Creation":"협력 예술 제작","Invite friends to create art together in real-time":"실시간으로 예술을 함께 만들기 위해 친구들을 초대하세요","Invite Friends":"친구 초대","Alice":"알리스","Bob":"보브","Charlie":"찰리","Invite More Friends":"추가 친구 초대","Collaborative Canvas":"협력 캔버스","Save Artwork":"작품 저장","Share":"공유","New Canvas":"새 캔버스","Soft brushstrokes and light":"연한 텍스처와 빛","Geometric shapes and perspectives":"幾何적 형상과 시각","Dreamlike and imaginative":"꿈같고 상상적인","Pop Art":"팝 아트","Bold colors and popular culture":"활기찬 색상과 대중 문화","Non-representational forms":"비대표적 형상","Fluid and transparent effects":"유연하고 투명한 효과","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"밴고그 형상","Bold brushstrokes and vibrant colors":"활기찬 텍스처와 밝은 색상","Monet Style":"모네 스타일","Impressionist water landscapes":"인상주의적 물 풍경","Picasso Cubism":"피카소 쿠빅스미","Geometric shapes and fragmented forms":"幾何적 형상과 파편적인 형상","Dali Surrealism":"달리超현실주의","Dreamlike and imaginative scenes":"꿈같고 상상적인 장면","Warhol Pop Art":"워홀 팝 아트","Matisse Style":"마티스 스타일","Colorful and expressive compositions":"채색적이고 표현적인 구성","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"AI Artist Palette를 사용하여 만든 이 놀라운 작품을 확인하세요!","AI Artist Palette Artwork":"AI Artist Palette 작품","Link copied to clipboard!":"링크가 클립보드에 복사되었습니다!","__title__":"AI Artist Palette - 이미지를 예술로 변환하세요"},"fr":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Transformez vos images en art","Generator":"Générateur","Colors":"Couleurs","Enhance":"Améliorer","Styles":"Styles","Collaborate":"Collaborer","Transform Your Images into Art with AI":"Transformez vos images en art avec l'IA","AI Art Generator":"Générateur d'art IA","Drag \u0026 drop an image here or click to browse":"Glissez une image ici ou cliquez pour parcourir","Choose Image":"Choisir une image","Generate Art Variations":"Générer des variations d'art","Color Palette Suggestions":"Suggestions de palette de couleurs","Based on your image, here are recommended color palettes":"Sur la base de votre image, voici des palettes de couleurs recommandées","Image Enhancement":"Amélioration d'image","Enhance your image with AI-powered improvements":"Améliorez votre image avec des améliorations alimentées par l'IA","Enhance Quality":"Améliorer la qualité","Improve Clarity":"Améliorer la clarté","Enhance Colors":"Améliorer les couleurs","Add Details":"Ajouter des détails","Art Style Matching":"Matching des styles d'art","AI recommends art styles based on your preferences":"L'IA recommande des styles d'art en fonction de vos préférences","Collaborative Art Creation":"Création collaborative d'art","Invite friends to create art together in real-time":"Invitez vos amis à créer de l'art ensemble en temps réel","Invite Friends":"Inviter des amis","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Inviter plus d'amis","Collaborative Canvas":"Tableau collaboratif","Save Artwork":"Enregistrer l'œuvre d'art","Share":"Partager","New Canvas":"Nouveau tableau","Soft brushstrokes and light":"Effets de pinceau doux et lumière","Geometric shapes and perspectives":"Formes géométriques et perspectives","Dreamlike and imaginative":"Rêveur et imaginatif","Pop Art":"Art Pop","Bold colors and popular culture":"Couleurs vives et culture populaire","Non-representational forms":"Formes non figuratives","Fluid and transparent effects":"Effets fluides et transparents","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Inspiration Van Gogh","Bold brushstrokes and vibrant colors":"Effets de pinceau audacieux et couleurs vives","Monet Style":"Style Monet","Impressionist water landscapes":"Paysages aquatiques impressionnistes","Picasso Cubism":"Cubisme Picasso","Geometric shapes and fragmented forms":"Formes géométriques et fragmentées","Dali Surrealism":"Surréalisme Dali","Dreamlike and imaginative scenes":"Scènes rêveuses et imaginatives","Warhol Pop Art":"Art Pop Warhol","Matisse Style":"Style Matisse","Colorful and expressive compositions":"Compositions colorées et expressives","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Regardez cette œuvre d'art incroyable que j'ai créée avec AI Artist Palette!","AI Artist Palette Artwork":"Œuvre d'art AI Artist Palette","Link copied to clipboard!":"Lien copié dans le presse-papiers!","__title__":"AI Artist Palette - Transformez vos images en art"},"de":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Bilder in Kunst umwandeln","Generator":"Generator","Colors":"Farben","Enhance":"Verfeinern","Styles":"Stile","Collaborate":"Zusammenarbeiten","Transform Your Images into Art with AI":"Ihre Bilder mit AI in Kunst umwandeln","AI Art Generator":"AI Kunst-Generator","Drag \u0026 drop an image here or click to browse":"Ziehen Sie ein Bild hierher oder klicken Sie zum Durchsuchen","Choose Image":"Bild auswählen","Generate Art Variations":"Kunstvarianten generieren","Color Palette Suggestions":"Farbpaletten-Vorschläge","Based on your image, here are recommended color palettes":"Basierend auf Ihrem Bild hier sind empfohlene Farbpaletten","Image Enhancement":"Bildverfeinerung","Enhance your image with AI-powered improvements":"Verfeinern Sie Ihr Bild mit künstlicher Intelligenz","Enhance Quality":"Qualität verbessern","Improve Clarity":"Schärfe verbessern","Enhance Colors":"Farben verfeinern","Add Details":"Details hinzufügen","Art Style Matching":"Kunstyle-Matching","AI recommends art styles based on your preferences":"AI empfiehlt Kunststile basierend auf Ihren Vorlieben","Collaborative Art Creation":"Kollaborative Kunstschöpfung","Invite friends to create art together in real-time":"Laden Sie Freunde ein, um gleichzeitig Kunst zu schaffen","Invite Friends":"Freunde einladen","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Mehr Freunde einladen","Collaborative Canvas":"Kollaboratives Leinwand","Save Artwork":"Kunstwerk speichern","Share":"Teilen","New Canvas":"Neue Leinwand","Soft brushstrokes and light":"Weiche Pinselstriche und Licht","Geometric shapes and perspectives":"Geometrische Formen und Perspektiven","Dreamlike and imaginative":"Traumhaft und fantasievoll","Pop Art":"Pop Art","Bold colors and popular culture":"Starke Farben und Popkultur","Non-representational forms":"Nicht-repräsentative Formen","Fluid and transparent effects":"Flüssige und transparente Effekte","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Von Van Gogh inspiriert","Bold brushstrokes and vibrant colors":"Starke Pinselstriche und lebendige Farben","Monet Style":"Stil von Monet","Impressionist water landscapes":"Impressionistische Wasserlandschaften","Picasso Cubism":"Picassoscher Kubismus","Geometric shapes and fragmented forms":"Geometrische Formen und fragmentierte Formen","Dali Surrealism":"Dalischen Surrealismus","Dreamlike and imaginative scenes":"Traumhafte und fantasievolle Szenen","Warhol Pop Art":"Warhols Pop Art","Matisse Style":"Stil von Matisse","Colorful and expressive compositions":"Farbenfrohe und ausdrucksstarke Kompositionen","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Sehen Sie sich dieses erstaunliche Kunstwerk an, das ich mit AI Artist Palette erstellt habe!","Ancient Artist Palette Artwork":"Alte Künstler Palette Kunstwerk","Link copied to clipboard!":"Verknüpfung in die Zwischenablage kopiert!","__title__":"AI Artist Palette - Bilder in Kunst umwandeln"},"ru":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Преобразуйте ваши изображения в искусство","Generator":"Генератор","Colors":"Цвета","Enhance":"Улучшить","Styles":"Стили","Collaborate":"Сотрудничать","Transform Your Images into Art with AI":"Преобразуйте ваши изображения в искусство с помощью AI","AI Art Generator":"AI генератор искусства","Drag \u0026 drop an image here or click to browse":"Перетащите изображение сюда или нажмите, чтобы просмотреть","Choose Image":"Выберите изображение","Generate Art Variations":"Создайте вариации искусства","Color Palette Suggestions":"Рекомендации палитры цветов","Based on your image, here are recommended color palettes":"На основе вашего изображения здесь представлены рекомендованные палитры цветов","Image Enhancement":"Улучшение изображения","Enhance your image with AI-powered improvements":"Улучшите ваше изображение с помощью улучшений,驱动的 AI","Enhance Quality":"Улучшить качество","Improve Clarity":"Улучшить чёткость","Enhance Colors":"Улучшить цвета","Add Details":"Добавить детали","Art Style Matching":"Сближение стиля искусства","AI recommends art styles based on your preferences":"AI рекомендует стили искусства на основе ваших предпочтений","Collaborative Art Creation":"Создание искусства в реальном времени","Invite friends to create art together in real-time":"Пригласите друзей для создания искусства вместе в реальном времени","Invite Friends":"Пригласить друзей","Alice":"Алиса","Bob":"Боб","Charlie":"Чарли","Invite More Friends":"Пригласить еще друзей","Collaborative Canvas":"Общий холст","Save Artwork":"Сохранить произведение искусства","Share":"Поделиться","New Canvas":"Новый холст","Soft brushstrokes and light":"Гладкие мазки и свет","Geometric shapes and perspectives":"Геометрические фигуры и перспективы","Dreamlike and imaginative":"Сонные и воображаемые","Pop Art":"Поп-арт","Bold colors and popular culture":"Яркие цвета и популярная культура","Non-representational forms":"Нерепрезентативные формы","Fluid and transparent effects":"Гладкие и прозрачные эффекты","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Идейно вдохновленный Ван Гогом","Bold brushstrokes and vibrant colors":"Яркие мазки и насыщенные цвета","Monet Style":"Стиль Моне","Impressionist water landscapes":"Импрессионистские водные пейзажи","Picasso Cubism":"Кубизм Пикассо","Geometric shapes and fragmented forms":"Геометрические фигуры и фрагментированные формы","Dali Surrealism":"Сurrealismo Дали","Dreamlike and imaginative scenes":"Сонные и воображаемые сцены","Warhol Pop Art":"Поп-арт Воэнхола","Matisse Style":"Стиль Модильяни","Colorful and expressive compositions":"Цветные и выразительные композиции","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Проверьте это потрясающее произведение искусства, которое я создал с помощью AI Artist Palette!","AI Artist Palette Artwork":"Произведение искусства AI Artist Palette","Link copied to clipboard!":"Ссылка скопирована в буфер обмена!","__title__":"AI Artist Palette - Преобразуйте ваши изображения в искусство"},"pt":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Transforme suas imagens em arte","Generator":"Gerador","Colors":"Cores","Enhance":"Melhorar","Styles":"Estilos","Collaborate":"Colaborar","Transform Your Images into Art with AI":"Transforme suas imagens em arte com AI","AI Art Generator":"Gerador de Arte AI","Drag \u0026 drop an image here or click to browse":"Arraste uma imagem aqui ou clique para navegar","Choose Image":"Escolha uma imagem","Generate Art Variations":"Gere variações de arte","Color Palette Suggestions":"Sugestões de paleta de cores","Based on your image, here are recommended color palettes":"Baseado na sua imagem, aqui estão paletas de cores recomendadas","Image Enhancement":"Melhoria de imagem","Enhance your image with AI-powered improvements":"Melhore sua imagem com melhorias alimentadas por AI","Enhance Quality":"Melhorar a qualidade","Improve Clarity":"Melhorar a clareza","Enhance Colors":"Melhorar as cores","Add Details":"Adicionar detalhes","Art Style Matching":"Combinação de estilo de arte","AI recommends art styles based on your preferences":"AI recomenda estilos de arte com base em suas preferências","Collaborative Art Creation":"Criação colaborativa de arte","Invite friends to create art together in real-time":"Convide amigos para criar arte juntos em tempo real","Invite Friends":"Convide amigos","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Convide mais amigos","Collaborative Canvas":"Quadro colaborativo","Save Artwork":"Salvar obra de arte","Share":"Compartilhar","New Canvas":"Novo quadro","Soft brushstrokes and light":"Traços de pincel suaves e luz","Geometric shapes and perspectives":"Formas geométricas e perspectivas","Dreamlike and imaginative":"Sonhador e imaginativo","Pop Art":"Arte Pop","Bold colors and popular culture":"Cores fortes e cultura popular","Non-representational forms":"Formas não representacionais","Fluid and transparent effects":"Efeitos fluídos e transparentes","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Inspiração de Van Gogh","Bold brushstrokes and vibrant colors":"Traços de pincel fortes e cores vibrantes","Monet Style":"Estilo de Monet","Impressionist water landscapes":"Paisagens aquáticas impressionistas","Picasso Cubism":"Cubismo de Picasso","Geometric shapes and fragmented forms":"Formas geométricas e fragmentadas","Dali Surrealism":"Surrealismo de Dali","Dreamlike and imaginative scenes":"Cenas sonhadoras e imaginativas","Warhol Pop Art":"Arte Pop de Warhol","Matisse Style":"Estilo de Matisse","Colorful and expressive compositions":"Composições coloridas e expressivas","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Confira essa obra de arte fantástica que criei com AI Artist Palette!","AI Artist Palette Artwork":"Obra de arte do AI Artist Palette","Link copied to clipboard!":"Link copiado para a área de transferência!","__title__":"AI Artist Palette - Transforme suas imagens em arte"},"ar":{"AI Artist Palette - Transform Your Images into Art":"نقاشة الفنان الآلي - تحويل صورك إلى فن","Generator":"مولد","Colors":"ألوان","Enhance":"تحسين","Styles":"أنماط","Collaborate":"تعاون","Transform Your Images into Art with AI":"تحويل صورك إلى فن باستخدام الذكاء الاصطناعي","AI Art Generator":"مولد فن ذكاء اصطناعي","Drag \u0026 drop an image here or click to browse":"سحب صورة هنا أو انقر للتصفح","Choose Image":"اختر صورة","Generate Art Variations":"إنشاء تنوعات فنية","Color Palette Suggestions":"اقتراحات لوحة الألوان","Based on your image, here are recommended color palettes":"بناءً على صورتك، هنا هي لوحات الألوان المقترحة","Image Enhancement":"تحسين الصورة","Enhance your image with AI-powered improvements":"تحسين صورتك بتحسينات مدعومة بالذكاء الاصطناعي","Enhance Quality":"تحسين الجودة","Improve Clarity":"تحسين الوضوح","Enhance Colors":"تحسين الألوان","Add Details":"إضافة تفاصيل","Art Style Matching":"تطابق نمط الفن","AI recommends art styles based on your preferences":"يوصي الذكاء الاصطناعي بأنماط فنية بناءً على تفضيلاتك","Collaborative Art Creation":"إنشاء فن تعاوني","Invite friends to create art together in real-time":"دع أصدقاءك لتكوين فن معًا في الوقت الحقيقي","Invite Friends":"دع أصدقاءً","Alice":"أليس","Bob":"بوب","Charlie":"شارلي","Invite More Friends":"دع المزيد من الأصدقاء","Collaborative Canvas":"لوحة تعاونية","Save Artwork":"حفظ العمل الفني","Share":"مشاركة","New Canvas":"لوحة جديدة","Soft brushstrokes and light":"لمسات فرشاة ناعمة والضوء","Geometric shapes and perspectives":"الأشكال الهندسية والمناظر","Dreamlike and imaginative":"مثل الأحلام وإبداعي","Pop Art":"الفن البوب","Bold colors and popular culture":"الألوان العظيمة الثقافة الشعبية","Non-representational forms":"أشكال غير تعبيرية","Fluid and transparent effects":"آثار سائلة وشفافة","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"المستوحى من فان جوخ","Bold brushstrokes and vibrant colors":"لمسات فرشاة عظيمة وألوان مشرقة","Monet Style":"نمط موني","Impressionist water landscapes":"مناظر مائية مستوحاة من الواقعية الجمالية","Picasso Cubism":"المستوحى من فن الباستيل","Geometric shapes and fragmented forms":"الأشكال الهندسية والمشوهة","Dali Surrealism":"المستوحى من فن الدالي","Dreamlike and imaginative scenes":"مشاهد مثل الأحلام وإبداعي","Warhol Pop Art":"الفن البوب لماركو وارهول","Matisse Style":"نمط ماتيس","Colorful and expressive compositions":"المؤلفات الزاهية والتعبيرية","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"أنظر إلى هذا العمل الفني الرائع الذي أنشأته باستخدام نقاشة الفنان الآلي!","AI Artist Palette Artwork":"فن نقاشة الفنان الآلي","Link copied to clipboard!":"رابط النسخ إلى الحافظة!","__title__":"نقاشة الفنان الآلي - تحويل صورك إلى فن"},"hi":{"AI Artist Palette - Transform Your Images into Art":"AI कलाकार पैलेट - अपनी छवियों को कला में बदलें","Generator":"जेनरेटर","Colors":"रंग","Enhance":"बढ़ावा","Styles":"शैलियां","Collaborate":"सहयोग करें","Transform Your Images into Art with AI":"AI के साथ अपनी छवियों को कला में बदलें","AI Art Generator":"AI कला जेनरेटर","Drag \u0026 drop an image here or click to browse":"यहाँ एक छवि खींचें और छोड़ें या ब्राउज़ करने के लिए क्लिक करें","Choose Image":"छवि चुनें","Generate Art Variations":"कला वेरिएशन जेनरेट करें","Color Palette Suggestions":"रंग पैलेट की सिफारिशें","Based on your image, here are recommended color palettes":"आपकी छवि के आधार पर, यहाँ अनुशंसित रंग पैलेट हैं","Image Enhancement":"छवि वर्धन","Enhance your image with AI-powered improvements":"AI द्वारा संचालित सुधारों के साथ अपनी छवि को बढ़ावा दें","Enhance Quality":"गुणवत्ता बढ़ाएं","Improve Clarity":"स्पष्टता सुधारें","Enhance Colors":"रंग बढ़ाएं","Add Details":"विवरण जोड़ें","Art Style Matching":"कला शैली मिलान","AI recommends art styles based on your preferences":"AI आपकी वरीयताओं के आधार पर कला शैलियों की सिफारिश करता है","Collaborative Art Creation":"सहयोगी कला निर्माण","Invite friends to create art together in real-time":"दोस्तों को आमंत्रित करें ताकि वे वास्तविक समय में एक साथ कला बना सकें","Invite Friends":"दोस्तों को आमंत्रित करें","Alice":"एलिस","Bob":"बॉब","Charlie":"चार्ली","Invite More Friends":"अधिक दोस्तों को आमंत्रित करें","Collaborative Canvas":"सहयोगी कैनवास","Save Artwork":"कलाकृति सहेजें","Share":"साझा करें","New Canvas":"नई कैनवास","Soft brushstrokes and light":"नरम ब्रशस्ट्रोक और रोशनी","Geometric shapes and perspectives":"ज्यामितीय आकार और परिप्रेक्ष्य","Dreamlike and imaginative":"सपनों जैसा और कल्पनाशील","Pop Art":"पॉप आर्ट","Bold colors and popular culture":"बोल्ड रंग और लोकप्रिय संस्कृति","Non-representational forms":"अप्रतिनिधिक रूप","Fluid and transparent effects":"प्रवाही और पारदर्शी प्रभाव","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"वैन गॉग प्रेरित","Bold brushstrokes and vibrant colors":"बोल्ड ब्रशस्ट्रोक और जीवंत रंग","Monet Style":"मोने शैली","Impressionist water landscapes":"इंप्रेशनिस्ट जल दृश्य","Picasso Cubism":"पिकासो क्यूबिज्म","Geometric shapes and fragmented forms":"ज्यामितीय आकार और टूटे हुए रूप","Dali Surrealism":"डाली सररेआलिज्म","Dreamlike and imaginative scenes":"सपनों जैसे और कल्पनाशील दृश्य","Warhol Pop Art":"वारहोल पॉप आर्ट","Matisse Style":"मैटिस शैली","Colorful and expressive compositions":"बहुरंगी और अभिव्यक्तिपूर्ण रचनाएं","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"देखें मैंने AI कलाकार पैलेट के साथ बनाई यह शानदार कलाकृति!","AI Artist Palette Artwork":"AI कलाकार पैलेट कलाकृति","Link copied to clipboard!":"लिंक क्लिपबोर्ड में कॉपी हो गया!","__title__":"AI कलाकार पैलेट - अपनी छवियों को कला में बदलें"},"id":{"AI Artist Palette - Transform Your Images into Art":"AI Artist Palette - Ubah Gambar Anda Menjadi Karya Seni","Generator":"Generator","Colors":"Warna","Enhance":"Tingkatkan","Styles":"Gaya","Collaborate":"Berkolaborasi","Transform Your Images into Art with AI":"Ubah Gambar Anda Menjadi Karya Seni dengan AI","AI Art Generator":"AI Art Generator","Drag \u0026 drop an image here or click to browse":"Seret \u0026 lepas gambar di sini atau klik untuk menjelajahi","Choose Image":"Pilih Gambar","Generate Art Variations":"Hasilkan Variasi Seni","Color Palette Suggestions":"Saran Palet Warna","Based on your image, here are recommended color palettes":"Berdasarkan gambar Anda, berikut adalah palet warna yang direkomendasikan","Image Enhancement":"Peningkatan Gambar","Enhance your image with AI-powered improvements":"Tingkatkan gambar Anda dengan perbaikan berbasis AI","Enhance Quality":"Tingkatkan Kualitas","Improve Clarity":"Tingkatkan Keterangan","Enhance Colors":"Tingkatkan Warna","Add Details":"Tambahkan Detail","Art Style Matching":"Pencocokan Gaya Seni","AI recommends art styles based on your preferences":"AI merekomendasikan gaya seni berdasarkan preferensi Anda","Collaborative Art Creation":"Pembuatan Seni Kolaboratif","Invite friends to create art together in real-time":"Ajak teman untuk membuat seni bersama secara real-time","Invite Friends":"Ajak Teman","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Ajak Lebih Banyak Teman","Collaborative Canvas":"Kanvas Kolaboratif","Save Artwork":"Simpan Karya Seni","Share":"Bagikan","New Canvas":"Kanvas Baru","Soft brushstrokes and light":"Goresan lembut dan cahaya","Geometric shapes and perspectives":"Bentuk geometris dan perspektif","Dreamlike and imaginative":"Seperti mimpi dan imajinatif","Pop Art":"Pop Art","Bold colors and popular culture":"Warna tegas dan budaya pop","Non-representational forms":"Bentuk non-representasional","Fluid and transparent effects":"Efek cair dan transparan","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Terinspirasi Van Gogh","Bold brushstrokes and vibrant colors":"Goresan kuat dan warna cerah","Monet Style":"Gaya Monet","Impressionist water landscapes":"Pemandangan air impresionistik","Picasso Cubism":"Kubisme Picasso","Geometric shapes and fragmented forms":"Bentuk geometris dan bentuk terfragmentasi","Dali Surrealism":"Surrealisme Dali","Dreamlike and imaginative scenes":"Adegan mimpi dan imajinatif","Warhol Pop Art":"Pop Art Warhol","Matisse Style":"Gaya Matisse","Colorful and expressive compositions":"Komposisi berwarna dan ekspresif","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Lihat karya seni luar biasa yang saya buat dengan AI Artist Palette!","AI Artist Palette Artwork":"Karya Seni AI Artist Palette","Link copied to clipboard!":"Tautan disalin ke clipboard!","__title__":"AI Artist Palette - Ubah Gambar Anda Menjadi Karya Seni"},"vi":{"AI Artist Palette - Transform Your Images into Art":"Bảng màu nghệ sĩ AI - Biến đổi hình ảnh của bạn thành tác phẩm nghệ thuật","Generator":"Bộ tạo","Colors":"Màu sắc","Enhance":"Nâng cấp","Styles":"Phong cách","Collaborate":"Hợp tác","Transform Your Images into Art with AI":"Biến đổi hình ảnh của bạn thành tác phẩm nghệ thuật với AI","AI Art Generator":"Bộ tạo nghệ thuật AI","Drag \u0026 drop an image here or click to browse":"Kéo \u0026 thả một hình ảnh vào đây hoặc nhấp để duyệt","Choose Image":"Chọn hình ảnh","Generate Art Variations":"Tạo biến thể nghệ thuật","Color Palette Suggestions":"Gợi ý bảng màu","Based on your image, here are recommended color palettes":"Dựa trên hình ảnh của bạn, đây là các bảng màu được đề xuất","Image Enhancement":"Nâng cấp hình ảnh","Enhance your image with AI-powered improvements":"Nâng cấp hình ảnh của bạn với những cải tiến được hỗ trợ bởi AI","Enhance Quality":"Nâng cấp chất lượng","Improve Clarity":"Cải thiện độ rõ nét","Enhance Colors":"Nâng cấp màu sắc","Add Details":"Thêm chi tiết","Art Style Matching":"Phù hợp với phong cách nghệ thuật","AI recommends art styles based on your preferences":"AI đề xuất các phong cách nghệ thuật dựa trên sở thích của bạn","Collaborative Art Creation":"Sáng tạo nghệ thuật hợp tác","Invite friends to create art together in real-time":"Mời bạn bè cùng tạo nghệ thuật theo thời gian thực","Invite Friends":"Mời bạn bè","Alice":"Alice","Bob":"Bob","Charlie":"Charlie","Invite More Friends":"Mời thêm bạn bè","Collaborative Canvas":"Khung vẽ hợp tác","Save Artwork":"Lưu tác phẩm nghệ thuật","Share":"Chia sẻ","New Canvas":"Khung vẽ mới","Soft brushstrokes and light":"Nét vẽ mềm mại và ánh sáng","Geometric shapes and perspectives":"Hình dạng hình học và góc nhìn","Dreamlike and imaginative":"Giống như giấc mơ và tưởng tượng","Pop Art":"Nghệ thuật Pop","Bold colors and popular culture":"Màu sắc nổi bật và văn hóa đại chúng","Non-representational forms":"Hình thức phi đại diện","Fluid and transparent effects":"Hiệu ứng trôi chảy và trong suốt","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"Cảm hứng từ Van Gogh","Bold brushstrokes and vibrant colors":"Nét vẽ dứt khoát và màu sắc sặc sỡ","Monet Style":"Phong cách Monet","Impressionist water landscapes":"Cảnh quan nước ấn tượng","Picasso Cubism":"Chủ nghĩa lập thể Picasso","Geometric shapes and fragmented forms":"Hình dạng hình học và các mảnh vỡ","Dali Surrealism":"Siêu thực Dali","Dreamlike and imaginative scenes":"Cảnh tượng giống giấc mơ và tưởng tượng","Warhol Pop Art":"Nghệ thuật Pop Warhol","Matisse Style":"Phong cách Matisse","Colorful and expressive compositions":"Bản phối màu sắc và biểu cảm","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"Hãy xem tác phẩm nghệ thuật tuyệt vời tôi đã tạo với Bảng màu nghệ sĩ AI!","AI Artist Palette Artwork":"Tác phẩm nghệ thuật Bảng màu nghệ sĩ AI","Link copied to clipboard!":"Liên kết đã được sao chép vào clipboard!","__title__":"Bảng màu nghệ sĩ AI - Biến đổi hình ảnh của bạn thành tác phẩm nghệ thuật"},"th":{"AI Artist Palette - Transform Your Images into Art":"แปลนศิลปะ AI - แปลงรูปภาพของคุณให้กลายเป็นงานศิลปะ","Generator":"เครื่องสร้าง","Colors":"สี","Enhance":"ปรับปรุง","Styles":"รูปแบบ","Collaborate":"ร่วมมือกัน","Transform Your Images into Art with AI":"แปลงรูปภาพของคุณให้กลายเป็นงานศิลปะด้วย AI","AI Art Generator":"เครื่องสร้างศิลปะ AI","Drag \u0026 drop an image here or click to browse":"ลากและวางรูปภาพที่นี่หรือคลิกเพื่อเลือก","Choose Image":"เลือกรูปภาพ","Generate Art Variations":"สร้างความหลากหลายของศิลปะ","Color Palette Suggestions":"คำแนะนำแผนสี","Based on your image, here are recommended color palettes":"จากรูปภาพของคุณ นี่คือแผนสีที่แนะนำ","Image Enhancement":"การปรับปรุงรูปภาพ","Enhance your image with AI-powered improvements":"ปรับปรุงรูปภาพของคุณด้วยการปรับปรุงที่ขับเคลื่อนด้วย AI","Enhance Quality":"ปรับปรุงคุณภาพ","Improve Clarity":"ปรับปรุงความชัดเจน","Enhance Colors":"ปรับปรุงสี","Add Details":"เพิ่มรายละเอียด","Art Style Matching":"การจับคู่รูปแบบศิลปะ","AI recommends art styles based on your preferences":"AI แนะนำรูปแบบศิลปะตามความชอบของคุณ","Collaborative Art Creation":"การสร้างศิลปะแบบร่วมมือ","Invite friends to create art together in real-time":"เชิญเพื่อนมาสร้างศิลปะด้วยกันในเวลาจริง","Invite Friends":"เชิญเพื่อน","Alice":"แอลลิซ","Bob":"บ็อบ","Charlie":"ชาร์ลี","Invite More Friends":"เชิญเพื่อนเพิ่มเติม","Collaborative Canvas":"แคนวาสร่วมมือ","Save Artwork":"บันทึกงานศิลปะ","Share":"แชร์","New Canvas":"แคนวาสใหม่","Soft brushstrokes and light":"แปรงอ่อนและแสง","Geometric shapes and perspectives":"รูปทรงเรขาคณิตและมุมมอง","Dreamlike and imaginative":"คล้ากับฝันและจินตนาการ","Pop Art":"ป็อปอาร์ต","Bold colors and popular culture":"สีที่โดดเด่นและวัฒนธรรมร่วมสมัย","Non-representational forms":"รูปแบบที่ไม่ใช่การแทน","Fluid and transparent effects":"เอฟเฟกต์ที่ไหลไปและโปร่งใส","margin-top: 0.5rem; font-size: 0.9rem;":"margin-top: 0.5rem; font-size: 0.9rem;","Van Gogh Inspired":"ไอดีย์นำมาจากแวนโก้ก","Bold brushstrokes and vibrant colors":"แปรงโดดเด่นและสีที่สดใส","Monet Style":"รูปแบบโมเน","Impressionist water landscapes":"ภาพน้ำแบบอิมเพรสชันนิสต์","Picasso Cubism":"คิวบิสม์ของปิกาโซ","Geometric shapes and fragmented forms":"รูปทรงเรขาคณิตและรูปแบบที่แตกสลาย","Dali Surrealism":" surrealis ของดาลี","Dreamlike and imaginative scenes":"ฉากที่คล้ากับฝันและจินตนาการ","Warhol Pop Art":"ป็อปอาร์ตของวอร์โฮล","Matisse Style":"รูปแบบมัตติส","Colorful and expressive compositions":"การประกอบที่สีสันสดใสและน่าสะดุดตา","margin-top: 0.8rem; font-size: 0.9rem;":"margin-top: 0.8rem; font-size: 0.9rem;","Check out this amazing artwork I created with AI Artist Palette!":"ลองดูงานศิลปะน่าทึ่งที่ผมสร้างขึ้นด้วยแปลนศิลปะ AI!","AI Artist Palette Artwork":"งานศิลปะของแปลนศิลปะ AI","Link copied to clipboard!":"ลิงก์ถูกคัดลอกไปยังคลิปบอร์ดแล้ว!","__title__":"แปลนศิลปะ AI - แปลงรูปภาพของคุณให้กลายเป็นงานศิลปะ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
