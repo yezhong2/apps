@@ -28,14 +28,25 @@ WATCH_MIN=12     # 调度器日志超过此分钟数无更新 → 判定已停�
 # 触发修复的错误模式（精确措辞，避免把可容忍的失败当事故）
 ERR_PAT='密钥配置文件读取失败|提炼失败|所有 Key/模型均不可用|部署异常|部署失败|issue 提交失败|TypeError|ReferenceError|SyntaxError|Exception'
 # 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout/UnknownHostException——同模型重试+冷却切换自愈 / 巡检的 Rhino 编译参考——仅供参考、非浏览器问题，2026-10-02 实测误报后加入）
-IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException|UnknownHostException|Rhino 编译不过'
+IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException|UnknownHostException|Rhino 编译不过|功能实测'
 
 log() { echo "[$(date '+%F %T')] $*" >> "$PROGRESS"; }
 
+# ---------- ccode_auto 存活判定：会话在 且 进程活着（pane 前台命令 = node/ccode） ----------
+# 盲区修复（2026-10-03）：旧逻辑只查 tmux 会话是否存在；ccode 被 OOM 杀掉后会话还在（pane 掉回
+# bash 提示符），会被误判「活着」永远不再管。这里升级为 会话 + 进程 双查，供每分钟主循环调用。
+ccode_alive() {
+    tmux has-session -t "$CC_SESSION" 2>/dev/null || return 1
+    local cur
+    cur=$(tmux display-message -p -t "$CC_SESSION" "#{pane_current_command}" 2>/dev/null)
+    case "$cur" in node|ccode) return 0 ;; *) return 1 ;; esac
+}
+
 # ---------- ccode 会话管理：崩溃自动重开（带 6G 堆）；10 分钟内崩 3 次就停手记录，不反复撞同一崩法 ----------
 start_ccode() {
-    if tmux has-session -t "$CC_SESSION" 2>/dev/null; then return 0; fi
-    local now cnt=0 ts
+    [ -f "$HOME/tmp/.ccode_watch_off" ] && return 0   # 暂停开关：touch $HOME/tmp/.ccode_watch_off（删掉即恢复）
+    if ccode_alive; then return 0; fi
+    local now cnt=0 ts cur="" i=0
     now=$(date +%s)
     if [ -f "$RESTART_TS" ]; then
         while read -r ts; do
@@ -48,10 +59,28 @@ start_ccode() {
         return 1
     fi
     echo "$now" >> "$RESTART_TS"
+    if tmux has-session -t "$CC_SESSION" 2>/dev/null; then
+        cur=$(tmux display-message -p -t "$CC_SESSION" "#{pane_current_command}" 2>/dev/null)
+        log "🧟 ccode 进程已不在（会话还在，pane 停在 ${cur:-?}——疑似被 OOM 杀/崩溃退出），清理残留后重开"
+        tmux kill-session -t "$CC_SESSION" 2>/dev/null
+        sleep 1
+    fi
     log "🚀 启动 ccode（NODE_OPTIONS=--max-old-space-size=6144，tmux 会话 $CC_SESSION）"
     tmux new-session -d -s "$CC_SESSION" -e NODE_OPTIONS="--max-old-space-size=6144"
     tmux send-keys -t "$CC_SESSION" "cd $CC_DIR && ccode" C-m
-    sleep 15
+    # 等 TUI 起来（基础 10 秒 + 每 3 秒复查，最多再等 60 秒）；确认进程活着后派活：读 PROGRESS 接着干
+    sleep 10
+    while [ "$i" -lt 20 ]; do
+        ccode_alive && break
+        sleep 3
+        i=$((i+1))
+    done
+    if ccode_alive; then
+        sleep 6
+        notify_ccode "【自动流水线】ccode 会话刚被自动重开（检测到上一个 ccode 进程已不在：可能被 OOM 杀或崩溃退出）。你是全新会话：请先读 $PROGRESS 最后 40 行和调度/主脚本/巡检三个日志的尾部盘点状态，有未完成的活就接着干；涉及脚本或产品文件先 cp .bak、验证后推 GitHub，并把结论追加到 PROGRESS.md。没有待办就待命。"
+    else
+        log "⚠️ ccode 重开后 60 秒内未见进程（疑似启动失败或被系统拦截），下轮复查"
+    fi
 }
 
 # ---------- 通知 ccode ----------
@@ -95,7 +124,7 @@ self_check() {
         return 0
     fi
     date +%s > "$hc"
-    local ref="$HOME/tmp/.hc_ref" sched mainst patrol budget disk
+    local ref="$HOME/tmp/.hc_ref" sched mainst patrol budget disk cc
     touch -d "12 minutes ago" "$ref" 2>/dev/null || touch "$ref"
     if [ -f "$SCHED_LOG" ] && [ "$SCHED_LOG" -nt "$ref" ]; then sched="❤️活"; else sched="💤静"; fi
     touch -d "25 minutes ago" "$ref" 2>/dev/null || touch "$ref"
@@ -103,7 +132,8 @@ self_check() {
     if [ -f "$PATROL_LOG" ] && [ "$PATROL_LOG" -nt "$ref" ]; then patrol="▶️跑"; else patrol="⏸停"; fi
     budget=$(sed -n 's/.*"cost":\([0-9]*\).*/\1/p' "$DIR/token预算.json" 2>/dev/null)
     disk=$(df -h "$DIR" 2>/dev/null | tail -1 | tr -s " " | cut -d" " -f5)
-    log "🩺 自检：调度器 $sched ｜ 主脚本 $mainst ｜ 巡检 $patrol ｜ token 预算已用 ${budget:-?} ｜ 磁盘 ${disk:-?}"
+    if ccode_alive; then cc="❤️活"; else cc="💀死"; fi
+    log "🩺 自检：调度器 $sched ｜ 主脚本 $mainst ｜ 巡检 $patrol ｜ ccode $cc ｜ token 预算已用 ${budget:-?} ｜ 磁盘 ${disk:-?}"
 }
 
 # ---------- 每日自检班：每 20 小时开一个「全新 ccode 会话」做低成本日志巡检（新会话上下文小=便宜；结论写 PROGRESS） ----------
