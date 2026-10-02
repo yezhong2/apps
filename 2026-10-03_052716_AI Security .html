@@ -257,6 +257,7 @@ var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
 var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
 var busy=false;
 function norm(s){return (s||"").replace(/\s+/g," ").trim();}
 function navLang(){
@@ -297,9 +298,12 @@ if(el.getAttribute("data-i18n-id"))continue;
 if(el.closest&&el.closest("#lang-switch"))continue;
 if(el.closest&&el.closest("#adSlot"))continue;
 if(el.children&&el.children.length)continue;
-var key=norm(el.textContent);
-if(fromEn&&!enMap[key])continue;
-if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
 }
 if(map.__title__)document.title=map.__title__;
 }finally{busy=false;}
