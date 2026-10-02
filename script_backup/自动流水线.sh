@@ -27,8 +27,8 @@ WATCH_MIN=12     # 调度器日志超过此分钟数无更新 → 判定已停�
 
 # 触发修复的错误模式（精确措辞，避免把可容忍的失败当事故）
 ERR_PAT='密钥配置文件读取失败|提炼失败|所有 Key/模型均不可用|部署异常|部署失败|issue 提交失败|TypeError|ReferenceError|SyntaxError|Exception'
-# 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout——已加同模型重试+冷却切换自愈，2026-10-02）
-IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException'
+# 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout/UnknownHostException——同模型重试+冷却切换自愈 / 巡检的 Rhino 编译参考——仅供参考、非浏览器问题，2026-10-02 实测误报后加入）
+IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException|UnknownHostException|Rhino 编译不过'
 
 log() { echo "[$(date '+%F %T')] $*" >> "$PROGRESS"; }
 
@@ -59,16 +59,16 @@ notify_ccode() {
     local msg="$1"
     # ccode 的 PromptInput 有 50ms IME 守卫：回车与最后一个按键同 chunk 到达会被吞掉（实测）。
     # 分两步：先只灌文本，间隔 300ms 再独立发回车，回车就不在守卫窗口内。
-    tmux send-keys -t "$CC_SESSION" "$msg"
+    timeout 8 tmux send-keys -t "$CC_SESSION" "$msg" || log "⚠️ 通知文本投递超时（ccode 会话忙），本条通知可能未送达"
     sleep 0.3
-    tmux send-keys -t "$CC_SESSION" Enter
+    timeout 8 tmux send-keys -t "$CC_SESSION" Enter || true
     # 发送成功检测：消息固定结尾「无需重启。」若仍挂在 pane 最后两行（输入框区域）= 没发出去，
     # 补发回车（最多 2 次）。发送成功后该字样只出现在对话区（pane 上方），不会误判。
     local tries=0
     while [ "$tries" -lt 2 ]; do
         sleep 1.5
         if tmux capture-pane -t "$CC_SESSION" -p 2>/dev/null | tail -2 | grep -q "无需重启"; then
-            tmux send-keys -t "$CC_SESSION" Enter
+            timeout 8 tmux send-keys -t "$CC_SESSION" Enter || true
             log "⚠️ 任务疑似未发送，已补发回车（第 $((tries+1)) 次）"
             tries=$((tries+1))
         else
@@ -78,12 +78,40 @@ notify_ccode() {
     log "📨 已通知 ccode：$msg"
 }
 
+# ---------- 自动重启被系统静默拦截时的用户提示（30 分钟冷却，防刷屏） ----------
+note_manual_restart() {
+    local mr="$HOME/tmp/.manual_notice_ts"
+    if [ -f "$mr" ] && [ $(( $(date +%s) - $(cat "$mr" 2>/dev/null || echo 0) )) -lt 1800 ]; then
+        return 0
+    fi
+    date +%s > "$mr"
+    notify_ccode "【自动流水线】调度器自动重启被系统静默拦截（am 返回成功但日志 150 秒未刷新）。请提示用户：① 手动在 AutoJs6 里运行一次 灵感雷达轮流调度.js；② 给 Termux 授予系统「后台弹出界面/后台弹窗」权限，之后自动重启即可恢复。"
+}
+
+# ---------- 健康自检：每小时一行摘要写 PROGRESS（零 token；真异常仍走既有告警链路） ----------
+self_check() {
+    local hc="$HOME/tmp/.health_ts"
+    if [ -f "$hc" ] && [ $(( $(date +%s) - $(cat "$hc" 2>/dev/null || echo 0) )) -lt 3600 ]; then
+        return 0
+    fi
+    date +%s > "$hc"
+    local ref="$HOME/tmp/.hc_ref" sched mainst patrol budget disk
+    touch -d "12 minutes ago" "$ref" 2>/dev/null || touch "$ref"
+    if [ -f "$SCHED_LOG" ] && [ "$SCHED_LOG" -nt "$ref" ]; then sched="❤️活"; else sched="💤静"; fi
+    touch -d "25 minutes ago" "$ref" 2>/dev/null || touch "$ref"
+    if [ -f "$MAIN_LOG" ] && [ "$MAIN_LOG" -nt "$ref" ]; then mainst="▶️跑"; else mainst="⏸停"; fi
+    if [ -f "$PATROL_LOG" ] && [ "$PATROL_LOG" -nt "$ref" ]; then patrol="▶️跑"; else patrol="⏸停"; fi
+    budget=$(sed -n 's/.*"cost":\([0-9]*\).*/\1/p' "$DIR/token预算.json" 2>/dev/null)
+    disk=$(df -h "$DIR" 2>/dev/null | tail -1 | tr -s " " | cut -d" " -f5)
+    log "🩺 自检：调度器 $sched ｜ 主脚本 $mainst ｜ 巡检 $patrol ｜ token 预算已用 ${budget:-?} ｜ 磁盘 ${disk:-?}"
+}
+
 # ---------- 冷却窗口内的自动确认兜底：ccode TUI 若弹确认框，自动回车 ----------
 auto_confirm_once() {
     local end=$(( $(date +%s) + COOLDOWN ))
     while [ "$(date +%s)" -lt "$end" ]; do
         if tmux capture-pane -t "$CC_SESSION" -p 2>/dev/null | tail -4 | grep -qE "Approve|Refine|Apply|应用"; then
-            tmux send-keys -t "$CC_SESSION" Enter
+            timeout 8 tmux send-keys -t "$CC_SESSION" Enter || true
             log "⌨️ 检测到确认框，已自动回车"
         fi
         sleep 45
@@ -136,16 +164,29 @@ ensure_scheduler() {
         log "❌ intent 重启调度器失败：$out"
         notify_ccode "【自动流水线】调度器疑似停止（$SCHED_LOG 超过 $WATCH_MIN 分钟无更新），intent 重启失败：$out。请想办法重启调度器（或提示用户手动运行一次 灵感雷达轮流调度.js），结论写入 $PROGRESS。"
     else
-        log "✅ 已通过 intent 重启调度器"
+        log "✅ intent 已发出（am 返回成功），等待验证真实启动…"
+        sleep 150
+        # 验证真实启动：am 成功≠真的起来了（荣耀系统实测会静默拦截 Termux 的后台启动）。等 150 秒看调度日志是否刷新
+        local vref="$HOME/tmp/.sched_verify"
+        touch -d "150 seconds ago" "$vref" 2>/dev/null || touch "$vref"
+        if [ -f "$SCHED_LOG" ] && [ "$SCHED_LOG" -nt "$vref" ]; then
+            log "✅ 调度器已确认在运行（调度日志已刷新）"
+        else
+            log "⚠️ intent 报告成功但调度日志 150 秒未刷新：疑似被系统后台启动限制静默拦截，无法自动重启"
+            note_manual_restart
+        fi
     fi
 }
 
 # ---------- 日志扫描：命中错误模式且不在白名单 → 输出「文件名|错误行」 ----------
 scan_logs() {
-    local f hit name
+    local f hit name fresh="$HOME/tmp/.scan_ref"
+    touch -d "20 minutes ago" "$fresh" 2>/dev/null || touch "$fresh"
     for name in 调度_日志 巡检_日志 主脚本_日志; do
         f="$DIR/$name.log"
         [ -f "$f" ] || continue
+        # 日志 20 分钟没更新 = 已冻结（脚本退出/卡死）：残留旧错误行不再告警，防止通知死循环
+        [ "$f" -nt "$fresh" ] || continue
         hit=$(tail -80 "$f" | grep -E "$ERR_PAT" | grep -vE "$IGNORE_PAT" | head -1)
         if [ -n "$hit" ]; then
             echo "$name.log|$hit"
@@ -175,6 +216,7 @@ main() {
     while true; do
         start_ccode
         ensure_scheduler
+        self_check
         local found fname errline
         found=$(scan_logs)
         if [ -n "$found" ]; then
