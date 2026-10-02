@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TodayRecommend - Personalized News & Discussion Platform</title><meta name="description" content="Free online tool: TodayRecommend - Personalized News &amp; Discussion Platform. No signup, no payment — free forever.">
+<meta property="og:title" content="TodayRecommend - Personalized News &amp; Discussion Platform">
+<meta property="og:description" content="Free online tool: TodayRecommend - Personalized News &amp; Discussion Platform. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_202608_TodayRecomme.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c63ff;
+            --accent-color: #ff6b6b;
+            --background-color: #121212;
+            --surface-color: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --border-color: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--surface-color);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Welcome Section */
+        .welcome-section {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(74, 107, 255, 0.1) 0%, rgba(108, 99, 255, 0.1) 100%);
+        }
+        
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            max-width: 800px;
+        }
+        
+        .welcome-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a5ce5;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .news-card {
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .news-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .news-content {
+            padding: 1.5rem;
+        }
+        
+        .news-category {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-excerpt {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Discussion Section */
+        .discussion-container {
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+        
+        .topic-list {
+            margin-top: 2rem;
+        }
+        
+        .topic-item {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.3s;
+        }
+        
+        .topic-item:hover {
+            background-color: rgba(74, 107, 255, 0.1);
+        }
+        
+        .topic-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .topic-title {
+            font-size: 1.2rem;
+        }
+        
+        .topic-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .comment-box {
+            margin-top: 1rem;
+        }
+        
+        .comment-input {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        /* Profile Section */
+        .profile-container {
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 2rem;
+        }
+        
+        .profile-form {
+            display: grid;
+            gap: 1.5rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .form-input {
+            padding: 0.8rem;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-primary);
+        }
+        
+        /* Saved Articles Section */
+        .saved-articles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .article-card {
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .article-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .article-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .article-content {
+            padding: 1rem;
+        }
+        
+        .article-title {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+        
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .icon-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Weather Section */
+        .weather-container {
+            background-color: var(--surface-color);
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .weather-info {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .weather-main {
+            text-align: center;
+        }
+        
+        .weather-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .temperature {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .detail-item {
+            background-color: var(--background-color);
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--surface-color);
+            padding: 3rem 0 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: var(--text-primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-section h1 {
+                font-size: 2rem;
+            }
+            
+            .welcome-section p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-avatar {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">TodayRecommend</div>
+                <nav>
+                    <ul>
+                        <li><a href="#news">News</a></li>
+                        <li><a href="#discussion">Discussion</a></li>
+                        <li><a href="#profile">Profile</a></li>
+                        <li><a href="#saved">Saved</a></li>
+                        <li><a href="#weather">Weather</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h1>Welcome to TodayRecommend</h1>
+            <p>Your personalized news platform with daily recommendations, engaging discussions, and curated articles tailored just for you.</p>
+            <div class="cta-buttons">
+                <button id="loginBtn" class="btn btn-primary">Log In</button>
+                <button id="registerBtn" class="btn btn-secondary">Sign Up</button>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news">
+            <div class="container">
+                <h2 class="section-title">Today's Top News</h2>
+                <div class="news-grid" id="newsGrid">
+                    <!-- News cards will be dynamically generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Discussion Section -->
+        <section id="discussion">
+            <div class="container">
+                <h2 class="section-title">Hot Topics</h2>
+                <div class="discussion-container">
+                    <div class="topic-list" id="topicList">
+                        <!-- Topics will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile">
+            <div class="container">
+                <h2 class="section-title">Your Profile</h2>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profileAvatar">U</div>
+                        <div>
+                            <h3 id="profileName">User Name</h3>
+                            <p id="profileBio">Your bio goes here</p>
+                        </div>
+                    </div>
+                    <form class="profile-form" id="profileForm">
+                        <div class="form-group">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-input" id="nameInput" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-input" id="bioInput" rows="3" placeholder="Tell us about yourself"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Interests</label>
+                            <input type="text" class="form-input" id="interestsInput" placeholder="e.g., Technology, Sports, Politics">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saved Articles Section -->
+        <section id="saved">
+            <div class="container">
+                <h2 class="section-title">Saved Articles</h2>
+                <div class="saved-articles" id="savedArticles">
+                    <!-- Saved articles will be dynamically generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Weather Section -->
+        <section id="weather">
+            <div class="container">
+                <h2 class="section-title">Weather & Air Quality</h2>
+                <div class="weather-container">
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">*This is a simulated demonstration, not real measurement</p>
+                    <div class="weather-info">
+                        <div class="weather-main">
+                            <div class="weather-icon" id="weatherIcon">☀️</div>
+                            <div class="temperature" id="temperature">72°F</div>
+                            <p id="weatherDescription">Sunny</p>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="detail-item">
+                            <h4>Humidity</h4>
+                            <p id="humidity">65%</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Wind</h4>
+                            <p id="windSpeed">8 mph</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>Air Quality</h4>
+                            <p id="airQuality">Good</p>
+                        </div>
+                        <div class="detail-item">
+                            <h4>UV Index</h4>
+                            <p id="uvIndex">6</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">Team</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">Instagram</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 TodayRecommend. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // User data
+        let userData = {
+            isLoggedIn: false,
+            name: 'Guest User',
+            bio: '',
+            interests: '',
+            savedArticles: []
+        };
+
+        // Sample news data
+        const newsData = [
+            {
+                id: 1,
+                title: 'Global Tech Summit Announces Groundbreaking AI Innovations',
+                excerpt: 'Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.',
+                category: 'Technology',
+                date: 'Oct 15, 2023',
+                readTime: '5 min read',
+                image: 'https://picsum.photos/seed/tech1/400/300.jpg'
+            },
+            {
+                id: 2,
+                title: 'Climate Summit Reaches Historic Agreement on Carbon Emissions',
+                excerpt: 'World leaders commit to ambitious targets to combat climate change in the next decade.',
+                category: 'Environment',
+                date: 'Oct 14, 2023',
+                readTime: '7 min read',
+                image: 'https://picsum.photos/seed/climate1/400/300.jpg'
+            },
+            {
+                id: 3,
+                title: 'New Medical Breakthrough Shows Promise in Cancer Treatment',
+                excerpt: 'Researchers report significant progress in developing a revolutionary cancer therapy.',
+                category: 'Health',
+                date: 'Oct 13, 2023',
+                readTime: '6 min read',
+                image: 'https://picsum.photos/seed/health1/400/300.jpg'
+            },
+            {
+                id: 4,
+                title: 'E Markets Surge as New Economic Policies Take Effect',
+                excerpt: 'Stock markets reach new heights following the implementation of government stimulus measures.',
+                category: 'Finance',
+                date: 'Oct 12, 2023',
+                readTime: '4 min read',
+                image: 'https://picsum.photos/seed/finance1/400/300.jpg'
+            },
+            {
+                id: 5,
+                title: 'Space Exploration Milestone: Mars Mission Prepares for Landing',
+                excerpt: 'The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.',
+                category: 'Science',
+                date: 'Oct 11, 2023',
+                readTime: '8 min read',
+                image: 'https://picsum.photos/seed/space1/400/300.jpg'
+            },
+            {
+                id: 6,
+                title: 'Cultural Festival Celebrates Global Diversity',
+                excerpt: 'Annual event brings together artists and performers from around the world.',
+                category: 'Culture',
+                date: 'Oct 10, 2023',
+                readTime: '5 min read',
+                image: 'https://picsum.photos/seed/culture1/400/300.jpg'
+            }
+        ];
+
+        // Sample discussion topics
+        const discussionData = [
+            {
+                id: 1,
+                title: 'The Future of Remote Work: What Changes Are Coming?',
+                author: 'Tech Analyst',
+                date: '2 hours ago',
+                comments: 42,
+                views: 1250,
+                content: 'With the rise of digital nomads and distributed teams, how will work evolve in the next decade?'
+            },
+            {
+                id: 2,
+                title: 'Sustainable Living: Small Changes, Big Impact',
+                author: 'Eco Warrior',
+                date: '5 hours ago',
+                comments: 87,
+                views: 2100,
+                content: 'What everyday habits can we adopt to reduce our environmental footprint?'
+            },
+            {
+                id: 3,
+                title: 'The Rise of AI in Creative Industries',
+                author: 'Digital Artist',
+                date: '1 day ago',
+                comments: 65,
+                views: 1890,
+                content: 'How is artificial intelligence changing the way we create and appreciate art?'
+            }
+        ];
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check user login status
+            checkLoginStatus();
+            
+            // Render news
+            renderNews();
+            
+            // Render discussion topics
+            renderDiscussionTopics();
+            
+            // Render saved articles
+            renderSavedArticles();
+            
+            // Initialize weather simulation
+            initWeatherSimulation();
+            
+            // Add event listeners
+            addEventListeners();
+        });
+
+        // Check login status
+        function checkLoginStatus() {
+            const savedUserData = localStorage.getItem('todayRecommendUser');
+            if (savedUserData) {
+                userData = JSON.parse(savedUserData);
+                userData.isLoggedIn = true;
+                updateProfileDisplay();
+            }
+        }
+
+        // Update profile display
+        function updateProfileDisplay() {
+            if (userData.isLoggedIn) {
+                document.getElementById('profileName').textContent = userData.name;
+                document.getElementById('profileBio').textContent = userData.bio || 'No bio set';
+                document.getElementById('profileAvatar').textContent = userData.name.charAt(0).toUpperCase();
+                
+                // Update form fields
+                document.getElementById('nameInput').value = userData.name;
+                document.getElementById('bioInput').value = userData.bio;
+                document.getElementById('interestsInput').value = userData.interests;
+            }
+        }
+
+        // Render news
+        function renderNews() {
+            const newsGrid = document.getElementById('newsGrid');
+            newsGrid.innerHTML = '';
+            
+            newsData.forEach(news => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card fade-in';
+                newsCard.innerHTML = `
+                    <img src="${news.image}" alt="${news.title}" class="news-image">
+                    <div class="news-content">
+                        <div class="news-category">${news.category}</div>
+                        <h3 class="news-title">${news.title}</h3>
+                        <p class="news-excerpt">${news.excerpt}</p>
+                        <div class="news-meta">
+                            <span>${news.date}</span>
+                            <span>${news.readTime}</span>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <button class="btn btn-primary" onclick="readArticle(${news.id})">Read More</button>
+                            <button class="icon-btn" onclick="saveArticle(${news.id})" title="Save article">
+                                <span id="save-icon-${news.id}">🔖</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                newsGrid.appendChild(newsCard);
+            });
+        }
+
+        // Render discussion topics
+        function renderDiscussionTopics() {
+            const topicList = document.getElementById('topicList');
+            topicList.innerHTML = '';
+            
+            discussionData.forEach(topic => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item';
+                topicItem.innerHTML = `
+                    <div class="topic-header">
+                        <h3 class="topic-title">${topic.title}</h3>
+                        <div class="topic-stats">
+                            <span>💬 ${topic.comments}</span>
+                            <span>👁️ ${topic.views}</span>
+                        </div>
+                    </div>
+                    <p>${topic.content}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                        <span style="color: var(--text-secondary); font-size: 0.9rem;">By ${topic.author} • ${topic.date}</span>
+                        <button class="btn btn-secondary" onclick="joinDiscussion(${topic.id})">Join Discussion</button>
+                    </div>
+                    <div class="comment-box" id="comments-${topic.id}" style="display: none;">
+                        <textarea class="comment-input" placeholder="Add your comment..."></textarea>
+                        <button class="btn btn-primary" onclick="postComment(${topic.id})">Post Comment</button>
+                        <div id="comments-list-${topic.id}" style="margin-top: 1rem;"></div>
+                    </div>
+                `;
+                topicList.appendChild(topicItem);
+            });
+        }
+
+        // Render saved articles
+        function renderSavedArticles() {
+            const savedArticlesContainer = document.getElementById('savedArticles');
+            savedArticlesContainer.innerHTML = '';
+            
+            if (userData.savedArticles.length === 0) {
+                savedArticlesContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No saved articles yet. Save some articles to see them here!</p>';
+                return;
+            }
+            
+            userData.savedArticles.forEach(articleId => {
+                const article = newsData.find(a => a.id === articleId);
+                if (article) {
+                    const articleCard = document.createElement('div');
+                    articleCard.className = 'article-card fade-in';
+                    articleCard.innerHTML = `
+                        <img src="${article.image}" alt="${article.title}" class="article-image">
+                        <div class="article-content">
+                            <h3 class="article-title">${article.title}</h3>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1rem;">
+                                <button class="btn btn-primary" onclick="readArticle(${article.id})">Read</button>
+                                <button class="icon-btn" onclick="unsaveArticle(${article.id})" title="Remove from saved">
+                                    <span>🗑️</span>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    savedArticlesContainer.appendChild(articleCard);
+                }
+            });
+        }
+
+        // Initialize weather simulation
+        function initWeatherSimulation() {
+            // Simulate weather changes
+            const weatherConditions = [
+                { icon: '☀️', temp: '72°F', desc: 'Sunny', humidity: '65%', wind: '8 mph', air: 'Good', uv: '6' },
+                { icon: '⛅', temp: '68°F', desc: 'Partly Cloudy', humidity: '70%', wind: '10 mph', air: 'Moderate', uv: '4' },
+                { icon: '🌧️', temp: '62°F', desc: 'Rainy', humidity: '85%', wind: '15 mph', air: 'Good', uv: '2' },
+                { icon: '❄️', temp: '32°F', desc: 'Snowy', humidity: '75%', wind: '20 mph', air: 'Moderate', uv: '1' },
+                { icon: '🌫️', temp: '58°F', desc: 'Foggy', humidity: '90%', wind: '5 mph', air: 'Unhealthy', uv: '1' }
+            ];
+            
+            // Update weather every 10 seconds
+            setInterval(() => {
+                const randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+                document.getElementById('weatherIcon').textContent = randomWeather.icon;
+                document.getElementById('temperature').textContent = randomWeather.temp;
+                document.getElementById('weatherDescription').textContent = randomWeather.desc;
+                document.getElementById('humidity').textContent = randomWeather.humidity;
+                document.getElementById('windSpeed').textContent = randomWeather.wind;
+                document.getElementById('airQuality').textContent = randomWeather.air;
+                document.getElementById('uvIndex').textContent = randomWeather.uv;
+            }, 10000);
+        }
+
+        // Add event listeners
+        function addEventListeners() {
+            // Login button
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                userData.isLoggedIn = true;
+                userData.name = 'John Doe';
+                userData.bio = 'News enthusiast and tech lover';
+                userData.interests = 'Technology, Science, Business';
+                localStorage.setItem('todayRecommendUser', JSON.stringify(userData));
+                updateProfileDisplay();
+                showNotification('Successfully logged in!');
+            });
+            
+            // Register button
+            document.getElementById('registerBtn').addEventListener('click', function() {
+                userData.isLoggedIn = true;
+                userData.name = 'New User';
+                userData.bio = '';
+                userData.interests = '';
+                localStorage.setItem('todayRecommendUser', JSON.stringify(userData));
+                updateProfileDisplay();
+                showNotification('Account created successfully!');
+            });
+            
+            // Profile form
+            document.getElementById('profileForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                userData.name = document.getElementById('nameInput').value;
+                userData.bio = document.getElementById('bioInput').value;
+                userData.interests = document.getElementById('interestsInput').value;
+                localStorage.setItem('todayRecommendUser', JSON.stringify(userData));
+                updateProfileDisplay();
+                showNotification('Profile updated successfully!');
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        targetSection.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Read article
+        function readArticle(articleId) {
+            const article = newsData.find(a => a.id === articleId);
+            if (article) {
+                showNotification(`Opening article: ${article.title}`);
+                // In a real app, this would navigate to the full article page
+            }
+        }
+
+        // Save article
+        function saveArticle(articleId) {
+            if (!userData.isLoggedIn) {
+                showNotification('Please log in to save articles');
+                return;
+            }
+            
+            if (!userData.savedArticles.includes(articleId)) {
+                userData.savedArticles.push(articleId);
+                localStorage.setItem('todayRecommendUser', JSON.stringify(userData));
+                document.getElementById(`save-icon-${articleId}`).textContent = '✅';
+                showNotification('Article saved successfully!');
+                renderSavedArticles();
+            } else {
+                showNotification('Article already saved');
+            }
+        }
+
+        // Unsave article
+        function unsaveArticle(articleId) {
+            userData.savedArticles = userData.savedArticles.filter(id => id !== articleId);
+            localStorage.setItem('todayRecommendUser', JSON.stringify(userData));
+            showNotification('Article removed from saved');
+            renderSavedArticles();
+            // Reset the save icon if it's visible
+            const saveIcon = document.getElementById(`save-icon-${articleId}`);
+            if (saveIcon) {
+                saveIcon.textContent = '🔖';
+            }
+        }
+
+        // Join discussion
+        function joinDiscussion(topicId) {
+            const commentBox = document.getElementById(`comments-${topicId}`);
+            commentBox.style.display = commentBox.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Post comment
+        function postComment(topicId) {
+            const commentInput = document.querySelector(`#comments-${topicId} .comment-input`);
+            const commentText = commentInput.value.trim();
+            
+            if (commentText === '') {
+                showNotification('Please enter a comment');
+                return;
+            }
+            
+            const commentsList = document.getElementById(`comments-list-${topicId}`);
+            const commentElement = document.createElement('div');
+            commentElement.className = 'fade-in';
+            commentElement.style.marginTop = '1rem';
+            commentElement.style.padding = '1rem';
+            commentElement.style.backgroundColor = 'var(--background-color)';
+            commentElement.style.borderRadius = '5px';
+            commentElement.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <strong>You</strong>
+                    <span style="color: var(--text-secondary); font-size: 0.8rem;">Just now</span>
+                </div>
+                <p>${commentText}</p>
+            `;
+            
+            commentsList.appendChild(commentElement);
+            commentInput.value = '';
+            showNotification('Comment posted successfully!');
+            
+            // Update comment count
+            const topic = discussionData.find(t => t.id === topicId);
+            if (topic) {
+                topic.comments++;
+                renderDiscussionTopics();
+            }
+        }
+
+        // Show notification
+        function showNotification(message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.backgroundColor = 'var(--primary-color)';
+            notification.style.color = 'white';
+            notification.style.padding = '1rem 1.5rem';
+            notification.style.borderRadius = '5px';
+            notification.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+            notification.style.zIndex = '1000';
+            notification.style.transition = 'opacity 0.3s';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"TodayRecommend - Personalized News \u0026 Discussion Platform":"TodayRecommend - Personalized News \u0026 Discussion Platform","News":"News","Discussion":"Discussion","Profile":"Profile","Saved":"Saved","Weather":"Weather","Welcome to TodayRecommend":"Welcome to TodayRecommend","Log In":"Log In","Sign Up":"Sign Up","Today's Top News":"Today's Top News","Hot Topics":"Hot Topics","Your Profile":"Your Profile","User Name":"User Name","Your bio goes here":"Your bio goes here","Name":"Name","Bio":"Bio","Interests":"Interests","Update Profile":"Update Profile","Saved Articles":"Saved Articles","Weather \u0026 Air Quality":"Weather \u0026 Air Quality","*This is a simulated demonstration, not real measurement":"*This is a simulated demonstration, not real measurement","Sunny":"Sunny","Humidity":"Humidity","Wind":"Wind","8 mph":"8 mph","Air Quality":"Air Quality","Good":"Good","UV Index":"UV Index","About Us":"About Us","Our Mission":"Our Mission","Team":"Team","Careers":"Careers","Support":"Support","Help Center":"Help Center","Contact Us":"Contact Us","FAQ":"FAQ","Legal":"Legal","Terms of Service":"Terms of Service","Privacy Policy":"Privacy Policy","Cookie Policy":"Cookie Policy","Follow Us":"Follow Us","Twitter":"Twitter","Facebook":"Facebook","Instagram":"Instagram","\u0026copy; 2023 TodayRecommend. All rights reserved.":"\u0026copy; 2023 TodayRecommend. All rights reserved.","Guest User":"Guest User","Global Tech Summit Announces Groundbreaking AI Innovations":"Global Tech Summit Announces Groundbreaking AI Innovations","Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.":"Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.","Oct 15, 2023":"Oct 15, 2023","Climate Summit Reaches Historic Agreement on Carbon Emissions":"Climate Summit Reaches Historic Agreement on Carbon Emissions","World leaders commit to ambitious targets to combat climate change in the next decade.":"World leaders commit to ambitious targets to combat climate change in the next decade.","Oct 14, 2023":"Oct 14, 2023","New Medical Breakthrough Shows Promise in Cancer Treatment":"New Medical Breakthrough Shows Promise in Cancer Treatment","Researchers report significant progress in developing a revolutionary cancer therapy.":"Researchers report significant progress in developing a revolutionary cancer therapy.","Oct 13, 2023":"Oct 13, 2023","E Markets Surge as New Economic Policies Take Effect":"E Markets Surge as New Economic Policies Take Effect","Stock markets reach new heights following the implementation of government stimulus measures.":"Stock markets reach new heights following the implementation of government stimulus measures.","Oct 12, 2023":"Oct 12, 2023","Space Exploration Milestone: Mars Mission Prepares for Landing":"Space Exploration Milestone: Mars Mission Prepares for Landing","The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.":"The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.","Oct 11, 2023":"Oct 11, 2023","__title__":"TodayRecommend - Personalized News \u0026 Discussion Platform"},"hi":{"TodayRecommend - Personalized News \u0026 Discussion Platform":"टुडेरिकमेंड - व्यक्तिगत समाचार और चर्चा प्लेटफॉर्म","News":"समाचार","Discussion":"चर्चा","Profile":"प्रोफाइल","Saved":"सहेजे गए","Weather":"मौसम","Welcome to TodayRecommend":"टुडेरिकमेंड में आपका स्वागत है","Log In":"लॉग इन करें","Sign Up":"साइन अप करें","Today's Top News":"आज के शीर्ष समाचार","Hot Topics":"गर्म विषय","Your Profile":"आपका प्रोफाइल","User Name":"उपयोगकर्ता नाम","Your bio goes here":"आपका जीवनवृत्त यहाँ आता है","Name":"नाम","Bio":"जीवनवृत्त","Interests":"रुचियां","Update Profile":"प्रोफाइल अपडेट करें","Saved Articles":"सहेजे गए लेख","Weather \u0026 Air Quality":"मौसम और वायु गुणवत्ता","*This is a simulated demonstration, not real measurement":"*यह एक सिमुलेटेड प्रदर्शन है, वास्तविक माप नहीं","Sunny":"धूप","Humidity":"नमी","Wind":"हवा","8 mph":"8 माइल प्रति घंटा","Air Quality":"वायु गुणवत्ता","Good":"अच्छा","UV Index":"यूवी सूचकांक","About Us":"हमारे बारे में","Our Mission":"हमारा मिशन","Team":"टीम","Careers":"करियर","Support":"समर्थन","Help Center":"मदद केंद्र","Contact Us":"संपर्क करें","FAQ":"सामान्य प्रश्न","Legal":"कानूनी","Terms of Service":"सेवा की शर्तें","Privacy Policy":"गोपनीयता नीति","Cookie Policy":"कुकी नीति","Follow Us":"हमें फॉलो करें","Twitter":"ट्विटर","Facebook":"फेसबुक","Instagram":"इंस्टाग्राम","\u0026copy; 2023 TodayRecommend. All rights reserved.":"\u0026copy; 2023 टुडेरिकमेंड. सर्वाधिकार सुरक्षित.","Guest User":"अतिथि उपयोगकर्ता","Global Tech Summit Announces Groundbreaking AI Innovations":"ग्लोबल टेक समिट ने इतिहास रचने वाले आर्टिफिशियल इंटेलिजेंस नवाचारों की घोषणा की","Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.":"उद्योग नेता कृत्यिक बुद्धिमत्ता में नए प्रगति का खुलासा करते हैं जो कई क्षेत्रों को परिवर्तित कर सकते हैं.","Oct 15, 2023":"15 अक्टूबर, 2023","Climate Summit Reaches Historic Agreement on Carbon Emissions":"कार्बन उत्सर्जन पर ऐतिहासिक समझौते तक पहुँचता है जलवायु समिट","World leaders commit to ambitious targets to combat climate change in the next decade.":"दुनिया के नेता अगले दशक में जलवायु परिवर्तन से लड़ने के लिए उद्देश्यपूर्ण लक्ष्यों का लेते हैं.","Oct 14, 2023":"14 अक्टूबर, 2023","New Medical Breakthrough Shows Promise in Cancer Treatment":"कैंसर उपचार में नई चिकित्सा उपलब्धि वादा दिखाती है","Researchers report significant progress in developing a revolutionary cancer therapy.":"शोधकर्ता एक क्रांतिकारी कैंसर थेरेपी के विकास में महत्वपूर्ण प्रगति की रिपोर्द करते हैं.","Oct 13, 2023":"13 अक्टूबर, 2023","E Markets Surge as New Economic Policies Take Effect":"नए आर्थिक नीतियों के प्रभाव में ई मार्केट तेजी से बढ़ते हैं","Stock markets reach new heights following the implementation of government stimulus measures.":"सरकार के उद्देश्यपूर्ण प्रबंधों के कार्यान्वयन के बाद, स्टॉक मार्केट नई ऊंचाइयों तक पहुँचते हैं.","Oct 12, 2023":"12 अक्टूबर, 2023","Space Exploration Milestone: Mars Mission Prepares for Landing":"अंतरिक्ष अन्वेषण मील का पत्थर: मंगल मिशन उतरने के लिए तैयार है","The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.":"नवीनतम मंगल रोवर उतरने के लिए तैयार है, जो ग्रह शोध के लिए नई संभावनाएं लाता है.","Oct 11, 2023":"11 अक्टूबर, 2023","__title__":"टुडेरिकमेंड - व्यक्तिगत समाचार और चर्चा प्लेटफॉर्म"},"id":{"TodayRecommend - Personalized News \u0026 Discussion Platform":"TodayRecommend - Platform Berita \u0026 Diskusi Personalisasi","News":"Berita","Discussion":"Diskusi","Profile":"Profil","Saved":"Tersimpan","Weather":"Cuaca","Welcome to TodayRecommend":"Selamat Datang di TodayRecommend","Log In":"Masuk","Sign Up":"Daftar","Today's Top News":"Berita Terpopuler Hari Ini","Hot Topics":"Topik Populer","Your Profile":"Profil Anda","User Name":"Nama Pengguna","Your bio goes here":"Bio Anda di sini","Name":"Nama","Bio":"Bio","Interests":"Minat","Update Profile":"Perbarui Profil","Saved Articles":"Artikel Tersimpan","Weather \u0026 Air Quality":"Cuaca \u0026 Kualitas Udara","*This is a simulated demonstration, not real measurement":"*Ini adalah demonstrasi simulasi, bukan pengukuran nyata","Sunny":"Cerah","Humidity":"Kelembaban","Wind":"Angin","8 mph":"8 mph","Air Quality":"Kualitas Udara","Good":"Baik","UV Index":"Indeks UV","About Us":"Tentang Kami","Our Mission":"Misi Kami","Team":"Tim","Careers":"Karir","Support":"Dukungan","Help Center":"Pusat Bantuan","Contact Us":"Hubungi Kami","FAQ":"FAQ","Legal":"Hukum","Terms of Service":"Syarat Layanan","Privacy Policy":"Kebijakan Privasi","Cookie Policy":"Kebijakan Cookie","Follow Us":"Ikuti Kami","Twitter":"Twitter","Facebook":"Facebook","Instagram":"Instagram","\u0026copy; 2023 TodayRecommend. All rights reserved.":"\u0026copy; 2023 TodayRecommend. Semua hak dilindungi.","Guest User":"Pengguna Tamu","Global Tech Summit Announces Groundbreaking AI Innovations":"Kesimpul Teknologi Global Mengumumkan Inovasi AI Berpengaruh","Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.":"Pemimpin industri mengungkap kemajuan baru dalam kecerdasan buatan yang dapat mengubah beberapa sektor.","Oct 15, 2023":"Okt 15, 2023","Climate Summit Reaches Historic Agreement on Carbon Emissions":"Klimat Mencapai Kesepakatan Sejarah tentang Emisi Karbon","World leaders commit to ambitious targets to combat climate change in the next decade.":"Pemimpin dunia berkomitmen pada target yang ambisius untuk melawan perubahan iklim dalam satu dekade ke depan.","Oct 14, 2023":"Okt 14, 2023","New Medical Breakthrough Shows Promise in Cancer Treatment":"Terobosan Medis Baru Menunjukkan Janji dalam Perawatan Kanker","Researchers report significant progress in developing a revolutionary cancer therapy.":"Para peneliti melaporkan kemajuan signifikan dalam mengembangkan terapi kanker yang revolusioner.","Oct 13, 2023":"Okt 13, 2023","E Markets Surge as New Economic Policies Take Effect":"Pasar Membengkak Saat Kebijakan Ekonomi Baru Berlaku","Stock markets reach new heights following the implementation of government stimulus measures.":"Pasar saham mencapai tingkat baru setelah implementasi tindakan stimulus pemerintah.","Oct 12, 2023":"Okt 12, 2023","Space Exploration Milestone: Mars Mission Prepares for Landing":"Milenium Eksplorasi Luar Angkasa: Misi Mars Siap untuk Pendaratan","The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.":" Rover Mars terbaru akan menyentuh tanah, membawa kemungkinan baru untuk penelitian planet.","Oct 11, 2023":"Okt 11, 2023","__title__":"TodayRecommend - Platform Berita \u0026 Diskusi Personalisasi"},"vi":{"TodayRecommend - Personalized News \u0026 Discussion Platform":"TodayRecommend - Nền tảng Tin tức \u0026 Thảo luận Cá nhân hóa","News":"Tin tức","Discussion":"Thảo luận","Profile":"Hồ sơ","Saved":"Đã lưu","Weather":"Thời tiết","Welcome to TodayRecommend":"Chào mừng đến với TodayRecommend","Log In":"Đăng nhập","Sign Up":"Đăng ký","Today's Top News":"Tin Nóng Hôm Nay","Hot Topics":"Chủ đề Nóng","Your Profile":"Hồ sơ của bạn","User Name":"Tên người dùng","Your bio goes here":"Tiểu sử của bạn ở đây","Name":"Tên","Bio":"Tiểu sử","Interests":"Sở thích","Update Profile":"Cập nhật hồ sơ","Saved Articles":"Bài viết đã lưu","Weather \u0026 Air Quality":"Thời tiết \u0026 Chất lượng không khí","*This is a simulated demonstration, not real measurement":"*Đây là một buổi trình diễn mô phỏng, không phải là phép đo thực tế","Sunny":"Nắng","Humidity":"Độ ẩm","Wind":"Gió","8 mph":"8 dặm/giờ","Air Quality":"Chất lượng không khí","Good":"Tốt","UV Index":"Chỉ số UV","About Us":"Về chúng tôi","Our Mission":"Sứ mệnh của chúng tôi","Team":"Đội ngũ","Careers":"Cơ hội nghề nghiệp","Support":"Hỗ trợ","Help Center":"Trung tâm trợ giúp","Contact Us":"Liên hệ với chúng tôi","FAQ":"Câu hỏi thường gặp","Legal":"Pháp lý","Terms of Service":"Điều khoản dịch vụ","Privacy Policy":"Chính sách bảo mật","Cookie Policy":"Chính sách cookie","Follow Us":"Theo dõi chúng tôi","Twitter":"Twitter","Facebook":"Facebook","Instagram":"Instagram","\u0026copy; 2023 TodayRecommend. All rights reserved.":"\u0026copy; 2023 TodayRecommend. Đã đăng ký bản quyền.","Guest User":"Người dùng khách","Global Tech Summit Announces Groundbreaking AI Innovations":"Hội nghị Thượng công nghệ Toàn cầu Công bố Đột phá về Đổi mới Trí tuệ nhân tạo","Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.":"Lãnh đạo ngành công nghiệp tiết lộ những tiến bộ mới trong trí tuệ nhân tạo có thể chuyển đổi nhiều ngành.","Oct 15, 2023":"Tháng 10 15, 2023","Climate Summit Reaches Historic Agreement on Carbon Emissions":"Hội nghị Thay đổi Khí hậu Đạt được Thỏa thuận Lịch sử về Phát thải Carbon","World leaders commit to ambitious targets to combat climate change in the next decade.":"Lãnh đạo thế cam kết với các mục tiêu tham vọng để chống lại biến đổi khí hậu trong thập kỷ tới.","Oct 14, 2023":"Tháng 10 14, 2023","New Medical Breakthrough Shows Promise in Cancer Treatment":"Đột phá Y tế Mới hứa hẹn trong Điều trị Ung thư","Researchers report significant progress in developing a revolutionary cancer therapy.":"Các nhà nghiên cứu báo cáo tiến bộ đáng kể trong việc phát triển liệu pháp điều trị ung thư cách mạng.","Oct 13, 2023":"Tháng 10 13, 2023","E Markets Surge as New Economic Policies Take Effect":"Thị trường Tăng trưởng mạnh khi các Chính sách Kinh tế Mới có hiệu lực","Stock markets reach new heights following the implementation of government stimulus measures.":"Thị trường chứng khoán đạt đến mức cao mới sau khi thực hiện các biện pháp kích thích kinh tế của chính phủ.","Oct 12, 2023":"Tháng 10 12, 2023","Space Exploration Milestone: Mars Mission Prepares for Landing":"Cột mốc Khám phá Không gian: Sứ mệnh Mars Chuẩn bị cho việc hạ cánh","The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.":"Tàu đổ bộ Sao Hỏa mới nhất sắp hạ cánh, mang lại những khả năng mới cho nghiên cứu hành tinh.","Oct 11, 2023":"Tháng 10 11, 2023","__title__":"TodayRecommend - Nền tảng Tin tức \u0026 Thảo luận Cá nhân hóa"},"th":{"TodayRecommend - Personalized News \u0026 Discussion Platform":"TodayRecommend - แพลตฟอร์มข่าวและการอภิปรายส่วนบุคคล","News":"ข่าว","Discussion":"การอภิปราย","Profile":"โปรไฟล์","Saved":"บันทึก","Weather":"สภาพอากาศ","Welcome to TodayRecommend":"ยินดีต้อนรับสู่ TodayRecommend","Log In":"เข้าสู่ระบบ","Sign Up":"ลงทะเบียน","Today's Top News":"ข่าวยอดนิยมของวันนี้","Hot Topics":"หัวข้อร้อน","Your Profile":"โปรไฟล์ของคุณ","User Name":"ชื่อผู้ใช้","Your bio goes here":"ประวัติส่วนตัวของคุณจะอยู่ที่นี่","Name":"ชื่อ","Bio":"ประวัติส่วนตัว","Interests":"ความสนใจ","Update Profile":"อัปเดตโปรไฟล์","Saved Articles":"บทความที่บันทึกไว้","Weather \u0026 Air Quality":"สภาพอากาศและคุณภาพอากาศ","*This is a simulated demonstration, not real measurement":"*นี่เป็นการสาธิตการจำลอง ไม่ใช้การวัดจริง","Sunny":"แดดจ้า","Humidity":"ความชื้น","Wind":"ลม","8 mph":"8 ไมล์ต่อชั่วโมง","Air Quality":"คุณภาพอากาศ","Good":"ดี","UV Index":"ดัชนี UV","About Us":"เกี่ยวกับเรา","Our Mission":"ภารกิจของเรา","Team":"ทีม","Careers":"งาน","Support":"การสนับสนุน","Help Center":"ศูนย์ช่วยเหลือ","Contact Us":"ติดต่อเรา","FAQ":"คำถามที่พบบ่อย","Legal":"กฎหมาย","Terms of Service":"เงื่อนไขการให้บริการ","Privacy Policy":"นโยบายความเป็นส่วนตัว","Cookie Policy":"นโยบายคุกกี้","Follow Us":"ติดตามเรา","Twitter":"ทวิตเตอร์","Facebook":"เฟซบุ๊ก","Instagram":"อินสตากรัม","\u0026copy; 2023 TodayRecommend. All rights reserved.":"\u0026copy; 2023 TodayRecommend. สงวนลิขสิทธิ์ทั้งหมด","Guest User":"ผู้เข้าชม","Global Tech Summit Announces Groundbreaking AI Innovations":"การประชุมเทคโนโลยีโลกประกาศนวัตกรรม AI ที่ท้าทาย","Industry leaders reveal new advancements in artificial intelligence that could transform multiple sectors.":"ผู้นำในวงการเปิดเผยความก้าวหน้าด้านปัญญาประดิษฐ์ใหม่ที่สามารถเปลี่ยนแปลงภาคต่างๆ ได้","Oct 15, 2023":"15 ต.ค. 2566","Climate Summit Reaches Historic Agreement on Carbon Emissions":"การประชุมเรื่องสภาพภูมิอากาศบรรลุข้อตกลงทางประวัติศาสตร์เรื่องการปล่อยคาร์บอน","World leaders commit to ambitious targets to combat climate change in the next decade.":"ผู้นำโลกมุ่งมั่นที่จะตั้งเป้าหมายอันกว้างขวางในการต่อสู้กับการเปลี่ยนแปลงสภาพภูมิอากาศในช่วงทศวรรษหน้า","Oct 14, 2023":"14 ต.ค. 2566","New Medical Breakthrough Shows Promise in Cancer Treatment":"การค้นพบทางการแพทย์ใหม่แสดงศักยภาพในการรักษามะเร็ง","Researchers report significant progress in developing a revolutionary cancer therapy.":"นักวิจัยรายงานความก้าวหน้าที่สำคัญในการพัฒนาการรักษามะเร็งแบบปฏิวัติ","Oct 13, 2023":"13 ต.ค. 2566","E Markets Surge as New Economic Policies Take Effect":"ตลาดออนไลน์พุ่งสูงขึ้นขณะนโยบายเศรษฐกิจใหม่มีผลบังคับใช้","Stock markets reach new heights following the implementation of government stimulus measures.":"ตลาดหุ้นสูงสุดใหม่หลังจากการนำมาปรับใช้มาตรการกระตุ้นเศรษฐกิจของรัฐบาล","Oct 12, 2023":"12 ต.ค. 2566","Space Exploration Milestone: Mars Mission Prepares for Landing":"เกียรติยศการสำรวจอวกาศ: ภารกิจดาวอังคารเตรียมพร้อมสำหรับการลงจอด","The latest Mars rover is set to touchdown, bringing new possibilities for planetary research.":"ยานรถยนต์ดาวอังคารล่าสุดกำลังจะลงจอด นำเสนอโอกาสใหม่สำหรับการวิจัยดาวเคราะห์","Oct 11, 2023":"11 ต.ค. 2566","__title__":"TodayRecommend - แพลตฟอร์มข่าวและการอภิปรายส่วนบุคคล"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
