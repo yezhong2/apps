@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Game Optimizer</title><meta name="description" content="Free online tool: VR Game Optimizer. No signup, no payment — free forever.">
+<meta property="og:title" content="VR Game Optimizer">
+<meta property="og:description" content="Free online tool: VR Game Optimizer. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_055729_VR Game Opti.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #3a8eef;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 10px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--accent);
+        }
+        
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+        
+        .tool-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tool-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .tool-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(74, 158, 255, 0.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .close:hover {
+            color: var(--text-primary);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .result-box {
+            background-color: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-top: 1.5rem;
+        }
+        
+        .result-box h4 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .result-box p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .forum-posts {
+            margin-top: 2rem;
+        }
+        
+        .forum-post {
+            background-color: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        
+        .forum-post h4 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .forum-post-meta {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .forum-post-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            margin-bottom: 1.5rem;
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--bg-tertiary);
+            border-left: 4px solid var(--accent);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s;
+            z-index: 2000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left-color: var(--success);
+        }
+        
+        .notification.error {
+            border-left-color: var(--error);
+        }
+        
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+            }
+            
+            nav li {
+                margin-left: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">VR</div>
+                    <span>VR Game Optimizer</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="#forum">Forum</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="container">
+                <h1>Optimize Your VR Gaming Experience</h1>
+                <p>Get compatibility reports, performance optimizations, controller calibration guides, and community support for the best VR gaming experience possible.</p>
+                <button class="btn" id="get-started">Get Started</button>
+            </div>
+        </section>
+
+        <section class="tools" id="tools">
+            <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 3rem;">Our Optimization Tools</h2>
+                
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">🖥️</div>
+                        <h3>Virtual Environment Check</h3>
+                        <p>Check your device compatibility for VR gaming environments</p>
+                        <button class="btn" id="env-check-btn">Check Environment</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">⚡</div>
+                        <h3>Frame Rate Optimizer</h3>
+                        <p>Get performance optimization tips for your favorite VR games</p>
+                        <button class="btn" id="fps-optimizer-btn">Optimize FPS</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">🎮</div>
+                        <h3>Controller Calibration</h3>
+                        <p>Step-by-step guides for calibrating your VR controllers</p>
+                        <button class="btn" id="controller-calibration-btn">Calibrate Controller</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">📊</div>
+                        <h3>Resource Analyzer</h3>
+                        <p>Analyze your game folder for resource optimization opportunities</p>
+                        <button class="btn" id="resource-analyzer-btn">Analyze Resources</button>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <div class="tool-icon">💬</div>
+                        <h3>Player Forum</h3>
+                        <p>Connect with other VR gamers for tips and troubleshooting</p>
+                        <button class="btn" id="forum-btn">Visit Forum</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About VR Game Optimizer</h3>
+                    <p>We help VR gamers get the best performance and compatibility from their games and hardware.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Email: support@vroptimizer.com</p>
+                    <p>Twitter: @vroptimizer</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <p><a href="#">VR Hardware Guide</a></p>
+                    <p><a href="#">Performance Tips</a></p>
+                    <p><a href="#">Troubleshooting</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Environment Check Modal -->
+    <div id="env-check-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Virtual Environment Check</h2>
+            <p>Enter your device specifications to check VR compatibility.</p>
+            
+            <div class="form-group">
+                <label for="device-type">Device Type</label>
+                <select id="device-type">
+                    <option value="">Select device type</option>
+                    <option value="pc">PC</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="console">Console</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="device-model">Device Model</label>
+                <input type="text" id="device-model" placeholder="e.g., Oculus Quest 2, iPhone 12">
+            </div>
+            
+            <div class="form-group">
+                <label for="graphics-card">Graphics Card (PC only)</label>
+                <input type="text" id="graphics-card" placeholder="e.g., NVIDIA RTX 3080">
+            </div>
+            
+            <button class="btn" id="check-env-btn">Check Compatibility</button>
+            
+            <div id="env-result" class="result-box" style="display: none;">
+                <h4>Compatibility Report</h4>
+                <div id="env-result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FPS Optimizer Modal -->
+    <div id="fps-optimizer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Frame Rate Optimizer</h2>
+            <p>Enter your game name to get performance optimization recommendations.</p>
+            
+            <div class="form-group">
+                <label for="game-name">Game Name</label>
+                <input type="text" id="game-name" placeholder="e.g., Beat Saber, Half-Life: Alyx">
+            </div>
+            
+            <div class="form-group">
+                <label for="target-fps">Target FPS</label>
+                <select id="target-fps">
+                    <option value="72">72 FPS (Standard)</option>
+                    <option value="90">90 FPS (High)</option>
+                    <option value="120">120 FPS (Ultra)</option>
+                </select>
+            </div>
+            
+            <button class="btn" id="optimize-fps-btn">Get Optimization Tips</button>
+            
+            <div id="fps-result" class="result-box" style="display: none;">
+                <h4>Performance Recommendations</h4>
+                <div id="fps-result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controller Calibration Modal -->
+    <div id="controller-calibration-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Controller Calibration Guide</h2>
+            <p>Enter your controller details to get personalized calibration instructions.</p>
+            
+            <div class="form-group">
+                <label for="controller-brand">Controller Brand</label>
+                <select id="controller-brand">
+                    <option value="">Select brand</option>
+                    <option value="oculus">Oculus</option>
+                    <option value="valve">Valve</option>
+                    <option value="htc">HTC</option>
+                    <option value="playstation">PlayStation</option>
+                    <option value="microsoft">Microsoft</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="controller-model">Controller Model</label>
+                <input type="text" id="controller-model" placeholder="e.g., Oculus Touch, DualSense">
+            </div>
+            
+            <button class="btn" id="calibrate-controller-btn">Get Calibration Guide</button>
+            
+            <div id="calibration-result" class="result-box" style="display: none;">
+                <h4>Calibration Instructions</h4>
+                <div id="calibration-result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resource Analyzer Modal -->
+    <div id="resource-analyzer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Game Resource Analyzer</h2>
+            <p>Analyze your game folder for optimization opportunities.</p>
+            
+            <div class="form-group">
+                <label for="game-folder">Game Folder Path</label>
+                <input type="text" id="game-folder" placeholder="e.g., C:\Steam\steamapps\common\Beat Saber">
+            </div>
+            
+            <button class="btn" id="analyze-resources-btn">Analyze Resources</button>
+            
+            <div id="resource-result" class="result-box" style="display: none;">
+                <h4>Resource Analysis Report</h4>
+                <div id="resource-result-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forum Modal -->
+    <div id="forum-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>VR Player Forum</h2>
+            <p>Ask questions and get help from the VR gaming community.</p>
+            
+            <div class="form-group">
+                <label for="forum-title">Post Title</label>
+                <input type="text" id="forum-title" placeholder="e.g., Need help with tracking issues">
+            </div>
+            
+            <div class="form-group">
+                <label for="forum-category">Category</label>
+                <select id="forum-category">
+                    <option value="general">General Discussion</option>
+                    <option value="performance">Performance Issues</option>
+                    <option value="hardware">Hardware Help</option>
+                    <option value="games">Game-Specific</option>
+                    <option value="troubleshooting">Troubleshooting</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="forum-message">Your Question</label>
+                <textarea id="forum-message" placeholder="Describe your issue or question in detail..."></textarea>
+            </div>
+            
+            <button class="btn" id="post-question-btn">Post Question</button>
+            
+            <div id="forum-posts" class="forum-posts">
+                <h3>Recent Community Posts</h3>
+                <div class="forum-post">
+                    <h4>Low FPS in Beat Saber after update</h4>
+                    <div class="forum-post-meta">Posted by VR_Gamer42 • 2 hours ago</div>
+                    <p>I'm experiencing significant FPS drops after the latest update. Anyone else facing this issue?</p>
+                    <div class="forum-post-actions">
+                        <button class="btn btn-small btn-secondary">Reply</button>
+                        <button class="btn btn-small btn-secondary">Helpful</button>
+                    </div>
+                </div>
+                
+                <div class="forum-post">
+                    <h4>Oculus Quest 2 controller drift solution</h4>
+                    <div class="forum-post-meta">Posted by ControllerFixer • 5 hours ago</div>
+                    <p>Fixed my controller drift issue by recalibrating the sensors. Here's how I did it...</p>
+                    <div class="forum-post-actions">
+                        <button class="btn btn-small btn-secondary">Reply</button>
+                        <button class="btn btn-small btn-secondary">Helpful</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Modal functionality
+        const modals = document.querySelectorAll('.modal');
+        const closeButtons = document.querySelectorAll('.close');
+        
+        // Open modal functions
+        document.getElementById('get-started').addEventListener('click', () => {
+            document.getElementById('env-check-modal').style.display = 'block';
+        });
+        
+        document.getElementById('env-check-btn').addEventListener('click', () => {
+            const deviceType = document.getElementById('device-type').value;
+            const deviceModel = document.getElementById('device-model').value;
+            const graphicsCard = document.getElementById('graphics-card').value;
+            
+            if (!deviceType || !deviceModel) {
+                showNotification('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            // Simulate compatibility check
+            let compatibility = '';
+            let recommendations = [];
+            
+            if (deviceType === 'pc') {
+                if (graphicsCard.toLowerCase().includes('rtx') || graphicsCard.toLowerCase().includes('3080') || graphicsCard.toLowerCase().includes('3090')) {
+                    compatibility = 'Excellent';
+                    recommendations = ['You can run most VR games at high settings', 'Consider enabling motion smoothing for extra comfort', 'Your system is ready for high-resolution VR'];
+                } else if (graphicsCard.toLowerCase().includes('gtx') || graphicsCard.toLowerCase().includes('1070') || graphicsCard.toLowerCase().includes('1080')) {
+                    compatibility = 'Good';
+                    recommendations = ['You can run most VR games at medium settings', 'Lower resolution can improve performance', 'Close background applications before playing'];
+                } else {
+                    compatibility = 'Fair';
+                    recommendations = ['You may need to lower settings for smooth gameplay', 'Consider upgrading your graphics card for better experience', 'Optimize system resources before playing'];
+                }
+            } else if (deviceType === 'mobile') {
+                if (deviceModel.toLowerCase().includes('quest') || deviceModel.toLowerCase().includes('iphone 12') || deviceModel.toLowerCase().includes('iphone 13')) {
+                    compatibility = 'Good';
+                    recommendations = ['Your device is VR-ready', 'Keep battery charged for longer sessions', 'Use a fan controller to prevent overheating'];
+                } else {
+                    compatibility = 'Limited';
+                    recommendations = ['Some VR experiences may not work optimally', 'Check app store for VR compatibility', 'Consider a dedicated VR headset for better experience'];
+                }
+            } else if (deviceType === 'console') {
+                compatibility = 'Good';
+                recommendations = ['Console VR offers streamlined experience', 'Ensure sufficient play space for safety', 'Update firmware regularly for best performance'];
+            }
+            
+            // Display results
+            document.getElementById('env-result-content').innerHTML = `
+                <p><strong>Compatibility Score:</strong> ${compatibility}</p>
+                <p><strong>Device:</strong> ${deviceModel}</p>
+                ${deviceType === 'pc' ? `<p><strong>Graphics Card:</strong> ${graphicsCard}</p>` : ''}
+                <h5>Recommendations:</h5>
+                <ul>
+                    ${recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            `;
+            
+            document.getElementById('env-result').style.display = 'block';
+            showNotification('Compatibility check completed!', 'success');
+        });
+        
+        document.getElementById('fps-optimizer-btn').addEventListener('click', () => {
+            document.getElementById('fps-optimizer-modal').style.display = 'block';
+        });
+        
+        document.getElementById('optimize-fps-btn').addEventListener('click', () => {
+            const gameName = document.getElementById('game-name').value;
+            const targetFps = document.getElementById('target-fps').value;
+            
+            if (!gameName) {
+                showNotification('Please enter a game name', 'error');
+                return;
+            }
+            
+            // Simulate FPS optimization
+            let tips = [];
+            
+            if (gameName.toLowerCase().includes('beat saber')) {
+                tips = [
+                    'Reduce visual effects to maintain target FPS',
+                    'Lower texture resolution for better performance',
+                    'Close unnecessary background applications',
+                    'Use Oculus performance overlay to monitor FPS',
+                    'Consider enabling ' + (targetFps === '72' ? 'medium' : 'low') + ' supersampling'
+                ];
+            } else if (gameName.toLowerCase().includes('half-life') || gameName.toLowerCase().includes('alyx')) {
+                tips = [
+                    'Use DLSS or FSR for better performance',
+                    'Lower motion blur settings',
+                    'Reduce shadow quality',
+                    'Enable async reprojection if needed',
+                    'Update graphics drivers for latest VR optimizations'
+                ];
+            } else {
+                tips = [
+                    'Lower texture resolution to maintain target FPS',
+                    'Reduce post-processing effects',
+                    'Enable hardware motion compensation',
+                    'Close background applications',
+                    'Update your game and drivers'
+                ];
+            }
+            
+            // Display results
+            document.getElementById('fps-result-content').innerHTML = `
+                <p><strong>Game:</strong> ${gameName}</p>
+                <p><strong>Target FPS:</strong> ${targetFps}</p>
+                <h5>Optimization Tips:</h5>
+                <ul>
+                    ${tips.map(tip => `<li>${tip}</li>`).join('')}
+                </ul>
+                <p><strong>Expected Performance:</strong> You should be able to achieve ${targetFps} FPS with these settings on most modern systems.</p>
+            `;
+            
+            document.getElementById('fps-result').style.display = 'block';
+            showNotification('Optimization tips generated!', 'success');
+        });
+        
+        document.getElementById('controller-calibration-btn').addEventListener('click', () => {
+            document.getElementById('controller-calibration-modal').style.display = 'block';
+        });
+        
+        document.getElementById('calibrate-controller-btn').addEventListener('click', () => {
+            const brand = document.getElementById('controller-brand').value;
+            const model = document.getElementById('controller-model').value;
+            
+            if (!brand || !model) {
+                showNotification('Please enter both brand and model', 'error');
+                return;
+            }
+            
+            // Simulate calibration guide
+            let steps = [];
+            
+            if (brand.toLowerCase() === 'oculus') {
+                steps = [
+                    'Put on the headset and turn on controllers',
+                    'Open Oculus settings on PC or mobile app',
+                    'Navigate to "Devices" > "Controllers"',
+                    'Select your controller and tap "Calibrate"',
+                    'Follow the on-screen prompts to move controllers in circles',
+                    'Tap "Done" when calibration is complete',
+                    'Test tracking in a game to verify calibration'
+                ];
+            } else if (brand.toLowerCase() === 'valve') {
+                steps = [
+                    'Turn on controllers and put on headset',
+                    'Open SteamVR settings',
+                    'Navigate to "Controllers" > "Manage Controllers"',
+                    'Select your controller and click "Calibrate"',
+                    'Move controllers in large circles as prompted',
+                    'Click "Finish" when done',
+                    'Verify tracking accuracy in SteamVR home'
+                ];
+            } else {
+                steps = [
+                    'Turn on controllers and ensure headset is ready',
+                    'Open your VR platform settings (SteamVR, Oculus, etc.)',
+                    'Find controller calibration option',
+                    'Follow manufacturer-specific calibration process',
+                    'Typically involves moving controllers in figure-8 patterns',
+                    'Confirm calibration when prompted',
+                    'Test in a compatible application'
+                ];
+            }
+            
+            // Display results
+            document.getElementById('calibration-result-content').innerHTML = `
+                <p><strong>Controller:</strong> ${brand} ${model}</p>
+                <h5>Calibration Steps:</h5>
+                <ol>
+                    ${steps.map(step => `<li>${step}</li>`).join('')}
+                </ol>
+                <h5>Tips:</h5>
+                <ul>
+                    <li>Perform calibration in a well-lit area</li>
+                    <li>Ensure controllers have sufficient battery</li>
+                    <li>Clear play space of obstacles before calibration</li>
+                    <li>Repeat calibration if tracking issues persist</li>
+                </ul>
+            `;
+            
+            document.getElementById('calibration-result').style.display = 'block';
+            showNotification('Calibration guide generated!', 'success');
+        });
+        
+        document.getElementById('resource-analyzer-btn').addEventListener('click', () => {
+            document.getElementById('resource-analyzer-modal').style.display = 'block';
+        });
+        
+        document.getElementById('analyze-resources-btn').addEventListener('click', () => {
+            const gameFolder = document.getElementById('game-folder').value;
+            
+            if (!gameFolder) {
+                showNotification('Please enter a game folder path', 'error');
+                return;
+            }
+            
+            // Simulate resource analysis
+            const analysis = {
+                totalSize: '45.2 GB',
+                textureSize: '22.7 GB',
+                audioSize: '8.3 GB',
+                executableSize: '12.1 GB',
+                otherSize: '2.1 GB',
+                largeFiles: [
+                    'textures/character_models/characters.hdrtex (4.2 GB)',
+                    'textures/environment/skybox.hdrtex (3.8 GB)',
+                    'audio/voice_overs/english/english_full_voice.vox (2.1 GB)',
+                    'animations/cutscenes/cutscene_01.anim (1.8 GB)'
+                ],
+                recommendations: [
+                    'Consider compressing texture files to save space',
+                    'Lower texture quality settings if experiencing performance issues',
+                    'Delete unused language files if not needed',
+                    'Verify integrity of game files if experiencing crashes'
+                ]
+            };
+            
+            // Display results
+            document.getElementById('resource-result-content').innerHTML = `
+                <p><strong>Game Folder:</strong> ${gameFolder}</p>
+                <p><strong>Total Size:</strong> ${analysis.totalSize}</p>
+                
+                <h5>Resource Breakdown:</h5>
+                <ul>
+                    <li>Textures: ${analysis.textureSize}</li>
+                    <li>Audio: ${analysis.audioSize}</li>
+                    <li>Executables: ${analysis.executableSize}</li>
+                    <li>Other: ${analysis.otherSize}</li>
+                </ul>
+                
+                <h5>Largest Files:</h5>
+                <ul>
+                    ${analysis.largeFiles.map(file => `<li>${file}</li>`).join('')}
+                </ul>
+                
+                <h5>Optimization Recommendations:</h5>
+                <ul>
+                    ${analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                </ul>
+            `;
+            
+            document.getElementById('resource-result').style.display = 'block';
+            showNotification('Resource analysis completed!', 'success');
+        });
+        
+        document.getElementById('forum-btn').addEventListener('click', () => {
+            document.getElementById('forum-modal').style.display = 'block';
+        });
+        
+        document.getElementById('post-question-btn').addEventListener('click', () => {
+            const title = document.getElementById('forum-title').value;
+            const category = document.getElementById('forum-category').value;
+            const message = document.getElementById('forum-message').value;
+            
+            if (!title || !message) {
+                showNotification('Please fill in title and message', 'error');
+                return;
+            }
+            
+            // Simulate posting question
+            const newPost = document.createElement('div');
+            newPost.className = 'forum-post';
+            newPost.innerHTML = `
+                <h4>${title}</h4>
+                <div class="forum-post-meta">Posted by You • Just now</div>
+                <p>${message}</p>
+                <div class="forum-post-actions">
+                    <button class="btn btn-small btn-secondary">Reply</button>
+                    <button class="btn btn-small btn-secondary">Helpful</button>
+                </div>
+            `;
+            
+            document.querySelector('.forum-posts').insertBefore(newPost, document.querySelector('.forum-posts').children[1]);
+            
+            // Clear form
+            document.getElementById('forum-title').value = '';
+            document.getElementById('forum-message').value = '';
+            
+            showNotification('Your question has been posted!', 'success');
+        });
+        
+        // Close modal functionality
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.modal').style.display = 'none';
+            });
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+        
+        // Notification function
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VR Game Optimizer":"VR Game Optimizer","Home":"Home","Tools":"Tools","Forum":"Forum","Contact":"Contact","Optimize Your VR Gaming Experience":"Optimize Your VR Gaming Experience","Get Started":"Get Started","Our Optimization Tools":"Our Optimization Tools","Virtual Environment Check":"Virtual Environment Check","Check your device compatibility for VR gaming environments":"Check your device compatibility for VR gaming environments","Check Environment":"Check Environment","Frame Rate Optimizer":"Frame Rate Optimizer","Get performance optimization tips for your favorite VR games":"Get performance optimization tips for your favorite VR games","Optimize FPS":"Optimize FPS","Controller Calibration":"Controller Calibration","Step-by-step guides for calibrating your VR controllers":"Step-by-step guides for calibrating your VR controllers","Calibrate Controller":"Calibrate Controller","Resource Analyzer":"Resource Analyzer","Analyze your game folder for resource optimization opportunities":"Analyze your game folder for resource optimization opportunities","Analyze Resources":"Analyze Resources","Player Forum":"Player Forum","Connect with other VR gamers for tips and troubleshooting":"Connect with other VR gamers for tips and troubleshooting","Visit Forum":"Visit Forum","About VR Game Optimizer":"About VR Game Optimizer","We help VR gamers get the best performance and compatibility from their games and hardware.":"We help VR gamers get the best performance and compatibility from their games and hardware.","Contact Us":"Contact Us","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Resources","VR Hardware Guide":"VR Hardware Guide","Performance Tips":"Performance Tips","Troubleshooting":"Troubleshooting","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Enter your device specifications to check VR compatibility.","Device Type":"Device Type","Select device type":"Select device type","PC":"PC","Mobile":"Mobile","Console":"Console","Device Model":"Device Model","Graphics Card (PC only)":"Graphics Card (PC only)","Check Compatibility":"Check Compatibility","Compatibility Report":"Compatibility Report","Enter your game name to get performance optimization recommendations.":"Enter your game name to get performance optimization recommendations.","Game Name":"Game Name","Target FPS":"Target FPS","72 FPS (Standard)":"72 FPS (Standard)","90 FPS (High)":"90 FPS (High)","120 FPS (Ultra)":"120 FPS (Ultra)","Get Optimization Tips":"Get Optimization Tips","Performance Recommendations":"Performance Recommendations","Controller Calibration Guide":"Controller Calibration Guide","Enter your controller details to get personalized calibration instructions.":"Enter your controller details to get personalized calibration instructions.","Controller Brand":"Controller Brand","Select brand":"Select brand","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR Game Optimizer"},"zh-CN":{"VR Game Optimizer":"VR游戏优化器","Home":"首页","Tools":"工具","Forum":"论坛","Contact":"联系","Optimize Your VR Gaming Experience":"优化您的VR游戏体验","Get Started":"开始使用","Our Optimization Tools":"我们的优化工具","Virtual Environment Check":"虚拟环境检查","Check your device compatibility for VR gaming environments":"检查您的设备是否兼容VR游戏环境","Check Environment":"检查环境","Frame Rate Optimizer":"帧率优化器","Get performance optimization tips for your favorite VR games":"获取您 favorite VR 游戏的性能优化技巧","Optimize FPS":"优化FPS","Controller Calibration":"控制器校准","Step-by-step guides for calibrating your VR controllers":"VR控制器校准的逐步指南","Calibrate Controller":"校准控制器","Resource Analyzer":"资源分析器","Analyze your game folder for resource optimization opportunities":"分析您的游戏文件夹以寻找资源优化机会","Analyze Resources":"分析资源","Player Forum":"玩家论坛","Connect with other VR gamers for tips and troubleshooting":"与其他VR玩家交流以获取技巧和故障排除","Visit Forum":"访问论坛","About VR Game Optimizer":"关于VR游戏优化器","We help VR gamers get the best performance and compatibility from their games and hardware.":"我们帮助VR玩家从他们的游戏和硬件中获得最佳性能和兼容性。","Contact Us":"联系我们","Email: support@vroptimizer.com":"邮箱: support@vroptimizer.com","Twitter: @vroptimizer":"推特: @vroptimizer","Resources":"资源","VR Hardware Guide":"VR硬件指南","Performance Tips":"性能技巧","Troubleshooting":"故障排除","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"输入您的设备规格以检查VR兼容性。","Device Type":"设备类型","Select device type":"选择设备类型","PC":"PC","Mobile":"移动","Console":"游戏机","Device Model":"设备型号","Graphics Card (PC only)":"显卡（仅限PC）","Check Compatibility":"检查兼容性","Compatibility Report":"兼容性报告","Enter your game name to get performance optimization recommendations.":"输入您的游戏名称以获取性能优化建议。","Game Name":"游戏名称","Target FPS":"目标FPS","72 FPS (Standard)":"72 FPS（标准）","90 FPS (High)":"90 FPS（高）","120 FPS (Ultra)":"120 FPS（超清）","Get Optimization Tips":"获取优化技巧","Performance Recommendations":"性能建议","Controller Calibration Guide":"控制器校准指南","Enter your controller details to get personalized calibration instructions.":"输入您的控制器详细信息以获取个性化的校准说明。","Controller Brand":"控制器品牌","Select brand":"选择品牌","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR游戏优化器"},"es":{"VR Game Optimizer":"VR Game Optimizer","Home":"Inicio","Tools":"Herramientas","Forum":"Foro","Contact":"Contacto","Optimize Your VR Gaming Experience":"Optimiza tu experiencia de juego de realidad virtual","Get Started":"Comienza","Our Optimization Tools":"Nuestras Herramientas de Optimización","Virtual Environment Check":"Revisión de Entorno Virtual","Check your device compatibility for VR gaming environments":"Verifica la compatibilidad de tu dispositivo para entornos de juegos de realidad virtual","Check Environment":"Revisa el Entorno","Frame Rate Optimizer":"Optimizador de Frecuencia de Cuadros","Get performance optimization tips for your favorite VR games":"Obtén consejos de optimización de rendimiento para tus juegos de realidad virtual favoritos","Optimize FPS":"Optimiza FPS","Controller Calibration":"Calibración del Controlador","Step-by-step guides for calibrating your VR controllers":"Guías paso a paso para calibrar tus controladores de realidad virtual","Calibrate Controller":"Calibrar Controlador","Resource Analyzer":"Análisis de Recursos","Analyze your game folder for resource optimization opportunities":"Analiza tu carpeta de juego para oportunidades de optimización de recursos","Analyze Resources":"Analizar Recursos","Player Forum":"Foro de Jugadores","Connect with other VR gamers for tips and troubleshooting":"Conéctate con otros jugadores de realidad virtual para obtener consejos y solucionar problemas","Visit Forum":"Visita el Foro","About VR Game Optimizer":"Acerca de VR Game Optimizer","We help VR gamers get the best performance and compatibility from their games and hardware.":"Ayudamos a los jugadores de realidad virtual a obtener el mejor rendimiento y compatibilidad de sus juegos y hardware.","Contact Us":"Contactarnos","Email: support@vroptimizer.com":"Correo electrónico: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Recursos","VR Hardware Guide":"Guía de Hardware de RV","Performance Tips":"Consejos de Rendimiento","Troubleshooting":"Solución de Problemas","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Introduce las especificaciones de tu dispositivo para verificar la compatibilidad de RV.","Device Type":"Tipo de Dispositivo","Select device type":"Seleccione el tipo de dispositivo","PC":"PC","Mobile":"Móvil","Console":"Consola","Device Model":"Modelo de Dispositivo","Graphics Card (PC only)":"Tarjeta Gráfica (solo PC)","Check Compatibility":"Verificar Compatibilidad","Compatibility Report":"Informe de Compatibilidad","Enter your game name to get performance optimization recommendations.":"Introduce el nombre de tu juego para obtener recomendaciones de optimización de rendimiento.","Game Name":"Nombre del Juego","Target FPS":"FPS Objetivo","72 FPS (Standard)":"72 FPS (Estándar)","90 FPS (High)":"90 FPS (Alto)","120 FPS (Ultra)":"120 FPS (Ultra)","Get Optimization Tips":"Obtener Consejos de Optimización","Performance Recommendations":"Recomendaciones de Rendimiento","Controller Calibration Guide":"Guía de Calibración del Controlador","Enter your controller details to get personalized calibration instructions.":"Introduce los detalles de tu controlador para obtener instrucciones de calibración personalizada.","Controller Brand":"Marca del Controlador","Select brand":"Seleccione la marca","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR Game Optimizer"},"ja":{"VR Game Optimizer":"VR Game Optimizer","Home":"ホーム","Tools":"ツール","Forum":"フォーラム","Contact":"コンタクト","Optimize Your VR Gaming Experience":"VRゲームの体験を最適化する","Get Started":"始めましょう","Our Optimization Tools":"私たちの最適化ツール","Virtual Environment Check":"バーチャル環境チェック","Check your device compatibility for VR gaming environments":"VRゲーム環境のデバイス互換性を確認してください","Check Environment":"環境を確認する","Frame Rate Optimizer":"フレームレート最適化","Get performance optimization tips for your favorite VR games":"お気に入りのVRゲームのパフォーマンス最適化のヒントを取得する","Optimize FPS":"FPS最適化","Controller Calibration":"コントローラー校準","Step-by-step guides for calibrating your VR controllers":"VRコントローラーの校準に向けたステップバイステップのガイド","Calibrate Controller":"コントローラーを校準する","Resource Analyzer":"リソースアナライザ","Analyze your game folder for resource optimization opportunities":"ゲームフォルダーをリソース最適化の機会に分析する","Analyze Resources":"リソースを分析する","Player Forum":"プレイヤーフォーラム","Connect with other VR gamers for tips and troubleshooting":"他のVRゲーマーと一緒にヒントやトラブルシューティングに参加する","Visit Forum":"フォーラムに訪れる","About VR Game Optimizer":"VR Game Optimizerについて","We help VR gamers get the best performance and compatibility from their games and hardware.":"私たちはVRゲーマーがゲームとハードウェアから最高のパフォーマンスと互換性を得られるようにサポートします。","Contact Us":"お問い合わせ","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"リソース","VR Hardware Guide":"VRハードウェアガイド","Performance Tips":"パフォーマンスヒント","Troubleshooting":"トラブルシューティング","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"VR互換性を確認するために、デバイスのスペックを入力してください。","Device Type":"デバイスタイプ","Select device type":"デバイスタイプを選択","PC":"PC","Mobile":"モバイル","Console":"コンソール","Device Model":"デバイスモデル","Graphics Card (PC only)":"グラフィックカード（PCのみ）","Check Compatibility":"互換性を確認する","Compatibility Report":"互換性レポート","Enter your game name to get performance optimization recommendations.":"パフォーマンス最適化の推奨を取得するために、ゲーム名を入力してください。","Game Name":"ゲーム名","Target FPS":"ターゲットFPS","72 FPS (Standard)":"72 FPS（標準）","90 FPS (High)":"90 FPS（高）","120 FPS (Ultra)":"120 FPS（超高）","Get Optimization Tips":"最適化ヒントを取得する","Performance Recommendations":"パフォーマンス推奨","Controller Calibration Guide":"コントローラー校準ガイド","Enter your controller details to get personalized calibration instructions.":"カスタマイズされた校準手順を取得するために、コントローラーの詳細を入力してください。","Controller Brand":"コントローラーブランド","Select brand":"ブランドを選択","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"プレイステーション","Microsoft":"マイクロソフト","__title__":"VR Game Optimizer"},"fr":{"VR Game Optimizer":"Optimiseur de Jeu VR","Home":"Accueil","Tools":"Outils","Forum":"Forum","Contact":"Contact","Optimize Your VR Gaming Experience":"Optimisez Votre Expérience de Jeu VR","Get Started":"Commencez","Our Optimization Tools":"Nos Outils d'Optimisation","Virtual Environment Check":"Vérification de l'Environnement Virtuel","Check your device compatibility for VR gaming environments":"Vérifiez la Compatibilité de Votre Appareil pour les Environnements de Jeu VR","Check Environment":"Vérifiez l'Environnement","Frame Rate Optimizer":"Optimiseur de Fréquence d'Images","Get performance optimization tips for your favorite VR games":"Obtenez des Conseils d'Optimisation de Performance pour Vos Jeux VR Préférés","Optimize FPS":"Optimisez les FPS","Controller Calibration":"Calibration du Contrôleur","Step-by-step guides for calibrating your VR controllers":"Guides Étape par Étape pour la Calibration de Vos Contrôleurs VR","Calibrate Controller":"Calibratez le Contrôleur","Resource Analyzer":"Analyseur de Ressources","Analyze your game folder for resource optimization opportunities":"Analysez Votre Dossier de Jeu pour des Opportunités d'Optimisation des Ressources","Analyze Resources":"Analysez Ressources","Player Forum":"Forum des Joueurs","Connect with other VR gamers for tips and troubleshooting":"Connectez-vous à d'Autres Joueurs VR pour des Conseils et des Solutions aux Problèmes","Visit Forum":"Visitez le Forum","About VR Game Optimizer":"À Propos de l'Optimiseur de Jeu VR","We help VR gamers get the best performance and compatibility from their games and hardware.":"Nous Aidons les Joueurs VR à Obtenir la Meilleure Performance et Compatibilité de Leurs Jeux et Matériel.","Contact Us":"Contactez-Nous","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Ressources","VR Hardware Guide":"Guide du Matériel VR","Performance Tips":"Conseils de Performance","Troubleshooting":"Dépannage","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Entrez les Spécifications de Votre Appareil pour Vérifier la Compatibilité VR.","Device Type":"Type d'Appareil","Select device type":"Sélectionnez le Type d'Appareil","PC":"PC","Mobile":"Mobile","Console":"Console","Device Model":"Modèle d'Appareil","Graphics Card (PC only)":"Carte Graphique (Seulement pour PC)","Check Compatibility":"Vérifiez la Compatibilité","Compatibility Report":"Rapport de Compatibilité","Enter your game name to get performance optimization recommendations.":"Entrez le Nom de Votre Jeu pour Obtenir des Recommandations d'Optimisation de Performance.","Game Name":"Nom du Jeu","Target FPS":"FPS Cible","72 FPS (Standard)":"72 FPS (Standard)","90 FPS (High)":"90 FPS (Haute)","120 FPS (Ultra)":"120 FPS (Ultra)","Get Optimization Tips":"Obtenez des Conseils d'Optimisation","Performance Recommendations":"Recommandations de Performance","Controller Calibration Guide":"Guide de Calibration du Contrôleur","Enter your controller details to get personalized calibration instructions.":"Entrez les Détails de Votre Contrôleur pour Obtenir des Instructions de Calibration Personnalisées.","Controller Brand":"Marque de Contrôleur","Select brand":"Sélectionnez la Marque","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"Optimiseur de Jeu VR"},"de":{"VR Game Optimizer":"VR Game Optimizer","Home":"Home","Tools":"Tools","Forum":"Forum","Contact":"Contact","Optimize Your VR Gaming Experience":"Optimize Your VR Gaming Experience","Get Started":"Get Started","Our Optimization Tools":"Our Optimization Tools","Virtual Environment Check":"Virtual Environment Check","Check your device compatibility for VR gaming environments":"Check your device compatibility for VR gaming environments","Check Environment":"Check Environment","Frame Rate Optimizer":"Frame Rate Optimizer","Get performance optimization tips for your favorite VR games":"Get performance optimization tips for your favorite VR games","Optimize FPS":"Optimize FPS","Controller Calibration":"Controller Calibration","Step-by-step guides for calibrating your VR controllers":"Step-by-step guides for calibrating your VR controllers","Calibrate Controller":"Calibrate Controller","Resource Analyzer":"Resource Analyzer","Analyze your game folder for resource optimization opportunities":"Analyze your game folder for resource optimization opportunities","Analyze Resources":"Analyze Resources","Player Forum":"Player Forum","Connect with other VR gamers for tips and troubleshooting":"Connect with other VR gamers for tips and troubleshooting","Visit Forum":"Visit Forum","About VR Game Optimizer":"About VR Game Optimizer","We help VR gamers get the best performance and compatibility from their games and hardware.":"We help VR gamers get the best performance and compatibility from their games and hardware.","Contact Us":"Contact Us","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Resources","VR Hardware Guide":"VR Hardware Guide","Performance Tips":"Performance Tips","Troubleshooting":"Troubleshooting","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Enter your device specifications to check VR compatibility.","Device Type":"Device Type","Select device type":"Select device type","PC":"PC","Mobile":"Mobile","Console":"Console","Device Model":"Device Model","Graphics Card (PC only)":"Graphics Card (PC only)","Check Compatibility":"Check Compatibility","Compatibility Report":"Compatibility Report","Enter your game name to get performance optimization recommendations.":"Enter your game name to get performance optimization recommendations.","Game Name":"Game Name","Target FPS":"Target FPS","72 FPS (Standard)":"72 FPS (Standard)","90 FPS (High)":"90 FPS (High)","120 FPS (Ultra)":"120 FPS (Ultra)","Get Optimization Tips":"Get Optimization Tips","Performance Recommendations":"Performance Recommendations","Controller Calibration Guide":"Controller Calibration Guide","Enter your controller details to get personalized calibration instructions.":"Enter your controller details to get personalized calibration instructions.","Controller Brand":"Controller Brand","Select brand":"Select brand","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR Game Optimizer"},"ru":{"VR Game Optimizer":"VR Game Optimizer","Home":"Дом","Tools":"Инструменты","Forum":"Форум","Contact":"Контакт","Optimize Your VR Gaming Experience":"Оптимизируйте ваше VR-игровой опыт","Get Started":"Начать","Our Optimization Tools":"Наши инструменты оптимизации","Virtual Environment Check":"Проверка виртуальной среды","Check your device compatibility for VR gaming environments":"Проверьте совместимость вашего устройства для VR-игровых сред","Check Environment":"Проверить среду","Frame Rate Optimizer":"Оптимизатор частоты кадров","Get performance optimization tips for your favorite VR games":"Получите советы по оптимизации производительности для ваших любимых VR-игр","Optimize FPS":"Оптимизировать FPS","Controller Calibration":"Калибровка контроллера","Step-by-step guides for calibrating your VR controllers":"Шаг за шагом руководства по калибровке ваших VR-контроллеров","Calibrate Controller":"Калибровать контроллер","Resource Analyzer":"Анализатор ресурсов","Analyze your game folder for resource optimization opportunities":"Анализируйте вашу папку с игрой на возможности оптимизации ресурсов","Analyze Resources":"Анализировать ресурсы","Player Forum":"Форум игроков","Connect with other VR gamers for tips and troubleshooting":"Свяжитесь с другими VR-игроками для получения советов и решения проблем","Visit Forum":"Посетить форум","About VR Game Optimizer":"О VR Game Optimizer","We help VR gamers get the best performance and compatibility from their games and hardware.":"Мы помогаем VR-игрокам получить наилучшую производительность и совместимость от их игр и оборудования.","Contact Us":"Свяжитесь с нами","Email: support@vroptimizer.com":"Электронная почта: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Ресурсы","VR Hardware Guide":"Руководство по VR-оборудованию","Performance Tips":"Советы по производительности","Troubleshooting":"Устранение неполадок","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Введите спецификации вашего устройства для проверки совместимости VR.","Device Type":"Тип устройства","Select device type":"Выберите тип устройства","PC":"PC","Mobile":"Мобильный","Console":"Консоль","Device Model":"Модель устройства","Graphics Card (PC only)":"Графическая карта (только для PC)","Check Compatibility":"Проверить совместимость","Compatibility Report":"Отчет о совместимости","Enter your game name to get performance optimization recommendations.":"Введите имя вашей игры, чтобы получить рекомендации по оптимизации производительности.","Game Name":"Имя игры","Target FPS":"Целевая частота кадров","72 FPS (Standard)":"72 FPS (Стандарт)","90 FPS (High)":"90 FPS (Высокая)","120 FPS (Ultra)":"120 FPS (Ультра)","Get Optimization Tips":"Получить советы по оптимизации","Performance Recommendations":"Рекомендации по производительности","Controller Calibration Guide":"Руководство по калибровке контроллера","Enter your controller details to get personalized calibration instructions.":"Введите данные вашего контроллера, чтобы получить персонализированные инструкции по калибровке.","Controller Brand":"Бренд контроллера","Select brand":"Выберите бренд","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR Game Optimizer"},"pt":{"VR Game Optimizer":"VR Game Optimizer","Home":"Home","Tools":"Tools","Forum":"Forum","Contact":"Contact","Optimize Your VR Gaming Experience":"Optimize Your VR Gaming Experience","Get Started":"Get Started","Our Optimization Tools":"Our Optimization Tools","Virtual Environment Check":"Virtual Environment Check","Check your device compatibility for VR gaming environments":"Check your device compatibility for VR gaming environments","Check Environment":"Check Environment","Frame Rate Optimizer":"Frame Rate Optimizer","Get performance optimization tips for your favorite VR games":"Get performance optimization tips for your favorite VR games","Optimize FPS":"Optimize FPS","Controller Calibration":"Controller Calibration","Step-by-step guides for calibrating your VR controllers":"Step-by-step guides for calibrating your VR controllers","Calibrate Controller":"Calibrate Controller","Resource Analyzer":"Resource Analyzer","Analyze your game folder for resource optimization opportunities":"Analyze your game folder for resource optimization opportunities","Analyze Resources":"Analyze Resources","Player Forum":"Player Forum","Connect with other VR gamers for tips and troubleshooting":"Connect with other VR gamers for tips and troubleshooting","Visit Forum":"Visit Forum","About VR Game Optimizer":"About VR Game Optimizer","We help VR gamers get the best performance and compatibility from their games and hardware.":"We help VR gamers get the best performance and compatibility from their games and hardware.","Contact Us":"Contact Us","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Resources","VR Hardware Guide":"VR Hardware Guide","Performance Tips":"Performance Tips","Troubleshooting":"Troubleshooting","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Enter your device specifications to check VR compatibility.","Device Type":"Device Type","Select device type":"Select device type","PC":"PC","Mobile":"Mobile","Console":"Console","Device Model":"Device Model","Graphics Card (PC only)":"Graphics Card (PC only)","Check Compatibility":"Check Compatibility","Compatibility Report":"Compatibility Report","Enter your game name to get performance optimization recommendations.":"Enter your game name to get performance optimization recommendations.","Game Name":"Game Name","Target FPS":"Target FPS","72 FPS (Standard)":"72 FPS (Standard)","90 FPS (High)":"90 FPS (High)","120 FPS (Ultra)":"120 FPS (Ultra)","Get Optimization Tips":"Get Optimization Tips","Performance Recommendations":"Performance Recommendations","Controller Calibration Guide":"Controller Calibration Guide","Enter your controller details to get personalized calibration instructions.":"Enter your controller details to get personalized calibration instructions.","Controller Brand":"Controller Brand","Select brand":"Select brand","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"VR Game Optimizer"},"ar":{"VR Game Optimizer":"مصمم ألعاب الـ VR","Home":"الصفحة الرئيسية","Tools":"الأدوات","Forum":"المجلس","Contact":"اتصل بنا","Optimize Your VR Gaming Experience":"تحسين تجربتك في لعب ألعاب الـ VR","Get Started":"ابدأ","Our Optimization Tools":"أدوات تحسيننا","Virtual Environment Check":"فحص بيئة الـ VR","Check your device compatibility for VR gaming environments":"تحقق من توافق جهازك مع بيئات ألعاب الـ VR","Check Environment":"فحص البيئة","Frame Rate Optimizer":"مصمم معدل الإطارات","Get performance optimization tips for your favorite VR games":"الحصول على نصائح تحسين الأداء لألعاب الـ VR المفضلة لديك","Optimize FPS":"تحسين معدل الإطارات","Controller Calibration":"ت调节ظم مقياس التحكم","Step-by-step guides for calibrating your VR controllers":"دليل خطوة بخطوة لت调节ظم مقياسات التحكم الخاص بك","Calibrate Controller":"ت调节ظم مقياس التحكم","Resource Analyzer":"محلل الموارد","Analyze your game folder for resource optimization opportunities":"تحليل مجلد اللعبة الخاص بك للفرص في تحسين الموارد","Analyze Resources":"تحليل الموارد","Player Forum":"مجلس اللاعبين","Connect with other VR gamers for tips and troubleshooting":"تواصل مع لاعبي الـ VR الآخرين للحصول على نصائح وإصلاح المشاكل","Visit Forum":"زيارة المجلس","About VR Game Optimizer":"عن مصمم ألعاب الـ VR","We help VR gamers get the best performance and compatibility from their games and hardware.":"نحن نساعد لاعبي الـ VR في الحصول على أفضل الأداء والتوافق من ألعابهم وعتادهم.","Contact Us":"اتصل بنا","Email: support@vroptimizer.com":"البريد الإلكتروني: support@vroptimizer.com","Twitter: @vroptimizer":"تويتر: @vroptimizer","Resources":"الموارد","VR Hardware Guide":"دليل العتاد الـ VR","Performance Tips":"نصائح الأداء","Troubleshooting":"إصلاح المشاكل","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"أدخل معلومات جهازك لتحقق من توافق الـ VR.","Device Type":"نوع الجهاز","Select device type":"اختر نوع الجهاز","PC":"الحاسوب","Mobile":"الهاتف المحمول","Console":"الجهاز","Device Model":"نموذج الجهاز","Graphics Card (PC only)":"لوحة الشاشة (فقط للحاسوب)","Check Compatibility":"تحقق من التوافق","Compatibility Report":"تقرير التوافق","Enter your game name to get performance optimization recommendations.":"أدخل اسم اللعبة للحصول على توصيات تحسين الأداء.","Game Name":"اسم اللعبة","Target FPS":"معدل الإطارات المستهدف","72 FPS (Standard)":"72 FPS (معياري)","90 FPS (High)":"90 FPS (عالي)","120 FPS (Ultra)":"120 FPS (ممتاز)","Get Optimization Tips":"الحصول على نصائح التحسين","Performance Recommendations":"توصيات الأداء","Controller Calibration Guide":"دليل ت调节ظم مقياس التحكم","Enter your controller details to get personalized calibration instructions.":"أدخل تفاصيل مقياس التحكم للحصول على تعليمات الت调节ظم الشخصية.","Controller Brand":"علامة مقياس التحكم","Select brand":"اختر العلامة","Oculus":"أوكلوس","Valve":"فالفي","HTC":"إتش تي سي","PlayStation":"بلاي ستيشن","Microsoft":"مايكروسوفت","__title__":"مصمم ألعاب الـ VR"},"hi":{"VR Game Optimizer":"वीआर गेम ऑप्टिमाइज़र","Home":"होम","Tools":"टूल्स","Forum":"फोरम","Contact":"संपर्क करें","Optimize Your VR Gaming Experience":"अपने वीआर गेमिंग अनुभव को ऑप्टिमाइज़ करें","Get Started":"शुरू करें","Our Optimization Tools":"हमारे ऑप्टिमाइज़ेशन टूल्स","Virtual Environment Check":"वर्चुअल एनवायरनमेंट चेक","Check your device compatibility for VR gaming environments":"वीआर गेमिंग एनवायरनमेंट्स के लिए अपने डिवाइस की संगतता की जांच करें","Check Environment":"एनवायरनमेंट चेक करें","Frame Rate Optimizer":"फ्रेम रेट ऑप्टिमाइज़र","Get performance optimization tips for your favorite VR games":"अपने पसंदीदा वीआर गेम्स के लिए प्रदर्शन ऑप्टिमाइज़ेशन टिप्स प्राप्त करें","Optimize FPS":"FPS ऑप्टिमाइज़ करें","Controller Calibration":"कंट्रोलर कैलिब्रेशन","Step-by-step guides for calibrating your VR controllers":"अपने वीआर कंट्रोलर्स कैलिब्रेट करने के लिए चरण-दर-चरण गाइड्स","Calibrate Controller":"कंट्रोलर कैलिब्रेट करें","Resource Analyzer":"रिसोर्स एनालाइज़र","Analyze your game folder for resource optimization opportunities":"रिसोर्स ऑप्टिमाइज़ेशन अवसरों के लिए अपने गेम फोल्डर का विश्लेषण करें","Analyze Resources":"रिसोर्सेस एनालाइज़ करें","Player Forum":"प्लेयर फोरम","Connect with other VR gamers for tips and troubleshooting":"टिप्स और ट्रबलशूटिंग के लिए अन्य वीआर गेमर्स से जुड़ें","Visit Forum":"फोरम देखें","About VR Game Optimizer":"वीआर गेम ऑप्टिमाइज़र के बारे में","We help VR gamers get the best performance and compatibility from their games and hardware.":"हम वीआर गेमर्स को उनके गेम्स और हार्डवेयर से सर्वोत्तम प्रदर्शन और संगतता प्राप्त करने में मदद करते हैं।","Contact Us":"हमसे संपर्क करें","Email: support@vroptimizer.com":"ईमेल: support@vroptimizer.com","Twitter: @vroptimizer":"ट्विटर: @vroptimizer","Resources":"संसाधन","VR Hardware Guide":"वीआर हार्डवेयर गाइड","Performance Tips":"प्रदर्शन टिप्स","Troubleshooting":"ट्रबलशूटिंग","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"वीआर संगतता जांचने के लिए अपने डिवाइस की विनिर्देशावली दर्ज करें।","Device Type":"डिवाइस प्रकार","Select device type":"डिवाइस प्रकार चुनें","PC":"पीसी","Mobile":"मोबाइल","Console":"कंसोल","Device Model":"डिवाइस मॉडल","Graphics Card (PC only)":"ग्राफिक्स कार्ड (केवल पीसी)","Check Compatibility":"संगतता जांचें","Compatibility Report":"संगतता रिपोर्ट","Enter your game name to get performance optimization recommendations.":"प्रदर्शन ऑप्टिमाइज़ेशन सिफारिशें प्राप्त करने के लिए अपने गेम का नाम दर्ज करें।","Game Name":"गेम का नाम","Target FPS":"लक्ष्य FPS","72 FPS (Standard)":"72 FPS (स्टैंडर्ड)","90 FPS (High)":"90 FPS (हाई)","120 FPS (Ultra)":"120 FPS (अल्ट्रा)","Get Optimization Tips":"ऑप्टिमाइज़ेशन टिप्स प्राप्त करें","Performance Recommendations":"प्रदर्शन सिफारिशें","Controller Calibration Guide":"कंट्रोलर कैलिब्रेशन गाइड","Enter your controller details to get personalized calibration instructions.":"व्यक्तिगत कैलिब्रेशन निर्देश प्राप्त करने के लिए अपने कंट्रोलर का विवरण दर्ज करें।","Controller Brand":"कंट्रोलर ब्रांड","Select brand":"ब्रांड चुनें","Oculus":"ओकुलस","Valve":"वाल्व","HTC":"एचटीसी","PlayStation":"प्लेस्टेशन","Microsoft":"माइक्रोसॉफ्ट","__title__":"वीआर गेम ऑप्टिमाइज़र"},"vi":{"VR Game Optimizer":"Trình Tối Ưu Trò Chơi VR","Home":"Trang Chủ","Tools":"Công Cụ","Forum":"Diễn Đàn","Contact":"Liên Hệ","Optimize Your VR Gaming Experience":"Tối Ưu Trải Nghiệm Trò Chơi VR Của Bạn","Get Started":"Bắt Đầu","Our Optimization Tools":"Các Công Cụ Tối Ưu Của Chúng Tôi","Virtual Environment Check":"Kiểm Tra Môi Trường Ảo","Check your device compatibility for VR gaming environments":"Kiểm tra tính tương thích của thiết bị với môi trường trò chơi VR","Check Environment":"Kiểm Tra Môi Trường","Frame Rate Optimizer":"Trình Tối Ưu Tỷ Lệ Khung Hình","Get performance optimization tips for your favorite VR games":"Nhận các mẹo tối ưu hóa hiệu suất cho các trò chơi VR yêu thích của bạn","Optimize FPS":"Tối Ưu FPS","Controller Calibration":"Calibrate Bộ Điều Khiển","Step-by-step guides for calibrating your VR controllers":"Hướng dẫn từng bước để calibrate bộ điều khiển VR của bạn","Calibrate Controller":"Calibrate Bộ Điều Khiển","Resource Analyzer":"Trình Phân Tích Tài Nguyên","Analyze your game folder for resource optimization opportunities":"Phân tích thư mục trò chơi của bạn để tìm cơ hội tối ưu hóa tài nguyên","Analyze Resources":"Phân Tích Tài Nguyên","Player Forum":"Diễn Đàn Người Chơi","Connect with other VR gamers for tips and troubleshooting":"Kết nối với những người chơi VR khác để nhận lời khuyên và khắc phục sự cố","Visit Forum":"Tham Gia Diễn Đàn","About VR Game Optimizer":"Về Trình Tối Ưu Trò Chơi VR","We help VR gamers get the best performance and compatibility from their games and hardware.":"Chúng tôi giúp người chơi VR có được hiệu suất và khả năng tương thích tốt nhất từ trò chơi và phần cứng của họ.","Contact Us":"Liên Hệ Với Chúng Tôi","Email: support@vroptimizer.com":"Email: support@vroptimizer.com","Twitter: @vroptimizer":"Twitter: @vroptimizer","Resources":"Tài Nguyên","VR Hardware Guide":"Hướng Dẫn Phần Cứng VR","Performance Tips":"Mẹo Hiệu Suất","Troubleshooting":"Khắc Phục Sự Cố","\u0026times;":"\u0026times;","Enter your device specifications to check VR compatibility.":"Nhập thông số kỹ thuật thiết bị của bạn để kiểm tra khả năng tương thích VR.","Device Type":"Loại Thiết Bị","Select device type":"Chọn loại thiết bị","PC":"PC","Mobile":"Di Động","Console":"Máy Chủ","Device Model":"Mẫu Thiết Bị","Graphics Card (PC only)":"Thẻ Đồ Họa (Chỉ PC)","Check Compatibility":"Kiểm Tra Tương Thích","Compatibility Report":"Báo Cáo Tương Thích","Enter your game name to get performance optimization recommendations.":"Nhập tên trò chơi của bạn để nhận đề xuất tối ưu hóa hiệu suất.","Game Name":"Tên Trò Chơi","Target FPS":"FPS Mục Tiêu","72 FPS (Standard)":"72 FPS (Tiêu Chuẩn)","90 FPS (High)":"90 FPS (Cao)","120 FPS (Ultra)":"120 FPS (Cực Cao)","Get Optimization Tips":"Nhận Mẹo Tối Ưu","Performance Recommendations":"Đề Xuất Hiệu Suất","Controller Calibration Guide":"Hướng Dẫn Calibrate Bộ Điều Khiển","Enter your controller details to get personalized calibration instructions.":"Nhập chi tiết bộ điều khiển của bạn để nhận hướng dẫn calibrate được cá nhân hóa.","Controller Brand":"Thương Hiệu Bộ Điều Khiển","Select brand":"Chọn thương hiệu","Oculus":"Oculus","Valve":"Valve","HTC":"HTC","PlayStation":"PlayStation","Microsoft":"Microsoft","__title__":"Trình Tối Ưu Trò Chơi VR"},"th":{"VR Game Optimizer":"โปรแกรมปรับแต่งเกม VR","Home":"หน้าแรก","Tools":"เครื่องมือ","Forum":"ฟอรั่ม","Contact":"ติดต่อ","Optimize Your VR Gaming Experience":"ปรับแต่งประสบการณ์การเล่นเกม VR ของคุณ","Get Started":"เริ่มต้น","Our Optimization Tools":"เครื่องมือปรับแต่งของเรา","Virtual Environment Check":"ตรวจสอบสภาพแวดล้อมเสมือนจริง","Check your device compatibility for VR gaming environments":"ตรวจสอบความเข้ากันได้ของอุปกรณ์สำหรับสภาพแวดล้อมเกม VR","Check Environment":"ตรวจสอบสภาพแวดล้อม","Frame Rate Optimizer":"เครื่องมือปรับเฟรมเรต","Get performance optimization tips for your favorite VR games":"รับเคล็ดลับปรับแต่งประสิทธิภาพสำหรับเกม VR ที่คุณชื่นชอบ","Optimize FPS":"ปรับแต่ง FPS","Controller Calibration":"แคลิเบรชั่นคอนโทรลเลอร์","Step-by-step guides for calibrating your VR controllers":"คู่มือแบบทีละขั้นตอนสำหรับแคลิเบรชั่นคอนโทรลเลอร์ VR ของคุณ","Calibrate Controller":"แคลิเบรตคอนโทรลเลอร์","Resource Analyzer":"ตัววิเคราะห์ทรัพยากร","Analyze your game folder for resource optimization opportunities":"วิเคราะห์โฟลเดอร์เกมของคุณเพื่อหาโอกาสในการปรับแต่งทรัพยากร","Analyze Resources":"วิเคราะห์ทรัพยากร","Player Forum":"ฟอรั่มผู้เล่น","Connect with other VR gamers for tips and troubleshooting":"เชื่อมต่อกับผู้เล่น VR คนอื่นเพื่อแลกเปลี่ยนเคล็ดลับและการแก้ปัญหา","Visit Forum":"เยี่ยมชมฟอรั่ม","About VR Game Optimizer":"เราช่วยผู้เล่น VR ให้ได้ประสิทธิภาพและความเข้ากันได้ที่ดีที่สุดจากเกมและฮาร์ดแวร์ของพวกเขา","Contact Us":"ติดต่อเรา","Email: support@vroptimizer.com":"อีเมล: support@vroptimizer.com","Twitter: @vroptimizer":"ทวิตเตอร์: @vroptimizer","Resources":"ทรัพยากร","VR Hardware Guide":"คู่มือฮาร์ดแวร์ VR","Performance Tips":"เคล็ดลับประสิทธิภาพ","Troubleshooting":"การแก้ปัญหา","\u0026times;":"×","Enter your device specifications to check VR compatibility.":"ป้อนข้อมูลเฉพาะของอุปกรณ์เพื่อตรวจสอบความเข้ากันได้ของ VR","Device Type":"ประเภทอุปกรณ์","Select device type":"เลือกประเภทอุปกรณ์","PC":"คอมพิวเตอร์ส่วนตัว","Mobile":"โทรศัพท์มือถือ","Console":"เครื่องเล่นเกม","Device Model":"รุ่นอุปกรณ์","Graphics Card (PC only)":"การ์ดกราฟิก (สำหรับ PC เท่านั้น)","Check Compatibility":"ตรวจสอบความเข้ากันได้","Compatibility Report":"รายงานความเข้ากันได้","Enter your game name to get performance optimization recommendations.":"ป้อนชื่อเกมของคุณเพื่อรับคำแนะนำในการปรับแต่งประสิทธิภาพ","Game Name":"ชื่อเกม","Target FPS":"เป้าหมาย FPS","72 FPS (Standard)":"72 FPS (มาตรฐาน)","90 FPS (High)":"90 FPS (สูง)","120 FPS (Ultra)":"120 FPS (สูงสุด)","Get Optimization Tips":"รับเคล็ดลับการปรับแต่ง","Performance Recommendations":"คำแนะนำประสิทธิภาพ","Controller Calibration Guide":"คู่มือแคลิเบรชั่นคอนโทรลเลอร์","Enter your controller details to get personalized calibration instructions.":"ป้อนรายละเอียดคอนโทรลเลอร์ของคุณเพื่อรับคำแนะนำการแคลิเบรชั่งแบบส่วนบุคคล","Controller Brand":"แบรนด์คอนโทรลเลอร์","Select brand":"เลือกแบรนด์","Oculus":"โอคูลัส","Valve":"วัลฟ์","HTC":"เอชทีซี","PlayStation":"เพลย์สเตชัน","Microsoft":"ไมโครซอฟต์","__title__":"โปรแกรมปรับแต่งเกม VR"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
