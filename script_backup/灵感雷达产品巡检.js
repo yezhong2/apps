@@ -1,0 +1,752 @@
+console.show();
+// ========== 文件日志：log() 同时写文件（实时落盘）+ 打日志窗 ==========
+// 本机魔改版 Rhino 静默忽略 console.log 的赋值（实测），无法重定义双写。
+// 方案：定义全局 log()，脚本内所有 log( 已由 sed 批量替换为 log(。
+var LOG_FILE = "/storage/emulated/0/脚本/巡检_日志.log";
+// 清空（覆盖模式，写测试.js 验证过的写法）
+try {
+    var f0 = new java.io.FileOutputStream(LOG_FILE, false);
+    f0.close();
+} catch (e) {}
+// 自定义 log()：写文件（每次 open→write→flush→close 实时落盘）+ 打日志窗
+function log() {
+    var line = "";
+    for (var i = 0; i < arguments.length; i++) {
+        if (i > 0) line += " ";
+        var a = arguments[i];
+        try { line += (typeof a === "object" && a !== null) ? JSON.stringify(a) : String(a); } catch (e) { line += String(a); }
+    }
+    try {
+        var fa = new java.io.FileOutputStream(LOG_FILE, true);
+        fa.write(new java.lang.String("[" + new Date().toLocaleString() + "] " + line + "\n").getBytes("UTF-8"));
+        fa.flush();
+        fa.close();
+    } catch (e) {}
+    try { console.log.apply(console, arguments); } catch (e) {}
+}
+log("✅ 文件日志已启用 → " + LOG_FILE);
+// ========== 灵感雷达 · 产品巡检（自动意见闭环）==========
+// 每次巡检覆盖全部基线产品：静态检查零 token 全查；LLM 审查按「今日变更优先 + 最久未审优先」逐个进行，
+// 预算余量不足时自动降级为仅静态（与主脚本共享每日预算，预留 40000 余量给主脚本）
+// 发现问题直接提交「意见」issue（label=自检+意见），主脚本闭环自动评分：总分≥21 且判定采纳才自动改进上线，不采纳自动回复关闭
+// 同产品已有 open 意见不重提；同一天最多重报 3 次：主脚本改不好 → 下一轮立刻再报 → 再改，自愈快且不会死循环烧 token
+// 建议在 AutoJs 里设置定时任务 12:00（主脚本 09:00 跑完后），手动重跑本脚本 = 立即巡检一轮
+// 与主脚本共享每日 token 预算（token预算.json），并预留 40000 余量给主脚本运行
+
+// ========== 密钥统一外置（与主脚本同款）==========
+const SECRET_PATH = "/storage/emulated/0/脚本/雷达密钥.json";
+function loadSecrets() {
+    try {
+        let j = JSON.parse(files.read(SECRET_PATH));
+        if (j && typeof j === "object") return j;
+    } catch (e) {
+        log("❌ 密钥配置文件读取失败：" + e + "（将跳过需要密钥的环节）");
+    }
+    return {};
+}
+const SEC = loadSecrets();
+const WX_HOOK = SEC.wx_hook || "";
+const GITHUB_USER = SEC.github_user || "";
+const GITHUB_TOKEN = SEC.github_token || "";
+const GITHUB_REPO = SEC.github_repo || "apps";
+
+// ========== API 池：多 Key 轮换 + 模型政策共享 + 限流冷却 + 预算共享 ==========
+// 模型政策与主脚本共享一份事实源：主脚本每轮从 GitHub 仓库 model_policy.json 同步到本地缓存
+// /storage/emulated/0/脚本/模型政策.json，本脚本只读这份缓存（内置默认兜底），不重复拉远程。
+// 字段：name=模型名；commercial=false 表示条款禁止商用（自动跳过）；price=0免费/1低/2中/3高；
+// quality=1-5 能力分。排序：日常=性价比优先（价格低→能力强）；quality 模式=能力优先、同分取便宜。
+// 429 限流：该模型冷却 5 分钟（与主脚本共享 模型冷却.json，跨脚本跨运行生效）；401/403：换 Key。
+const ZP_KEYS = SEC.zp_keys || [];
+if (!ZP_KEYS.length) log("⚠️ ZP_KEYS 为空：请检查雷达密钥.json（LLM 审查将跳过）");
+if (!WX_HOOK) log("⚠️ WX_HOOK 为空：企微推送将跳过");
+const POLICY_PATH = "/storage/emulated/0/脚本/模型政策.json"; // 主脚本每轮同步维护
+const COOLDOWN_PATH = "/storage/emulated/0/脚本/模型冷却.json"; // 与主脚本共享
+const POLICY_DEFAULT = {
+    updated: "",
+    note: "内置默认：glm-4-flash 免费且可商用（智谱官方政策）；glm-4-air 付费可商用。",
+    models: [
+        {name: "glm-4-flash", enabled: true, commercial: true, price: 0, quality: 3},
+        {name: "glm-4-air", enabled: true, commercial: true, price: 1, quality: 5}
+    ]
+};
+function loadPolicy() {
+    try {
+        let p = JSON.parse(files.read(POLICY_PATH));
+        if (p && Array.isArray(p.models) && p.models.length) return p;
+    } catch (e) {}
+    return POLICY_DEFAULT;
+}
+let MODEL_POLICY = loadPolicy();
+function policyTier(quality) {
+    let list = (MODEL_POLICY.models || []).filter(function(x) { return x && x.name && x.enabled !== false && x.commercial !== false; });
+    list.sort(function(a, b) {
+        if (quality) { // 质量模式：能力优先，同分取便宜
+            let dq = (b.quality || 0) - (a.quality || 0);
+            if (dq !== 0) return dq;
+            return (a.price || 0) - (b.price || 0);
+        }
+        let dp = (a.price || 0) - (b.price || 0); // 日常模式：性价比优先（价格低 → 能力强）
+        if (dp !== 0) return dp;
+        return (b.quality || 0) - (a.quality || 0);
+    });
+    return list.map(function(x) { return x.name; });
+}
+log("📜 模型政策（" + (MODEL_POLICY.updated || "内置默认") + "）候选档位：" + policyTier(false).join(" → "));
+function loadCooldowns() {
+    try {
+        let j = JSON.parse(files.read(COOLDOWN_PATH));
+        if (j && typeof j === "object") return j;
+    } catch (e) {}
+    return {};
+}
+let MODEL_COOLDOWN = loadCooldowns();
+function saveCooldowns() {
+    try { files.write(COOLDOWN_PATH, JSON.stringify(MODEL_COOLDOWN)); } catch (e) {}
+}
+function isCooling(model) {
+    return Date.now() < (MODEL_COOLDOWN[model] || 0);
+}
+function cooldown(model, secs) {
+    let now = Date.now();
+    let keys = Object.keys(MODEL_COOLDOWN);
+    for (let i = 0; i < keys.length; i++) {
+        if ((MODEL_COOLDOWN[keys[i]] || 0) < now) delete MODEL_COOLDOWN[keys[i]];
+    }
+    MODEL_COOLDOWN[model] = now + secs * 1000;
+    saveCooldowns();
+}
+let keyIdx = 0;
+const DAILY_BUDGET = 10000000;  // 与主脚本共用每日预算上限（实测峰值≈150K，千万基本不触发；单日失控硬顶≈¥10-20）
+const BUDGET_RESERVE = 40000;  // 巡检最多花到 预算-4万，给主脚本每日运行留余量
+const BUDGET_PATH = "/storage/emulated/0/脚本/token预算.json";
+function dayKey() {
+    let d = new Date();
+    return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+}
+function dateStr() {
+    let d = new Date();
+    let p = function(n) { return ("0" + n).slice(-2); };
+    return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+}
+function loadBudget() {
+    try {
+        let j = JSON.parse(files.read(BUDGET_PATH));
+        if (j && j.d === dayKey() && typeof j.cost === "number") return j.cost;
+    } catch (e) {}
+    return 0;
+}
+function saveBudget() {
+    try { files.write(BUDGET_PATH, JSON.stringify({d: dayKey(), cost: dailyTokenCost})); } catch (e) {}
+}
+let dailyTokenCost = loadBudget();
+if (dailyTokenCost > 0) log("💰 今日已累计 " + dailyTokenCost + " token（预算 " + DAILY_BUDGET + "）");
+
+function callLLM(messages, maxTokens, quality, temp) {
+    let tier = policyTier(quality);
+    if (dailyTokenCost > DAILY_BUDGET) return null; // 统一预算闸门
+    for (let k = 0; k < ZP_KEYS.length; k++) {
+        let key = ZP_KEYS[(keyIdx + k) % ZP_KEYS.length];
+        for (let m = 0; m < tier.length; m++) {
+            let model = tier[m];
+            if (isCooling(model)) { log("🧊 " + model + " 限流冷却中，跳过"); continue; }
+            try {
+                // 注意：必须用 postJson（对象参数）——AutoJs6 的 http.post 传字符串 body 会强制转对象报错
+                let r = http.postJson("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
+                    model: model,
+                    messages: messages,
+                    temperature: temp !== undefined ? temp : 0.3,
+                    max_tokens: maxTokens
+                }, {
+                    headers: {"Authorization": "Bearer " + key, "Content-Type": "application/json"},
+                    timeout: 90000
+                });
+                let sc = r.statusCode;
+                if (sc === 200) {
+                    let j = r.body.json();
+                    if (j && j.choices && j.choices[0]) {
+                        keyIdx = (keyIdx + k) % ZP_KEYS.length;
+                        let usage = j.usage || {};
+                        let cost = (usage.prompt_tokens || 0) + (usage.completion_tokens || 0);
+                        dailyTokenCost += cost;
+                        saveBudget(); // 与主脚本共享同一预算文件，防双脚本合计失控
+                        log("🤖 " + model + " 完成，本轮约 " + cost + " token，今日累计 " + dailyTokenCost + "（预算 " + DAILY_BUDGET + "）");
+                        return j.choices[0].message.content;
+                    }
+                    log("⚠️ " + model + " 返回异常（额度耗尽/参数错误），自动切换下一档…");
+                } else if (sc === 429) {
+                    log("🚦 " + model + " 限流(429)：冷却 5 分钟并切换…");
+                    cooldown(model, 300);
+                    break; // 限流可能按 Key 或按模型计，直接换下一个 Key 最稳妥
+                } else if (sc === 401 || sc === 403) {
+                    log("🔑 Key 无效(HTTP " + sc + ")，自动换下一个 Key…");
+                    break;
+                } else {
+                    log("⚠️ " + model + " 异常(HTTP " + sc + ")，自动切换下一档…");
+                }
+            } catch (e) {
+                log("❌ " + model + " 调用失败：" + e + "，短冷却 60 秒并切换…");
+                cooldown(model, 60); // 网络异常（超时/断连）短暂冷却，避免同轮内连续白撞同一个慢模型
+            }
+            sleep(1500);
+        }
+    }
+    return null;
+}
+
+function ghHeaders() {
+    return {
+        "Authorization": "token " + GITHUB_TOKEN,
+        "Content-Type": "application/json",
+        "User-Agent": "AutoJs6-Radar-Check",
+        "Accept": "application/vnd.github+json"
+    };
+}
+
+// ========== 企微推送（与主脚本同款分段逻辑）==========
+function pushToWx(title, content) {
+    if (!WX_HOOK) {
+        log("⚠️ 未配置企微 webhook，跳过推送");
+        return;
+    }
+    let chunks = [];
+    let rest = content;
+    while (rest.length > 550) {
+        chunks.push(rest.slice(0, 550));
+        rest = rest.slice(550);
+    }
+    if (rest) chunks.push(rest);
+    chunks = chunks.slice(0, 10);
+    for (let i = 0; i < chunks.length; i++) {
+        let text = (i === 0 ? title + "\n\n" : "") + chunks[i];
+        if (i < chunks.length - 1) text += "\n…";
+        try {
+            let r = http.postJson(WX_HOOK, {msgtype: "text", text: {content: text}}, {timeout: 15000});
+            let j = r.body.json();
+            if (j && j.errcode !== 0) log("❌ 推送第 " + (i + 1) + " 段失败: errcode " + j.errcode);
+            else log("✅ 已推送第 " + (i + 1) + "/" + chunks.length + " 段");
+        } catch (e) {
+            log("❌ 推送第 " + (i + 1) + " 段失败: " + e);
+        }
+        sleep(2000);
+    }
+}
+
+// ========== 质检函数（与主脚本同款，口径一致）==========
+const FREE_FOOTER_MARK = "free-ad-standard-2026";
+function looksComplete(html) {
+    return !!html && html.indexOf("</body>") > 0 && /<\/html>\s*$/i.test(html);
+}
+function localHardCheck(html) {
+    // 系统注入的多语言块（含各语言译文）不参与扫描：译文里可能合法出现“付费/收款/心率带”等字样，不能误杀
+    html = stripI18nBlock(html);
+    // 硬件依赖检查（放在最前）：含专用硬件词且无“模拟/演示”声明 → 不合格（防“连接设备”型空想产品）
+    let hw = ["连接设备", "设备连接", "扫描设备", "脑电波", "脑波", "脑电", "心率带", "血糖仪"];
+    for (let i = 0; i < hw.length; i++) {
+        if (html.indexOf(hw[i]) >= 0 && html.indexOf("模拟") < 0 && html.indexOf("演示") < 0) return "含" + hw[i] + "依赖但无模拟演示声明";
+    }
+    if (!html || html.length < 300) return "内容为空或过短";
+    let body = html;
+    let m = html.indexOf(FREE_FOOTER_MARK);
+    if (m >= 0) body = html.slice(0, m);
+    let forbidden = [
+        ["shoukuan", "收款码"],
+        ["checkCode", "激活码算法"],
+        ["激活码", "激活码"],
+        ["wxid", "微信号收款"],
+        ["¥", "价格"],
+        ["付费", "付费字样"],
+        ["解锁完整版", "付费解锁区块"],
+        ["收款", "收款引导"]
+    ];
+    for (let i = 0; i < forbidden.length; i++) {
+        if (body.indexOf(forbidden[i][0]) >= 0) return "含" + forbidden[i][1];
+    }
+    let required = [
+        ["完全免费", "免费声明"],
+        ["广告", "广告位标注"]
+    ];
+    for (let j = 0; j < required.length; j++) {
+        if (html.indexOf(required[j][0]) < 0) return "缺少" + required[j][1];
+    }
+    return "";
+}
+
+// ========== 目标选择：全部基线产品 ==========
+const PRODUCT_DIR = "/storage/emulated/0/脚本/产出";
+const REVIEW_LOG_PATH = "/storage/emulated/0/脚本/巡检历史.json"; // 产品名 → 最近 LLM 审查日期（最久未审优先的公平轮转依据）
+const CHECK_LABEL = "自检";
+const FB_LABEL = "意见";                    // 与主脚本 FEEDBACK_LABEL 一致：巡检 issue 打此标签进自动闭环
+const REPORTED_PATH = "/storage/emulated/0/脚本/巡检已报.json"; // 产品名 → {d: 最后上报日期, n: 当日已报次数}
+const MAX_RETRY_PER_DAY = 3;               // 同一产品每天最多重报 3 次：改不好下一轮立刻再报，又限制死循环烧 token
+const SWEEP_FLAG_PATH = "/storage/emulated/0/脚本/旧自检清扫完成.json"; // 一次性清扫旧自检 issue 的完成标记
+
+// 基线过滤：排除总览页/关于页与 _vN/_prev 快照（与主脚本 collectProducts 同规则，另排除 about.html）
+function collectBaselines() {
+    let names = [];
+    try {
+        names = files.listDir(PRODUCT_DIR, function(n) {
+            return n.endsWith(".html") && n !== "index.html" && n !== "about.html" && !/_(?:v\d+|prev)\.html$/.test(n);
+        });
+    } catch (e) {}
+    names.sort();
+    return names;
+}
+
+// 今日新品/今日改版：今天 0 点后写入过的基线（v2 写回会刷新 mtime）+ 文件名带今天日期前缀的
+function todayChanged() {
+    let t0 = new Date();
+    t0.setHours(0, 0, 0, 0);
+    let t0ms = t0.getTime();
+    let prefix = dateStr();
+    let today = [];
+    collectBaselines().forEach(function(n) {
+        let f = new java.io.File(PRODUCT_DIR + "/" + n);
+        let mtime = 0;
+        try { mtime = f.lastModified(); } catch (e) {}
+        if (mtime >= t0ms || n.indexOf(prefix) === 0) today.push(n);
+    });
+    return today;
+}
+
+// 审查历史：记录每个产品最近一次 LLM 审查日期（预算闸门降级时，最久未审的优先拿到 LLM 名额，公平轮转）
+function loadReviewLog() {
+    try {
+        let j = JSON.parse(files.read(REVIEW_LOG_PATH));
+        if (j && typeof j === "object") return j;
+    } catch (e) {}
+    return {};
+}
+function markReviewed(name) {
+    let log = loadReviewLog();
+    log[name] = dateStr();
+    try { files.write(REVIEW_LOG_PATH, JSON.stringify(log)); } catch (e) {}
+}
+
+// 巡检目标 = 全部基线产品：今日变更（新品/改版）排最前（最可能有新问题），其余按「最久未审 → 最近已审」排队；
+// 静态检查零 token 全查；LLM 审查逐产品受预算闸门，预算不足时后面的产品自动降级为仅静态
+function pickTargets() {
+    let picked = [];
+    todayChanged().forEach(function(n) {
+        if (picked.indexOf(n) < 0) picked.push(n);
+    });
+    let log = loadReviewLog();
+    let rest = collectBaselines().filter(function(n) { return picked.indexOf(n) < 0; });
+    rest.sort(function(a, b) {
+        let da = log[a] || "";
+        let db = log[b] || "";
+        if (da !== db) return da < db ? -1 : 1;
+        return a < b ? -1 : 1;
+    });
+    rest.forEach(function(n) { picked.push(n); });
+    return picked;
+}
+
+// ========== 静态检查层（零 token）==========
+function staticCheck(name, html) {
+    let issues = [];
+    if (!html || html.length < 300) {
+        issues.push("文件为空或过短（" + (html ? html.length : 0) + " 字节）");
+        return issues;
+    }
+    if (!looksComplete(html)) issues.push("HTML 不完整（缺 </body> 或 </html> 结尾）");
+    let hard = localHardCheck(html);
+    if (hard) issues.push("硬检查不通过：" + hard);
+    // 产品交互脚本检查：剥离多语言块与头部统计码后，产品部分必须还有 <script>（否则所有按钮都是死按钮）
+    let productPart = stripI18nBlock(html);
+    let fm = productPart.indexOf("<!-- " + FREE_FOOTER_MARK + " -->");
+    if (fm >= 0) productPart = productPart.slice(0, fm);
+    productPart = productPart.replace(/<script[^>]*id="LA_COLLECT"[^>]*>\s*<\/script>/gi, "")
+        .replace(/<script>\s*if\(typeof LA!==[\s\S]*?<\/script>/gi, "");
+    if (!/<script[\s>]/i.test(productPart)) issues.push("产品交互脚本丢失（所有按钮都是死按钮）");
+    // 统计埋码版本：无埋码或旧版（协议相对 //sdk / LA.init 裸调无保护）都算问题；重跑 51la 批量脚本可升级
+    if (html.indexOf("51.la") < 0) {
+        issues.push("未接入 51.la 统计（系统支持自动埋码，重跑「灵感雷达51la批量接入.js」即可补齐）");
+    } else if (html.indexOf('typeof LA!=="undefined"') < 0) {
+        issues.push("51.la 埋码是旧版（协议相对或无 LA 加载保护，SDK 加载失败会抛 ReferenceError）；重跑「灵感雷达51la批量接入.js」可批量升级");
+    }
+    // SEO meta：系统已支持自动补全，缺失说明页面还没经过新管线重写（下次优化轮换自动补齐）
+    if (html.indexOf('property="og:title"') < 0 || html.indexOf('<meta name="description"') < 0 || html.indexOf('name="theme-color"') < 0) {
+        issues.push("SEO meta 不完整（缺 og:title/description/theme-color 之一，下次重写自动补齐）");
+    }
+    // 多语言块完整性：标记残缺是真问题；完全没有是遗留页（优化轮换会自动注入），仅提示不记问题
+    let i18nS = html.indexOf("<!-- radar-i18n-start -->");
+    let i18nE = html.indexOf("<!-- radar-i18n-end -->");
+    if ((i18nS >= 0 && i18nE < 0) || (i18nS < 0 && i18nE >= 0)) {
+        issues.push("多语言块标记残缺（radar-i18n-start/end 不成对，切换器或翻译功能可能失效）");
+    } else if (i18nS < 0) {
+        log("ℹ️ " + name + " 尚无多语言块（遗留页，优化轮换会自动注入）");
+    }
+    return issues;
+}
+
+// Rhino 编译仅 console 参考（浏览器 ES 语法 Rhino 未必支持，不进报告、不算问题）
+function compileAdvisory(name, html) {
+    let re = /<script[^>]*>([\s\S]*?)<\/script>/gi;
+    let m, bad = 0;
+    while ((m = re.exec(html)) !== null) {
+        if (!m[1].trim()) continue;
+        try {
+            new Function(m[1]);
+        } catch (e) {
+            bad++;
+            log("ℹ️ " + name + " 第 " + bad + " 个脚本块 Rhino 编译不过（仅供参考，浏览器环境无碍）：" + e);
+        }
+    }
+}
+
+// ========== LLM 审查层（air 主审，证据匹配过滤防幻觉）==========
+// 证据匹配：先精确（空白+引号归一）；模型常把解释性文字混进证据或引号风格不一致（实测导致真发现被误丢），
+// 再退而取“代码指纹”——证据里带引号的选择器/id（如 ".btn-secondary"、"inviteBtn"），命中任一个即视为有据可查
+function evidenceInSource(evidence, srcNorm) {
+    let e = evidence.replace(/\s+/g, "").replace(/'/g, '"');
+    if (srcNorm.indexOf(e) >= 0) return true;
+    // 代码指纹候选：带引号的选择器/id（".btn-secondary"、"inviteBtn"）+ 带点的类名选择器（.feature-card，可能只出现在 CSS/HTML 里）
+    let cands = (e.match(/"[^"]{2,40}"/g) || []).concat(e.match(/\.[A-Za-z_-][A-Za-z0-9_-]{1,40}/g) || []);
+    for (let i = 0; i < cands.length; i++) {
+        if (srcNorm.indexOf(cands[i]) >= 0) return true;
+    }
+    return false;
+}
+// 解析 LLM 输出：格式「问题:x | 证据:源码片段 | 修复建议:x」；证据必须能在源码里匹配（空白/引号归一 + 代码指纹兜底），否则视为幻觉丢弃
+function parseFindings(out, src) {
+    let findings = [];
+    if (!out) return findings;
+    if (out.trim() === "无问题") return findings;
+    let srcNorm = src.replace(/\s+/g, "").replace(/'/g, '"');
+    out.split("\n").forEach(function(line) {
+        line = line.trim();
+        if (!line || line.indexOf("问题") !== 0) return;
+        // 按标签定位切三段（证据里可能含 | 或 ||，不能按 "|" 切分）
+        let evIdx = line.indexOf("证据:");
+        let adIdx = line.lastIndexOf("修复建议:");
+        if (evIdx < 0 || adIdx < 0 || adIdx <= evIdx) return;
+        let issue = line.slice(0, evIdx).replace(/^问题[:：]\s*/, "").replace(/\s*\|\s*$/, "").trim();
+        let evidence = line.slice(evIdx + 3, adIdx).replace(/^\s*\|\s*/, "").replace(/\s*\|\s*$/, "").trim();
+        let advice = line.slice(adIdx + 5).replace(/^\s*\|\s*/, "").trim();
+        if (!issue || !advice) return;
+        if (evidence) {
+            if (!evidenceInSource(evidence, srcNorm)) {
+                log("🗑️ 丢弃疑似幻觉发现（证据在源码中找不到）：" + issue);
+                return;
+            }
+        } else {
+            evidence = "（未附代码证据）";
+        }
+        // 模型偶用纯数字当问题标题（问题:1/2/3…），据证据生成可读标题
+        if (/^\d{1,2}$/.test(issue)) {
+            issue = "疑似问题：" + (evidence.indexOf("（未附") === 0 ? "无证据" : evidence.slice(0, 80));
+        }
+        findings.push({issue: issue, evidence: evidence, advice: advice});
+    });
+    return findings.slice(0, 5);
+}
+
+// 系统注入的多语言块（radar-i18n-start ~ radar-i18n-end）不送审：脚本生成的固定代码，不是产品源码
+function stripI18nBlock(html) {
+    if (!html) return html;
+    let a = html.indexOf("<!-- radar-i18n-start -->");
+    if (a < 0) return html;
+    let b = html.indexOf("<!-- radar-i18n-end -->");
+    if (b < 0) return html.slice(0, a);
+    return html.slice(0, a) + html.slice(b + ("<!-- radar-i18n-end -->").length);
+}
+
+function reviewProduct(name, html) {
+    if (dailyTokenCost > DAILY_BUDGET - BUDGET_RESERVE) {
+        log("💰 预算余量不足（" + dailyTokenCost + "/" + DAILY_BUDGET + "），跳过 LLM 审查层，仅静态检查");
+        return null; // null = 预算跳过、本轮未审查（不计入审查历史，下次优先）
+    }
+    // 审查视界：20000 会砍掉长产品的交互脚本尾部（实测 AI Code Ment 脚本在 13906-27193 字节），
+    // 42KB 级产品（BrainWaveHea 42638）同样被 30000 截断盲区覆盖尾部监测 JS；50000 覆盖当前全部产品（最大 43KB）
+    let src = html.length > 50000 ? html.slice(0, 50000) + "\n<!-- 源码过长已截断 -->" : html;
+    src = stripI18nBlock(src); // 系统注入的多语言块不送审（固定代码，非产品源码）
+    let prompt = "你是严格的产品测试员。下面是已上线单文件 HTML 产品的完整源码（若被截断，截断处之后无法审查）。请逐项检查：\n1) 每个按钮/表单/交互元素是否都有对应 JS 处理，逻辑闭环（不引用页面里不存在的 id/函数/变量）\n2) 状态切换后 UI 是否同步更新（增删改查、计数器、列表渲染）\n3) 有无明显 JS 错误（未定义变量、函数调用参数错误、作用域问题）\n4) 有无残留付费痕迹（价格/收款码/激活码/付费解锁）\n5) 事件绑定是否存在 document.querySelector('.class') 只绑定第一个元素的写法（会导致其余同类按钮全是死按钮）\n6) 有无伪随机假数据（如随机分数+固定提示文案的假评分，数据无真实来源）\n只输出 0-5 条你**有把握**的问题，没有把握的不要写。检查通过的项目禁止输出（如「无明显JS错误」「状态切换后UI同步更新」这类结论不是问题，禁止列出来）。每条一行，格式：\n问题:xxx | 证据:原样引用源码片段 | 修复建议:xxx\n没有问题就只输出：无问题\n产品名：" + name + "\n源码：\n" + src;
+    let out = callLLM([
+        {role: "system", content: "你是严格的测试员。只按格式输出，禁止解释。"},
+        {role: "user", content: prompt}
+    ], 1200, true, 0.3); // air 主审（代码理解需要强模型）
+    if (!out) return [];
+    let findings = parseFindings(out, src);
+    if (!findings.length && out.indexOf("无问题") < 0) {
+        log("⚠️ " + name + " 审查输出未解析出可验证发现，原文：\n" + out);
+    }
+    return findings;
+}
+
+// ========== 提交层：label 自举 + 指纹冷却去重 + issue + 企微摘要 ==========
+
+// 双标签都要存在（GitHub 对不存在的 label 会拒收 issue）：自检=红色可人工过滤，意见=主脚本闭环自动处理
+function ensureLabels() {
+    if (!GITHUB_USER || !GITHUB_TOKEN) return;
+    let defs = [[CHECK_LABEL, "d73a4a", "产品巡检报告（自动进意见闭环）"], [FB_LABEL, "0e8a16", "用户意见反馈（自动处理）"]];
+    for (let i = 0; i < defs.length; i++) {
+        let name = defs[i][0];
+        try {
+            let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/labels/" + encodeURIComponent(name), {headers: ghHeaders(), timeout: 30000});
+            if (r.statusCode === 200) continue;
+            http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/labels", {
+                method: "POST",
+                headers: ghHeaders(),
+                body: JSON.stringify({name: name, color: defs[i][1], description: defs[i][2]}),
+                timeout: 30000
+            });
+            log("🏷️ 已自动创建 label：" + name);
+        } catch (e) {
+            log("label " + name + " 处理失败：" + e);
+        }
+    }
+}
+
+// 本地重报台账：同一产品一天最多重报 MAX_RETRY_PER_DAY 次。主脚本闭环处理完会关闭 issue，
+// 所以用「是否已有 open 意见」+「当日重报次数」双闸防重复刷屏
+function loadReported() {
+    try {
+        let j = JSON.parse(files.read(REPORTED_PATH));
+        if (j && typeof j === "object") return j;
+    } catch (e) {}
+    return {};
+}
+function todayReportCount(name) {
+    let db = loadReported();
+    let rec = db[name];
+    if (!rec) return 0;
+    if (typeof rec === "string") return rec === dateStr() ? 1 : 0; // 兼容旧格式（纯日期字符串）
+    return rec.d === dateStr() ? (rec.n || 0) : 0;
+}
+function markReported(name) {
+    let db = loadReported();
+    db[name] = {d: dateStr(), n: todayReportCount(name) + 1};
+    let keys = Object.keys(db);
+    if (keys.length > 120) keys.slice(0, keys.length - 120).forEach(function(k) { delete db[k]; });
+    try { files.write(REPORTED_PATH, JSON.stringify(db)); } catch (e) {}
+}
+
+// 拉取当前所有 open 意见 issue 标题（最多 3 页 × 100）：产品已有 open 意见 = 主脚本还没处理完，不重复提
+function loadOpenTitles() {
+    let titles = [];
+    for (let page = 1; page <= 3; page++) {
+        try {
+            let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues?state=open&labels=" + encodeURIComponent(FB_LABEL) + "&per_page=100&page=" + page, {headers: ghHeaders(), timeout: 30000});
+            if (r.statusCode !== 200) break;
+            let arr = r.body.json() || [];
+            if (!arr.length) break;
+            arr.forEach(function(i) { if (i.title) titles.push(i.title); });
+            if (arr.length < 100) break;
+        } catch (e) { break; }
+    }
+    return titles;
+}
+let openTitles = []; // 本轮巡检开始时快照的 open 意见 issue 标题
+
+// 一次性清扫：关闭桥打通前遗留的旧「自检」单标签 issue（标题【自检】开头），附说明评论；
+// 当前问题会由新巡检以「意见」双标签重新上报，旧报告不转意见（内容可能过时，转过去会让闭环重复采纳）
+function sweepLegacyCheckIssues() {
+    if (!GITHUB_USER || !GITHUB_TOKEN) return;
+    try { if (files.exists(SWEEP_FLAG_PATH)) return; } catch (e) {}
+    let legacy = [];
+    for (let page = 1; page <= 10; page++) {
+        try {
+            let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues?state=open&labels=" + encodeURIComponent(CHECK_LABEL) + "&per_page=100&page=" + page, {headers: ghHeaders(), timeout: 30000});
+            if (r.statusCode !== 200) break;
+            let arr = r.body.json() || [];
+            if (!arr.length) break;
+            arr.forEach(function(i) {
+                if (i.number && (i.title || "").indexOf("【自检】") === 0) legacy.push(i.number);
+            });
+            if (arr.length < 100) break;
+        } catch (e) { break; }
+    }
+    if (!legacy.length) {
+        try { files.write(SWEEP_FLAG_PATH, JSON.stringify({done: true, closed: 0, date: dateStr()})); } catch (e) {}
+        log("🧹 无遗留旧自检 issue，清扫完成");
+        return;
+    }
+    let ok = 0, fail = 0;
+    legacy.forEach(function(no) {
+        try {
+            http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues/" + no + "/comments", {
+                method: "POST",
+                headers: ghHeaders(),
+                body: JSON.stringify({body: "🧹 归档说明：巡检脚本已切换为「意见」闭环（发现问题自动评分、达标自动改进上线），本旧版「自检」报告关闭归档。当前问题将由新一轮巡检以「意见」issue 重新上报。"}),
+                timeout: 30000
+            });
+            http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues/" + no, {
+                method: "PATCH",
+                headers: ghHeaders(),
+                body: JSON.stringify({state: "closed"}),
+                timeout: 30000
+            });
+            ok++;
+            log("🧹 已归档旧自检 issue #" + no);
+        } catch (e) {
+            fail++;
+            log("⚠️ 归档旧自检 issue #" + no + " 失败：" + e);
+        }
+    });
+    if (!fail) {
+        try { files.write(SWEEP_FLAG_PATH, JSON.stringify({done: true, closed: ok, date: dateStr()})); } catch (e) {}
+    }
+    log("🧹 旧自检清扫完成：归档 " + ok + " 个" + (fail ? "，失败 " + fail + " 个（下轮重试）" : ""));
+}
+
+function fileIssue(name, staticIssues, findings) {
+    // 无问题不提交（意见闭环只处理真问题；全绿产品走企微摘要「通过」列表）
+    if (!staticIssues.length && !findings.length) return "clean";
+    // 双闸防重复：① 该产品已有 open 意见 issue（主脚本还没处理完）→ 不重提；
+    // ② 当天已重报 MAX_RETRY_PER_DAY 次 → 明天再试（防「改不好→无限循环烧 token」）
+    for (let i = 0; i < openTitles.length; i++) {
+        if (openTitles[i].indexOf("【意见】" + name + "（巡检") === 0) {
+            log("⏭️ 该产品已有 open 意见待主脚本处理，跳过重复上报：" + name);
+            return "skip";
+        }
+    }
+    let cnt = todayReportCount(name);
+    if (cnt >= MAX_RETRY_PER_DAY) {
+        log("⏭️ 该产品今日已重报 " + cnt + " 次（上限 " + MAX_RETRY_PER_DAY + "），明天再试：" + name);
+        return "skip";
+    }
+    let title = "【意见】" + name + "（巡检 " + dateStr() + "）";
+    let body = "## 🔍 产品巡检发现（自动意见闭环）\n\n";
+    body += "- 产品：" + name + "\n";
+    body += "- 链接：https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + name + "\n";
+    body += "- 检查时间：" + new Date().toLocaleString() + "\n";
+    body += "- 来源：自动巡检（静态检查 + LLM 审查，证据已与源码匹配）\n\n";
+    if (staticIssues.length) {
+        body += "### 静态检查问题（零 token）\n";
+        staticIssues.forEach(function(s) { body += "- ❌ " + s + "\n"; });
+    }
+    if (findings.length) {
+        body += "\n### LLM 审查问题\n";
+        findings.forEach(function(f) {
+            body += "- ❌ " + f.issue + "\n  - 证据：" + f.evidence.slice(0, 200) + "\n  - 修复建议：" + f.advice + "\n";
+        });
+    }
+    body += "\n> 改进目标：已有产品「" + name + "」，请主脚本意见闭环自动评分处理：总分 ≥21 且判定采纳即自动改进上线，不采纳自动回复关闭。\n";
+    try {
+        let r = http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues", {
+            method: "POST",
+            headers: ghHeaders(),
+            body: JSON.stringify({title: title, body: body, labels: [CHECK_LABEL, FB_LABEL]}),
+            timeout: 30000
+        });
+        if (r.statusCode === 201) {
+            markReported(name);
+            log("📮 已提交意见 issue（自检+意见）：" + title);
+            return title;
+        }
+        log("❌ issue 提交失败 HTTP " + r.statusCode + "：" + String(r.body).slice(0, 200));
+    } catch (e) {
+        log("❌ issue 提交失败：" + e);
+    }
+    return null;
+}
+
+// ========== 主流程 ==========
+// ========== 功能实测层（真 WebView 加载 + 自动点击；每轮轮测 1 个产品；零 token）==========
+// 由「灵感雷达功能实测.js」（ui 模式）执行：加载产品副本→注入错误捕获→点击全部按钮→结果经 hash 回传；
+// 发现并入该产品的 staticIssues → 走「意见」issue 同一闭环（评分≥21 自动改进上线）；
+// 无结果/超时不报 issue（防实测器自身兼容问题刷屏，只记日志供排查）
+const FT_HARNESS_PATH = "/storage/emulated/0/脚本/灵感雷达功能实测.js";
+const FT_TASK_PATH = "/storage/emulated/0/脚本/功能实测_任务.json";
+const FT_RESULT_PATH = "/storage/emulated/0/脚本/功能实测_结果.json";
+const FT_CURSOR_PATH = "/storage/emulated/0/脚本/功能实测游标.txt";
+function functionalTest(name) {
+    let names = collectBaselines();
+    if (!names.length) return [];
+    // 挑选本轮目标：优先今天变过的产品（最可能带新问题，只测变更列表第一个），否则按游标轮转
+    let pick = null;
+    let today = todayChanged();
+    if (today.length) {
+        if (today.indexOf(name) < 0) return [];
+        pick = today[0];
+    } else {
+        let last = "";
+        try { last = files.read(FT_CURSOR_PATH).trim(); } catch (e) {}
+        pick = names[(names.indexOf(last) + 1) % names.length];
+    }
+    if (pick !== name) return [];
+    try { files.write(FT_CURSOR_PATH, pick); } catch (e) {}
+    try { files.remove(FT_RESULT_PATH); } catch (e) {}
+    try { files.write(FT_TASK_PATH, JSON.stringify({target: PRODUCT_DIR + "/" + pick, label: pick})); } catch (e) { return []; }
+    log("功能实测启动：" + pick);
+    try { engines.execScriptFile(FT_HARNESS_PATH); } catch (e) { log("功能实测器启动失败：" + e); return []; }
+    // 等结果文件（本机 waitFor 不可靠，用结果文件轮询；上限 45 秒）
+    let deadline = Date.now() + 45000;
+    let res = null;
+    while (Date.now() < deadline) {
+        sleep(1500);
+        try {
+            if (files.exists(FT_RESULT_PATH)) {
+                let raw = files.read(FT_RESULT_PATH);
+                if (raw && raw.length > 10) { res = JSON.parse(raw); break; }
+            }
+        } catch (e) {}
+    }
+    if (!res) {
+        log("功能实测 [" + pick + "]：45 秒内无结果（实测器未跑起来或页面卡死），本轮只记日志不报 issue（防误报刷屏）");
+        return [];
+    }
+    let out = [];
+    if (res.errs && res.errs.length) out.push("功能实测：点击交互触发 JS 报错 " + res.errs.length + " 处，例如「" + String(res.errs[0]).slice(0, 100) + "」");
+    if (res.fatal) out.push("功能实测：页面/实测器异常（" + String(res.fatal).slice(0, 100) + "）");
+    if (res.timeout) out.push("功能实测：页面 25 秒内未完成点击响应（卡死或驱动失败，卡在 " + (res.step || "?") + "）");
+    log("功能实测 [" + pick + "]：按钮 " + (res.buttons || 0) + " 个，点击 " + (res.clicked || 0) + " 个，报错 " + ((res.errs && res.errs.length) || 0) + " 处" + (out.length ? " ⚠️" : " ✓"));
+    return out;
+}
+
+function main() {
+    if (!GITHUB_USER || !GITHUB_TOKEN) log("ℹ️ 未配置 GitHub，巡检仅跑本地检查、无法提交 issue");
+    log("🔍 产品巡检启动…");
+    let targets = pickTargets();
+    log("🎯 本轮巡检 " + targets.length + " 个产品：" + (targets.join("、") || "（无）"));
+    if (!targets.length) {
+        log("✅ 无可巡检产品，脚本退出");
+        return;
+    }
+    ensureLabels();
+    sweepLegacyCheckIssues();
+    openTitles = loadOpenTitles(); // 本轮 open 意见快照：已有 open 意见的产品不重复上报
+    let filed = [];
+    let allOk = [];
+    let skipped = 0;
+    let failed = 0;
+    let llmCount = 0;
+    targets.forEach(function(name) {
+        let html = "";
+        try { html = files.read(PRODUCT_DIR + "/" + name); } catch (e) {}
+        if (!html || html.length < 200) {
+            log("⚠️ 读取失败，跳过：" + name);
+            return;
+        }
+        log("🔎 检查 " + name + "（" + html.length + " 字节）…");
+        let staticIssues = staticCheck(name, html);
+        compileAdvisory(name, html);
+        // 功能实测（真 WebView 自动点击，每轮 1 个产品轮转）——发现并入 staticIssues，走同一意见闭环
+        try {
+            let ftIssues = functionalTest(name);
+            if (ftIssues && ftIssues.length) staticIssues = staticIssues.concat(ftIssues);
+        } catch (e) { log("⚠️ 功能实测异常（不影响静态巡检）：" + e); }
+        // 页面残缺（缺 </html>）时 LLM 审查无意义，只报静态问题
+        let findings = null;
+        if (looksComplete(html)) {
+            findings = reviewProduct(name, html);
+            if (findings !== null) { llmCount++; markReviewed(name); } // null = 预算跳过未审查，不记历史
+        }
+        if (findings === null) findings = [];
+        let t = fileIssue(name, staticIssues, findings);
+        if (t === "clean") allOk.push(name);
+        else if (t === "skip") skipped++;
+        else if (t) filed.push(name);
+        else failed++;
+    });
+    let summary = "🔍 产品巡检（" + dateStr() + "）\n全量 " + targets.length + " 个产品（LLM 审查 " + llmCount + " 个，其余仅静态）";
+    if (filed.length) summary += "\n📮 新开意见 issue（进自动闭环）：" + filed.join("、");
+    if (skipped) summary += "\n⏭️ 跳过：" + skipped + " 个（已有 open 意见待处理，或今日重报达 " + MAX_RETRY_PER_DAY + " 次上限）";
+    if (failed) summary += "\n❌ 提交异常：" + failed + " 个（见运行日志）";
+    if (allOk.length) summary += "\n✅ 通过：" + allOk.join("、");
+    pushToWx("灵感雷达·巡检摘要", summary);
+    log("✅ 巡检完成，脚本退出");
+}
+main();
+// 调度器完成标记：供「灵感雷达轮流调度.js」检测本轮已结束（写失败不影响巡检流程）
+try { files.write("/storage/emulated/0/脚本/调度子脚本完成.txt", "巡检脚本 " + new Date().toLocaleString()); } catch (e) {}
