@@ -143,6 +143,7 @@ function runOne(path, tag, maxWaitMs) {
         beat++;
         if (beat % 30 === 0) {
             log("⏳ " + tag + "仍在运行…（已等待 " + Math.round(beat / 6) + " 分钟，继续等完成标记）");
+            pipeWatchdog(); // 等子脚本期间也查 Termux 心跳（约 5 分钟一查）
         }
         let marked = false;
         try { marked = files.exists(CHILD_DONE_MARK); } catch (e) {}
@@ -164,6 +165,7 @@ function gapSleep(min) {
     let until = Date.now() + min * 60 * 1000;
     while (Date.now() < until) {
         sleep(30000); // 每 30 秒醒一次查停止标志，手动停止随时生效
+        pipeWatchdog(); // Termux 心跳看门狗（内部节流 2 分钟）：轮间休息也要查
         updateStatus();
     }
 }
@@ -173,6 +175,7 @@ function sleepUntilStart() {
         if (stopRequested()) return false;
         sleep(30000);
         tick++;
+        pipeWatchdog(); // Termux 心跳看门狗（内部节流 2 分钟）：待机期间也能发现流水线死亡
         CFG = loadCfg(); // 待机中每 30 秒重读配置：面板改时间立刻反映到待机
         let remain = minToStart();
         if (tick % 10 === 0 || remain <= 2) {
@@ -191,6 +194,67 @@ function stopRequested() {
         }
     } catch (e) {}
     return false;
+}
+
+// ========== Termux 流水线心跳看门狗（2026-10-03 新增）==========
+// 背景：流水线（连同其中的 ccode 看门狗）整体跑在 Termux 里，Termux 被系统大退/杀死时全灭、无人发现；
+// 本调度器活在 AutoJs6 侧，是 Termux 团灭后的幸存方——改由它盯流水线心跳，死了立即企微提醒。
+// 心跳：/storage/emulated/0/脚本/.流水线心跳（自动流水线.sh 每轮写 epoch 秒）
+// 暂停：创建 流水线看门狗暂停.txt；调参：编辑 .流水线看门狗状态.json 里的 staleMin / cooldownMin（分钟）
+const PIPE_HB = "/storage/emulated/0/脚本/.流水线心跳";
+const PIPE_WD_STATE = "/storage/emulated/0/脚本/.流水线看门狗状态.json";
+const PIPE_WD_PAUSE = "/storage/emulated/0/脚本/流水线看门狗暂停.txt";
+const PIPE_STALE_MIN_D = 40;    // 默认：心跳超 40 分钟无更新 → 判定流水线可能已死（本机后台冻结最长约 30 分钟，阈值必须大于它）
+const PIPE_COOLDOWN_MIN_D = 60; // 默认：持续异常时，重复提醒的最短间隔（分钟）
+let pipeWdLastCheck = 0;
+function pipeWdNotify(text) {
+    try {
+        let sec = JSON.parse(files.read("/storage/emulated/0/脚本/雷达密钥.json"));
+        let hook = sec && sec.wx_hook;
+        if (!hook) { log("⚠️ 流水线看门狗：密钥里没有 wx_hook，企微提醒发不出去"); return false; }
+        let res = http.postJson(hook, {msgtype: "text", text: {content: text}}, {timeout: 15000});
+        return !!(res && res.statusCode === 200);
+    } catch (e) {
+        log("⚠️ 流水线看门狗：企微提醒发送失败：" + e);
+        return false;
+    }
+}
+function pipeWatchdog() {
+    try {
+        let now = Date.now();
+        if (now - pipeWdLastCheck < 120000) return; // 多个循环都会调用：内部节流，≥2 分钟真正查一次
+        pipeWdLastCheck = now;
+        if (files.exists(PIPE_WD_PAUSE)) return;    // 暂停开关：维护期创建该文件，删掉即恢复
+        if (!files.exists(PIPE_HB)) return;         // 心跳文件还没出现过（首次部署/流水线从未跑），不告警
+        let hb = parseInt(String(files.read(PIPE_HB)).replace(/[^0-9]/g, ""), 10);
+        if (!hb) return;
+        let st = {alerted: false, lastAlert: 0, staleMin: PIPE_STALE_MIN_D, cooldownMin: PIPE_COOLDOWN_MIN_D};
+        try {
+            if (files.exists(PIPE_WD_STATE)) {
+                let j = JSON.parse(files.read(PIPE_WD_STATE));
+                if (j) { for (let k in j) st[k] = j[k]; }
+            }
+        } catch (e) {}
+        let staleMs = (st.staleMin > 0 ? st.staleMin : PIPE_STALE_MIN_D) * 60000;
+        let coolMs = (st.cooldownMin > 0 ? st.cooldownMin : PIPE_COOLDOWN_MIN_D) * 60000;
+        let ageMs = now - hb * 1000;
+        if (ageMs > staleMs) {
+            if (now - (st.lastAlert || 0) > coolMs) {
+                st.lastAlert = now; st.alerted = true;
+                try { files.write(PIPE_WD_STATE, JSON.stringify(st)); } catch (e) {}
+                let mins = Math.round(ageMs / 60000);
+                let last = "?";
+                try { last = new Date(hb * 1000).toLocaleString(); } catch (e) {}
+                log("⚠️ 流水线看门狗：Termux 流水线已 " + mins + " 分钟无心跳（最后心跳 " + last + "），发企微提醒");
+                pipeWdNotify("⚠️ 灵感雷达看门狗：Termux 流水线已 " + mins + " 分钟无心跳（最后心跳 " + last + "），疑似被系统大退/冻结。请回 Termux 重启：tmux 里运行 bash /storage/emulated/0/脚本/自动流水线.sh（会话名 pipe）。不想收到此类提醒：创建文件 脚本/流水线看门狗暂停.txt");
+            }
+        } else if (st.alerted) {
+            st.alerted = false;
+            try { files.write(PIPE_WD_STATE, JSON.stringify(st)); } catch (e) {}
+            log("✅ 流水线看门狗：心跳已恢复，告警解除");
+            pipeWdNotify("✅ 灵感雷达看门狗：Termux 流水线心跳已恢复，告警解除。");
+        }
+    } catch (e) { /* 看门狗绝不打断主流程 */ }
 }
 
 // ========== 悬浮设置面板：改开始/停止时间与轮间休息不用改代码 ==========
@@ -506,6 +570,8 @@ function openBatteryWhitelistSettings() {
 log("🔄 灵感雷达双脚本轮流调度器启动");
 log("⏰ 时间窗口 " + CFG.start + " → " + CFG.stop + "；每轮（主+巡）后休息 " + CFG.gapMin + " 分钟");
 log("🛑 手动停止：AutoJs 停止本脚本 / 创建文件 " + STOP_FLAG);
+log("🛡️ 流水线看门狗已启用：Termux 心跳超 " + PIPE_STALE_MIN_D + " 分钟无更新 → 企微提醒（暂停：创建 流水线看门狗暂停.txt）");
+pipeWatchdog(); // 启动即查一次：上一段会话若 Termux 已死，尽早提醒
 
 let prevIn = null; // 窗口进出状态记忆：只在切换时打日志，方便排查「到点没跑」
 // ========== 启动配置对话框（替代浮窗面板：dialogs 走 Activity，不受 floaty 卡死影响）==========
