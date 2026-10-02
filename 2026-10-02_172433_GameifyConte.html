@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameifyContentPlanner - Gamify Your Content Creation Journey</title><meta name="description" content="Free online tool: GameifyContentPlanner - Gamify Your Content Creation Journey. No signup, no payment — free forever.">
+<meta property="og:title" content="GameifyContentPlanner - Gamify Your Content Creation Journey">
+<meta property="og:description" content="Free online tool: GameifyContentPlanner - Gamify Your Content Creation Journey. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_172433_GameifyConte.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1E1E1E;
+            --bg-card: #2A2A2A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B0B0B0;
+            --accent: #BB86FC;
+            --accent-hover: #985EFF;
+            --success: #03DAC5;
+            --warning: #CFD8DC;
+            --danger: #CF6679;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 40px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .cta-button:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.4);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .content-area {
+            flex: 2;
+        }
+
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        /* Task Cards */
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .task-card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .task-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(187, 134, 252, 0.2);
+        }
+
+        .task-card h3 {
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .task-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Points System */
+        .points-display {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .points-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .points-label {
+            color: var(--text-secondary);
+        }
+
+        /* Achievements */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+        }
+
+        .achievement {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .achievement.unlocked {
+            background-color: rgba(3, 218, 197, 0.2);
+            border: 1px solid var(--success);
+        }
+
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .achievement-name {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* Community */
+        .community-post {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .post-content {
+            margin-bottom: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Inspiration */
+        .inspiration-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .inspiration-card:hover {
+            background-color: rgba(187, 134, 252, 0.1);
+        }
+
+        .inspiration-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .inspiration-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            margin: 50px auto;
+            padding: 30px;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .task-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">GameifyContentPlanner</div>
+                <nav>
+                    <ul>
+                        <li><a href="#tasks" id="nav-tasks">Tasks</a></li>
+                        <li><a href="#achievements" id="nav-achievements">Achievements</a></li>
+                        <li><a href="#community" id="nav-community">Community</a></li>
+                        <li><a href="#inspiration" id="nav-inspiration">Inspiration</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Transform Your Content Creation Journey</h1>
+            <p>Gameify your content planning with task tracking, achievements, community support, and endless inspiration. Complete challenges, earn points, unlock achievements, and connect with fellow creators.</p>
+            <button class="cta-button" id="start-btn">Get Started</button>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="content-area">
+                <div class="card fade-in">
+                    <h2>Your Current Tasks</h2>
+                    <div class="task-grid" id="task-grid">
+                        <!-- Tasks will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="card fade-in" id="inspiration-section">
+                    <h2>Content Inspiration</h2>
+                    <div id="inspiration-container">
+                        <!-- Inspiration cards will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="card fade-in">
+                    <div class="points-display">
+                        <div>
+                            <div class="points-value" id="points-value">0</div>
+                            <div class="points-label">Points</div>
+                        </div>
+                        <button class="cta-button" id="redeem-btn">Redeem</button>
+                    </div>
+                </div>
+
+                <div class="card fade-in" id="achievements-section">
+                    <h2>Achievements</h2>
+                    <div class="achievement-grid" id="achievement-grid">
+                        <!-- Achievements will be dynamically loaded here -->
+                    </div>
+                </div>
+
+                <div class="card fade-in" id="community-section">
+                    <h2>Community Activity</h2>
+                    <div id="community-container">
+                        <!-- Community posts will be dynamically loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#about">About</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#help">Help Center</a>
+                    <a href="#feedback">Feedback</a>
+                </div>
+                <div class="copyright">
+                    <p>&copy; 2023 GameifyContentPlanner. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Task Detail Modal -->
+    <div class="modal" id="task-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-task-modal">&times;</span>
+            <div id="task-detail-content">
+                <!-- Task details will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data storage
+        let userData = {
+            points: 0,
+            tasks: [
+                { id: 1, title: "Create Blog Post", description: "Write a 1000-word blog post", progress: 75, timeLeft: "2 days", completed: false, points: 100 },
+                { id: 2, title: "Social Media Content", description: "Prepare 5 social media posts", progress: 40, timeLeft: "1 day", completed: false, points: 80 },
+                { id: 3, title: "Video Script", description: "Write script for 5-minute video", progress: 100, timeLeft: "Completed", completed: true, points: 150 },
+                { id: 4, title: "Email Newsletter", description: "Design and send monthly newsletter", progress: 20, timeLeft: "3 days", completed: false, points: 70 }
+            ],
+            achievements: [
+                { id: 1, name: "First Steps", icon: "🚶", unlocked: true },
+                { id: 2, name: "Content Creator", icon: "✍️", unlocked: true },
+                { id: 3, name: "Social Media Star", icon: "⭐", unlocked: false },
+                { id: 4, name: "Video Master", icon: "🎥", unlocked: false },
+                { id: 5, name: "Community Hero", icon: "👥", unlocked: false },
+                { id: 6, name: "Inspiration Seeker", icon: "💡", unlocked: false }
+            ],
+            communityPosts: [
+                { id: 1, user: "Alex", content: "Just finished my 10th blog post this month! Feeling accomplished.", likes: 15, comments: 3 },
+                { id: 2, user: "Jamie", content: "Looking for content ideas about sustainable living. Any suggestions?", likes: 8, comments: 12 },
+                { id: 3, user: "Taylor", content: "My latest video hit 1k views! Thanks for all the support.", likes: 24, comments: 5 }
+            ],
+            inspirations: [
+                { id: 1, title: "30-Day Content Challenge", description: "Create content for 30 consecutive days to build your brand." },
+                { id: 2, title: "Storytelling Framework", description: "Use the hero's journey structure to captivate your audience." },
+                { id: 3, title: "Engagement Boosters", description: "5 proven techniques to increase audience engagement." },
+                { id: 4, title: "Content Repurposing", description: "Transform one piece of content into multiple formats." }
+            ]
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTasks();
+            renderAchievements();
+            renderCommunity();
+            renderInspiration();
+            updatePoints();
+            checkUnlockedAchievements();
+            bindEvents();
+        });
+
+        // Render tasks
+        function renderTasks() {
+            const taskGrid = document.getElementById('task-grid');
+            taskGrid.innerHTML = '';
+            
+            userData.tasks.forEach(task => {
+                const taskCard = document.createElement('div');
+                taskCard.className = 'task-card';
+                taskCard.dataset.taskId = task.id;
+                
+                taskCard.innerHTML = `
+                    <h3>${task.title}</h3>
+                    <p>${task.description}</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${task.progress}%"></div>
+                    </div>
+                    <div class="task-meta">
+                        <span>${task.progress}% Complete</span>
+                        <span>${task.timeLeft}</span>
+                    </div>
+                `;
+                
+                taskCard.addEventListener('click', () => showTaskDetail(task));
+                taskGrid.appendChild(taskCard);
+            });
+        }
+
+        // Show task detail modal
+        function showTaskDetail(task) {
+            const modal = document.getElementById('task-modal');
+            const content = document.getElementById('task-detail-content');
+            
+            content.innerHTML = `
+                <h2>${task.title}</h2>
+                <p>${task.description}</p>
+                <div style="margin: 20px 0;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${task.progress}%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <span>${task.progress}% Complete</span>
+                        <span>${task.timeLeft}</span>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                    <span>Rewards: ${task.points} points</span>
+                    ${task.completed ? 
+                        '<span style="color: var(--success); font-weight: bold;">Completed ✓</span>' : 
+                        `<button class="cta-button" id="complete-task-${task.id}">Mark as Complete</button>`
+                    }
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+            
+            if (!task.completed) {
+                document.getElementById(`complete-task-${task.id}`).addEventListener('click', () => {
+                    completeTask(task.id);
+                    modal.style.display = 'none';
+                });
+            }
+        }
+
+        // Complete task
+        function completeTask(taskId) {
+            const taskIndex = userData.tasks.findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+                userData.tasks[taskIndex].progress = 100;
+                userData.tasks[taskIndex].completed = true;
+                userData.tasks[taskIndex].timeLeft = "Completed";
+                
+                // Add points
+                userData.points += userData.tasks[taskIndex].points;
+                updatePoints();
+                
+                // Re-render tasks
+                renderTasks();
+                
+                // Show notification
+                showNotification(`Task completed! +${userData.tasks[taskIndex].points} points earned.`);
+                
+                // Check for unlocked achievements
+                checkUnlockedAchievements();
+            }
+        }
+
+        // Render achievements
+        function renderAchievements() {
+            const achievementGrid = document.getElementById('achievement-grid');
+            achievementGrid.innerHTML = '';
+            
+            userData.achievements.forEach(achievement => {
+                const achievementDiv = document.createElement('div');
+                achievementDiv.className = `achievement ${achievement.unlocked ? 'unlocked' : ''}`;
+                
+                achievementDiv.innerHTML = `
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-name">${achievement.name}</div>
+                `;
+                
+                achievementGrid.appendChild(achievementDiv);
+            });
+        }
+
+        // Check for unlocked achievements
+        function checkUnlockedAchievements() {
+            const completedTasks = userData.tasks.filter(t => t.completed).length;
+            
+            // Check achievements
+            if (completedTasks >= 1 && !userData.achievements[0].unlocked) {
+                unlockAchievement(0);
+            }
+            
+            if (completedTasks >= 5 && !userData.achievements[2].unlocked) {
+                unlockAchievement(2);
+            }
+            
+            if (completedTasks >= 10 && !userData.achievements[3].unlocked) {
+                unlockAchievement(3);
+            }
+            
+            if (userData.points >= 500 && !userData.achievements[5].unlocked) {
+                unlockAchievement(5);
+            }
+        }
+
+        // Unlock achievement
+        function unlockAchievement(achievementId) {
+            userData.achievements[achievementId].unlocked = true;
+            userData.points += 50; // Bonus points for achievement
+            updatePoints();
+            renderAchievements();
+            showNotification(`Achievement unlocked: ${userData.achievements[achievementId].name}! +50 points.`);
+        }
+
+        // Render community
+        function renderCommunity() {
+            const communityContainer = document.getElementById('community-container');
+            communityContainer.innerHTML = '';
+            
+            userData.communityPosts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'community-post';
+                
+                postDiv.innerHTML = `
+                    <div class="post-header">
+                        <div class="user-avatar">${post.user.charAt(0)}</div>
+                        <div>
+                            <div style="font-weight: bold;">${post.user}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-secondary);">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <span>❤️ ${post.likes}</span>
+                        <span>💬 ${post.comments}</span>
+                        <button class="cta-button" style="padding: 5px 15px; font-size: 0.8rem;" id="like-post-${post.id}">Like</button>
+                    </div>
+                `;
+                
+                communityContainer.appendChild(postDiv);
+                
+                // Like button functionality
+                document.getElementById(`like-post-${post.id}`).addEventListener('click', () => {
+                    post.likes++;
+                    renderCommunity();
+                });
+            });
+        }
+
+        // Render inspiration
+        function renderInspiration() {
+            const inspirationContainer = document.getElementById('inspiration-container');
+            inspirationContainer.innerHTML = '';
+            
+            userData.inspirations.forEach(inspiration => {
+                const inspirationDiv = document.createElement('div');
+                inspirationDiv.className = 'inspiration-card';
+                
+                inspirationDiv.innerHTML = `
+                    <div class="inspiration-title">${inspiration.title}</div>
+                    <div class="inspiration-description">${inspiration.description}</div>
+                `;
+                
+                inspirationDiv.addEventListener('click', () => {
+                    showNotification(`Inspiration selected: ${inspiration.title}`);
+                });
+                
+                inspirationContainer.appendChild(inspirationDiv);
+            });
+        }
+
+        // Update points display
+        function updatePoints() {
+            document.getElementById('points-value').textContent = userData.points;
+        }
+
+        // Show notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background-color: var(--accent);
+                color: var(--bg-primary);
+                padding: 15px 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 1001;
+                font-weight: 500;
+                animation: fadeIn 0.3s ease-out;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.3s';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Bind events
+        function bindEvents() {
+            // Navigation
+            document.getElementById('nav-tasks').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('task-grid').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('nav-achievements').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('achievements-section').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('nav-community').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('community-section').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            document.getElementById('nav-inspiration').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('inspiration-section').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Start button
+            document.getElementById('start-btn').addEventListener('click', () => {
+                showNotification('Welcome! Start by completing your first task.');
+                document.getElementById('task-grid').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Redeem button
+            document.getElementById('redeem-btn').addEventListener('click', () => {
+                if (userData.points >= 100) {
+                    userData.points -= 100;
+                    updatePoints();
+                    showNotification('Reward redeemed! Check your email for details.');
+                } else {
+                    showNotification('You need at least 100 points to redeem a reward.');
+                }
+            });
+            
+            // Modal close
+            document.getElementById('close-task-modal').addEventListener('click', () => {
+                document.getElementById('task-modal').style.display = 'none';
+            });
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                const modal = document.getElementById('task-modal');
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamify Your Content Creation Journey","Tasks":"Tasks","Achievements":"Achievements","Community":"Community","Inspiration":"Inspiration","Transform Your Content Creation Journey":"Transform Your Content Creation Journey","Get Started":"Get Started","Your Current Tasks":"Your Current Tasks","Content Inspiration":"Content Inspiration","Redeem":"Redeem","Community Activity":"Community Activity","About":"About","Contact":"Contact","Help Center":"Help Center","Feedback":"Feedback","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. All rights reserved.","\u0026times;":"\u0026times;","Create Blog Post":"Create Blog Post","Write a 1000-word blog post":"Write a 1000-word blog post","Social Media Content":"Social Media Content","Prepare 5 social media posts":"Prepare 5 social media posts","Video Script":"Video Script","Write script for 5-minute video":"Write script for 5-minute video","Email Newsletter":"Email Newsletter","Design and send monthly newsletter":"Design and send monthly newsletter","First Steps":"First Steps","Content Creator":"Content Creator","Social Media Star":"Social Media Star","Video Master":"Video Master","Community Hero":"Community Hero","Inspiration Seeker":"Inspiration Seeker","Just finished my 10th blog post this month! Feeling accomplished.":"Just finished my 10th blog post this month! Feeling accomplished.","Looking for content ideas about sustainable living. Any suggestions?":"Looking for content ideas about sustainable living. Any suggestions?","My latest video hit 1k views! Thanks for all the support.":"My latest video hit 1k views! Thanks for all the support.","Create content for 30 consecutive days to build your brand.":"Create content for 30 consecutive days to build your brand.","Storytelling Framework":"Storytelling Framework","Use the hero's journey structure to captivate your audience.":"Use the hero's journey structure to captivate your audience.","Engagement Boosters":"Engagement Boosters","Content Repurposing":"Content Repurposing","Transform one piece of content into multiple formats.":"Transform one piece of content into multiple formats.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Welcome! Start by completing your first task.","__title__":"GameifyContentPlanner - Gamify Your Content Creation Journey"},"zh-CN":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - 游戏化您的创作之旅","Tasks":"任务","Achievements":"成就","Community":"社区","Inspiration":"灵感","Transform Your Content Creation Journey":"改变您的创作之旅","Get Started":"开始","Your Current Tasks":"您当前的任务","Content Inspiration":"内容灵感","Redeem":"兑换","Community Activity":"社区活动","About":"关于","Contact":"联系","Help Center":"帮助中心","Feedback":"反馈","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. 版权所有。","\u0026times;":"\u0026times;","Create Blog Post":"创建博客文章","Write a 1000-word blog post":"撰写一篇1000字的博客文章","Social Media Content":"社交媒体内容","Prepare 5 social media posts":"准备5条社交媒体帖子","Video Script":"视频脚本","Write script for 5-minute video":"撰写5分钟视频的脚本","Email Newsletter":"电子邮件通讯","Design and send monthly newsletter":"设计和发送每月通讯","First Steps":"第一步","Content Creator":"内容创作者","Social Media Star":"社交媒体明星","Video Master":"视频大师","Community Hero":"社区英雄","Inspiration Seeker":"灵感寻求者","Just finished my 10th blog post this month! Feeling accomplished.":"这个月我刚刚完成了我第10篇博客文章！感觉太棒了。","Looking for content ideas about sustainable living. Any suggestions?":"在寻找关于可持续生活的内容灵感。有什么建议吗？","My latest video hit 1k views! Thanks for all the support.":"我的最新视频达到了1k观看量！感谢大家的支持。","Create content for 30 consecutive days to build your brand.":"连续30天创建内容来建立您的品牌。","Storytelling Framework":"叙事框架","Use the hero's journey structure to captivate your audience.":"使用英雄之旅结构来吸引观众的注意力。","Engagement Boosters":"参与度提升器","Content Repurposing":"内容再利用","Transform one piece of content into multiple formats.":"将一块内容转换成多种格式。","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"欢迎！从完成您的第一个任务开始。","__title__":"GameifyContentPlanner - 游戏化您的创作之旅"},"es":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamificar tu viaje de creación de contenido","Tasks":"Tareas","Achievements":"Logros","Community":"Comunidad","Inspiration":"Inspiración","Transform Your Content Creation Journey":"Transforma tu viaje de creación de contenido","Get Started":"Comienza","Your Current Tasks":" Tus tareas actuales","Content Inspiration":"Inspiración de contenido","Redeem":"Canjear","Community Activity":"Actividad de la comunidad","About":"Acerca de","Contact":"Contacto","Help Center":"Centro de ayuda","Feedback":"Feedback","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Todos los derechos reservados.","\u0026times;":"\u0026times;","Create Blog Post":"Crear entrada de blog","Write a 1000-word blog post":"Escribe un post de blog de 1000 palabras","Social Media Content":"Contenido de redes sociales","Prepare 5 social media posts":"Prepara 5 publicaciones en redes sociales","Video Script":"Guión de video","Write script for 5-minute video":"Escribe un guión para un video de 5 minutos","Email Newsletter":"Boletín por correo electrónico","Design and send monthly newsletter":"Diseña y envía un boletín mensual","First Steps":"Primeros pasos","Content Creator":"Creador de contenido","Social Media Star":"Estrella de redes sociales","Video Master":"Maestro de video","Community Hero":"Héroe de la comunidad","Inspiration Seeker":"Buscador de inspiración","Just finished my 10th blog post this month! Feeling accomplished.":"¡Acabo de terminar mi décima entrada de blog este mes! Me siento satisfecho.","Looking for content ideas about sustainable living. Any suggestions?":"Buscando ideas de contenido sobre vida sostenible. ¿Alguna sugerencia? ","My latest video hit 1k views! Thanks for all the support.":"Mi último video alcanzó 1k visualizaciones! Gracias por todo el apoyo.","Create content for 30 consecutive days to build your brand.":"Crea contenido durante 30 días consecutivos para construir tu marca.","Storytelling Framework":"Marco narrativo","Use the hero's journey structure to captivate your audience.":"Usa la estructura del viaje del héroe para cautivar a tu audiencia.","Engagement Boosters":"Potenciadores de engagement","Content Repurposing":"Reutilización de contenido","Transform one piece of content into multiple formats.":"Transforma un fragmento de contenido en múltiples formatos.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"¡Bienvenido! Comienza completando tu primera tarea.","__title__":"GameifyContentPlanner - Gamificar tu viaje de creación de contenido"},"ja":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - コンテンツ作成の旅を楽しくする","Tasks":"タスク","Achievements":"達成","Community":"コミュニティ","Inspiration":"インスピレーション","Transform Your Content Creation Journey":"あなたのコンテンツ作成の旅を変えよう","Get Started":"始めましょう","Your Current Tasks":"現在のタスク","Content Inspiration":"コンテンツのインスピレーション","Redeem":"リデエム","Community Activity":"コミュニティ活動","About":"关于","Contact":"联系方式","Help Center":"ヘルプセンター","Feedback":"フィードバック","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. 全ての権利は保存されています。","\u0026times;":"\u0026times;","Create Blog Post":"ブログ記事を作成","Write a 1000-word blog post":"1000文字のブログ記事を書く","Social Media Content":"ソーシャルメディアのコンテンツ","Prepare 5 social media posts":"5つのソーシャルメディア投稿を準備","Video Script":"ビデオ脚本","Write script for 5-minute video":"5分間のビデオの脚本を書く","Email Newsletter":"メールニュースレター","Design and send monthly newsletter":"月次ニュースレターのデザインと送信","First Steps":"最初のステップ","Content Creator":"コンテンツ作成者","Social Media Star":"ソーシャルメディアのスター","Video Master":"ビデオマスター","Community Hero":"コミュニティのヒーロー","Inspiration Seeker":"インスピレーションを探す人","Just finished my 10th blog post this month! Feeling accomplished.":"今月で10回目のブログ記事が完成しました！達成感があります。","Looking for content ideas about sustainable living. Any suggestions?":"持続可能な生活に関するコンテンツアイデアを探しています。何か提案はありますか？","My latest video hit 1k views! Thanks for all the support.":"最新のビデオが1万ビューに達しました！皆のご支援に感謝します。","Create content for 30 consecutive days to build your brand.":"ブランドを構築するために30日連続でコンテンツを作成します。","Storytelling Framework":"ストーリーテリングフレームワーク","Use the hero's journey structure to captivate your audience.":"ヒーローの旅の構造を使って聴衆を魅了します。","Engagement Boosters":"エンゲージメント向上策","Content Repurposing":"コンテンツの再利用","Transform one piece of content into multiple formats.":"1つのコンテンツを複数のフォーマットに変換します。","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"ようこそ！最初のタスクを完了することから始めましょう。","__title__":"GameifyContentPlanner - コンテンツ作成の旅を楽しくする"},"ko":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"게임화 내용 계획자 - 내 내용 제작 여정을 게임화하다","Tasks":"작업","Achievements":"성취","Community":"커뮤니티","Inspiration":"감동","Transform Your Content Creation Journey":"내 내용 제작 여정을 변환하다","Get Started":"시작하기","Your Current Tasks":"현재 작업","Content Inspiration":"콘텐츠 감동","Redeem":"환급","Community Activity":"커뮤니티 활동","About":"소개","Contact":"연락처","Help Center":"도움말 센터","Feedback":"피드백","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 게임화 내용 계획자. 모든 권리 보호","\u0026times;":"\u0026times;","Create Blog Post":"블로그 포스트 작성","Write a 1000-word blog post":"1000자 블로그 포스트 작성","Social Media Content":"소셜 미디어 콘텐츠","Prepare 5 social media posts":"5개의 소셜 미디어 포스트 준비","Video Script":"비디오 스크립트","Write script for 5-minute video":"5분 비디오 스크립트 작성","Email Newsletter":"이메일 뉴스레터","Design and send monthly newsletter":"월간 뉴스레터 디자인 및 발송","First Steps":"첫 걸음","Content Creator":"콘텐츠 제작자","Social Media Star":"소셜 미디어 스타","Video Master":"비디오 마스터","Community Hero":"커뮤니티 영웅","Inspiration Seeker":"감동 찾기","Just finished my 10th blog post this month! Feeling accomplished.":"이 달 10번째 블로그 포스트를 마쳤습니다! 성취감을 느낍니다.","Looking for content ideas about sustainable living. Any suggestions?":"지속 가능한 생활에 대한 콘텐츠 아이디어를 찾고 있습니다. 어떤 조언이 있나요?","My latest video hit 1k views! Thanks for all the support.":"제 최신 비디오가 1k 뷰를 달성했습니다! 모든 지원에 감사합니다.","Create content for 30 consecutive days to build your brand.":"브랜드를 구축하기 위해 30일 연속으로 콘텐츠를 작성하세요.","Storytelling Framework":"스토리텔링 프레임워크","Use the hero's journey structure to captivate your audience.":"영웅의 여정 구조를 사용하여 관객을 사로잡으세요.","Engagement Boosters":"참여 촉진제","Content Repurposing":"콘텐츠 다시 활용","Transform one piece of content into multiple formats.":"한 가지 콘텐츠를 여러 형식으로 변환하세요.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"환영합니다! 첫 번째 작업을 완료하기 시작하세요.","__title__":"게임화 내용 계획자 - 내 내용 제작 여정을 게임화하다"},"fr":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamifiez votre voyage de création de contenu","Tasks":"Tâches","Achievements":"Réalisations","Community":"Communauté","Inspiration":"Inspiration","Transform Your Content Creation Journey":"Transformez votre voyage de création de contenu","Get Started":"Commencez","Your Current Tasks":"Vos tâches actuelles","Content Inspiration":"Inspiration pour le contenu","Redeem":"Récupérer","Community Activity":"Activité communautaire","About":"À propos","Contact":"Contact","Help Center":"Centre d'aide","Feedback":"Retour d'information","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Tous droits réservés.","\u0026times;":"\u0026times;","Create Blog Post":"Créer un article de blog","Write a 1000-word blog post":"Écrire un article de blog de 1000 mots","Social Media Content":"Contenu pour les réseaux sociaux","Prepare 5 social media posts":"Préparer 5 publications sur les réseaux sociaux","Video Script":"Script vidéo","Write script for 5-minute video":"Écrire un script pour une vidéo de 5 minutes","Email Newsletter":"Newsletter par e-mail","Design and send monthly newsletter":"Concevoir et envoyer une newsletter mensuelle","First Steps":"Premiers pas","Content Creator":"Créateur de contenu","Social Media Star":"Étoile des réseaux sociaux","Video Master":"Maître du vidéo","Community Hero":"Héros communautaire","Inspiration Seeker":"Chasseur d'inspiration","Just finished my 10th blog post this month! Feeling accomplished.":"Juste terminé mon 10ème article de blog ce mois-ci ! Je me sens accompli.","Looking for content ideas about sustainable living. Any suggestions?":"À la recherche d'idées de contenu sur le mode de vie durable. Avez-vous des suggestions ?","My latest video hit 1k views! Thanks for all the support.":"Ma dernière vidéo a atteint 1k vues ! Merci de tout votre soutien.","Create content for 30 consecutive days to build your brand.":"Créez du contenu pendant 30 jours consécutifs pour construire votre marque.","Storytelling Framework":"Cadre de récit","Use the hero's journey structure to captivate your audience.":"Utilisez la structure du voyage du héros pour captiver votre audience.","Engagement Boosters":"Boosteurs d'engagement","Content Repurposing":"Réutilisation du contenu","Transform one piece of content into multiple formats.":"Transformez un élément de contenu en plusieurs formats.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Bienvenue ! Commencez par terminer votre première tâche.","__title__":"GameifyContentPlanner - Gamifiez votre voyage de création de contenu"},"de":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamifizieren Sie Ihren Content Creation Journey","Tasks":"Aufgaben","Achievements":"Erfolge","Community":"Community","Inspiration":"Inspiration","Transform Your Content Creation Journey":"Transformieren Sie Ihren Content Creation Journey","Get Started":"Erste Schritte","Your Current Tasks":"Ihre aktuellen Aufgaben","Content Inspiration":"Content Inspiration","Redeem":"Einlösen","Community Activity":"Community Aktivität","About":"Über","Contact":"Kontakt","Help Center":"Hilfe Center","Feedback":"Feedback","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Alle Rechte vorbehalten.","\u0026times;":"\u0026times;","Create Blog Post":"Erstellen Sie einen Blogbeitrag","Write a 1000-word blog post":"Schreiben Sie einen 1000-Wörter-Blogbeitrag","Social Media Content":"Social Media Content","Prepare 5 social media posts":"Vorbereiten Sie 5 Social Media Beiträge","Video Script":"Video Drehbuch","Write script for 5-minute video":"Schreiben Sie ein Drehbuch für ein 5-minütiges Video","Email Newsletter":"E-Mail Newsletter","Design and send monthly newsletter":"Entwerfen und senden Sie einen monatlichen Newsletter","First Steps":"Erste Schritte","Content Creator":"Content Creator","Social Media Star":"Social Media Star","Video Master":"Video Meister","Community Hero":"Community Held","Inspiration Seeker":"Inspirationssucher","Just finished my 10th blog post this month! Feeling accomplished.":"Ich habe diesen Monat meinen 10. Blogbeitrag fertiggestellt! Gefühlte Erfolgreich.","Looking for content ideas about sustainable living. Any suggestions?":"Auf der Suche nach Ideen für Content über nachhaltiges Leben. Any suggestions? ","My latest video hit 1k views! Thanks for all the support.":"Mein letztes Video hat 1k Aufrufe erreicht! Vielen Dank für all die Unterstützung.","Create content for 30 consecutive days to build your brand.":"Erstellen Sie für 30 aufeinanderfolgende Tage Content, um Ihre Marke aufzubauen.","Storytelling Framework":"Erzählstruktur Rahmen","Use the hero's journey structure to captivate your audience.":"Verwenden Sie die Heldenerzählstruktur, um Ihr Publikum zu fesseln.","Engagement Boosters":"Beteiligungsbooster","Content Repurposing":"Content Wiederverwendung","Transform one piece of content into multiple formats.":"Transformieren Sie ein Stück Content in mehrere Formate.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Willkommen! Beginnen Sie mit dem Erledigen Ihrer ersten Aufgabe.","__title__":"GameifyContentPlanner - Gamifizieren Sie Ihren Content Creation Journey"},"ru":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamify Your Content Creation Journey","Tasks":"Задачи","Achievements":"Достижения","Community":"Сообщество","Inspiration":"Инспирация","Transform Your Content Creation Journey":"Трансформируйте свой путь создания контента","Get Started":"Начать","Your Current Tasks":"Ваши текущие задачи","Content Inspiration":"Инспирация для контента","Redeem":"Взять","Community Activity":"Активность сообщества","About":"О нас","Contact":"Контакты","Help Center":"Центр поддержки","Feedback":"Обратная связь","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Все права защищены.","\u0026times;":"\u0026times;","Create Blog Post":"Создать запись в блоге","Write a 1000-word blog post":"Написать 1000-словную запись в блоге","Social Media Content":"Контент в социальных сетях","Prepare 5 social media posts":"Подготовить 5 постов в социальных сетях","Video Script":"Сценарий видео","Write script for 5-minute video":"Написать сценарий для 5-минутного видео","Email Newsletter":"Электронный бюллетень","Design and send monthly newsletter":"Разработать и отправить ежемесячный бюллетень","First Steps":"Первые шаги","Content Creator":"Создатель контента","Social Media Star":"Звезда социальных сетей","Video Master":"Мастер видео","Community Hero":"Герой сообщества","Inspiration Seeker":"Искатель вдохновения","Just finished my 10th blog post this month! Feeling accomplished.":"Только что закончил 10-ю запись в блоге в этом месяце! Чувствую себя достигшим.","Looking for content ideas about sustainable living. Any suggestions?":"Ищу идеи для контента о устойчивом проживании. Есть ли у вас предложения?","My latest video hit 1k views! Thanks for all the support.":"Мой последний видео достиг 1 тысячи просмотров! Спасибо за поддержку.","Create content for 30 consecutive days to build your brand.":"Создавайте контент в течение 30 consecutive days, чтобы создать свой бренд.","Storytelling Framework":"Рамка для рассказа историй","Use the hero's journey structure to captivate your audience.":"Используйте структуру путешествия героя, чтобы завладеть вниманием вашей аудитории.","Engagement Boosters":"Усилители вовлечения","Content Repurposing":"Перепрофилирование контента","Transform one piece of content into multiple formats.":"Преобразуйте один элемент контента в несколько форматов.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Добро пожаловать! Начните с выполнения первой задачи.","__title__":"GameifyContentPlanner - Gamify Your Content Creation Journey"},"pt":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamifica sua jornada de criação de conteúdo","Tasks":"Tarefas","Achievements":"Conquistas","Community":"Comunidade","Inspiration":"Inspiração","Transform Your Content Creation Journey":"Transforme sua jornada de criação de conteúdo","Get Started":"Comece","Your Current Tasks":"Suas Tarefas Atuais","Content Inspiration":"Inspiração de Conteúdo","Redeem":"Trocar","Community Activity":"Atividade da Comunidade","About":"Sobre","Contact":"Contato","Help Center":"Central de Ajuda","Feedback":"Feedback","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Todos os direitos reservados.","\u0026times;":"\u0026times;","Create Blog Post":"Criar Postagem de Blog","Write a 1000-word blog post":"Escrever um post de blog de 1000 palavras","Social Media Content":"Conteúdo de Mídia Social","Prepare 5 social media posts":"Preparar 5 posts de mídia social","Video Script":"Roteiro de Vídeo","Write script for 5-minute video":"Escrever roteiro para um vídeo de 5 minutos","Email Newsletter":"Newsletter por E-mail","Design and send monthly newsletter":"Designar e enviar newsletter mensal","First Steps":"Primeiros Passos","Content Creator":"Criador de Conteúdo","Social Media Star":"Estrela da Mídia Social","Video Master":"Mestre do Vídeo","Community Hero":"Herói da Comunidade","Inspiration Seeker":"Procurador de Inspiração","Just finished my 10th blog post this month! Feeling accomplished.":"Acabei meu 10° post de blog neste mês! Me sinto realizado.","Looking for content ideas about sustainable living. Any suggestions?":"Procurando ideias de conteúdo sobre vida sustentável. Alguma sugestão?","My latest video hit 1k views! Thanks for all the support.":"Meu último vídeo atingiu 1k de visualizações! Obrigado pelo apoio.","Create content for 30 consecutive days to build your brand.":"Crie conteúdo por 30 dias consecutivos para construir sua marca.","Storytelling Framework":"Ferramenta de Contação de Histórias","Use the hero's journey structure to captivate your audience.":"Use a estrutura da jornada do herói para captivar sua audiência.","Engagement Boosters":"Aceleradores de Engajamento","Content Repurposing":"Reutilização de Conteúdo","Transform one piece of content into multiple formats.":"Transforme um único conteúdo em múltiplos formatos.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Bem-vindo! Comece completando sua primeira tarefa.","__title__":"GameifyContentPlanner - Gamifica sua jornada de criação de conteúdo"},"ar":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"يُلعب محتوى مخطط التكوين - يُلعب رحلتك في إنشاء المحتوى","Tasks":"المهام","Achievements":"إنجازات","Community":"المجتمع","Inspiration":"الإلهام","Transform Your Content Creation Journey":"تحويل رحلتك في إنشاء المحتوى","Get Started":"ابدأ","Your Current Tasks":"المهام الحالية الخاصة بك","Content Inspiration":"إلهام المحتوى","Redeem":"استبدال","Community Activity":"أنشطة المجتمع","About":"عن","Contact":" الاتصال","Help Center":"مركز المساعدة","Feedback":"ملاحظات","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. جميع الحقوق محفوظة.","\u0026times;":"\u0026times;","Create Blog Post":"إنشاء منشورブログ","Write a 1000-word blog post":"كتابة منشورブログ يُحتوي على 1000 كلمة","Social Media Content":"محتوى وسائل التواصل الاجتماعي","Prepare 5 social media posts":"إعداد 5 منشورات على وسائل التواصل الاجتماعي","Video Script":"سيناريو الفيديو","Write script for 5-minute video":"كتابة سيناريو لفيديو دام 5 دقائق","Email Newsletter":"بريد إلكتروني للمجلة","Design and send monthly newsletter":"تصميم وإرسال مجلة شهرية","First Steps":" الخطوات الأولى","Content Creator":"مُصنّع المحتوى","Social Media Star":"نجمة وسائل التواصل الاجتماعي","Video Master":"مُهار الفيديو","Community Hero":"بطلا المجتمع","Inspiration Seeker":"الباحث عن الإلهام","Just finished my 10th blog post this month! Feeling accomplished.":"أكملت منشورblogs العاشر هذا الشهر! أحسس بالإنجاز.","Looking for content ideas about sustainable living. Any suggestions?":"أبحث عن أفكار محتوى حول العيش المستدام. هل لديك أي اقتراحات؟","My latest video hit 1k views! Thanks for all the support.":"وصل فيديوي الأخير إلى 1000 مشاهدة! شكرًا لجميع الدعم.","Create content for 30 consecutive days to build your brand.":"أنشئ محتوى لمدة 30 يومًا متتالية لبناء علامتك التجارية.","Storytelling Framework":"إطار القصص","Use the hero's journey structure to captivate your audience.":"استخدم هيكل رحلة البطل لجذب جمهورك.","Engagement Boosters":"مُسرعو الإشراك","Content Repurposing":"إعادة توجيه المحتوى","Transform one piece of content into multiple formats.":"تحويل قطعة واحدة من المحتوى إلى تنسيقات متعددة.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"مرحبًا! ابدا بإكمال مهامك الأولى.","__title__":"يُلعب محتوى مخطط التكوين - يُلعب رحلتك في إنشاء المحتوى"},"hi":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - अपने कंटेंट क्रिएशन यात्रा को गेम करें","Tasks":"कार्य","Achievements":"उपलब्धियां","Community":"समुदाय","Inspiration":"प्रेरणा","Transform Your Content Creation Journey":"अपने कंटेंट क्रिएशन यात्रा को बदलें","Get Started":"शुरू करें","Your Current Tasks":"आपके वर्तमान कार्य","Content Inspiration":"कंटेंट प्रेरणा","Redeem":"रिडीम","Community Activity":"समुदाय गतिविधि","About":"के बारे में","Contact":"संपर्क","Help Center":"सहायता केंद्र","Feedback":"प्रतिक्रिया","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. सर्वाधिकार सुरक्षित।","\u0026times;":"\u0026times;","Create Blog Post":"ब्लॉग पोस्ट बनाएं","Write a 1000-word blog post":"1000-शब्द का ब्लॉग पोस्ट लिखें","Social Media Content":"सोशल मीडिया कंटेंट","Prepare 5 social media posts":"5 सोशल मीडिया पोस्त तैयार करें","Video Script":"वीडियो स्क्रिप्ट","Write script for 5-minute video":"5-मिनट के वीडियो के लिए स्क्रिप्ट लिखें","Email Newsletter":"ईमेल न्यूज़लेटर","Design and send monthly newsletter":"मासिक न्यूज़लेटर डिज़ाइन करें और भेजें","First Steps":"पहले कदम","Content Creator":"कंटेंट क्रिएटर","Social Media Star":"सोशल मीडिया स्टार","Video Master":"वीडियो मास्टर","Community Hero":"समुदाय हीरो","Inspiration Seeker":"प्रेरणा खोजने वाला","Just finished my 10th blog post this month! Feeling accomplished.":"इस महीने मेरा 10वां ब्लॉग पोस्ट अभी खत्म हुआ! सफल महसूस हो रहा हूं।","Looking for content ideas about sustainable living. Any suggestions?":"स्थिर जीवन के बारे में कंटेंट विचार ढूंढ रहा हूं। कोई सुझाव?","My latest video hit 1k views! Thanks for all the support.":"मेरा नवीनतम वीडियो 1k व्यूज़ पार कर गया! सभी का धन्यवाद।","Create content for 30 consecutive days to build your brand.":"अपने ब्रांड बनाने के लिए 30 लगातार दिनों तक कंटेंट बनाएं।","Storytelling Framework":"कथा कहने की ढांचा","Use the hero's journey structure to captivate your audience.":"अपने दर्शकों को मोहित करने के लिए हीरो की यात्रा की संरचना का उपयोग करें।","Engagement Boosters":"इंगेजमेंट बूस्टर्स","Content Repurposing":"कंटेंट रिपरपोजिंग","Transform one piece of content into multiple formats.":"एक कंटेंट को कई फॉर्मेट में बदलें।","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"स्वागत है! अपना पहला कार्य पूरा करके शुरू करें।","__title__":"GameifyContentPlanner - अपने कंटेंट क्रिएशन यात्रा को गेम करें"},"id":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Jadikan Perjalanan Pembuatan Konten Anda Lebih Menyenangkan","Tasks":"Tugas","Achievements":"Pencapaian","Community":"Komunitas","Inspiration":"Inspirasi","Transform Your Content Creation Journey":"Ubahlah Perjalanan Pembuatan Konten Anda","Get Started":"Mulai Sekarang","Your Current Tasks":"Tugas Saat Ini Anda","Content Inspiration":"Inspirasi Konten","Redeem":"Tukarkan","Community Activity":"Aktivitas Komunitas","About":"Tentang","Contact":"Kontak","Help Center":"Pusat Bantuan","Feedback":"Umpan Balik","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Semua hak dilindungi.","\u0026times;":"\u0026times;","Create Blog Post":"Buat Postingan Blog","Write a 1000-word blog post":"Tulis postingan blog berisi 1000 kata","Social Media Content":"Konten Media Sosial","Prepare 5 social media posts":"Siapkan 5 postingan media sosial","Video Script":"Naskah Video","Write script for 5-minute video":"Tulis naskah untuk video 5 menit","Email Newsletter":"Newsletter Email","Design and send monthly newsletter":"Desain dan kirim newsletter bulanan","First Steps":"Langkah Pertama","Content Creator":"Pembuat Konten","Social Media Star":"Bintang Media Sosial","Video Master":"Master Video","Community Hero":"Pahlawan Komunitas","Inspiration Seeker":"Pencari Inspirasi","Just finished my 10th blog post this month! Feeling accomplished.":"Baru selesai menulis postingan blog ke-10 bulan ini! Merasa puas dengan prestasi.","Looking for content ideas about sustainable living. Any suggestions?":"Mencari ide konten tentang gaya hidup berkelanjutan. Ada saran?","My latest video hit 1k views! Thanks for all the support.":"Video terbaru saya mencapai 1k tontonan! Terima kasih atas semua dukungan.","Create content for 30 consecutive days to build your brand.":"Buat konten selama 30 hari berturut-turut untuk membangun merek Anda.","Storytelling Framework":"Kerangka Narasi","Use the hero's journey structure to captivate your audience.":"Gunakan struktur perjalanan pahlawan untuk memikat audiens Anda.","Engagement Boosters":"Peningkat Keterlibatan","Content Repurposing":"Penulisan Ulang Konten","Transform one piece of content into multiple formats.":"Ubah satu konten menjadi beberapa format.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Selamat datang! Mulai dengan menyelesaikan tugas pertama Anda.","__title__":"GameifyContentPlanner - Jadikan Perjalanan Pembuatan Konten Anda Lebih Menyenangkan"},"vi":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - Gamify Hành trình Tạo Nội dung của Bạn","Tasks":"Nhiệm vụ","Achievements":"Thành tựu","Community":"Cộng đồng","Inspiration":"Cảm hứng","Transform Your Content Creation Journey":"Biến Đổi Hành trình Tạo Nội dung Của Bạn","Get Started":"Bắt Đầu","Your Current Tasks":"Nhiệm vụ Hiện tại của Bạn","Content Inspiration":"Cảm hứng Nội dung","Redeem":"Đổi thưởng","Community Activity":"Hoạt động Cộng đồng","About":"Về chúng tôi","Contact":"Liên hệ","Help Center":"Trung tâm Trợ giúp","Feedback":"Phản hồi","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. Tất cả quyền được bảo vệ.","\u0026times;":"\u0026times;","Create Blog Post":"Tạo Bài viết Blog","Write a 1000-word blog post":"Viết một bài blog 1000 từ","Social Media Content":"Nội dung Mạng xã hội","Prepare 5 social media posts":"Chuẩn bị 5 bài đăng mạng xã hội","Video Script":"Kịch bản Video","Write script for 5-minute video":"Viết kịch bản cho video 5 phút","Email Newsletter":"Bản tin Email","Design and send monthly newsletter":"Thiết kế và gửi bản tin hàng tháng","First Steps":"Những Bước Đầu tiên","Content Creator":"Người Tạo Nội dung","Social Media Star":"Ngôi Sao Mạng xã hội","Video Master":"Bậc Thầy Video","Community Hero":"Anh Hùng Cộng đồng","Inspiration Seeker":"Người Tìm Cảm hứng","Just finished my 10th blog post this month! Feeling accomplished.":"Mới hoàn thành bài blog thứ 10 trong tháng này! Cảm thấy tự hào lắm.","Looking for content ideas about sustainable living. Any suggestions?":"Đang tìm ý tưởng nội dung về lối sống bền vững. Có gợi ý nào không?","My latest video hit 1k views! Thanks for all the support.":"Video mới nhất của tôi đạt 1k lượt xem! Cảm ơn vì đã có sự hỗ trợ.","Create content for 30 consecutive days to build your brand.":"Tạo nội dung trong 30 ngày liên tiếp để xây dựng thương hiệu của bạn.","Storytelling Framework":"Khung Kể chuyện","Use the hero's journey structure to captivate your audience.":"Sử dụng cấu trúc hành trình của anh hùng để thu hút khán giả.","Engagement Boosters":"Tăng Tương tác","Content Repurposing":"Tái sử dụng Nội dung","Transform one piece of content into multiple formats.":"Chuyển đổi một nội dung thành nhiều định dạng.","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"Chào mừng! Bắt đầu bằng cách hoàn thành nhiệm vụ đầu tiên của bạn.","__title__":"GameifyContentPlanner - Gamify Hành trình Tạo Nội dung của Bạn"},"th":{"GameifyContentPlanner - Gamify Your Content Creation Journey":"GameifyContentPlanner - ทำให้การสร้างเนื้อหาของคุณเป็นเกม","Tasks":"งาน","Achievements":"ความสำเร็จ","Community":"ชุมชน","Inspiration":"แรงบันดาลใจ","Transform Your Content Creation Journey":"เปลี่ยนแปลงการสร้างเนื้อหาของคุณ","Get Started":"เริ่มต้น","Your Current Tasks":"งานปัจจุบันของคุณ","Content Inspiration":"แรงบันดาลใจด้านเนื้อหา","Redeem":"แลก","Community Activity":"กิจกรรมชุมชน","About":"เกี่ยวกับ","Contact":"ติดต่อ","Help Center":"ศูนย์ช่วยเหลือ","Feedback":"ความคิดเห็น","\u0026copy; 2023 GameifyContentPlanner. All rights reserved.":"\u0026copy; 2023 GameifyContentPlanner. All rights reserved.","\u0026times;":"\u0026times;","Create Blog Post":"สร้างบล็อกโพสต์","Write a 1000-word blog post":"เขียนบล็อกโพสต์ 1000 คำ","Social Media Content":"เนื้อหาโซเชียลมีเดีย","Prepare 5 social media posts":"เตรียมโพสต์โซเชียลมีเดีย 5 รายการ","Video Script":"สคริปต์วิดีโอ","Write script for 5-minute video":"เขียนสคริปต์สำหรับวิดีโอ 5 นาที","Email Newsletter":"นิวส์เล็ตเตอร์ทางอีเมล","Design and send monthly newsletter":"ออกแบบและส่งนิวส์เล็ตเตอร์รายเดือน","First Steps":"ขั้นตอนแรก","Content Creator":"ผู้สร้างเนื้อหา","Social Media Star":"ดาราโซเชียลมีเดีย","Video Master":"มาสเตอร์วิดีโอ","Community Hero":"วีรบุรุษของชุมชน","Inspiration Seeker":"ผู้ค้นหาแรงบันดาลใจ","Just finished my 10th blog post this month! Feeling accomplished.":"เพิ่งจบบล็อกโพสต์ครั้งที่ 10 ของเดือนนี้! รู้สึกภูมิใจมาก","Looking for content ideas about sustainable living. Any suggestions?":"กำลังมองหาแนวคิดด้านเนื้อหาเกี่ยวกับการดำรงชีวิตอย่างยั่งยืน. มีข้อเสนอแนะไหมคะ","My latest video hit 1k views! Thanks for all the support.":"วิดีโอล่าสุดของฉันมียอดวิว 1k! ขอบคุณสำหรับการสนับสนุนทั้งหมด","Create content for 30 consecutive days to build your brand.":"สร้างเนื้อหาเป็นเวลา 30 วันติดต่อกันเพื่อสร้างแบรนด์ของคุณ","Storytelling Framework":"กรอบการเล่าเรื่อง","Use the hero's journey structure to captivate your audience.":"ใช้โครงสร้างของการเดินทางของวีรบุรุษเพื่อดึงดูดผู้ชมของคุณ","Engagement Boosters":"เครื่องมือเพิ่มการมีส่วนร่วม","Content Repurposing":"นำเนื้อหากลับมาใช้ใหม่","Transform one piece of content into multiple formats.":"แปลงเนื้อหาชิ้นเดียวเป็นหลายรูปแบบ","margin: 20px 0;":"margin: 20px 0;","display: flex; justify-content: space-between; margin-top: 10px;":"display: flex; justify-content: space-between; margin-top: 10px;","display: flex; justify-content: space-between; align-items: center; margin-top: 20px;":"display: flex; justify-content: space-between; align-items: center; margin-top: 20px;","font-weight: bold;":"font-weight: bold;","padding: 5px 15px; font-size: 0.8rem;":"padding: 5px 15px; font-size: 0.8rem;","opacity 0.3s":"opacity 0.3s","Welcome! Start by completing your first task.":"ยินดีต้อนรับ! เริ่มต้นด้วยการทำงานแรกของคุณ","__title__":"GameifyContentPlanner - ทำให้การสร้างเนื้อหาของคุณเป็นเกม"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
