@@ -12,6 +12,7 @@ export NODE_OPTIONS="--max-old-space-size=6144"   # 12G 设备的安全堆上限
 
 DIR="/storage/emulated/0/脚本"
 PROGRESS="$DIR/PROGRESS.md"
+PIPE_HB="$DIR/.流水线心跳"   # 心跳文件（epoch 秒，每轮写一次）：供 AutoJs6 侧看门狗（调度器）判断 Termux 存活（2026-10-03 新增）
 CC_SESSION="ccode_auto"
 CC_DIR="/data/data/com.termux/files/home/jc_tool"
 SCHED_JS="$DIR/灵感雷达轮流调度.js"
@@ -273,8 +274,10 @@ main() {
     mkdir -p "$HOME/tmp"   # Termux 没有 /tmp：流水线所有临时文件统一放这里
     [ -f "$PROGRESS" ] || echo "# 灵感雷达全自动流水线进度（自动写入）" > "$PROGRESS"
     log "========== 流水线启动 =========="
+    date +%s > "$PIPE_HB"
     backup_scripts_once
     while true; do
+        date +%s > "$PIPE_HB"   # 心跳（约每分钟一次）：AutoJs6 调度器靠它判断流水线死活
         start_ccode
         ensure_scheduler
         self_check
