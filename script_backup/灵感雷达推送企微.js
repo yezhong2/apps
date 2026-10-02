@@ -873,13 +873,13 @@ function extractVisibleTexts(html) {
 }
 // GLM 翻译：每语言单独一次调用（扁平格式，实测三语合一的大 JSON 模型容易翻车——格式坍塌/语言混用）；
 // 单语言失败只丢该语言包，其余照常；全部失败才返回空对象（页面保持原文单语言）
-function translatePageTextsOne(lang, langName, texts) {
+function translatePageTextsOne(lang, langName, texts, maxTok) {
     if (dailyTokenCost > DAILY_BUDGET) return null;
     let prompt = "把下面的文案逐条翻译成 " + langName + "。\n严格输出一个 JSON 对象，形如：\n{\"原文\":\"译文\",\"原文2\":\"译文2\"}\n要求：\n- 键必须与原文完全一致（含大小写与标点），禁止省略任何条目\n- 译文必须全部使用该语言本身，严格禁止出现中文或其他语言，发现混用即不合格\n- 保持文案里的数字与格式原样\n- 禁止 markdown 围栏、禁止任何解释文字，只输出 JSON\n原文列表：\n" + JSON.stringify(texts);
     let raw = callLLM([
         {role: "system", content: "你是专业的" + langName + "译者。只输出 JSON，不输出任何其他内容。"},
         {role: "user", content: prompt}
-    ], 2000);
+    ], maxTok || 8000, false, 0.3); // 输出含原文键+译文，原 2000 必截断（i18n 丢包根因）；温度 0.3 提高键精确度
     if (!raw) return null;
     let j = raw.replace(/^```[a-z]*\s*/i, "").replace(/```\s*$/, "").trim();
     try {
@@ -899,12 +899,43 @@ function translatePageTextsOne(lang, langName, texts) {
     log("⚠️ i18n 翻译输出不是合法 JSON（" + lang + "），跳过该语言");
     return null;
 }
+// 稳健翻译：单次失败→对半拆分重试；成功但有缺键→补翻缺失条目（根治截断丢包与"半包"）
+function translateTextsRobust(lang, langName, texts) {
+    if (!texts || !texts.length) return null;
+    let obj = translatePageTextsOne(lang, langName, texts);
+    if (!obj && texts.length > 2) {
+        let h = Math.floor(texts.length / 2);
+        let a = translatePageTextsOne(lang, langName, texts.slice(0, h));
+        let b = translatePageTextsOne(lang, langName, texts.slice(h));
+        if (a || b) {
+            obj = {};
+            if (a) for (let k in a) obj[k] = a[k];
+            if (b) for (let k in b) obj[k] = b[k];
+            log("⚠️ i18n " + lang + " 单次输出超限，已对半拆分重试（" + Object.keys(obj).length + "/" + texts.length + " 条）");
+        }
+    }
+    if (!obj) return null;
+    let miss = [];
+    for (let i = 0; i < texts.length; i++) if (obj[texts[i]] === undefined) miss.push(texts[i]);
+    if (miss.length > 0 && miss.length < texts.length && dailyTokenCost <= DAILY_BUDGET) {
+        let m = translatePageTextsOne(lang, langName, miss);
+        if (m) {
+            let fixed = 0;
+            for (let k2 in m) { if (obj[k2] === undefined) { obj[k2] = m[k2]; fixed++; } }
+            if (fixed > 0) log("🔧 i18n " + lang + " 补翻缺失 " + fixed + " 条");
+        }
+    }
+    let left = 0;
+    for (let j = 0; j < texts.length; j++) if (obj[texts[j]] === undefined) left++;
+    if (left > 0) log("⚠️ i18n " + lang + " 仍缺 " + left + " 条（该语言将显示部分原文）");
+    return obj;
+}
 function translatePageTexts(texts) {
     let out = {};
     let langs = [["zh-CN", "简体中文"], ["es", "西班牙语"], ["ja", "日语"], ["ko", "韩语"], ["fr", "法语"], ["de", "德语"], ["ru", "俄语"], ["pt", "葡萄牙语"], ["ar", "阿拉伯语"], ["hi", "印地语"], ["id", "印尼语"], ["vi", "越南语"], ["th", "泰语"]];
     for (let i = 0; i < langs.length; i++) {
         if (dailyTokenCost > DAILY_BUDGET) break;
-        let one = translatePageTextsOne(langs[i][0], langs[i][1], texts);
+        let one = translateTextsRobust(langs[i][0], langs[i][1], texts);
         if (one) out[langs[i][0]] = one;
     }
     return out;
@@ -916,6 +947,7 @@ const I18N_RESOLVER_SRC = [
     "var PACKS=window.__I18N_PACKS||{};",
     "var FIXED=window.__I18N_FIXED||{};",
     "var GEO=window.__I18N_GEO||{};",
+    "var RES_VER=\"20261003b\";",
     "var busy=false;",
     "function norm(s){return (s||\"\").replace(/\\s+/g,\" \").trim();}",
     "function navLang(){",
@@ -956,9 +988,12 @@ const I18N_RESOLVER_SRC = [
     "if(el.closest&&el.closest(\"#lang-switch\"))continue;",
     "if(el.closest&&el.closest(\"#adSlot\"))continue;",
     "if(el.children&&el.children.length)continue;",
-    "var key=norm(el.textContent);",
-    "if(fromEn&&!enMap[key])continue;",
-    "if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];",
+    "var cur=norm(el.textContent);",
+    "var key=null;",
+    "if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}",
+    "else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}",
+    "else if(el.__i18nBase===undefined){el.__i18nBase=cur;}",
+    "if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}",
     "}",
     "if(map.__title__)document.title=map.__title__;",
     "}finally{busy=false;}",
@@ -1074,7 +1109,7 @@ function injectI18n(html) {
         let srcIsCjk = isCjkTexts(texts);
         let packs = {};
         if (srcIsCjk) {
-            packs.en = translatePageTextsOne("en", "英语", texts) || {};
+            packs.en = translateTextsRobust("en", "英语", texts) || {};
             texts.forEach(function(k) { if (packs.en[k] === undefined) packs.en[k] = k; }); // 缺失条目回填原文
         } else {
             packs.en = {};
