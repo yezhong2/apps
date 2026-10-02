@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PiOS Toolkit - Developer Tools for PiOS Platform</title><meta name="description" content="Free online tool: PiOS Toolkit - Developer Tools for PiOS Platform. No signup, no payment — free forever.">
+<meta property="og:title" content="PiOS Toolkit - Developer Tools for PiOS Platform">
+<meta property="og:description" content="Free online tool: PiOS Toolkit - Developer Tools for PiOS Platform. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_064406_PiOS Toolkit.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6bb2ff;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        /* Tools Section */
+        .tools {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .tool-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tool-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Tool Interface */
+        .tool-interface {
+            display: none;
+            padding: 2rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        .tool-interface.active {
+            display: block;
+        }
+        
+        .input-section {
+            margin-bottom: 2rem;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: monospace;
+            resize: vertical;
+        }
+        
+        .file-upload {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .file-upload input[type="file"] {
+            display: none;
+        }
+        
+        .file-upload-label {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-label:hover {
+            background-color: #3a3a3a;
+            border-color: var(--accent);
+        }
+        
+        .file-name {
+            color: var(--text-secondary);
+        }
+        
+        .output-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .output-section.active {
+            display: block;
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .copy-btn:hover {
+            background-color: #3a3a3a;
+            border-color: var(--accent);
+        }
+        
+        .output-content {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .compatibility-score {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .score-high {
+            background-color: var(--success);
+        }
+        
+        .score-medium {
+            background-color: var(--warning);
+        }
+        
+        .score-low {
+            background-color: var(--error);
+        }
+        
+        .compatibility-tips {
+            background-color: var(--bg-primary);
+            border-left: 4px solid var(--accent);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .compatibility-tips h4 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .compatibility-tips ul {
+            list-style-position: inside;
+            color: var(--text-secondary);
+        }
+        
+        /* Help Section */
+        .help {
+            padding: 4rem 0;
+            background-color: var(--bg-secondary);
+        }
+        
+        .help-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .help-card {
+            background-color: var(--bg-tertiary);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .help-card h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .help-card p {
+            color: var(--text-secondary);
+        }
+        
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            background-color: var(--bg-secondary);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">PiOS Toolkit</div>
+            <ul class="nav-links">
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#help">Help</a></li>
+                <li><a href="#feedback">Feedback</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Developer Tools for PiOS Platform</h1>
+            <p>Comprehensive toolkit to help you develop, test, and optimize applications for the PiOS ecosystem. Get compatibility insights, debug code, generate prototypes, and more.</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="get-started">Get Started</button>
+                <button class="btn btn-secondary" id="learn-more">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section class="tools" id="tools">
+        <div class="container">
+            <h2 class="section-title">Development Tools</h2>
+            <div class="tools-grid">
+                <!-- Compatibility Checker -->
+                <div class="tool-card">
+                    <div class="tool-icon">🔍</div>
+                    <h3 class="tool-title">Compatibility Checker</h3>
+                    <p class="tool-description">Analyze your app's compatibility with PiOS devices and get optimization recommendations.</p>
+                    <button class="btn btn-primary" id="compatibility-btn">Check Compatibility</button>
+                </div>
+
+                <!-- Code Debugger -->
+                <div class="tool-card">
+                    <div class="tool-icon">🐞</div>
+                    <h3 class="tool-title">Code Debugger</h3>
+                    <p class="tool-description">Debug your code snippets with detailed error diagnostics and fix suggestions.</p>
+                    <button class="btn btn-primary" id="debugger-btn">Debug Code</button>
+                </div>
+
+                <!-- Prototype Designer -->
+                <div class="tool-card">
+                    <div class="tool-icon">🎨</div>
+                    <h3 class="tool-title">Prototype Designer</h3>
+                    <p class="tool-description">Upload design images to generate interactive prototypes for your PiOS apps.</p>
+                    <button class="btn btn-primary" id="prototype-btn">Create Prototype</button>
+                </div>
+
+                <!-- API Document Generator -->
+                <div class="tool-card">
+                    <div class="tool-icon">📚</div>
+                    <h3 class="tool-title">API Document Generator</h3>
+                    <p class="tool-description">Generate comprehensive documentation from your PiOS API endpoints.</p>
+                    <button class="btn btn-primary" id="api-doc-btn">Generate Docs</button>
+                </div>
+
+                <!-- Code Optimizer -->
+                <div class="tool-card">
+                    <div class="tool-icon">⚡</div>
+                    <h3 class="tool-title">Code Optimizer</h3>
+                    <p class="tool-description">Optimize and compress your code files for better performance on PiOS devices.</p>
+                    <button class="btn btn-primary" id="optimizer-btn">Optimize Code</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tool Interfaces -->
+    <div class="container">
+        <!-- Compatibility Checker Interface -->
+        <div class="tool-interface" id="compatibility-interface">
+            <h3>Compatibility Checker</h3>
+            <div class="input-section">
+                <label class="input-label" for="app-package">Enter App Package Name:</label>
+                <input type="text" id="app-package" class="input-field" placeholder="e.g., com.example.myapp">
+            </div>
+            <button class="btn btn-primary" id="check-compatibility">Check Compatibility</button>
+            
+            <div class="output-section" id="compatibility-output">
+                <div class="output-header">
+                    <h4>Compatibility Analysis</h4>
+                    <button class="copy-btn" id="copy-compatibility">Copy Results</button>
+                </div>
+                <div id="compatibility-content"></div>
+            </div>
+        </div>
+
+        <!-- Code Debugger Interface -->
+        <div class="tool-interface" id="debugger-interface">
+            <h3>Code Debugger</h3>
+            <div class="input-section">
+                <label class="input-label" for="code-snippet">Enter Code Snippet:</label>
+                <textarea id="code-snippet" class="input-field" rows="10" placeholder="Paste your code here..."></textarea>
+            </div>
+            <button class="btn btn-primary" id="debug-code">Debug Code</button>
+            
+            <div class="output-section" id="debug-output">
+                <div class="output-header">
+                    <h4>Debug Results</h4>
+                    <button class="copy-btn" id="copy-debug">Copy Results</button>
+                </div>
+                <div id="debug-content"></div>
+            </div>
+        </div>
+
+        <!-- Prototype Designer Interface -->
+        <div class="tool-interface" id="prototype-interface">
+            <h3>Prototype Designer</h3>
+            <div class="input-section">
+                <label class="input-label">Upload Design Image:</label>
+                <div class="file-upload">
+                    <input type="file" id="design-file" accept="image/*">
+                    <label for="design-file" class="file-upload-label">Choose File</label>
+                    <span class="file-name" id="design-file-name">No file chosen</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="generate-prototype">Generate Prototype</button>
+            
+            <div class="output-section" id="prototype-output">
+                <div class="output-header">
+                    <h4>Generated Prototype</h4>
+                    <button class="copy-btn" id="copy-prototype">Copy Code</button>
+                </div>
+                <div id="prototype-content"></div>
+            </div>
+        </div>
+
+        <!-- API Document Generator Interface -->
+        <div class="tool-interface" id="api-doc-interface">
+            <h3>API Document Generator</h3>
+            <div class="input-section">
+                <label class="input-label" for="api-endpoint">Enter API Endpoint:</label>
+                <input type="text" id="api-endpoint" class="input-field" placeholder="e.g., GET /api/users">
+            </div>
+            <button class="btn btn-primary" id="generate-docs">Generate Documentation</button>
+            
+            <div class="output-section" id="api-doc-output">
+                <div class="output-header">
+                    <h4>API Documentation</h4>
+                    <button class="copy-btn" id="copy-api-doc">Copy Documentation</button>
+                </div>
+                <div id="api-doc-content"></div>
+            </div>
+        </div>
+
+        <!-- Code Optimizer Interface -->
+        <div class="tool-interface" id="optimizer-interface">
+            <h3>Code Optimizer</h3>
+            <div class="input-section">
+                <label class="input-label">Upload Code File:</label>
+                <div class="file-upload">
+                    <input type="file" id="code-file" accept=".js,.css,.html,.ts">
+                    <label for="code-file" class="file-upload-label">Choose File</label>
+                    <span class="file-name" id="code-file-name">No file chosen</span>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="optimize-code">Optimize Code</button>
+            
+            <div class="output-section" id="optimizer-output">
+                <div class="output-header">
+                    <h4>Optimized Code</h4>
+                    <button class="copy-btn" id="copy-optimized">Copy Code</button>
+                </div>
+                <div id="optimizer-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Section -->
+    <section class="help" id="help">
+        <div class="container">
+            <h2 class="section-title">Help & Resources</h2>
+            <div class="help-content">
+                <div class="help-card">
+                    <h3>Getting Started</h3>
+                    <p>Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.</p>
+                </div>
+                <div class="help-card">
+                    <h3>API Reference</h3>
+                    <p>Explore the PiOS platform APIs and services available for application development.</p>
+                </div>
+                <div class="help-card">
+                    <h3>Tutorials</h3>
+                    <p>Step-by-step guides to help you build and deploy your first PiOS application.</p>
+                </div>
+                <div class="help-card">
+                    <h3>Community</h3>
+                    <p>Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>PiOS Toolkit - Developer Tools for the PiOS Platform</p>
+        </div>
+    </footer>
+
+    <script>
+        // Tool selection functionality
+        const toolCards = document.querySelectorAll('.tool-card');
+        const toolInterfaces = document.querySelectorAll('.tool-interface');
+        const getStartedBtn = document.getElementById('get-started');
+        const learnMoreBtn = document.getElementById('learn-more');
+        
+        // Get started button
+        getStartedBtn.addEventListener('click', () => {
+            document.getElementById('tools').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Learn more button
+        learnMoreBtn.addEventListener('click', () => {
+            document.getElementById('help').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Tool card buttons
+        document.getElementById('compatibility-btn').addEventListener('click', () => {
+            showToolInterface('compatibility-interface');
+        });
+        
+        document.getElementById('debugger-btn').addEventListener('click', () => {
+            showToolInterface('debugger-interface');
+        });
+        
+        document.getElementById('prototype-btn').addEventListener('click', () => {
+            showToolInterface('prototype-interface');
+        });
+        
+        document.getElementById('api-doc-btn').addEventListener('click', () => {
+            showToolInterface('api-doc-interface');
+        });
+        
+        document.getElementById('optimizer-btn').addEventListener('click', () => {
+            showToolInterface('optimizer-interface');
+        });
+        
+        // Show tool interface function
+        function showToolInterface(interfaceId) {
+            toolInterfaces.forEach(interface => {
+                interface.classList.remove('active');
+            });
+            
+            const targetInterface = document.getElementById(interfaceId);
+            targetInterface.classList.add('active');
+            
+            // Scroll to the interface
+            targetInterface.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
+        // File upload functionality
+        const designFileInput = document.getElementById('design-file');
+        const designFileName = document.getElementById('design-file-name');
+        const codeFileInput = document.getElementById('code-file');
+        const codeFileName = document.getElementById('code-file-name');
+        
+        designFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                designFileName.textContent = e.target.files[0].name;
+            } else {
+                designFileName.textContent = 'No file chosen';
+            }
+        });
+        
+        codeFileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                codeFileName.textContent = e.target.files[0].name;
+            } else {
+                codeFileName.textContent = 'No file chosen';
+            }
+        });
+        
+        // Compatibility Checker
+        document.getElementById('check-compatibility').addEventListener('click', () => {
+            const packageName = document.getElementById('app-package').value.trim();
+            const outputSection = document.getElementById('compatibility-output');
+            const outputContent = document.getElementById('compatibility-content');
+            
+            if (!packageName) {
+                outputContent.innerHTML = '<p style="color: var(--error);">Please enter an app package name.</p>';
+                outputSection.classList.add('active');
+                return;
+            }
+            
+            // Show loading
+            outputContent.innerHTML = '<div class="loading"></div> Analyzing compatibility...';
+            outputSection.classList.add('active');
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Generate mock compatibility data based on package name
+                const score = Math.floor(Math.random() * 100);
+                const scoreClass = score >= 80 ? 'score-high' : score >= 50 ? 'score-medium' : 'score-low';
+                const recommendations = [
+                    'Optimize image assets for PiOS display profiles',
+                    'Test on multiple PiOS device models',
+                    'Implement adaptive layout for different screen sizes',
+                    'Reduce app startup time by optimizing resource loading',
+                    'Ensure compatibility with PiOS security model',
+                    'Implement PiOS-specific UI patterns'
+                ];
+                
+                const selectedRecommendations = recommendations
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+                
+                outputContent.innerHTML = `
+                    <div class="compatibility-score">
+                        <div class="score-circle ${scoreClass}">${score}%</div>
+                        <div>
+                            <h4>Compatibility Score</h4>
+                            <p>Your app has ${scoreClass === 'score-high' ? 'excellent' : scoreClass === 'score-medium' ? 'moderate' : 'limited'} compatibility with PiOS devices.</p>
+                        </div>
+                    </div>
+                    <div class="compatibility-tips">
+                        <h4>Optimization Recommendations</h4>
+                        <ul>
+                            ${selectedRecommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }, 1500);
+        });
+        
+        // Copy compatibility results
+        document.getElementById('copy-compatibility').addEventListener('click', () => {
+            const content = document.getElementById('compatibility-content').innerText;
+            copyToClipboard(content);
+        });
+        
+        // Code Debugger
+        document.getElementById('debug-code').addEventListener('click', () => {
+            const codeSnippet = document.getElementById('code-snippet').value.trim();
+            const outputSection = document.getElementById('debug-output');
+            const outputContent = document.getElementById('debug-content');
+            
+            if (!codeSnippet) {
+                outputContent.innerHTML = '<p style="color: var(--error);">Please enter a code snippet.</p>';
+                outputSection.classList.add('active');
+                return;
+            }
+            
+            // Show loading
+            outputContent.innerHTML = '<div class="loading"></div> Debugging code...';
+            outputSection.classList.add('active');
+            
+            // Simulate debugging process
+            setTimeout(() => {
+                // Generate mock debugging data
+                const errors = [
+                    'ReferenceError: variableName is not defined',
+                    'TypeError: cannot read property \'prop\' of undefined',
+                    'SyntaxError: missing ) after argument list',
+                    'TypeError: callback is not a function',
+                    'RangeError: array index out of bounds'
+                ];
+                
+                const warnings = [
+                    'Variable declared but never used',
+                    'Expected \'===\' and instead saw \'==\'',
+                    'Missing semicolon',
+                    'Unused import statement',
+                    'Potential memory leak detected'
+                ];
+                
+                const fixes = [
+                    'Declare the variable before using it',
+                    'Check if the property exists before accessing',
+                    'Close all parentheses in your expression',
+                    'Ensure the callback parameter is a function',
+                    'Check array bounds before accessing elements'
+                ];
+                
+                const selectedError = errors[Math.floor(Math.random() * errors.length)];
+                const selectedWarning = warnings[Math.floor(Math.random() * warnings.length)];
+                const selectedFix = fixes[Math.floor(Math.random() * fixes.length)];
+                
+                outputContent.innerHTML = `
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: var(--error);">Errors Found</h4>
+                        <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                            <p><strong>Line 12:</strong> ${selectedError}</p>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h4 style="color: var(--warning);">Warnings</h4>
+                        <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                            <p><strong>Line 5:</strong> ${selectedWarning}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--success);">Fix Suggestions</h4>
+                        <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px;">
+                            <p>${selectedFix}</p>
+                        </div>
+                    </div>
+                `;
+            }, 1500);
+        });
+        
+        // Copy debug results
+        document.getElementById('copy-debug').addEventListener('click', () => {
+            const content = document.getElementById('debug-content').innerText;
+            copyToClipboard(content);
+        });
+        
+        // Prototype Designer
+        document.getElementById('generate-prototype').addEventListener('click', () => {
+            const designFile = document.getElementById('design-file').files[0];
+            const outputSection = document.getElementById('prototype-output');
+            const outputContent = document.getElementById('prototype-content');
+            
+            if (!designFile) {
+                outputContent.innerHTML = '<p style="color: var(--error);">Please upload a design image.</p>';
+                outputSection.classList.add('active');
+                return;
+            }
+            
+            // Show loading
+            outputContent.innerHTML = '<div class="loading"></div> Generating prototype...';
+            outputSection.classList.add('active');
+            
+            // Simulate prototype generation
+            setTimeout(() => {
+                // Generate mock prototype code
+                const prototypeCode = `// Generated Prototype for ${designFile.name}
+const prototype = {
+    name: "App Prototype",
+    version: "1.0.0",
+    screens: [
+        {
+            id: "home",
+            title: "Home Screen",
+            components: [
+                {
+                    type: "header",
+                    text: "Welcome to App",
+                    style: { textAlign: "center", fontSize: "24px", margin: "20px 0" }
+                },
+                {
+                    type: "button",
+                    text: "Get Started",
+                    action: "navigateTo('onboarding')",
+                    style: { 
+                        backgroundColor: "#4a9eff", 
+                        color: "white", 
+                        padding: "12px 24px", 
+                        borderRadius: "4px",
+                        margin: "20px auto",
+                        display: "block"
+                    }
+                }
+            ]
+        },
+        {
+            id: "onboarding",
+            title: "Onboarding Screen",
+            components: [
+                {
+                    type: "image",
+                    source: "assets/onboarding-image.png",
+                    style: { width: "100%", height: "200px", objectFit: "cover" }
+                },
+                {
+                    type: "text",
+                    content: "Discover amazing features",
+                    style: { textAlign: "center", fontSize: "18px", margin: "20px 0" }
+                },
+                {
+                    type: "button",
+                    text: "Complete Setup",
+                    action: "navigateTo('dashboard')",
+                    style: { 
+                        backgroundColor: "#4caf50", 
+                        color: "white", 
+                        padding: "12px 24px", 
+                        borderRadius: "4px",
+                        margin: "20px auto",
+                        display: "block"
+                    }
+                }
+            ]
+        }
+    ],
+    navigation: {
+        initialScreen: "home",
+        transitions: {
+            home: { next: "onboarding" },
+            onboarding: { next: "dashboard" },
+            dashboard: { back: "home" }
+        }
+    }
+};
+
+// Initialize prototype
+function initPrototype() {
+    // Render initial screen
+    renderScreen(prototype.navigation.initialScreen);
+}
+
+function renderScreen(screenId) {
+    const screen = prototype.screens.find(s => s.id === screenId);
+    if (!screen) return;
+    
+    // Clear existing content
+    document.getElementById('app-container').innerHTML = '';
+    
+    // Render components
+    screen.components.forEach(component => {
+        const element = document.createElement('div');
+        element.className = component.type;
+        
+        // Apply styles
+        Object.assign(element.style, component.style);
+        
+        // Set content
+        if (component.type === 'text') {
+            element.textContent = component.content;
+        } else if (component.type === 'button') {
+            element.textContent = component.text;
+            element.addEventListener('click', () => {
+                // Handle navigation action
+                const action = component.action.match(/'(.+)'/);
+                if (action) {
+                    navigateTo(action[1]);
+                }
+            });
+        }
+        
+        document.getElementById('app-container').appendChild(element);
+    });
+}
+
+function navigateTo(screenId) {
+    // Add transition effect
+    const container = document.getElementById('app-container');
+    container.style.opacity = '0';
+    
+    setTimeout(() => {
+        renderScreen(screenId);
+        container.style.opacity = '1';
+    }, 300);
+}
+
+// Start the prototype
+initPrototype();`;
+                
+                outputContent.innerHTML = `
+                    <h4>Generated Prototype Code</h4>
+                    <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                        <pre style="white-space: pre-wrap; word-break: break-all;">${prototypeCode}</pre>
+                    </div>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">
+                        This prototype includes interactive elements and navigation between screens.
+                        You can customize the components and styles to match your design.
+                    </p>
+                `;
+            }, 2000);
+        });
+        
+        // Copy prototype code
+        document.getElementById('copy-prototype').addEventListener('click', () => {
+            const content = document.getElementById('prototype-content').innerText;
+            copyToClipboard(content);
+        });
+        
+        // API Document Generator
+        document.getElementById('generate-docs').addEventListener('click', () => {
+            const apiEndpoint = document.getElementById('api-endpoint').value.trim();
+            const outputSection = document.getElementById('api-doc-output');
+            const outputContent = document.getElementById('api-doc-content');
+            
+            if (!apiEndpoint) {
+                outputContent.innerHTML = '<p style="color: var(--error);">Please enter an API endpoint.</p>';
+                outputSection.classList.add('active');
+                return;
+            }
+            
+            // Show loading
+            outputContent.innerHTML = '<div class="loading"></div> Generating documentation...';
+            outputSection.classList.add('active');
+            
+            // Simulate documentation generation
+            setTimeout(() => {
+                // Generate mock API documentation
+                const endpoint = apiEndpoint.includes(' ') ? apiEndpoint.split(' ')[0] : apiEndpoint;
+                const method = apiEndpoint.includes(' ') ? apiEndpoint.split(' ')[0] : 'GET';
+                const path = apiEndpoint.includes(' ') ? apiEndpoint.split(' ')[1] : apiEndpoint;
+                
+                const doc = `# API Documentation: ${method} ${path}
+
+## Description
+${method === 'GET' ? 'Retrieve' : method === 'POST' ? 'Create' : method === 'PUT' ? 'Update' : 'Delete'} resource from the PiOS platform.
+
+## Authentication
+This endpoint requires authentication using an API key. Include the following header in your request:
+\`\`\`
+Authorization: Bearer YOUR_API_KEY
+\`\`\`
+
+## Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| id | string | No | Unique identifier for the resource |
+| limit | integer | No | Maximum number of results to return (default: 20) |
+| offset | integer | No | Number of results to skip (for pagination) |
+| sort | string | No | Field to sort results by (default: created_at) |
+| order | string | No | Sort order: asc or desc (default: desc) |
+
+## Request Example
+\`\`\`javascript
+fetch('${endpoint}', {
+  method: '${method}',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer YOUR_API_KEY'
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data));
+\`\`\`
+
+## Response
+### Success Response (200 OK)
+\`\`\`json
+{
+  "status": "success",
+  "data": {
+    "id": "12345",
+    "name": "Example Resource",
+    "created_at": "2026-05-15T12:00:00Z",
+    "updated_at": "2026-05-15T12:00:00Z",
+    "metadata": {
+      "version": 1,
+      "active": true
+    }
+  }
+}
+\`\`\`
+
+### Error Responses
+#### 400 Bad Request
+\`\`\`json
+{
+  "status": "error",
+  "message": "Invalid request parameters"
+}
+\`\`\`
+
+#### 401 Unauthorized
+\`\`\`json
+{
+  "status": "error",
+  "message": "Authentication required"
+}
+\`\`\`
+
+#### 404 Not Found
+\`\`\`json
+{
+  "status": "error",
+  "message": "Resource not found"
+}
+\`\`\`
+
+#### 500 Internal Server Error
+\`\`\`json
+{
+  "status": "error",
+  "message": "Server error occurred"
+}
+\`\`\`
+
+## Rate Limiting
+This endpoint has a rate limit of 100 requests per minute. Include the \`X-RateLimit-Remaining\` header in responses to monitor your remaining quota.
+
+## SDK Integration
+\`\`\`javascript
+import { PiOSClient } from 'pios-sdk';
+
+const client = new PiOSClient({
+  apiKey: 'YOUR_API_KEY'
+});
+
+// Example usage
+client.${path.toLowerCase().replace('/', '')}()
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
+\`\`\`;
+`;
+                
+                outputContent.innerHTML = `
+                    <h4>API Documentation</h4>
+                    <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                        <pre style="white-space: pre-wrap; word-break: break-all;">${doc}</pre>
+                    </div>
+                `;
+            }, 1500);
+        });
+        
+        // Copy API documentation
+        document.getElementById('copy-api-doc').addEventListener('click', () => {
+            const content = document.getElementById('api-doc-content').innerText;
+            copyToClipboard(content);
+        });
+        
+        // Code Optimizer
+        document.getElementById('optimize-code').addEventListener('click', () => {
+            const codeFile = document.getElementById('code-file').files[0];
+            const outputSection = document.getElementById('optimizer-output');
+            const outputContent = document.getElementById('optimizer-content');
+            
+            if (!codeFile) {
+                outputContent.innerHTML = '<p style="color: var(--error);">Please upload a code file.</p>';
+                outputSection.classList.add('active');
+                return;
+            }
+            
+            // Show loading
+            outputContent.innerHTML = '<div class="loading"></div> Optimizing code...';
+            outputSection.classList.add('active');
+            
+            // Read file content
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const code = e.target.result;
+                
+                // Simulate optimization
+                setTimeout(() => {
+                    // Apply basic optimizations
+                    let optimizedCode = code;
+                    
+                    // Remove comments
+                    optimizedCode = optimizedCode.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '');
+                    
+                    // Remove extra whitespace
+                    optimizedCode = optimizedCode.replace(/\s+/g, ' ').trim();
+                    
+                    // Minify variable names (mock)
+                    const variableMap = {
+                        'variableName': 'a',
+                        'userName': 'b',
+                        'userProfile': 'c',
+                        'responseData': 'd',
+                        'submitButton': 'e'
+                    };
+                    
+                    Object.keys(variableMap).forEach(key => {
+                        optimizedCode = optimizedCode.replace(new RegExp('\\b' + key + '\\b', 'g'), variableMap[key]);
+                    });
+                    
+                    // Add optimization report
+                    const report = `// Code Optimization Report
+// Original file: ${codeFile.name}
+// File size reduced from ${Math.round(code.length / 1024)}KB to ${Math.round(optimizedCode.length / 1024)}KB
+// Optimized on: ${new Date().toISOString()}
+
+${optimizedCode}`;
+                    
+                    outputContent.innerHTML = `
+                        <h4>Optimized Code</h4>
+                        <div style="background-color: var(--bg-primary); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+                            <pre style="white-space: pre-wrap; word-break: break-all;">${report}</pre>
+                        </div>
+                        <div style="margin-top: 1rem; padding: 1rem; background-color: var(--bg-primary); border-radius: 4px;">
+                            <h4>Optimization Summary</h4>
+                            <ul style="margin-top: 0.5rem;">
+                                <li>Removed all comments and whitespace</li>
+                                <li>Minified variable names</li>
+                                <li>Reduced file size by ${Math.round((1 - optimizedCode.length / code.length) * 100)}%</li>
+                                <li>Optimized for PiOS runtime environment</li>
+                            </ul>
+                        </div>
+                    `;
+                }, 1500);
+            };
+            
+            reader.readAsText(codeFile);
+        });
+        
+        // Copy optimized code
+        document.getElementById('copy-optimized').addEventListener('click', () => {
+            const content = document.getElementById('optimizer-content').innerText;
+            copyToClipboard(content);
+        });
+        
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // Show feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            btn.style.backgroundColor = 'var(--success)';
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.backgroundColor = '';
+            }, 2000);
+        }
+        
+        // Initialize tooltips
+        document.querySelectorAll('.tooltip-trigger').forEach(trigger => {
+            trigger.addEventListener('mouseenter', (e) => {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'tooltip';
+                tooltip.textContent = e.target.getAttribute('data-tooltip');
+                document.body.appendChild(tooltip);
+                
+                const rect = e.target.getBoundingClientRect();
+                tooltip.style.top = rect.top - tooltip.offsetHeight - 10 + 'px';
+                tooltip.style.left = rect.left + (rect.width - tooltip.offsetWidth) / 2 + 'px';
+            });
+            
+            trigger.addEventListener('mouseleave', () => {
+                const tooltip = document.querySelector('.tooltip');
+                if (tooltip) tooltip.remove();
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Developer Tools for PiOS Platform","Tools":"Tools","Help":"Help","Feedback":"Feedback","Developer Tools for PiOS Platform":"Developer Tools for PiOS Platform","Get Started":"Get Started","Learn More":"Learn More","Development Tools":"Development Tools","Compatibility Checker":"Compatibility Checker","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Analyze your app's compatibility with PiOS devices and get optimization recommendations.","Check Compatibility":"Check Compatibility","Code Debugger":"Code Debugger","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Debug your code snippets with detailed error diagnostics and fix suggestions.","Debug Code":"Debug Code","Prototype Designer":"Prototype Designer","Upload design images to generate interactive prototypes for your PiOS apps.":"Upload design images to generate interactive prototypes for your PiOS apps.","Create Prototype":"Create Prototype","API Document Generator":"API Document Generator","Generate comprehensive documentation from your PiOS API endpoints.":"Generate comprehensive documentation from your PiOS API endpoints.","Generate Docs":"Generate Docs","Code Optimizer":"Code Optimizer","Optimize and compress your code files for better performance on PiOS devices.":"Optimize and compress your code files for better performance on PiOS devices.","Optimize Code":"Optimize Code","Enter App Package Name:":"Enter App Package Name:","Compatibility Analysis":"Compatibility Analysis","Copy Results":"Copy Results","Enter Code Snippet:":"Enter Code Snippet:","Debug Results":"Debug Results","Upload Design Image:":"Upload Design Image:","Choose File":"Choose File","No file chosen":"No file chosen","Generate Prototype":"Generate Prototype","Generated Prototype":"Generated Prototype","Copy Code":"Copy Code","Enter API Endpoint:":"Enter API Endpoint:","Generate Documentation":"Generate Documentation","API Documentation":"API Documentation","Copy Documentation":"Copy Documentation","Upload Code File:":"Upload Code File:","Optimized Code":"Optimized Code","Help \u0026 Resources":"Help \u0026 Resources","Getting Started":"Getting Started","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.","API Reference":"API Reference","Explore the PiOS platform APIs and services available for application development.":"Explore the PiOS platform APIs and services available for application development.","Tutorials":"Tutorials","Step-by-step guides to help you build and deploy your first PiOS application.":"Step-by-step guides to help you build and deploy your first PiOS application.","Community":"Community","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Developer Tools for the PiOS Platform","Optimize image assets for PiOS display profiles":"Optimize image assets for PiOS display profiles","Test on multiple PiOS device models":"Test on multiple PiOS device models","Implement adaptive layout for different screen sizes":"Implement adaptive layout for different screen sizes","Reduce app startup time by optimizing resource loading":"Reduce app startup time by optimizing resource loading","Ensure compatibility with PiOS security model":"Ensure compatibility with PiOS security model","Implement PiOS-specific UI patterns":"Implement PiOS-specific UI patterns","ReferenceError: variableName is not defined":"ReferenceError: variableName is not defined","of undefined":"of undefined","TypeError: callback is not a function":"TypeError: callback is not a function","RangeError: array index out of bounds":"RangeError: array index out of bounds","Variable declared but never used":"Variable declared but never used","__title__":"PiOS Toolkit - Developer Tools for PiOS Platform"},"zh-CN":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - PiOS平台开发者工具","Tools":"工具","Help":"帮助","Feedback":"反馈","Developer Tools for PiOS Platform":"PiOS平台开发者工具","Get Started":"开始使用","Learn More":"了解更多","Development Tools":"开发工具","Compatibility Checker":"兼容性检查器","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"分析您的应用程序与PiOS设备的兼容性并获得优化建议。","Check Compatibility":"检查兼容性","Code Debugger":"代码调试器","Debug your code snippets with detailed error diagnostics and fix suggestions.":"使用详细的错误诊断和修复建议调试您的代码片段。","Debug Code":"调试代码","Prototype Designer":"原型设计器","Upload design images to generate interactive prototypes for your PiOS apps.":"上传设计图像以生成您的PiOS应用程序的交互式原型。","Create Prototype":"创建原型","API Document Generator":"API文档生成器","Generate comprehensive documentation from your PiOS API endpoints.":"从您的PiOS API端点生成全面的文档。","Generate Docs":"生成文档","Code Optimizer":"代码优化器","Optimize and compress your code files for better performance on PiOS devices.":"优化和压缩您的代码文件以在PiOS设备上获得更好的性能。","Optimize Code":"优化代码","Enter App Package Name:":"请输入应用包名：","Compatibility Analysis":"兼容性分析","Copy Results":"复制结果","Enter Code Snippet:":"请输入代码片段：","Debug Results":"调试结果","Upload Design Image:":"上传设计图像：","Choose File":"选择文件","No file chosen":"没有选择文件","Generate Prototype":"生成原型","Generated Prototype":"已生成原型","Copy Code":"复制代码","Enter API Endpoint:":"请输入API端点：","Generate Documentation":"生成文档","API Documentation":"API文档","Copy Documentation":"复制文档","Upload Code File:":"上传代码文件：","Optimized Code":"优化后的代码","Help \u0026 Resources":"帮助与资源","Getting Started":"入门","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"了解如何使用PiOS Toolkit开发、测试和优化您的PiOS设备应用程序。","API Reference":"API参考","Explore the PiOS platform APIs and services available for application development.":"探索适用于应用程序开发的PiOS平台API和服务。","Tutorials":"教程","Step-by-step guides to help you build and deploy your first PiOS application.":"逐步指南，帮助您构建和部署您的第一个PiOS应用程序。","Community":"社区","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"加入我们的开发者社区，分享想法，提问，并与其他PiOS开发者合作。","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - PiOS平台开发者工具","Optimize image assets for PiOS display profiles":"优化PiOS显示配置文件中的图像资源","Test on multiple PiOS device models":"在多个PiOS设备型号上测试","Implement adaptive layout for different screen sizes":"实现适用于不同屏幕尺寸的自适应布局","Reduce app startup time by optimizing resource loading":"通过优化资源加载来减少应用启动时间","Ensure compatibility with PiOS security model":"确保与PiOS安全模型兼容","Implement PiOS-specific UI patterns":"实现PiOS特定的UI模式","ReferenceError: variableName is not defined":"引用错误：未定义变量名","of undefined":"未定义的","TypeError: callback is not a function":"类型错误：回调不是一个函数","RangeError: array index out of bounds":"范围错误：数组索引超出范围","Variable declared but never used":"已声明但未使用的变量","__title__":"PiOS Toolkit - PiOS平台开发者工具"},"es":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Herramientas para el Plataforma PiOS","Tools":"Herramientas","Help":"Ayuda","Feedback":"Feedback","Developer Tools for PiOS Platform":"Herramientas para el Plataforma PiOS","Get Started":"Comienza","Learn More":"Aprende más","Development Tools":"Herramientas de Desarrollo","Compatibility Checker":"Comprobador de Compatibilidad","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Analiza la compatibilidad de tu aplicación con dispositivos PiOS y obtén recomendaciones de optimización.","Check Compatibility":"Comprobar Compatibilidad","Code Debugger":"Depurador de Código","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Depura tus fragmentos de código con diagnósticos de errores detallados y sugerencias de corrección.","Debug Code":"Depurar Código","Prototype Designer":"Diseñador de Prototipos","Upload design images to generate interactive prototypes for your PiOS apps.":"Sube imágenes de diseño para generar prototipos interactivos para tus aplicaciones PiOS.","Create Prototype":"Crear Prototipo","API Document Generator":"Generador de Documentación de API","Generate comprehensive documentation from your PiOS API endpoints.":"Genera documentación completa desde los puntos de terminación de tu API PiOS.","Generate Docs":"Generar Docs","Code Optimizer":"Optimizador de Código","Optimize and compress your code files for better performance on PiOS devices.":"Optimiza y comprime tus archivos de código para mejorar el rendimiento en dispositivos PiOS.","Optimize Code":"Optimizar Código","Enter App Package Name:":"Introduce el Nombre del Paquete de la Aplicación:","Compatibility Analysis":"Análisis de Compatibilidad","Copy Results":"Copiar Resultados","Enter Code Snippet:":"Introduce Fragmento de Código:","Debug Results":"Resultados de Depuración","Upload Design Image:":"Subir Imagen de Diseño:","Choose File":"Elegir Archivo","No file chosen":"No se ha elegido ningún archivo","Generate Prototype":"Generar Prototipo","Generated Prototype":"Prototipo Generado","Copy Code":"Copiar Código","Enter API Endpoint:":"Introduce Punto de Terminación de API:","Generate Documentation":"Generar Documentación","API Documentation":"Documentación de API","Copy Documentation":"Copiar Documentación","Upload Code File:":"Subir Archivo de Código:","Optimized Code":"Código Optimizado","Help \u0026 Resources":"Ayuda y Recursos","Getting Started":"Comienza","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Aprende cómo usar el PiOS Toolkit para desarrollar, probar y optimizar tus aplicaciones para dispositivos PiOS.","API Reference":"Referencia de API","Explore the PiOS platform APIs and services available for application development.":"Explora las APIs y servicios de la plataforma PiOS disponibles para el desarrollo de aplicaciones.","Tutorials":"Tutoriales","Step-by-step guides to help you build and deploy your first PiOS application.":"Guías paso a paso para ayudarte a construir y desplegar tu primera aplicación PiOS.","Community":"Comunidad","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Únete a nuestra comunidad de desarrolladores para compartir ideas, hacer preguntas y colaborar con otros desarrolladores de PiOS.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Herramientas para el Plataforma PiOS","Optimize image assets for PiOS display profiles":"Optimiza los activos de imagen para perfiles de visualización de PiOS","Test on multiple PiOS device models":"Prueba en múltiples modelos de dispositivos PiOS","Implement adaptive layout for different screen sizes":"Implementa un diseño adaptable para diferentes tamaños de pantalla","Reduce app startup time by optimizing resource loading":"Reduce el tiempo de inicio de la aplicación optimizando la carga de recursos","Ensure compatibility with PiOS security model":"Asegura la compatibilidad con el modelo de seguridad de PiOS","Implement PiOS-specific UI patterns":"Implementa patrones de UI específicos de PiOS","ReferenceError: variableName is not defined":"ReferenceError: variableName no está definido","of undefined":"de undefined","TypeError: callback is not a function":"TypeError: callback no es una función","RangeError: array index out of bounds":"RangeError: índice de array fuera de límites","Variable declared but never used":"Variable declarada pero nunca utilizada","__title__":"PiOS Toolkit - Herramientas para el Plataforma PiOS"},"ja":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - PiOSプラットフォーム用開発者ツール","Tools":"ツール","Help":"ヘルプ","Feedback":"フィードバック","Developer Tools for PiOS Platform":"PiOSプラットフォーム用開発者ツール","Get Started":"始めましょう","Learn More":"もっと詳しく","Development Tools":"開発ツール","Compatibility Checker":"互換性チェックツール","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"アプリのPiOSデバイスとの互換性を分析し、最適化推奨を行います。","Check Compatibility":"互換性を確認","Code Debugger":"コードデバッガー","Debug your code snippets with detailed error diagnostics and fix suggestions.":"詳細なエラーダイアグノスティクスと修正提案でコードスニペットをデバッグします。","Debug Code":"コードをデバッグ","Prototype Designer":"プロトタイプデザイナー","Upload design images to generate interactive prototypes for your PiOS apps.":"デザイン画像をアップロードして、PiOSアプリのインタラクティブプロトタイプを作成します。","Create Prototype":"プロトタイプを作成","API Document Generator":"APIドキュメント生成ツール","Generate comprehensive documentation from your PiOS API endpoints.":"PiOS APIエンドポイントから包括的なドキュメントを生成します。","Generate Docs":"ドキュメントを生成","Code Optimizer":"コード最適化ツール","Optimize and compress your code files for better performance on PiOS devices.":"PiOSデバイス上でのパフォーマンスを向上させるために、コードファイルを最適化および圧縮します。","Optimize Code":"コードを最適化","Enter App Package Name:":"アプリパッケージ名を入力:","Compatibility Analysis":"互換性分析","Copy Results":"結果をコピー","Enter Code Snippet:":"コードスニペットを入力:","Debug Results":"デバッグ結果","Upload Design Image:":"デザイン画像をアップロード:","Choose File":"ファイルを選択","No file chosen":"ファイルが選択されていません","Generate Prototype":"プロトタイプを生成","Generated Prototype":"生成されたプロトタイプ","Copy Code":"コードをコピー","Enter API Endpoint:":"APIエンドポイントを入力:","Generate Documentation":"ドキュメントを生成","API Documentation":"APIドキュメント","Copy Documentation":"ドキュメントをコピー","Upload Code File:":"コードファイルをアップロード:","Optimized Code":"最適化されたコード","Help \u0026 Resources":"ヘルプとリソース","Getting Started":"始めましょう","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"PiOS Toolkitを使用して、PiOSデバイス用のアプリケーションを開発、テスト、最適化する方法を学びます。","API Reference":"APIリファレンス","Explore the PiOS platform APIs and services available for application development.":"アプリケーション開発用に利用可能なPiOSプラットフォームのAPIとサービスを探索します。","Tutorials":"チュートリアル","Step-by-step guides to help you build and deploy your first PiOS application.":"最初のPiOSアプリケーションを構築およびデプロイするためのステップバイステップのガイドです。","Community":"コミュニティ","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"開発者コミュニティに参加して、アイデアを共有し、質問をしたり、他のPiOS開発者と協力します。","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - PiOSプラットフォーム用開発者ツール","Optimize image assets for PiOS display profiles":"PiOSディスプレイプロファイル用の画像資源を最適化","Test on multiple PiOS device models":"複数のPiOSデバイスモデルでテスト","Implement adaptive layout for different screen sizes":"異なるスクリーンサイズに対する適応レイアウトを実装","Reduce app startup time by optimizing resource loading":"リソースのロードを最適化してアプリの起動時間を短縮","Ensure compatibility with PiOS security model":"PiOSセキュリティモデルとの互換性を確保","Implement PiOS-specific UI patterns":"PiOS固有のUIパターンを実装","ReferenceError: variableName is not defined":"ReferenceError: variableNameが定義されていません","of undefined":"未定義の","TypeError: callback is not a function":"TypeError: callbackは関数ではありません","RangeError: array index out of bounds":"RangeError: 配列のインデックスが範囲外です","Variable declared but never used":"宣言された変数が使用されていません","__title__":"PiOS Toolkit - PiOSプラットフォーム用開発者ツール"},"ko":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS 툴킷 - PiOS 플랫폼 개발자 도구","Tools":"도구","Help":"도움말","Feedback":"피드백","Developer Tools for PiOS Platform":"PiOS 플랫폼 개발자 도구","Get Started":"시작하기","Learn More":"더 알아보기","Development Tools":"개발 도구","Compatibility Checker":"호환성 검사기","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"앱의 PiOS 장치와의 호환성을 분석하고 최적화 권장 사항을 받으세요.","Check Compatibility":"호환성 확인","Code Debugger":"코드 디버거","Debug your code snippets with detailed error diagnostics and fix suggestions.":"세부적인 오류 진단 및 수정 권장 사항과 함께 코드 스니펫을 디버그하세요.","Debug Code":"코드 디버그","Prototype Designer":"프로토타입 디자이너","Upload design images to generate interactive prototypes for your PiOS apps.":"디자인 이미지를 업로드하여 PiOS 앱의 상호작용 프로토타입을 생성하세요.","Create Prototype":"프로토타입 생성","API Document Generator":"API 문서 생성기","Generate comprehensive documentation from your PiOS API endpoints.":"PiOS API 엔드포인트에서 상세한 문서를 생성하세요.","Generate Docs":"문서 생성","Code Optimizer":"코드 최적화기","Optimize and compress your code files for better performance on PiOS devices.":"PiOS 장치에서의 더 나은 성능을 위해 코드 파일을 최적화하고 압축하세요.","Optimize Code":"코드 최적화","Enter App Package Name:":"앱 패키지 이름을 입력하세요:","Compatibility Analysis":"호환성 분석","Copy Results":"결과 복사","Enter Code Snippet:":"코드 스니펫을 입력하세요:","Debug Results":"디버그 결과","Upload Design Image:":"디자인 이미지 업로드:","Choose File":"파일 선택","No file chosen":"파일이 선택되지 않았습니다","Generate Prototype":"프로토타입 생성","Generated Prototype":"생성된 프로토타입","Copy Code":"코드 복사","Enter API Endpoint:":"API 엔드포인트 입력:","Generate Documentation":"문서 생성","API Documentation":"API 문서","Copy Documentation":"문서 복사","Upload Code File:":"코드 파일 업로드:","Optimized Code":"최적화된 코드","Help \u0026 Resources":"도움말 및 자원","Getting Started":"시작하기","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"PiOS 툴킷을 사용하여 앱을 개발하고 테스트하고 최적화하는 방법을 배웁니다.","API Reference":"API 참조","Explore the PiOS platform APIs and services available for application development.":"앱 개발에 사용할 수 있는 PiOS 플랫폼 API 및 서비스를 탐색하세요.","Tutorials":"튜토리얼","Step-by-step guides to help you build and deploy your first PiOS application.":"첫 번째 PiOS 앱을 구축하고 배포하는 데 도움을 주는 단계별 가이드.","Community":"커뮤니티","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"아이디어를 공유하고 질문을 하며 다른 PiOS 개발자들과 협력하기 위해 개발자 커뮤니티에 가입하세요.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS 툴킷 - PiOS 플랫폼 개발자 도구","Optimize image assets for PiOS display profiles":"PiOS 디스플레이 프로필을 위해 이미지 자산을 최적화하세요","Test on multiple PiOS device models":"다양한 PiOS 장치 모델에서 테스트하세요","Implement adaptive layout for different screen sizes":"다른 스크린 크기에 대한 적응형 레이아웃을 구현하세요","Reduce app startup time by optimizing resource loading":"자원 로드를 최적화하여 앱 시작 시간을 줄이세요","Ensure compatibility with PiOS security model":"PiOS 보안 모델과의 호환성을 보장하세요","Implement PiOS-specific UI patterns":"PiOS 특화된 UI 패턴을 구현하세요","ReferenceError: variableName is not defined":"ReferenceError: 변수명이 정의되지 않았습니다","of undefined":"정의되지 않음","TypeError: callback is not a function":"TypeError: 콜백이 함수가 아닙니다","RangeError: array index out of bounds":"RangeError: 배열 인덱스가 범위를 벗어났습니다","Variable declared but never used":"정의된 변수를 사용하지 않았습니다","__title__":"PiOS 툴킷 - PiOS 플랫폼 개발자 도구"},"fr":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Outils Développeur pour la Plateforme PiOS","Tools":"Outils","Help":"Aide","Feedback":"Retour d'information","Developer Tools for PiOS Platform":"Outils Développeur pour la Plateforme PiOS","Get Started":"Commencer","Learn More":"En Savoir Plus","Development Tools":"Outils de Développement","Compatibility Checker":"Vérificateur deCompatibilité","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Analysez la compatibilité de votre application avec les appareils PiOS et obtenez des recommandations d'optimisation.","Check Compatibility":"Vérifier la Compatibilité","Code Debugger":"Débogueur de Code","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Déboguez vos extraits de code avec des diagnostics d'erreur détaillés et des suggestions de correction.","Debug Code":"Déboguer le Code","Prototype Designer":"Concepteur de Prototypes","Upload design images to generate interactive prototypes for your PiOS apps.":"Téléchargez des images de conception pour générer des prototypes interactifs pour vos applications PiOS.","Create Prototype":"Créer un Prototype","API Document Generator":"Générateur de Documentation API","Generate comprehensive documentation from your PiOS API endpoints.":"Générez une documentation complète à partir de vos points de terminaison API PiOS.","Generate Docs":"Générer des Docs","Code Optimizer":"Optimiseur de Code","Optimize and compress your code files for better performance on PiOS devices.":"Optimisez et compressez vos fichiers de code pour une meilleure performance sur les appareils PiOS.","Optimize Code":"Optimiser le Code","Enter App Package Name:":"Entrez le Nom du Paquet d'Application :","Compatibility Analysis":"Analyse de Compatibilité","Copy Results":"Copier les Résultats","Enter Code Snippet:":"Entrez un Extrait de Code :","Debug Results":"Résultats du Débogage","Upload Design Image:":"Télécharger une Image de Conception :","Choose File":"Choisir un Fichier","No file chosen":"Aucun fichier sélectionné","Generate Prototype":"Générer un Prototype","Generated Prototype":"Prototype Généré","Copy Code":"Copier le Code","Enter API Endpoint:":"Entrez le Point de Terminaison API :","Generate Documentation":"Générer la Documentation","API Documentation":"Documentation API","Copy Documentation":"Copier la Documentation","Upload Code File:":"Télécharger un Fichier de Code :","Optimized Code":"Code Optimisé","Help \u0026 Resources":"Aide \u0026 Ressources","Getting Started":"Démarrage","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Apprenez à utiliser le PiOS Toolkit pour développer, tester et optimiser vos applications pour les appareils PiOS.","API Reference":"Référence API","Explore the PiOS platform APIs and services available for application development.":"Explorez les API et services de la plateforme PiOS disponibles pour le développement d'applications.","Tutorials":"Tutoriels","Step-by-step guides to help you build and deploy your first PiOS application.":"Guides étape par étape pour vous aider à construire et déployer votre première application PiOS.","Community":"Communauté","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Rejoignez notre communauté de développeurs pour partager des idées, poser des questions et collaborer avec d'autres développeurs PiOS.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Outils Développeur pour la Plateforme PiOS","Optimize image assets for PiOS display profiles":"Optimiser les actifs d'image pour les profils d'affichage PiOS","Test on multiple PiOS device models":"Tester sur plusieurs modèles d'appareils PiOS","Implement adaptive layout for different screen sizes":"Mettre en œuvre un agencement adaptatif pour différentes tailles d'écran","Reduce app startup time by optimizing resource loading":"Réduire le temps de démarrage de l'application en optimisant le chargement des ressources","Ensure compatibility with PiOS security model":"Assurer la compatibilité avec le modèle de sécurité PiOS","Implement PiOS-specific UI patterns":"Mettre en œuvre des modèles d'UI spécifiques à PiOS","ReferenceError: variableName is not defined":"ReferenceError : variableName n'est pas défini","of undefined":"de non défini","TypeError: callback is not a function":"TypeError : callback n'est pas une fonction","RangeError: array index out of bounds":"RangeError : index du tableau hors des limites","Variable declared but never used":"Variable déclarée mais jamais utilisée","__title__":"PiOS Toolkit - Outils Développeur pour la Plateforme PiOS"},"de":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Entwicklungs-Tools für die PiOS-Plattform","Tools":"Tools","Help":"Hilfe","Feedback":"Feedback","Developer Tools for PiOS Platform":"Entwicklungs-Tools für die PiOS-Plattform","Get Started":"Erste Schritte","Learn More":"Mehr erfahren","Development Tools":"Entwicklungs-Tools","Compatibility Checker":"Kompatibilitätsprüfer","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Analysieren Sie die Kompatibilität Ihrer App mit PiOS-Geräten und erhalten Sie Optimierungsempfehlungen.","Check Compatibility":"Kompatibilität überprüfen","Code Debugger":"Code-Debugger","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Debuggen Sie Ihre Code-Snippets mit detaillierten Fehlerdiagnosen und Reparaturvorschlägen.","Debug Code":"Code debuggen","Prototype Designer":"Prototyp-Designer","Upload design images to generate interactive prototypes for your PiOS apps.":"Laden Sie Design-Bilder hoch, um interaktive Prototypen für Ihre PiOS-Apps zu erstellen.","Create Prototype":"Prototyp erstellen","API Document Generator":"API-Dokumentgenerator","Generate comprehensive documentation from your PiOS API endpoints.":"Erstellen Sie umfassende Dokumentation aus Ihren PiOS-API-Endpunkten.","Generate Docs":"Dokumente generieren","Code Optimizer":"Code-Optimierer","Optimize and compress your code files for better performance on PiOS devices.":"Optimieren und komprimieren Sie Ihre Code-Dateien für eine bessere Leistung auf PiOS-Geräten.","Optimize Code":"Code optimieren","Enter App Package Name:":"Geben Sie den App-Paketnamen ein:","Compatibility Analysis":"Kompatibilitätsanalyse","Copy Results":"Ergebnisse kopieren","Enter Code Snippet:":"Geben Sie einen Code-Snippet ein:","Debug Results":"Debugging-Ergebnisse","Upload Design Image:":"Laden Sie ein Design-Bild hoch:","Choose File":"Datei auswählen","No file chosen":"Keine Datei ausgewählt","Generate Prototype":"Prototyp generieren","Generated Prototype":"Generierter Prototyp","Copy Code":"Code kopieren","Enter API Endpoint:":"Geben Sie den API-Endpunkt ein:","Generate Documentation":"Dokumentation generieren","API Documentation":"API-Dokumentation","Copy Documentation":"Dokumentation kopieren","Upload Code File:":"Laden Sie die Code-Datei hoch:","Optimized Code":"Optimierter Code","Help \u0026 Resources":"Hilfe und Ressourcen","Getting Started":"Erste Schritte","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Erfahren Sie, wie Sie das PiOS Toolkit verwenden, um Ihre Anwendungen für PiOS-Geräte zu entwickeln, testen und zu optimieren.","API Reference":"API-Referenz","Explore the PiOS platform APIs and services available for application development.":"Entdecken Sie die APIs und Dienste der PiOS-Plattform für die Anwendungsentwicklung.","Tutorials":"Tutorials","Step-by-step guides to help you build and deploy your first PiOS application.":"Schritt-für-Schritt-Anleitungen, um Ihnen zu helfen, Ihre erste PiOS-Anwendung zu erstellen und zu veröffentlichen.","Community":"Community","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Treten Sie unserer Entwicklercommunity bei, um Ideen zu teilen, Fragen zu stellen und mit anderen PiOS-Entwicklern zusammenzuarbeiten.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Entwicklungs-Tools für die PiOS-Plattform","Optimize image assets for PiOS display profiles":"Optimieren Sie Bilddateien für PiOS-Anzeigeprofile","Test on multiple PiOS device models":"Testen Sie auf mehreren PiOS-Gerätmodellen","Implement adaptive layout for different screen sizes":"Implementieren Sie ein anpassungsfähiges Layout für verschiedene Bildschirmgrößen","Reduce app startup time by optimizing resource loading":"Verringern Sie die Startzeit der App durch Optimierung des Ressourcenladens","Ensure compatibility with PiOS security model":"Stellen Sie die Kompatibilität mit dem PiOS-Sicherheitsmodell sicher","Implement PiOS-specific UI patterns":"Implementieren Sie PiOS-spezifische UI-Muster","ReferenceError: variableName is not defined":"ReferenceError: variableName ist nicht definiert","of undefined":"von nicht definiert","TypeError: callback is not a function":"TypeError: callback ist keine Funktion","RangeError: array index out of bounds":"RangeError: Arrayindex außerhalb der Grenzen","Variable declared but never used":"Variable deklariert aber nie verwendet","__title__":"PiOS Toolkit - Entwicklungs-Tools für die PiOS-Plattform"},"ru":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Инструменты разработчика для платформы PiOS","Tools":"Инструменты","Help":"Справка","Feedback":"Обратная связь","Developer Tools for PiOS Platform":"Инструменты разработчика для платформы PiOS","Get Started":"Начать","Learn More":"Узнать больше","Development Tools":"Инструменты разработки","Compatibility Checker":"Проверка совместимости","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Анализируйте совместимость вашего приложения с устройствами PiOS и получайте рекомендации по оптимизации.","Check Compatibility":"Проверить совместимость","Code Debugger":"Отладчик кода","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Отладка фрагментов кода с детальной диагностикой ошибок и предложениями по исправлению.","Debug Code":"Отладка кода","Prototype Designer":"Дизайнер прототипов","Upload design images to generate interactive prototypes for your PiOS apps.":"Загрузите изображения дизайна, чтобы создать интерактивные прототипы для ваших приложений PiOS.","Create Prototype":"Создать прототип","API Document Generator":"Генератор документации API","Generate comprehensive documentation from your PiOS API endpoints.":"Создавайте исчерпывающую документацию из точек API вашего PiOS.","Generate Docs":"Создать документацию","Code Optimizer":"Оптимизатор кода","Optimize and compress your code files for better performance on PiOS devices.":"Оптимизируйте и сжимайте файлы кода для улучшения производительности на устройствах PiOS.","Optimize Code":"Оптимизировать код","Enter App Package Name:":"Введите имя пакета приложения:","Compatibility Analysis":"Анализ совместимости","Copy Results":"Копировать результаты","Enter Code Snippet:":"Введите фрагмент кода:","Debug Results":"Результаты отладки","Upload Design Image:":"Загрузите изображение дизайна:","Choose File":"Выберите файл","No file chosen":"Файл не выбран","Generate Prototype":"Создать прототип","Generated Prototype":"Созданный прототип","Copy Code":"Копировать код","Enter API Endpoint:":"Введите точку API:","Generate Documentation":"Создать документацию","API Documentation":"Документация API","Copy Documentation":"Копировать документацию","Upload Code File:":"Загрузите файл кода:","Optimized Code":"Оптимизированный код","Help \u0026 Resources":"Справка и ресурсы","Getting Started":"Начало работы","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Узнайте, как использовать PiOS Toolkit для разработки, тестирования и оптимизации ваших приложений для устройств PiOS.","API Reference":"Референция API","Explore the PiOS platform APIs and services available for application development.":"Исследуйте API и услуги платформы PiOS, доступные для разработки приложений.","Tutorials":"Учебные пособия","Step-by-step guides to help you build and deploy your first PiOS application.":"Шаг за шагом, чтобы помочь вам создать и запустить ваше первое приложение PiOS.","Community":"Сообщество","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Присоединяйтесь к нашему сообществу разработчиков, чтобы делиться идеями, задавать вопросы и сотрудничать с другими разработчиками PiOS.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Инструменты разработчика для платформы PiOS","Optimize image assets for PiOS display profiles":"Оптимизируйте ресурсы изображений для профилей отображения PiOS","Test on multiple PiOS device models":"Тестируйте на нескольких моделях устройств PiOS","Implement adaptive layout for different screen sizes":"Реализуйте адаптивный макет для различных размеров экрана","Reduce app startup time by optimizing resource loading":"Уменьшите время запуска приложения, оптимизируя загрузку ресурсов","Ensure compatibility with PiOS security model":"Обеспечьте совместимость с моделью безопасности PiOS","Implement PiOS-specific UI patterns":"Реализуйте специфические для PiOS шаблоны пользовательского интерфейса","ReferenceError: variableName is not defined":"ReferenceError: переменная variableName не определена","of undefined":"неопределено","TypeError: callback is not a function":"TypeError: callback не является функцией","RangeError: array index out of bounds":"RangeError: индекс массива выходит за пределы границ","Variable declared but never used":"Переменная объявлена, но никогда не использовалась","__title__":"PiOS Toolkit - Инструменты разработчика для платформы PiOS"},"pt":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Ferramentas para Plataforma PiOS","Tools":"Ferramentas","Help":"Ajuda","Feedback":"Feedback","Developer Tools for PiOS Platform":"Ferramentas para Plataforma PiOS","Get Started":"Comece","Learn More":"Saiba Mais","Development Tools":"Ferramentas de Desenvolvimento","Compatibility Checker":"Verificador de Compatibilidade","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Análise da compatibilidade do seu aplicativo com dispositivos PiOS e obtenha recomendações de otimização.","Check Compatibility":"Verificar Compatibilidade","Code Debugger":"Depurador de Código","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Depure seus trechos de código com diagnósticos de erro detalhados e sugestões de correção.","Debug Code":"Depurar Código","Prototype Designer":"Designer de Protótipos","Upload design images to generate interactive prototypes for your PiOS apps.":"Carregue imagens de design para gerar protótipos interativos para seus aplicativos PiOS.","Create Prototype":"Criar Protótipo","API Document Generator":"Gerador de Documentação de API","Generate comprehensive documentation from your PiOS API endpoints.":"Gere documentação completa a partir dos pontos de extremidade da sua API PiOS.","Generate Docs":"Gerar Documentos","Code Optimizer":"Otimizador de Código","Optimize and compress your code files for better performance on PiOS devices.":"Otimize e comprima seus arquivos de código para melhor desempenho em dispositivos PiOS.","Optimize Code":"Otimizar Código","Enter App Package Name:":"Insira o Nome do Pacote do Aplicativo:","Compatibility Analysis":"Análise de Compatibilidade","Copy Results":"Copiar Resultados","Enter Code Snippet:":"Insira Trecho de Código:","Debug Results":"Resultados da Depuração","Upload Design Image:":"Carregar Imagem de Design:","Choose File":"Escolher Arquivo","No file chosen":"Nenhum arquivo escolhido","Generate Prototype":"Gerar Protótipo","Generated Prototype":"Protótipo Gerado","Copy Code":"Copiar Código","Enter API Endpoint:":"Insira o Ponto de Extremidade da API:","Generate Documentation":"Gerar Documentação","API Documentation":"Documentação da API","Copy Documentation":"Copiar Documentação","Upload Code File:":"Carregar Arquivo de Código:","Optimized Code":"Código Otimizado","Help \u0026 Resources":"Ajuda e Recursos","Getting Started":"Começando","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Aprenda a usar o PiOS Toolkit para desenvolver, testar e otimizar seus aplicativos para dispositivos PiOS.","API Reference":"Referência da API","Explore the PiOS platform APIs and services available for application development.":"Explore as APIs e serviços da plataforma PiOS disponíveis para desenvolvimento de aplicativos.","Tutorials":"Tutoriais","Step-by-step guides to help you build and deploy your first PiOS application.":"Guias passo a passo para ajudar você a construir e implantar seu primeiro aplicativo PiOS.","Community":"Comunidade","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Junte-se à nossa comunidade de desenvolvedores para compartilhar ideias, fazer perguntas e colaborar com outros desenvolvedores PiOS.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Ferramentas para Plataforma PiOS","Optimize image assets for PiOS display profiles":"Otimizar ativos de imagem para perfis de exibição PiOS","Test on multiple PiOS device models":"Testar em múltiplos modelos de dispositivos PiOS","Implement adaptive layout for different screen sizes":"Implementar layout adaptativo para diferentes tamanhos de tela","Reduce app startup time by optimizing resource loading":"Reduza o tempo de inicialização do aplicativo otimizando a carga de recursos","Ensure compatibility with PiOS security model":"Garanta compatibilidade com o modelo de segurança PiOS","Implement PiOS-specific UI patterns":"Implementar padrões de UI específicos do PiOS","ReferenceError: variableName is not defined":"ReferenceError: variávelName não está definida","of undefined":"de indefinido","TypeError: callback is not a function":"TypeError: callback não é uma função","RangeError: array index out of bounds":"RangeError: índice do array fora dos limites","Variable declared but never used":"Variável declarada mas nunca usada","__title__":"PiOS Toolkit - Ferramentas para Plataforma PiOS"},"ar":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - أدوات المطورين لمجال PiOS","Tools":"أدوات","Help":"المساعدة","Feedback":"التعليقات","Developer Tools for PiOS Platform":"أدوات المطورين لمجال PiOS","Get Started":"ابدأ","Learn More":"تعلم المزيد","Development Tools":"أدوات التطوير","Compatibility Checker":"مسبح التطابق","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"تحليل تطابق تطبيقك مع أجهزة PiOS و الحصول على توصيات لتحسين.","Check Compatibility":"تحقق من التطابق","Code Debugger":"مكتبة التتبع البرمجية","Debug your code snippets with detailed error diagnostics and fix suggestions.":"تتبع قطع الكود الخاصة بك مع تحليلات أخطاء مفصلة وتوصيات لمعالجة.","Debug Code":"تتبع الكود","Prototype Designer":"مصمم النماذج الأولية","Upload design images to generate interactive prototypes for your PiOS apps.":"أرفق صور التصميم لإنشاء نماذج أولية تفاعلية لتطبيقات PiOS الخاصة بك.","Create Prototype":"إنشاء نموذج أولي","API Document Generator":"مولد وثائق API","Generate comprehensive documentation from your PiOS API endpoints.":"توليد وثائق شاملة من نقاط النهاية الخاصة بك لـ API PiOS.","Generate Docs":"توليد الوثائق","Code Optimizer":"مضارب الكود","Optimize and compress your code files for better performance on PiOS devices.":"تحسين وتضييق ملفات الكود الخاصة بك لتحسين الأداء على أجهزة PiOS.","Optimize Code":"تحسين الكود","Enter App Package Name:":"ادخل اسم حزمة التطبيق:","Compatibility Analysis":"تحليل التطابق","Copy Results":"نسخ النتائج","Enter Code Snippet:":"ادخل قطعة الكود:","Debug Results":"نتائج التتبع","Upload Design Image:":"أرفق صورة التصميم:","Choose File":"اختر ملف","No file chosen":"لم يتم اختيار أي ملف","Generate Prototype":"إنشاء نموذج أولي","Generated Prototype":"نموذج أولي تم إنشاؤه","Copy Code":"نسخ الكود","Enter API Endpoint:":"ادخل نقطة النهاية للـ API:","Generate Documentation":"توليد الوثائق","API Documentation":"وثائق API","Copy Documentation":"نسخ الوثائق","Upload Code File:":"أرفق ملف الكود:","Optimized Code":"الكود المضارب","Help \u0026 Resources":"المساعدة والموارد","Getting Started":"بدء العمل","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"تعلم كيفية استخدام أدوات PiOS Toolkit لتطوير، اختبار وتحسين تطبيقاتك لأجهزة PiOS.","API Reference":"مرجع API","Explore the PiOS platform APIs and services available for application development.":"استكشف وحدات API وخدمات منصة PiOS المتاحة لتطوير التطبيقات.","Tutorials":"دروس","Step-by-step guides to help you build and deploy your first PiOS application.":"دروس خطوة بخطوة تساعدك في بناء وتوزيع تطبيق PiOS الخاص بك الأول.","Community":"المجتمع","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"انضم إلى مجتمع المطورين لدينا لمشاركة الأفكار، طرح الأسئلة والتعاون مع مطوري PiOS الآخرين.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - أدوات المطورين لمجال PiOS","Optimize image assets for PiOS display profiles":"تحسين أصول الصور لملفات عرض PiOS","Test on multiple PiOS device models":"اختبار على عدة نماذج أجهزة PiOS","Implement adaptive layout for different screen sizes":"تنفيذ تصميم مخصص للعديد من أحجام الشاشات","Reduce app startup time by optimizing resource loading":"تقليل وقت بدء التطبيق عن طريق تحسين تحميل الموارد","Ensure compatibility with PiOS security model":"ضمان التطابق مع نموذج الأمان الخاص بـ PiOS","Implement PiOS-specific UI patterns":"تنفيذ أنماط واجهة المستخدم المحددة لـ PiOS","ReferenceError: variableName is not defined":"ReferenceError: لم يتم تعريف متغيرName","of undefined":"من غير محدد","TypeError: callback is not a function":"TypeError: callback ليس دالة","RangeError: array index out of bounds":"RangeError: مخرج نطاق مؤشر اللوحة","Variable declared but never used":"تم إعلان المتغير لكن لم يتم استخدامه","__title__":"PiOS Toolkit - أدوات المطورين لمجال PiOS"},"hi":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - PiOS प्लेटफॉर्म के लिए डेवलपर टूल्स","Tools":"टूल्स","Help":"मदद","Feedback":"फीडबैक","Developer Tools for PiOS Platform":"PiOS प्लेटफॉर्म के लिए डेवलपर टूल्स","Get Started":"शुरू करें","Learn More":"और जानें","Development Tools":"डेवलपमेंट टूल्स","Compatibility Checker":"संगतता चेकर","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"अपने ऐप की PiOS डिवाइसेस के साथ संगतता का विश्लेषण करें और ऑप्टिमाइज़ेशन सिफारिशें प्राप्त करें।","Check Compatibility":"संगतता जांचें","Code Debugger":"कोड डीबगर","Debug your code snippets with detailed error diagnostics and fix suggestions.":"विस्तृत त्रुटि निदान और फिक्स सुझावों के साथ अपने कोड स्निपेट्स को डीबग करें।","Debug Code":"कोड डीबग करें","Prototype Designer":"प्रोटोटाइप डिज़ाइनर","Upload design images to generate interactive prototypes for your PiOS apps.":"अपने PiOS ऐप्स के लिए इंटरैक्टिव प्रोटोटाइप बनाने के लिए डिज़ाइन इमेज अपलोड करें।","Create Prototype":"प्रोटोटाइप बनाएं","API Document Generator":"API डॉक्यूमेंट जेनरेटर","Generate comprehensive documentation from your PiOS API endpoints.":"अपने PiOS API एंडपॉइंट्स से व्यापक डॉक्यूमेंटेशन जेनरेट करें।","Generate Docs":"डॉक्यूमेंटेशन जेनरेट करें","Code Optimizer":"कोड ऑप्टिमाइज़र","Optimize and compress your code files for better performance on PiOS devices.":"PiOS डिवाइसेस पर बेहतर प्रदर्शन के लिए अपने कोड फाइल्स को ऑप्टिमाइज़ और कम्प्रेस करें।","Optimize Code":"कोड ऑप्टिमाइज़ करें","Enter App Package Name:":"ऐप पैकेज नाम दर्ज करें:","Compatibility Analysis":"संगतता विश्लेषण","Copy Results":"परिणाम कॉपी करें","Enter Code Snippet:":"कोड स्निपेट दर्ज करें:","Debug Results":"डीबग परिणाम","Upload Design Image:":"डिज़ाइन इमेज अपलोड करें:","Choose File":"फाइल चुनें","No file chosen":"कोई फाइल नहीं चुनी गई","Generate Prototype":"प्रोटोटाइप जेनरेट करें","Generated Prototype":"जेनरेट किया गया प्रोटोटाइप","Copy Code":"कोड कॉपी करें","Enter API Endpoint:":"API एंडपॉइंट दर्ज करें:","Generate Documentation":"डॉक्यूमेंटेशन जेनरेट करें","API Documentation":"API डॉक्यूमेंटेशन","Copy Documentation":"डॉक्यूमेंटेशन कॉपी करें","Upload Code File:":"कोड फाइल अपलोड करें:","Optimized Code":"ऑप्टिमाइज़ किया गया कोड","Help \u0026 Resources":"मदद और संसाधन","Getting Started":"शुरुआत करना","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"जानें कि PiOS डिवाइसेस के लिए अपने एप्लिकेशन को डेवलप करने, टेस्ट करने और ऑप्टिमाइज़ करने के लिए PiOS टूलकिट का उपयोग कैसे करें।","API Reference":"API संदर्भ","Explore the PiOS platform APIs and services available for application development.":"एप्लिकेशन डेवलपमेंट के लिए उपलब्ध PiOS प्लेटफॉर्म APIs और सर्विसेस का अन्वेषण करें।","Tutorials":"ट्यूटोरियल्स","Step-by-step guides to help you build and deploy your first PiOS application.":"आपकी पहली PiOS एप्लिकेशन बनाने और डिप्लॉय करने में मदद करने के लिए चरण-दर-चरण मार्गदर्शक।","Community":"कम्युनिटी","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"अपने विचार साझा करने, प्रश्न पूछने और अन्य PiOS डेवलपर्स के साथ सहयोग करने के लिए हमारे डेवलपर कम्युनिटी में शामिल हों।","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - PiOS प्लेटफॉर्म के लिए डेवलपर टूल्स","Optimize image assets for PiOS display profiles":"PiOS डिस्प्ले प्रोफाइल्स के लिए इमेज एसेट्स ऑप्टिमाइज़ करें","Test on multiple PiOS device models":"कई PiOS डिवाइस मॉडल्स पर टेस्ट करें","Implement adaptive layout for different screen sizes":"विभिन्न स्क्रीन आकारों के लिए एडाप्टिव लेआउट लागू करें","Reduce app startup time by optimizing resource loading":"रिसोर्स लोडिंग को ऑप्टिमाइज़ करके ऐप स्टार्टअप समय कम करें","Ensure compatibility with PiOS security model":"PiOS सिक्योरिटी मॉडल के साथ संगतता सुनिश्चित करें","Implement PiOS-specific UI patterns":"PiOS-विशिष्ट UI पैटर्न लागू करें","ReferenceError: variableName is not defined":"रेफरेंस एरर: variableName परिभाषित नहीं है","of undefined":"अपरिभाषित का","TypeError: callback is not a function":"टाइप एरर: callback एक फ़ंक्शन नहीं है","RangeError: array index out of bounds":"रेंज एरर: ऐरे इंडेक्स बाउंड्स से बाहर है","Variable declared but never used":"वेरिएबल घोषित किया गया लेकिन कभी उपयोग नहीं किया गया","__title__":"PiOS Toolkit - PiOS प्लेटफॉर्म के लिए डेवलपर टूल्स"},"id":{"PiOS Toolkit - Developer Tools for PiOS Platform":"PiOS Toolkit - Alat Pengembang untuk Platform PiOS","Tools":"Alat","Help":"Bantuan","Feedback":"Umpan Balik","Developer Tools for PiOS Platform":"Alat Pengembang untuk Platform PiOS","Get Started":"Mulai","Learn More":"Pelajari Lebih Lanjut","Development Tools":"Alat Pengembangan","Compatibility Checker":"Pemeriksa Kompatibilitas","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Analisis kompatibilitas aplikasi Anda dengan perangkat PiOS dan dapatkan rekomendasi optimasi.","Check Compatibility":"Periksa Kompatibilitas","Code Debugger":"Debugger Kode","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Debug snippet kode Anda dengan diagnostik kesalahan detail dan saran perbaikan.","Debug Code":"Debug Kode","Prototype Designer":"Desainer Prototipe","Upload design images to generate interactive prototypes for your PiOS apps.":"Unggah gambar desain untuk menghasilkan prototipe interaktif untuk aplikasi PiOS Anda.","Create Prototype":"Buat Prototipe","API Document Generator":"Penghasil Dokumen API","Generate comprehensive documentation from your PiOS API endpoints.":"Hasilkan dokumentasi komprehensif dari endpoint API PiOS Anda.","Generate Docs":"Hasilkan Dokumen","Code Optimizer":"Optimalkan Kode","Optimize and compress your code files for better performance on PiOS devices.":"Optimalkan dan kompres file kode Anda untuk performa yang lebih baik pada perangkat PiOS.","Optimize Code":"Optimalkan Kode","Enter App Package Name:":"Masukkan Nama Package Aplikasi:","Compatibility Analysis":"Analisis Kompatibilitas","Copy Results":"Salin Hasil","Enter Code Snippet:":"Masukkan Snippet Kode:","Debug Results":"Hasil Debug","Upload Design Image:":"Unggah Gambar Desain:","Choose File":"Pilih File","No file chosen":"Tidak ada file yang dipilih","Generate Prototype":"Hasilkan Prototipe","Generated Prototype":"Prototipe yang Dihasilkan","Copy Code":"Salin Kode","Enter API Endpoint:":"Masukkan Endpoint API:","Generate Documentation":"Hasilkan Dokumentasi","API Documentation":"Dokumentasi API","Copy Documentation":"Salin Dokumentasi","Upload Code File:":"Unggah File Kode:","Optimized Code":"Kode yang Dioptimalkan","Help \u0026 Resources":"Bantuan \u0026 Sumber Daya","Getting Started":"Memulai","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Pelajari cara menggunakan PiOS Toolkit untuk mengembangkan, menguji, dan mengoptimalkan aplikasi Anda untuk perangkat PiOS.","API Reference":"Referensi API","Explore the PiOS platform APIs and services available for application development.":"Jelajahi API dan layanan platform PiOS yang tersedia untuk pengembangan aplikasi.","Tutorials":"Tutorial","Step-by-step guides to help you build and deploy your first PiOS application.":"Panduan langkah-demi-langkah untuk membantu Anda membangun dan mendeploy aplikasi PiOS pertama Anda.","Community":"Komunitas","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Bergabunglah dengan komunitas pengembang kami untuk berbagi ide, bertanya, dan berkolaborasi dengan pengembang PiOS lainnya.","PiOS Toolkit - Developer Tools for the PiOS Platform":"PiOS Toolkit - Alat Pengembang untuk Platform PiOS","Optimize image assets for PiOS display profiles":"Optimalkan aset gambar untuk profil tampilan PiOS","Test on multiple PiOS device models":"Uji pada beberapa model perangkat PiOS","Implement adaptive layout for different screen sizes":"Terapkan layout adaptif untuk ukuran layar yang berbeda","Reduce app startup time by optimizing resource loading":"Kurangi waktu startup aplikasi dengan mengoptimalkan pemuatan sumber daya","Ensure compatibility with PiOS security model":"Pastikan kompatibilitas dengan model keamanan PiOS","Implement PiOS-specific UI patterns":"Terapkan pola UI khusus PiOS","ReferenceError: variableName is not defined":"ReferenceError: variableName tidak didefinisikan","of undefined":"dari undefined","TypeError: callback is not a function":"TypeError: callback bukan fungsi","RangeError: array index out of bounds":"RangeError: indeks array di luar batas","Variable declared but never used":"Variabel dideklarasikan tetapi tidak pernah digunakan","__title__":"PiOS Toolkit - Alat Pengembang untuk Platform PiOS"},"vi":{"PiOS Toolkit - Developer Tools for PiOS Platform":"Bộ công cụ PiOS - Công cụ dành cho nhà phát triển trên nền tảng PiOS","Tools":"Công cụ","Help":"Trợ giúp","Feedback":"Phản hồi","Developer Tools for PiOS Platform":"Công cụ dành cho nhà phát triển trên nền tảng PiOS","Get Started":"Bắt đầu","Learn More":"Tìm hiểu thêm","Development Tools":"Công cụ phát triển","Compatibility Checker":"Trình kiểm tra tương thích","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"Phân tích khả năng tương thích của ứng dụng với thiết bị PiOS và nhận các đề xuất tối ưu hóa.","Check Compatibility":"Kiểm tra tương thích","Code Debugger":"Trình gỡ lỗi mã","Debug your code snippets with detailed error diagnostics and fix suggestions.":"Gỡ lỗi các đoạn mã của bạn với chẩn đoán lỗi chi tiết và đề xuất sửa lỗi.","Debug Code":"Gỡ lỗi mã","Prototype Designer":"Thiết kế mẫu thử","Upload design images to generate interactive prototypes for your PiOS apps.":"Tải lên hình ảnh thiết kế để tạo mẫu thử tương tác cho ứng dụng PiOS của bạn.","Create Prototype":"Tạo mẫu thử","API Document Generator":"Trình tạo tài liệu API","Generate comprehensive documentation from your PiOS API endpoints.":"Tạo tài liệu toàn diện từ các điểm cuối API PiOS của bạn.","Generate Docs":"Tạo tài liệu","Code Optimizer":"Trình tối ưu hóa mã","Optimize and compress your code files for better performance on PiOS devices.":"Tối ưu hóa và nén các tệp mã của bạn để có hiệu suất tốt hơn trên thiết bị PiOS.","Optimize Code":"Tối ưu hóa mã","Enter App Package Name:":"Nhập tên gói ứng dụng:","Compatibility Analysis":"Phân tích tương thích","Copy Results":"Sao chép kết quả","Enter Code Snippet:":"Nhập đoạn mã:","Debug Results":"Kết quả gỡ lỗi","Upload Design Image:":"Tải lên hình ảnh thiết kế:","Choose File":"Chọn tệp","No file chosen":"Chưa chọn tệp","Generate Prototype":"Tạo mẫu thử","Generated Prototype":"Mẫu thử đã tạo","Copy Code":"Sao chép mã","Enter API Endpoint:":"Nhập điểm cuối API:","Generate Documentation":"Tạo tài liệu","API Documentation":"Tài liệu API","Copy Documentation":"Sao chép tài liệu","Upload Code File:":"Tải lên tệp mã:","Optimized Code":"Mã đã tối ưu hóa","Help \u0026 Resources":"Trợ giúp \u0026 Tài nguyên","Getting Started":"Bắt đầu","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"Học cách sử dụng Bộ công cụ PiOS để phát triển, kiểm tra và tối ưu hóa ứng dụng của bạn cho thiết bị PiOS.","API Reference":"Tham chiếu API","Explore the PiOS platform APIs and services available for application development.":"Khám phá các API và dịch vụ nền tảng PiOS có sẵn cho phát triển ứng dụng.","Tutorials":"Hướng dẫn","Step-by-step guides to help you build and deploy your first PiOS application.":"Hướng dẫn từng bước giúp bạn xây dựng và triển khai ứng dụng PiOS đầu tiên.","Community":"Cộng đồng","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"Tham gia cộng đồng nhà phát triển của chúng tôi để chia sẻ ý tưởng, đặt câu hỏi và hợp tác với các nhà phát triển PiOS khác.","PiOS Toolkit - Developer Tools for the PiOS Platform":"Bộ công cụ PiOS - Công cụ dành cho nhà phát triển trên nền tảng PiOS","Optimize image assets for PiOS display profiles":"Tối ưu hóa tài sản hình ảnh cho các hồ sơ hiển thị PiOS","Test on multiple PiOS device models":"Kiểm tra trên nhiều mẫu thiết bị PiOS","Implement adaptive layout for different screen sizes":"Triển khai bố cục thích ứng cho các kích thước màn hình khác nhau","Reduce app startup time by optimizing resource loading":"Giảm thời gian khởi động ứng dụng bằng cách tối ưu hóa tải tài nguyên","Ensure compatibility with PiOS security model":"Đảm bảo tương thích với mô hình bảo mật PiOS","Implement PiOS-specific UI patterns":"Triển khai các mẫu UI đặc thù của PiOS","ReferenceError: variableName is not defined":"ReferenceError: biến variableName chưa được định nghĩa","of undefined":"của undefined","TypeError: callback is not a function":"TypeError: callback không phải là một hàm","RangeError: array index out of bounds":"RangeError: chỉ mục mảng vượt quá giới hạn","Variable declared but never used":"Biến được khai báo nhưng không bao giờ sử dụng","__title__":"Bộ công cụ PiOS - Công cụ dành cho nhà phát triển trên nền tảng PiOS"},"th":{"PiOS Toolkit - Developer Tools for PiOS Platform":"เครื่องมือสำหรับนักพัฒนา PiOS - เครื่องมือสำหรับนักพัฒนาบนแพลตฟอร์ม PiOS","Tools":"เครื่องมือ","Help":"ช่วยเหลือ","Feedback":"ข้อเสนอแนะ","Developer Tools for PiOS Platform":"เครื่องมือสำหรับนักพัฒนาบนแพลตฟอร์ม PiOS","Get Started":"เริ่มต้นใช้งาน","Learn More":"เรียนรู้เพิ่มเติม","Development Tools":"เครื่องมือพัฒนา","Compatibility Checker":"ตัวตรวจสอบความเข้ากันได้","Analyze your app's compatibility with PiOS devices and get optimization recommendations.":"วิเคราะห์ความเข้ากันได้ของแอปพลิเคชันของคุณกับอุปกรณ์ PiOS และรับข้อเสนอแนะในการเพิ่มประสิทธิภาพ","Check Compatibility":"ตรวจสอบความเข้ากันได้","Code Debugger":"ตัวแก้จุดบกพร่องโค้ด","Debug your code snippets with detailed error diagnostics and fix suggestions.":"แก้จุดบกพร่องส่วนของโค้ดของคุณด้วยการวินิจฉัยข้อผิดพลาดและข้อเสนอแนะในการแก้ไขที่ละเอียด","Debug Code":"แก้จุดบกพร่องโค้ด","Prototype Designer":"ตัวออกแบบโปรโตไทป์","Upload design images to generate interactive prototypes for your PiOS apps.":"อัปโหลดรูปแบบการออกแบบเพื่อสร้างโปรโตไทป์แบบโต้ตอบสำหรับแอป PiOS ของคุณ","Create Prototype":"สร้างโปรโตไทป์","API Document Generator":"ตัวสร้างเอกสาร API","Generate comprehensive documentation from your PiOS API endpoints.":"สร้างเอกสารที่ครบถ้วนจาก endpoint API ของ PiOS ของคุณ","Generate Docs":"สร้างเอกสาร","Code Optimizer":"ตัวเพิ่มประสิทธิภาพโค้ด","Optimize and compress your code files for better performance on PiOS devices.":"เพิ่มประสิทธิภาพและบีบอัดไฟล์โค้ดของคุณเพื่อให้มีประสิทธิภาพที่ดีขึ้นบนอุปกรณ์ PiOS","Optimize Code":"เพิ่มประสิทธิภาพโค้ด","Enter App Package Name:":"ป้อนชื่อแพ็คเกจแอป:","Compatibility Analysis":"การวิเคราะห์ความเข้ากันได้","Copy Results":"คัดลอกผลลัพธ์","Enter Code Snippet:":"ป้อนส่วนของโค้ด:","Debug Results":"ผลลัพธ์การแก้จุดบกพร่อง","Upload Design Image:":"อัปโหลดรูปแบบการออกแบบ:","Choose File":"เลือกไฟล์","No file chosen":"ไม่ได้เลือกไฟล์","Generate Prototype":"สร้างโปรโตไทป์","Generated Prototype":"โปรโตไทป์ที่สร้างแล้ว","Copy Code":"คัดลอกโค้ด","Enter API Endpoint:":"ป้อน API Endpoint:","Generate Documentation":"สร้างเอกสาร","API Documentation":"เอกสาร API","Copy Documentation":"คัดลอกเอกสาร","Upload Code File:":"อัปโหลดไฟล์โค้ด:","Optimized Code":"โค้ดที่เพิ่มประสิทธิภาพแล้ว","Help \u0026 Resources":"ช่วยเหลือและทรัพยากร","Getting Started":"เริ่มต้นใช้งาน","Learn how to use the PiOS Toolkit to develop, test, and optimize your applications for PiOS devices.":"เรียนรู้วิธีใช้ PiOS Toolkit เพื่อพัฒนา ทดสอบ และเพิ่มประสิทธิภาพแอปพลิเคชันสำหรับอุปกรณ์ PiOS","API Reference":"อ้างอิง API","Explore the PiOS platform APIs and services available for application development.":"สำรวจ API และบริการบนแพลตฟอร์ม PiOS ที่มีให้สำหรับการพัฒนาแอปพลิเคชัน","Tutorials":"บทเรียน","Step-by-step guides to help you build and deploy your first PiOS application.":":คำแนะนำทีละขั้นตอนเพื่อช่วยให้คุณสร้างและเผยแพร่แอป PiOS แรกของคุณ","Community":"ชุมชน","Join our developer community to share ideas, ask questions, and collaborate with other PiOS developers.":"เข้าร่วมชุมชนของนักพัฒนาเพื่อแบ่งปันความคิด ถามคำถาม และร่วมงานกับนักพัฒนา PiOS คนอื่นๆ","PiOS Toolkit - Developer Tools for the PiOS Platform":"เครื่องมือสำหรับนักพัฒนา PiOS - เครื่องมือสำหรับนักพัฒนาบนแพลตฟอร์ม PiOS","Optimize image assets for PiOS display profiles":"เพิ่มประสิทธิภาพสินทรัพย์ด้านรูปภาพสำหรับโปรไฟล์การแสดงผลของ PiOS","Test on multiple PiOS device models":"ทดสอบบนรุ่นอุปกรณ์ PiOS หลายรุ่น","Implement adaptive layout for different screen sizes":"นำเสนอ layout ที่ปรับตัวได้สำหรับขนาดหน้าจอที่แตกต่างกัน","Reduce app startup time by optimizing resource loading":"ลดเวลาในการเริ่มต้นแอปโดยการเพิ่มประสิทธิภาพการโหลดทรัพย์","Ensure compatibility with PiOS security model":"รับรองความเข้ากันได้กับโมเดลความปลอดภัยของ PiOS","Implement PiOS-specific UI patterns":"นำเสนอ UI patterns ที่เฉพาะตัวสำหรับ PiOS","ReferenceError: variableName is not defined":"ReferenceError: variableName ไม่ได้ถูกกำหนด","of undefined":"ของ undefined","TypeError: callback is not a function":"TypeError: callback ไม่ใช่ฟังก์ชัน","RangeError: array index out of bounds":"RangeError: index ของ array เกินขอบเขต","Variable declared but never used":"ตัวแปรถูกประกาศแต่ไม่เคยถูกใช้","__title__":"เครื่องมือสำหรับนักพัฒนา PiOS - เครื่องมือสำหรับนักพัฒนาบนแพลตฟอร์ม PiOS"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
