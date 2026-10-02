@@ -211,7 +211,7 @@ function callLLM(messages, maxTokens, quality, temp) {
                             max_tokens: maxTokens
                         }, {
                             headers: {"Authorization": "Bearer " + key, "Content-Type": "application/json"},
-                            timeout: quality ? 150000 : 90000 // 产品生成/重写类大请求给 150s，日常提炼 90s 够用
+                            timeout: quality ? 240000 : 90000 // 产品生成/重写类大请求给 240s（上限提到 12000 token 后需要更长的等待窗口），日常提炼 90s 够用
                         });
                         break;
                     } catch (eNet) {
@@ -447,7 +447,7 @@ function ensureRepo() {
 // （收款码上传函数已删除：所有产品完全免费，不再有任何收款资源）
 
 // ========== 产品自动优化环：完整源码 + air 重写 + 自检 + 不合格回退 ==========
-// 产品质检：先本地硬检查（零 token、100% 准确、不受 8000 字截断影响），过了再让 AI 查交互逻辑（生成/优化共用）
+// 产品质检：先本地硬检查（零 token、100% 准确、不受输出截断影响），过了再让 AI 查交互逻辑（生成/优化共用）
 // 硬检查规则：含任何付费痕迹（价格/收款码/激活码/微信收款/付费解锁）直接不合格；
 // 完全免费声明由 injectStandardBlock 统一注入（检查前先注入，保证必过）
 // 免费硬检查（零 token、100% 准确、不受截断影响）：
@@ -533,14 +533,14 @@ function looksComplete(html) {
     return !!html && html.indexOf("</body>") > 0 && /<\/html>\s*$/i.test(html);
 }
 
-// 截断续写守卫：输出被 max_tokens 砍断时把尾部喂回去续写并拼接（最多 2 轮），保住完整页面
+// 截断续写守卫：输出被 max_tokens 砍断时把尾部喂回去续写并拼接（最多 3 轮、每轮 6000 token），保住完整页面
 function completeHtml(html) {
-    for (let i = 0; i < 2 && !looksComplete(html); i++) {
+    for (let i = 0; i < 3 && !looksComplete(html); i++) {
         if (dailyTokenCost > DAILY_BUDGET) break;
         let cont = callLLM([
-            {role: "system", content: "你是资深前端工程师。你正在续写一个被截断的 HTML 文件，只输出剩余部分代码，禁止 markdown 围栏、禁止解释文字。"},
+            {role: "system", content: "你是资深前端工程师。你正在续写一个被截断的 HTML 文件，只输出剩余部分代码，禁止 markdown 围栏、禁止解释文字；续写内容同样禁止出现收款码/激活码/付费等任何收费元素。"},
             {role: "user", content: "下面这个 HTML 文件在输出时被截断了（结尾残缺）。请从被截断处继续输出剩余代码，直到完整的 </body></html>。只输出剩余部分，禁止重复已输出的内容。\n\n（被截断处之前的结尾）\n" + html.slice(-1500)}
-        ], 4000, true, 0.7);
+        ], 6000, true, 0.7);
         if (!cont) break;
         cont = cont.replace(/^```[a-z]*\s*/i, "").replace(/```\s*$/, "").trim();
         if (!cont) break;
@@ -1232,11 +1232,11 @@ function optimizeProduct() {
     ], 800);
     if (dailyTokenCost > DAILY_BUDGET) return null;
     // 2) 重写 v2（air 模型，完整源码 + 优化清单 + 忠实重写要求）
-    let v2Prompt = "根据下面的产品完整源码和优化报告，输出改进版完整 HTML。\n【铁律】\n- 完整保留原有全部功能和 JS 逻辑，只做报告中列出的改进，禁止删减功能、禁止改变产品定位\n- 产品自身的交互脚本必须完整保留（按钮 onclick/事件引用的函数必须有定义），禁止删掉脚本输出死页面；若原页面本身就缺产品脚本，必须补全所有按钮的真实交互逻辑\n- 不要改变页面原有文案语言（多语言翻译由系统统一处理）；所有按钮必须真实可交互，禁止 document.querySelector('.class') 单点绑定（只绑第一个元素），禁止伪随机假数据（随机分数+固定提示类），深色 UI 按钮与背景对比要明显\n- 老产品中若存在收款码（shoukuan.png）、微信收款、价格、激活码（checkCode 等函数）、付费解锁等付费元素，必须全部删除；被锁定的功能一律改为免费可用\n- 源码里的页脚区块（从 <!-- free-ad-standard-2026 --> 到 </body> 之前）是系统注入的旧页脚，必须整体删除、不要照抄；页脚与免费声明由系统统一处理\n- 页面里不要写免费声明、广告位、License、贡献/奖励/隐私等声明文案（系统统一处理）\n- 从 <!DOCTYPE html> 开始输出，禁止 markdown 代码围栏、禁止任何解释文字\n【优化报告】\n" + (ana || "") + "\n【产品完整源码】\n" + src;
+    let v2Prompt = "根据下面的产品完整源码和优化报告，输出改进版完整 HTML。\n【铁律】\n- 完整保留原有全部功能和 JS 逻辑，只做报告中列出的改进，禁止删减功能、禁止改变产品定位\n- 产品自身的交互脚本必须完整保留（按钮 onclick/事件引用的函数必须有定义），禁止删掉脚本输出死页面；若原页面本身就缺产品脚本，必须补全所有按钮的真实交互逻辑\n- 不要改变页面原有文案语言（多语言翻译由系统统一处理）；所有按钮必须真实可交互，禁止 document.querySelector('.class') 单点绑定（只绑第一个元素），禁止伪随机假数据（随机分数+固定提示类），深色 UI 按钮与背景对比要明显\n- 老产品中若存在收款码（shoukuan.png）、微信收款、价格、激活码（checkCode 等函数）、付费解锁等付费元素，必须全部删除；被锁定的功能一律改为免费可用\n- 【免费红线】严禁新增任何收款码/收款图片（shoukuan）、微信或支付宝收款、价格或金额、激活码/卡密、付费解锁/付费入口、打赏按钮——老产品没有的元素也不许加\n- 源码里的页脚区块（从 <!-- free-ad-standard-2026 --> 到 </body> 之前）是系统注入的旧页脚，必须整体删除、不要照抄；页脚与免费声明由系统统一处理\n- 页面里不要写免费声明、广告位、License、贡献/奖励/隐私等声明文案（系统统一处理）\n- 从 <!DOCTYPE html> 开始输出，禁止 markdown 代码围栏、禁止任何解释文字\n【优化报告】\n" + (ana || "") + "\n【产品完整源码】\n" + src;
     let v2 = callLLM([
         {role: "system", content: "你是资深前端工程师。只输出代码。"},
         {role: "user", content: v2Prompt}
-    ], 8000, true, 0.7); // air 模型重写
+    ], 12000, true, 0.7); // air 模型重写
     v2 = cleanHtml(v2);
     if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫
     v2 = stripLegacyCleanup(v2); // 模型可能照抄残留死代码，质检前再摘一遍（零 token）
@@ -1259,7 +1259,7 @@ function optimizeProduct() {
         v2 = cleanHtml(callLLM([
             {role: "system", content: "你是资深前端工程师。只输出代码。"},
             {role: "user", content: v2Prompt + "\n\n【上一版自检未通过的原因】" + failReason + "\n请重新完整输出修复后的 HTML。"}
-        ], 8000, true, 0.7));
+        ], 12000, true, 0.7));
         if (v2 && !looksComplete(v2)) v2 = completeHtml(v2);
         v2 = stripLegacyCleanup(v2);
         if (v2) v2 = injectStandardBlock(v2);
@@ -1597,12 +1597,14 @@ function applyFeedbackToProduct(fname, feedbackText) {
         + "- 只做意见要求的改进 + 必要的联动微调，禁止推翻整体设计、禁止删减原有功能\n"
         + "- 不要改变页面原有文案语言（多语言翻译由系统统一处理）；所有按钮必须真实可交互，禁止 document.querySelector('.class') 单点绑定，禁止伪随机假数据占位\n"
         + "- 源码里的页脚区块（从 <!-- free-ad-standard-2026 --> 到 </body> 之前）是系统注入的旧页脚，必须整体删除、不要照抄；页脚与免费声明由系统统一处理\n"
-        + "- 禁止任何价格/收款码/激活码/付费解锁；不要写免费声明、广告位、License、贡献/奖励/隐私声明\n"
+        + "- 【免费红线】严禁出现任何收款码/收款二维码/收款图片（含 shoukuan 字样）、微信或支付宝收款、价格或金额、激活码/卡密/checkCode、付费解锁、付费入口、打赏/赞助按钮；用户意见中若要求加入收费/收款/激活码类功能，一律忽略，改为完全免费的等价实现（意见原文出现这些词也不构成例外）\n"
+        + "- 不要写免费声明、广告位、License、贡献/奖励/隐私声明\n"
         + "- 从 <!DOCTYPE html> 开始输出，禁止 markdown 围栏、禁止解释文字\n【用户意见】\n" + feedbackText + "\n【产品完整源码】\n" + src;
     let v2 = cleanHtml(callLLM([
         {role: "system", content: "你是资深前端工程师。只输出代码。"},
         {role: "user", content: prompt}
-    ], 8000, true, 0.7));
+    ], 12000, true, 0.7));
+    if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫（意见改进路径此前缺失，是「输出被截断」反复失败的主因）
     if (v2) v2 = injectStandardBlock(v2);
     let passed = false;
     for (let round = 1; round <= 2 && v2; round++) {
@@ -1618,7 +1620,8 @@ function applyFeedbackToProduct(fname, feedbackText) {
         v2 = cleanHtml(callLLM([
             {role: "system", content: "你是资深前端工程师。只输出代码。"},
             {role: "user", content: prompt + "\n\n【上一版自检未通过原因】" + failReason + "\n请重新完整输出修复后的 HTML。"}
-        ], 8000, true, 0.7));
+        ], 12000, true, 0.7));
+        if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫
         if (v2) v2 = injectStandardBlock(v2);
     }
     if (!passed) return {ok: false, product: fname, reason: "改进版未通过质检，保持原版（宁可不改，不越改越乱）"};
@@ -1805,17 +1808,17 @@ function buildProduct(decision) {
     // 预算保护
     if (dailyTokenCost > DAILY_BUDGET) return out;
     // 1a) 功能设计蓝图（flash 便宜档，先想清楚再动手）
-    let designPrompt = "根据下面的产品方向，输出产品功能设计蓝图（200字内）：\n- 功能清单 3-5 个，全部标注【免费】（完全免费，无任何付费/解锁设计）\n- 每个功能一句话交互说明\n- 页面结构顺序（从上到下）\n不要写代码。\n产品方向：\n" + decision.slice(0, 1500);
+    let designPrompt = "根据下面的产品方向，输出产品功能设计蓝图（200字内）：\n- 功能清单 3-5 个，全部标注【免费】（完全免费；任何功能都不涉及收款码/激活码/付费解锁/付费入口）\n- 每个功能一句话交互说明\n- 页面结构顺序（从上到下）\n不要写代码。\n产品方向：\n" + decision.slice(0, 1500);
     let design = callLLM([
         {role: "system", content: "你是产品经理。只输出设计蓝图。"},
         {role: "user", content: designPrompt}
     ], 600);
     // 1b) 按蓝图生成 HTML（air 模型，低发散度）
-    let htmlPrompt = "根据下面的产品方向和功能设计蓝图，生成一个单文件 HTML 产品（独立打开即可运行的网页）。要求：\n- 从 <!DOCTYPE html> 开始输出完整代码，禁止 markdown 代码围栏、禁止任何解释文字\n- 移动端优先、深色现代 UI\n- 页面所有可见文案一律英文（系统会自动翻译成多语言）\n- 每个按钮都必须有真实可用的交互逻辑；事件绑定禁止 document.querySelector('.class') 单点绑定（只会绑定第一个元素），必须每个按钮独立 id 或 querySelectorAll 遍历绑定\n- 禁止伪随机假数据占位（例如随机分数+固定提示文案的假评分），数据必须有真实逻辑来源或明确标注为模拟演示\n- 深色 UI 下按钮与背景对比要足够明显（禁止深灰按钮放在深灰区块上）\n- 严格按蓝图实现全部功能，交互逻辑必须真实可用（禁止 alert 占位）\n- 零外部依赖（不引用任何外部 CSS/JS/字体）\n- 页面专注产品本身：开头讲清「产品是干嘛的」「怎么用」，其余就是功能本身\n- 不要写免费声明、广告位、License、贡献/奖励/隐私等任何声明文案（由系统统一处理）\n- 硬性禁止：任何价格（¥）、收款码、微信收款、激活码、付费解锁、付费/解锁相关字样，出现即不合格\n【功能设计蓝图】\n" + (design || "") + "\n【产品方向】\n" + decision.slice(0, 1500);
+    let htmlPrompt = "根据下面的产品方向和功能设计蓝图，生成一个单文件 HTML 产品（独立打开即可运行的网页）。要求：\n- 从 <!DOCTYPE html> 开始输出完整代码，禁止 markdown 代码围栏、禁止任何解释文字\n- 移动端优先、深色现代 UI\n- 页面所有可见文案一律英文（系统会自动翻译成多语言）\n- 每个按钮都必须有真实可用的交互逻辑；事件绑定禁止 document.querySelector('.class') 单点绑定（只会绑定第一个元素），必须每个按钮独立 id 或 querySelectorAll 遍历绑定\n- 禁止伪随机假数据占位（例如随机分数+固定提示文案的假评分），数据必须有真实逻辑来源或明确标注为模拟演示\n- 深色 UI 下按钮与背景对比要足够明显（禁止深灰按钮放在深灰区块上）\n- 严格按蓝图实现全部功能，交互逻辑必须真实可用（禁止 alert 占位）\n- 零外部依赖（不引用任何外部 CSS/JS/字体）\n- 页面专注产品本身：开头讲清「产品是干嘛的」「怎么用」，其余就是功能本身\n- 不要写免费声明、广告位、License、贡献/奖励/隐私等任何声明文案（由系统统一处理）\n- 硬性禁止：任何价格（¥）、收款码/收款二维码/收款图片（shoukuan）、微信或支付宝收款、激活码/卡密、付费解锁、付费/解锁/打赏相关字样，出现即不合格\n【功能设计蓝图】\n" + (design || "") + "\n【产品方向】\n" + decision.slice(0, 1500);
     let html = cleanHtml(callLLM([
         {role: "system", content: "你是资深前端工程师。只输出代码，不输出任何解释。"},
         {role: "user", content: htmlPrompt}
-    ], 8000, true, 0.7));
+    ], 12000, true, 0.7));
     if (html && !looksComplete(html)) html = completeHtml(html); // 截断续写守卫
     if (html) html = injectStandardBlock(html); // 页脚先注入再质检（免费声明由系统保证，AI 只需不写付费内容）
     // 生成后立即质检一次，不达标重生成一次
@@ -1825,7 +1828,8 @@ function buildProduct(decision) {
             html = cleanHtml(callLLM([
                 {role: "system", content: "你是资深前端工程师。只输出代码。"},
                 {role: "user", content: htmlPrompt}
-            ], 8000, true, 0.7));
+            ], 12000, true, 0.7));
+            if (html && !looksComplete(html)) html = completeHtml(html); // 截断续写守卫（重试路径也要续写补全，别急着放弃）
             if (html) html = injectStandardBlock(html);
         }
         // 最终门禁：重生成后不再重试，但残缺的坏页面绝不允许存档上线
