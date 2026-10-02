@@ -106,6 +106,37 @@ self_check() {
     log "🩺 自检：调度器 $sched ｜ 主脚本 $mainst ｜ 巡检 $patrol ｜ token 预算已用 ${budget:-?} ｜ 磁盘 ${disk:-?}"
 }
 
+# ---------- 每日自检班：每 20 小时开一个「全新 ccode 会话」做低成本日志巡检（新会话上下文小=便宜；结论写 PROGRESS） ----------
+# 暂停方式：touch $HOME/tmp/.daily_patrol_off（删掉该文件即恢复）
+daily_patrol() {
+    [ -f "$HOME/tmp/.daily_patrol_off" ] && return 0
+    local dt="$HOME/tmp/.daily_patrol_ts" now
+    now=$(date +%s)
+    if [ -f "$dt" ] && [ $((now - $(cat "$dt" 2>/dev/null || echo 0))) -lt 72000 ]; then
+        return 0
+    fi
+    date +%s > "$dt"
+    if tmux has-session -t ccode_daily 2>/dev/null; then tmux kill-session -t ccode_daily 2>/dev/null; sleep 1; fi
+    log "🗓️ 每日自检班启动（独立 ccode 会话 ccode_daily，低成本巡检）"
+    tmux new-session -d -s ccode_daily -e NODE_OPTIONS="--max-old-space-size=6144"
+    tmux send-keys -t ccode_daily "cd $CC_DIR && ccode" C-m
+    sleep 18
+    local p="【每日自检班】你是灵感雷达系统的低成本自检员。项目记忆里有全部设备工作流约定（文件都在 /storage/emulated/0/脚本/，编辑前先 cp 进沙箱、改完 cp 回去、动手前先建 .bak）。请做一轮快速巡检：1) 用 tail 看 调度_日志.log、主脚本_日志.log、巡检_日志.log 和 PROGRESS.md 最后 40 行；2) 核对：调度器心跳是否准点（约5分钟一条）、主脚本/巡检是否正常轮换、token 预算与磁盘是否健康、产出与脚本目录有无散件（_prev/_v1 散件、临时文件、重复副本、卡死进程）；3) 处理原则：一眼确凿的小问题直接修（目录散件、残留临时文件、卡死进程）；涉及脚本或产品文件必须先 .bak、改完验证、推 GitHub 备份；拿不准的不动，写一行【需主会话处理】待办；4) 严格低成本：本班目标总消耗 3 万 token 以内，只 tail 不 cat 大文件，不深挖、不跑长命令；5) 收尾：在 PROGRESS.md 追加一行【🗓️ 自检班：一句话结论】，有问题就再加一行【需主会话处理】。做完即停。"
+    tmux send-keys -t ccode_daily "$p"
+    sleep 0.3
+    tmux send-keys -t ccode_daily Enter
+    local tries=0
+    while [ "$tries" -lt 2 ]; do
+        sleep 1.5
+        if tmux capture-pane -t ccode_daily -p 2>/dev/null | tail -2 | grep -q "做完即停"; then
+            timeout 8 tmux send-keys -t ccode_daily Enter || true
+            tries=$((tries+1))
+        else
+            break
+        fi
+    done
+}
+
 # ---------- 冷却窗口内的自动确认兜底：ccode TUI 若弹确认框，自动回车 ----------
 auto_confirm_once() {
     local end=$(( $(date +%s) + COOLDOWN ))
@@ -217,6 +248,7 @@ main() {
         start_ccode
         ensure_scheduler
         self_check
+        daily_patrol
         local found fname errline
         found=$(scan_logs)
         if [ -n "$found" ]; then
