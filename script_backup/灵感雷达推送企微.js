@@ -473,10 +473,14 @@ function localHardCheck(html, srcRef) {
         ["simulation for demonstration", "模拟演示声明（必须做成真实工具）"],
         ["demonstration purposes only", "模拟演示声明（必须做成真实工具）"],
         ["仅供演示", "模拟演示声明（必须做成真实工具）"],
-        ["仅用于演示", "模拟演示声明（必须做成真实工具）"]
+        ["仅用于演示", "模拟演示声明（必须做成真实工具）"],
+        ["// simulate", "模拟分析式假功能（必须真实实现）"],
+        ["simulate ai", "模拟分析式假功能（必须真实实现）"],
+        ["fake data", "假数据（必须真实数据）"],
+        ["mock data", "假数据（必须真实数据）"]
     ];
     for (let i = 0; i < forbidden.length; i++) {
-        if (body.indexOf(forbidden[i][0]) >= 0) return "含" + forbidden[i][1];
+        if (body.toLowerCase().indexOf(String(forbidden[i][0]).toLowerCase()) >= 0) return "含" + forbidden[i][1]; // 大小写不敏感：Simulate/simulate 之类变体都要拦
     }
     // 产品交互脚本必须存在：AI 重写时可能把产品 JS 整个删掉（DevBoost 实测死页面），零 token 硬拦截
     if (!/<script[\s>]/i.test(body)) return "产品交互脚本丢失（死页面）";
