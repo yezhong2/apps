@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PiDevKit - Code Snippet Search & Developer Tools</title><meta name="description" content="Free online tool: PiDevKit - Code Snippet Search &amp; Developer Tools. No signup, no payment — free forever.">
+<meta property="og:title" content="PiDevKit - Code Snippet Search &amp; Developer Tools">
+<meta property="og:description" content="Free online tool: PiDevKit - Code Snippet Search &amp; Developer Tools. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_005721_PiDevKit.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6bb3ff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+            --border: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 1rem 0;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 20px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .search-button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-secondary);
+        }
+        
+        .nav-tab {
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .nav-tab.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .nav-tab:hover:not(.active) {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .content-area {
+            padding: 2rem 0;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .function-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .function-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .function-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .function-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .code-editor {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 1rem;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .button {
+            padding: 10px 20px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .button-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .button-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .result-container {
+            margin-top: 1.5rem;
+        }
+        
+        .result-item {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .result-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .code-block {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1rem;
+        }
+        
+        .code-block pre {
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .tabs-container {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 8px 8px 0 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .tab-button.active {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active {
+            display: block;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--accent);
+        }
+        
+        .upload-area.drag-over {
+            border-color: var(--accent);
+            background-color: rgba(74, 158, 255, 0.1);
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            background-color: var(--success);
+        }
+        
+        .notification.error {
+            background-color: var(--error);
+        }
+        
+        .notification.info {
+            background-color: var(--accent);
+        }
+        
+        .version-history {
+            margin-top: 1rem;
+        }
+        
+        .version-item {
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .version-info {
+            flex: 1;
+        }
+        
+        .version-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .test-results {
+            margin-top: 1rem;
+        }
+        
+        .test-item {
+            background-color: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .test-status {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .test-status.passed {
+            background-color: var(--success);
+        }
+        
+        .test-status.failed {
+            background-color: var(--error);
+        }
+        
+        .test-status.pending {
+            background-color: var(--warning);
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+            }
+            
+            .nav-tabs {
+                gap: 0.5rem;
+            }
+            
+            .nav-tab {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">PiDevKit</div>
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="globalSearch" placeholder="Search for code snippets, APIs, or solutions...">
+                    <button class="search-button" id="globalSearchButton">Search</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-tab="code-snippets">Code Snippets</button>
+            <button class="nav-tab" data-tab="api-docs">API Docs</button>
+            <button class="nav-tab" data-tab="error-diagnosis">Error Diagnosis</button>
+            <button class="nav-tab" data-tab="version-control">Version Control</button>
+            <button class="nav-tab" data-tab="code-testing">Code Testing</button>
+        </div>
+        
+        <div class="content-area">
+            <!-- Code Snippets Tab -->
+            <div class="tab-content active" id="code-snippets">
+                <div class="function-card">
+                    <h2 class="function-title">Search Code Snippets</h2>
+                    <p class="function-description">Find relevant code snippets and examples by entering keywords</p>
+                    <input type="text" class="search-input" id="snippetSearch" placeholder="Enter keywords to search for code snippets...">
+                    <button class="button" id="searchSnippets">Search</button>
+                    
+                    <div class="result-container" id="snippetResults"></div>
+                </div>
+            </div>
+            
+            <!-- API Docs Tab -->
+            <div class="tab-content" id="api-docs">
+                <div class="function-card">
+                    <h2 class="function-title">API Documentation</h2>
+                    <p class="function-description">Find detailed API documentation and usage examples</p>
+                    <input type="text" class="search-input" id="apiSearch" placeholder="Enter API name to search for documentation...">
+                    <button class="button" id="searchAPIs">Search</button>
+                    
+                    <div class="result-container" id="apiResults"></div>
+                </div>
+            </div>
+            
+            <!-- Error Diagnosis Tab -->
+            <div class="tab-content" id="error-diagnosis">
+                <div class="function-card">
+                    <h2 class="function-title">Error Diagnosis</h2>
+                    <p class="function-description">Get help with error codes and debugging suggestions</p>
+                    <textarea class="code-editor" id="errorInput" placeholder="Paste your error code or message here..."></textarea>
+                    <button class="button" id="diagnoseError">Diagnose</button>
+                    
+                    <div class="result-container" id="diagnosisResults"></div>
+                </div>
+            </div>
+            
+            <!-- Version Control Tab -->
+            <div class="tab-content" id="version-control">
+                <div class="function-card">
+                    <h2 class="function-title">Code Version Control</h2>
+                    <p class="function-description">Upload and manage different versions of your code</p>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <p>Drag and drop your code files here or click to browse</p>
+                        <input type="file" class="file-input" id="fileInput" multiple accept=".js,.ts,.py,.java,.cpp,.c,.html,.css,.sql">
+                        <button class="button" id="browseFiles">Browse Files</button>
+                    </div>
+                    
+                    <div class="tabs-container">
+                        <button class="tab-button active" data-tab="upload-tab">Upload Code</button>
+                        <button class="tab-button" data-tab="history-tab">Version History</button>
+                    </div>
+                    
+                    <div class="tab-panel active" id="upload-tab">
+                        <textarea class="code-editor" id="codeEditor" placeholder="Or paste your code here..."></textarea>
+                        <button class="button" id="saveVersion">Save Version</button>
+                        <button class="button button-secondary" id="clearEditor">Clear</button>
+                    </div>
+                    
+                    <div class="tab-panel" id="history-tab">
+                        <div class="version-history" id="versionHistory"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Code Testing Tab -->
+            <div class="tab-content" id="code-testing">
+                <div class="function-card">
+                    <h2 class="function-title">Code Testing</h2>
+                    <p class="function-description">Upload your code and generate automated test cases</p>
+                    
+                    <div class="upload-area" id="testUploadArea">
+                        <p>Drag and drop your code files here or click to browse</p>
+                        <input type="file" class="file-input" id="testFileInput" accept=".js,.ts,.py,.java,.cpp,.c">
+                        <button class="button" id="browseTestFiles">Browse Files</button>
+                    </div>
+                    
+                    <textarea class="code-editor" id="testCodeEditor" placeholder="Or paste your code here..."></textarea>
+                    <button class="button" id="runTests">Run Tests</button>
+                    <button class="button button-secondary" id="clearTestEditor">Clear</button>
+                    
+                    <div class="test-results" id="testResults"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+    
+    <script>
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+        
+        // Tab navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabId = tab.getAttribute('data-tab');
+                
+                // Update active tab
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Update active content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Global search
+        document.getElementById('globalSearchButton').addEventListener('click', () => {
+            const searchTerm = document.getElementById('globalSearch').value;
+            if (searchTerm) {
+                // Activate the first tab (Code Snippets)
+                document.querySelector('.nav-tab').click();
+                
+                // Set the search term in the snippet search
+                document.getElementById('snippetSearch').value = searchTerm;
+                
+                // Perform the search
+                searchSnippets();
+            }
+        });
+        
+        // Code Snippets functionality
+        const codeSnippets = [
+            {
+                title: "Array Sorting",
+                description: "Different ways to sort arrays in JavaScript",
+                code: `// Sort numbers in ascending order
+const numbers = [3, 1, 4, 1, 5, 9, 2, 6];
+numbers.sort((a, b) => a - b);
+
+// Sort objects by property
+const users = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 20 }
+];
+users.sort((a, b) => a.age - b.age);`,
+                tags: ["array", "sort", "javascript"]
+            },
+            {
+                title: "Fetch API Example",
+                description: "Making HTTP requests with the Fetch API",
+                code: `// GET request
+fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+
+// POST request
+fetch('https://api.example.com/data', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ key: 'value' }),
+})
+.then(response => response.json())
+.then(data => console.log(data));`,
+                tags: ["fetch", "api", "http", "javascript"]
+            },
+            {
+                title: "Debounce Function",
+                description: "Creating a debounce function to limit how often a function can be called",
+                code: `function debounce(func, wait) {
+  let timeout;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
+}
+
+// Usage
+const handleResize = debounce(() => {
+  console.log('Window resized');
+}, 250);
+
+window.addEventListener('resize', handleResize);`,
+                tags: ["debounce", "function", "javascript"]
+            },
+            {
+                title: "CSS Flexbox Center",
+                description: "Center elements using CSS Flexbox",
+                code: `.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Or center both horizontally and vertically */
+.center-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}`,
+                tags: ["css", "flexbox", "center"]
+            },
+            {
+                title: "React Hooks Example",
+                description: "Using useState and useEffect hooks in React",
+                code: `import React, { useState, useEffect } from 'react';
+
+function Example() {
+  const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Fetch data when component mounts
+    fetch('https://api.example.com/data')
+      .then(response => response.json())
+      .then(data => setData(data));
+      
+    // Cleanup function
+    return () => {
+      console.log('Component unmounted');
+    };
+  }, []);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </div>
+  );
+}`,
+                tags: ["react", "hooks", "useState", "useEffect"]
+            }
+        ];
+        
+        function searchSnippets() {
+            const searchTerm = document.getElementById('snippetSearch').value.toLowerCase();
+            const resultsContainer = document.getElementById('snippetResults');
+            
+            if (!searchTerm) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            const filteredSnippets = codeSnippets.filter(snippet => 
+                snippet.title.toLowerCase().includes(searchTerm) ||
+                snippet.description.toLowerCase().includes(searchTerm) ||
+                snippet.tags.some(tag => tag.toLowerCase().includes(searchTerm))
+            );
+            
+            if (filteredSnippets.length === 0) {
+                resultsContainer.innerHTML = '<p>No code snippets found matching your search.</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = filteredSnippets.map(snippet => `
+                <div class="result-item">
+                    <h3 class="result-title">${snippet.title}</h3>
+                    <p class="result-description">${snippet.description}</p>
+                    <div class="code-block">
+                        <pre>${snippet.code}</pre>
+                    </div>
+                    <div>
+                        ${snippet.tags.map(tag => `<span class="button button-secondary">${tag}</span>`).join(' ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        document.getElementById('searchSnippets').addEventListener('click', searchSnippets);
+        
+        // API Documentation functionality
+        const apiDocs = [
+            {
+                name: "fetch",
+                description: "The Fetch API provides an interface for fetching resources.",
+                parameters: [
+                    { name: "url", type: "string", description: "The URL to which the request is sent" },
+                    { name: "options", type: "object", description: "Optional configuration options" }
+                ],
+                examples: [
+                    {
+                        title: "Basic GET request",
+                        code: `fetch('https://api.example.com/data')
+  .then(response => response.json())
+  .then(data => console.log(data));`
+                    },
+                    {
+                        title: "POST request with headers",
+                        code: `fetch('https://api.example.com/data', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer token123'
+  },
+  body: JSON.stringify({ key: 'value' })
+});`
+                    }
+                ],
+                browserSupport: "Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+"
+            },
+            {
+                name: "localStorage",
+                description: "Provides access to the local storage of the origin.",
+                methods: [
+                    { name: "setItem", description: "Adds a key/value pair to storage" },
+                    { name: "getItem", description: "Retrieves a value by key" },
+                    { name: "removeItem", description: "Removes a key/value pair" },
+                    { name: "clear", description: "Removes all key/value pairs" }
+                ],
+                examples: [
+                    {
+                        title: "Saving data",
+                        code: `// Save data
+localStorage.setItem('username', 'john_doe');
+
+// Save object (must be stringified)
+const user = { name: 'John', age: 30 };
+localStorage.setItem('user', JSON.stringify(user));`
+                    },
+                    {
+                        title: "Retrieving data",
+                        code: `// Get data
+const username = localStorage.getItem('username');
+
+// Get object and parse
+const user = JSON.parse(localStorage.getItem('user'));`
+                    }
+                ],
+                browserSupport: "All modern browsers"
+            },
+            {
+                name: "Array.prototype.map",
+                description: "Creates a new array populated with the results of calling a provided function on every element in the calling array.",
+                syntax: "arr.map(callback(currentValue[, index[, array]])[, thisArg])",
+                examples: [
+                    {
+                        title: "Double numbers in array",
+                        code: `const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(num => num * 2);
+console.log(doubled); // [2, 4, 6, 8, 10]`
+                    },
+                    {
+                        title: "Extract property from objects",
+                        code: `const users = [
+  { name: 'Alice', age: 25 },
+  { name: 'Bob', age: 30 },
+  { name: 'Charlie', age: 20 }
+];
+
+const names = users.map(user => user.name);
+console.log(names); // ['Alice', 'Bob', 'Charlie']`
+                    }
+                ],
+                browserSupport: "All modern browsers"
+            }
+        ];
+        
+        function searchAPIs() {
+            const searchTerm = document.getElementById('apiSearch').value.toLowerCase();
+            const resultsContainer = document.getElementById('apiResults');
+            
+            if (!searchTerm) {
+                resultsContainer.innerHTML = '';
+                return;
+            }
+            
+            const filteredAPIs = apiDocs.filter(api => 
+                api.name.toLowerCase().includes(searchTerm) ||
+                api.description.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredAPIs.length === 0) {
+                resultsContainer.innerHTML = '<p>No API documentation found matching your search.</p>';
+                return;
+            }
+            
+            resultsContainer.innerHTML = filteredAPIs.map(api => `
+                <div class="result-item">
+                    <h3 class="result-title">${api.name}</h3>
+                    <p class="result-description">${api.description}</p>
+                    
+                    ${api.parameters ? `
+                        <h4>Parameters:</h4>
+                        <ul>
+                            ${api.parameters.map(param => `
+                                <li>
+                                    <strong>${param.name}</strong> (${param.type}): ${param.description}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                    
+                    ${api.methods ? `
+                        <h4>Methods:</h4>
+                        <ul>
+                            ${api.methods.map(method => `
+                                <li>
+                                    <strong>${method.name}</strong>: ${method.description}
+                                </li>
+                            `).join('')}
+                        </ul>
+                    ` : ''}
+                    
+                    ${api.syntax ? `
+                        <h4>Syntax:</h4>
+                        <div class="code-block">
+                            <pre>${api.syntax}</pre>
+                        </div>
+                    ` : ''}
+                    
+                    <h4>Examples:</h4>
+                    ${api.examples.map(example => `
+                        <div>
+                            <h5>${example.title}</h5>
+                            <div class="code-block">
+                                <pre>${example.code}</pre>
+                            </div>
+                        </div>
+                    `).join('')}
+                    
+                    ${api.browserSupport ? `
+                        <h4>Browser Support:</h4>
+                        <p>${api.browserSupport}</p>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+        
+        document.getElementById('searchAPIs').addEventListener('click', searchAPIs);
+        
+        // Error Diagnosis functionality
+        const errorPatterns = [
+            {
+                pattern: "ReferenceError",
+                description: "Occurs when a non-existent variable is referenced.",
+                solutions: [
+                    "Check for typos in variable names",
+                    "Ensure variables are declared before use",
+                    "Verify variable scope (global vs local)"
+                ],
+                examples: [
+                    {
+                        error: "ReferenceError: x is not defined",
+                        solution: "Declare 'x' before using it: let x = 5;"
+                    }
+                ]
+            },
+            {
+                pattern: "TypeError",
+                description: "Occurs when a value is not of the expected type.",
+                solutions: [
+                    "Check the expected data types for operations",
+                    "Ensure variables are initialized before use",
+                    "Use typeof to check variable types"
+                ],
+                examples: [
+                    {
+                        error: "TypeError: Cannot read property 'length' of undefined",
+                        solution: "Check if the variable is defined before accessing its properties"
+                    }
+                ]
+            },
+            {
+                pattern: "SyntaxError",
+                description: "Occurs when there is a mistake in the code syntax.",
+                solutions: [
+                    "Check for missing brackets, parentheses, or semicolons",
+                    "Ensure string quotes are properly closed",
+                    "Verify function and object syntax"
+                ],
+                examples: [
+                    {
+                        error: "SyntaxError: Unexpected identifier",
+                        solution: "Check for proper comma usage and missing operators"
+                    }
+                ]
+            },
+            {
+                pattern: "Promise rejection",
+                description: "Occurs when a Promise is rejected without a catch handler.",
+                solutions: [
+                    "Add .catch() to handle rejections",
+                    "Use async/try-catch for cleaner error handling",
+                    "Ensure all async operations have error handling"
+                ],
+                examples: [
+                    {
+                        error: "Uncaught (in promise) Error: Something went wrong",
+                        solution: "Add error handling: promise.catch(err => console.error(err))"
+                    }
+                ]
+            }
+        ];
+        
+        function diagnoseError() {
+            const errorInput = document.getElementById('errorInput').value;
+            const resultsContainer = document.getElementById('diagnosisResults');
+            
+            if (!errorInput.trim()) {
+                resultsContainer.innerHTML = '<p>Please enter an error message or code to diagnose.</p>';
+                return;
+            }
+            
+            // Simple error pattern matching
+            const matches = [];
+            
+            errorPatterns.forEach(pattern => {
+                if (errorInput.includes(pattern.pattern)) {
+                    matches.push(pattern);
+                }
+            });
+            
+            if (matches.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="result-item">
+                        <h3 class="result-title">Error Analysis</h3>
+                        <p class="result-description">Unable to recognize this specific error pattern. Here are some general troubleshooting steps:</p>
+                        <ul>
+                            <li>Check for typos in variable names and function calls</li>
+                            <li>Ensure all brackets and parentheses are properly closed</li>
+                            <li>Verify that all required dependencies are loaded</li>
+                            <li>Use browser developer tools to get more detailed error information</li>
+                            <li>Search for the error message online for specific solutions</li>
+                        </ul>
+                    </div>
+                `;
+                return;
+            }
+            
+            resultsContainer.innerHTML = matches.map(match => `
+                <div class="result-item">
+                    <h3 class="result-title">${match.pattern}</h3>
+                    <p class="result-description">${match.description}</p>
+                    
+                    <h4>Possible Solutions:</h4>
+                    <ul>
+                        ${match.solutions.map(solution => `<li>${solution}</li>`).join('')}
+                    </ul>
+                    
+                    ${match.examples.map(example => `
+                        <div>
+                            <h5>Error Example:</h5>
+                            <p>${example.error}</p>
+                            <h5>Solution:</h5>
+                            <div class="code-block">
+                                <pre>${example.solution}</pre>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
+        
+        document.getElementById('diagnoseError').addEventListener('click', diagnoseError);
+        
+        // Version Control functionality
+        let codeVersions = JSON.parse(localStorage.getItem('piDevKitVersions') || '[]');
+        let currentVersion = 0;
+        
+        // Update version history display
+        function updateVersionHistory() {
+            const historyContainer = document.getElementById('versionHistory');
+            
+            if (codeVersions.length === 0) {
+                historyContainer.innerHTML = '<p>No versions saved yet.</p>';
+                return;
+            }
+            
+            historyContainer.innerHTML = codeVersions.map((version, index) => `
+                <div class="version-item">
+                    <div class="version-info">
+                        <strong>Version ${index + 1}</strong>
+                        <div class="version-date">${new Date(version.timestamp).toLocaleString()}</div>
+                    </div>
+                    <div>
+                        <button class="button button-secondary" onclick="loadVersion(${index})">Load</button>
+                        <button class="button button-secondary" onclick="deleteVersion(${index})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Save current version
+        function saveVersion() {
+            const codeEditor = document.getElementById('codeEditor');
+            const code = codeEditor.value;
+            
+            if (!code.trim()) {
+                showNotification('Please enter code before saving', 'error');
+                return;
+            }
+            
+            const newVersion = {
+                code: code,
+                timestamp: new Date().toISOString()
+            };
+            
+            codeVersions.push(newVersion);
+            localStorage.setItem('piDevKitVersions', JSON.stringify(codeVersions));
+            
+            updateVersionHistory();
+            showNotification('Version saved successfully', 'success');
+        }
+        
+        // Load a specific version
+        function loadVersion(index) {
+            const codeEditor = document.getElementById('codeEditor');
+            codeEditor.value = codeVersions[index].code;
+            showNotification(`Version ${index + 1} loaded`, 'info');
+        }
+        
+        // Delete a specific version
+        function deleteVersion(index) {
+            if (confirm(`Are you sure you want to delete version ${index + 1}?`)) {
+                codeVersions.splice(index, 1);
+                localStorage.setItem('piDevKitVersions', JSON.stringify(codeVersions));
+                updateVersionHistory();
+                showNotification('Version deleted', 'info');
+            }
+        }
+        
+        // Clear code editor
+        function clearEditor() {
+            document.getElementById('codeEditor').value = '';
+        }
+        
+        // File upload handling for version control
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            handleFileUpload(files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleFileUpload(files);
+        });
+        
+        function handleFileUpload(files) {
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                document.getElementById('codeEditor').value = e.target.result;
+                showNotification(`${file.name} loaded successfully`, 'success');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        document.getElementById('browseFiles').addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        document.getElementById('saveVersion').addEventListener('click', saveVersion);
+        document.getElementById('clearEditor').addEventListener('click', clearEditor);
+        
+        // Tab navigation for version control
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Update active tab button
+                document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Update active tab panel
+                document.querySelectorAll('.tab-panel').forEach(panel => {
+                    panel.classList.remove('active');
+                });
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Initialize version history
+        updateVersionHistory();
+        
+        // Code Testing functionality
+        const testUploadArea = document.getElementById('testUploadArea');
+        const testFileInput = document.getElementById('testFileInput');
+        
+        testUploadArea.addEventListener('click', () => {
+            testFileInput.click();
+        });
+        
+        testUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            testUploadArea.classList.add('drag-over');
+        });
+        
+        testUploadArea.addEventListener('dragleave', () => {
+            testUploadArea.classList.remove('drag-over');
+        });
+        
+        testUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            testUploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            handleTestFileUpload(files);
+        });
+        
+        testFileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            handleTestFileUpload(files);
+        });
+        
+        function handleTestFileUpload(files) {
+            if (files.length === 0) return;
+            
+            const file = files[0];
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                document.getElementById('testCodeEditor').value = e.target.result;
+                showNotification(`${file.name} loaded successfully`, 'success');
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        document.getElementById('browseTestFiles').addEventListener('click', () => {
+            testFileInput.click();
+        });
+        
+        // Run tests
+        function runTests() {
+            const code = document.getElementById('testCodeEditor').value;
+            const resultsContainer = document.getElementById('testResults');
+            
+            if (!code.trim()) {
+                showNotification('Please enter code before running tests', 'error');
+                return;
+            }
+            
+            // Simulate test execution
+            resultsContainer.innerHTML = '<p>Running tests...</p>';
+            
+            // Simulate delay for test execution
+            setTimeout(() => {
+                // Generate mock test results based on code content
+                const testResults = generateTestResults(code);
+                
+                resultsContainer.innerHTML = `
+                    <h3>Test Results</h3>
+                    <p>${testResults.passed} passed, ${testResults.failed} failed, ${testResults.pending} pending</p>
+                    
+                    <div class="test-item">
+                        <div>
+                            <strong>Code Syntax Check</strong>
+                            <p>Checking for syntax errors...</p>
+                        </div>
+                        <span class="test-status ${testResults.syntaxCheck ? 'passed' : 'failed'}">
+                            ${testResults.syntaxCheck ? 'Passed' : 'Failed'}
+                        </span>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div>
+                            <strong>Function Coverage</strong>
+                            <p>Checking if all functions are tested...</p>
+                        </div>
+                        <span class="test-status ${testResults.functionCoverage ? 'passed' : 'failed'}">
+                            ${testResults.functionCoverage ? 'Passed' : 'Failed'}
+                        </span>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div>
+                            <strong>Edge Cases</strong>
+                            <p>Testing edge cases and error handling...</p>
+                        </div>
+                        <span class="test-status ${testResults.edgeCases ? 'passed' : 'failed'}">
+                            ${testResults.edgeCases ? 'Passed' : 'Failed'}
+                        </span>
+                    </div>
+                    
+                    <div class="test-item">
+                        <div>
+                            <strong>Performance Test</strong>
+                            <p>Checking for performance issues...</p>
+                        </div>
+                        <span class="test-status ${testResults.performance ? 'passed' : 'pending'}">
+                            ${testResults.performance ? 'Passed' : 'Pending'}
+                        </span>
+                    </div>
+                `;
+                
+                if (testResults.failed > 0) {
+                    showNotification(`${testResults.failed} test(s) failed`, 'error');
+                } else if (testResults.pending > 0) {
+                    showNotification('Some tests are still running', 'info');
+                } else {
+                    showNotification('All tests passed!', 'success');
+                }
+            }, 2000);
+        }
+        
+        function generateTestResults(code) {
+            // Simple heuristic to generate test results based on code content
+            const hasSyntaxErrors = code.includes('syntax error') || code.includes('SyntaxError');
+            const hasFunctions = code.includes('function') || code.includes('=>');
+            const hasErrorHandling = code.includes('try') && code.includes('catch');
+            const hasLoops = code.includes('for') || code.includes('while');
+            
+            return {
+                passed: Math.floor(Math.random() * 3) + 2,
+                failed: hasSyntaxErrors ? Math.floor(Math.random() * 2) : 0,
+                pending: Math.floor(Math.random() * 2),
+                syntaxCheck: !hasSyntaxErrors,
+                functionCoverage: hasFunctions,
+                edgeCases: hasErrorHandling,
+                performance: !hasLoops || Math.random() > 0.3
+            };
+        }
+        
+        document.getElementById('runTests').addEventListener('click', runTests);
+        
+        // Clear test editor
+        function clearTestEditor() {
+            document.getElementById('testCodeEditor').value = '';
+            document.getElementById('testResults').innerHTML = '';
+        }
+        
+        document.getElementById('clearTestEditor').addEventListener('click', clearTestEditor);
+        
+        // Initialize the app
+        showNotification('Welcome to PiDevKit - Your developer toolkit', 'info');
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - Code Snippet Search \u0026 Developer Tools","Search":"Search","Code Snippets":"Code Snippets","API Docs":"API Docs","Error Diagnosis":"Error Diagnosis","Version Control":"Version Control","Code Testing":"Code Testing","Search Code Snippets":"Search Code Snippets","Find relevant code snippets and examples by entering keywords":"Find relevant code snippets and examples by entering keywords","API Documentation":"API Documentation","Find detailed API documentation and usage examples":"Find detailed API documentation and usage examples","Get help with error codes and debugging suggestions":"Get help with error codes and debugging suggestions","Diagnose":"Diagnose","Code Version Control":"Code Version Control","Upload and manage different versions of your code":"Upload and manage different versions of your code","Drag and drop your code files here or click to browse":"Drag and drop your code files here or click to browse","Browse Files":"Browse Files","Upload Code":"Upload Code","Version History":"Version History","Save Version":"Save Version","Clear":"Clear","Upload your code and generate automated test cases":"Upload your code and generate automated test cases","Run Tests":"Run Tests","Array Sorting":"Array Sorting","Different ways to sort arrays in JavaScript":"Different ways to sort arrays in JavaScript","Fetch API Example":"Fetch API Example","Making HTTP requests with the Fetch API":"Making HTTP requests with the Fetch API","Debounce Function":"Debounce Function","Creating a debounce function to limit how often a function can be called":"Creating a debounce function to limit how often a function can be called","Window resized":"Window resized","CSS Flexbox Center":"CSS Flexbox Center","Center elements using CSS Flexbox":"Center elements using CSS Flexbox","React Hooks Example":"React Hooks Example","Using useState and useEffect hooks in React":"Using useState and useEffect hooks in React","Component unmounted":"Component unmounted","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"The Fetch API provides an interface for fetching resources.","The URL to which the request is sent":"The URL to which the request is sent","Optional configuration options":"Optional configuration options","Basic GET request":"Basic GET request","POST request with headers":"POST request with headers","Bearer token123":"Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"Provides access to the local storage of the origin.","Adds a key/value pair to storage":"Adds a key/value pair to storage","Retrieves a value by key":"Retrieves a value by key","Removes a key/value pair":"Removes a key/value pair","Removes all key/value pairs":"Removes all key/value pairs","Saving data":"Saving data","Retrieving data":"Retrieving data","All modern browsers":"All modern browsers","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"Creates a new array populated with the results of calling a provided function on every element in the calling array.","Double numbers in array":"Double numbers in array","__title__":"PiDevKit - Code Snippet Search \u0026 Developer Tools"},"zh-CN":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - 代码片段搜索与开发者工具","Search":"搜索","Code Snippets":"代码片段","API Docs":"API 文档","Error Diagnosis":"错误诊断","Version Control":"版本控制","Code Testing":"代码测试","Search Code Snippets":"通过输入关键词查找相关代码片段和示例","Find relevant code snippets and examples by entering keywords":"通过输入关键词查找相关代码片段和示例","API Documentation":"API 文档","Find detailed API documentation and usage examples":"查找详细的 API 文档和用法示例","Get help with error codes and debugging suggestions":"获取错误代码和调试建议的帮助","Diagnose":"诊断","Code Version Control":"代码版本控制","Upload and manage different versions of your code":"上传和管理您代码的不同版本","Drag and drop your code files here or click to browse":"拖放您的代码文件到这里或点击浏览","Browse Files":"浏览文件","Upload Code":"上传代码","Version History":"版本历史","Save Version":"保存版本","Clear":"清除","Upload your code and generate automated test cases":"上传您的代码并生成自动测试用例","Run Tests":"运行测试","Array Sorting":"数组排序","Different ways to sort arrays in JavaScript":"在 JavaScript 中排序数组的不同方式","Fetch API Example":"Fetch API 示例","Making HTTP requests with the Fetch API":"使用 Fetch API 发送 HTTP 请求","Debounce Function":"防抖函数","Creating a debounce function to limit how often a function can be called":"创建一个防抖函数以限制函数可以被调用的频率","Window resized":"窗口大小调整","CSS Flexbox Center":"使用 CSS Flexbox 居中元素","Center elements using CSS Flexbox":"使用 CSS Flexbox 居中元素","React Hooks Example":"React Hooks 示例","Using useState and useEffect hooks in React":"在 React 中使用 useState 和 useEffect 钩子","Component unmounted":"组件卸载","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"Fetch API 提供了获取资源的接口。","The URL to which the request is sent":"请求发送到的 URL","Optional configuration options":"可选配置选项","Basic GET request":"基本的 GET 请求","POST request with headers":"带有头部的 POST 请求","Bearer token123":"Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+、Firefox 39+、Edge 14+、Safari 10.1+","Provides access to the local storage of the origin.":"提供对原始位置的本地存储的访问。","Adds a key/value pair to storage":"向存储添加键/值对","Retrieves a value by key":"通过键检索值","Removes a key/value pair":"删除键/值对","Removes all key/value pairs":"删除所有键/值对","Saving data":"保存数据","Retrieving data":"检索数据","All modern browsers":"所有现代浏览器","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"创建一个新数组，该数组用对调用数组的每个元素调用的提供函数的结果填充。","Double numbers in array":"数组中的数字翻倍","__title__":"PiDevKit - 代码片段搜索与开发者工具"},"ja":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - コードスニペット検索 \u0026 デベロッパーツール","Search":"検索","Code Snippets":"コードスニペット","API Docs":"API ドキュメント","Error Diagnosis":"エラーダイアグノスティック","Version Control":"バージョンコントロール","Code Testing":"コードテスト","Search Code Snippets":"キーワードを入力して関連するコードスニペットと例を見つける","Find relevant code snippets and examples by entering keywords":"キーワードを入力して関連するコードスニペットと例を見つける","API Documentation":"詳細な API ドキュメントと使用例を見つける","Find detailed API documentation and usage examples":"詳細な API ドキュメントと使用例を見つける","Get help with error codes and debugging suggestions":"エラーコードとデバッグ提案に関するヘルプを取得","Diagnose":"診断","Code Version Control":"コードのバージョンコントロール","Upload and manage different versions of your code":"コードの異なるバージョンをアップロードおよび管理","Drag and drop your code files here or click to browse":"ここにコードファイルをドラッグ＆ドロップまたはクリックしてブラウズ","Browse Files":"ファイルをブラウズ","Upload Code":"コードをアップロード","Version History":"バージョンハイストリ","Save Version":"バージョンを保存","Clear":"クリア","Upload your code and generate automated test cases":"コードをアップロードして自動テストケースを生成","Run Tests":"テストを実行","Array Sorting":"JavaScriptでの配列のソート方法","Different ways to sort arrays in JavaScript":"JavaScriptでの配列のソート方法","Fetch API Example":"Fetch APIの例","Making HTTP requests with the Fetch API":"Fetch APIを使ってHTTPリクエストを行う","Debounce Function":"デバウンド関数の作成","Creating a debounce function to limit how often a function can be called":"関数がどのくらいの頻度で呼び出されるかを制限するデバウンド関数の作成","Window resized":"ウィンドウがリサイズされました","CSS Flexbox Center":"CSS Flexboxを使って要素を中央に配置","Center elements using CSS Flexbox":"CSS Flexboxを使って要素を中央に配置","React Hooks Example":"React Hooksの例","Using useState and useEffect hooks in React":"ReactでuseStateとuseEffect Hooksを使用","Component unmounted":"コンポーネントがアンマウントされました","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"Fetch APIはリソースを取得するためのインターフェースを提供します。","The URL to which the request is sent":"リクエストが送信されるURL","Optional configuration options":"オプションの設定オプション","Basic GET request":"基本的なGETリクエスト","POST request with headers":"ヘッダー付きのPOSTリクエスト","Bearer token123":"Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+、Firefox 39+、Edge 14+、Safari 10.1+","Provides access to the local storage of the origin.":"オリジンのローカルストレージへのアクセスを提供","Adds a key/value pair to storage":"キー/値ペアをストレージに追加","Retrieves a value by key":"キーで値を取得","Removes a key/value pair":"キー/値ペアを削除","Removes all key/value pairs":"すべてのキー/値ペアを削除","Saving data":"データの保存","Retrieving data":"データの取得","All modern browsers":"すべての現代のブラウザ","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"呼び出し元の配列の各要素に提供された関数を呼び出す結果で構成された新しい配列を作成。","Double numbers in array":"配列内の数を二倍に","__title__":"PiDevKit - コードスニペット検索 \u0026 デベロッパーツール"},"de":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - Code Snippet Search \u0026 Developer Tools","Search":"Suche","Code Snippets":"Code Snippets","API Docs":"API-Dokumentation","Error Diagnosis":"Fehlerdiagnose","Version Control":" Versionskontrolle","Code Testing":"Code-Testen","Search Code Snippets":"Code Snippets durch Suchen finden","Find relevant code snippets and examples by entering keywords":"Finden Sie relevante Code-Snippets und Beispiele durch Eingabe von Schlüsselwörtern","API Documentation":"API-Dokumentation","Find detailed API documentation and usage examples":"Finden Sie detaillierte API-Dokumentation und Beispiele zur Verwendung","Get help with error codes and debugging suggestions":"Hilfe bei Fehlercodes und Debugging-Vorschlägen erhalten","Diagnose":"Diagnostizieren","Code Version Control":"Code-Versionskontrolle","Upload and manage different versions of your code":"Laden Sie verschiedene Versionen Ihres Codes hoch und verwalten Sie sie","Drag and drop your code files here or click to browse":"Ziehen Sie Ihre Code-Dateien hierher oder klicken Sie zum Durchsuchen","Browse Files":"Dateien durchsuchen","Upload Code":"Code hochladen","Version History":"Versionen","Save Version":"Version speichern","Clear":"Löschen","Upload your code and generate automated test cases":"Laden Sie Ihren Code hoch und generieren Sie automatisierte Testfälle","Run Tests":"Tests ausführen","Array Sorting":"Array-Sortierung","Different ways to sort arrays in JavaScript":"Verschiedene Methoden zur Sortierung von Arrays in JavaScript","Fetch API Example":"Fetch API-Beispiel","Making HTTP requests with the Fetch API":"HTTP-Anfragen mit dem Fetch API machen","Debounce Function":"Debounce-Funktion","Creating a debounce function to limit how often a function can be called":"Erstellen Sie eine Debounce-Funktion, um zu begrenzen, wie oft eine Funktion aufgerufen werden kann","Window resized":"Fenstergröße geändert","CSS Flexbox Center":"CSS Flexbox zentrieren","Center elements using CSS Flexbox":"Elemente mit CSS Flexbox zentrieren","React Hooks Example":"React Hooks-Beispiel","Using useState and useEffect hooks in React":"useState- und useEffect-Hooks in React verwenden","Component unmounted":"Komponente abmontiert","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"Die Fetch-API bietet eine Schnittstelle für das Abrufen von Ressourcen.","The URL to which the request is sent":"Die URL, an die die Anfrage gesendet wird","Optional configuration options":"Optionale Konfigurationsoptionen","Basic GET request":"Grundlegende GET-Anfrage","POST request with headers":"POST-Anfrage mit Headers","Bearer token123":"Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"Bietet Zugang zum lokalen Speicher der Quelle.","Adds a key/value pair to storage":"Fügt ein Schlüssel/Wert-Paar zum Speicher hinzu","Retrieves a value by key":"Wert durch Schlüssel abrufen","Removes a key/value pair":"Entfernt ein Schlüssel/Wert-Paar","Removes all key/value pairs":"Entfernt alle Schlüssel/Wert-Paare","Saving data":"Daten speichern","Retrieving data":"Daten abrufen","All modern browsers":"Alle modernen Browser","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"Erstellt ein neues Array, das mit den Ergebnissen gefüllt ist, die durch das Aufrufen einer bereitgestellten Funktion auf jedem Element im aufrufenden Array erzielt werden.","Double numbers in array":"Zweifache Zahlen im Array","__title__":"PiDevKit - Code Snippet Search \u0026 Developer Tools"},"pt":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - Pesquisa de Snippets de Código \u0026 Ferramentas de Desenvolvedor","Search":"Pesquisa","Code Snippets":"Snippets de Código","API Docs":"Documentação da API","Error Diagnosis":"Diagnóstico de Erros","Version Control":"Controle de Versão","Code Testing":"Teste de Código","Search Code Snippets":"Encontre snippets de código relevantes e exemplos inserindo palavras-chave","Find relevant code snippets and examples by entering keywords":"Encontre snippets de código relevantes e exemplos inserindo palavras-chave","API Documentation":"Documentação da API","Find detailed API documentation and usage examples":"Encontre documentação detalhada da API e exemplos de uso","Get help with error codes and debugging suggestions":"Obtenha ajuda com códigos de erro e sugestões de depuração","Diagnose":"Diagnóstico","Code Version Control":"Controle de Versão de Código","Upload and manage different versions of your code":"Carregue e gerencie diferentes versões do seu código","Drag and drop your code files here or click to browse":"Arraste e solte seus arquivos de código aqui ou clique para navegar","Browse Files":"Navegar em Arquivos","Upload Code":"Carregar Código","Version History":"Histórico de Versões","Save Version":"Salvar Versão","Clear":"Limpar","Upload your code and generate automated test cases":"Carregue seu código e gere casos de teste automatizados","Run Tests":"Executar Testes","Array Sorting":"Ordenação de Arrays","Different ways to sort arrays in JavaScript":"Diferentes maneiras de ordenar arrays em JavaScript","Fetch API Example":"Exemplo da Fetch API","Making HTTP requests with the Fetch API":"Fazendo requisições HTTP com a Fetch API","Debounce Function":"Função Debounce","Creating a debounce function to limit how often a function can be called":"Criando uma função debounce para limitar a frequência com que uma função pode ser chamada","Window resized":"Janela redimensionada","CSS Flexbox Center":"Centralizar elementos usando CSS Flexbox","React Hooks Example":"Exemplo de Hooks do React","Using useState and useEffect hooks in React":"Usando os hooks useState e useEffect no React","Component unmounted":"Componente desmontado","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"A Fetch API fornece uma interface para buscar recursos.","The URL to which the request is sent":"O URL para o qual a solicitação é enviada","Optional configuration options":"Opções de configuração opcionais","Basic GET request":"Solicitação GET básica","POST request with headers":"Solicitação POST com cabeçalhos","Bearer token123":"Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"Fornece acesso ao armazenamento local da origem.","Adds a key/value pair to storage":"Adiciona um par chave/valor ao armazenamento","Retrieves a value by key":"Recupera um valor por chave","Removes a key/value pair":"Remove um par chave/valor","Removes all key/value pairs":"Remove todos os pares chave/valor","Saving data":"Salvando dados","Retrieving data":"Recuperando dados","All modern browsers":"Todos os navegadores modernos","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"Cria um novo array populado com os resultados de chamar uma função fornecida em cada elemento do array chamado.","Double numbers in array":"Dobrar números em array","__title__":"PiDevKit - Pesquisa de Snippets de Código \u0026 Ferramentas de Desenvolvedor"},"ar":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - البحث عن أجزاء البرمجة والآدوات المطورين","Search":"البحث","Code Snippets":"أجزاء البرمجة","API Docs":"مستندات واجهة البرمجة","Error Diagnosis":"تشخيص الأخطاء","Version Control":"مراقبة إصدارات الكود","Code Testing":"اختبار الكود","Search Code Snippets":"ابحث عن أجزاء كود مرتبطة وامثلة عبر إدخال الكلمات المفتاحية","Find relevant code snippets and examples by entering keywords":"ابحث عن أجزاء كود مرتبطة وامثلة عبر إدخال الكلمات المفتاحية","API Documentation":"مستندات واجهة البرمجة","Find detailed API documentation and usage examples":"ابحث عن مستندات واجهة البرمجة التفصيلية وامثلة الاستخدام","Get help with error codes and debugging suggestions":"احصل على مساعدة بالأخطاء وكيفية التشخيص","Diagnose":"التشخيص","Code Version Control":"مراقبة إصدارات الكود","Upload and manage different versions of your code":"رفع وإدارة إصدارات مختلفة من كودك","Drag and drop your code files here or click to browse":"اسحب وأفصل ملفات كودك هنا أو انقر للتصفح","Browse Files":"تصفح الملفات","Upload Code":"رفع الكود","Version History":"تاريخ الإصدارات","Save Version":"حفظ الإصدار","Clear":"الإزالة","Upload your code and generate automated test cases":"رفع كودك وإنشاء حالات اختبار آلية","Run Tests":"تشغيل الاختبارات","Array Sorting":"ترتيب الجداول","Different ways to sort arrays in JavaScript":"طرق مختلفة لترتيب الجداول في JavaScript","Fetch API Example":"مثال على واجهة البرمجة Fetch","Making HTTP requests with the Fetch API":"إرسال طلبات HTTP باستخدام واجهة البرمجة Fetch","Debounce Function":"وظيفة التأخير","Creating a debounce function to limit how often a function can be called":"إنشاء وظيفة تأخير لتقييد عدد مرات الاتصال بوظيفة","Window resized":"تم تغيير حجم النافذة","CSS Flexbox Center":"مركز Flexbox CSS","Center elements using CSS Flexbox":"توسط العناصر باستخدام Flexbox CSS","React Hooks Example":"مثال على وصلات React","Using useState and useEffect hooks in React":"استخدام وصلات useState و useEffect في React","Component unmounted":"القطعة غير مثبتة","button button-secondary":"الزر زر ثانوي","The Fetch API provides an interface for fetching resources.":"تقدم واجهة البرمجة Fetch واجهة للوصول إلى الموارد.","The URL to which the request is sent":"العنوان URL الذي يتم إرسال الطلب إليه","Optional configuration options":"خيارات تكوين اختيارية","Basic GET request":"طلب GET أساسي","POST request with headers":"طلب POST مع الرؤوس","Bearer token123":"رمز Bearer token123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+، Firefox 39+، Edge 14+، Safari 10.1+","Provides access to the local storage of the origin.":"يقدم الوصول إلى التخزين المحلي للمصدر.","Adds a key/value pair to storage":"يضيف زوج مفتاح/قيمة إلى التخزين","Retrieves a value by key":"يستعيد قيمة عبر المفتاح","Removes a key/value pair":"يزيل زوج مفتاح/قيمة","Removes all key/value pairs":"يزيل جميع زوجي المفتاح/القيمة","Saving data":"حفظ البيانات","Retrieving data":"استرجاع البيانات","All modern browsers":"جميع المتصفحات الحديثة","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"يخلق جدولاً جديداً ممتلئاً بالنتائج من استدعاء وظيفة مقدمة على كل عنصر في الجدول الدعائي.","Double numbers in array":"تثبيت الأرقام في الجدول","__title__":"PiDevKit - البحث عن أجزاء البرمجة والآدوات المطورين"},"hi":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - कोड स्निपेट खोज और डेवलपर टूल्स","Search":"खोज","Code Snippets":"कोड स्निपेट्स","API Docs":"API दस्तावेज","Error Diagnosis":"एरर डायग्नोसिस","Version Control":"संस्करण नियंत्रण","Code Testing":"कोड टेस्टिंग","Search Code Snippets":"कीवर्ड द्वारा कोड स्निपेट्स खोजें","Find relevant code snippets and examples by entering keywords":"कीवर्ड भरकर संबंधित कोड स्निपेट्स और उदाहरण खोजें","API Documentation":"API दस्तावेज","Find detailed API documentation and usage examples":"विस्तृत API दस्तावेज और उपयोग उदाहरण खोजें","Get help with error codes and debugging suggestions":"एरर कोड्स और डायग्नोसिस सुझावों के साथ मदद प्राप्त करें","Diagnose":"डायग्नोसिस करें","Code Version Control":"कोड संस्करण नियंत्रण","Upload and manage different versions of your code":"अपने कोड के विभिन्न संस्करणों को अपलोड और प्रबंधित करें","Drag and drop your code files here or click to browse":"यहाँ अपने कोड फ़ाइलों को खींचें और छांटें या ब्राउज़ करने के लिए क्लिक करें","Browse Files":"फ़ाइलों का ब्राउज़","Upload Code":"कोड अपलोड करें","Version History":"संस्करण इतिहास","Save Version":"संस्करण सहेजें","Clear":"साफ़ करें","Upload your code and generate automated test cases":"अपना कोड अपलोड करें और स्वचालित टेस्ट केस बनाएं","Run Tests":"टेस्ट चलाएं","Array Sorting":"एरे क्रमबद्ध करना","Different ways to sort arrays in JavaScript":"जेसक्रिप्ट में एरे क्रमबद्ध करने के विभिन्न तरीके","Fetch API Example":"Fetch API उदाहरण","Making HTTP requests with the Fetch API":"Fetch API के साथ HTTP अनुरोध करना","Debounce Function":"Debounce फ़ंक्शन","Creating a debounce function to limit how often a function can be called":"फ़ंक्शन को कब कैसे बार बुलाया जाए के लिए डेबाउंस फ़ंक्शन बनाएं","Window resized":"विंडो फिर से आकार बदला","CSS Flexbox Center":"CSS Flexbox केंद्र","Center elements using CSS Flexbox":"CSS Flexbox का उपयोग करके एलीमेंट्स केंद्रीकृत करें","React Hooks Example":"React Hooks उदाहरण","Using useState and useEffect hooks in React":"React में useState और useEffect hooks का उपयोग करना","Component unmounted":"कॉम्पोनेंट अनमाउंट करा","button button-secondary":"बटन बटन-सेकेंडरी","The Fetch API provides an interface for fetching resources.":"Fetch API रिसोर्स्स को फेच करने के लिए इंटरफ़ेस प्रदान करता है.","The URL to which the request is sent":"अनुरोध भेजे जाने वाली URL","Optional configuration options":"वैकल्पिक कॉन्फ़िगरेशन विकल्प","Basic GET request":"बेसिक GET अनुरोध","POST request with headers":"हेडर के साथ POST अनुरोध","Bearer token123":"Bearer टोकन123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"स्थानीय स्टोरेज की पहुँच प्रदान करता है.","Adds a key/value pair to storage":"स्टोरेज में एक की/मूल्य जोड़दार जोड़ता है","Retrieves a value by key":"की के द्वारा एक मूल्य प्राप्त करता है","Removes a key/value pair":"की/मूल्य जोड़दार हटाता है","Removes all key/value pairs":"सभी की/मूल्य जोड़दार हटाता है","Saving data":"डाटा सहेजना","Retrieving data":"डाटा प्राप्त करना","All modern browsers":"सभी आधुनिक ब्राउज़र","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"एक नया एरे बनाता है जो कॉलिंग एरे में हर एलीमेंट पर एक प्रदान की फ़ंक्शन को बुलाने के परिणामों से भरा है.","Double numbers in array":"एरे में संख्याओं को दोहराएं","__title__":"PiDevKit - कोड स्निपेट खोज और डेवलपर टूल्स"},"id":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - Pencarian Kode Snippet \u0026 Alat Pengembang","Search":"Cari","Code Snippets":"Kode Snippet","API Docs":"Dokumentasi API","Error Diagnosis":"Diagnosis Error","Version Control":"Pengelolaan Versi","Code Testing":"Pengujian Kode","Search Code Snippets":"Cari kode snippet dan contoh dengan memasukkan kata kunci","Find relevant code snippets and examples by entering keywords":"Temukan kode snippet dan contoh yang relevan dengan memasukkan kata kunci","API Documentation":"Dokumentasi API","Find detailed API documentation and usage examples":"Temukan dokumentasi API detil dan contoh penggunaan","Get help with error codes and debugging suggestions":"Dapatkan bantuan dengan kode error dan saran debug","Diagnose":"Diagnosis","Code Version Control":"Pengelolaan Versi Kode","Upload and manage different versions of your code":"Unggah dan mengelola berbagai versi kode anda","Drag and drop your code files here or click to browse":"Seret dan lepas berkas kode anda disini atau klik untuk menggulir","Browse Files":"Gulir Berkas","Upload Code":"Unggah Kode","Version History":"Riwayat Versi","Save Version":"Simpan Versi","Clear":"Bersihkan","Upload your code and generate automated test cases":"Unggah kode anda dan buat kasus tes otomatis","Run Tests":"Jalankan Tes","Array Sorting":"Pengurutan Array","Different ways to sort arrays in JavaScript":"Cara berbeda untuk mengurutkan array di JavaScript","Fetch API Example":"Contoh Fetch API","Making HTTP requests with the Fetch API":"Membuat permintaan HTTP dengan Fetch API","Debounce Function":"Fungsi Debounce","Creating a debounce function to limit how often a function can be called":"Membuat fungsi debounce untuk membatasi berapa sering fungsi dapat dipanggil","Window resized":"Jendela diubah ukur","CSS Flexbox Center":"Pusatkan elemen menggunakan CSS Flexbox","React Hooks Example":"Contoh React Hooks","Using useState and useEffect hooks in React":"Menggunakan hooks useState dan useEffect di React","Component unmounted":"Komponen dihilangkan","button button-secondary":"button button-secondary","The Fetch API provides an interface for fetching resources.":"Fetch API menyediakan antarmuka untuk mengeksport sumber.","The URL to which the request is sent":"URL tempat permintaan dikirim","Optional configuration options":"Opsi konfigurasi opsional","Basic GET request":"Permintaan GET dasar","POST request with headers":"Permintaan POST dengan header","Bearer token123":"Token Bearer 123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"Menyediakan akses ke penyimpanan lokal asal.","Adds a key/value pair to storage":"Menambahkan pasangan kunci/nilai ke penyimpanan","Retrieves a value by key":"Mengambil nilai berdasarkan kunci","Removes a key/value pair":"Menghapus pasangan kunci/nilai","Removes all key/value pairs":"Menghapus semua pasangan kunci/nilai","Saving data":"Menyimpan data","Retrieving data":"Mengambil data","All modern browsers":"Semua browser modern","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"Membuat array baru yang diisi dengan hasil pemanggilan fungsi yang disediakan pada setiap elemen dalam array yang dipanggil.","Double numbers in array":"Gandakan angka di array","__title__":"PiDevKit - Pencarian Kode Snippet \u0026 Alat Pengembang"},"vi":{"PiDevKit - Code Snippet Search \u0026 Developer Tools":"PiDevKit - Tìm kiếm Mã Mô Hình và Công Cụ Phát Triển","Search":"Tìm kiếm","Code Snippets":"Mã Mô Hình","API Docs":"Tài Liệu API","Error Diagnosis":"Chẩn Đoán Lỗi","Version Control":"Quản Lý Phiên Bản","Code Testing":"Kiểm Tra Mã","Search Code Snippets":"Tìm kiếm các đoạn mã liên quan bằng cách nhập từ khóa","Find relevant code snippets and examples by entering keywords":"Tìm các đoạn mã liên quan và các ví dụ bằng cách nhập từ khóa","API Documentation":"Tài Liệu Hướng Dẫn API","Find detailed API documentation and usage examples":"Tìm tài liệu hướng dẫn chi tiết và các ví dụ về việc sử dụng API","Get help with error codes and debugging suggestions":"Nhận hỗ trợ với mã lỗi và gợi ý gỡ lỗi","Diagnose":"Chẩn Đoán","Code Version Control":"Quản Lý Phiên Bản Mã","Upload and manage different versions of your code":"Tải lên và quản lý các phiên bản mã khác nhau của bạn","Drag and drop your code files here or click to browse":"Kéo và thả tệp mã của bạn vào đây hoặc nhấp để duyệt","Browse Files":"Duyệt Tệp","Upload Code":"Tải lên Mã","Version History":"Lịch Sử Phiên Bản","Save Version":"Lưu Phiên Bản","Clear":"Xóa","Upload your code and generate automated test cases":"Tải lên mã của bạn và tạo các trường hợp kiểm tra tự động","Run Tests":"Chạy Kiểm Tra","Array Sorting":"Cách sắp xếp mảng trong JavaScript","Different ways to sort arrays in JavaScript":"Các cách khác nhau để sắp xếp mảng trong JavaScript","Fetch API Example":"Ví dụ Fetch API","Making HTTP requests with the Fetch API":"Gửi yêu cầu HTTP bằng Fetch API","Debounce Function":"Tạo hàm Debounce","Creating a debounce function to limit how often a function can be called":"Tạo hàm Debounce để giới hạn tần suất hàm có thể được gọi","Window resized":"Cửa sổ được thu nhỏ","CSS Flexbox Center":"Phân Trung Element Sử Dụng CSS Flexbox","Center elements using CSS Flexbox":"Phân Trung Element Sử Dụng CSS Flexbox","React Hooks Example":"Ví dụ React Hooks","Using useState and useEffect hooks in React":"Sử dụng hooks useState và useEffect trong React","Component unmounted":"Component không được gắn kết","button button-secondary":"nút nút-secundary","The Fetch API provides an interface for fetching resources.":"Fetch API cung cấp một giao diện để tải tài nguyên.","The URL to which the request is sent":"URL mà yêu cầu được gửi đến","Optional configuration options":"Tùy chọn cấu hình tùy chọn","Basic GET request":"Yêu cầu GET cơ bản","POST request with headers":"Yêu cầu POST với tiêu đề","Bearer token123":"Token Bearer 123","Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+":"Chrome 42+, Firefox 39+, Edge 14+, Safari 10.1+","Provides access to the local storage of the origin.":"Cung cấp quyền truy cập vào bộ nhớ cục bộ của nguồn.","Adds a key/value pair to storage":"Thêm một cặp khóa/giá trị vào bộ nhớ","Retrieves a value by key":"Lấy giá trị bằng khóa","Removes a key/value pair":"Xóa một cặp khóa/giá trị","Removes all key/value pairs":"Xóa tất cả các cặp khóa/giá trị","Saving data":"Lưu dữ liệu","Retrieving data":"Lấy dữ liệu","All modern browsers":"Tất cả các trình duyệt hiện đại","Creates a new array populated with the results of calling a provided function on every element in the calling array.":"Tạo một mảng mới được lưu trữ với kết quả của việc gọi một hàm cung cấp trên mỗi phần tử trong mảng được gọi.","Double numbers in array":"Gấp đôi số trong mảng","__title__":"PiDevKit - Tìm kiếm Mã Mô Hình và Công Cụ Phát Triển"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="ja">日本語</option><option value="de">Deutsch</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
