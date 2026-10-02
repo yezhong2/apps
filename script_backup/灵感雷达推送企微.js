@@ -1684,7 +1684,11 @@ function recordAdoption(sc, applied) {
     clist.forEach(function(c) { if (c.name === rec.user) found = c; });
     if (!found) { found = {name: rec.user, role: "意见贡献者", score: 0, note: ""}; clist.push(found); }
     found.score = (found.score || 0) + rec.points;
-    found.note = "最近采纳：" + rec.title.slice(0, 40);
+    // 「最近采纳」取编号最大的（=最新创建）采纳意见：采纳批按编号降序处理，若取“最后处理的”会长期停留在批次里最旧的一条（实测踩坑：采纳了 #73-#87，表里却一直挂 #71）
+    if (!found.noteNo || (rec.issueNo || 0) > found.noteNo) {
+        found.note = "最近采纳：" + rec.title.slice(0, 40);
+        found.noteNo = rec.issueNo || 0;
+    }
     feedbackWriteJson(CONTRIB_PATH, {updated: new Date().toLocaleString(), list: clist});
     log("🏆 贡献分 +" + rec.points + " → " + rec.user + "（累计 " + found.score + "）");
     return rec;
@@ -2007,6 +2011,10 @@ function runOnce() {
         log("📬 意见闭环启动…");
         fbReport = processFeedback();
     } catch (e) { log("⚠️ 意见闭环异常：" + e + "（不影响主流程）"); }
+    // 采纳后立即刷新并上线 about 页：让「贡献榜单/最近采纳」即时可见，不用等下一轮（此前榜单文件更新了但页面要等整轮跑完才重建）
+    if (fbReport && fbReport.adopted && fbReport.adopted.length) {
+        try { log("🔄 采纳完成，刷新 about 页…"); syncAbout(); } catch (e) { log("⚠️ about 页刷新失败：" + e); }
+    }
     // ===== 产品台账：汇总所有产品数据，总览页自动同步上线 =====
     let ledger = buildLedger(links);
     // ===== 零 token 部署层：LICENSE 同步 + 存量页脚迁移 + 档位评估 + 台账/总览页 + about 页 =====
