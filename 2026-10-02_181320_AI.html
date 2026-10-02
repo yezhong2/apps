@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI StoryWeaver - Your Creative Writing Assistant</title><meta name="description" content="Free online tool: AI StoryWeaver - Your Creative Writing Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="AI StoryWeaver - Your Creative Writing Assistant">
+<meta property="og:description" content="Free online tool: AI StoryWeaver - Your Creative Writing Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_181320_AI.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            padding: 20px 0;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .search-container {
+            margin: 30px 0;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .search-button {
+            padding: 15px 30px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .search-button:active {
+            transform: scale(0.98);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .workspace {
+            background-color: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+            min-height: 300px;
+        }
+        
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .workspace-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .workspace-content {
+            background-color: var(--bg-primary);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 200px;
+            color: var(--text-secondary);
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+        
+        .tools {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .tool-card {
+            background-color: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .tool-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .tool-button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .tool-button:active {
+            transform: scale(0.98);
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item.active {
+            color: var(--accent);
+        }
+        
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .nav-label {
+            font-size: 12px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .close-button {
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+        
+        .close-button:hover {
+            color: var(--text-primary);
+        }
+        
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .character-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .character-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .character-avatar {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .character-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .character-type {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .scene-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .scene-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .scene-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .scene-image {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+        }
+        
+        .scene-info {
+            padding: 15px;
+        }
+        
+        .scene-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .scene-description {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .text-area {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            background-color: var(--bg-primary);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 16px;
+            resize: vertical;
+            margin: 15px 0;
+        }
+        
+        .text-area:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .secondary-button {
+            padding: 12px 24px;
+            background-color: transparent;
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            color: var(--accent);
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .secondary-button:hover {
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--bg-tertiary);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+        
+        .loader {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .simulation-note {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid var(--warning);
+            padding: 10px 15px;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+            color: var(--warning);
+            margin: 15px 0;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .tools {
+                grid-template-columns: 1fr;
+            }
+            
+            .character-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .scene-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">AI StoryWeaver</div>
+                    <div class="tagline">Your Creative Writing Assistant</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="search-container">
+            <input type="text" class="search-input" id="keywordInput" placeholder="Enter keywords to generate story ideas...">
+            <button class="search-button" id="generateButton">Generate Story</button>
+        </div>
+
+        <section class="features">
+            <div class="feature-card" id="aiInspirationCard">
+                <div class="feature-icon">💡</div>
+                <h3 class="feature-title">AI Inspiration</h3>
+                <p class="feature-description">Generate unique story ideas and outlines based on your keywords</p>
+            </div>
+            
+            <div class="feature-card" id="characterLibraryCard">
+                <div class="feature-icon">👤</div>
+                <h3 class="feature-title">Character Library</h3>
+                <p class="feature-description">Browse and customize rich character profiles for your stories</p>
+            </div>
+            
+            <div class="feature-card" id="sceneLibraryCard">
+                <div class="feature-icon">🌆</div>
+                <h3 class="feature-title">Scene Library</h3>
+                <p class="feature-description">Explore pre-built settings to jumpstart your story worlds</p>
+            </div>
+            
+            <div class="feature-card" id="plotAssistantCard">
+                <div class="feature-icon">📖</div>
+                <h3 class="feature-title">Plot Assistant</h3>
+                <p class="feature-description">Get AI suggestions for story development and plot twists</p>
+            </div>
+            
+            <div class="feature-card" id="textOptimizerCard">
+                <div class="feature-icon">✍️</div>
+                <h3 class="feature-title">Text Optimizer</h3>
+                <p class="feature-description">Refine your writing with grammar and style improvements</p>
+            </div>
+        </section>
+
+        <section class="workspace" id="workspace">
+            <div class="workspace-header">
+                <h2 class="workspace-title" id="workspaceTitle">Story Workspace</h2>
+                <div class="workspace-controls">
+                    <button class="secondary-button" id="saveButton">Save</button>
+                    <button class="secondary-button" id="clearButton">Clear</button>
+                </div>
+            </div>
+            <div class="workspace-content" id="workspaceContent">Your generated story content will appear here...</div>
+        </section>
+
+        <section class="tools">
+            <div class="tool-card">
+                <h3 class="tool-title">💡 Plot Development</h3>
+                <p class="tool-description">Get AI suggestions for advancing your story plot</p>
+                <textarea class="text-area" id="plotInput" placeholder="Enter your current plot point..."></textarea>
+                <button class="tool-button" id="plotButton">Get Suggestions</button>
+            </div>
+            
+            <div class="tool-card">
+                <h3 class="tool-title">✍️ Text Refinement</h3>
+                <p class="tool-description">Improve your writing with AI-powered enhancements</p>
+                <textarea class="text-area" id="textInput" placeholder="Paste your text here to refine..."></textarea>
+                <button class="tool-button" id="refineButton">Refine Text</button>
+            </div>
+            
+            <div class="tool-card">
+                <h3 class="tool-title">🔍 Conflict Generator</h3>
+                <p class="tool-description">Create compelling conflicts to drive your story forward</p>
+                <button class="tool-button" id="conflictButton">Generate Conflict</button>
+            </div>
+            
+            <div class="tool-card">
+                <h3 class="tool-title">🎭 Dialogue Enhancer</h3>
+                <p class="tool-description">Make your character conversations more engaging</p>
+                <textarea class="text-area" id="dialogueInput" placeholder="Enter dialogue to enhance..."></textarea>
+                <button class="tool-button" id="dialogueButton">Enhance Dialogue</button>
+            </div>
+        </section>
+    </main>
+
+    <nav class="bottom-nav">
+        <div class="nav-container">
+            <div class="nav-item active" id="homeNav">
+                <div class="nav-icon">🏠</div>
+                <div class="nav-label">Home</div>
+            </div>
+            <div class="nav-item" id="charactersNav">
+                <div class="nav-icon">👥</div>
+                <div class="nav-label">Characters</div>
+            </div>
+            <div class="nav-item" id="scenesNav">
+                <div class="nav-icon">🌆</div>
+                <div class="nav-label">Scenes</div>
+            </div>
+            <div class="nav-item" id="toolsNav">
+                <div class="nav-icon">🛠️</div>
+                <div class="nav-label">Tools</div>
+            </div>
+            <div class="nav-item" id="savedNav">
+                <div class="nav-icon">💾</div>
+                <div class="nav-label">Saved</div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal" id="characterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Character Library</h2>
+                <span class="close-button" id="closeCharacterModal">&times;</span>
+            </div>
+            <div class="character-grid" id="characterGrid">
+                <!-- Characters will be dynamically loaded here -->
+            </div>
+            <div class="button-group">
+                <button class="secondary-button" id="createCharacterButton">Create Custom Character</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="sceneModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Scene Library</h2>
+                <span class="close-button" id="closeSceneModal">&times;</span>
+            </div>
+            <div class="scene-grid" id="sceneGrid">
+                <!-- Scenes will be dynamically loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="createCharacterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Custom Character</h2>
+                <span class="close-button" id="closeCreateCharacterModal">&times;</span>
+            </div>
+            <div>
+                <label for="characterName">Character Name:</label>
+                <input type="text" class="text-area" id="characterNameInput" style="min-height: 40px;">
+                
+                <label for="characterRole">Role:</label>
+                <input type="text" class="text-area" id="characterRoleInput" style="min-height: 40px;">
+                
+                <label for="characterTraits">Traits:</label>
+                <input type="text" class="text-area" id="characterTraitsInput" style="min-height: 40px;">
+                
+                <label for="characterBackground">Background:</label>
+                <textarea class="text-area" id="characterBackgroundInput"></textarea>
+                
+                <label for="characterMotivation">Motivation:</label>
+                <textarea class="text-area" id="characterMotivationInput"></textarea>
+            </div>
+            <div class="button-group">
+                <button class="tool-button" id="saveCharacterButton">Save Character</button>
+                <button class="secondary-button" id="cancelCreateCharacterButton">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // DOM Elements
+        const keywordInput = document.getElementById('keywordInput');
+        const generateButton = document.getElementById('generateButton');
+        const workspaceTitle = document.getElementById('workspaceTitle');
+        const workspaceContent = document.getElementById('workspaceContent');
+        const saveButton = document.getElementById('saveButton');
+        const clearButton = document.getElementById('clearButton');
+        
+        const plotInput = document.getElementById('plotInput');
+        const plotButton = document.getElementById('plotButton');
+        const textInput = document.getElementById('textInput');
+        const refineButton = document.getElementById('refineButton');
+        const conflictButton = document.getElementById('conflictButton');
+        const dialogueInput = document.getElementById('dialogueInput');
+        const dialogueButton = document.getElementById('dialogueButton');
+        
+        const characterModal = document.getElementById('characterModal');
+        const closeCharacterModal = document.getElementById('closeCharacterModal');
+        const characterGrid = document.getElementById('characterGrid');
+        const createCharacterButton = document.getElementById('createCharacterButton');
+        const createCharacterModal = document.getElementById('createCharacterModal');
+        const closeCreateCharacterModal = document.getElementById('closeCreateCharacterModal');
+        const saveCharacterButton = document.getElementById('saveCharacterButton');
+        const cancelCreateCharacterButton = document.getElementById('cancelCreateCharacterButton');
+        
+        const sceneModal = document.getElementById('sceneModal');
+        const closeSceneModal = document.getElementById('closeSceneModal');
+        const sceneGrid = document.getElementById('sceneGrid');
+        
+        const toast = document.getElementById('toast');
+        
+        // Navigation
+        const homeNav = document.getElementById('homeNav');
+        const charactersNav = document.getElementById('charactersNav');
+        const scenesNav = document.getElementById('scenesNav');
+        const toolsNav = document.getElementById('toolsNav');
+        const savedNav = document.getElementById('savedNav');
+        
+        // State
+        let currentContent = '';
+        let savedStories = JSON.parse(localStorage.getItem('savedStories') || '[]');
+        
+        // Sample data
+        const sampleCharacters = [
+            { id: 1, name: 'Elena', role: 'Protagonist', traits: 'Brave, curious, determined', background: 'Orphaned at a young age, Elena grew up on the streets.', motivation: 'To find her long-lost family and uncover the truth about her past.', avatar: '👩‍💼' },
+            { id: 2, name: 'Marcus', role: 'Antagonist', traits: 'Cunning, manipulative, ambitious', background: 'Born into wealth but always wanting more.', motivation: 'To gain control of the city\'s resources and eliminate anyone who stands in his way.', avatar: '👨‍💼' },
+            { id: 3, name: 'Sophia', role: 'Mentor', traits: 'Wise, patient, insightful', background: 'A retired scholar who has seen many cycles of history.', motivation: 'To guide the next generation and prevent the mistakes of the past.', avatar: '👩‍🏫' },
+            { id: 4, name: 'Leo', role: 'Sidekick', traits: 'Loyal, brave, humorous', background: 'Grew up with the protagonist, they\'ve been friends since childhood.', motivation: 'To support his friend no matter what and prove his worth.', avatar: '👦‍🎨' },
+            { id: 5, name: 'Isabella', role: 'Love Interest', traits: 'Independent, intelligent, compassionate', background: 'Works as a doctor in the city\'s poorest district.', motivation: 'To make a difference in the world and find true love.', avatar: '👩‍⚕️' },
+            { id: 6, name: 'Victor', role: 'Rival', traits: 'Competitive, jealous, skilled', background: 'Always in the protagonist\'s shadow, seeking recognition.', motivation: 'To surpass the protagonist and finally earn the respect he deserves.', avatar: '👨‍🎓' }
+        ];
+        
+        const sampleScenes = [
+            { id: 1, title: 'The Abandoned Castle', description: 'A forgotten fortress hidden deep in the forest', image: 'https://picsum.photos/seed/castle/200/120' },
+            { id: 2, title: 'The Neon-Lit City', description: 'A bustling metropolis of towering skyscrapers', image: 'https://picsum.photos/seed/city/200/120' },
+            { id: 3, title: 'The Coastal Village', description: 'A peaceful seaside town with a dark secret', image: 'https://picsum.photos/seed/village/200/120' },
+            { id: 4, title: 'The Underground Lab', description: 'A hidden research facility with dangerous experiments', image: 'https://picsum.photos/seed/lab/200/120' },
+            { id: 5, title: 'The Ancient Temple', description: 'A sacred place with mysterious powers', image: 'https://picsum.photos/seed/temple/200/120' },
+            { id: 6, title: 'The Space Station', description: 'A high-tech outpost orbiting a distant planet', image: 'https://picsum.photos/seed/space/200/120' }
+        ];
+        
+        // Utility functions
+        function showToast(message, duration = 3000) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        function generateStory(keywords) {
+            // Simulate AI story generation
+            const plotTemplates = [
+                `In a world where ${keywords} is possible, a young protagonist discovers they have extraordinary abilities. As they navigate this new reality, they uncover a conspiracy that threatens everything they hold dear.`,
+                `When ${keywords} begins to appear across the city, a group of unlikely allies must band together to solve the mystery before it's too late. Each clue leads them deeper into a web of intrigue.`,
+                `The discovery of ${keywords} changes the course of history forever. A determined scientist races against time to understand its implications, unaware of the forces working against them.`,
+                `In a society where ${keywords} is outlawed, a rebellion forms to fight for freedom. The lines blur between hero and villain as the conflict escalates.`,
+                `A mysterious artifact tied to ${keywords} falls into the wrong hands, unleashing a chain of events that could alter the fabric of reality itself.`
+            ];
+            
+            const characters = ['a reluctant hero', 'a cunning villain', 'a wise mentor', 'a loyal companion'];
+            const settings = ['a bustling metropolis', 'a remote village', 'an ancient castle', 'a futuristic city'];
+            const conflicts = ['a race against time', 'a battle of wits', 'a struggle for power', 'a fight for survival'];
+            
+            const plot = plotTemplates[Math.floor(Math.random() * plotTemplates.length)];
+            const character = characters[Math.floor(Math.random() * characters.length)];
+            const setting = settings[Math.floor(Math.random() * settings.length)];
+            const conflict = conflicts[Math.floor(Math.random() * conflicts.length)];
+            
+            return `STORY OUTLINE:\n\nSetting: ${setting}\n\nMain Character: ${character}\n\nPlot: ${plot}\n\nCentral Conflict: ${conflict}\n\nThis story explores themes of discovery, responsibility, and the consequences of power in a world transformed by ${keywords}.`;
+        }
+        
+        function generatePlotSuggestion(plotPoint) {
+            // Simulate AI plot suggestion
+            const suggestions = [
+                `Consider introducing a twist where the protagonist discovers that ${plotPoint} is not what it seems, leading to a deeper mystery.`,
+                `Have a character challenge the protagonist's approach to ${plotPoint}, creating internal conflict and character development.`,
+                `Use ${plotPoint} as a catalyst for a major turning point in the story, raising the stakes and forcing the protagonist to make difficult choices.`,
+                `Explore the consequences of ${plotPoint} by showing how it affects different characters in various ways, creating subplots that intertwine.`,
+                `Introduce a time jump after ${plotPoint} to show the long-term effects and how the characters have changed over time.`
+            ];
+            
+            return suggestions[Math.floor(Math.random() * suggestions.length)];
+        }
+        
+        function refineText(text) {
+            // Simulate AI text refinement
+            const improvements = [
+                `Refined version:\n\n${text.replace(/\./g, '. ').replace(/\s+/g, ' ').trim()}\n\nThis version improves readability by adding proper spacing and sentence structure.`,
+                `Enhanced version:\n\n${text}\n\nI've enhanced this text by varying sentence length and adding more descriptive language to engage the reader.`,
+                `Polished version:\n\n${text.split('. ').map(sentence => sentence.charAt(0).toUpperCase() + sentence.slice(1)).join('. ')}\n\nThis version improves grammar and capitalization for a more professional appearance.`
+            ];
+            
+            return improvements[Math.floor(Math.random() * improvements.length)];
+        }
+        
+        function generateConflict() {
+            // Simulate AI conflict generation
+            const conflicts = [
+                "A sudden betrayal by a trusted ally forces the protagonist to question everything they thought they knew about their relationships.",
+                "A natural disaster strikes, separating the protagonist from their allies and forcing them to survive on their own in hostile territory.",
+                "The protagonist discovers a secret that changes their entire understanding of the world and their place in it.",
+                "A powerful antagonist reveals a connection to the protagonist's past, forcing them to confront unresolved trauma.",
+                "The protagonist is faced with an impossible choice that pits their values against their desires, with no clear right answer."
+            ];
+            
+            return conflicts[Math.floor(Math.random() * conflicts.length)];
+        }
+        
+        function enhanceDialogue(dialogue) {
+            // Simulate AI dialogue enhancement
+            const enhancements = [
+                `Enhanced dialogue:\n\n"${dialogue}"\n\nThis version adds subtext and emotional depth to make the conversation more engaging and reveal character motivations.`,
+                `Improved dialogue:\n\n"${dialogue}"\n\nI've added natural pauses, hesitations, and interruptions to make this conversation feel more authentic and dynamic.`,
+                `Polished dialogue:\n\n"${dialogue}"\n\nThis version sharpens the character voices and adds meaningful subtext that enhances the underlying tension.`
+            ];
+            
+            return enhancements[Math.floor(Math.random() * enhancements.length)];
+        }
+        
+        // Event listeners
+        generateButton.addEventListener('click', () => {
+            const keywords = keywordInput.value.trim();
+            if (!keywords) {
+                showToast('Please enter keywords to generate a story');
+                return;
+            }
+            
+            generateButton.innerHTML = '<span class="loader"></span> Generating...';
+            generateButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const story = generateStory(keywords);
+                workspaceContent.textContent = story;
+                workspaceTitle.textContent = `Generated Story: ${keywords}`;
+                currentContent = story;
+                
+                generateButton.innerHTML = 'Generate Story';
+                generateButton.disabled = false;
+                
+                showToast('Story generated successfully!');
+            }, 1500);
+        });
+        
+        saveButton.addEventListener('click', () => {
+            if (!currentContent) {
+                showToast('No content to save');
+                return;
+            }
+            
+            const story = {
+                id: Date.now(),
+                title: workspaceTitle.textContent,
+                content: currentContent,
+                date: new Date().toISOString()
+            };
+            
+            savedStories.unshift(story);
+            localStorage.setItem('savedStories', JSON.stringify(savedStories));
+            
+            showToast('Story saved successfully!');
+        });
+        
+        clearButton.addEventListener('click', () => {
+            workspaceContent.textContent = 'Your generated story content will appear here...';
+            workspaceTitle.textContent = 'Story Workspace';
+            currentContent = '';
+            keywordInput.value = '';
+            
+            showToast('Workspace cleared');
+        });
+        
+        plotButton.addEventListener('click', () => {
+            const plotPoint = plotInput.value.trim();
+            if (!plotPoint) {
+                showToast('Please enter a plot point');
+                return;
+            }
+            
+            plotButton.innerHTML = '<span class="loader"></span> Analyzing...';
+            plotButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const suggestion = generatePlotSuggestion(plotPoint);
+                workspaceContent.textContent = suggestion;
+                workspaceTitle.textContent = 'Plot Suggestions';
+                currentContent = suggestion;
+                
+                plotButton.innerHTML = 'Get Suggestions';
+                plotButton.disabled = false;
+                
+                showToast('Plot suggestions generated!');
+            }, 1000);
+        });
+        
+        refineButton.addEventListener('click', () => {
+            const text = textInput.value.trim();
+            if (!text) {
+                showToast('Please enter text to refine');
+                return;
+            }
+            
+            refineButton.innerHTML = '<span class="loader"></span> Refining...';
+            refineButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const refined = refineText(text);
+                workspaceContent.textContent = refined;
+                workspaceTitle.textContent = 'Refined Text';
+                currentContent = refined;
+                
+                refineButton.innerHTML = 'Refine Text';
+                refineButton.disabled = false;
+                
+                showToast('Text refined successfully!');
+            }, 1000);
+        });
+        
+        conflictButton.addEventListener('click', () => {
+            conflictButton.innerHTML = '<span class="loader"></span> Generating...';
+            conflictButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const conflict = generateConflict();
+                workspaceContent.textContent = conflict;
+                workspaceTitle.textContent = 'Generated Conflict';
+                currentContent = conflict;
+                
+                conflictButton.innerHTML = 'Generate Conflict';
+                conflictButton.disabled = false;
+                
+                showToast('Conflict generated!');
+            }, 1000);
+        });
+        
+        dialogueButton.addEventListener('click', () => {
+            const dialogue = dialogueInput.value.trim();
+            if (!dialogue) {
+                showToast('Please enter dialogue to enhance');
+                return;
+            }
+            
+            dialogueButton.innerHTML = '<span class="loader"></span> Enhancing...';
+            dialogueButton.disabled = true;
+            
+            // Simulate API delay
+            setTimeout(() => {
+                const enhanced = enhanceDialogue(dialogue);
+                workspaceContent.textContent = enhanced;
+                workspaceTitle.textContent = 'Enhanced Dialogue';
+                currentContent = enhanced;
+                
+                dialogueButton.innerHTML = 'Enhance Dialogue';
+                dialogueButton.disabled = false;
+                
+                showToast('Dialogue enhanced!');
+            }, 1000);
+        });
+        
+        // Character modal
+        document.getElementById('aiInspirationCard').addEventListener('click', () => {
+            keywordInput.focus();
+        });
+        
+        document.getElementById('characterLibraryCard').addEventListener('click', () => {
+            characterModal.style.display = 'flex';
+            renderCharacters();
+        });
+        
+        closeCharacterModal.addEventListener('click', () => {
+            characterModal.style.display = 'none';
+        });
+        
+        createCharacterButton.addEventListener('click', () => {
+            characterModal.style.display = 'none';
+            createCharacterModal.style.display = 'flex';
+        });
+        
+        closeCreateCharacterModal.addEventListener('click', () => {
+            createCharacterModal.style.display = 'none';
+            clearCharacterForm();
+        });
+        
+        saveCharacterButton.addEventListener('click', () => {
+            const name = document.getElementById('characterNameInput').value.trim();
+            const role = document.getElementById('characterRoleInput').value.trim();
+            const traits = document.getElementById('characterTraitsInput').value.trim();
+            const background = document.getElementById('characterBackgroundInput').value.trim();
+            const motivation = document.getElementById('characterMotivationInput').value.trim();
+            
+            if (!name || !role) {
+                showToast('Please fill in at least name and role');
+                return;
+            }
+            
+            const newCharacter = {
+                id: Date.now(),
+                name,
+                role,
+                traits: traits || 'To be added',
+                background: background || 'To be added',
+                motivation: motivation || 'To be added',
+                avatar: '👤'
+            };
+            
+            sampleCharacters.push(newCharacter);
+            createCharacterModal.style.display = 'none';
+            clearCharacterForm();
+            showToast('Character created successfully!');
+        });
+        
+        cancelCreateCharacterButton.addEventListener('click', () => {
+            createCharacterModal.style.display = 'none';
+            clearCharacterForm();
+        });
+        
+        function clearCharacterForm() {
+            document.getElementById('characterNameInput').value = '';
+            document.getElementById('characterRoleInput').value = '';
+            document.getElementById('characterTraitsInput').value = '';
+            document.getElementById('characterBackgroundInput').value = '';
+            document.getElementById('characterMotivationInput').value = '';
+        }
+        
+        function renderCharacters() {
+            characterGrid.innerHTML = '';
+            
+            sampleCharacters.forEach(character => {
+                const characterCard = document.createElement('div');
+                characterCard.className = 'character-card';
+                characterCard.innerHTML = `
+                    <div class="character-avatar">${character.avatar}</div>
+                    <div class="character-name">${character.name}</div>
+                    <div class="character-type">${character.role}</div>
+                `;
+                
+                characterCard.addEventListener('click', () => {
+                    workspaceContent.textContent = `CHARACTER PROFILE:\n\nName: ${character.name}\n\nRole: ${character.role}\n\nTraits: ${character.traits}\n\nBackground: ${character.background}\n\nMotivation: ${character.motivation}`;
+                    workspaceTitle.textContent = `Character: ${character.name}`;
+                    currentContent = workspaceContent.textContent;
+                    characterModal.style.display = 'none';
+                    showToast('Character loaded into workspace');
+                });
+                
+                characterGrid.appendChild(characterCard);
+            });
+        }
+        
+        // Scene modal
+        document.getElementById('sceneLibraryCard').addEventListener('click', () => {
+            sceneModal.style.display = 'flex';
+            renderScenes();
+        });
+        
+        closeSceneModal.addEventListener('click', () => {
+            sceneModal.style.display = 'none';
+        });
+        
+        function renderScenes() {
+            sceneGrid.innerHTML = '';
+            
+            sampleScenes.forEach(scene => {
+                const sceneCard = document.createElement('div');
+                sceneCard.className = 'scene-card';
+                sceneCard.innerHTML = `
+                    <img src="${scene.image}" alt="${scene.title}" class="scene-image">
+                    <div class="scene-info">
+                        <div class="scene-title">${scene.title}</div>
+                        <div class="scene-description">${scene.description}</div>
+                    </div>
+                `;
+                
+                sceneCard.addEventListener('click', () => {
+                    workspaceContent.textContent = `SCENE DESCRIPTION:\n\n${scene.title}\n\n${scene.description}\n\nThis setting provides a rich backdrop for your story, with numerous possibilities for character interactions and plot development. Consider how the environment influences your characters' actions and decisions.`;
+                    workspaceTitle.textContent = `Scene: ${scene.title}`;
+                    currentContent = workspaceContent.textContent;
+                    sceneModal.style.display = 'none';
+                    showToast('Scene loaded into workspace');
+                });
+                
+                sceneGrid.appendChild(sceneCard);
+            });
+        }
+        
+        // Navigation
+        homeNav.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            homeNav.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        charactersNav.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            charactersNav.classList.add('active');
+            characterModal.style.display = 'flex';
+            renderCharacters();
+        });
+        
+        scenesNav.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            scenesNav.classList.add('active');
+            sceneModal.style.display = 'flex';
+            renderScenes();
+        });
+        
+        toolsNav.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            toolsNav.classList.add('active');
+            document.querySelector('.tools').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        savedNav.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            savedNav.classList.add('active');
+            
+            if (savedStories.length === 0) {
+                showToast('No saved stories yet');
+                return;
+            }
+            
+            let savedContent = 'SAVED STORIES:\n\n';
+            savedStories.forEach((story, index) => {
+                savedContent += `${index + 1}. ${story.title}\n   Saved: ${new Date(story.date).toLocaleDateString()}\n\n`;
+            });
+            
+            workspaceContent.textContent = savedContent;
+            workspaceTitle.textContent = 'Saved Stories';
+            currentContent = savedContent;
+            
+            window.scrollTo({ top: document.querySelector('.workspace').offsetTop - 100, behavior: 'smooth' });
+        });
+        
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === characterModal) {
+                characterModal.style.display = 'none';
+            }
+            if (e.target === sceneModal) {
+                sceneModal.style.display = 'none';
+            }
+            if (e.target === createCharacterModal) {
+                createCharacterModal.style.display = 'none';
+            }
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check if there's saved content to restore
+            if (savedStories.length > 0) {
+                showToast('Welcome back! You have saved stories available');
+            }
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Your Creative Writing Assistant","Generate Story":"Generate Story","AI Inspiration":"AI Inspiration","Generate unique story ideas and outlines based on your keywords":"Generate unique story ideas and outlines based on your keywords","Character Library":"Character Library","Browse and customize rich character profiles for your stories":"Browse and customize rich character profiles for your stories","Scene Library":"Scene Library","Explore pre-built settings to jumpstart your story worlds":"Explore pre-built settings to jumpstart your story worlds","Plot Assistant":"Plot Assistant","Get AI suggestions for story development and plot twists":"Get AI suggestions for story development and plot twists","Text Optimizer":"Text Optimizer","Refine your writing with grammar and style improvements":"Refine your writing with grammar and style improvements","Story Workspace":"Story Workspace","Save":"Save","Clear":"Clear","💡 Plot Development":"💡 Plot Development","Get AI suggestions for advancing your story plot":"Get AI suggestions for advancing your story plot","Get Suggestions":"Get Suggestions","✍️ Text Refinement":"✍️ Text Refinement","Improve your writing with AI-powered enhancements":"Improve your writing with AI-powered enhancements","Refine Text":"Refine Text","🔍 Conflict Generator":"🔍 Conflict Generator","Create compelling conflicts to drive your story forward":"Create compelling conflicts to drive your story forward","Generate Conflict":"Generate Conflict","🎭 Dialogue Enhancer":"🎭 Dialogue Enhancer","Make your character conversations more engaging":"Make your character conversations more engaging","Enhance Dialogue":"Enhance Dialogue","\u0026times;":"\u0026times;","Create Custom Character":"Create Custom Character","Character Name:":"Character Name:","Role:":"Role:","Traits:":"Traits:","Background:":"Background:","Motivation:":"Motivation:","Save Character":"Save Character","Cancel":"Cancel","Brave, curious, determined":"Brave, curious, determined","Orphaned at a young age, Elena grew up on the streets.":"Orphaned at a young age, Elena grew up on the streets.","To find her long-lost family and uncover the truth about her past.":"To find her long-lost family and uncover the truth about her past.","Cunning, manipulative, ambitious":"Cunning, manipulative, ambitious","Born into wealth but always wanting more.":"Born into wealth but always wanting more.","s resources and eliminate anyone who stands in his way.":"s resources and eliminate anyone who stands in his way.","Wise, patient, insightful":"Wise, patient, insightful","A retired scholar who has seen many cycles of history.":"A retired scholar who has seen many cycles of history.","To guide the next generation and prevent the mistakes of the past.":"To guide the next generation and prevent the mistakes of the past.","Loyal, brave, humorous":"Loyal, brave, humorous","ve been friends since childhood.":"ve been friends since childhood.","To support his friend no matter what and prove his worth.":"To support his friend no matter what and prove his worth.","Love Interest":"Love Interest","Independent, intelligent, compassionate":"Independent, intelligent, compassionate","s poorest district.":"s poorest district.","To make a difference in the world and find true love.":"To make a difference in the world and find true love.","Competitive, jealous, skilled":"Competitive, jealous, skilled","s shadow, seeking recognition.":"s shadow, seeking recognition.","To surpass the protagonist and finally earn the respect he deserves.":"To surpass the protagonist and finally earn the respect he deserves.","The Abandoned Castle":"The Abandoned Castle","A forgotten fortress hidden deep in the forest":"A forgotten fortress hidden deep in the forest","The Neon-Lit City":"The Neon-Lit City","A bustling metropolis of towering skyscrapers":"A bustling metropolis of towering skyscrapers","The Coastal Village":"The Coastal Village","A peaceful seaside town with a dark secret":"A peaceful seaside town with a dark secret","__title__":"AI StoryWeaver - Your Creative Writing Assistant"},"ja":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Your Creative Writing Assistant","Generate Story":"ストーリー生成","AI Inspiration":"AIインスピレーション","Generate unique story ideas and outlines based on your keywords":"キーワードに基づいてユニークなストーリーアイデアと概要を生成","Character Library":"キャラクターライブラリ","Browse and customize rich character profiles for your stories":"ストーリーのための豊かなキャラクタープロファイルをブラウズしてカスタマイズ","Scene Library":"シーンライブラリ","Explore pre-built settings to jumpstart your story worlds":"ストーリーワールドを始動させるために事前に構築された設定を探検","Plot Assistant":"シナリオアシスタント","Get AI suggestions for story development and plot twists":"ストーリーの発展と展開のアイデアをAIの提案で得る","Text Optimizer":"テキスト最適化","Refine your writing with grammar and style improvements":"文法やスタイルの改善で書き込みを精査","Story Workspace":"ストーリーワークスペース","Save":"保存","Clear":"クリア","💡 Plot Development":"💡シナリオ開発","Get AI suggestions for advancing your story plot":"ストーリープロットを進めるためのAIの提案を得る","Get Suggestions":"提案を得る","✍️ Text Refinement":"✍️テキスト精査","Improve your writing with AI-powered enhancements":"AIで強化された機能で書き込みを改善","Refine Text":"テキストを精査","🔍 Conflict Generator":"🔍対立生成","Create compelling conflicts to drive your story forward":"ストーリーを進めるために魅力的な対立を創造","Generate Conflict":"対立を生成","🎭 Dialogue Enhancer":"🎭台詞強化","Make your character conversations more engaging":"キャラクターの会話をより魅力的にする","Enhance Dialogue":"台詞を強化","\u0026times;":"\u0026times;","Create Custom Character":"カスタムキャラクターを作成","Character Name:":"キャラクター名：","Role:":"役割：","Traits:":"特性：","Background:":"背景：","Motivation:":"動機：","Save Character":"キャラクターを保存","Cancel":"キャンセル","Brave, curious, determined":"勇敢で好奇心旺盛、決断力がある","Orphaned at a young age, Elena grew up on the streets.":"幼い頃に孤児となり、エレナは街で育った。","To find her long-lost family and uncover the truth about her past.":"彼女の長年失われた家族を見つけ、彼女の過去の真実を明らかにするために。","Cunning, manipulative, ambitious":"狡猾で操る、野心勃勃","Born into wealth but always wanting more.":"豊かさに生まれたが常にもっと欲しいと考えていた。","s resources and eliminate anyone who stands in his way.":"彼の資源を利用し、彼の道に立ちはだかる者を排除。","Wise, patient, insightful":"賢明で忍耐強く、洞察力がある","A retired scholar who has seen many cycles of history.":"多くの歴史のサイクルを目にした引退した学者。","To guide the next generation and prevent the mistakes of the past.":"次の世代を導き、過去の過ちを防ぐために。","Loyal, brave, humorous":"忠実で勇敢でユーモラス","ve been friends since childhood.":"幼い頃から友達です。","To support his friend no matter what and prove his worth.":"どんなことがあっても友達を支え、自分の価値を証明するために。","Love Interest":"ロマンチックな興味","Independent, intelligent, compassionate":"独立した、賢明で思いやりのある","s poorest district.":"最も貧しい地区で。","To make a difference in the world and find true love.":"世界に影響を与え、真の愛を見つけるために。","Competitive, jealous, skilled":"競争心旺盛でうらやましい、熟練した","s shadow, seeking recognition.":"影の中で認められたいと求めている。","To surpass the protagonist and finally earn the respect he deserves.":"主人公を超え、ついに彼が応じるべき尊敬を得るために。","The Abandoned Castle":"放棄された城","A forgotten fortress hidden deep in the forest":"森の奥深くに隠された忘れられた要塞","The Neon-Lit City":"ネオンで照らされた大都市","A bustling metropolis of towering skyscrapers":"高い摩天楼が林立する活気ある大都市","The Coastal Village":"海岸の村","A peaceful seaside town with a dark secret":"暗い秘密を持つ平和な海辺の町","__title__":"AI StoryWeaver - Your Creative Writing Assistant"},"ko":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Your Creative Writing Assistant","Generate Story":"스토리 생성","AI Inspiration":"AI 영감","Generate unique story ideas and outlines based on your keywords":"키워드를 기반으로 독특한 스토리 아이디어와 대본을 생성","Character Library":"캐릭터 라이브러리","Browse and customize rich character profiles for your stories":"스토리를 위해 풍부한 캐릭터 프로필을 검색하고 맞춤 설정","Scene Library":"장면 라이브러리","Explore pre-built settings to jumpstart your story worlds":"미리 구축된 설정을 탐험하여 스토리 세계를 빠르게 시작","Plot Assistant":"플롯 어시스턴트","Get AI suggestions for story development and plot twists":"스토리 개발과 플롯 전황에 대한 AI 권장 사항을 받아보세요","Text Optimizer":"텍스트 최적화","Refine your writing with grammar and style improvements":"문법과 스타일 개선을 통해 작품을 정교하게 하세요","Story Workspace":"스토리 워크스페이스","Save":"저장","Clear":"삭제","💡 Plot Development":"💡 플롯 개발","Get AI suggestions for advancing your story plot":"스토리 플롯을 진행하는 데 대한 AI 권장 사항을 받아보세요","Get Suggestions":"권장 사항 받기","✍️ Text Refinement":"✍️ 텍스트 정교화","Improve your writing with AI-powered enhancements":"AI로 지원된 향상을 통해 작품을 개선하세요","Refine Text":"텍스트 정교화","🔍 Conflict Generator":"🔍 갈등 생성기","Create compelling conflicts to drive your story forward":"스토리를 전진시키기 위해 매력적인 갈등을 만들어보세요","Generate Conflict":"갈등 생성","🎭 Dialogue Enhancer":"🎭 대화 강화기","Make your character conversations more engaging":"캐릭터 대화를 더 매력적으로 만들어보세요","Enhance Dialogue":"대화 강화","\u0026times;":"\u0026times;","Create Custom Character":"사용자 정의 캐릭터 생성","Character Name:":"캐릭터 이름:","Role:":"역할:","Traits:":"특성:","Background:":"배경:","Motivation:":"동기:","Save Character":"캐릭터 저장","Cancel":"취소","Brave, curious, determined":"무사한, 호기심 많은, 결단력 있는","Orphaned at a young age, Elena grew up on the streets.":"어린 시절 유기되어 Elena는 거리에서 자랐다.","To find her long-lost family and uncover the truth about her past.":"그녀의 오랜 친가족을 찾고 그녀의 과거에 대한 진실을 밝혀내기 위해.","Cunning, manipulative, ambitious":"기교적인, 조종적인, 야심적인","Born into wealth but always wanting more.":"부호 출신이지만 항상 더를 원하려 했다.","s resources and eliminate anyone who stands in his way.":"자신의 자원을 쓰고 그의 길을 막는 모든 사람을 제거하려 했다.","Wise, patient, insightful":"명확한, 겸손한, 통찰력 있는","A retired scholar who has seen many cycles of history.":"역사의 많은 주기를 지켜보았던 은퇴한 학자.","To guide the next generation and prevent the mistakes of the past.":"다음 세대를 이끌고 과거의 실수를 방지하기 위해.","Loyal, brave, humorous":"충성스러운, 무사한, 유머러스한","ve been friends since childhood.":"어린 시절부터 친구였다.","To support his friend no matter what and prove his worth.":"그의 친구를 어떤 상황에서도 지지하고 그의 가치를 입증하기 위해.","Love Interest":"로맨스 관계","Independent, intelligent, compassionate":"독립적이고, 지능적이며, 조화로운","s poorest district.":"가장 가난한 지역.","To make a difference in the world and find true love.":"세상에 변화를 가져오고 진정한 사랑을 찾기 위해.","Competitive, jealous, skilled":"경쟁적이고, 짐을 여기고, 능숙한","s shadow, seeking recognition.":"그의 그림자 속에서 인정을 찾으려 했다.","To surpass the protagonist and finally earn the respect he deserves.":"주인공을 능가하고 마침내 그가 받아야 할 존경을 얻기 위해.","The Abandoned Castle":"버려진 성","A forgotten fortress hidden deep in the forest":"림속 깊숙이 숨겨진 잊혀진 성","The Neon-Lit City":"네온으로 밝혀진 도시","A bustling metropolis of towering skyscrapers":"높은摩天大楼로 가득한 번화한 도시","The Coastal Village":"해안 마을","A peaceful seaside town with a dark secret":"평화로운 해변 마을에 숨겨진 악_SECRET","__title__":"AI StoryWeaver - Your Creative Writing Assistant"},"fr":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Votre Assistant d'Écriture Créative","Generate Story":"Générer une histoire","AI Inspiration":"Inspiration IA","Generate unique story ideas and outlines based on your keywords":"Générer des idées d'histoire uniques et des plans basés sur vos mots-clés","Character Library":"Bibliothèque de personnages","Browse and customize rich character profiles for your stories":"Naviguez et personnalisez des profils de personnages riches pour vos histoires","Scene Library":"Bibliothèque de scènes","Explore pre-built settings to jumpstart your story worlds":"Explorez des ensembles pré-construits pour démarrer vos mondes d'histoires","Plot Assistant":"Assistant de Scénario","Get AI suggestions for story development and plot twists":"Obtenez des suggestions d'IA pour le développement de l'histoire et les retournements de situation","Text Optimizer":"Optimiseur de texte","Refine your writing with grammar and style improvements":"Affinez votre écriture avec des améliorations grammaticales et stylistiques","Story Workspace":"Espace de travail pour l'histoire","Save":"Enregistrer","Clear":"Effacer","💡 Plot Development":"💡 Développement de l'intrigue","Get AI suggestions for advancing your story plot":"Obtenez des suggestions d'IA pour avancer l'intrigue de votre histoire","Get Suggestions":"Obtenir des suggestions","✍️ Text Refinement":"✍️ Affinage du texte","Improve your writing with AI-powered enhancements":"Améliorez votre écriture avec des améliorations alimentées par l'IA","Refine Text":"Affiner le texte","🔍 Conflict Generator":"🔍 Générateur de conflits","Create compelling conflicts to drive your story forward":"Créez des conflits captivants pour avancer votre histoire","Generate Conflict":"Générer un conflit","🎭 Dialogue Enhancer":"🎭 Améliorateur de dialogue","Make your character conversations more engaging":"Rendez les conversations de vos personnages plus engageantes","Enhance Dialogue":"Améliorer le dialogue","\u0026times;":"\u0026times;","Create Custom Character":"Créer un personnage personnalisé","Character Name:":"Nom du personnage :","Role:":"Rôle :","Traits:":"Caractéristiques :","Background:":"Contexte :","Motivation:":"Motivation :","Save Character":"Enregistrer le personnage","Cancel":"Annuler","Brave, curious, determined":"Brave, curieux, déterminé","Orphaned at a young age, Elena grew up on the streets.":"Orpheline dès son plus jeune âge, Elena a grandi dans les rues.","To find her long-lost family and uncover the truth about her past.":"Pour trouver sa famille perdue depuis longtemps et découvrir la vérité sur son passé.","Cunning, manipulative, ambitious":"Astucieux, manipulateur, ambitieux","Born into wealth but always wanting more.":"Né dans la richesse mais toujours wanting plus.","s resources and eliminate anyone who stands in his way.":"s ressources et éliminer toute personne qui se trouve sur son chemin.","Wise, patient, insightful":"Sage, patient, perspicace","A retired scholar who has seen many cycles of history.":"Un savant retraité qui a vu de nombreux cycles de l'histoire.","To guide the next generation and prevent the mistakes of the past.":"Pour guider la génération suivante et éviter les erreurs du passé.","Loyal, brave, humorous":"Fidèle, brave, humoristique","ve been friends since childhood.":" avons été amis depuis l'enfance.","To support his friend no matter what and prove his worth.":"Pour soutenir son ami en tout et en tout et prouver sa valeur.","Love Interest":"Intérêt Amoureux","Independent, intelligent, compassionate":"Indépendante, intelligente, compassionnelle","s poorest district.":"s plus pauvre district.","To make a difference in the world and find true love.":"Pour faire une différence dans le monde et trouver l'amour véritable.","Competitive, jealous, skilled":"Concurrentiel, jaloux, compétent","s shadow, seeking recognition.":"s ombre, cherchant la reconnaissance.","To surpass the protagonist and finally earn the respect he deserves.":"Pour surpasser le protagoniste et enfin mériter le respect qu'il mérite.","The Abandoned Castle":"Le Château Abandonné","A forgotten fortress hidden deep in the forest":"Une forteresse oubliée cachée profondément dans la forêt","The Neon-Lit City":"La Ville Éclairée aux Neons","A bustling metropolis of towering skyscrapers":"Une métropole animée de gratte-ciel imposants","The Coastal Village":"Le Villages de Côte","A peaceful seaside town with a dark secret":"Un petit village de bord de mer paisible avec un secret sombre","__title__":"AI StoryWeaver - Votre Assistant d'Écriture Créative"},"de":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Ihr kreativer Schreibassistent","Generate Story":"Geschichte generieren","AI Inspiration":"AI-Inspiration","Generate unique story ideas and outlines based on your keywords":"Erstellen Sie einzigartige Geschichten und Zusammenfassungen basierend auf Ihren Schlüsselwörtern","Character Library":"Charakterbibliothek","Browse and customize rich character profiles for your stories":"Durchsuchen und individualisieren Sie umfassende Charakterprofile für Ihre Geschichten","Scene Library":"Szenenbibliothek","Explore pre-built settings to jumpstart your story worlds":"Entdecken Sie vorgefertigte Einstellungen, um Ihre Geschichten zu starten","Plot Assistant":"Handlungsassistent","Get AI suggestions for story development and plot twists":"Erhalten Sie AI-Vorschläge für die Entwicklung Ihrer Geschichte und Handlungsabwicklungen","Text Optimizer":"Textoptimizer","Refine your writing with grammar and style improvements":"Verfeinern Sie Ihre Schreibweise mit grammatikalischen und stilistischen Verbesserungen","Story Workspace":"Geschichtenwerkzeug","Save":"Speichern","Clear":"Leeren","💡 Plot Development":"💡 Handlungsdevelopment","Get AI suggestions for advancing your story plot":"Erhalten Sie AI-Vorschläge für die Weiterentwicklung Ihres Handlungsplans","Get Suggestions":"Vorschläge erhalten","✍️ Text Refinement":"✍️ Textverfeinerung","Improve your writing with AI-powered enhancements":"Verfeinern Sie Ihre Schreibweise mit AI-gesteuerten Verbesserungen","Refine Text":"Text verfeinern","🔍 Conflict Generator":"🔍 Konfliktgenerator","Create compelling conflicts to drive your story forward":"Erstellen Sie fesselnde Konflikte, um Ihre Geschichte voranzutreiben","Generate Conflict":"Konflikt generieren","🎭 Dialogue Enhancer":"🎭 Dialogverstärker","Make your character conversations more engaging":"Machen Sie die Gespräche Ihrer Charaktere ansprechender","Enhance Dialogue":"Dialog verstärken","\u0026times;":"\u0026times;","Create Custom Character":"Einen benutzerdefinierten Charakter erstellen","Character Name:":"Charaktername:","Role:":"Rolle:","Traits:":"Eigenschaften:","Background:":"Hintergrund:","Motivation:":"Motivation:","Save Character":"Charakter speichern","Cancel":"Abbrechen","Brave, curious, determined":"Tapfer, neugierig, entschlossen","Orphaned at a young age, Elena grew up on the streets.":"Verwaist in jungen Jahren, wuchs Elena auf den Straßen auf.","To find her long-lost family and uncover the truth about her past.":"Um ihre lange vermisste Familie zu finden und die Wahrheit über ihre Vergangenheit aufzudecken.","Cunning, manipulative, ambitious":"Listig, manipulativ, ambitioniert","Born into wealth but always wanting more.":"In das Wohlstand geboren, aber immer mehr wollte.","s resources and eliminate anyone who stands in his way.":"se Ressourcen und beseitigt jeden, der seinen Weg versperrt.","Wise, patient, insightful":"Weise, geduldig, durchschaut","A retired scholar who has seen many cycles of history.":"Ein pensionierter Gelehrter, der viele Zyklen der Geschichte gesehen hat.","To guide the next generation and prevent the mistakes of the past.":"Um die nächste Generation zu leiten und die Fehler der Vergangenheit zu vermeiden.","Loyal, brave, humorous":"Treu, mutig, humorvoll","ve been friends since childhood.":"Wir sind seit der Kindheit Freunde.","To support his friend no matter what and prove his worth.":"Um seinen Freund unerschütterlich zu unterstützen und seinen Wert zu beweisen.","Love Interest":"Liebesinteresse","Independent, intelligent, compassionate":"Unabhängig, intelligent, barmherzig","s poorest district.":"Im ärmsten Bezirk.","To make a difference in the world and find true love.":"Um die Welt zu verändern und wahre Liebe zu finden.","Competitive, jealous, skilled":"Konkurrenzfähig, eifersüchtig, geschickt","s shadow, seeking recognition.":"In den Schatten, auf Anerkennung aus ist.","To surpass the protagonist and finally earn the respect he deserves.":"Um den Protagonisten zu überbieten und endlich die Anerkennung zu erhalten, die er verdient.","The Abandoned Castle":"Das verlassene Schloss","A forgotten fortress hidden deep in the forest":"Eine vergessene Festung, tief im Wald versteckt","The Neon-Lit City":"Die Neon beleuchtete Stadt","A bustling metropolis of towering skyscrapers":"Eine belebte Metropole mit mächtigen Wolkenkratzern","The Coastal Village":"Das Küstendorf","A peaceful seaside town with a dark secret":"Ein friedlicher Küstenort mit einem dunklen Geheimnis","__title__":"AI StoryWeaver - Ihr kreativer Schreibassistent"},"ar":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - مساعد كتابة إبداعك","Generate Story":"إنتاج قصة","AI Inspiration":"إلهام AI","Generate unique story ideas and outlines based on your keywords":"إنتاج أفكار وخطط قصصية فريدة بناءً على كلماتك المفتاحية","Character Library":"مكتبة الشخصيات","Browse and customize rich character profiles for your stories":"تصفح وتخصيص ملفات شخصيات غنية لقصصك","Scene Library":"مكتبة السيناريوهات","Explore pre-built settings to jumpstart your story worlds":"استكشف الإعدادات البنية للبدء بسرعة في عوالم قصصك","Plot Assistant":"مساعد الخطة","Get AI suggestions for story development and plot twists":"الحصول على توصيات AI لتنمية القصة والتشابك في الخطوات","Text Optimizer":"محسن النص","Refine your writing with grammar and style improvements":"تنقيح كتابتك بأفضل التحسينات للنحوة والنمط","Story Workspace":"فضاء عمل القصة","Save":"ال حفظ","Clear":"الإزالة","💡 Plot Development":"💡 تطوير الخطوط","Get AI suggestions for advancing your story plot":"الحصول على توصيات AI لتحسين خطط قصتك","Get Suggestions":"الحصول على توصيات","✍️ Text Refinement":"✍️ تحسين النص","Improve your writing with AI-powered enhancements":"تحسين كتابتك بمزيج قوي لتحسينات AI","Refine Text":"تحسين النص","🔍 Conflict Generator":"🔍 مولد الصراع","Create compelling conflicts to drive your story forward":"إنشاء صراعات مفعمة بالشغف لتحريك قصتك للأمام","Generate Conflict":"إنتاج صراع","🎭 Dialogue Enhancer":"🎭 محسن الحوار","Make your character conversations more engaging":"جعل محادثات شخصياتك أكثر إثارة","Enhance Dialogue":"تعزيز الحوار","\u0026times;":"\u0026times;","Create Custom Character":"إنشاء شخصية مخصصة","Character Name:":"اسم الشخصية:","Role:":"الدور:","Traits:":" الصفات:","Background:":" الخلفية:","Motivation:":" الدافع:","Save Character":"حفظ الشخصية","Cancel":"إلغاء","Brave, curious, determined":"شجاع، فضولي، مصمم","Orphaned at a young age, Elena grew up on the streets.":"لقد صرت يتيمة في سن مبكرة، أصبحت اليينا تنمو في الشوارع.","To find her long-lost family and uncover the truth about her past.":"لتجد عائلتها الضائعة وأكتشاف الحقيقة حول ماضيها.","Cunning, manipulative, ambitious":"خبير، مفنن، طموح","Born into wealth but always wanting more.":"ولد في الثروة لكنه يطمح دائمًا للمزيد.","s resources and eliminate anyone who stands in his way.":"موارده ومزيلًا أي شخص يقف في طريقه.","Wise, patient, insightful":"عالم، صبور، فطن","A retired scholar who has seen many cycles of history.":"فقيه متقاعد رآى العديد من دورات التاريخ.","To guide the next generation and prevent the mistakes of the past.":"لإرشاد الجيل القادم وإتخاذ احتياطات من أخطاء الماضي.","Loyal, brave, humorous":"وليال، شجاع، مرح","ve been friends since childhood.":"كنا أصدقاء منذ طفولتنا.","To support his friend no matter what and prove his worth.":"لتقديم الدعم لأصحابه مهما حدث وإثبات قيمته.","Love Interest":"موضوع الحب","Independent, intelligent, compassionate":"مستقل، ذكي، متعاطف","s poorest district.":"في الحي الفقير.","To make a difference in the world and find true love.":"لجعل الفرق في العالم وإيجاد الحب الحقيقي.","Competitive, jealous, skilled":"متنافس، حسود، ماهر","s shadow, seeking recognition.":"في ظلها، يتساءل عن الإقرار.","To surpass the protagonist and finally earn the respect he deserves.":"للتفوق على البطل وتحقيق الاحترام الذي يستحقه في نهاية المطاف.","The Abandoned Castle":"قصر المهجور","A forgotten fortress hidden deep in the forest":"محرز مهجور مخفي عميقًا في الغابة","The Neon-Lit City":"مدينة مضاءة بالألوان الزاهية","A bustling metropolis of towering skyscrapers":"مدينة نشطة مليئة بسجلات عميقة","The Coastal Village":"قرية ساحلية سلمية","A peaceful seaside town with a dark secret":"مدينة ساحلية سلمية تحتوي على سر مظلم","__title__":"AI StoryWeaver - مساعد كتابة إبداعك"},"id":{"AI StoryWeaver - Your Creative Writing Assistant":"AI StoryWeaver - Asisten Penulisan Kreatif Anda","Generate Story":"Hasilkan Cerita","AI Inspiration":"Inspirasi AI","Generate unique story ideas and outlines based on your keywords":"Hasilkan ide cerita dan garis besar yang unik berdasarkan kata kunci Anda","Character Library":"Pustaka Karakter","Browse and customize rich character profiles for your stories":"Telusuri dan kustomisasi profil karakter yang kaya untuk cerita Anda","Scene Library":"Pustaka Adegan","Explore pre-built settings to jumpstart your story worlds":"Jelajahi pengaturan yang telah dibangun untuk memulai dunia cerita Anda","Plot Assistant":"Asisten Plot","Get AI suggestions for story development and plot twists":"Dapatkan saran AI untuk pengembangan cerita dan plot twist","Text Optimizer":"Optimalisasi Teks","Refine your writing with grammar and style improvements":"Sempurnakan penulisan Anda dengan perbaikan tata bahasa dan gaya","Story Workspace":"Ruang Kerja Cerita","Save":"Simpan","Clear":"Hapus","💡 Plot Development":"💡 Pengembangan Plot","Get AI suggestions for advancing your story plot":"Dapatkan saran AI untuk memajukan plot cerita Anda","Get Suggestions":"Dapatkan Saran","✍️ Text Refinement":"✍️ Penyempurnaan Teks","Improve your writing with AI-powered enhancements":"Tingkatkan penulisan Anda dengan peningkatan berbasis AI","Refine Text":"Sempurnakan Teks","🔍 Conflict Generator":"🔍 Pembuat Konflik","Create compelling conflicts to drive your story forward":"Ciptakan konflik yang menarik untuk mendorong cerita Anda maju","Generate Conflict":"Hasilkan Konflik","🎭 Dialogue Enhancer":"🎭 Peningkat Dialog","Make your character conversations more engaging":"Buat percakapan karakter Anda lebih menarik","Enhance Dialogue":"Tingkatkan Dialog","\u0026times;":"\u0026times;","Create Custom Character":"Buat Karakter Kustom","Character Name:":"Nama Karakter:","Role:":"Peran:","Traits:":"Ciri-ciri:","Background:":"Latar Belakang:","Motivation:":"Motivasi:","Save Character":"Simpan Karakter","Cancel":"Batal","Brave, curious, determined":"Berani, penasaran, determinasi","Orphaned at a young age, Elena grew up on the streets.":"Yatim piatu pada usia muda, Elena tumbuh di jalanan.","To find her long-lost family and uncover the truth about her past.":"Untuk menemukan keluarga yang lama hilang dan mengungkap kebenaran tentang masa lalunya.","Cunning, manipulative, ambitious":"Licik, manipulatif, ambisius","Born into wealth but always wanting more.":"Lahir dalam kekayaan tetapi selalu ingin lebih.","s resources and eliminate anyone who stands in his way.":"sumber dayanya dan menghilangkan siapa pun yang menghalanginya.","Wise, patient, insightful":"Bijak, sabar, penuh wawasan","A retired scholar who has seen many cycles of history.":"Seorang cendekiawan pensiunan yang telah melihat banyak siklus sejarah.","To guide the next generation and prevent the mistakes of the past.":"Untuk membimbing generasi berikutnya dan mencegah kesalahan masa lalu.","Loyal, brave, humorous":"Setia, berani, humoris","ve been friends since childhood.":"teman sejak kecil.","To support his friend no matter what and prove his worth.":"Untuk mendukung temannya apa pun dan membuktikan nilainya.","Love Interest":"Minat Cinta","Independent, intelligent, compassionate":"Mandiri, pintar, penyayang","s poorest district.":"distrik termiskin.","To make a difference in the world and find true love.":"Untuk membuat perbedaan di dunia dan menemukan cinta sejati.","Competitive, jealous, skilled":"Kompetitif, iri, terampil","s shadow, seeking recognition.":"bayangannya, mencari pengakuan.","To surpass the protagonist and finally earn the respect he deserves.":"Untuk melampaui protagonis dan akhirnya mendapatkan hormat yang pantas diterimanya.","The Abandoned Castle":"Kastil yang Ditinggalkan","A forgotten fortress hidden deep in the forest":"Benteng terlupakan yang tersembunyi di dalam hutan","The Neon-Lit City":"Kota Terang Neon","A bustling metropolis of towering skyscrapers":"Metropolis sibuk dengan gedung pencakar langit yang menjulang","The Coastal Village":"Desa Pesisir","A peaceful seaside town with a dark secret":"Kota pesisir yang damai dengan rahasia gelap","__title__":"AI StoryWeaver - Asisten Penulisan Kreatif Anda"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
