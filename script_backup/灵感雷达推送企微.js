@@ -2118,6 +2118,21 @@ function buildLedger(newLinks) {
             if (list[i].name === item.name) { list[i].url = item.url; break; }
         }
     });
+    // 【线上核对】历史缺陷修正：url 只记录“本轮上传过”的链接，漏传/旧记录会让在线产品被误标「仅本地」（实测 AI Health Me / HealthAI Coa 在线却显示仅本地）。
+    // 用仓库实际文件清单双向校准：在线→补链接，不在线→标仅本地（被手动删除也能自愈）。一次 API 调用，失败则沿用旧逻辑不影响主流程
+    try {
+        if (GITHUB_USER && GITHUB_TOKEN && GITHUB_REPO) {
+            let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/contents/", {headers: ghHeaders(), timeout: 30000});
+            if (r && r.statusCode === 200) {
+                let items = r.body.json() || [];
+                let online = {};
+                for (let i = 0; i < items.length; i++) { if (items[i] && items[i].name) online[items[i].name] = 1; }
+                for (let i = 0; i < list.length; i++) {
+                    list[i].url = online[list[i].name] ? ("https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + list[i].name) : "";
+                }
+            }
+        }
+    } catch (e) {}
     let ledger = {updated: new Date().toLocaleString(), count: list.length, list: list};
     try { files.write(LEDGER_PATH, JSON.stringify(ledger)); } catch (e) { log("台账写入失败：" + e); }
     return ledger;
