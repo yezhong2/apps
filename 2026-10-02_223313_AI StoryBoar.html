@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Creative Studio - StoryBoarder</title><meta name="description" content="Free online tool: AI Creative Studio - StoryBoarder. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Creative Studio - StoryBoarder">
+<meta property="og:description" content="Free online tool: AI Creative Studio - StoryBoarder. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_223313_AI StoryBoar.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --border: #333333;
+            --success: #4ade80;
+            --error: #f87171;
+            --warning: #fbbf24;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--bg-tertiary);
+        }
+        
+        main {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+        
+        .feature-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .upload-area {
+            background-color: var(--bg-secondary);
+            border: 2px dashed var(--border);
+            border-radius: 1rem;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--accent);
+        }
+        
+        .upload-area.drag-over {
+            border-color: var(--accent);
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+        
+        .upload-button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .storyboard-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .storyboard-item {
+            background-color: var(--bg-secondary);
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .storyboard-item img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        
+        .storyboard-item-caption {
+            padding: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a:hover {
+            color: var(--text-primary);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+        
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">AI Creative Studio</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-feature="storyboarder">AI StoryBoarder</a></li>
+                <li><a href="#" class="nav-link" data-feature="script">SmartScript AI</a></li>
+                <li><a href="#" class="nav-link" data-feature="game">Game Content Creator</a></li>
+                <li><a href="#" class="nav-link" data-feature="prompt">AI Prompt Designer</a></li>
+                <li><a href="#" class="nav-link" data-feature="vr">VR/AR Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>AI StoryBoarder</h1>
+            <p>Transform your images and videos into compelling storyboards with AI. Simply upload your visual content and let our AI generate a professional storyboard layout.</p>
+        </section>
+
+        <section class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <p>Drag & drop your images or videos here</p>
+                <p style="margin-top: 1rem; color: var(--text-secondary);">or</p>
+                <button class="upload-button" id="uploadButton">Browse Files</button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*,video/*" multiple>
+            </div>
+
+            <div class="storyboard-preview" id="storyboardPreview"></div>
+
+            <div class="action-buttons">
+                <button class="btn" id="generateStoryboard">Generate Storyboard</button>
+                <button class="btn btn-secondary" id="exportStoryboard">Export as PDF</button>
+                <button class="btn btn-secondary" id="saveProject">Save Project</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About</h3>
+                <ul>
+                    <li><a href="#">Product Overview</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">How It Works</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Copyright</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>How to Use AI StoryBoarder</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Getting Started</h3>
+                <p>AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:</p>
+                
+                <h4>Step 1: Upload Your Content</h4>
+                <p>Drag and drop your images or videos into the upload area, or click "Browse Files" to select them from your device. You can upload multiple files at once.</p>
+                
+                <h4>Step 2: Generate Storyboard</h4>
+                <p>Once your files are uploaded, click "Generate Storyboard" to let our AI analyze your content and create a storyboard layout.</p>
+                
+                <h4>Step 3: Review and Export</h4>
+                <p>Preview your storyboard and make any adjustments. When you're satisfied, export it as a PDF or save your project for later editing.</p>
+                
+                <h3>Tips for Best Results</h3>
+                <ul>
+                    <li>Use high-quality images and videos for best results</li>
+                    <li>Include visual variety in your uploads</li>
+                    <li>Consider the narrative flow of your content</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let uploadedFiles = [];
+        let storyboardData = [];
+        
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadButton = document.getElementById('uploadButton');
+        const fileInput = document.getElementById('fileInput');
+        const generateStoryboardBtn = document.getElementById('generateStoryboard');
+        const exportStoryboardBtn = document.getElementById('exportStoryboard');
+        const saveProjectBtn = document.getElementById('saveProject');
+        const storyboardPreview = document.getElementById('storyboardPreview');
+        const notification = document.getElementById('notification');
+        const helpModal = document.getElementById('helpModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedProject();
+            setupEventListeners();
+        });
+        
+        // Event listeners setup
+        function setupEventListeners() {
+            // File upload
+            uploadButton.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // Action buttons
+            generateStoryboardBtn.addEventListener('click', generateStoryboard);
+            exportStoryboardBtn.addEventListener('click', exportStoryboard);
+            saveProjectBtn.addEventListener('click', saveProject);
+            
+            // Modal
+            closeModalBtn.addEventListener('click', () => helpModal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
+            });
+            
+            // Navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavClick);
+            });
+        }
+        
+        // File handling
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
+        
+        function processFiles(files) {
+            const validFiles = files.filter(file => {
+                return file.type.startsWith('image/') || file.type.startsWith('video/');
+            });
+            
+            if (validFiles.length === 0) {
+                showNotification('Please upload valid image or video files.', 'error');
+                return;
+            }
+            
+            validFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileData = {
+                        id: Date.now() + Math.random(),
+                        name: file.name,
+                        type: file.type,
+                        url: e.target.result
+                    };
+                    
+                    uploadedFiles.push(fileData);
+                    displayFile(fileData);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showNotification(`${validFiles.length} file(s) uploaded successfully.`, 'success');
+        }
+        
+        function displayFile(fileData) {
+            const fileElement = document.createElement('div');
+            fileElement.className = 'storyboard-item';
+            fileElement.id = `file-${fileData.id}`;
+            
+            let content;
+            if (fileData.type.startsWith('image/')) {
+                content = `<img src="${fileData.url}" alt="${fileData.name}">`;
+            } else {
+                content = `<div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-tertiary);">
+                    <span>Video: ${fileData.name}</span>
+                </div>`;
+            }
+            
+            fileElement.innerHTML = `
+                ${content}
+                <div class="storyboard-item-caption">${fileData.name}</div>
+            `;
+            
+            storyboardPreview.appendChild(fileElement);
+        }
+        
+        // Storyboard generation
+        function generateStoryboard() {
+            if (uploadedFiles.length === 0) {
+                showNotification('Please upload files first.', 'warning');
+                return;
+            }
+            
+            generateStoryboardBtn.innerHTML = '<span class="loading-spinner"></span>Generating...';
+            generateStoryboardBtn.disabled = true;
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                storyboardData = uploadedFiles.map((file, index) => ({
+                    id: file.id,
+                    position: index,
+                    title: `Scene ${index + 1}`,
+                    description: `AI-generated description for ${file.name}`,
+                    duration: file.type.startsWith('video/') ? Math.floor(Math.random() * 30) + 10 : 0,
+                    notes: 'AI-generated notes for this scene'
+                }));
+                
+                displayStoryboard();
+                generateStoryboardBtn.innerHTML = 'Generate Storyboard';
+                generateStoryboardBtn.disabled = false;
+                showNotification('Storyboard generated successfully!', 'success');
+            }, 2000);
+        }
+        
+        function displayStoryboard() {
+            storyboardPreview.innerHTML = '';
+            
+            storyboardData.forEach(scene => {
+                const sceneElement = document.createElement('div');
+                sceneElement.className = 'storyboard-item';
+                sceneElement.id = `scene-${scene.id}`;
+                
+                const file = uploadedFiles.find(f => f.id === scene.id);
+                
+                let content;
+                if (file.type.startsWith('image/')) {
+                    content = `<img src="${file.url}" alt="${scene.title}">`;
+                } else {
+                    content = `<div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-tertiary);">
+                        <span>${scene.title}</span>
+                    </div>`;
+                }
+                
+                sceneElement.innerHTML = `
+                    ${content}
+                    <div class="storyboard-item-caption">
+                        <strong>${scene.title}</strong>
+                        ${scene.duration > 0 ? `<br>Duration: ${scene.duration}s` : ''}
+                        <br>${scene.description}
+                    </div>
+                `;
+                
+                storyboardPreview.appendChild(sceneElement);
+            });
+        }
+        
+        // Export functionality
+        function exportStoryboard() {
+            if (storyboardData.length === 0) {
+                showNotification('Generate a storyboard first before exporting.', 'warning');
+                return;
+            }
+            
+            // Create a simple text representation for demo
+            let exportContent = 'AI StoryBoard Export\n\n';
+            
+            storyboardData.forEach((scene, index) => {
+                const file = uploadedFiles.find(f => f.id === scene.id);
+                exportContent += `Scene ${index + 1}: ${scene.title}\n`;
+                exportContent += `File: ${file.name}\n`;
+                exportContent += `Description: ${scene.description}\n`;
+                if (scene.duration > 0) {
+                    exportContent += `Duration: ${scene.duration} seconds\n`;
+                }
+                exportContent += `Notes: ${scene.notes}\n\n`;
+            });
+            
+            // Create and download the file
+            const blob = new Blob([exportContent], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'storyboard-export.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('Storyboard exported successfully!', 'success');
+        }
+        
+        // Save project
+        function saveProject() {
+            if (uploadedFiles.length === 0) {
+                showNotification('No project to save.', 'warning');
+                return;
+            }
+            
+            const projectData = {
+                uploadedFiles: uploadedFiles,
+                storyboardData: storyboardData,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('ai-storyboard-project', JSON.stringify(projectData));
+            showNotification('Project saved successfully!', 'success');
+        }
+        
+        function loadSavedProject() {
+            const savedProject = localStorage.getItem('ai-storyboard-project');
+            if (savedProject) {
+                const projectData = JSON.parse(savedProject);
+                uploadedFiles = projectData.uploadboardData || [];
+                storyboardData = projectData.storyboardData || [];
+                
+                uploadedFiles.forEach(file => displayFile(file));
+                
+                if (storyboardData.length > 0) {
+                    displayStoryboard();
+                }
+            }
+        }
+        
+        // Navigation
+        function handleNavClick(e) {
+            e.preventDefault();
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            e.target.classList.add('active');
+            
+            const feature = e.target.dataset.feature;
+            showNotification(`Switched to ${e.target.textContent} feature. This is a demo - full functionality coming soon!`, 'info');
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'info') {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Help modal
+        document.querySelector('.hero p').addEventListener('click', () => {
+            helpModal.style.display = 'flex';
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Creative Studio - StoryBoarder":"AI Creative Studio - StoryBoarder","AI StoryBoarder":"AI StoryBoarder","SmartScript AI":"SmartScript AI","Game Content Creator":"Game Content Creator","AI Prompt Designer":"AI Prompt Designer","VR/AR Demo":"VR/AR Demo","Drag \u0026 drop your images or videos here":"Drag \u0026 drop your images or videos here","or":"or","Browse Files":"Browse Files","Generate Storyboard":"Generate Storyboard","Export as PDF":"Export as PDF","Save Project":"Save Project","About":"About","Product Overview":"Product Overview","Features":"Features","How It Works":"How It Works","Support":"Support","Help Center":"Help Center","Tutorials":"Tutorials","Contact Us":"Contact Us","Legal":"Legal","Terms of Service":"Terms of Service","Privacy Policy":"Privacy Policy","Copyright":"Copyright","How to Use AI StoryBoarder":"How to Use AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Getting Started","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:","Step 1: Upload Your Content":"Step 1: Upload Your Content","Step 2: Generate Storyboard":"Step 2: Generate Storyboard","Step 3: Review and Export":"Step 3: Review and Export","Tips for Best Results":"Tips for Best Results","Use high-quality images and videos for best results":"Use high-quality images and videos for best results","Include visual variety in your uploads":"Include visual variety in your uploads","Consider the narrative flow of your content":"Consider the narrative flow of your content","Please upload valid image or video files.":"Please upload valid image or video files.","Please upload files first.":"Please upload files first.","AI-generated notes for this scene":"AI-generated notes for this scene","Storyboard generated successfully!":"Storyboard generated successfully!","Generate a storyboard first before exporting.":"Generate a storyboard first before exporting.","Storyboard exported successfully!":"Storyboard exported successfully!","No project to save.":"No project to save.","Project saved successfully!":"Project saved successfully!","__title__":"AI Creative Studio - StoryBoarder"},"ja":{"AI Creative Studio - StoryBoarder":"AIクリエイティブスタジオ - ストーリーボードエディタ","AI StoryBoarder":"AIストーリーボードエディタ","SmartScript AI":"スマートスクリプトAI","Game Content Creator":"ゲームコンテンツクリエイター","AI Prompt Designer":"AIプロンプトデザイナー","VR/AR Demo":"VR/ARデモ","Drag \u0026 drop your images or videos here":"画像やビデオをここにドラッグ＆ドロップ","or":"または","Browse Files":"ファイルをブラウズ","Generate Storyboard":"ストーリーボードの生成","Export as PDF":"PDFとしてエクスポート","Save Project":"プロジェクトを保存","About":"关于","Product Overview":"製品概要","Features":"特徴","How It Works":"どのように動作するか","Support":"サポート","Help Center":"ヘルプセンター","Tutorials":"チュートリアル","Contact Us":"連絡先","Legal":"法的","Terms of Service":"サービス条項","Privacy Policy":"プライバシーポリシー","Copyright":"著作権","How to Use AI StoryBoarder":"AI StoryBoarderの使い方","\u0026times;":"\u0026times;","Getting Started":"始め方","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarderはあなたの視覚コンテンツからプロフェッショナルなストーリーボードを作成助けます。使い方は以下の通りです:","Step 1: Upload Your Content":"ステップ1: あなたのコンテンツをアップロード","Step 2: Generate Storyboard":"ステップ2: ストーリーボードの生成","Step 3: Review and Export":"ステップ3: レビューとエクスポート","Tips for Best Results":"ベスト結果のためにのコツ","Use high-quality images and videos for best results":"最高の結果をもたらすために、高品質な画像やビデオを使用してください","Include visual variety in your uploads":"アップロードするファイルに視覚的なバリエーションを含めましょう","Consider the narrative flow of your content":"あなたのコンテンツのナラティブフローよを考えましょう","Please upload valid image or video files.":"有効な画像またはビデオファイルをアップロードしてください.","Please upload files first.":"まずファイルをアップロードしてください.","AI-generated notes for this scene":"このシーン用のAI生成されたノート","Storyboard generated successfully!":"ストーリーボードが正常に生成されました!","Generate a storyboard first before exporting.":"エクスポートする前にまずストーリーボードを生成してください。","Storyboard exported successfully!":"ストーリーボードが正常にエクスポートされました!","No project to save.":"保存するプロジェクトがありません.","Project saved successfully!":"プロジェクトが正常に保存されました!","__title__":"AIクリエイティブスタジオ - ストーリーボードエディタ"},"fr":{"AI Creative Studio - StoryBoarder":"AI Creative Studio - StoryBoarder","AI StoryBoarder":"AI StoryBoarder","SmartScript AI":"SmartScript AI","Game Content Creator":"Game Content Creator","AI Prompt Designer":"AI Prompt Designer","VR/AR Demo":"VR/AR Demo","Drag \u0026 drop your images or videos here":"Glissez-déposez vos images ou vidéos ici","or":"ou","Browse Files":"Parcourir les fichiers","Generate Storyboard":"Générer un storyboard","Export as PDF":"Exporter en PDF","Save Project":"Enregistrer le projet","About":"À propos","Product Overview":"Aperçu du produit","Features":"Fonctionnalités","How It Works":"Comment ça fonctionne","Support":"Support","Help Center":"Centre d'aide","Tutorials":"Tutoriels","Contact Us":"Nous contacter","Legal":"Légal","Terms of Service":"Conditions de service","Privacy Policy":"Politique de confidentialité","Copyright":"Droits d'auteur","How to Use AI StoryBoarder":"Comment utiliser AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Démarrage","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder vous aide à créer des storyboards professionnels à partir de votre contenu visuel. Voici comment l'utiliser :","Step 1: Upload Your Content":"Étape 1 : Téléchargez votre contenu","Step 2: Generate Storyboard":"Étape 2 : Générer un storyboard","Step 3: Review and Export":"Étape 3 : Revoyez et exportez","Tips for Best Results":"Conseils pour obtenir de meilleurs résultats","Use high-quality images and videos for best results":"Utilisez des images et des vidéos de haute qualité pour obtenir de meilleurs résultats","Include visual variety in your uploads":"Incluez une variété visuelle dans vos téléversements","Consider the narrative flow of your content":"Considérez le flux narratif de votre contenu","Please upload valid image or video files.":"Veuillez télécharger des fichiers image ou vidéo valides.","Please upload files first.":"Veuillez télécharger d'abord les fichiers.","AI-generated notes for this scene":"Notes générées par l'IA pour cette scène","Storyboard generated successfully!":"Storyboard généré avec succès !","Generate a storyboard first before exporting.":"Générez d'abord un storyboard avant d'exporter.","Storyboard exported successfully!":"Storyboard exporté avec succès !","No project to save.":"Aucun projet à enregistrer.","Project saved successfully!":"Projet enregistré avec succès !","__title__":"AI Creative Studio - StoryBoarder"},"pt":{"AI Creative Studio - StoryBoarder":"Estúdio Criativo de AI - StoryBoarder","AI StoryBoarder":"AI StoryBoarder","SmartScript AI":"SmartScript AI","Game Content Creator":"Criador de Conteúdo de Jogo","AI Prompt Designer":"Designer de Prompt de AI","VR/AR Demo":"Demo VR/AR","Drag \u0026 drop your images or videos here":"Arraste e solte suas imagens ou vídeos aqui","or":"ou","Browse Files":"Navegue pelos Arquivos","Generate Storyboard":"Gerar Storyboard","Export as PDF":"Exportar como PDF","Save Project":"Salvar Projeto","About":"Sobre","Product Overview":"Visão Geral do Produto","Features":"Características","How It Works":"Como Funciona","Support":"Suporte","Help Center":"Central de Ajuda","Tutorials":"Tutoriais","Contact Us":"Entre em Contato conosco","Legal":"Legal","Terms of Service":"Termos de Serviço","Privacy Policy":"Política de Privacidade","Copyright":"Direitos Autorais","How to Use AI StoryBoarder":"Como Usar o AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Começando","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"O AI StoryBoarder ajuda você a criar storyboards profissionais a partir do seu conteúdo visual. Aqui está como usá-lo:","Step 1: Upload Your Content":"Passo 1: Envie Seu Conteúdo","Step 2: Generate Storyboard":"Passo 2: Gerar Storyboard","Step 3: Review and Export":"Passo 3: Revisar e Exportar","Tips for Best Results":"Dicas para Melhores Resultados","Use high-quality images and videos for best results":"Use imagens e vídeos de alta qualidade para melhores resultados","Include visual variety in your uploads":"Inclua variedade visual em suas uploads","Consider the narrative flow of your content":"Considere o fluxo narrativo do seu conteúdo","Please upload valid image or video files.":"Por favor, carregue arquivos de imagem ou vídeo válidos.","Please upload files first.":"Por favor, carregue os arquivos primeiro.","AI-generated notes for this scene":"Notas geradas por AI para esta cena","Storyboard generated successfully!":"Storyboard gerado com sucesso!","Generate a storyboard first before exporting.":"Gerar um storyboard antes de exportar.","Storyboard exported successfully!":"Storyboard exportado com sucesso!","No project to save.":"Nenhum projeto para salvar.","Project saved successfully!":"Projeto salvo com sucesso!","__title__":"Estúdio Criativo de AI - StoryBoarder"},"vi":{"AI Creative Studio - StoryBoarder":"AI Creative Studio - StoryBoarder","AI StoryBoarder":"AI StoryBoarder","SmartScript AI":"SmartScript AI","Game Content Creator":"Game Content Creator","AI Prompt Designer":"AI Prompt Designer","VR/AR Demo":"VR/AR Demo","Drag \u0026 drop your images or videos here":"Kéo và thả hình ảnh hoặc video của bạn vào đây","or":"hoặc","Browse Files":"Duyệt tệp","Generate Storyboard":"Tạo Storyboard","Export as PDF":"Xuất ra PDF","Save Project":"Lưu Dự án","About":"Về Chúng Tôi","Product Overview":"Tóm tắt Sản phẩm","Features":"Tính Năng","How It Works":"Cách Nó Làm Việc","Support":"Hỗ Trợ","Help Center":"Trung Tâm Hỗ Trợ","Tutorials":"Hướng Dẫn","Contact Us":"Liên Hệ Với Chúng Tôi","Legal":"法規","Terms of Service":"Điều Khoản Dịch Vụ","Privacy Policy":"Chính Sách Bảo Mật","Copyright":"Bản Quyền","How to Use AI StoryBoarder":"Cách Sử Dụng AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Bắt Đầu","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder giúp bạn tạo ra các Storyboard chuyên nghiệp từ nội dung視 giác của bạn. Dưới đây là cách sử dụng nó:","Step 1: Upload Your Content":"Bước 1: Tải lên Nội dung của Bạn","Step 2: Generate Storyboard":"Bước 2: Tạo Storyboard","Step 3: Review and Export":"Bước 3: Kiểm tra và Xuất","Tips for Best Results":"Cách Làm Để Kết Quả Tốt Nhất","Use high-quality images and videos for best results":"Sử dụng hình ảnh và video chất lượng cao để đạt kết quả tốt nhất","Include visual variety in your uploads":"Chia sẻ sự đa dạng về hình ảnh trong các tệp tải lên của bạn","Consider the narrative flow of your content":"Nhìn vào trình tự câu chuyện của nội dung của bạn","Please upload valid image or video files.":"Vui lòng tải lên các tệp hình ảnh hoặc video hợp lệ.","Please upload files first.":"Vui lòng tải lên các tệp trước.","AI-generated notes for this scene":"Ghi chú được tạo bởi AI cho cảnh này","Storyboard generated successfully!":"Storyboard đã được tạo thành công!","Generate a storyboard first before exporting.":"Tạo Storyboard trước khi xuất.","Storyboard exported successfully!":"Storyboard đã được xuất thành công!","No project to save.":"Không có dự án để lưu.","Project saved successfully!":"Dự án đã được lưu thành công!","__title__":"AI Creative Studio - StoryBoarder"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="ja">日本語</option><option value="fr">Français</option><option value="pt">Português</option><option value="vi">Tiếng Việt</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
