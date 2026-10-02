@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi App Installer Pro</title><meta name="description" content="Free online tool: Pi App Installer Pro. No signup, no payment — free forever.">
+<meta property="og:title" content="Pi App Installer Pro">
+<meta property="og:description" content="Free online tool: Pi App Installer Pro. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_071837_Pi App Insta.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a7c7e;
+            --accent-hover: #5a9c9e;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --border: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 16px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .file-list, .app-list {
+            margin-top: 16px;
+        }
+
+        .file-item, .app-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .file-info, .app-info {
+            flex: 1;
+        }
+
+        .file-name, .app-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .file-details, .app-details {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .file-actions, .app-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-button {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .icon-button:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .setting-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .setting-control {
+            width: 100%;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border);
+            transition: 0.4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--accent);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .update-notification {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .update-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .update-details {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .editor-container {
+            margin-top: 16px;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .editor-button {
+            padding: 8px 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .editor-button:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .editor-button.active {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 300px;
+            padding: 16px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .section {
+                padding: 16px;
+            }
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pi App Installer Pro</h1>
+            <p class="subtitle">Discover, install and manage applications for your Pi device</p>
+        </div>
+
+        <!-- App Market Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span>📱</span> App Market
+            </h2>
+            <div class="search-container">
+                <input type="text" id="appSearch" placeholder="Search for applications...">
+                <button id="searchApps">Search</button>
+            </div>
+            <div id="appResults" class="app-list"></div>
+        </div>
+
+        <!-- File Manager Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span>📁</span> File Manager
+            </h2>
+            <div class="search-container">
+                <input type="text" id="filePath" placeholder="Enter file path (e.g., /home/pi)">
+                <button id="browseFiles">Browse</button>
+            </div>
+            <div id="fileList" class="file-list"></div>
+        </div>
+
+        <!-- System Settings Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span>⚙️</span> System Settings
+            </h2>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <div class="setting-label">Network</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="networkToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Dark Mode</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Auto Updates</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="autoUpdateToggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <div class="setting-label">Notifications</div>
+                    <div class="setting-control">
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notificationToggle" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Update Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span>🔄</span> System Updates
+            </h2>
+            <div id="updateNotification" class="update-notification">
+                <div class="update-title">System Update Available</div>
+                <div class="update-details">Version 2.5.0 - Bug fixes and performance improvements</div>
+                <button id="updateNow">Update Now</button>
+            </div>
+        </div>
+
+        <!-- Document Editor Section -->
+        <div class="section">
+            <h2 class="section-title">
+                <span>📝</span> Document Editor
+            </h2>
+            <div class="editor-toolbar">
+                <button class="editor-button" id="boldBtn">B</button>
+                <button class="editor-button" id="italicBtn">I</button>
+                <button class="editor-button" id="underlineBtn">U</button>
+                <button class="editor-button" id="saveBtn">Save</button>
+                <button class="editor-button" id="clearBtn">Clear</button>
+            </div>
+            <div class="editor-container">
+                <textarea id="documentEditor" placeholder="Start typing your document here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Toast notification system
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // App Market functionality
+        document.getElementById('searchApps').addEventListener('click', () => {
+            const searchTerm = document.getElementById('appSearch').value.trim();
+            const appResults = document.getElementById('appResults');
+            
+            if (!searchTerm) {
+                showToast('Please enter a search term', 'error');
+                return;
+            }
+            
+            // Simulate app search results
+            const mockApps = [
+                { name: 'Pi Calculator', version: '1.2.3', size: '2.4 MB', downloads: '10,000+' },
+                { name: 'Pi Terminal', version: '3.1.0', size: '5.7 MB', downloads: '25,000+' },
+                { name: 'Pi File Manager', version: '2.5.1', size: '8.2 MB', downloads: '15,000+' },
+                { name: 'Pi Weather App', version: '1.8.4', size: '3.1 MB', downloads: '8,000+' }
+            ];
+            
+            const filteredApps = mockApps.filter(app => 
+                app.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            appResults.innerHTML = '';
+            
+            if (filteredApps.length === 0) {
+                appResults.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No applications found</p>';
+                return;
+            }
+            
+            filteredApps.forEach((app, index) => {
+                const appItem = document.createElement('div');
+                appItem.className = 'app-item';
+                appItem.innerHTML = `
+                    <div class="app-info">
+                        <div class="app-name">${app.name}</div>
+                        <div class="app-details">Version ${app.version} • ${app.size} • ${app.downloads} downloads</div>
+                    </div>
+                    <div class="app-actions">
+                        <button class="icon-button" id="installApp${index}">⬇️</button>
+                        <button class="icon-button" id="appDetails${index}">ℹ️</button>
+                    </div>
+                `;
+                appResults.appendChild(appItem);
+                
+                // Install app button
+                document.getElementById(`installApp${index}`).addEventListener('click', () => {
+                    showToast(`Installing ${app.name}...`);
+                    // Simulate installation process
+                    setTimeout(() => {
+                        showToast(`${app.name} installed successfully!`, 'success');
+                    }, 2000);
+                });
+                
+                // App details button
+                document.getElementById(`appDetails${index}`).addEventListener('click', () => {
+                    showToast(`Showing details for ${app.name}`, 'success');
+                });
+            });
+        });
+
+        // File Manager functionality
+        document.getElementById('browseFiles').addEventListener('click', () => {
+            const path = document.getElementById('filePath').value.trim();
+            const fileList = document.getElementById('fileList');
+            
+            if (!path) {
+                showToast('Please enter a file path', 'error');
+                return;
+            }
+            
+            // Simulate file listing
+            const mockFiles = [
+                { name: 'Documents', type: 'folder', size: '4 KB', modified: '2026-05-10' },
+                { name: 'Pictures', type: 'folder', size: '2 KB', modified: '2026-05-09' },
+                { name: 'config.txt', type: 'file', size: '1.2 KB', modified: '2026-05-12' },
+                { name: 'data.csv', type: 'file', size: '3.5 KB', modified: '2026-05-11' },
+                { name: 'readme.md', type: 'file', size: '2.1 KB', modified: '2026-05-08' }
+            ];
+            
+            fileList.innerHTML = '';
+            
+            mockFiles.forEach((file, index) => {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-name">
+                            ${file.type === 'folder' ? '📁' : '📄'} ${file.name}
+                        </div>
+                        <div class="file-details">${file.size} • Modified: ${file.modified}</div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="icon-button" id="copyFile${index}">📋</button>
+                        <button class="icon-button" id="deleteFile${index}">🗑️</button>
+                    </div>
+                `;
+                fileList.appendChild(fileItem);
+                
+                // Copy file button
+                document.getElementById(`copyFile${index}`).addEventListener('click', () => {
+                    showToast(`Copying ${file.name} to clipboard`, 'success');
+                });
+                
+                // Delete file button
+                document.getElementById(`deleteFile${index}`).addEventListener('click', () => {
+                    if (confirm(`Are you sure you want to delete ${file.name}?`)) {
+                        fileItem.remove();
+                        showToast(`${file.name} deleted`, 'success');
+                    }
+                });
+            });
+        });
+
+        // System Settings functionality
+        document.getElementById('networkToggle').addEventListener('change', (e) => {
+            showToast(`Network ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+        });
+
+        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+            showToast(`Dark mode ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+        });
+
+        document.getElementById('autoUpdateToggle').addEventListener('change', (e) => {
+            showToast(`Auto updates ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+        });
+
+        document.getElementById('notificationToggle').addEventListener('change', (e) => {
+            showToast(`Notifications ${e.target.checked ? 'enabled' : 'disabled'}`, 'success');
+        });
+
+        // System Update functionality
+        document.getElementById('updateNow').addEventListener('click', () => {
+            showToast('Downloading update...', 'success');
+            
+            // Simulate update process
+            setTimeout(() => {
+                showToast('Update downloaded successfully', 'success');
+            }, 2000);
+            
+            setTimeout(() => {
+                showToast('Installing update...', 'success');
+            }, 4000);
+            
+            setTimeout(() => {
+                showToast('System updated successfully! Restarting...', 'success');
+            }, 6000);
+        });
+
+        // Document Editor functionality
+        const editor = document.getElementById('documentEditor');
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // Load saved content from localStorage
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedContent = localStorage.getItem('piDocumentEditor');
+            if (savedContent) {
+                editor.value = savedContent;
+            }
+        });
+
+        // Format buttons
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            boldBtn.classList.toggle('active');
+        });
+
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            italicBtn.classList.toggle('active');
+        });
+
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            underlineBtn.classList.toggle('active');
+        });
+
+        // Save button
+        saveBtn.addEventListener('click', () => {
+            const content = editor.value;
+            localStorage.setItem('piDocumentEditor', content);
+            showToast('Document saved successfully', 'success');
+        });
+
+        // Clear button
+        clearBtn.addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear the document?')) {
+                editor.value = '';
+                showToast('Document cleared', 'success');
+            }
+        });
+
+        // Auto-save on change
+        editor.addEventListener('input', () => {
+            localStorage.setItem('piDocumentEditor', editor.value);
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Discover, install and manage applications for your Pi device","📱 App Market":"📱 App Market","Search":"Search","📁 File Manager":"📁 File Manager","Browse":"Browse","⚙️ System Settings":"⚙️ System Settings","🔄 System Updates":"🔄 System Updates","Update Now":"Update Now","📝 Document Editor":"📝 Document Editor","Save":"Save","Clear":"Clear","Please enter a search term":"Please enter a search term","Pi Calculator":"Pi Calculator","Pi Terminal":"Pi Terminal","Pi File Manager":"Pi File Manager","Pi Weather App":"Pi Weather App","Please enter a file path":"Please enter a file path","Downloading update...":"Downloading update...","Update downloaded successfully":"Update downloaded successfully","Installing update...":"Installing update...","System updated successfully! Restarting...":"System updated successfully! Restarting...","Document saved successfully":"Document saved successfully","Are you sure you want to clear the document?":"Are you sure you want to clear the document?","Document cleared":"Document cleared","__title__":"Pi App Installer Pro"},"zh-CN":{"Pi App Installer Pro":"Pi 应用程序安装程序 Pro","Discover, install and manage applications for your Pi device":"发现、安装和管理您的 Pi 设备的应用程序","📱 App Market":"📱 应用市场","Search":"搜索","📁 File Manager":"📁 文件管理器","Browse":"浏览","⚙️ System Settings":"⚙️ 系统设置","🔄 System Updates":"🔄 系统更新","Update Now":"立即更新","📝 Document Editor":"📝 文档编辑器","Save":"保存","Clear":"清除","Please enter a search term":"请输入搜索词","Pi Calculator":"Pi 计算器","Pi Terminal":"Pi 终端","Pi File Manager":"Pi 文件管理器","Pi Weather App":"Pi 天气应用","Please enter a file path":"请输入文件路径","Downloading update...":"正在下载更新...","Update downloaded successfully":"更新下载成功","Installing update...":"正在安装更新...","System updated successfully! Restarting...":"系统更新成功！正在重启...","Document saved successfully":"文档保存成功","Are you sure you want to clear the document?":"您确定要清除文档吗？","Document cleared":"文档已清除","__title__":"Pi 应用程序安装程序 Pro"},"es":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Descubre, instala y gestiona aplicaciones para tu dispositivo Pi","📱 App Market":"📱 App Market","Search":"Búsqueda","📁 File Manager":"📁 Gestor de archivos","Browse":"Navegar","⚙️ System Settings":"⚙️ Configuración del sistema","🔄 System Updates":"🔄 Actualizaciones del sistema","Update Now":"Actualizar ahora","📝 Document Editor":"📝 Editor de documentos","Save":"Guardar","Clear":"Borrar","Please enter a search term":"Por favor, introduce un término de búsqueda","Pi Calculator":"Calculadora Pi","Pi Terminal":"Terminal Pi","Pi File Manager":"Gestor de archivos Pi","Pi Weather App":"Aplicación de clima Pi","Please enter a file path":"Por favor, introduce una ruta de archivo","Downloading update...":"Descargando actualización...","Update downloaded successfully":"Actualización descargada con éxito","Installing update...":"Instalando actualización...","System updated successfully! Restarting...":"¡El sistema se actualizó con éxito! Reiniciando...","Document saved successfully":"Documento guardado con éxito","Are you sure you want to clear the document?":"¿Estás seguro de que deseas borrar el documento?","Document cleared":"Documento borrado","__title__":"Pi App Installer Pro"},"ja":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Piデバイス用のアプリケーションを検出、インストール、管理する","📱 App Market":"📱 App Market","Search":"検索","📁 File Manager":"📁 ファイルマネージャー","Browse":"ブラウズ","⚙️ System Settings":"⚙️ システム設定","🔄 System Updates":"🔄 システム更新","Update Now":"今すぐ更新","📝 Document Editor":"📝 ドキュメントエディタ","Save":"保存","Clear":"クリア","Please enter a search term":"検索語を入力してください","Pi Calculator":"Pi カルculator","Pi Terminal":"Pi Terminal","Pi File Manager":"Pi ファイルマネージャー","Pi Weather App":"Pi 天気アプリ","Please enter a file path":"ファイルパスを入力してください","Downloading update...":"更新をダウンロード中...","Update downloaded successfully":"更新が正常にダウンロードされました","Installing update...":"更新をインストール中...","System updated successfully! Restarting...":"システムの更新が正常に行われました！再起動中...","Document saved successfully":"ドキュメントが正常に保存されました","Are you sure you want to clear the document?":"ドキュメントをクリアする場合は本当に確定ですか？","Document cleared":"ドキュメントがクリアされました","__title__":"Pi App Installer Pro"},"ko":{"Pi App Installer Pro":"Pi 앱 설치기 프로","Discover, install and manage applications for your Pi device":"Pi 기기용 앱을 발견하고 설치하고 관리하세요","📱 App Market":"📱 앱 마켓","Search":"검색","📁 File Manager":"📁 파일 관리자","Browse":"浏覽","⚙️ System Settings":"⚙️ 시스템 설정","🔄 System Updates":"🔄 시스템 업데이트","Update Now":"지금 업데이트","📝 Document Editor":"📝 문서 편집기","Save":"저장","Clear":"지우기","Please enter a search term":"검색 단어를 입력하세요","Pi Calculator":"Pi 계산기","Pi Terminal":"Pi 터미널","Pi File Manager":"Pi 파일 관리자","Pi Weather App":"Pi 날씨 앱","Please enter a file path":"파일 경로를 입력하세요","Downloading update...":"업데이트 다운로드 중...","Update downloaded successfully":"업데이트 다운로드 성공","Installing update...":"업데이트 설치 중...","System updated successfully! Restarting...":"시스템 업데이트 성공! 재시작 중...","Document saved successfully":"문서 저장 성공","Are you sure you want to clear the document?":"문서를 지우시겠습니까?","Document cleared":"문서 지우기 완료","__title__":"Pi 앱 설치기 프로"},"fr":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Discover, install and manage applications for your Pi device","📱 App Market":"📱 App Market","Search":"Search","📁 File Manager":"📁 File Manager","Browse":"Browse","⚙️ System Settings":"⚙️ System Settings","🔄 System Updates":"🔄 System Updates","Update Now":"Update Now","📝 Document Editor":"📝 Document Editor","Save":"Save","Clear":"Clear","Please enter a search term":"Please enter a search term","Pi Calculator":"Pi Calculator","Pi Terminal":"Pi Terminal","Pi File Manager":"Pi File Manager","Pi Weather App":"Pi Weather App","Please enter a file path":"Please enter a file path","Downloading update...":"Downloading update...","Update downloaded successfully":"Update downloaded successfully","Installing update...":"Installing update...","System updated successfully! Restarting...":"System updated successfully! Restarting...","Document saved successfully":"Document saved successfully","Are you sure you want to clear the document?":"Are you sure you want to clear the document?","Document cleared":"Document cleared","__title__":"Pi App Installer Pro"},"de":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Entdecken, installieren und verwalten Sie Anwendungen für Ihr Pi-Gerät","📱 App Market":"📱 App-Markt","Search":"Suchen","📁 File Manager":"📁 Dateimanager","Browse":"Durchsuchen","⚙️ System Settings":"⚙️ Systemeinstellungen","🔄 System Updates":"🔄 Systemaktualisierungen","Update Now":"Jetzt aktualisieren","📝 Document Editor":"📝 Dokumenteditor","Save":"Speichern","Clear":"Löschen","Please enter a search term":"Bitte geben Sie einen Suchbegriff ein","Pi Calculator":"Pi-Rechner","Pi Terminal":"Pi-Terminal","Pi File Manager":"Pi-Dateimanager","Pi Weather App":"Pi-Wetter-App","Please enter a file path":"Bitte geben Sie einen Dateipfad ein","Downloading update...":"Aktualisierung wird heruntergeladen...","Update downloaded successfully":"Aktualisierung erfolgreich heruntergeladen","Installing update...":"Aktualisierung wird installiert...","System updated successfully! Restarting...":"System erfolgreich aktualisiert! Neustart...","Document saved successfully":"Dokument erfolgreich gespeichert","Are you sure you want to clear the document?":"Sind Sie sicher, dass Sie das Dokument löschen möchten?","Document cleared":"Dokument gelöscht","__title__":"Pi App Installer Pro"},"ru":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Discover, install and manage applications for your Pi device","📱 App Market":"📱 App Market","Search":"Search","📁 File Manager":"📁 File Manager","Browse":"Browse","⚙️ System Settings":"⚙️ System Settings","🔄 System Updates":"🔄 System Updates","Update Now":"Update Now","📝 Document Editor":"📝 Document Editor","Save":"Save","Clear":"Clear","Please enter a search term":"Please enter a search term","Pi Calculator":"Pi Calculator","Pi Terminal":"Pi Terminal","Pi File Manager":"Pi File Manager","Pi Weather App":"Pi Weather App","Please enter a file path":"Please enter a file path","Downloading update...":"Downloading update...","Update downloaded successfully":"Update downloaded successfully","Installing update...":"Installing update...","System updated successfully! Restarting...":"System updated successfully! Restarting...","Document saved successfully":"Document saved successfully","Are you sure you want to clear the document?":"Are you sure you want to clear the document?","Document cleared":"Document cleared","__title__":"Pi App Installer Pro"},"pt":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Descubra, instale e gerencie aplicativos para seu dispositivo Pi","📱 App Market":"📱 Mercado de Aplicativos","Search":"Pesquisar","📁 File Manager":"Gerenciador de Arquivos","Browse":"Navegar","⚙️ System Settings":"⚙️ Configurações do Sistema","🔄 System Updates":"🔄 Atualizações do Sistema","Update Now":"Atualizar Agora","📝 Document Editor":"Editor de Documentos","Save":"Salvar","Clear":"Limpar","Please enter a search term":"Por favor, insira um termo de pesquisa","Pi Calculator":"Calculadora Pi","Pi Terminal":"Terminal Pi","Pi File Manager":"Gerenciador de Arquivos Pi","Pi Weather App":"Aplicativo de Tempo Pi","Please enter a file path":"Por favor, insira um caminho de arquivo","Downloading update...":"Baixando atualização...","Update downloaded successfully":"Atualização baixada com sucesso","Installing update...":"Instalando atualização...","System updated successfully! Restarting...":"Sistema atualizado com sucesso! Reiniciando...","Document saved successfully":"Documento salvo com sucesso","Are you sure you want to clear the document?":"Tem certeza de que deseja limpar o documento?","Document cleared":"Documento limpo","__title__":"Pi App Installer Pro"},"ar":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"اكتشاف، تثبيت وإدارة التطبيقات الخاصة بجهاز Pi الخاص بك","📱 App Market":"سوق التطبيقات","Search":"البحث","📁 File Manager":"مدير الملفات","Browse":"تصفح","⚙️ System Settings":"إعدادات النظام","🔄 System Updates":"تحديثات النظام","Update Now":"تحديث الآن","📝 Document Editor":"محرر المستندات","Save":"حفظ","Clear":"إزالة","Please enter a search term":"من فضلك أدخل مصطلح البحث","Pi Calculator":"حاسبة Pi","Pi Terminal":"م终端 Pi","Pi File Manager":"مدير ملفات Pi","Pi Weather App":"تطبيق الطقس Pi","Please enter a file path":"من فضلك أدخل مسار الملف","Downloading update...":"تحميل التحديث...","Update downloaded successfully":"تم تحميل التحديث بنجاح","Installing update...":"تثبيت التحديث...","System updated successfully! Restarting...":"تم تحديث النظام بنجاح! إعادة التشغيل...","Document saved successfully":"تم حفظ المستند بنجاح","Are you sure you want to clear the document?":"هل أنت متأكد من أنك تريد إزالة المستند؟","Document cleared":"تم إزالة المستند","__title__":"Pi App Installer Pro"},"hi":{"Pi App Installer Pro":"Pi एप इंस्टॉलर प्रो","Discover, install and manage applications for your Pi device":"अपने Pi डिवाइस के लिए एप्लिकेशन्स डिस्कवर, इंस्टॉल करें और प्रबंधित करें","📱 App Market":"📱 एप मार्केट","Search":"खोज","📁 File Manager":"📁 फ़ाइल मैनेजर","Browse":"ब्राउज़","⚙️ System Settings":"⚙️ सिस्टम सेटिंग्स","🔄 System Updates":"🔄 सिस्टम अपडेट्स","Update Now":"अब अपडेट करें","📝 Document Editor":"📝 डॉक्युमेंट एडिटर","Save":"सहेजें","Clear":"साफ़ करें","Please enter a search term":"कृपया खोज शब्द भरें","Pi Calculator":"Pi कैलकुलेटर","Pi Terminal":"Pi टर्मिनल","Pi File Manager":"Pi फ़ाइल मैनेजर","Pi Weather App":"Pi मौसम एप","Please enter a file path":"कृपया फ़ाइल पथ भरें","Downloading update...":"अपडेट डाउनलोड किया जा रहा है...","Update downloaded successfully":"अपडेट सफलता से डाउनलोड किया गया","Installing update...":"अपडेट इंस्टॉल किया जा रहा है...","System updated successfully! Restarting...":"सिस्टम सफलता से अपडेट किया! फिर से चालू हो रहा है...","Document saved successfully":"दस्तावेज़ सफलता से सहेजा गया","Are you sure you want to clear the document?":"क्या आप वाकई दस्तावेज़ को साफ़ करना चाहते हैं?","Document cleared":"दस्तावेज़ साफ़ किया","__title__":"Pi एप इंस्टॉलर प्रो"},"id":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Temukan, instal dan mengelola aplikasi untuk perangkat Pi Anda","📱 App Market":"📱 Pasar Aplikasi","Search":"Cari","📁 File Manager":"Manajer Berkas","Browse":"Jelajah","⚙️ System Settings":"⚙️ Pengaturan Sistem","🔄 System Updates":"🔄 Pembaruan Sistem","Update Now":"Perbarui Sekarang","📝 Document Editor":"Penyunting Dokumen","Save":"Simpan","Clear":"Bersihkan","Please enter a search term":"Silakan masukkan istilah pencarian","Pi Calculator":"Kalkulator Pi","Pi Terminal":"Terminal Pi","Pi File Manager":"Manajer Berkas Pi","Pi Weather App":"Aplikasi Cuaca Pi","Please enter a file path":"Silakan masukkan jalur berkas","Downloading update...":"Mengunduh pembaruan...","Update downloaded successfully":"Pembaruan berhasil diunduh","Installing update...":"Memasang pembaruan...","System updated successfully! Restarting...":"Sistem berhasil diperbarui! Memulai ulang...","Document saved successfully":"Dokumen disimpan dengan sukses","Are you sure you want to clear the document?":"Apakah Anda yakin ingin membersihkan dokumen?","Document cleared":"Dokumen dibersihkan","__title__":"Pi App Installer Pro"},"vi":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Tìm kiếm, cài đặt và quản lý ứng dụng cho thiết bị Pi của bạn","📱 App Market":"📱 Chợ ứng dụng","Search":"Tìm kiếm","📁 File Manager":"📁 Quản lý tệp","Browse":"Duyệt","⚙️ System Settings":"⚙️ Cài đặt hệ thống","🔄 System Updates":"🔄 Cập nhật hệ thống","Update Now":"Cập nhật ngay","📝 Document Editor":"📝 Trình chỉnh sửa tài liệu","Save":"Lưu","Clear":"Xóa","Please enter a search term":"Vui lòng nhập từ khóa tìm kiếm","Pi Calculator":"Bàn tính Pi","Pi Terminal":"终端 Pi","Pi File Manager":"Quản lý tệp Pi","Pi Weather App":"Ứng dụng thời tiết Pi","Please enter a file path":"Vui lòng nhập đường dẫn tệp","Downloading update...":"Đang tải cập nhật...","Update downloaded successfully":"Cập nhật đã tải xuống thành công","Installing update...":"Đang cài đặt cập nhật...","System updated successfully! Restarting...":"Hệ thống đã cập nhật thành công! Đang khởi động lại...","Document saved successfully":"Tài liệu đã lưu thành công","Are you sure you want to clear the document?":"Bạn có chắc chắn muốn xóa tài liệu này không?","Document cleared":"Tài liệu đã được xóa","__title__":"Pi App Installer Pro"},"th":{"Pi App Installer Pro":"Pi App Installer Pro","Discover, install and manage applications for your Pi device":"Discover, install and manage applications for your Pi device","📱 App Market":"📱 App Market","Search":"Search","📁 File Manager":"📁 File Manager","Browse":"Browse","⚙️ System Settings":"⚙️ System Settings","🔄 System Updates":"🔄 System Updates","Update Now":"Update Now","📝 Document Editor":"📝 Document Editor","Save":"Save","Clear":"Clear","Please enter a search term":"Please enter a search term","Pi Calculator":"Pi Calculator","Pi Terminal":"Pi Terminal","Pi File Manager":"Pi File Manager","Pi Weather App":"Pi Weather App","Please enter a file path":"Please enter a file path","Downloading update...":"Downloading update...","Update downloaded successfully":"Update downloaded successfully","Installing update...":"Installing update...","System updated successfully! Restarting...":"System updated successfully! Restarting...","Document saved successfully":"Document saved successfully","Are you sure you want to clear the document?":"Are you sure you want to clear the document?","Document cleared":"Document cleared","__title__":"Pi App Installer Pro"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
