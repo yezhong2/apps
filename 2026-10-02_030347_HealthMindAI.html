@@ -1062,9 +1062,14 @@
             const chartContainer = document.getElementById('sleep-chart');
             chartContainer.innerHTML = '';
             
-            // Generate sample sleep data for the last 7 days
+            // Generate random sleep data for the last 7 days
             const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
-            const hours = [6.5, 7.2, 6.8, 7.5, 6.2, 8.1, 7.8];
+            const hours = [];
+            
+            // Generate random hours between 5 and 9
+            for (let i = 0; i < 7; i++) {
+                hours.push((Math.random() * 4 + 5).toFixed(1));
+            }
             
             // Create canvas element
             const canvas = document.createElement('canvas');
@@ -1106,138 +1111,225 @@
         document.getElementById('sleep-monitor-screen').addEventListener('show', initSleepChart);
 
         // Breathing Exercise
-        let breathingInterval;
-        let breathingPhase = 'inhale';
-        let breathingCount = 0;
-
         function startBreathingExercise() {
-            const circle = document.getElementById('breathing-circle');
-            const instructions = document.getElementById('breathing-instructions');
-            const startBtn = document.getElementById('start-breathing');
-            const stopBtn = document.getElementById('stop-breathing');
+            const circle = document.getElementById('breathing-inner');
+            const instructions = document.getElementById('breathing-instruction');
+            const startBtn = document.getElementById('start-breathing-btn');
+            const stopBtn = document.getElementById('stop-breathing-btn');
+            const progress = document.getElementById('breathing-progress');
+            const timer = document.getElementById('breathing-timer');
             
             startBtn.style.display = 'none';
             stopBtn.style.display = 'block';
             
-            breathingInterval = setInterval(() => {
-                if (breathingPhase === 'inhale') {
-                    circle.style.transform = 'scale(1.5)';
-                    instructions.textContent = '吸气...';
-                    breathingPhase = 'hold';
-                } else if (breathingPhase === 'hold') {
-                    instructions.textContent = '保持...';
-                    breathingPhase = 'exhale';
-                } else {
-                    circle.style.transform = 'scale(1)';
-                    instructions.textContent = '呼气...';
-                    breathingPhase = 'inhale';
-                    breathingCount++;
-                    
-                    if (breathingCount >= 10) {
-                        stopBreathingExercise();
-                        showNotification('练习完成', '您已完成10次呼吸练习，感觉如何？');
-                    }
+            let timeLeft = app.breathingTimer;
+            let cycleCount = 0;
+            
+            app.breathingInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    stopBreathingExercise();
+                    showNotification('练习完成', '您已完成呼吸练习，感觉如何？');
+                    return;
                 }
-            }, 3000);
+                
+                // Update timer
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timer.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                
+                // Update progress
+                app.breathingProgress = ((app.breathingTimer - timeLeft) / app.breathingTimer) * 100;
+                progress.style.width = `${app.breathingProgress}%`;
+                
+                // Breathing cycle
+                if (app.breathingPhase === 'inhale') {
+                    circle.classList.add('breathing-in');
+                    circle.classList.remove('breathing-out');
+                    instructions.textContent = '吸气...';
+                    app.breathingPhase = 'hold';
+                } else if (app.breathingPhase === 'hold') {
+                    instructions.textContent = '保持...';
+                    app.breathingPhase = 'exhale';
+                } else if (app.breathingPhase === 'exhale') {
+                    circle.classList.remove('breathing-in');
+                    circle.classList.add('breathing-out');
+                    instructions.textContent = '呼气...';
+                    app.breathingPhase = 'inhale';
+                    cycleCount++;
+                }
+                
+                timeLeft--;
+            }, 1000);
         }
 
         function stopBreathingExercise() {
-            clearInterval(breathingInterval);
-            breathingPhase = 'inhale';
-            breathingCount = 0;
+            clearInterval(app.breathingInterval);
+            app.breathingPhase = 'inhale';
+            app.breathingProgress = 0;
             
-            const circle = document.getElementById('breathing-circle');
-            const instructions = document.getElementById('breathing-instructions');
-            const startBtn = document.getElementById('start-breathing');
-            const stopBtn = document.getElementById('stop-breathing');
+            const circle = document.getElementById('breathing-inner');
+            const instructions = document.getElementById('breathing-instruction');
+            const startBtn = document.getElementById('start-breathing-btn');
+            const stopBtn = document.getElementById('stop-breathing-btn');
+            const progress = document.getElementById('breathing-progress');
+            const timer = document.getElementById('breathing-timer');
             
-            circle.style.transform = 'scale(1)';
+            circle.classList.remove('breathing-in', 'breathing-out');
             instructions.textContent = '点击开始按钮开始呼吸练习';
             startBtn.style.display = 'block';
             stopBtn.style.display = 'none';
+            progress.style.width = '0%';
+            timer.textContent = '4:00';
         }
 
         // Breathing exercise buttons
-        document.getElementById('start-breathing').addEventListener('click', startBreathingExercise);
-        document.getElementById('stop-breathing').addEventListener('click', stopBreathingExercise);
+        document.getElementById('start-breathing-btn').addEventListener('click', startBreathingExercise);
+        document.getElementById('stop-breathing-btn').addEventListener('click', stopBreathingExercise);
 
         // Psychological Test
-        const testQuestions = [
-            { question: "最近一周，我感到心情低落或沮丧的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
-            { question: "我对日常活动的兴趣和乐趣？", options: ["没有减少", "有些减少", "明显减少", "完全丧失"] },
-            { question: "我感到疲劳或精力不足的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
-            { question: "我难以入睡或保持睡眠的频率是？", options: ["从不", "偶尔", "经常", "总是"] },
-            { question: "我感到自己毫无价值或过度自责的频率是？", options: ["从不", "偶尔", "经常", "总是"] }
-        ];
-
-        let currentQuestion = 0;
-        let testScores = [];
-
-        function showTestQuestion() {
-            const questionContainer = document.getElementById('test-question');
-            const optionsContainer = document.getElementById('test-options');
+        function resetQuiz() {
+            app.quizCurrentQuestion = 0;
+            app.quizAnswers = [];
             
-            if (currentQuestion < testQuestions.length) {
-                questionContainer.textContent = testQuestions[currentQuestion].question;
-                optionsContainer.innerHTML = '';
-                
-                testQuestions[currentQuestion].options.forEach((option, index) => {
-                    const optionBtn = document.createElement('button');
-                    optionBtn.className = 'option-btn';
-                    optionBtn.textContent = option;
-                    optionBtn.addEventListener('click', () => {
-                        testScores.push(index + 1);
-                        currentQuestion++;
-                        showTestQuestion();
+            document.getElementById('quiz-question').textContent = quizQuestions[0].question;
+            document.getElementById('quiz-options').innerHTML = '';
+            
+            quizQuestions[0].options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option';
+                optionDiv.setAttribute('data-value', index + 1);
+                optionDiv.textContent = option;
+                optionDiv.addEventListener('click', function() {
+                    document.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
                     });
-                    optionsContainer.appendChild(optionBtn);
+                    this.classList.add('selected');
+                    app.quizAnswers[app.quizCurrentQuestion] = this.getAttribute('data-value');
+                    document.getElementById('next-question-btn').disabled = false;
                 });
-            } else {
-                // Calculate and display results
-                const totalScore = testScores.reduce((sum, score) => sum + score, 0);
-                const resultContainer = document.getElementById('test-result');
-                resultContainer.innerHTML = '';
+                document.getElementById('quiz-options').appendChild(optionDiv);
+            });
+            
+            updateQuizProgress();
+            document.getElementById('next-question-btn').disabled = true;
+        }
+
+        function updateQuizProgress() {
+            const progress = ((app.quizCurrentQuestion + 1) / quizQuestions.length) * 100;
+            document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
+            document.getElementById('quiz-progress-text').textContent = `问题 ${app.quizCurrentQuestion + 1}/${quizQuestions.length}`;
+        }
+
+        document.getElementById('next-question-btn').addEventListener('click', () => {
+            if (app.quizCurrentQuestion < quizQuestions.length - 1) {
+                app.quizCurrentQuestion++;
                 
-                let resultText = '';
-                if (totalScore <= 8) {
-                    resultText = '您的心理状态良好，请继续保持积极的生活态度。';
-                } else if (totalScore <= 15) {
-                    resultText = '您可能有些压力或轻度情绪困扰，建议尝试放松技巧或寻求支持。';
+                document.getElementById('quiz-question').textContent = quizQuestions[app.quizCurrentQuestion].question;
+                document.getElementById('quiz-options').innerHTML = '';
+                
+                quizQuestions[app.quizCurrentQuestion].options.forEach((option, index) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'quiz-option';
+                    optionDiv.setAttribute('data-value', index + 1);
+                    optionDiv.textContent = option;
+                    optionDiv.addEventListener('click', function() {
+                        document.querySelectorAll('.quiz-option').forEach(opt => {
+                            opt.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        app.quizAnswers[app.quizCurrentQuestion] = this.getAttribute('data-value');
+                        document.getElementById('next-question-btn').disabled = false;
+                    });
+                    document.getElementById('quiz-options').appendChild(optionDiv);
+                });
+                
+                updateQuizProgress();
+                document.getElementById('next-question-btn').disabled = true;
+            } else {
+                // Calculate results
+                const totalScore = app.quizAnswers.reduce((sum, score) => sum + parseInt(score), 0);
+                const averageScore = totalScore / quizQuestions.length;
+                
+                let resultMessage = '';
+                if (averageScore <= 1.5) {
+                    resultMessage = '您的心理健康状态良好，请继续保持积极的生活态度。';
+                } else if (averageScore <= 2.5) {
+                    resultMessage = '您可能有些压力或轻度情绪困扰，建议尝试放松技巧或寻求支持。';
                 } else {
-                    resultText = '您的情绪状态可能需要关注，建议寻求专业心理健康服务。';
+                    resultMessage = '您的情绪状态可能需要关注，建议寻求专业心理健康服务。';
                 }
                 
-                resultContainer.innerHTML = `<h3>测试结果</h3><p>${resultText}</p><button class="btn-primary" onclick="showScreen('home-screen')">返回首页</button>`;
+                document.getElementById('quiz-container').innerHTML = `
+                    <div class="score-circle">
+                        <div class="score-value">${averageScore.toFixed(1)}</div>
+                        <div class="score-label">平均分</div>
+                    </div>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <h3 style="margin-bottom: 15px;">评估结果</h3>
+                        <p style="color: var(--text-secondary);">${resultMessage}</p>
+                    </div>
+                `;
+                
+                document.getElementById('quiz-progress').style.display = 'none';
+                document.getElementById('next-question-btn').textContent = '完成';
+                document.getElementById('next-question-btn').disabled = false;
+                document.getElementById('next-question-btn').addEventListener('click', () => {
+                    showScreen('home-screen');
+                });
             }
-        }
-
-        // Initialize test when test screen is shown
-        document.getElementById('psych-test-screen').addEventListener('show', () => {
-            currentQuestion = 0;
-            testScores = [];
-            showTestQuestion();
         });
 
-        // Notification system
-        function showNotification(title, message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.innerHTML = `
-                <h3>${title}</h3>
-                <p>${message}</p>
-                <button class="btn-close" onclick="this.parentElement.remove()">关闭</button>
-            `;
-            document.body.appendChild(notification);
+        // Carousel
+        function startCarousel() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            app.currentSlide = 0;
             
-            setTimeout(() => {
-                notification.remove();
-            }, 5000);
+            // Show first slide
+            slides[0].classList.add('active');
+            
+            // Start carousel
+            app.carouselInterval = setInterval(() => {
+                slides[app.currentSlide].classList.remove('active');
+                app.currentSlide = (app.currentSlide + 1) % slides.length;
+                slides[app.currentSlide].classList.add('active');
+            }, 3000);
         }
 
+        document.getElementById('skip-carousel-btn').addEventListener('click', () => {
+            clearInterval(app.carouselInterval);
+            showScreen('home-screen');
+        });
+
+        // Settings
+        document.getElementById('reminders-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            showNotification('提醒设置', this.classList.contains('active') ? '每日提醒已开启' : '每日提醒已关闭');
+        });
+
+        document.getElementById('dark-mode-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            showNotification('深色模式', this.classList.contains('active') ? '深色模式已开启' : '深色模式已关闭');
+        });
+
+        document.getElementById('data-sharing-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            showNotification('数据共享', this.classList.contains('active') ? '数据共享已开启' : '数据共享已关闭');
+        });
+
+        document.getElementById('notifications-toggle').addEventListener('click', function() {
+            this.classList.toggle('active');
+            showNotification('通知设置', this.classList.contains('active') ? '通知已开启' : '通知已关闭');
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            showNotification('退出成功', '您已成功退出登录');
+            showScreen('launch-screen');
+        });
+
         // Initialize app
-        showScreen('home-screen');
+        showScreen('launch-screen');
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Your Mental Health Companion","开始使用":"Start Using","邮箱":"Email","密码":"Password","登录":"Login","提交心情":"Submit Mood","今夜开始睡眠追踪":"Start Sleep Tracking Tonight","开始呼吸练习":"Start Breathing Exercise","停止练习":"Stop Exercise","下一题":"Next Question","退出登录":"Logout","跳过":"Skip","bold 16px Arial":"bold 16px Arial","吸气...":"Inhale...","保持...":"Hold...","呼气...":"Exhale...","__title__":"HealthMindAI - Your Mental Health Companion"},"zh-CN":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 您的心理健康伴侣","开始使用":"开始使用","邮箱":"邮箱","密码":"密码","登录":"登录","提交心情":"提交心情","今夜开始睡眠追踪":"今夜开始睡眠追踪","开始呼吸练习":"开始呼吸练习","停止练习":"停止练习","下一题":"下一题","退出登录":"退出登录","跳过":"跳过","bold 16px Arial":"粗体 16px Arial","吸气...":"吸气...","保持...":"保持...","呼气...":"呼气...","__title__":"HealthMindAI - 您的心理健康伴侣"},"es":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Tu Compañero de Salud Mental","开始使用":"Comienza a usar","邮箱":"Correo electrónico","密码":"Contraseña","登录":"Iniciar sesión","提交心情":"Enviar tu estado de ánimo","今夜开始睡眠追踪":"Empieza a rastrear tu sueño esta noche","开始呼吸练习":"Comienza el ejercicio de respiración","停止练习":"Detener el ejercicio","下一题":"Siguiente pregunta","退出登录":"Salir de la sesión","跳过":"Saltar","bold 16px Arial":"Negrita 16px Arial","吸气...":"Inhalar...","保持...":"Mantener...","呼气...":"Exhalar...","__title__":"HealthMindAI - Tu Compañero de Salud Mental"},"ja":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - あなたのメンタルヘルスのコンパニオン","开始使用":"使用を開始する","邮箱":"メールアドレス","密码":"パスワード","登录":"ログイン","提交心情":"気分を提出する","今夜开始睡眠追踪":"今夜から睡眠トラッキングを開始する","开始呼吸练习":"呼吸練習を開始する","停止练习":"練習を停止する","下一题":"次の問題へ","退出登录":"ログアウトする","跳过":"スキップ","bold 16px Arial":"太字 16px Arial","吸气...":"吸気...","保持...":"保持...","呼气...":"呼気...","__title__":"HealthMindAI - あなたのメンタルヘルスのコンパニオン"},"ko":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 귀하의 심리 건강 동반자","开始使用":"사용 시작","邮箱":"이메일","密码":"비밀번호","登录":"로그인","提交心情":"감정 제출","今夜开始睡眠追踪":"이 夜부터 잠 추적 시작","开始呼吸练习":"호흡 연습 시작","停止练习":"연습 중지","下一题":"다음 문제","退出登录":"로그아웃","跳过":"건너뛰기","bold 16px Arial":"굵게 16px Arial","吸气...":"吸入...","保持...":"유지...","呼气...":"呼出...","__title__":"HealthMindAI - 귀하의 심리 건강 동반자"},"fr":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Votre compagnon de santé mentale","开始使用":"Commencer à utiliser","邮箱":"Email","密码":"Mot de passe","登录":"Se connecter","提交心情":"Soumettre votre humeur","今夜开始睡眠追踪":"Commencer le suivi du sommeil cette nuit","开始呼吸练习":"Commencer l'exercice de respiration","停止练习":"Arrêter l'exercice","下一题":"Prochain question","退出登录":"Se déconnecter","跳过":"Skip","bold 16px Arial":"Gras 16px Arial","吸气...":"Inhaler...","保持...":"Maintenir...","呼气...":"Expirer...","__title__":"HealthMindAI - Votre compagnon de santé mentale"},"de":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter","开始使用":"Beginnen Sie mit der Nutzung","邮箱":"E-Mail","密码":"Passwort","登录":"Anmelden","提交心情":"Mood einreichen","今夜开始睡眠追踪":"Ab heute Nacht die Schlafverfolgung starten","开始呼吸练习":"Atmungsbewegung beginnen","停止练习":"Übung beenden","下一题":"Nächste Frage","退出登录":"Abmelden","跳过":"Überspringen","bold 16px Arial":"fett 16px Arial","吸气...":"Einatmen...","保持...":"Behalten Sie...","呼气...":"Austreten...","__title__":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter"},"ru":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ваш компаньон по психическому здоровью","开始使用":"Начать использовать","邮箱":"Электронная почта","密码":"Пароль","登录":"Войти","提交心情":"Отправить настроение","今夜开始睡眠追踪":"Начать отслеживание сна сегодня вечером","开始呼吸练习":"Начать дыхательную практику","停止练习":"Остановить практику","下一题":"Следующее задание","退出登录":"Выйти из системы","跳过":"Пропустить","bold 16px Arial":"жирным шрифтом 16px Arial","吸气...":"Вдох...","保持...":"Поддерживать...","呼气...":"Выдох...","__title__":"HealthMindAI - Ваш компаньон по психическому здоровью"},"pt":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Seu Companheiro de Bem-Estar Mental","开始使用":"Começar a Usar","邮箱":"E-mail","密码":"Senha","登录":"Login","提交心情":"Submeter Humor","今夜开始睡眠追踪":"Iniciar o Rastreamento do Sono Hoje à Noite","开始呼吸练习":"Começar o Exercício de Respiração","停止练习":"Parar o Exercício","下一题":"Próxima Pergunta","退出登录":"Sair do Login","跳过":"Pular","bold 16px Arial":"Negrito 16px Arial","吸气...":"Inalar...","保持...":"Manter...","呼气...":"Exalar...","__title__":"HealthMindAI - Seu Companheiro de Bem-Estar Mental"},"ar":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - مرشدك الصحي النفسي","开始使用":"ابدأ في الاستخدام","邮箱":"البريد الإلكتروني","密码":"كلمة المرور","登录":"تسجيل الدخول","提交心情":"تقديم مشاعرك","今夜开始睡眠追踪":"بدء تتبع النوم الليلة","开始呼吸练习":"بدء ممارسة التنفس","停止练习":"توقف عن التمرين","下一题":"السؤال التالي","退出登录":"خروج من التسجيل","跳过":"تخطي","bold 16px Arial":"عريض 16 بكسل Arial","吸气...":"استنشاق...","保持...":"ابقاء...","呼气...":"تنفس...","__title__":"HealthMindAI - مرشدك الصحي النفسي"},"hi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी","开始使用":"शुरू करें","邮箱":"ईमेल","密码":"पासवर्ड","登录":"लॉगिन","提交心情":"भावना सबमिट करें","今夜开始睡眠追踪":"आज रात से सोमाना ट्रैक करना शुरू करें","开始呼吸练习":"श्वास अभ्यास शुरू करें","停止练习":"अभ्यास रोकें","下一题":"अगला प्रश्न","退出登录":"लॉग आउट","跳过":"सक्रिय करें","bold 16px Arial":"बोल्ड 16px Arial","吸气...":"श्वास गिराएं...","保持...":"रखें...","呼气...":"श्वास उठाएं...","__title__":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी"},"id":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Peneliti Kesehatan Mental Anda","开始使用":"Mulai Memakai","邮箱":"Email","密码":"Sandi","登录":"Masuk","提交心情":"Kirim Sentimen","今夜开始睡眠追踪":"Mulai Track Pemancingan Tidur Malam Ini","开始呼吸练习":"Mulai Melakukan Latihan Nafas","停止练习":"Berhenti Melakukan Prajanjian","下一题":"Soal Berikutnya","退出登录":"Keluar Dari Login","跳过":"Lewati","bold 16px Arial":"Bergaris Tebal 16px Arial","吸气...":"Nasih...","保持...":"Tetapkan...","呼气...":"Pusih... ","__title__":"HealthMindAI - Peneliti Kesehatan Mental Anda"},"vi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Bạn đồng hành Sức khỏe Tâm lý của bạn","开始使用":"Bắt đầu sử dụng","邮箱":"Email","密码":"Mật khẩu","登录":"Đăng nhập","提交心情":"Gửi cảm xúc","今夜开始睡眠追踪":"Bắt đầu theo dõi giấc ngủ từ đêm nay","开始呼吸练习":"Bắt đầu bài tập thở","停止练习":"Dừng bài tập","下一题":"Câu hỏi tiếp theo","退出登录":"Thoát đăng nhập","跳过":"Bỏ qua","bold 16px Arial":"in đậm 16px Arial","吸气...":"Hít thở...","保持...":"Giữ...","呼气...":"Thở ra...","__title__":"HealthMindAI - Bạn đồng hành Sức khỏe Tâm lý của bạn"},"th":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - พร้อมดูแลสุขภาพจิตของคุณ","开始使用":"เริ่มใช้","邮箱":"อีเมล","密码":"รหัสผ่าน","登录":"เข้าสู่ระบบ","提交心情":"ส่งมอบความรู้สึก","今夜开始睡眠追踪":"เริ่มตามสลัดหลับตั้งแต่คืนนี้","开始呼吸练习":"เริ่มประกาศิตตาน","停止练习":"หยุดประกาศิตตาน","下一题":"ข้อต่อไป","退出登录":"ออกจากระบบ","跳过":"ข้าม","bold 16px Arial":"bold 16px Arial","吸气...":"เข้าอากาศ...","保持...":"รักษา...","呼气...":"ออกอากาศ...","__title__":"HealthMindAI - พร้อมดูแลสุขภาพจิตของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Your Mental Health Companion","开始使用":"Start Using","邮箱":"Email","密码":"Password","登录":"Login","提交心情":"Submit Mood","今夜开始睡眠追踪":"Start Sleep Tracking Tonight","开始呼吸练习":"Start Breathing Exercise","停止练习":"Stop Exercise","下一题":"Next Question","退出登录":"Logout","跳过":"Skip","bold 16px Arial":"bold 16px Arial","吸气...":"Inhale...","保持...":"Hold...","呼气...":"Exhale...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Your Mental Health Companion"},"zh-CN":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 您的心理健康伴侣","开始使用":"开始使用","邮箱":"邮箱","密码":"密码","登录":"登录","提交心情":"提交心情","今夜开始睡眠追踪":"今夜开始睡眠追踪","开始呼吸练习":"开始呼吸练习","停止练习":"停止练习","下一题":"下一题","退出登录":"退出登录","跳过":"跳过","bold 16px Arial":"粗体 16px Arial","吸气...":"吸气...","保持...":"保持...","呼气...":"呼气...","text-align: center; margin: 20px 0;":"文本居中; 外边距 20px 0;","margin-bottom: 15px;":"下边距 15px;","__title__":"HealthMindAI - 您的心理健康伴侣"},"es":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Su Compañero de Salud Mental","开始使用":"Comenzar a Usar","邮箱":"Correo Electrónico","密码":"Contraseña","登录":"Iniciar Sesión","提交心情":"Enviar estado de ánimo","今夜开始睡眠追踪":"Iniciar el Seguimiento del Sueño Hoy por la Noche","开始呼吸练习":"Iniciar el Entrenamiento de Respiración","停止练习":"Detener el Entrenamiento","下一题":"Próximo Pregunta","退出登录":"Salir de la Sesión","跳过":"Saltar","bold 16px Arial":"Negrita 16px Arial","吸气...":"Inhalación...","保持...":"Mantener...","呼气...":"Exhalación...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Su Compañero de Salud Mental"},"ja":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - あなたの心の健康のパートナー","开始使用":"使い始める","邮箱":"メールアドレス","密码":"パスワード","登录":"ログイン","提交心情":"気分を提出する","今夜开始睡眠追踪":"今夜から睡眠追跡を開始する","开始呼吸练习":"呼吸練習を開始する","停止练习":"練習を停止する","下一题":"次の問題","退出登录":"ログアウト","跳过":"スキップ","bold 16px Arial":"bold 16px Arial","吸气...":"吸気...","保持...":"保持...","呼气...":"呼気...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - あなたの心の健康のパートナー"},"ko":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - 귀하의 심리 건강 컴패니언","开始使用":"사용 시작","邮箱":"이메일","密码":"암호","登录":"로그인","提交心情":"감정 제출","今夜开始睡眠追踪":"今夜부터 수면 추적 시작","开始呼吸练习":" 호흡 연습 시작","停止练习":"연습 중지","下一题":"다음 문제","退出登录":"로그아웃","跳过":"넘어가기","bold 16px Arial":"bold 16px Arial","吸气...":"吸入...","保持...":" 유지...","呼气...":"呼出...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - 귀하의 심리 건강 컴패니언"},"fr":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Votre compagnon de santé mentale","开始使用":"Commencer à utiliser","邮箱":"Email","密码":"Mot de passe","登录":"Se connecter","提交心情":"Soumettre votre humeur","今夜开始睡眠追踪":"Commencer le suivi du sommeil cette nuit","开始呼吸练习":"Commencer l'exercice de respiration","停止练习":"Arrêter l'exercice","下一题":"Prochain question","退出登录":"Se déconnecter","跳过":"Passer","bold 16px Arial":"gras 16px Arial","吸气...":"Inhaler...","保持...":"Garder...","呼气...":"Expirer...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Votre compagnon de santé mentale"},"de":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter","开始使用":"Beginnen Sie mit der Nutzung","邮箱":"E-Mail","密码":"Passwort","登录":"Anmelden","提交心情":"Ihre Stimmung einreichen","今夜开始睡眠追踪":"Heute Nacht mit der Schlafverfolgung beginnen","开始呼吸练习":"Beginnen Sie mit der Atemübung","停止练习":"Übung beenden","下一题":"Nächste Frage","退出登录":"Abmelden","跳过":"Überspringen","bold 16px Arial":"fett 16px Arial","吸气...":"Atmen Sie ein...","保持...":"Behalten Sie...","呼气...":"Atmen Sie aus...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Ihr mentaler Gesundheitsbegleiter"},"ru":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Ваш компаньон по психическому здоровью","开始使用":"Начать использование","邮箱":"Электронная почта","密码":"Пароль","登录":"Войти","提交心情":"Поделиться своим настроением","今夜开始睡眠追踪":"Начать отслеживание сна сегодня вечером","开始呼吸练习":"Начать упражнения по дыханию","停止练习":"Остановить упражнения","下一题":"Следующее задание","退出登录":"Выйти из системы","跳过":"Пропустить","bold 16px Arial":"жирный 16px Arial","吸气...":"Вдох...","保持...":"Поддерживать...","呼气...":"Выдох...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Ваш компаньон по психическому здоровью"},"pt":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Seu Companheiro de Bem-Estar Mental","开始使用":"Começar a Usar","邮箱":"E-mail","密码":"Senha","登录":"Entrar","提交心情":"Enviar seu Humor","今夜开始睡眠追踪":"Começar a Rastrear Sono Hoje à Noite","开始呼吸练习":"Iniciar o Treinamento de Respiração","停止练习":"Parar o Treinamento","下一题":"Próxima Pergunta","退出登录":"Sair/Logout","跳过":"Pular","bold 16px Arial":"Negrito 16px Arial","吸气...":"Inalar...","保持...":"Mantenha...","呼气...":"Exalar...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Seu Companheiro de Bem-Estar Mental"},"ar":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - مرافقي صحة عقلك","开始使用":"ابدأ في الاستخدام","邮箱":"البريد الإلكتروني","密码":"كلمة المرور","登录":"تسجيل الدخول","提交心情":"تقديم مشاعرك","今夜开始睡眠追踪":"بدء تتبع النوم الليلة","开始呼吸练习":"بدء ممارسة التنفس","停止练习":"توقف عن الممارسة","下一题":"السؤال التالي","退出登录":"خروج من تسجيل الدخول","跳过":"تخطي","bold 16px Arial":"ثقيل 16بكسل Arial","吸气...":"تنفس في...","保持...":"ابقاء...","呼气...":"تنفس خارج...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - مرافقي صحة عقلك"},"hi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी","开始使用":"आरंभ करें","邮箱":"ईमेल","密码":"पासवर्ड","登录":"लॉगिन","提交心情":"मनोदशा सबमिट करें","今夜开始睡眠追踪":"आज रात से सोमा ट्रैक करना शुरू करें","开始呼吸练习":"सांस लेने का अभ्यास शुरू करें","停止练习":"अभ्यास को रोकें","下一题":"अगला प्रश्न","退出登录":"लॉग आउट","跳过":"सक्रिय करें","bold 16px Arial":"बोल्ड 16px Arial","吸气...":"सांस लें...","保持...":"रखें...","呼气...":"सांस निकालें...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - आपका मानसिक स्वास्थ्य साथी"},"id":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Peneliti Kesehatan Mental Anda","开始使用":"Mulai Menggunakan","邮箱":"Email","密码":"Sandi","登录":"Masuk","提交心情":"Kirim Emosi","今夜开始睡眠追踪":"Mulai Melacak Nyamikan Ini Malam","开始呼吸练习":"Mulai Latihan Nafas","停止练习":"Berhenti Dari Praktik","下一题":"Soal Berikutnya","退出登录":"Keluar dari Masuk","跳过":"Lewati","bold 16px Arial":"tebal 16px Arial","吸气...":"Nafas Masuk...","保持...":"Tahan...","呼气...":"Nafas keluar...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Peneliti Kesehatan Mental Anda"},"vi":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - Bạn đồng hành Sức khỏe Tinh thần của Bạn","开始使用":"Bắt đầu sử dụng","邮箱":"Email","密码":"Mật khẩu","登录":"Đăng nhập","提交心情":"Gửi cảm xúc","今夜开始睡眠追踪":"Bắt đầu theo dõi giấc ngủ từ đêm nay","开始呼吸练习":"Bắt đầu thực hành thở","停止练习":"Dừng thực hành","下一题":"Câu hỏi tiếp theo","退出登录":"Thoát đăng nhập","跳过":"Bỏ qua","bold 16px Arial":"bold 16px Arial","吸气...":"Hít vào...","保持...":"Giữ...","呼气...":"Thở ra...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - Bạn đồng hành Sức khỏe Tinh thần của Bạn"},"th":{"HealthMindAI - Your Mental Health Companion":"HealthMindAI - พันธุ์แท้ของความสุขทางจิต","开始使用":"เริ่มใช้","邮箱":"อีเมล","密码":"รหัสผ่าน","登录":"เข้าสู่ระบบ","提交心情":"ส่งมอบความรู้สึก","今夜开始睡眠追踪":"เริ่มตามสอบสวนการหลับในคืนนี้","开始呼吸练习":"เริ่มประกาศิตการหายใจ","停止练习":"หยุดประกาศิต","下一题":"ข้อต่อไป","退出登录":"ออกจากระบบ","跳过":"กระโดดเหนือ","bold 16px Arial":"bold 16px Arial","吸气...":"เหนื่อย...","保持...":"รักษา...","呼气...":"ปล่อย...","text-align: center; margin: 20px 0;":"text-align: center; margin: 20px 0;","margin-bottom: 15px;":"margin-bottom: 15px;","__title__":"HealthMindAI - พันธุ์แท้ของความสุขทางจิต"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
