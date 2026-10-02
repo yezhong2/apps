@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Art Studio - Create Amazing Art with AI</title><meta name="description" content="Free online tool: AI Art Studio - Create Amazing Art with AI. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Art Studio - Create Amazing Art with AI">
+<meta property="og:description" content="Free online tool: AI Art Studio - Create Amazing Art with AI. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_110238_AI Art Studi.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6200ee;
+            --accent-hover: #7c4dff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .welcome-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--accent) 0%, #bb86fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-screen p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        /* Hidden by default */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        /* Navigation */
+        .nav {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* AI Art Generator */
+        .ai-art-generator {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .input-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .style-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .style-card:hover, .style-card.selected {
+            background-color: var(--accent);
+            transform: scale(1.05);
+        }
+
+        .style-card img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .gallery-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .gallery-item-info {
+            padding: 15px;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .gallery-item-actions button {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gallery-item-actions button:hover {
+            background-color: var(--accent);
+        }
+
+        /* Community */
+        .community-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .community-tab {
+            padding: 10px 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .community-tab.active {
+            background-color: var(--accent);
+        }
+
+        .post {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .post-meta {
+            flex-grow: 1;
+        }
+
+        .post-author {
+            font-weight: bold;
+        }
+
+        .post-time {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .post-action:hover {
+            color: var(--accent);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--accent);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--error);
+        }
+
+        .toast.info {
+            border-left: 4px solid var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-screen h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen screen active" id="welcomeScreen">
+        <div class="container">
+            <h1>AI Art Studio</h1>
+            <p>Create stunning artwork with the power of artificial intelligence. Transform your ideas into beautiful visuals in seconds.</p>
+            <p>Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.</p>
+            <button class="btn" id="startBtn">Start Creating</button>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="mainNav" style="display: none;">
+        <div class="container">
+            <div class="nav-content">
+                <div class="nav-brand">AI Art Studio</div>
+                <div class="nav-menu">
+                    <a href="#" class="nav-link active" data-screen="ai-generator">AI Generator</a>
+                    <a href="#" class="nav-link" data-screen="library">Library</a>
+                    <a href="#" class="nav-link" data-screen="editor">Editor</a>
+                    <a href="#" class="nav-link" data-screen="community">Community</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- AI Generator Screen -->
+    <div class="screen" id="aiGeneratorScreen">
+        <div class="container">
+            <div class="ai-art-generator">
+                <h2>Create with AI</h2>
+                <div class="input-group">
+                    <label for="promptInput">Describe your artwork</label>
+                    <textarea id="promptInput" placeholder="e.g., a futuristic cityscape at sunset, cyberpunk style"></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="styleSelect">Choose Style</label>
+                    <select id="styleSelect">
+                        <option value="realistic">Realistic</option>
+                        <option value="anime">Anime</option>
+                        <option value="watercolor">Watercolor</option>
+                        <option value="oil">Oil Painting</option>
+                        <option value="sketch">Sketch</option>
+                        <option value="abstract">Abstract</option>
+                    </select>
+                </div>
+                <button class="btn" id="generateBtn">Generate Artwork</button>
+                <div id="generationStatus" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Creating your artwork...</p>
+                </div>
+            </div>
+            
+            <div id="generatedArt" style="display: none;">
+                <h3>Your Generated Artwork</h3>
+                <div class="gallery-item">
+                    <img id="generatedImage" src="" alt="Generated artwork">
+                    <div class="gallery-item-actions">
+                        <button id="downloadBtn" title="Download">⬇</button>
+                        <button id="shareBtn" title="Share">🔗</button>
+                        <button id="saveBtn" title="Save to Library">💾</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Library Screen -->
+    <div class="screen" id="libraryScreen">
+        <div class="container">
+            <h2>素材库</h2>
+            <div class="input-group">
+                <input type="text" id="librarySearch" placeholder="Search assets...">
+            </div>
+            
+            <div class="style-grid">
+                <div class="style-card">
+                    <img src="https://picsum.photos/seed/art1/150/100.jpg" alt="Art style 1">
+                    <h4>Fantasy Landscapes</h4>
+                    <button class="btn btn-secondary">Download</button>
+                </div>
+                <div class="style-card">
+                    <img src="https://picsum.photos/seed/art2/150/100.jpg" alt="Art style 2">
+                    <h4>Character Designs</h4>
+                    <button class="btn btn-secondary">Download</button>
+                </div>
+                <div class="style-card">
+                    <img src="https://picsum.photos/seed/art3/150/100.jpg" alt="Art style 3">
+                    <h4>Sci-Fi Elements</h4>
+                    <button class="btn btn-secondary">Download</button>
+                </div>
+                <div class="style-card">
+                    <img src="https://picsum.photos/seed/art4/150/100.jpg" alt="Art style 4">
+                    <h4>Nature Patterns</h4>
+                    <button class="btn btn-secondary">Download</button>
+                </div>
+            </div>
+            
+            <h3>My Library</h3>
+            <div class="gallery" id="userGallery">
+                <!-- User's saved artworks will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Editor Screen -->
+    <div class="screen" id="editorScreen">
+        <div class="container">
+            <h2>Customize Your Art</h2>
+            <div class="ai-art-generator">
+                <div class="input-group">
+                    <label>Adjust Style Parameters</label>
+                    <div style="display: flex; gap: 20px;">
+                        <div style="flex: 1;">
+                            <label for="brightness">Brightness</label>
+                            <input type="range" id="brightness" min="0" max="100" value="50">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="contrast">Contrast</label>
+                            <input type="range" id="contrast" min="0" max="100" value="50">
+                        </div>
+                        <div style="flex: 1;">
+                            <label for="saturation">Saturation</label>
+                            <input type="range" id="saturation" min="0" max="100" value="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Custom Filters</label>
+                    <div class="style-grid">
+                        <div class="style-card">
+                            <h4>Vintage</h4>
+                            <button class="btn btn-secondary">Apply</button>
+                        </div>
+                        <div class="style-card">
+                            <h4>Black & White</h4>
+                            <button class="btn btn-secondary">Apply</button>
+                        </div>
+                        <div class="style-card">
+                            <h4>Neon Glow</h4>
+                            <button class="btn btn-secondary">Apply</button>
+                        </div>
+                        <div class="style-card">
+                            <h4>Oil Painting</h4>
+                            <button class="btn btn-secondary">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" id="applyEditsBtn">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Community Screen -->
+    <div class="screen" id="communityScreen">
+        <div class="container">
+            <h2>Community Gallery</h2>
+            <div class="community-tabs">
+                <div class="community-tab active" data-tab="trending">Trending</div>
+                <div class="community-tab" data-tab="recent">Recent</div>
+                <div class="community-tab" data-tab="following">Following</div>
+            </div>
+            
+            <div id="communityPosts">
+                <!-- Community posts will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal" id="shareModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Your Artwork</h3>
+                <button class="modal-close" id="closeShareModal">×</button>
+            </div>
+            <div class="input-group">
+                <label for="postTitle">Title</label>
+                <input type="text" id="postTitle" placeholder="Give your artwork a title">
+            </div>
+            <div class="input-group">
+                <label for="postDescription">Description</label>
+                <textarea id="postDescription" placeholder="Tell us about your artwork"></textarea>
+            </div>
+            <button class="btn" id="shareToCommunityBtn">Share to Community</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Screen Management
+        const screens = {
+            welcome: document.getElementById('welcomeScreen'),
+            'ai-generator': document.getElementById('aiGeneratorScreen'),
+            library: document.getElementById('libraryScreen'),
+            editor: document.getElementById('editorScreen'),
+            community: document.getElementById('communityScreen')
+        };
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mainNav = document.getElementById('mainNav');
+        const startBtn = document.getElementById('startBtn');
+
+        // Initialize app
+        let currentUser = {
+            id: 'user_' + Math.random().toString(36).substr(2, 9),
+            name: 'Artist',
+            avatar: 'A',
+            savedArtworks: []
+        };
+
+        // Mock data for community posts
+        const mockCommunityPosts = [
+            {
+                id: 'post1',
+                author: 'ArtLover',
+                avatar: 'AL',
+                time: '2 hours ago',
+                title: 'Sunset Dreams',
+                description: 'Created with AI using the prompt "dreamy sunset over mountains"',
+                image: 'https://picsum.photos/seed/sunset1/400/300.jpg',
+                likes: 24,
+                comments: 5
+            },
+            {
+                id: 'post2',
+                author: 'CreativeMind',
+                avatar: 'CM',
+                time: '5 hours ago',
+                title: 'Cyberpunk City',
+                description: 'Futuristic cityscape with neon lights',
+                image: 'https://picsum.photos/seed/cyber1/400/300.jpg',
+                likes: 42,
+                comments: 8
+            },
+            {
+                id: 'post3',
+                author: 'NatureFan',
+                avatar: 'NF',
+                time: '1 day ago',
+                title: 'Forest Spirit',
+                description: 'Mystical forest with glowing creatures',
+                image: 'https://picsum.photos/seed/forest1/400/300.jpg',
+                likes: 31,
+                comments: 3
+            }
+        ];
+
+        // Screen navigation
+        startBtn.addEventListener('click', () => {
+            screens.welcome.classList.remove('active');
+            mainNav.style.display = 'block';
+            screens['ai-generator'].classList.add('active');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetScreen = e.target.dataset.screen;
+                
+                // Update active nav link
+                navLinks.forEach(l => l.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Switch screens
+                Object.keys(screens).forEach(key => {
+                    screens[key].classList.remove('active');
+                });
+                screens[targetScreen].classList.add('active');
+                
+                // Load content for specific screens
+                if (targetScreen === 'library') {
+                    loadUserGallery();
+                } else if (targetScreen === 'community') {
+                    loadCommunityPosts();
+                }
+            });
+        });
+
+        // AI Art Generation
+        const generateBtn = document.getElementById('generateBtn');
+        const promptInput = document.getElementById('promptInput');
+        const styleSelect = document.getElementById('styleSelect');
+        const generationStatus = document.getElementById('generationStatus');
+        const generatedArt = document.getElementById('generatedArt');
+        const generatedImage = document.getElementById('generatedImage');
+
+        generateBtn.addEventListener('click', () => {
+            const prompt = promptInput.value.trim();
+            const style = styleSelect.value;
+            
+            if (!prompt) {
+                showToast('Please describe what you want to create', 'error');
+                return;
+            }
+            
+            // Show loading state
+            generationStatus.style.display = 'block';
+            generatedArt.style.display = 'none';
+            
+            // Simulate AI generation
+            setTimeout(() => {
+                // In a real app, this would be an API call to an AI service
+                const seed = prompt.replace(/\s+/g, '').toLowerCase();
+                generatedImage.src = `https://picsum.photos/seed/${seed}${style}/600/400.jpg`;
+                
+                generationStatus.style.display = 'none';
+                generatedArt.style.display = 'block';
+                
+                showToast('Artwork generated successfully!', 'success');
+            }, 2000);
+        });
+
+        // Download functionality
+        const downloadBtn = document.getElementById('downloadBtn');
+        downloadBtn.addEventListener('click', () => {
+            // In a real app, this would download the actual image
+            showToast('Download started', 'info');
+        });
+
+        // Share functionality
+        const shareBtn = document.getElementById('shareBtn');
+        const shareModal = document.getElementById('shareModal');
+        const closeShareModal = document.getElementById('closeShareModal');
+        const shareToCommunityBtn = document.getElementById('shareToCommunityBtn');
+        const postTitle = document.getElementById('postTitle');
+        const postDescription = document.getElementById('postDescription');
+
+        shareBtn.addEventListener('click', () => {
+            shareModal.classList.add('active');
+            postTitle.value = '';
+            postDescription.value = '';
+        });
+
+        closeShareModal.addEventListener('click', () => {
+            shareModal.classList.remove('active');
+        });
+
+        shareToCommunityBtn.addEventListener('click', () => {
+            const title = postTitle.value.trim();
+            const description = postDescription.value.trim();
+            
+            if (!title || !description) {
+                showToast('Please fill in both title and description', 'error');
+                return;
+            }
+            
+            // Add to community posts
+            const newPost = {
+                id: 'post_' + Math.random().toString(36).substr(2, 9),
+                author: currentUser.name,
+                avatar: currentUser.avatar,
+                time: 'Just now',
+                title: title,
+                description: description,
+                image: generatedImage.src,
+                likes: 0,
+                comments: 0
+            };
+            
+            mockCommunityPosts.unshift(newPost);
+            
+            shareModal.classList.remove('active');
+            showToast('Shared to community!', 'success');
+            
+            // Switch to community screen
+            navLinks.forEach(l => l.classList.remove('active'));
+            document.querySelector('[data-screen="community"]').classList.add('active');
+            Object.keys(screens).forEach(key => {
+                screens[key].classList.remove('active');
+            });
+            screens.community.classList.add('active');
+            loadCommunityPosts();
+        });
+
+        // Save to library
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.addEventListener('click', () => {
+            const artwork = {
+                id: 'art_' + Math.random().toString(36).substr(2, 9),
+                title: promptInput.value || 'Untitled',
+                image: generatedImage.src,
+                style: styleSelect.value,
+                createdAt: new Date().toISOString()
+            };
+            
+            currentUser.savedArtworks.push(artwork);
+            showToast('Saved to library!', 'success');
+        });
+
+        // Library functionality
+        const librarySearch = document.getElementById('librarySearch');
+        const libraryDownloadBtns = document.querySelectorAll('.style-card .btn-secondary');
+
+        libraryDownloadBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.style-card');
+                const title = card.querySelector('h4').textContent;
+                
+                // Simulate download
+                showToast(`Downloading ${title}...`, 'info');
+            });
+        });
+
+        function loadUserGallery() {
+            const userGallery = document.getElementById('userGallery');
+            userGallery.innerHTML = '';
+            
+            if (currentUser.savedArtworks.length === 0) {
+                userGallery.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No saved artworks yet. Generate some art to get started!</p>';
+                return;
+            }
+            
+            currentUser.savedArtworks.forEach(artwork => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${artwork.image}" alt="${artwork.title}">
+                    <div class="gallery-item-info">
+                        <h4>${artwork.title}</h4>
+                        <p style="color: var(--text-secondary);">${artwork.style} style</p>
+                        <div class="gallery-item-actions">
+                            <button title="Download" onclick="downloadArtwork('${artwork.id}')">⬇</button>
+                            <button title="Share" onclick="shareArtwork('${artwork.id}')">🔗</button>
+                        </div>
+                    </div>
+                `;
+                userGallery.appendChild(galleryItem);
+            });
+        }
+
+        function downloadArtwork(id) {
+            showToast('Download started', 'info');
+        }
+
+        function shareArtwork(id) {
+            const artwork = currentUser.savedArtworks.find(a => a.id === id);
+            if (artwork) {
+                postTitle.value = artwork.title;
+                postDescription.value = `Created in ${artwork.style} style using AI`;
+                shareBtn.click();
+            }
+        }
+
+        // Editor functionality
+        const brightness = document.getElementById('brightness');
+        const contrast = document.getElementById('contrast');
+        const saturation = document.getElementById('saturation');
+        const applyEditsBtn = document.getElementById('applyEditsBtn');
+
+        // Apply filter to generated image
+        function applyFilters() {
+            if (generatedImage.src) {
+                const filterValue = `brightness(${brightness.value}%) contrast(${contrast.value}%) saturate(${saturation.value}%)`;
+                generatedImage.style.filter = filterValue;
+            }
+        }
+
+        brightness.addEventListener('input', applyFilters);
+        contrast.addEventListener('input', applyFilters);
+        saturation.addEventListener('input', applyFilters);
+
+        applyEditsBtn.addEventListener('click', () => {
+            if (!generatedImage.src) {
+                showToast('Please generate an artwork first', 'error');
+                return;
+            }
+            
+            showToast('Changes applied!', 'success');
+        });
+
+        // Community tabs
+        const communityTabs = document.querySelectorAll('.community-tab');
+        communityTabs.forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                communityTabs.forEach(t => t.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // In a real app, this would filter posts based on tab
+                loadCommunityPosts();
+            });
+        });
+
+        function loadCommunityPosts() {
+            const communityPosts = document.getElementById('communityPosts');
+            communityPosts.innerHTML = '';
+            
+            mockCommunityPosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-avatar">${post.avatar}</div>
+                        <div class="post-meta">
+                            <div class="post-author">${post.author}</div>
+                            <div class="post-time">${post.time}</div>
+                        </div>
+                    </div>
+                    <h3>${post.title}</h3>
+                    <div class="post-content">${post.description}</div>
+                    <img src="${post.image}" alt="${post.title}" class="post-image">
+                    <div class="post-actions">
+                        <div class="post-action" onclick="likePost('${post.id}')">
+                            <span>❤</span> <span>${post.likes}</span>
+                        </div>
+                        <div class="post-action">
+                            <span>💬</span> <span>${post.comments}</span>
+                        </div>
+                        <div class="post-action">
+                            <span>↗</span> Share
+                        </div>
+                    </div>
+                `;
+                communityPosts.appendChild(postElement);
+            });
+        }
+
+        function likePost(postId) {
+            const post = mockCommunityPosts.find(p => p.id === postId);
+            if (post) {
+                post.likes++;
+                loadCommunityPosts();
+                showToast('Liked!', 'success');
+            }
+        }
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Initialize community posts on load
+        loadCommunityPosts();
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Create Amazing Art with AI","AI Art Studio":"AI Art Studio","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.","Start Creating":"Start Creating","AI Generator":"AI Generator","Library":"Library","Editor":"Editor","Community":"Community","Create with AI":"Create with AI","Describe your artwork":"Describe your artwork","Choose Style":"Choose Style","Realistic":"Realistic","Anime":"Anime","Watercolor":"Watercolor","Oil Painting":"Oil Painting","Sketch":"Sketch","Abstract":"Abstract","Generate Artwork":"Generate Artwork","Creating your artwork...":"Creating your artwork...","Your Generated Artwork":"Your Generated Artwork","素材库":"素材库","Fantasy Landscapes":"Fantasy Landscapes","Download":"Download","Character Designs":"Character Designs","Sci-Fi Elements":"Sci-Fi Elements","Nature Patterns":"Nature Patterns","My Library":"My Library","Customize Your Art":"Customize Your Art","Adjust Style Parameters":"Adjust Style Parameters","Brightness":"Brightness","Contrast":"Contrast","Saturation":"Saturation","Custom Filters":"Custom Filters","Vintage":"Vintage","Apply":"Apply","Black \u0026 White":"Black \u0026 White","Neon Glow":"Neon Glow","Apply Changes":"Apply Changes","Community Gallery":"Community Gallery","Share Your Artwork":"Share Your Artwork","Title":"Title","Description":"Description","Share to Community":"Share to Community","Sunset Dreams":"Sunset Dreams","Cyberpunk City":"Cyberpunk City","Futuristic cityscape with neon lights":"Futuristic cityscape with neon lights","Forest Spirit":"Forest Spirit","Mystical forest with glowing creatures":"Mystical forest with glowing creatures","Please describe what you want to create":"Please describe what you want to create","Artwork generated successfully!":"Artwork generated successfully!","Download started":"Download started","Please fill in both title and description":"Please fill in both title and description","Just now":"Just now","Shared to community!":"Shared to community!","Saved to library!":"Saved to library!","Please generate an artwork first":"Please generate an artwork first","Changes applied!":"Changes applied!","Liked!":"Liked!","__title__":"AI Art Studio - Create Amazing Art with AI"},"zh-CN":{"AI Art Studio - Create Amazing Art with AI":"AI艺术工作室 - 使用AI创建惊人的艺术","AI Art Studio":"AI艺术工作室","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"简单地描述你想要创建的内容，选择你的风格，然后让我们的AI为你生成独特的艺术作品。","Start Creating":"开始创建","AI Generator":"AI生成器","Library":"素材库","Editor":"编辑器","Community":"社区","Create with AI":"用AI创作","Describe your artwork":"描述你的艺术作品","Choose Style":"选择风格","Realistic":"现实主义","Anime":"动漫","Watercolor":"水彩画","Oil Painting":"油画","Sketch":"素描","Abstract":"抽象","Generate Artwork":"生成艺术作品","Creating your artwork...":"创建你的艺术作品...","Your Generated Artwork":"你的生成艺术作品","素材库":"素材库","Fantasy Landscapes":"幻想风景","Download":"下载","Character Designs":"角色设计","Sci-Fi Elements":"科幻元素","Nature Patterns":"自然图案","My Library":"我的素材库","Customize Your Art":"自定义你的艺术","Adjust Style Parameters":"调整风格参数","Brightness":"亮度","Contrast":"对比度","Saturation":"饱和度","Custom Filters":"自定义滤镜","Vintage":"复古","Apply":"应用","Black \u0026 White":"黑白","Neon Glow":"霓虹灯效果","Apply Changes":"应用更改","Community Gallery":"社区画廊","Share Your Artwork":"分享你的艺术作品","Title":"标题","Description":"描述","Share to Community":"分享到社区","Sunset Dreams":"日落梦想","Cyberpunk City":"赛博朋克城市","Futuristic cityscape with neon lights":"带有霓虹灯的未来城市景观","Forest Spirit":"森林精灵","Mystical forest with glowing creatures":"神秘发光生物的森林","Please describe what you want to create":"请描述你想要创建的内容","Artwork generated successfully!":"艺术作品生成成功！","Download started":"下载开始","Please fill in both title and description":"请填写标题和描述","Just now":"刚刚","Shared to community!":"已分享到社区！","Saved to library!":"已保存到素材库！","Please generate an artwork first":"请先生成一个艺术作品","Changes applied!":"更改已应用！","Liked!":"点赞！","__title__":"AI艺术工作室 - 使用AI创建惊人的艺术"},"es":{"AI Art Studio - Create Amazing Art with AI":"Estudio de Arte Inteligente Artificial - Crea Arte Increíble con Inteligencia Artificial","AI Art Studio":"Estudio de Arte Inteligente Artificial","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Simplemente describe lo que deseas crear, elige tu estilo y deja que nuestra IA genere arte único para ti.","Start Creating":"Comienza a Crear","AI Generator":"Generador de IA","Library":"Biblioteca","Editor":"Editor","Community":"Comunidad","Create with AI":"Crea con IA","Describe your artwork":"Describir tu obra de arte","Choose Style":"Elegir Estilo","Realistic":"Realista","Anime":"Anime","Watercolor":"Acuarela","Oil Painting":"Pintura al Óleo","Sketch":"Boceto","Abstract":"Abstracto","Generate Artwork":"Generar Arte","Creating your artwork...":"Creando tu obra de arte...","Your Generated Artwork":"Tu Obra de Arte Generada","素材库":"Biblioteca de Materiales","Fantasy Landscapes":"Paisajes de Fantasía","Download":"Descargar","Character Designs":"Diseños de Personajes","Sci-Fi Elements":"Elementos de Ciencia Ficción","Nature Patterns":"Patrones Naturales","My Library":"Mi Biblioteca","Customize Your Art":"Personalizar Tu Arte","Adjust Style Parameters":"Ajustar Parámetros de Estilo","Brightness":"Brillo","Contrast":"Contraste","Saturation":"Saturación","Custom Filters":"Filtros Personalizados","Vintage":"Vintage","Apply":"Aplicar","Black \u0026 White":"Negro y Blanco","Neon Glow":"Brillo Neón","Apply Changes":"Aplicar Cambios","Community Gallery":"Galería de Comunidad","Share Your Artwork":"Comparte Tu Arte","Title":"Título","Description":"Descripción","Share to Community":"Compartir con la Comunidad","Sunset Dreams":"Sueños de Atardecer","Cyberpunk City":"Ciudad Cyberpunk","Futuristic cityscape with neon lights":"Paisaje Urbano Futurista con Luces Neón","Forest Spirit":"Espíritu del Bosque","Mystical forest with glowing creatures":"Bosque Místico con Criaturas Brillantes","Please describe what you want to create":"Por favor, describe lo que deseas crear","Artwork generated successfully!":"¡La obra de arte se generó con éxito!","Download started":"Inicio de Descarga","Please fill in both title and description":"Por favor, rellena tanto el título como la descripción","Just now":"Justo ahora","Shared to community!":"Compartido con la comunidad!","Saved to library!":"Guardado en la biblioteca!","Please generate an artwork first":"Por favor, genera una obra de arte primero","Changes applied!":"¡Cambios aplicados!","Liked!":"¡Me gustó!","__title__":"Estudio de Arte Inteligente Artificial - Crea Arte Increíble con Inteligencia Artificial"},"ja":{"AI Art Studio - Create Amazing Art with AI":"AIアートスタジオ - AIで素晴らしいアートを作成する","AI Art Studio":"AIアートスタジオ","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"作りたいものを簡単に説明し、スタイルを選び、私たちのAIがユニークなアートワークを生成します。","Start Creating":"作成を開始する","AI Generator":"AI生成器","Library":"ライブラリ","Editor":"エディタ","Community":"コミュニティ","Create with AI":"AIで作成する","Describe your artwork":"あなたのアートワークを説明する","Choose Style":"スタイルを選ぶ","Realistic":"リアリスティック","Anime":"アニメ","Watercolor":"水彩画","Oil Painting":"油絵","Sketch":"スケッチ","Abstract":"抽象画","Generate Artwork":"アートワークの生成","Creating your artwork...":"あなたのアートワークの作成中...","Your Generated Artwork":"生成したアートワーク","素材库":"素材庫","Fantasy Landscapes":"ファンタジーランドスケープ","Download":"ダウンロード","Character Designs":"キャラクターデザイン","Sci-Fi Elements":"SF要素","Nature Patterns":"自然のパターン","My Library":"マイライブラリ","Customize Your Art":"あなたのアートをカスタマイズする","Adjust Style Parameters":"スタイルパラメータの調整","Brightness":"明るさ","Contrast":"コントラスト","Saturation":"彩度","Custom Filters":"カスタムフィルタ","Vintage":"ヴィンテージ","Apply":"適用","Black \u0026 White":"モノクロ","Neon Glow":"ネオン光","Apply Changes":"変更を適用","Community Gallery":"コミュニティギャラリ","Share Your Artwork":"あなたのアートワークを共有","Title":"タイトル","Description":"説明","Share to Community":"コミュニティに共有","Sunset Dreams":"サンセットドリームズ","Cyberpunk City":"サイバーぷらす","Futuristic cityscape with neon lights":"ネオン光に輝く未来的な都市風景","Forest Spirit":"森の精"," Mystical forest with glowing creatures":"光る生き物たちが住む神秘的な森","Please describe what you want to create":"作りたいものを説明してください","Artwork generated successfully!":"アートワークの生成に成功しました！","Download started":"ダウンロードを開始しました","Please fill in both title and description":"タイトルと説明を両方入力してください","Just now":"今しきりに","Shared to community!":"コミュニティに共有しました！","Saved to library!":"ライブラリに保存しました！","Please generate an artwork first":"まずはアートワークを生成してください","Changes applied!":"変更を適用しました！","Liked!":"いいね！","__title__":"AIアートスタジオ - AIで素晴らしいアートを作成する"},"ko":{"AI Art Studio - Create Amazing Art with AI":"AI 아트 스튜디오 - AI로 놀라운 예술 창조하기","AI Art Studio":"AI 아트 스튜디오","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"창조하고자 하는 것을 간단히 설명하고, 스타일을 선택하여 우리의 AI가 독특한 예술 작품을 생성해 드립니다.","Start Creating":"만들기 시작하기","AI Generator":"AI 생성기","Library":"라이브러리","Editor":" 편집자","Community":"커뮤니티","Create with AI":"AI와 함께 창조하기","Describe your artwork":"당신의 예술 작품을 설명하세요","Choose Style":"스타일 선택하기","Realistic":"사실적","Anime":"애니메이션","Watercolor":"물감화","Oil Painting":"올림적화","Sketch":"스케치","Abstract":"알스테케스트","Generate Artwork":"예술 작품 생성하기","Creating your artwork...":"당신의 예술 작품을 생성 중...","Your Generated Artwork":"당신의 생성된 예술 작품","素材库":"자료庫","Fantasy Landscapes":"fantasy 랜드스케이프","Download":"다운로드","Character Designs":"캐릭터 디자인","Sci-Fi Elements":"サイ퍼티 요소","Nature Patterns":"자연 패턴","My Library":"제 라이브러리","Customize Your Art":"당신의 예술을 커스터마이징하세요","Adjust Style Parameters":"스타일 매개변수 조정","Brightness":"빛의 강도","Contrast":"명암비","Saturation":"색채 진하기","Custom Filters":"커스터마이징 필터","Vintage":"베티지","Apply":"적용","Black \u0026 White":"흑백","Neon Glow":"네온 곤라","Apply Changes":"변경 적용","Community Gallery":"커뮤니티 갤러리","Share Your Artwork":"당신의 예술 작품을 공유하세요","Title":"제목","Description":"설명","Share to Community":"커뮤니티에 공유","Sunset Dreams":"사전 꿈","Cyberpunk City":"시버 팝시티","Futuristic cityscape with neon lights":"네온 조명으로의 미래 도시 연안","Forest Spirit":"나무 정신","Mystical forest with glowing creatures":"빛나는 생명체와 함께하는 미스티칼 랜드스케이프","Please describe what you want to create":"창조하고자 하는 것을 설명해 주세요","Artwork generated successfully!":"예술 작품 생성 완료!","Download started":"다운로드 시작","Please fill in both title and description":"제목과 설명을 모두 입력해 주세요","Just now":"현재","Shared to community!":"커뮤니티에 공유됨!","Saved to library!":"라이브러리에 저장됨!","Please generate an artwork first":"먼저 예술 작품을 생성해 주세요","Changes applied!":"변경이 적용되었습니다!","Liked!":"좋아해요!","__title__":"AI 아트 스튜디오 - AI로 놀라운 예술 창조하기"},"fr":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Créez de l'art incroyable avec l'IA","AI Art Studio":"Studio d'art IA","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Décrivez simplement ce que vous souhaitez créer, choisissez votre style et laissez notre IA générer un artwork unique pour vous.","Start Creating":"Commencez à créer","AI Generator":"Générateur IA","Library":"Bibliothèque","Editor":"Éditeur","Community":"Communauté","Create with AI":"Créez avec l'IA","Describe your artwork":"Décrivez votre artwork","Choose Style":"Choisissez le style","Realistic":"Réaliste","Anime":"Anime","Watercolor":"Aquarelle","Oil Painting":"Peinture à l'huile","Sketch":"Esquisse","Abstract":"Abstrait","Generate Artwork":"Générer un artwork","Creating your artwork...":"Création de votre artwork...","Your Generated Artwork":"Votre artwork généré","素材库":"Bibliothèque de matériaux","Fantasy Landscapes":"Paysages fantastiques","Download":"Télécharger","Character Designs":"Designs de personnages","Sci-Fi Elements":"Éléments de science-fiction","Nature Patterns":"Motifs naturels","My Library":"Ma bibliothèque","Customize Your Art":"Personnalisez votre art","Adjust Style Parameters":"Ajuster les paramètres de style","Brightness":"Luminosité","Contrast":"Contraste","Saturation":"Saturation","Custom Filters":"Filtres personnalisés","Vintage":"Vintages","Apply":"Appliquer","Black \u0026 White":"Noir et blanc","Neon Glow":"Lumière néon","Apply Changes":"Appliquer les changements","Community Gallery":"Galerie communautaire","Share Your Artwork":"Partagez votre artwork","Title":"Titre","Description":"Description","Share to Community":"Partager avec la communauté","Sunset Dreams":"Rêves du coucher de soleil","Cyberpunk City":"Ville cyberpunk","Futuristic cityscape with neon lights":"Paysage urbain futuriste avec des lumières néon","Forest Spirit":"Esprit de la forêt","Mystical forest with glowing creatures":"Forêt mystique avec des créatures lumineuses","Please describe what you want to create":"Veuillez décrire ce que vous souhaitez créer","Artwork generated successfully!":"Artwork généré avec succès!","Download started":"Téléchargement commencé","Please fill in both title and description":"Veuillez remplir à la fois le titre et la description","Just now":"À l'instant","Shared to community!":"Partagé avec la communauté!","Saved to library!":"Sauvegardé dans la bibliothèque!","Please generate an artwork first":"Veuillez d'abord générer un artwork","Changes applied!":"Changements appliqués!","Liked!":"J'aime!","__title__":"AI Art Studio - Créez de l'art incroyable avec l'IA"},"de":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Erstellen Sie erstaunliche Kunst mit KI","AI Art Studio":"AI Art Studio","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Beschreiben Sie einfach, was Sie erstellen möchten, wählen Sie Ihren Stil und lassen Sie unsere KI einzigartige Kunstwerke für Sie generieren.","Start Creating":"Mit dem Erstellen beginnen","AI Generator":"AI-Generator","Library":"Bibliothek","Editor":"Editor","Community":"Community","Create with AI":"Mit KI erstellen","Describe your artwork":"Beschreiben Sie Ihr Kunstwerk","Choose Style":"Stil wählen","Realistic":"Realistisch","Anime":"Anime","Watercolor":"Aquarell","Oil Painting":"Ölmalerei","Sketch":"Skizze","Abstract":"Abstrakt","Generate Artwork":"Kunstwerk generieren","Creating your artwork...":"Ihr Kunstwerk wird erstellt...","Your Generated Artwork":"Ihr generiertes Kunstwerk","素材库":"Materialbibliothek","Fantasy Landscapes":"Fantasy-Landschaften","Download":"Herunterladen","Character Designs":"Charakterentwürfe","Sci-Fi Elements":"Sci-Fi-Elemente","Nature Patterns":"Naturmuster","My Library":"Meine Bibliothek","Customize Your Art":"Ihr Kunstwerk anpassen","Adjust Style Parameters":"Stilparameter anpassen","Brightness":"Helligkeit","Contrast":"Kontrast","Saturation":"Sättigung","Custom Filters":"Benutzerdefinierte Filter","Vintage":"Antik","Apply":"Anwenden","Black \u0026 White":"Schwarz \u0026 Weiß","Neon Glow":"Neonglow","Apply Changes":"Änderungen anwenden","Community Gallery":"Gemeinschaftsgalerie","Share Your Artwork":"Ihr Kunstwerk teilen","Title":"Titel","Description":"Beschreibung","Share to Community":"Mit der Community teilen","Sunset Dreams":"Sonnenuntergangsträume","Cyberpunk City":"Cyberpunk-Stadt","Futuristic cityscape with neon lights":"Zukunftsstädte mit Neonbeleuchtung","Forest Spirit":"Waldgeist","Mystical forest with glowing creatures":"Mystischer Wald mit leuchtenden Kreaturen","Please describe what you want to create":"Bitte beschreiben Sie, was Sie erstellen möchten","Artwork generated successfully!":"Kunstwerk erfolgreich generiert!","Download started":"Herunterladen gestartet","Please fill in both title and description":"Bitte geben Sie sowohl Titel als auch Beschreibung ein","Just now":"Gerade eben","Shared to community!":"Mit der Community geteilt!","Saved to library!":"In die Bibliothek gespeichert!","Please generate an artwork first":"Bitte generieren Sie erst ein Kunstwerk","Changes applied!":"Änderungen angewendet!","Liked!":"Gefällt mir!","__title__":"AI Art Studio - Erstellen Sie erstaunliche Kunst mit KI"},"ru":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Создайте удивительное искусство с помощью AI","AI Art Studio":"AI Art Studio","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Просто опишите, что вы хотите создать, выберите стиль и позвольте нашему AI сгенерировать уникальное искусство для вас.","Start Creating":"Начать создание","AI Generator":"AI Генератор","Library":"Библиотека","Editor":"Редактор","Community":"Сообщество","Create with AI":"Создание с помощью AI","Describe your artwork":"Опишите ваше искусство","Choose Style":"Выберите стиль","Realistic":"Реалистичное","Anime":"Аниме","Watercolor":"Акварель","Oil Painting":"Художественная油画","Sketch":"Скетч","Abstract":"Абстрактное","Generate Artwork":"Сгенерировать искусство","Creating your artwork...":"Создание вашего искусства...","Your Generated Artwork":"Ваше сгенерированное искусство","素材库":"Библиотека материалов","Fantasy Landscapes":"Фантастические ландшафты","Download":"Загрузить","Character Designs":"Дизайн персонажей","Sci-Fi Elements":"Элементы научной фантастики","Nature Patterns":"Природные узоры","My Library":"Моя библиотека","Customize Your Art":"Настройте ваше искусство","Adjust Style Parameters":"Настройте параметры стиля","Brightness":"Яркость","Contrast":"Контрастность","Saturation":"Насыщенность","Custom Filters":"Пользовательские фильтры","Vintage":"Винтаж","Apply":"Применить","Black \u0026 White":"Черно-белый","Neon Glow":"Неоновый свет","Apply Changes":"Применить изменения","Community Gallery":"Галерея сообщества","Share Your Artwork":"Поделитесь своим искусством","Title":"Заголовок","Description":"Описание","Share to Community":"Поделиться с сообществом","Sunset Dreams":"Сонные закаты","Cyberpunk City":"Киберпанковский город","Futuristic cityscape with neon lights":"Футуристический пейзаж города с неоновыми огнями","Forest Spirit":"Дух леса","Mystical forest with glowing creatures":"Мистический лес с светящимися созданиями","Please describe what you want to create":"Пожалуйста, опишите, что вы хотите создать","Artwork generated successfully!":"Искусство успешно сгенерировано!","Download started":"Начата загрузка","Please fill in both title and description":"Пожалуйста, заполните оба поля: заголовок и описание","Just now":"Сейчас","Shared to community!":"Поделено с сообществом!","Saved to library!":"Сохранено в библиотеку!","Please generate an artwork first":"Пожалуйста, сначала сгенерируйте искусство","Changes applied!":"Изменения применены!","Liked!":"Нравится!","__title__":"AI Art Studio - Создайте удивительное искусство с помощью AI"},"pt":{"AI Art Studio - Create Amazing Art with AI":"Estúdio de Arte AI - Crie Arte Maravilhosa com AI","AI Art Studio":"Estúdio de Arte AI","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Descreva simplesmente o que você quer criar, escolha seu estilo e deixe nosso AI gerar arte única para você.","Start Creating":"Comece a Criar","AI Generator":"Gerador AI","Library":"Biblioteca","Editor":"Editor","Community":"Comunidade","Create with AI":"Crie com AI","Describe your artwork":"Descreva sua arte","Choose Style":"Escolha o Estilo","Realistic":"Realista","Anime":"Anime","Watercolor":"Aquarela","Oil Painting":"Pintura a Óleo","Sketch":"Rascunho","Abstract":"Abstrato","Generate Artwork":"Gerar Arte","Creating your artwork...":"Criando sua arte...","Your Generated Artwork":"Sua Arte Gerada","素材库":"Biblioteca de Materiais","Fantasy Landscapes":"Paisagens de Ficção","Download":"Baixar","Character Designs":"Designs de Personagens","Sci-Fi Elements":"Elementos de Ciência-Ficção","Nature Patterns":"Padrões da Natureza","My Library":"Minha Biblioteca","Customize Your Art":"Personalize Sua Arte","Adjust Style Parameters":"Ajuste Parâmetros de Estilo","Brightness":"Brilho","Contrast":"Contraste","Saturation":"Saturação","Custom Filters":"Filtros Personalizados","Vintage":"Vintagem","Apply":"Aplicar","Black \u0026 White":"Preto e Branco","Neon Glow":"Brilho Neon","Apply Changes":"Aplicar Mudanças","Community Gallery":"Galeria da Comunidade","Share Your Artwork":"Compartilhe Sua Arte","Title":"Título","Description":"Descrição","Share to Community":"Compartilhar com a Comunidade","Sunset Dreams":"Sonhos ao Pôr do Sol","Cyberpunk City":"Cidade de Cyberpunk","Futuristic cityscape with neon lights":"Paisagem urbana futurista com luzes neon","Forest Spirit":"Espírito da Floresta","Mystical forest with glowing creatures":"Floresta mística com criaturas brilhantes","Please describe what you want to create":"Por favor, descreva o que você quer criar","Artwork generated successfully!":"Arte gerada com sucesso!","Download started":"Download iniciado","Please fill in both title and description":"Por favor, preencha tanto o título quanto a descrição","Just now":"Agora mesmo","Shared to community!":"Compartilhado com a comunidade!","Saved to library!":"Salvo na biblioteca!","Please generate an artwork first":"Por favor, gere uma arte primeiro","Changes applied!":"Mudanças aplicadas!","Liked!":"Gostei!","__title__":"Estúdio de Arte AI - Crie Arte Maravilhosa com AI"},"ar":{"AI Art Studio - Create Amazing Art with AI":"مرحبًا بكم في استوديو الفن الاصطناعي - أنشئ فنًا مذهلًا باستخدام الذكاء الاصطناعي","AI Art Studio":"استوديو الفن الاصطناعي","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"اسرد ما تريد إنشائه، اختر نمطك، ودع ذاكرتنا ينتج لك عمل فني فريد","Start Creating":"ابدأ في الإنشاء","AI Generator":"جهاز إعادة الإنتاج الذكاء الاصطناعي","Library":"المكتبة","Editor":"المحرر","Community":"المجتمع","Create with AI":"أنشئ باستخدام الذكاء الاصطناعي","Describe your artwork":"أصف عملك الفني","Choose Style":"اختر النمط","Realistic":"الحقيقي","Anime":"الأنيمي","Watercolor":"الماء واللون","Oil Painting":"الزيتية","Sketch":"الخطوط العريضة","Abstract":"المجرد","Generate Artwork":"إنشاء عمل فني","Creating your artwork...":"إنشاء عملك الفني...","Your Generated Artwork":"عمرك الفني المنشأ","素材库":"مكتبة المواد","Fantasy Landscapes":"مناظر طبيعية خيالية","Download":"التحميل","Character Designs":"تصميم الشخصيات","Sci-Fi Elements":"عناصر الخيال العلمي","Nature Patterns":"أنماط الطبيعة","My Library":"مكتبتي","Customize Your Art":"اضبط فنك الخاص","Adjust Style Parameters":"تعديل معاملات النمط","Brightness":"الضوء","Contrast":"المقارنة","Saturation":"التشبع","Custom Filters":"مرشحات مخصصة","Vintage":"قديم","Apply":"التطبيق","Black \u0026 White":"اسود وأبيض","Neon Glow":"ضوء نيون","Apply Changes":"تطبيق التغييرات","Community Gallery":"معرض المجتمع","Share Your Artwork":"شارك عملك الفني","Title":"عنوان","Description":"وصف","Share to Community":"شارك في المجتمع","Sunset Dreams":"أحلام شفق الشمس","Cyberpunk City":"مدينة سايبربونك","Futuristic cityscape with neon lights":"مناظر حضرية مستقبلية بمصابيح نيون","Forest Spirit":"روح الغابة","Mystical forest with glowing creatures":"غابة خيالية تحوي كائنات مضيئة","Please describe what you want to create":"رجاءً اسرد ما تريد إنشائه","Artwork generated successfully!":"تم إنشاء العمل الفني بنجاح!","Download started":"بدأ التحميل","Please fill in both title and description":"رجاءً ملئ كلاً من العنوان والوصف","Just now":"الآن","Shared to community!":"تم مشاركته في المجتمع!","Saved to library!":"تم حفظه في المكتبة!","Please generate an artwork first":"رجاءً قم بإنشاء عمل فني أولاً","Changes applied!":"تطبيق التغييرات!","Liked!":"تم تعجبًا!","__title__":"مرحبًا بكم في استوديو الفن الاصطناعي - أنشئ فنًا مذهلًا باستخدام الذكاء الاصطناعي"},"hi":{"AI Art Studio - Create Amazing Art with AI":"एआई आर्ट स्टूडियो - एआई के साथ आदर्श कला बनाएं","AI Art Studio":"एआई आर्ट स्टूडियो","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"साधारणता से बताएं कि आप क्या बनाना चाहते हैं, अपनी शैली चुनें और हमारे एआई को आपके लिए अद्वितीय कला कार्य उत्पन्न करने दें","Start Creating":"बनाना शुरू करें","AI Generator":"एआई जनरेटर","Library":"लाइब्रेरी","Editor":"एडिटर","Community":"कम्युनिटी","Create with AI":"एआई के साथ बनाएं","Describe your artwork":"अपनी कला का वर्णन करें","Choose Style":"शैली चुनें","Realistic":"वास्तविक","Anime":"एनीमे","Watercolor":"वाटरकालर","Oil Painting":"ऑयल पेंटिंग","Sketch":"स्कीच","Abstract":"साबित","Generate Artwork":"कला कार्य उत्पन्न करें","Creating your artwork...":"आपकी कला कार्य बनाया जा रहा है...","Your Generated Artwork":"आपकी उत्पन्न कला","素材库":"सामग्री कोश","Fantasy Landscapes":"फैंटेसी लैंडस्केप","Download":"डाउनलोड","Character Designs":"काराक्तर डिजाइन","Sci-Fi Elements":"साइ-फाई एलीमेंट्स","Nature Patterns":"प्रकृति पैटर्न","My Library":"मेरी लाइब्रेरी","Customize Your Art":"अपनी कला को कस्टमाइज करें","Adjust Style Parameters":"शैली पारामीटर्स समायोजित करें","Brightness":"चमकीलापन","Contrast":"कंट्रास्ट","Saturation":"सूखीपन","Custom Filters":"कस्टम फिल्टर्स","Vintage":"विंटेज","Apply":"आवेदन करें","Black \u0026 White":"काला और श्वेत","Neon Glow":"नियन ग्लोअर","Apply Changes":"परिवर्तन लागू करें","Community Gallery":"कम्युनिटी गैलरी","Share Your Artwork":"अपनी कला को साझा करें","Title":"शीर्षक","Description":"वर्णन","Share to Community":"कम्युनिटी में साझा करें","Sunset Dreams":"सूर्यास्त के सपने","Cyberpunk City":"साइबरपंक सिटी","Futuristic cityscape with neon lights":"नियन लाइट्स के साथ भविष्यवान शहरी दृश्य","Forest Spirit":"जंगल की आत्मा","Mystical forest with glowing creatures":"चमकती जीवों के साथ मायामायी जंगल","Please describe what you want to create":"कृपया बताएं कि आप क्या बनाना चाहते हैं","Artwork generated successfully!":"कला कार्य सफलता से उत्पन्न किया गया!","Download started":"डाउनलोड शुरू हुआ","Please fill in both title and description":"कृपया शीर्षक और वर्णन दोनों भरें","Just now":"अभी ही","Shared to community!":"कम्युनिटी में साझा किया गया!","Saved to library!":"कोश में सहेजा गया!","Please generate an artwork first":"कृपया पहले कोई कला कार्य उत्पन्न करें","Changes applied!":"परिवर्तन लागू किए गए!","Liked!":"सराहा गया!","__title__":"एआई आर्ट स्टूडियो - एआई के साथ आदर्श कला बनाएं"},"id":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Buat Karya Seni yang Menakjubkan dengan AI","AI Art Studio":"AI Art Studio","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Beri deskripsi tentang apa yang ingin Anda buat, pilih gaya Anda, dan biarkan AI kami generate karya seni unik untuk Anda.","Start Creating":"Mulai Membuat","AI Generator":"Generasi AI","Library":"Pustaka","Editor":"Editor","Community":"Komunitas","Create with AI":"Buat dengan AI","Describe your artwork":"Deskripsikan karya seni Anda","Choose Style":"Pilih Gaya","Realistic":"Realistik","Anime":"Anime","Watercolor":"Watercolor","Oil Painting":"S涕er","Sketch":"Sketsa","Abstract":"Abstrak","Generate Artwork":"Buat Karya Seni","Creating your artwork...":"Membuat karya seni Anda...","Your Generated Artwork":"Karya Seni Yang Dibuat Anda","素材库":"Pustaka Bahan","Fantasy Landscapes":"Lanskap Fiksi","Download":"Unduh","Character Designs":"Rancangan Karakter","Sci-Fi Elements":"Elemen Sci-Fi","Nature Patterns":"Pola Alam","My Library":"Pustaka Saya","Customize Your Art":"Tayangkan Karya Seni Anda","Adjust Style Parameters":"Tayangkan Parameter Gaya","Brightness":"Kecakapan","Contrast":"Kontras","Saturation":"Penyedu","Custom Filters":"Filter Kustom","Vintage":"Vintaj","Apply":"Terapkan","Black \u0026 White":"Hitam \u0026 Putih","Neon Glow":"Kesan Neon","Apply Changes":"Terapkan Perubahan","Community Gallery":"Galeri Komunitas","Share Your Artwork":"Bagikan Karya Seni Anda","Title":"Judul","Description":"Deskripsi","Share to Community":"Bagikan ke Komunitas","Sunset Dreams":"Rumah Tangga Pajaman","Cyberpunk City":"Kota Cyberpunk","Futuristic cityscape with neon lights":"Pemandangan Kota Fiksi dengan Lampu Neon","Forest Spirit":"Roeh Hutan","Mystical forest with glowing creatures":"Hutan Mitologis dengan Kreatur Bercahaya","Please describe what you want to create":"Harap deskripsikan apa yang ingin Anda buat","Artwork generated successfully!":"Karya seni berhasil dibuat!","Download started":"Pemulaun Unduhan","Please fill in both title and description":"Harapisiisi judul dan deskripsi keduanya","Just now":"Baru saja","Shared to community!":"Dibagikan ke komunitas!","Saved to library!":"Disimpan ke pustaka!","Please generate an artwork first":"Harap buat karya seni dahulu","Changes applied!":"Perubahan terapkan!","Liked!":"Dipuji!","__title__":"AI Art Studio - Buat Karya Seni yang Menakjubkan dengan AI"},"vi":{"AI Art Studio - Create Amazing Art with AI":"AI Art Studio - Tạo nghệ thuật tuyệt vời với AI","AI Art Studio":"AI Art Studio","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"Chỉ cần mô tả điều bạn muốn tạo, chọn phong cách của bạn và để AI của chúng tôi tạo ra tác phẩm nghệ thuật độc đáo cho bạn.","Start Creating":"Bắt đầu Tạo","AI Generator":"Trình tạo AI","Library":"Thư viện","Editor":"Biên tập viên","Community":"Cộng đồng","Create with AI":"Tạo với AI","Describe your artwork":"Mô tả tác phẩm nghệ thuật của bạn","Choose Style":"Chọn phong cách","Realistic":"Thực tế","Anime":"Anime","Watercolor":"Nước màu","Oil Painting":"Họa phẩm dầu","Sketch":"Bút vẽ","Abstract":"Trừu tượng","Generate Artwork":"Tạo tác phẩm nghệ thuật","Creating your artwork...":"Đang tạo tác phẩm nghệ thuật của bạn...","Your Generated Artwork":"Tác phẩm nghệ thuật đã tạo của bạn","素材库":"Thư viện nguyên liệu","Fantasy Landscapes":"Khu vực phong cảnh huyền ảo","Download":"Tải xuống","Character Designs":"Thiết kế nhân vật","Sci-Fi Elements":"Các yếu tố khoa học viễn tưởng","Nature Patterns":"Mẫu tự nhiên","My Library":"Thư viện của tôi","Customize Your Art":"Tùy chỉnh tác phẩm nghệ thuật của bạn","Adjust Style Parameters":"Chỉnh sửa các tham số phong cách","Brightness":"Sáng","Contrast":"Độ tương phản","Saturation":"Độ bão hòa","Custom Filters":"Bộ lọc tùy chỉnh","Vintage":"Cổ điển","Apply":"Áp dụng","Black \u0026 White":"Đen và trắng","Neon Glow":"Ánh sáng neon","Apply Changes":"Áp dụng thay đổi","Community Gallery":"Thư viện cộng đồng","Share Your Artwork":"Chia sẻ tác phẩm nghệ thuật của bạn","Title":"Tiêu đề","Description":"Mô tả","Share to Community":"Chia sẻ với cộng đồng","Sunset Dreams":"Giấc mơ hoàng hôn","Cyberpunk City":"Thành phố cyberpunk","Futuristic cityscape with neon lights":"Khu vực thành phố tương lai với ánh sáng neon","Forest Spirit":"Thần rừng","Mystical forest with glowing creatures":"Rừng huyền bí với sinh vật sáng","Please describe what you want to create":"Vui lòng mô tả điều bạn muốn tạo","Artwork generated successfully!":"Tác phẩm nghệ thuật đã tạo thành công!","Download started":"Quá trình tải xuống đã bắt đầu","Please fill in both title and description":"Vui lòng điền cả tiêu đề và mô tả","Just now":"Chỉ bây giờ","Shared to community!":"Đã chia sẻ với cộng đồng!","Saved to library!":"Đã lưu vào thư viện!","Please generate an artwork first":"Vui lòng tạo tác phẩm nghệ thuật trước","Changes applied!":"Thay đổi đã áp dụng!","Liked!":"Thích!","__title__":"AI Art Studio - Tạo nghệ thuật tuyệt vời với AI"},"th":{"AI Art Studio - Create Amazing Art with AI":"สตูดิโอศิลปะ AI - สร้างศิลปะที่น่าทึ่งด้วย AI","AI Art Studio":"สตูดิโอศิลปะ AI","Simply describe what you want to create, choose your style, and let our AI generate unique artwork for you.":"อธิบายสิ่งที่คุณต้องการสร้าง คัดสไตล์ที่คุณชอบ แล้วให้ AI ของเราสร้างงานศิลปะที่ไม่ซ้ำใคล่ให้คุณ","Start Creating":"เริ่มสร้าง","AI Generator":"ตัวสร้างภาพ AI","Library":"ห้องสมุด","Editor":"ตัวแก้ไข","Community":"ชุมชน","Create with AI":"สร้างด้วย AI","Describe your artwork":"อธิบายงานศิลปะของคุณ","Choose Style":"เลือกสไตล์","Realistic":"เหมือนจริง","Anime":"แอนิเมชั่น","Watercolor":"สีน้ำ","Oil Painting":"สีน้ำมัน","Sketch":"ร่าง","Abstract":"นาฬิกา","Generate Artwork":"สร้างงานศิลปะ","Creating your artwork...":"กำลังสร้างงานศิลปะของคุณ...","Your Generated Artwork":"งานศิลปะที่ถูกสร้างขึ้นโดยคุณ","素材库":"ห้องสมุดวัสดุ","Fantasy Landscapes":"ภูมิทัศน์แฟนตาซี","Download":"ดาวน์โหลด","Character Designs":"ออกแบบตัวละคร","Sci-Fi Elements":"องค์ประกอบวิทยาศาสตร์สมมติ","Nature Patterns":"ลายธรรมชาติ","My Library":"ห้องสมุดของฉัน","Customize Your Art":"ปรับแต่งงานศิลปะของคุณ","Adjust Style Parameters":"ปรับแต่งพารามิเตอร์สไตล์","Brightness":"ความสว่าง","Contrast":"ความคมชัด","Saturation":"ความอิ่มของสี","Custom Filters":"ฟิลเตอร์ที่กำหนดเอง","Vintage":"วินเทจ","Apply":"นำไปใช้","Black \u0026 White":"ขาวดำ","Neon Glow":"แสงนีออน","Apply Changes":"นำการเปลี่ยนแปลงไปใช้","Community Gallery":"แกลเลอรี่ชุมชน","Share Your Artwork":"แชร์งานศิลปะของคุณ","Title":"ชื่อเรื่อง","Description":"คำอธิบาย","Share to Community":"แชร์ไปยังชุมชน","Sunset Dreams":"ฝันข้างสายตะวัน","Cyberpunk City":"เมืองไซเบอร์พังค์","Futuristic cityscape with neon lights":"ภูมิทัศน์เมืองอนาคตที่มีแสงนีออน","Forest Spirit":"วิญญาณป่า","Mystical forest with glowing creatures":"ป่าลึกลับที่มีสิ่งมีชีวิตสว่างพลางอยู่","Please describe what you want to create":"กรุณาอธิบายสิ่งที่คุณต้องการสร้าง","Artwork generated successfully!":"สร้างงานศิลปะสำเร็จ!","Download started":"เริ่มดาวน์โหลดแล้ว","Please fill in both title and description":"กรุณากรอกทั้งชื่อเรื่องและคำอธิบาย","Just now":"เมื่อเดี๋ยวนี้","Shared to community!":"แชร์ไปยังชุมชนแล้ว!","Saved to library!":"บันทึกไปยังห้องสมุดแล้ว!","Please generate an artwork first":"กรุณาสร้างงานศิลปะก่อน","Changes applied!":"นำการเปลี่ยนแปลงไปใช้แล้ว!","Liked!":"ถูกใจแล้ว!","__title__":"สตูดิโอศิลปะ AI - สร้างศิลปะที่น่าทึ่งด้วย AI"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
