@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRGameMaster - Your Ultimate VR Gaming Assistant</title><meta name="description" content="Free online tool: VRGameMaster - Your Ultimate VR Gaming Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="VRGameMaster - Your Ultimate VR Gaming Assistant">
+<meta property="og:description" content="Free online tool: VRGameMaster - Your Ultimate VR Gaming Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_072023_VRGameMaster.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            line-height: 1.6;
+            padding-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        .navbar {
+            background-color: #1e1e1e;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a9eff;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: #4a9eff;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            color: #cccccc;
+            margin-bottom: 30px;
+        }
+        
+        /* Search Section */
+        .search-section {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .search-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tab-button {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            background-color: #4a9eff;
+        }
+        
+        .tab-button:hover {
+            background-color: #3a8eef;
+        }
+        
+        .search-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .search-input input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #3a3a3a;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #ffffff;
+        }
+        
+        .search-input input:focus {
+            outline: none;
+            border-color: #4a9eff;
+        }
+        
+        .search-button {
+            background-color: #4a9eff;
+            color: #ffffff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: #3a8eef;
+        }
+        
+        /* Results Section */
+        .results-section {
+            margin-top: 40px;
+        }
+        
+        .result-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .result-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .stars {
+            color: #ffd700;
+        }
+        
+        .result-platform {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .platform-tag {
+            background-color: #2a2a2a;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .result-description {
+            color: #cccccc;
+            margin-bottom: 15px;
+        }
+        
+        .result-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .compatibility {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .compatible {
+            background-color: #2e7d32;
+            color: #ffffff;
+        }
+        
+        .partial {
+            background-color: #ff9800;
+            color: #ffffff;
+        }
+        
+        .incompatible {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+        
+        /* Reviews Section */
+        .reviews-section {
+            margin-top: 40px;
+        }
+        
+        .review-card {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .reviewer {
+            font-weight: bold;
+        }
+        
+        .review-date {
+            color: #999999;
+            font-size: 14px;
+        }
+        
+        .review-rating {
+            margin-bottom: 10px;
+        }
+        
+        .review-text {
+            color: #cccccc;
+        }
+        
+        /* Add Review Form */
+        .add-review-form {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #3a3a3a;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #ffffff;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .rating-input {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .star-input {
+            font-size: 24px;
+            color: #555555;
+            cursor: pointer;
+        }
+        
+        .star-input.active {
+            color: #ffd700;
+        }
+        
+        .submit-button {
+            background-color: #4a9eff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-button:hover {
+            background-color: #3a8eef;
+        }
+        
+        /* Link Checker */
+        .link-checker {
+            background-color: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .check-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .valid {
+            background-color: #2e7d32;
+            color: #ffffff;
+        }
+        
+        .invalid {
+            background-color: #d32f2f;
+            color: #ffffff;
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 5px;
+            color: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .notification.success {
+            background-color: #2e7d32;
+        }
+        
+        .notification.error {
+            background-color: #d32f2f;
+        }
+        
+        .notification.info {
+            background-color: #1976d2;
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .search-input {
+                flex-direction: column;
+            }
+            
+            .result-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .result-footer {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">VRGameMaster</div>
+                <div class="nav-links">
+                    <a href="#home">Home</a>
+                    <a href="#games">Games</a>
+                    <a href="#reviews">Reviews</a>
+                    <a href="#about">About</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Your Ultimate VR Gaming Assistant</h1>
+            <p>Discover, compare, and review VR games across all platforms and devices</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-tabs">
+                <button class="tab-button active" data-tab="game">Find Games</button>
+                <button class="tab-button" data-tab="platform">Platform Games</button>
+                <button class="tab-button" data-tab="device">Device Compatibility</button>
+                <button class="tab-button" data-tab="review">Game Reviews</button>
+                <button class="tab-button" data-tab="link">Check Download Link</button>
+            </div>
+            
+            <div class="search-input">
+                <input type="text" id="searchInput" placeholder="Enter game name, platform, device, review, or download link...">
+                <button class="search-button" id="searchButton">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+        <div class="container">
+            <div id="resultsContainer">
+                <p style="text-align: center; color: #999999;">Enter a search term to find VR games</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews-section" id="reviewsSection" style="display: none;">
+        <div class="container">
+            <h2>Community Reviews</h2>
+            <div id="reviewsContainer">
+                <!-- Reviews will be populated here -->
+            </div>
+            
+            <div class="add-review-form">
+                <h3>Add Your Review</h3>
+                <form id="reviewForm">
+                    <div class="form-group">
+                        <label for="reviewerName">Your Name</label>
+                        <input type="text" id="reviewerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Rating</label>
+                        <div class="rating-input" id="ratingInput">
+                            <span class="star-input" data-rating="1">★</span>
+                            <span class="star-input" data-rating="2">★</span>
+                            <span class="star-input" data-rating="3">★</span>
+                            <span class="star-input" data-rating="4">★</span>
+                            <span class="star-input" data-rating="5">★</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewText">Your Review</label>
+                        <textarea id="reviewText" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Sample data for demonstration
+        const sampleGames = [
+            {
+                id: 1,
+                title: "Half-Life: Alyx",
+                platforms: ["PC VR", "Valve Index"],
+                rating: 4.8,
+                description: "A groundbreaking VR game set in the Half-Life universe.",
+                compatibleDevices: ["Valve Index", "Oculus Rift S", "HTC Vive", "Windows Mixed Reality"],
+                reviews: [
+                    { reviewer: "Alex Johnson", rating: 5, text: "Absolutely stunning graphics and gameplay!", date: "2026-05-10" },
+                    { reviewer: "Sam Wilson", rating: 4, text: "Great game but can be challenging at times.", date: "2026-05-08" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Beat Saber",
+                platforms: ["PC VR", "PlayStation VR", "Quest"],
+                rating: 4.7,
+                description: "Rhythm game where you slash blocks with lightsabers.",
+                compatibleDevices: ["Oculus Quest", "Oculus Rift S", "HTC Vive", "Valve Index", "Windows Mixed Reality"],
+                reviews: [
+                    { reviewer: "Taylor Kim", rating: 5, text: "Best VR game ever! So much fun!", date: "2026-05-12" },
+                    { reviewer: "Jordan Lee", rating: 4, text: "Great workout and very addictive.", date: "2026-05-09" }
+                ]
+            },
+            {
+                id: 3,
+                title: "Superhot VR",
+                platforms: ["PC VR", "PlayStation VR", "Quest"],
+                rating: 4.5,
+                description: "Time moves only when you move in this stylish action game.",
+                compatibleDevices: ["Oculus Rift S", "HTC Vive", "Valve Index", "Windows Mixed Reality", "PlayStation VR"],
+                reviews: [
+                    { reviewer: "Casey Smith", rating: 4, text: "Unique concept and great gameplay.", date: "2026-05-11" },
+                    { reviewer: "Morgan Brown", rating: 5, text: "Mind-blowing VR experience!", date: "2026-05-07" }
+                ]
+            }
+        ];
+
+        const samplePlatforms = [
+            { name: "Oculus Quest", games: ["Beat Saber", "Superhot VR", "Moss"] },
+            { name: "SteamVR", games: ["Half-Life: Alyx", "Skyrim VR", "Boneworks"] },
+            { name: "PlayStation VR", games: "Beat Saber, Superhot VR, Blood and Truth" },
+            { name: "Valve Index", games: "Half-Life: Alyx, Boneworks, The Walking Dead Saints & Sinners" }
+        ];
+
+        const sampleDevices = [
+            { name: "Oculus Quest 2", compatibleGames: ["Beat Saber", "Superhot VR", "Moss"] },
+            { name: "Valve Index", compatibleGames: ["Half-Life: Alyx", "Boneworks"] },
+            { name: "HTC Vive", compatibleGames: ["Half-Life: Alyx", "Skyrim VR", "Superhot VR"] },
+            { name: "PlayStation VR", compatibleGames: ["Beat Saber", "Blood and Truth", "Superhot VR"] }
+        ];
+
+        // Initialize variables
+        let currentTab = 'game';
+        let selectedRating = 0;
+
+        // DOM elements
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const reviewsSection = document.getElementById('reviewsSection');
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const reviewForm = document.getElementById('reviewForm');
+        const notification = document.getElementById('notification');
+        const ratingInput = document.getElementById('ratingInput');
+
+        // Tab functionality
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                currentTab = this.dataset.tab;
+                reviewsSection.style.display = 'none';
+                
+                if (currentTab === 'review') {
+                    reviewsSection.style.display = 'block';
+                }
+            });
+        });
+
+        // Search functionality
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const searchTerm = searchInput.value.trim();
+            if (!searchTerm) {
+                showNotification('Please enter a search term', 'error');
+                return;
+            }
+
+            resultsContainer.innerHTML = '<div class="spinner"></div>';
+
+            // Simulate API call delay
+            setTimeout(() => {
+                switch(currentTab) {
+                    case 'game':
+                        searchGames(searchTerm);
+                        break;
+                    case 'platform':
+                        searchByPlatform(searchTerm);
+                        break;
+                    case 'device':
+                        checkDeviceCompatibility(searchTerm);
+                        break;
+                    case 'review':
+                        searchReviews(searchTerm);
+                        break;
+                    case 'link':
+                        checkDownloadLink(searchTerm);
+                        break;
+                }
+            }, 800);
+        }
+
+        function searchGames(searchTerm) {
+            const results = sampleGames.filter(game => 
+                game.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                game.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            displayResults(results, 'games');
+        }
+
+        function searchByPlatform(searchTerm) {
+            const platform = samplePlatforms.find(p => 
+                p.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (platform) {
+                const results = sampleGames.filter(game => 
+                    platform.games.some(g => game.title.toLowerCase().includes(g.toLowerCase()))
+                );
+                displayResults(results, 'platform');
+            } else {
+                resultsContainer.innerHTML = `<p>No platform found matching "${searchTerm}"</p>`;
+            }
+        }
+
+        function checkDeviceCompatibility(searchTerm) {
+            const device = sampleDevices.find(d => 
+                d.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (device) {
+                const results = sampleGames.filter(game => 
+                    device.compatibleGames.some(g => game.title.toLowerCase().includes(g.toLowerCase()))
+                );
+                displayResults(results, 'device', device.name);
+            } else {
+                resultsContainer.innerHTML = `<p>No device found matching "${searchTerm}"</p>`;
+            }
+        }
+
+        function searchReviews(searchTerm) {
+            const results = sampleGames.filter(game => 
+                game.reviews.some(review => 
+                    review.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    review.reviewer.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+            );
+
+            displayResults(results, 'reviews');
+        }
+
+        function checkDownloadLink(searchTerm) {
+            // Simulate link validation
+            const isValid = searchTerm.includes('http') || searchTerm.includes('https');
+            
+            resultsContainer.innerHTML = `
+                <div class="check-result ${isValid ? 'valid' : 'invalid'}">
+                    <h3>Link Status: ${isValid ? 'Valid' : 'Invalid'}</h3>
+                    <p>${isValid ? 'The download link appears to be valid.' : 'The download link is invalid or inaccessible.'}</p>
+                </div>
+            `;
+        }
+
+        function displayResults(results, type, deviceName = '') {
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `<p>No results found for your search.</p>`;
+                return;
+            }
+
+            let html = '';
+            
+            results.forEach(game => {
+                const compatibilityClass = deviceName ? 
+                    (game.compatibleDevices.includes(deviceName) ? 'compatible' : 
+                     game.compatibleDevices.some(d => d.toLowerCase().includes(deviceName.toLowerCase())) ? 'partial' : 'incompatible') : '';
+                
+                const compatibilityText = deviceName ? 
+                    (game.compatibleDevices.includes(deviceName) ? 'Fully Compatible' : 
+                     game.compatibleDevices.some(d => d.toLowerCase().includes(deviceName.toLowerCase())) ? 'Partially Compatible' : 'Not Compatible') : '';
+                
+                html += `
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h3 class="result-title">${game.title}</h3>
+                            <div class="result-rating">
+                                <span class="stars">${'★'.repeat(Math.floor(game.rating))}${'☆'.repeat(5 - Math.floor(game.rating))}</span>
+                                <span>${game.rating}</span>
+                            </div>
+                        </div>
+                        <div class="result-platform">
+                            ${game.platforms.map(p => `<span class="platform-tag">${p}</span>`).join('')}
+                        </div>
+                        <p class="result-description">${game.description}</p>
+                        <div class="result-footer">
+                            ${deviceName ? `<div class="compatibility ${compatibilityClass}">${compatibilityText}</div>` : ''}
+                            <button class="submit-button" onclick="showReviews(${game.id})">View Reviews</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        function showReviews(gameId) {
+            const game = sampleGames.find(g => g.id === gameId);
+            if (!game) return;
+
+            reviewsContainer.innerHTML = '';
+            
+            game.reviews.forEach(review => {
+                reviewsContainer.innerHTML += `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <span class="reviewer">${review.reviewer}</span>
+                            <span class="review-date">${review.date}</span>
+                        </div>
+                        <div class="review-rating">
+                            <span class="stars">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</span>
+                        </div>
+                        <p class="review-text">${review.text}</p>
+                    </div>
+                `;
+            });
+
+            reviewsSection.style.display = 'block';
+            reviewsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Rating functionality
+        document.querySelectorAll('.star-input').forEach(star => {
+            star.addEventListener('click', function() {
+                selectedRating = parseInt(this.dataset.rating);
+                updateStars();
+            });
+        });
+
+        function updateStars() {
+            document.querySelectorAll('.star-input').forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // Review form submission
+        reviewForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (selectedRating === 0) {
+                showNotification('Please select a rating', 'error');
+                return;
+            }
+
+            const reviewerName = document.getElementById('reviewerName').value;
+            const reviewText = document.getElementById('reviewText').value;
+            
+            // Add review to first game as demo
+            if (sampleGames.length > 0) {
+                sampleGames[0].reviews.push({
+                    reviewer: reviewerName,
+                    rating: selectedRating,
+                    text: reviewText,
+                    date: new Date().toISOString().split('T')[0]
+                });
+                
+                showNotification('Review submitted successfully!', 'success');
+                reviewForm.reset();
+                selectedRating = 0;
+                updateStars();
+                
+                // Refresh reviews display
+                showReviews(sampleGames[0].id);
+            }
+        });
+
+        // Notification function
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Your Ultimate VR Gaming Assistant","Home":"Home","Games":"Games","Reviews":"Reviews","About":"About","Your Ultimate VR Gaming Assistant":"Your Ultimate VR Gaming Assistant","Discover, compare, and review VR games across all platforms and devices":"Discover, compare, and review VR games across all platforms and devices","Find Games":"Find Games","Platform Games":"Platform Games","Device Compatibility":"Device Compatibility","Game Reviews":"Game Reviews","Check Download Link":"Check Download Link","Search":"Search","Enter a search term to find VR games":"Enter a search term to find VR games","Community Reviews":"Community Reviews","Add Your Review":"Add Your Review","Your Name":"Your Name","Rating":"Rating","Your Review":"Your Review","Submit Review":"Submit Review","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"A groundbreaking VR game set in the Half-Life universe.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"Absolutely stunning graphics and gameplay!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"Great game but can be challenging at times.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Rhythm game where you slash blocks with lightsabers.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"Best VR game ever! So much fun!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"Great workout and very addictive.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"Time moves only when you move in this stylish action game.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"Unique concept and great gameplay.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"Mind-blowing VR experience!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Your Ultimate VR Gaming Assistant"},"es":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Tu Asistente de Juegos VR Ultimate","Home":"Inicio","Games":"Juegos","Reviews":"Revisión","About":"Acerca de","Your Ultimate VR Gaming Assistant":"Tu Asistente de Juegos VR Ultimate","Discover, compare, and review VR games across all platforms and devices":"Descubre, compara y revisa juegos VR en todas las plataformas y dispositivos","Find Games":"Encuentra Juegos","Platform Games":"Juegos de Plataforma","Device Compatibility":"Compatibilidad de Dispositivo","Game Reviews":"Revisión de Juegos","Check Download Link":"Verificar Enlace de Descarga","Search":"Buscar","Enter a search term to find VR games":"Introduce un término de búsqueda para encontrar juegos VR","Community Reviews":"Revisión de la Comunidad","Add Your Review":"Añade tu Revisión","Your Name":"Tu Nombre","Rating":"Calificación","Your Review":"Tu Revisión","Submit Review":"Enviar Revisión","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Un juego VR revolucionario situado en el universo de Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"¡Gráficos y jugabilidad absolutamente impresionantes!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"Gran juego, pero puede ser desafiante a veces.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Juego de ritmo donde debes cortar bloques con espadas láser.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"¡El mejor juego de realidad virtual de todos los tiempos! ¡Tan divertido!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"¡Excelente rutina de ejercicios y muy adictivo!","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"El tiempo solo avanza cuando te mueves en este juego de acción elegante.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"Concepto único y gran jugabilidad.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"¡Experiencia de realidad virtual alucinante!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Tu Asistente de Juegos VR Ultimate"},"ja":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Your Ultimate VR Gaming Assistant","Home":"ホーム","Games":"ゲーム","Reviews":"レビュー","About":"について","Your Ultimate VR Gaming Assistant":"Your Ultimate VR Gaming Assistant","Discover, compare, and review VR games across all platforms and devices":"すべてのプラットフォームとデバイスでのVRゲームを発見、比較、レビュー","Find Games":"ゲームを見つける","Platform Games":"プラットフォームゲーム","Device Compatibility":"デバイス互換性","Game Reviews":"ゲームレビュー","Check Download Link":"ダウンロードリンクを確認","Search":"検索","Enter a search term to find VR games":"VRゲームを見つけるための検索語を入力","Community Reviews":"コミュニティレビュー","Add Your Review":"レビューを追加","Your Name":"あなたの名前","Rating":"評価","Your Review":"あなたのレビュー","Submit Review":"レビューを提出","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Half-Life宇宙に位置する革新的なVRゲーム。","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"驚くほど美しいグラフィックとゲームプレイ！","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"素晴らしいゲームですが、時には挑戦的です。","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"ライトセーバーでブロックを切り裂くリズムゲーム。","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"史上最高のVRゲーム！とても楽しいです！","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"素晴らしいワークアウトで非常に魅力的です。","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"このスタイリッシュなアクションゲームで動くときだけ時間が進みます。","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"ユニークなコンセプトと素晴らしいゲームプレイ。","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"心を奪われるVR体験！","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber、Superhot VR、Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx、Boneworks、The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","Oculus Rift S":"Oculus Rift S","__title__":"VRGameMaster - Your Ultimate VR Gaming Assistant"},"ko":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Your Ultimate VR Gaming Assistant","Home":"홈","Games":"게임","Reviews":"리뷰","About":"정보","Your Ultimate VR Gaming Assistant":"Your Ultimate VR Gaming Assistant","Discover, compare, and review VR games across all platforms and devices":"모든 플랫폼과 장치에서 VR 게임을 발견하고 비교하고 리뷰하세요","Find Games":"게임 찾기","Platform Games":"플랫폼 게임","Device Compatibility":"장치 호환성","Game Reviews":"게임 리뷰","Check Download Link":"다운로드 링크 확인","Search":"검색","Enter a search term to find VR games":"VR 게임을 찾기 위해 검색어를 입력하세요","Community Reviews":"커뮤니티 리뷰","Add Your Review":"리뷰 추가","Your Name":"이름","Rating":"평점","Your Review":"당신의 리뷰","Submit Review":"리뷰 제출","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Half-Life 우주에서 설정된 혁신적인 VR 게임.","Oculus Rift S":"Oculus Rift S","__title__":"VRGameMaster - Your Ultimate VR Gaming Assistant"},"fr":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Votre Assistant de Jeu VR Ultime","Home":"Accueil","Games":"Jeux","Reviews":"Avis","About":"À Propos","Your Ultimate VR Gaming Assistant":"Votre Assistant de Jeu VR Ultime","Discover, compare, and review VR games across all platforms and devices":"Découvrez, comparez et évaluez des jeux VR sur toutes les plateformes et appareils","Find Games":"Trouver des Jeux","Platform Games":"Jeux de Plateforme","Device Compatibility":"Compatibilité de l'Appareil","Game Reviews":"Avis de Jeux","Check Download Link":"Vérifiez le Lien de Téléchargement","Search":"Recherche","Enter a search term to find VR games":"Entrez un terme de recherche pour trouver des jeux VR","Community Reviews":"Avis de la Communauté","Add Your Review":"Ajoutez Votre Avis","Your Name":"Votre Nom","Rating":"Évaluation","Your Review":"Votre Avis","Submit Review":"Soumettre Avis","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"VR PC","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Un jeu VR révolutionnaire se déroulant dans l'univers de Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"Graphismes et gameplay absolument incroyables !","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"Très bon jeu mais peut être délicat à certains moments.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Jeu de rythme où vous coupez des blocs avec des sabres lumineux.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"Meilleur jeu VR de tous les temps ! Si amusant !","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"Excellent entraînement et très addictif.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"Le temps ne passe que lorsque vous bougez dans ce jeu d'action stylé.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"Concept unique et gameplay excellent.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"Expérience VR éblouissante !","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Votre Assistant de Jeu VR Ultime"},"de":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Ihr ultimater VR-Spiel-Assistent","Home":"Startseite","Games":"Spiele","Reviews":"Bewertungen","About":"Über","Your Ultimate VR Gaming Assistant":"Ihr ultimater VR-Spiel-Assistent","Discover, compare, and review VR games across all platforms and devices":"Entdecken, vergleichen und bewerten Sie VR-Spiele auf allen Plattformen und Geräten","Find Games":"Spiele finden","Platform Games":"Plattformspiele","Device Compatibility":"Gerätekompatibilität","Game Reviews":"Spielbewertungen","Check Download Link":"Download-Link überprüfen","Search":"Suche","Enter a search term to find VR games":"Geben Sie einen Suchbegriff ein, um VR-Spiele zu finden","Community Reviews":"Gemeinschaftsbewertungen","Add Your Review":"Ihre Bewertung hinzufügen","Your Name":"Ihr Name","Rating":"Bewertung","Your Review":"Ihre Bewertung","Submit Review":"Bewertung einreichen","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Ein bahnbrechendes VR-Spiel, das im Half-Life-Universum spielt.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"Absolut atemberaubende Grafik und Spielmechanik!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"Großartiges Spiel, aber es kann manchmal herausfordernd sein.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Rhythmuspiel, bei dem man Blöcke mit Lichtschwertern durchtrennt.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"Bestes VR-Spiel aller Zeiten! So viel Spaß!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"Großartiges Training und sehr süchtig machend.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"Die Zeit vergeht nur, wenn du in diesem stilvollen Actionspiel bewegst.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"Eindeutiges Konzept und großartiges Gameplay.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"Unglaubliche VR-Erfahrung!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Ihr ultimater VR-Spiel-Assistent"},"ru":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Ваш终极VR ассистент для игр","Home":"Дом","Games":"Игры","Reviews":"Отзывы","About":"О нас","Your Ultimate VR Gaming Assistant":"Ваш终极VR ассистент для игр","Discover, compare, and review VR games across all platforms and devices":"Обнаружьте, сравните и оцените VR игры на всех платформах и устройствах","Find Games":"Найти игры","Platform Games":"Платформенные игры","Device Compatibility":"Совместимость с устройствами","Game Reviews":"Отзывы о играх","Check Download Link":"Проверьте ссылку для скачивания","Search":"Поиск","Enter a search term to find VR games":"Введите поисковый запрос, чтобы найти VR игры","Community Reviews":"Обзоры сообщества","Add Your Review":"Добавьте ваш отзыв","Your Name":"Ваше имя","Rating":"Оценка","Your Review":"Ваш отзыв","Submit Review":"Отправить отзыв","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Революционная VR игра, происходящая в мире Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Алекс Джонсон","Absolutely stunning graphics and gameplay!":"Absolutely stunning graphics and gameplay!","Sam Wilson":"Сам Уилсон","Great game but can be challenging at times.":"Отличная игра, но в некоторых случаях может быть сложной.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Ритмическая игра, в которой вы разрезаете блоки световым мечом.","Oculus Quest":"Oculus Quest","Taylor Kim":"Тейлор Ким","Best VR game ever! So much fun!":"Лучший VR-игра всех времен! Так много удовольствия!","Jordan Lee":"Джордан Ли","Great workout and very addictive.":"Отличная тренировка и очень зависимая.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"Время движется только тогда, когда вы движетесь в этой стильной игре-экшене.","Casey Smith":"Кейси Смит","Unique concept and great gameplay.":"Уникальная концепция и отличное геймплей.","Morgan Brown":"Морган Браун","Mind-blowing VR experience!":"Ошеломляющий VR-опыты!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Ваш终极VR ассистент для игр"},"pt":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Seu Assistente de Jogos VR Ultimate","Home":"Início","Games":"Jogos","Reviews":"Revisões","About":"Sobre","Your Ultimate VR Gaming Assistant":"Seu Assistente de Jogos VR Ultimate","Discover, compare, and review VR games across all platforms and devices":"Descubra, compare e revise jogos VR em todas as plataformas e dispositivos","Find Games":"Encontre Jogos","Platform Games":"Jogos de Plataforma","Device Compatibility":"Compatibilidade de Dispositivo","Game Reviews":"Revisões de Jogos","Check Download Link":"Verifique o Link de Download","Search":"Pesquisa","Enter a search term to find VR games":"Insira um termo de pesquisa para encontrar jogos VR","Community Reviews":"Revisões da Comunidade","Add Your Review":"Adicione Sua Revisão","Your Name":"Seu Nome","Rating":"Avaliação","Your Review":"Sua Revisão","Submit Review":"Enviar Revisão","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Um jogo VR revolucionário situado no universo do Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"Absolutamente impressionantes gráficos e jogabilidade!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"Excelente jogo, mas pode ser desafiador em alguns momentos.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"Jogo de ritmo onde você corta blocos com sabres de luz.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"O melhor jogo VR de todos os tempos! Tanto divertimento!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"Excelente treino e muito viciante.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"O tempo avança apenas quando você se move neste jogo de ação estiloso.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"Conceito único e excelente jogabilidade.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"Experiência de VR espetacular!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Seu Assistente de Jogos VR Ultimate"},"ar":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"مستشارك الرسمي لعب الألعاب الافتراضية - Your Ultimate VR Gaming Assistant","Home":"الصفحة الرئيسية","Games":"الألعاب","Reviews":"التقييمات","About":"عن","Your Ultimate VR Gaming Assistant":"مستشارك الرسمي لعب الألعاب الافتراضية","Discover, compare, and review VR games across all platforms and devices":" اكتشف، قارن وتقييم ألعاب الافتراضية عبر جميع المنصات والأجهزة","Find Games":"ابحث عن الألعاب","Platform Games":"ألعاب المنصة","Device Compatibility":"تطابق الأجهزة","Game Reviews":"تقييمات الألعاب","Check Download Link":"تحقق من رابط التحميل","Search":"البحث","Enter a search term to find VR games":"أدخل كلمة البحث لاستكشاف ألعاب الافتراضية","Community Reviews":"التقييمات المجتمعية","Add Your Review":"أضف مراجعتك","Your Name":"اسمك","Rating":"التقييم","Your Review":"مراجعتك","Submit Review":"إرسال المراجعة","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"لعبة افتراضية مبتكرة تتميز بوضعها في عالم Half-Life.","Oculus Rift S":"Oculus Rift S","__title__":"مستشارك الرسمي لعب الألعاب الافتراضية - Your Ultimate VR Gaming Assistant"},"hi":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - आपका अंतिम वीआर गेमिंग सहायक","Home":"होम","Games":"गेम्स","Reviews":"समीक्षाएँ","About":"बारे में","Your Ultimate VR Gaming Assistant":"आपका अंतिम वीआर गेमिंग सहायक","Discover, compare, and review VR games across all platforms and devices":"सभी प्लेटफॉर्म और डिवाइसों पर वीआर गेम्स को खोजें, तुलना करें और समीक्षा करें","Find Games":"गेम्स खोजें","Platform Games":"प्लेटफॉर्म गेम्स","Device Compatibility":"डिवाइस समर्थन","Game Reviews":"गेम समीक्षाएँ","Check Download Link":"डाउनलोड लिंक जांच करें","Search":"खोज","Enter a search term to find VR games":"वीआर गेम्स खोजने के लिए खोज शब्द भरें","Community Reviews":"समुदाय समीक्षाएँ","Add Your Review":"अपनी समीक्षा जोड़ें","Your Name":"आपका नाम","Rating":"रेटिंग","Your Review":"आपकी समीक्षा","Submit Review":"समीक्षा जमा करें","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Half-Life यूनिवर्स में सेट हुए एक ब्रेकथ्रू वीआर गेम.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"बिल्कुल अद्भुत ग्राफिक्स और गेमप्लेय!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"बहुत अच्छा गेम लेकिन कभी-कभी चुनौतीपूर्ण हो सकता है.","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"रीथम गेम जहां आप लाइटसेबर से ब्लॉक्स को काटते हैं.","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"अब तक का सबसे अच्छा वीआर गेम! बहुत मज़ा आ रहा है!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"बहुत अच्छा वर्कआउट और बहुत लगावदार.","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"इस शैलीशी एक्शन गेम में समय केवल तब चलता है जब आप गति करते हैं.","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"अद्वितीय अवधारणा और बहुत अच्छा गेमप्लेय.","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"दिमाग को धूमिल करने वाला वीआर अनुभव!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - आपका अंतिम वीआर गेमिंग सहायक"},"id":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Asisten Permainan VR Terbaik Anda","Home":"Beranda","Games":"Permainan","Reviews":"Review","About":"Tentang","Your Ultimate VR Gaming Assistant":"Asisten Permainan VR Terbaik Anda","Discover, compare, and review VR games across all platforms and devices":"Temukan, bandingkan, dan review permainan VR di seluruh platform dan perangkat","Find Games":"Cari Permainan","Platform Games":"Permainan Platform","Device Compatibility":"Kemampuan Perangkat","Game Reviews":"Review Permainan","Check Download Link":"Periksa Tautan Unduh","Search":"Cari","Enter a search term to find VR games":"Masukkan istilah pencarian untuk menemukan permainan VR","Community Reviews":"Review Komunitas","Add Your Review":"Tambahkan Review Anda","Your Name":"Nama Anda","Rating":"Rating","Your Review":"Review Anda","Submit Review":"Kirim Review","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Permainan VR yang berdiri sendiri yang berada di dunia Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"Grafis dan gameplay yang sangat menakjubkan!","Sam Wilson":"Permainan yang bagus tetapi kadang-kadang menantang.","Beat Saber":"Permainan ritme di mana Anda memotong blok dengan lightsaber.","PlayStation VR":"PlayStation VR","Taylor Kim":"Permainan VR terbaik yang pernah ada! Sangat menyenangkan!","Jordan Lee":"Pelatihan yang bagus dan sangat menarik.","Superhot VR":"Waktu hanya bergerak saat Anda bergerak di permainan aksi yang stylish ini.","Casey Smith":"Konsep unik dan gameplay yang bagus.","Morgan Brown":"Pengalaman VR yang memukul hati!","Skyrim VR":"Beat Saber, Superhot VR, Blood and Truth","Beat Saber, Superhot VR, Blood and Truth":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","Great game but can be challenging at times.":"Permainan yang hebat tetapi kadang-kadang menantang.","Rhythm game where you slash blocks with lightsabers.":"Permainan ritme tempur di mana Anda memotong blok dengan lightsaber.","Oculus Quest":"Oculus Quest","Best VR game ever! So much fun!":"Permainan VR terbaik yang pernah ada! Sangat menyenangkan!","Great workout and very addictive.":"Pekerjaan yang baik dan sangat menarik.","Time moves only when you move in this stylish action game.":"Waktu hanya bergerak saat Anda bergerak di permainan aksi yang berlekak.","Unique concept and great gameplay.":"Konsep unik dan gameplay yang hebat.","Mind-blowing VR experience!":"Pengalaman VR yang memalukan pikir.","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","__title__":"VRGameMaster - Asisten Permainan VR Terbaik Anda"},"vi":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - Trợ lý chơi game VR hoàn hảo của bạn","Home":"Trang chủ","Games":"Trò chơi","Reviews":"Đánh giá","About":"Giới thiệu","Your Ultimate VR Gaming Assistant":"Trợ lý chơi game VR hoàn hảo của bạn","Discover, compare, and review VR games across all platforms and devices":"Tìm kiếm, so sánh và đánh giá các trò chơi VR trên tất cả các nền tảng và thiết bị","Find Games":"Tìm trò chơi","Platform Games":"Trò chơi nền tảng","Device Compatibility":"Khả năng tương thích thiết bị","Game Reviews":"Đánh giá trò chơi","Check Download Link":"Kiểm tra liên kết tải xuống","Search":"Tìm kiếm","Enter a search term to find VR games":"Nhập từ khóa để tìm kiếm trò chơi VR","Community Reviews":"Đánh giá cộng đồng","Add Your Review":"Thêm đánh giá của bạn","Your Name":"Tên của bạn","Rating":"Đánh giá","Your Review":"Đánh giá của bạn","Submit Review":"Gửi đánh giá","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"Một trò chơi VR đột phá đặt trong vũ trụ Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"图形和游戏玩法绝对令人惊叹！","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"是一款很棒的游戏，但有时可能会具有挑战性。","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"一款节奏游戏，你可以用光剑砍掉方块。","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"史上最佳VR游戏！乐趣无穷！","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"锻炼效果极佳，非常上瘾。","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"在这款时尚的动作游戏中，时间只有在移动时才会流逝。","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"独特的概念和出色的游戏玩法。","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"令人惊叹的VR体验！","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - Trợ lý chơi game VR hoàn hảo của bạn"},"th":{"VRGameMaster - Your Ultimate VR Gaming Assistant":"VRGameMaster - ระบุความสำคัญของคุณในเกม VR","Home":"หน้าหลัก","Games":"เกม","Reviews":"รีวิว","About":"เกี่ยวกับ","Your Ultimate VR Gaming Assistant":"ระบุความสำคัญของคุณในเกม VR","Discover, compare, and review VR games across all platforms and devices":"ค้นพบ เปรียบเทียบ และรีวิวเกม VR ทั้งหมดบนแผงความสามารถและอุปกรณ์","Find Games":"ค้นหาเกม","Platform Games":"เกมแบบแผง","Device Compatibility":"ความสามารถปรับเปลี่ยนอุปกรณ์","Game Reviews":"รีวิวเกม","Check Download Link":"ตรวจสอบลิงก์ดาวน์โหลด","Search":"ค้นหา","Enter a search term to find VR games":"ใส่คำค้นหาเพื่อค้นหาเกม VR","Community Reviews":"รีวิวหมู่บ้าน","Add Your Review":"เพิ่มรีวิวของคุณ","Your Name":"ชื่อของคุณ","Rating":"แรงทาง","Your Review":"รีวิวของคุณ","Submit Review":"ยื่นรีวิว","Half-Life: Alyx":"Half-Life: Alyx","PC VR":"PC VR","Valve Index":"Valve Index","A groundbreaking VR game set in the Half-Life universe.":"เกม VR ที่มีนวัตกรรมที่ตั้งอยู่ในจักรวาลของ Half-Life.","Oculus Rift S":"Oculus Rift S","HTC Vive":"HTC Vive","Windows Mixed Reality":"Windows Mixed Reality","Alex Johnson":"Alex Johnson","Absolutely stunning graphics and gameplay!":"อาลงาศภาพและการเล่นที่น่าตื่นตระหนก!","Sam Wilson":"Sam Wilson","Great game but can be challenging at times.":"เกมที่ดีมาก แต่บางครั้งอาจยากกว่า","Beat Saber":"Beat Saber","PlayStation VR":"PlayStation VR","Rhythm game where you slash blocks with lightsabers.":"เกมเล่นดนตรีที่คุณตัดบล็อคด้วยแว่นไฟเซาท์เซอร์","Oculus Quest":"Oculus Quest","Taylor Kim":"Taylor Kim","Best VR game ever! So much fun!":"เกม VR ที่ดีที่สุดในทุกวัน! สนุกมาก!","Jordan Lee":"Jordan Lee","Great workout and very addictive.":"การฝึกซ้อมที่ดีและเข้าขวัญมาก","Superhot VR":"Superhot VR","Time moves only when you move in this stylish action game.":"เวลาจะเคลื่อนไปเมื่อคุณเคลื่อนตัวในเกมการเล่นแอ็กชันที่สไตล์","Casey Smith":"Casey Smith","Unique concept and great gameplay.":"ความคิดคร่าวที่เด่นและการเล่นที่ดี","Morgan Brown":"Morgan Brown","Mind-blowing VR experience!":"ประสบการณ์ VR ที่ทำให้หวานใจ!","Skyrim VR":"Skyrim VR","Beat Saber, Superhot VR, Blood and Truth":"Beat Saber, Superhot VR, Blood and Truth","Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners":"Half-Life: Alyx, Boneworks, The Walking Dead Saints \u0026 Sinners","Oculus Quest 2":"Oculus Quest 2","Blood and Truth":"Blood and Truth","__title__":"VRGameMaster - ระบุความสำคัญของคุณในเกม VR"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
