@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudEventFlow - Your Workflow Automation Hub</title><meta name="description" content="Free online tool: CloudEventFlow - Your Workflow Automation Hub. No signup, no payment — free forever.">
+<meta property="og:title" content="CloudEventFlow - Your Workflow Automation Hub">
+<meta property="og:description" content="Free online tool: CloudEventFlow - Your Workflow Automation Hub. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_000124_CloudEventFl.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8b3;
+            --accent: #4fbdba;
+            --accent-hover: #7ec8e3;
+            --success: #2ed573;
+            --error: #ff6348;
+            --warning: #ffa502;
+            --border: #2d2d44;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 2rem 0;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .intro-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .intro-section p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .feature-btn:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Content Display Area */
+        .content-display {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            min-height: 300px;
+        }
+
+        .content-display h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .content-area {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-height: 200px;
+            white-space: pre-wrap;
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+
+        /* Input Areas */
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.input-field {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .file-upload:hover .file-upload-label {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Task Reminder */
+        .reminder-time {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reminder-time input {
+            padding: 0.5rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        /* Data Visualization */
+        .chart-container {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 4rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .intro-section h1 {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">CloudEventFlow</a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-input" id="globalSearch" placeholder="Search for anything...">
+                <button class="search-btn" id="globalSearchBtn">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+            <section class="intro-section">
+                <h1>CloudEventFlow - Your Workflow Automation Hub</h1>
+                <p>Streamline your tasks with our AI-powered tools. Summarize text, analyze images, visualize data, set reminders, and more - all in one place.</p>
+            </section>
+
+            <section id="features" class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Text Summarizer</h3>
+                    <p>Transform long articles into concise summaries with our AI-powered text summarization tool.</p>
+                    <button class="feature-btn" onclick="showFeature('summarizer')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Keyword Search</h3>
+                    <p>Find relevant information and news articles based on your keywords with our intelligent search.</p>
+                    <button class="feature-btn" onclick="showFeature('search')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>Image Analyzer</h3>
+                    <p>Upload any image and get detailed analysis and insights with our computer vision technology.</p>
+                    <button class="feature-btn" onclick="showFeature('image')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Data Visualizer</h3>
+                    <p>Transform your raw data into beautiful, interactive charts and graphs with ease.</p>
+                    <button class="feature-btn" onclick="showFeature('data')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Task Reminder</h3>
+                    <p>Never forget important tasks again with our smart reminder and notification system.</p>
+                    <button class="feature-btn" onclick="showFeature('reminder')">Try Now</button>
+                </div>
+            </section>
+
+            <section id="content-display" class="content-display" style="display: none;">
+                <h2 id="feature-title">Feature Title</h2>
+                <div id="feature-content" class="content-area">Content will appear here...</div>
+            </section>
+
+            <section id="feature-inputs" class="input-section" style="display: none;">
+                <!-- Feature-specific inputs will be dynamically inserted here -->
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2023 CloudEventFlow. All rights reserved.</p>
+                <ul class="footer-links">
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#support">Support</a></li>
+                    <li><a href="#api">API</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification">
+        <span id="notification-text">Notification text</span>
+    </div>
+
+    <script>
+        // Feature data and implementations
+        const features = {
+            summarizer: {
+                title: 'Text Summarizer',
+                description: 'Enter your text below and get a concise summary.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="summarizer-input">Enter text to summarize:</label>
+                        <textarea id="summarizer-input" class="input-field" placeholder="Paste or type your text here..."></textarea>
+                    </div>
+                    <button class="action-btn" id="summarizer-btn">Generate Summary</button>
+                `,
+                process: function(input) {
+                    // Simple summarization algorithm - extract first and last sentences
+                    const sentences = input.split(/[.!?]+/).filter(s => s.trim().length > 0);
+                    if (sentences.length <= 2) return input;
+                    
+                    const firstSentence = sentences[0] + '.';
+                    const lastSentence = sentences[sentences.length - 1] + '.';
+                    
+                    // In a real application, this would use AI/ML for better summarization
+                    return `Summary:\n\n${firstSentence}\n\n${lastSentence}\n\n[Note: This is a simplified demonstration. A full implementation would use advanced NLP techniques.]`;
+                }
+            },
+            search: {
+                title: 'Keyword Search',
+                description: 'Enter keywords to find relevant information.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="search-input">Enter keywords:</label>
+                        <input type="text" id="search-input" class="input-field" placeholder="Type your keywords here...">
+                    </div>
+                    <button class="action-btn" id="search-btn">Search</button>
+                `,
+                process: function(input) {
+                    // Simulated search results
+                    const keywords = input.toLowerCase().split(' ');
+                    const topics = [
+                        'Technology', 'Science', 'Business', 'Health', 'Education', 
+                        'Entertainment', 'Sports', 'Travel', 'Food', 'Fashion'
+                    ];
+                    
+                    const results = topics.filter(topic => 
+                        keywords.some(keyword => topic.toLowerCase().includes(keyword))
+                    );
+                    
+                    if (results.length === 0) {
+                        return `No direct matches found for "${input}". Try different keywords or browse our popular topics:\n\n${topics.slice(0, 5).join(', ')}`;
+                    }
+                    
+                    let output = `Search results for "${input}":\n\n`;
+                    results.forEach((result, index) => {
+                        output += `${index + 1}. ${result}\n`;
+                        output += `   This is a simulated result. In a real application, this would contain actual articles and information related to ${result}.\n\n`;
+                    });
+                    
+                    return output;
+                }
+            },
+            image: {
+                title: 'Image Analyzer',
+                description: 'Upload an image to get detailed analysis.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="image-upload">Upload an image:</label>
+                        <div class="file-upload">
+                            <input type="file" id="image-upload" accept="image/*">
+                            <label for="image-upload" class="file-upload-label">
+                                Click to upload or drag and drop your image here
+                            </label>
+                        </div>
+                    </div>
+                    <button class="action-btn" id="image-btn">Analyze Image</button>
+                `,
+                process: function(file) {
+                    // In a real application, this would use computer vision APIs
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.marginTop = '1rem';
+                        
+                        document.getElementById('feature-content').innerHTML = `
+                            <div style="text-align: center;">
+                                <h3>Image Analysis Results:</h3>
+                                ${img.outerHTML}
+                                <div style="margin-top: 1rem;">
+                                    <h4>Detected Features:</h4>
+                                    <ul>
+                                        <li>Color Palette: Primary colors detected (simulated)</li>
+                                        <li>Objects: Common objects identified (simulated)</li>
+                                        <li>Text: No readable text detected</li>
+                                        <li>Quality: High resolution image</li>
+                                    </ul>
+                                    <p style="margin-top: 1rem;">Note: This is a simulated analysis. A full implementation would use advanced computer vision algorithms.</p>
+                                </div>
+                            </div>
+                        `;
+                    };
+                    reader.readAsDataURL(file);
+                    return 'Analyzing image...';
+                }
+            },
+            data: {
+                title: 'Data Visualizer',
+                description: 'Enter your data to generate interactive charts.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="data-input">Enter data (comma-separated values):</label>
+                        <input type="text" id="data-input" class="input-field" placeholder="e.g., 10, 20, 30, 40, 50">
+                    </div>
+                    <div class="input-group">
+                        <label for="data-labels">Enter labels (comma-separated):</label>
+                        <input type="text" id="data-labels" class="input-field" placeholder="e.g., Jan, Feb, Mar, Apr, May">
+                    </div>
+                    <button class="action-btn" id="data-btn">Generate Chart</button>
+                `,
+                process: function(data, labels) {
+                    const values = data.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+                    const labelList = labels.split(',').map(l => l.trim());
+                    
+                    if (values.length === 0) {
+                        return 'Please enter valid numeric data.';
+                    }
+                    
+                    // Ensure we have enough labels
+                    while (labelList.length < values.length) {
+                        labelList.push(`Item ${labelList.length + 1}`);
+                    }
+                    
+                    const maxValue = Math.max(...values);
+                    const barWidth = Math.min(100 / values.length, 30);
+                    const chartHeight = 200;
+                    
+                    let chartHTML = '<div style="text-align: center;">';
+                    chartHTML += '<h3>Data Visualization</h3>';
+                    chartHTML += '<div style="position: relative; height: ' + chartHeight + 'px; margin: 20px 0;">';
+                    
+                    values.forEach((value, index) => {
+                        const height = (value / maxValue) * (chartHeight - 40);
+                        const left = index * (100 / values.length) + (100 / values.length - barWidth) / 2;
+                        
+                        chartHTML += `
+                            <div style="position: absolute; bottom: 0; left: ${left}%; width: ${barWidth}%; background-color: var(--accent); height: ${height}px;">
+                                <div style="position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;">
+                                    ${labelList[index]}
+                                </div>
+                                <div style="position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;">
+                                    ${value}
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    chartHTML += '</div>';
+                    chartHTML += '<p style="margin-top: 10px;">Note: This is a basic bar chart visualization. In a full implementation, you could choose different chart types and customize appearance.</p>';
+                    chartHTML += '</div>';
+                    
+                    return chartHTML;
+                }
+            },
+            reminder: {
+                title: 'Task Reminder',
+                description: 'Set a reminder for your important tasks.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="reminder-task">Task description:</label>
+                        <input type="text" id="reminder-task" class="input-field" placeholder="Enter your task description...">
+                    </div>
+                    <div class="input-group">
+                        <label>Reminder time:</label>
+                        <div class="reminder-time">
+                            <input type="date" id="reminder-date">
+                            <input type="time" id="reminder-time">
+                        </div>
+                    </div>
+                    <button class="action-btn" id="reminder-btn">Set Reminder</button>
+                `,
+                process: function(task, date, time) {
+                    const now = new Date();
+                    const reminderDateTime = new Date(`${date}T${time}`);
+                    
+                    if (reminderDateTime <= now) {
+                        return 'Please select a future date and time for your reminder.';
+                    }
+                    
+                    // Store reminder in localStorage
+                    const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+                    reminders.push({
+                        id: Date.now(),
+                        task: task,
+                        date: date,
+                        time: time,
+                        timestamp: reminderDateTime.getTime()
+                    });
+                    localStorage.setItem('reminders', JSON.stringify(reminders));
+                    
+                    // Set actual timeout for notification
+                    const delay = reminderDateTime.getTime() - now.getTime();
+                    setTimeout(() => {
+                        showNotification(`Reminder: ${task}`, 'success');
+                    }, delay);
+                    
+                    return `Reminder set successfully!\n\nTask: ${task}\nDate: ${date}\nTime: ${time}\n\nYou will receive a notification at the scheduled time.`;
+                }
+            }
+        };
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Feature display function
+        function showFeature(featureName) {
+            const feature = features[featureName];
+            if (!feature) return;
+            
+            const contentDisplay = document.getElementById('content-display');
+            const featureTitle = document.getElementById('feature-title');
+            const featureContent = document.getElementById('feature-content');
+            const featureInputs = document.getElementById('feature-inputs');
+            
+            contentDisplay.style.display = 'block';
+            featureTitle.textContent = feature.title;
+            featureContent.textContent = feature.description;
+            featureInputs.innerHTML = feature.inputs;
+            featureInputs.style.display = 'block';
+            
+            // Scroll to feature inputs
+            featureInputs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Bind feature-specific event handlers
+            bindFeatureHandlers(featureName);
+        }
+
+        // Feature-specific event handlers
+        function bindFeatureHandlers(featureName) {
+            switch(featureName) {
+                case 'summarizer':
+                    document.getElementById('summarizer-btn').onclick = function() {
+                        const input = document.getElementById('summarizer-input').value;
+                        if (!input.trim()) {
+                            showNotification('Please enter text to summarize', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.summarizer.process(input);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Summary generated successfully!', 'success');
+                    };
+                    break;
+                    
+                case 'search':
+                    document.getElementById('search-btn').onclick = function() {
+                        const input = document.getElementById('search-input').value;
+                        if (!input.trim()) {
+                            showNotification('Please enter keywords to search', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.search.process(input);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Search completed!', 'success');
+                    };
+                    break;
+                    
+                case 'image':
+                    document.getElementById('image-btn').onclick = function() {
+                        const fileInput = document.getElementById('image-upload');
+                        const file = fileInput.files[0];
+                        
+                        if (!file) {
+                            showNotification('Please upload an image first', 'warning');
+                            return;
+                        }
+                        
+                        if (!file.type.startsWith('image/')) {
+                            showNotification('Please upload a valid image file', 'error');
+                            return;
+                        }
+                        
+                        const result = features.image.process(file);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Image analysis started!', 'success');
+                    };
+                    break;
+                    
+                case 'data':
+                    document.getElementById('data-btn').onclick = function() {
+                        const dataInput = document.getElementById('data-input').value;
+                        const labelsInput = document.getElementById('data-labels').value || '';
+                        
+                        if (!dataInput.trim()) {
+                            showNotification('Please enter data to visualize', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.data.process(dataInput, labelsInput);
+                        document.getElementById('feature-content').innerHTML = result;
+                        showNotification('Chart generated successfully!', 'success');
+                    };
+                    break;
+                    
+                case 'reminder':
+                    document.getElementById('reminder-btn').onclick = function() {
+                        const taskInput = document.getElementById('reminder-task').value;
+                        const dateInput = document.getElementById('reminder-date').value;
+                        const timeInput = document.getElementById('reminder-time').value;
+                        
+                        if (!taskInput.trim()) {
+                            showNotification('Please enter a task description', 'warning');
+                            return;
+                        }
+                        
+                        if (!dateInput || !timeInput) {
+                            showNotification('Please select both date and time for the reminder', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.reminder.process(taskInput, dateInput, timeInput);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Reminder set successfully!', 'success');
+                    };
+                    break;
+            }
+        }
+
+        // Global search functionality
+        document.getElementById('globalSearchBtn').onclick = function() {
+            const searchInput = document.getElementById('globalSearch').value;
+            if (!searchInput.trim()) {
+                showNotification('Please enter a search term', 'warning');
+                return;
+            }
+            
+            // Find matching features
+            const matchingFeatures = Object.keys(features).filter(key => 
+                key.toLowerCase().includes(searchInput.toLowerCase()) || 
+                features[key].title.toLowerCase().includes(searchInput.toLowerCase())
+            );
+            
+            if (matchingFeatures.length > 0) {
+                showFeature(matchingFeatures[0]);
+                showNotification(`Found matching feature: ${features[matchingFeatures[0]].title}`, 'success');
+            } else {
+                showNotification('No matching features found', 'warning');
+            }
+        };
+
+        // Enter key support for global search
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('globalSearchBtn').click();
+            }
+        });
+
+        // Initialize with today's date for reminder date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reminder-date').setAttribute('min', today);
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Your Workflow Automation Hub","Text Summarizer":"Text Summarizer","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transform long articles into concise summaries with our AI-powered text summarization tool.","Try Now":"Try Now","Keyword Search":"Keyword Search","Find relevant information and news articles based on your keywords with our intelligent search.":"Find relevant information and news articles based on your keywords with our intelligent search.","Image Analyzer":"Image Analyzer","Upload any image and get detailed analysis and insights with our computer vision technology.":"Upload any image and get detailed analysis and insights with our computer vision technology.","Data Visualizer":"Data Visualizer","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transform your raw data into beautiful, interactive charts and graphs with ease.","Task Reminder":"Task Reminder","Never forget important tasks again with our smart reminder and notification system.":"Never forget important tasks again with our smart reminder and notification system.","Feature Title":"Feature Title","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. All rights reserved.","Privacy Policy":"Privacy Policy","Terms of Service":"Terms of Service","Support":"Support","API":"API","Notification text":"Notification text","Enter your text below and get a concise summary.":"Enter your text below and get a concise summary.","Paste or type your text here...":"Paste or type your text here...","Enter keywords to find relevant information.":"Enter keywords to find relevant information.","Type your keywords here...":"Type your keywords here...","Upload an image to get detailed analysis.":"Upload an image to get detailed analysis.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Analyzing image...","Enter your data to generate interactive charts.":"Enter your data to generate interactive charts.","e.g., 10, 20, 30, 40, 50":"e.g., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"e.g., Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Please enter valid numeric data.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Set a reminder for your important tasks.","Enter your task description...":"Enter your task description...","Please select a future date and time for your reminder.":"Please select a future date and time for your reminder.","Please enter text to summarize":"Please enter text to summarize","Summary generated successfully!":"Summary generated successfully!","Please enter keywords to search":"Please enter keywords to search","Search completed!":"Search completed!","Please upload an image first":"Please upload an image first","Please upload a valid image file":"Please upload a valid image file","Image analysis started!":"Image analysis started!","__title__":"CloudEventFlow - Your Workflow Automation Hub"},"zh-CN":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - 您的工作流程自动化中心","Text Summarizer":"Text Summarizer","Transform long articles into concise summaries with our AI-powered text summarization tool.":"使用我们的AI驱动的文本摘要工具将长篇文章转化为简洁的摘要。","Try Now":"立即尝试","Keyword Search":"关键词搜索","Find relevant information and news articles based on your keywords with our intelligent search.":"使用我们的智能搜索根据您的关键词查找相关信息和新闻文章。","Image Analyzer":"图像分析器","Upload any image and get detailed analysis and insights with our computer vision technology.":"上传任何图像并使用我们的计算机视觉技术获得详细分析和洞察。","Data Visualizer":"数据可视化器","Transform your raw data into beautiful, interactive charts and graphs with ease.":"轻松将您的原始数据转换为美丽、交互式的图表和图形。","Task Reminder":"任务提醒","Never forget important tasks again with our smart reminder and notification system.":"使用我们的智能提醒和通知系统，再也不用担心忘记重要任务。","Feature Title":"功能标题","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow。版权所有。","Privacy Policy":"隐私政策","Terms of Service":"服务条款","Support":"支持","API":"API","Notification text":"通知文本","Enter your text below and get a concise summary.":"在下方输入您的文本以获得简洁的摘要。","Paste or type your text here...":"在此粘贴或键入您的文本...","Enter keywords to find relevant information.":"输入关键词以查找相关信息。","Type your keywords here...":"在此键入您的关键词...","Upload an image to get detailed analysis.":"上传一张图像以获得详细分析。","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"分析图像...","Enter your data to generate interactive charts.":"输入您的数据以生成交互式图表。","e.g., 10, 20, 30, 40, 50":"例如，10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"例如，Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"请输入有效的数字数据。","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"为您的任务设置提醒。","Enter your task description...":"输入您的任务描述...","Please select a future date and time for your reminder.":"请选择一个未来日期和时间来设置提醒。","Please enter text to summarize":"请输入要总结的文本","Summary generated successfully!":"摘要生成成功！","Please enter keywords to search":"请输入关键词进行搜索","Search completed!":"搜索完成！","Please upload an image first":"请首先上传一张图像","Please upload a valid image file":"请上传一个有效的图像文件","Image analysis started!":"图像分析开始！","__title__":"CloudEventFlow - 您的工作流程自动化中心"},"es":{"CloudEventFlow":"CloudEventFlow","Home":"Inicio","Features":"Características","About":"Acerca de","Contact":"Contacto","Search":"Búsqueda","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Tu Hub de Automatización de Flujo de Trabajo","Text Summarizer":"Resumidor de Texto","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transforma artículos largos en resúmenes concisos con nuestra herramienta de resumen de texto potenciada por IA.","Try Now":"Prueba ahora","Keyword Search":"Búsqueda de palabras clave","Find relevant information and news articles based on your keywords with our intelligent search.":"Encuentra información relevante y artículos de noticias basados en tus palabras clave con nuestra búsqueda inteligente.","Image Analyzer":"Analizador de Imágenes","Upload any image and get detailed analysis and insights with our computer vision technology.":"Carga cualquier imagen y obtén análisis detallados e información con nuestra tecnología de visión por computadora.","Data Visualizer":"Visualizador de Datos","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transforma tus datos en bruto en gráficos e informes interactivos y bellamente de manera sencilla.","Task Reminder":"Recordatorio de Tareas","Never forget important tasks again with our smart reminder and notification system.":"Nunca olvides más tareas importantes con nuestro sistema inteligente de recordatorios y notificaciones.","Feature Title":"Título de la Funcionalidad","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Todos los derechos reservados.","Privacy Policy":"Política de Privacidad","Terms of Service":"Términos de Servicio","Support":"Soporte","API":"API","Notification text":"Texto de notificación","Enter your text below and get a concise summary.":"Ingresa tu texto a continuación y obtén un resumen conciso.","Paste or type your text here...":"Pega o escribe tu texto aquí...","Enter keywords to find relevant information.":"Ingresa palabras clave para encontrar información relevante.","Type your keywords here...":"Escribe tus palabras clave aquí...","Upload an image to get detailed analysis.":"Carga una imagen para obtener un análisis detallado.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Analizando imagen...","Enter your data to generate interactive charts.":"Ingresa tus datos para generar gráficos interactivos.","e.g., 10, 20, 30, 40, 50":"por ejemplo, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"por ejemplo, Ene, Feb, Mar, Abr, May","Please enter valid numeric data.":"Por favor, introduce datos numéricos válidos.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Establece un recordatorio para tus tareas importantes.","Enter your task description...":"Introduce la descripción de tu tarea...","Please select a future date and time for your reminder.":"Por favor, selecciona una fecha y hora futuras para tu recordatorio.","Please enter text to summarize":"Por favor, introduce texto para resumir","Summary generated successfully!":"Resumen generado con éxito!","Please enter keywords to search":"Por favor, introduce palabras clave para buscar","Search completed!":"Búsqueda completada!","Please upload an image first":"Por favor, carga una imagen primero","Please upload a valid image file":"Por favor, carga un archivo de imagen válido","Image analysis started!":"¡Se inició el análisis de imagen!","__title__":"CloudEventFlow - Tu Hub de Automatización de Flujo de Trabajo"},"ja":{"CloudEventFlow":"CloudEventFlow","Home":"ホーム","Features":"特徴","About":"について","Contact":"連絡先","Search":"検索","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - あなたのワークフローオートメーションハブ","Text Summarizer":"テキスト要約ツール","Transform long articles into concise summaries with our AI-powered text summarization tool.":"AIパワードのテキスト要約ツールで長文を簡潔な要約に変換しましょう。","Try Now":"今すぐ試す","Keyword Search":"キーワード検索","Find relevant information and news articles based on your keywords with our intelligent search.":"キーワードに基づいて関連情報やニュース記事を見つけるためのインテリジェント検索で。","Image Analyzer":"画像解析器","Upload any image and get detailed analysis and insights with our computer vision technology.":"どのような画像でもアップロードして、コンピュータビジョntechnologyで詳細な分析と洞察を得ましょう。","Data Visualizer":"データ可視化ツール","Transform your raw data into beautiful, interactive charts and graphs with ease.":"生データを簡単に美しいインタラクティブなグラフやチャートに変換しましょう。","Task Reminder":"タスクリマインダー","Never forget important tasks again with our smart reminder and notification system.":"私たちのスマートリマインダーと通知システムで重要なタスクを再び忘れずに。","Feature Title":"機能タイトル","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. 全著作権所有。","Privacy Policy":"プライバシーポリシー","Terms of Service":"利用規約","Support":"サポート","API":"API","Notification text":"通知テキスト","Enter your text below and get a concise summary.":"以下にテキストを入力して簡潔な要約を取得してください。","Paste or type your text here...":"ここにテキストをペーストまたは入力してください...","Enter keywords to find relevant information.":"関連情報を見つけるためのキーワードを入力してください。","Type your keywords here...":"ここにキーワードを入力してください...","Upload an image to get detailed analysis.":"詳細な分析を行うために画像をアップロードしてください。","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"画像を解析中...","Enter your data to generate interactive charts.":"インタラクティブなグラフを生成するためにデータを入力してください。","e.g., 10, 20, 30, 40, 50":"例：10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"例：Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"有効な数値データを入力してください。","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"重要なタスクのリマインダーを設定してください。","Enter your task description...":"タスクの説明を入力してください...","Please select a future date and time for your reminder.":"リマインダーの未来の日付と時間を選んでください。","Please enter text to summarize":"要約するテキストを入力してください。","Summary generated successfully!":"要約が成功しました！","Please enter keywords to search":"検索するためのキーワードを入力してください。","Search completed!":"検索が完了しました！","Please upload an image first":"まず画像をアップロードしてください。","Please upload a valid image file":"有効な画像ファイルをアップロードしてください。","Image analysis started!":"画像解析が開始されました！","__title__":"CloudEventFlow - あなたのワークフローオートメーションハブ"},"ko":{"CloudEventFlow":"CloudEventFlow","Home":"홈","Features":"기능","About":"關於","Contact":"연락처","Search":"검색","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - 귀하의 워크플로우 자동화 중심","Text Summarizer":"텍스트 요약","Transform long articles into concise summaries with our AI-powered text summarization tool.":"우리의 인공지능 기반 텍스트 요약 도구로 장문의 기사를 간결한 요약으로 변환하세요.","Try Now":"지금 테스트해 보세요","Keyword Search":"키워드 검색","Find relevant information and news articles based on your keywords with our intelligent search.":"우리의 지능형 검색을 통해 키워드에 따라 관련 정보와 뉴스 기사를 찾아보세요.","Image Analyzer":"이미지 분석기","Upload any image and get detailed analysis and insights with our computer vision technology.":"어떤 이미지든 업로드하고 컴퓨터 시각 기술로 자세한 분석과 통찰을 얻으세요.","Data Visualizer":"데이터 시각화","Transform your raw data into beautiful, interactive charts and graphs with ease.":"원본 데이터를 쉽게 아름다운, 상호작용하는 차트와 그래프로 변환하세요.","Task Reminder":"타스크 알림","Never forget important tasks again with our smart reminder and notification system.":"우리의 지능형 알림 및 통지 시스템으로 중요한 업무를 다시는 잊지 마세요.","Feature Title":"기능 제목","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. 모든 권리를 보유합니다.","Privacy Policy":"개인정보 보호 정책","Terms of Service":"서비스 조건","Support":"지원","API":"API","Notification text":"알림 텍스트","Enter your text below and get a concise summary.":"아래에 텍스트를 입력하고 간결한 요약을 얻으세요.","Paste or type your text here...":"여기에 텍스트를 붙여넣거나 입력하세요...","Enter keywords to find relevant information.":"관련 정보를 찾으려면 키워드를 입력하세요.","Type your keywords here...":"여기에 키워드를 입력하세요...","Upload an image to get detailed analysis.":"자세한 분석을 위해 이미지를 업로드하세요.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"이미지 분석 중...","Enter your data to generate interactive charts.":"데이터를 입력하여 상호작용 차트를 생성하세요.","e.g., 10, 20, 30, 40, 50":"예: 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"예: Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"유효한 숫자 데이터를 입력하세요.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"중요한 업무에 대한 알림을 설정하세요.","Enter your task description...":"업무 설명을 입력하세요...","Please select a future date and time for your reminder.":"알림에 대한 미래의 날짜와 시간을 선택하세요.","Please enter text to summarize":"요약할 텍스트를 입력하세요","Summary generated successfully!":"요약이 성공적으로 생성되었습니다!","Please enter keywords to search":"검색할 키워드를 입력하세요","Search completed!":"검색 완료!","Please upload an image first":"먼저 이미지를 업로드하세요","Please upload a valid image file":"유효한 이미지 파일을 업로드하세요","Image analysis started!":"이미지 분석 시작!","__title__":"CloudEventFlow - 귀하의 워크플로우 자동화 중심"},"fr":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"À propos","Contact":"Contact","Search":"Recherche","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Votre Centre d'Automatisation de Flux de Travail","Text Summarizer":"Résumé de texte","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transformez des articles longs en résumés concis avec notre outil de résumé de texte alimenté par l'IA.","Try Now":"Essayez maintenant","Keyword Search":"Recherche de mots-clés","Find relevant information and news articles based on your keywords with our intelligent search.":"Trouvez des informations pertinentes et des articles de nouvelles basés sur vos mots-clés avec notre recherche intelligente.","Image Analyzer":"Analyseur d'image","Upload any image and get detailed analysis and insights with our computer vision technology.":"Téléchargez n'importe quelle image et obtenez une analyse détaillée et des informations avec notre technologie de vision par ordinateur.","Data Visualizer":"Visualisateur de données","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transformez vos données brutes en graphiques et tableaux interactifs et beaux avec facilité.","Task Reminder":"Rappel de tâche","Never forget important tasks again with our smart reminder and notification system.":"Ne ratez plus jamais vos tâches importantes avec notre système intelligent de rappel et de notification.","Feature Title":"Titre de fonctionnalité","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Tous droits réservés.","Privacy Policy":"Politique de confidentialité","Terms of Service":"Conditions de service","Support":"Support","API":"API","Notification text":"Texte de notification","Enter your text below and get a concise summary.":"Entrez votre texte ci-dessous et obtenez un résumé concis.","Paste or type your text here...":"Collerez ou tapez votre texte ici...","Enter keywords to find relevant information.":"Entrez des mots-clés pour trouver des informations pertinentes.","Type your keywords here...":"Tapez vos mots-clés ici...","Upload an image to get detailed analysis.":"Téléchargez une image pour obtenir une analyse détaillée.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Analyse de l'image...","Enter your data to generate interactive charts.":"Entrez vos données pour générer des graphiques interactifs.","e.g., 10, 20, 30, 40, 50":"par exemple, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"par exemple, Jan, Fév, Mar, Avr, Mai","Please enter valid numeric data.":"Veuillez entrer des données numériques valides.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Paramétrez un rappel pour vos tâches importantes.","Enter your task description...":"Entrez une description de votre tâche...","Please select a future date and time for your reminder.":"Veuillez sélectionner une date et une heure futures pour votre rappel.","Please enter text to summarize":"Veuillez entrer un texte à résumer","Summary generated successfully!":"Résumé généré avec succès!","Please enter keywords to search":"Veuillez entrer des mots-clés pour rechercher","Search completed!":"Recherche terminée!","Please upload an image first":"Veuillez d'abord télécharger une image","Please upload a valid image file":"Veuillez télécharger un fichier image valide","Image analysis started!":"Analyse d'image démarrée!","__title__":"CloudEventFlow - Votre Centre d'Automatisation de Flux de Travail"},"de":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"Über","Contact":"Kontakt","Search":"Suche","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Ihr Workflow-Automation-Hub","Text Summarizer":"Textzusammenfassung","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transformieren Sie lange Artikel in prägnante Zusammenfassungen mit unserem künstlichintelligenzgestützten Textzusammenfassungs-Tool.","Try Now":"Jetzt ausprobieren","Keyword Search":"Schlüsselwortsuche","Find relevant information and news articles based on your keywords with our intelligent search.":"Finden Sie relevante Informationen und Nachrichtenartikel basierend auf Ihren Schlüsselwörtern mit unserer intelligenten Suche.","Image Analyzer":"Bildanalytiker","Upload any image and get detailed analysis and insights with our computer vision technology.":"Laden Sie jedes Bild hoch und erhalten Sie detaillierte Analysen und Einblicke mit unserer computervisionstechnologischen Lösung.","Data Visualizer":"Datenvisualisierer","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transformieren Sie Ihre Rohdaten in wunderschöne, interaktive Diagramme und Grafiken mit Leichtigkeit.","Task Reminder":"AufgabenErinnerung","Never forget important tasks again with our smart reminder and notification system.":"Vergessen Sie wichtige Aufgaben nie wieder mit unserem intelligenten Erinnerungs- und Benachrichtigungssystem.","Feature Title":"Funktionstitel","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Alle Rechte vorbehalten.","Privacy Policy":"Datenschutzbestimmungen","Terms of Service":"Nutzungsbedingungen","Support":"Support","API":"API","Notification text":"Benachrichtigungstext","Enter your text below and get a concise summary.":"Geben Sie Ihren Text unten ein und erhalten Sie eine prägnante Zusammenfassung.","Paste or type your text here...":"Fügen Sie Ihren Text hier ein oder tippen Sie ihn hier ein...","Enter keywords to find relevant information.":"Geben Sie Schlüsselwörter ein, um relevante Informationen zu finden.","Type your keywords here...":"Geben Sie Ihre Schlüsselwörter hier ein...","Upload an image to get detailed analysis.":"Laden Sie ein Bild hoch, um eine detaillierte Analyse zu erhalten.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Bild analysieren...","Enter your data to generate interactive charts.":"Geben Sie Ihre Daten ein, um interaktive Diagramme zu generieren.","e.g., 10, 20, 30, 40, 50":"z.B., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"z.B., Jan, Feb, Mär, Apr, Mai","Please enter valid numeric data.":"Bitte geben Sie gültige numerische Daten ein.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Stellen Sie eine Erinnerung für Ihre wichtigen Aufgaben ein.","Enter your task description...":"Geben Sie Ihre Aufgabenbeschreibung ein...","Please select a future date and time for your reminder.":"Bitte wählen Sie einen zukünftigen Datum und Uhrzeit für Ihre Erinnerung aus.","Please enter text to summarize":"Bitte geben Sie Text zum Zusammenfassen ein","Summary generated successfully!":"Zusammenfassung erfolgreich generiert!","Please enter keywords to search":"Bitte geben Sie Schlüsselwörter für die Suche ein","Search completed!":"Suche abgeschlossen!","Please upload an image first":"Bitte laden Sie zunächst ein Bild hoch","Please upload a valid image file":"Bitte laden Sie eine gültige Bilddatei hoch","Image analysis started!":"Bildanalyse gestartet!","__title__":"CloudEventFlow - Ihr Workflow-Automation-Hub"},"ru":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Ваш центр автоматизации рабочих процессов","Text Summarizer":"Текстовый резюме","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Преобразуйте длинные статьи в краткие резюме с помощью нашего AI-инструмента для резюмирования текста.","Try Now":"Попробуйте сейчас","Keyword Search":"Ключевое слово поиска","Find relevant information and news articles based on your keywords with our intelligent search.":"Найдите релевантную информацию и статьи новостей на основе ваших ключевых слов с помощью нашей интеллектуальной поисковой системы.","Image Analyzer":"Анализатор изображений","Upload any image and get detailed analysis and insights with our computer vision technology.":"Загрузите любое изображение и получите детальный анализ и инсайты с помощью нашей технологии компьютерного зрения.","Data Visualizer":"Визуализатор данных","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Преобразуйте ваши исходные данные в красивые, интерактивные графики и диаграммы с легкостью.","Task Reminder":"Памятка задачи","Never forget important tasks again with our smart reminder and notification system.":"Больше не забывайте важные задачи с помощью нашего умного напоминания и системы уведомлений.","Feature Title":"Название функции","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Все права защищены.","Privacy Policy":"Политика конфиденциальности","Terms of Service":"Условия обслуживания","Support":"Поддержка","API":"API","Notification text":"Текст уведомления","Enter your text below and get a concise summary.":"Введите текст ниже и получите краткое резюме.","Paste or type your text here...":"Вставьте или введите текст здесь...","Enter keywords to find relevant information.":"Введите ключевые слова для поиска релевантной информации.","Type your keywords here...":"Ваше ключевое слово здесь...","Upload an image to get detailed analysis.":"Загрузите изображение для получения детального анализа.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Анализ изображения...","Enter your data to generate interactive charts.":"Введите данные для генерации интерактивных графиков.","e.g., 10, 20, 30, 40, 50":"например, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"например, Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Пожалуйста, введите действительные числовые данные.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Установите напоминание для ваших важных задач.","Enter your task description...":"Введите описание вашей задачи...","Please select a future date and time for your reminder.":"Пожалуйста, выберите будущую дату и время для вашего напоминания.","Please enter text to summarize":"Пожалуйста, введите текст для резюмирования","Summary generated successfully!":"Резюме успешно сгенерировано!","Please enter keywords to search":"Пожалуйста, введите ключевые слова для поиска","Search completed!":"Поиск завершен!","Please upload an image first":"Пожалуйста, сначала загрузите изображение","Please upload a valid image file":"Пожалуйста, загрузите действительный файл изображения","Image analysis started!":"Анализ изображения начат!","__title__":"CloudEventFlow - Ваш центр автоматизации рабочих процессов"},"pt":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"Sobre","Contact":"Contato","Search":"Pesquisa","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Seu Hub de Automação de Fluxo de Trabalho","Text Summarizer":"Resumidor de Texto","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transforme artigos longos em resumos concisos com nossa ferramenta de resumo de texto alimentada por IA.","Try Now":"Experimente Agora","Keyword Search":"Pesquisa por Palavra-chave","Find relevant information and news articles based on your keywords with our intelligent search.":"Encontre informações e artigos de notícias relevantes com base nas suas palavras-chave através da nossa busca inteligente.","Image Analyzer":"Analisador de Imagem","Upload any image and get detailed analysis and insights with our computer vision technology.":"Carregue qualquer imagem e obtenha análise detalhada e insights com nossa tecnologia de visão por computador.","Data Visualizer":"Visualizador de Dados","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transforme seus dados crus em gráficos e gráficos interativos bonitos e com facilidade.","Task Reminder":"Lembrete de Tarefa","Never forget important tasks again with our smart reminder and notification system.":"Nunca esqueça mais tarefas importantes com nosso sistema inteligente de lembretes e notificações.","Feature Title":"Título da Funcionalidade","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Todos os direitos reservados.","Privacy Policy":"Política de Privacidade","Terms of Service":"Termos de Serviço","Support":"Suporte","API":"API","Notification text":"Texto de Notificação","Enter your text below and get a concise summary.":"Insira seu texto abaixo e obtenha um resumo conciso.","Paste or type your text here...":"Cole ou digite seu texto aqui...","Enter keywords to find relevant information.":"Insira palavras-chave para encontrar informações relevantes.","Type your keywords here...":"Digite suas palavras-chave aqui...","Upload an image to get detailed analysis.":"Carregue uma imagem para obter análise detalhada.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Analyzing image...","Enter your data to generate interactive charts.":"Insira seus dados para gerar gráficos interativos.","e.g., 10, 20, 30, 40, 50":"ex., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"ex., Jan, Fev, Mar, Abr, Mai","Please enter valid numeric data.":"Por favor, insira dados numéricos válidos.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Defina um lembrete para suas tarefas importantes.","Enter your task description...":"Insira a descrição da sua tarefa...","Please select a future date and time for your reminder.":"Por favor, selecione uma data e hora futuras para o seu lembrete.","Please enter text to summarize":"Por favor, insira o texto a ser resumido","Summary generated successfully!":"Resumo gerado com sucesso!","Please enter keywords to search":"Por favor, insira palavras-chave para pesquisar","Search completed!":"Pesquisa concluída!","Please upload an image first":"Por favor, carregue uma imagem primeiro","Please upload a valid image file":"Por favor, carregue um arquivo de imagem válido","Image analysis started!":"Análise de imagem iniciada!","__title__":"CloudEventFlow - Seu Hub de Automação de Fluxo de Trabalho"},"ar":{"CloudEventFlow":"CloudEventFlow","Home":"المنزل","Features":"الميزات","About":"عن","Contact":"اتصل بنا","Search":"البحث","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - مركز تحكم عملياتك","Text Summarizer":"مختصر النص","Transform long articles into concise summaries with our AI-powered text summarization tool.":"تحويل المقالات الطويلة إلى مختصرات مختصرة باستخدام أداة تحليل النصوص بفضل تقنية الذكاء الاصطناعي الخاصة بنا.","Try Now":"جرب الآن","Keyword Search":"البحث عن الكلمات المفتاحية","Find relevant information and news articles based on your keywords with our intelligent search.":"ابحث عن معلومات ذات صلة وأخبار المقالات بناءً على كلماتك المفتاحية باستخدام بحث ذكي خاص بنا.","Image Analyzer":"محلل الصور","Upload any image and get detailed analysis and insights with our computer vision technology.":"رفع أي صورة والحصول على تحليل مفصل والمعرفة بفضل تقنية الرؤية الحاسوبية الخاصة بنا.","Data Visualizer":"مخطط البيانات","Transform your raw data into beautiful, interactive charts and graphs with ease.":"تحويل بياناتك الخام إلى مخططات وأشكال تفاعلية جميلة بسهولة.","Task Reminder":"تذكير المهمة","Never forget important tasks again with our smart reminder and notification system.":"لا تنسى المهمات الهامة مرة أخرى مع نظام التذكير والتنبيه الذكي الخاص بنا.","Feature Title":"عنوان الميزة","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. جميع الحقوق محفوظة.","Privacy Policy":"سياسة الخصوصية","Terms of Service":"شروط الخدمة","Support":"الدعم","API":"API","Notification text":"نص التنبيه","Enter your text below and get a concise summary.":"أدخل نصك أدناه للحصول على مختصر.","Paste or type your text here...":"ألصق أو اكتب نصك هنا...","Enter keywords to find relevant information.":"أدخل الكلمات المفتاحية للبحث عن معلومات ذات صلة.","Type your keywords here...":"اكتب كلماتك المفتاحية هنا...","Upload an image to get detailed analysis.":"رفع صورة للحصول على تحليل مفصل.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"تحليل الصورة...","Enter your data to generate interactive charts.":"أدخل بياناتك لإنشاء مخططات تفاعلية.","e.g., 10, 20, 30, 40, 50":"مثلاً، 10، 20، 30، 40، 50","e.g., Jan, Feb, Mar, Apr, May":"مثلاً، كانون الثاني، شباط، آذار، نيسان، أيار","Please enter valid numeric data.":"يرجى إدخال بيانات عددية صالحة.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"ضبط تذكير للمهمات الهامة.","Enter your task description...":"أدخل وصف مهمتك...","Please select a future date and time for your reminder.":"يرجى اختيار تاريخ وموعد المستقبلية لتذكيرك.","Please enter text to summarize":"يرجى إدخال النص للتلخيص","Summary generated successfully!":"تم توليد المختصر بنجاح!","Please enter keywords to search":"يرجى إدخال الكلمات المفتاحية للبحث","Search completed!":"اكتمال البحث!","Please upload an image first":"يرجى رفع صورة أولاً","Please upload a valid image file":"يرجى رفع ملف صورة صالح","__title__":"CloudEventFlow - مركز تحكم عملياتك"},"id":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Pusat Otomatisasi Alur Kerja Anda","Text Summarizer":"Text Summarizer","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Transform artikel panjang menjadi ringkasan singkat dengan alat sumarizing teks yang dipowerkan AI kami.","Try Now":"Coba Sekarang","Keyword Search":"Pencarian Kata Kunci","Find relevant information and news articles based on your keywords with our intelligent search.":"Temukan informasi relevan dan artikel berita berdasarkan kata kunci Anda dengan pencarian cerdas kami.","Image Analyzer":"Analisis Gambar","Upload any image and get detailed analysis and insights with our computer vision technology.":"Unggah gambar apapun dan dapatkan analisis dan wawasan detil dengan teknologi penglihatan komputer kami.","Data Visualizer":"Pengembang Grafik Data","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Transform data asli Anda menjadi grafik dan papan tampilan yang indah dan interaktif dengan mudah.","Task Reminder":"Pengingat Tugas","Never forget important tasks again with our smart reminder and notification system.":"Jangan lupa lagi tugas penting dengan sistem pengingat dan pemberitahuan cerdas kami.","Feature Title":"Judul Fitur","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"\u0026copy; 2023 CloudEventFlow. Hak cipta dilindungi.","Privacy Policy":"Kebijakan Privasi","Terms of Service":"Syarat dan Ketentuan Layanan","Support":"Dukungan","API":"API","Notification text":"Teks Pemberitahuan","Enter your text below and get a concise summary.":"Masukkan teks Anda di bawah ini dan dapatkan ringkasan singkat.","Paste or type your text here...":"Lekahkan atau ketik teks di sini...","Enter keywords to find relevant information.":"Masukkan kata kunci untuk menemukan informasi relevan.","Type your keywords here...":"Ketik kata kunci Anda di sini...","Upload an image to get detailed analysis.":"Unggah gambar untuk mendapatkan analisis detil.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Menganalisis gambar...","Enter your data to generate interactive charts.":"Masukkan data Anda untuk menghasilkan grafik interaktif.","e.g., 10, 20, 30, 40, 50":"contoh, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"contoh, Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Silakan masukkan data numerik yang valid.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Atur pengingat untuk tugas penting Anda.","Enter your task description...":"Masukkan deskripsi tugas Anda...","Please select a future date and time for your reminder.":"Silakan pilih tanggal dan waktu masa mendatang untuk pengingat Anda.","Please enter text to summarize":"Silakan masukkan teks untuk disumarsikan","Summary generated successfully!":"Ringkasan dihasilkan dengan sukses!","Please enter keywords to search":"Silakan masukkan kata kunci untuk mencari","Search completed!":"Pencarian selesai!","Please upload an image first":"Silakan unggah gambar terlebih dahulu","Please upload a valid image file":"Silakan unggah berkas gambar yang valid","Image analysis started!":"Analisis gambar dimulai!","__title__":"CloudEventFlow - Pusat Otomatisasi Alur Kerja Anda"},"vi":{"CloudEventFlow":"CloudEventFlow","Home":"Trang chủ","Features":"Tính năng","About":"Giới thiệu","Contact":"Liên hệ","Search":"Tìm kiếm","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Trung tâm Tự động hóa Quy trình của Bạn","Text Summarizer":"Trình Tóm tắt Văn bản","Transform long articles into concise summaries with our AI-powered text summarization tool.":"Chuyển đổi các bài viết dài thành tóm tắt ngắn gọn với công cụ tóm tắt văn bản được điều khiển bởi AI của chúng tôi.","Try Now":"Thử ngay","Keyword Search":"Tìm kiếm từ khóa","Tìm relevant information and news articles based on your keywords with our intelligent search.":"Tìm thông tin và bài viết tin tức liên quan dựa trên từ khóa của bạn bằng cách sử dụng công cụ tìm kiếm thông minh của chúng tôi.","Image Analyzer":"Phân tích Hình ảnh","Upload any image and get detailed analysis and insights with our computer vision technology.":"Tải lên bất kỳ hình ảnh nào và nhận được phân tích chi tiết và thông tin sâu với công nghệ tầm nhìn máy tính của chúng tôi.","Data Visualizer":"Tạo biểu đồ dữ liệu","Transform your raw data into beautiful, interactive charts and graphs with ease.":"Chuyển đổi dữ liệu thô của bạn thành các biểu đồ và đường đồ họa交互 beautifuly với ease.","Task Reminder":"Nhắc việc","Never forget important tasks again with our smart reminder and notification system.":"Chẳng bao giờ quên các nhiệm vụ quan trọng nữa với hệ thống nhắc nhở và thông báo thông minh của chúng tôi.","Feature Title":"Tiêu đề Tính năng","\u0026copy; 2023 CloudEventFlow. All rights reserved.":"© 2023 CloudEventFlow. All rights reserved.","Privacy Policy":"Chính sách bảo mật","Terms of Service":"Điều khoản dịch vụ","Support":"Hỗ trợ","API":"API","Notification text":"Văn bản thông báo","Enter your text below and get a concise summary.":"Nhập văn bản của bạn dưới đây để nhận được tóm tắt ngắn gọn.","Paste or type your text here...":"Dán hoặc nhập văn bản ở đây...","Enter keywords to find relevant information.":"Nhập từ khóa để tìm thông tin liên quan.","Type your keywords here...":"Nhập từ khóa của bạn ở đây...","Upload an image to get detailed analysis.":"Tải lên một hình ảnh để nhận được phân tích chi tiết.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","Analyzing image...":"Phân tích hình ảnh...","Enter your data to generate interactive charts.":"Nhập dữ liệu của bạn để tạo biểu đồ交互.","e.g., 10, 20, 30, 40, 50":"ví dụ: 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"ví dụ: Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Vui lòng nhập dữ liệu số chính xác.","position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; bottom: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;":"position: absolute; top: -20px; left: 0; width: 100%; text-align: center; font-size: 0.8rem;","margin-top: 10px;":"margin-top: 10px;","Set a reminder for your important tasks.":"Đặt nhắc nhở cho các nhiệm vụ quan trọng của bạn.","Enter your task description...":"Nhập mô tả nhiệm vụ của bạn...","Please select a future date and time for your reminder.":"Vui lòng chọn ngày và giờ tương lai cho nhắc nhở của bạn.","Please enter text to summarize":"Vui lòng nhập văn bản để tóm tắt","Summary generated successfully!":"Tóm tắt đã tạo thành công!","Please enter keywords to search":"Vui lòng nhập từ khóa để tìm kiếm","Search completed!":"Tìm kiếm hoàn thành!","Please upload an image first":"Vui lòng tải lên hình ảnh đầu tiên","Please upload a valid image file":"Vui lòng tải lên tệp hình ảnh hợp lệ","Image analysis started!":"Phân tích hình ảnh đã bắt đầu!","__title__":"CloudEventFlow - Trung tâm Tự động hóa Quy trình của Bạn"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var key=norm(el.textContent);
+if(fromEn&&!enMap[key])continue;
+if(map[key]&&map[key]!==el.textContent)el.textContent=map[key];
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
