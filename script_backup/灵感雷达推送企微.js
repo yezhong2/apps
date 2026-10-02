@@ -1271,10 +1271,11 @@ function optimizeProduct() {
     // 迭代链修复：v2 通过质检后提升为新基线（最初版存一次 _v1 快照；每轮覆盖前把上一版存为 _prev 就近回退点）
     let v1snap = latest.replace(".html", "_v1.html");
     let prevSnap = latest.replace(".html", "_prev.html");
-    if (!files.exists(dir + "/" + v1snap)) {
-        try { files.copy(dir + "/" + latest, dir + "/" + v1snap); } catch (e) { log("v1 快照失败：" + e); }
+    ensureSnapDir(); // 快照统一进 _版本快照 子文件夹：此前每个产品在产出根目录留 _v1/_prev 两份，被当“重复产品”清理过一批
+    if (!files.exists(SNAP_DIR + "/" + v1snap)) {
+        try { files.copy(dir + "/" + latest, SNAP_DIR + "/" + v1snap); } catch (e) { log("v1 快照失败：" + e); }
     }
-    try { files.write(dir + "/" + prevSnap, html); } catch (e) { log("_prev 快照失败：" + e); }
+    try { files.write(SNAP_DIR + "/" + prevSnap, html); } catch (e) { log("_prev 快照失败：" + e); }
     try {
         v2 = injectMeta(injectAnalytics(injectI18n(v2)), latest); // v2 重写可能丢统计码/meta/多语言块，写回前补上
         files.write(dir + "/" + latest, v2); // v2 写回基线位置，下一轮从最新版继续迭代（v3、v4…累积）
@@ -1326,6 +1327,7 @@ function zeroTokenDeployLayer(links) {
     links = links || [];
     if (GITHUB_USER && GITHUB_TOKEN) deployLicense();
     migrateLegacyFooters();
+    migrateSnapshots(); // 版本快照遗留迁移：产出根目录的 _prev/_v1 挪进 _版本快照/（零 token 幂等）
     let tierTune = autoTuneTiers();
     if (tierTune && tierTune.note) pushToWx("🎁 奖励档位", tierTune.note);
     log("📊 产品台账同步…");
@@ -1627,7 +1629,8 @@ function applyFeedbackToProduct(fname, feedbackText) {
     }
     if (!passed) return {ok: false, product: fname, reason: "改进版未通过质检，保持原版（宁可不改，不越改越乱）"};
     let prevSnap = fname.replace(".html", "_prev.html");
-    try { files.write(PRODUCT_DIR + "/" + prevSnap, html); } catch (e) {}
+    ensureSnapDir();
+    try { files.write(SNAP_DIR + "/" + prevSnap, html); } catch (e) {}
     try {
         v2 = injectMeta(injectAnalytics(injectI18n(v2)), fname);
         files.write(PRODUCT_DIR + "/" + fname, v2);
@@ -2079,6 +2082,29 @@ function pushToWx(title, content) {
 // ========== 产品台账：所有产品数据汇总（本地台账 + 总览页自动同步上线）==========
 const LEDGER_PATH = "/storage/emulated/0/脚本/产出/产品台账.json";
 const PRODUCT_DIR = "/storage/emulated/0/脚本/产出";
+const SNAP_DIR = PRODUCT_DIR + "/_版本快照"; // 版本快照统一存放（_v1 最初存档 / _prev 就近回退点），保持产出根目录只有产品本体
+// 快照目录懒创建：/storage 下新建目录 files.ensureDir 会静默失败（实测），必须用 java.io.File.mkdirs()
+function ensureSnapDir() {
+    try {
+        let f = new java.io.File(SNAP_DIR);
+        if (!f.exists()) f.mkdirs();
+    } catch (e) {}
+}
+// 遗留迁移：旧版快照散在产出根目录，每次运行幂等挪进子文件夹（copy+remove，不依赖 files.move）
+function migrateSnapshots() {
+    try {
+        let names = files.listDir(PRODUCT_DIR, function(n) { return /_(?:v\d+|prev)\.html$/.test(n); });
+        if (!names || !names.length) return;
+        ensureSnapDir();
+        for (let i = 0; i < names.length; i++) {
+            try {
+                files.copy(PRODUCT_DIR + "/" + names[i], SNAP_DIR + "/" + names[i]);
+                files.remove(PRODUCT_DIR + "/" + names[i]);
+            } catch (e) { log("快照迁移失败 " + names[i] + "：" + e); }
+        }
+        log("📦 已迁移 " + names.length + " 个版本快照 → _版本快照/");
+    } catch (e) {}
+}
 
 // 扫描产出文件夹，收集所有基线产品（排除 _vN/_prev 回退文件和总览页自身）
 function collectProducts() {
