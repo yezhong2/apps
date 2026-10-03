@@ -1385,9 +1385,26 @@ function optimizeProduct() {
         }
         log("⚠️ v2 自检不通过（第" + round + "轮）：" + failReason + (round < 2 ? "，重写…" : "，已达重写上限"));
         if (round >= 2) break; // 最后一轮失败不再白烧一次重写 token
+        // 【2026-10-03 关键修复】解除提示词自相矛盾 —— 这是「旧产品永远改不好」的真正根因。
+        // v2Prompt 第一条铁律是「完整保留原有全部功能、禁止删减功能」，而上一版失败原因恰恰是
+        // 「含模拟分析式假功能/占位按钮/伪随机」这类**硬红线**。两条指令打架时 AI 只能选择照抄原样，
+        // 于是第二轮照样触红线 → 两轮用尽 → 放弃优化。实测：改进成功率仅 40%（34 成功 / 50 失败），
+        // 积压的旧产品就这样永远轮不上「变好」。
+        // 修法：当失败原因是**硬红线**（而非纯截断）时，在重写提示里明确「重建授权」——把红线的优先级
+        // 抬到「保留功能」之上，允许丢弃违规实现重做。截断类问题不动这条（那是输出完整性问题，不是红线）。
+        let isRedline = failReason.indexOf("截断") < 0 && failReason.indexOf("</html>") < 0;
+        let retryPrompt = v2Prompt + "\n\n【上一版自检未通过的原因】" + failReason + "\n";
+        if (isRedline) {
+            retryPrompt += "\n【重要·重建授权】上一版失败的原因是触犯了**硬红线**（见上）。此时「完整保留原有功能」那条铁律**让位于红线**：\n"
+                + "· 凡是触发红线的功能/代码（假功能、模拟分析、占位按钮、伪随机结果、收费元素、版权行、设备依赖等），**必须整体丢弃**，按产品定位重新实现为真实可用的功能；\n"
+                + "· **允许删减、允许重写**这些部分，不得为了「保留」而原样照抄违规代码；\n"
+                + "· 红线之外的功能与产品定位仍然要保留。\n"
+                + "宁可把这个功能做成真实实现，也不要把违规代码留着过不了关。";
+        }
+        retryPrompt += "\n请重新完整输出修复后的 HTML。";
         v2 = cleanHtml(callLLM([
             {role: "system", content: "你是资深前端工程师。只输出代码。"},
-            {role: "user", content: v2Prompt + "\n\n【上一版自检未通过的原因】" + failReason + "\n请重新完整输出修复后的 HTML。"}
+            {role: "user", content: retryPrompt}
         ], 12000, true, 0.7));
         if (v2 && !looksComplete(v2)) v2 = completeHtml(v2);
         v2 = stripLegacyCleanup(v2);
@@ -1769,9 +1786,20 @@ function applyFeedbackToProduct(fname, feedbackText) {
         if (!failReason) { passed = true; break; }
         log("⚠️ 意见改进版自检不通过（第" + round + "轮）：" + failReason);
         if (round >= 2) break;
+        // 同 v2 优化路径的「重建授权」修复（2026-10-03）：失败原因若是硬红线，必须抬到「保留原有功能」之上，
+        // 否则 AI 又会照抄违规代码、第二轮照样失败 → 意见也永远落不了地。
+        let isRedline2 = failReason.indexOf("截断") < 0 && failReason.indexOf("</html>") < 0;
+        let retryPrompt2 = prompt + "\n\n【上一版自检未通过原因】" + failReason + "\n";
+        if (isRedline2) {
+            retryPrompt2 += "\n【重要·重建授权】上一版失败的原因是触犯了**硬红线**（见上）。此时「完整保留原有功能」让位于红线：\n"
+                + "· 凡是触发红线的功能/代码（假功能、模拟分析、占位按钮、伪随机结果、收费元素、版权行、设备依赖等），**必须整体丢弃**，按产品定位重新实现为真实可用的功能；\n"
+                + "· **允许删减、允许重写**这些部分，不得为了「保留」而原样照抄违规代码；\n"
+                + "· 红线之外的功能与产品定位仍然要保留。";
+        }
+        retryPrompt2 += "\n请重新完整输出修复后的 HTML。";
         v2 = cleanHtml(callLLM([
             {role: "system", content: "你是资深前端工程师。只输出代码。"},
-            {role: "user", content: prompt + "\n\n【上一版自检未通过原因】" + failReason + "\n请重新完整输出修复后的 HTML。"}
+            {role: "user", content: retryPrompt2}
         ], 12000, true, 0.7));
         if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫
         if (v2) v2 = injectStandardBlock(v2);
