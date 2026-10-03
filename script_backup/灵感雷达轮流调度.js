@@ -245,11 +245,25 @@ function pipeWatchdog() {
             if (now - (st.lastAlert || 0) > coolMs) {
                 st.lastAlert = now; st.alerted = true;
                 try { files.write(PIPE_WD_STATE, JSON.stringify(st)); } catch (e) {}
+                // 【2026-10-03 大退自愈·第二半】心跳停摆时先尝试把 Termux 拉起来：
+                //   · Termux 只是被冻结 → 拉回前台即解冻，原流水线进程继续跑，心跳自愈；
+                //   · Termux 真被杀了   → 冷启动后其登录 shell 会执行 ~/.bashrc 里的自启动钩子，
+                //                        自动重开流水线（该钩子 2026-10-03 已装好并三测通过）。
+                //   这是「AutoJs 侧唯一能做的动作」：调度器活在 AutoJs6 里，是 Termux 团灭后的幸存方。
+                //   调用失败也无害（try/catch 兜住，最多就是退回"只发提醒"的老行为）。
+                let relaunch = "";
+                try {
+                    app.launch("com.termux");
+                    relaunch = "（已尝试自动拉起 Termux）";
+                    log("🛡️ 流水线看门狗：心跳停摆，已尝试自动拉起 Termux");
+                } catch (e) {
+                    log("⚠️ 流水线看门狗：自动拉起 Termux 失败（" + e + "），退回只发提醒");
+                }
                 let mins = Math.round(ageMs / 60000);
                 let last = "?";
                 try { last = new Date(hb * 1000).toLocaleString(); } catch (e) {}
                 log("⚠️ 流水线看门狗：Termux 流水线已 " + mins + " 分钟无心跳（最后心跳 " + last + "），发企微提醒");
-                pipeWdNotify("⚠️ 灵感雷达看门狗：Termux 流水线已 " + mins + " 分钟无心跳（最后心跳 " + last + "），疑似被系统大退/冻结。请回 Termux 重启：tmux 里运行 bash /storage/emulated/0/脚本/自动流水线.sh（会话名 pipe）。不想收到此类提醒：创建文件 脚本/流水线看门狗暂停.txt");
+                pipeWdNotify("⚠️ 灵感雷达看门狗：Termux 流水线已 " + mins + " 分钟无心跳（最后心跳 " + last + "），疑似被系统大退/冻结。" + relaunch + "若仍未恢复，请回 Termux 重启：tmux 里运行 bash /storage/emulated/0/脚本/自动流水线.sh（会话名 pipe）。不想收到此类提醒：创建文件 脚本/流水线看门狗暂停.txt");
             }
         } else if (st.alerted) {
             st.alerted = false;
