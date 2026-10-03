@@ -169,7 +169,7 @@ function cooldown(model, secs) {
     saveCooldowns();
 }
 let keyIdx = 0;            // 当前可用 Key 下标
-const DAILY_BUDGET = 10000000; // 每日 token 预算上限：实际日消耗峰值≈150K，设 1000 万基本不触发；最坏情况（flash 免费档耗尽全走 air）约 ¥10-20/天，且预算文件每日重置，单日失控硬顶可控
+const DAILY_BUDGET = 30000000; // 每日 token 预算上限（2026-10-03 用户指定由 1000 万提到 3000 万）：实际日消耗峰值≈150K，3000 万几乎不可能触发；最坏情况（flash 免费档耗尽全走 air）约 ¥30-60/天，且预算文件每日重置，单日失控硬顶可控。注意：巡检测脚本自带同名常量，两处必须同步改
 // 预算跨运行持久化：一天内多次运行共享同一份预算（防手动多轮跑失控）
 const BUDGET_PATH = "/storage/emulated/0/脚本/token预算.json";
 function dayKey() {
