@@ -240,20 +240,24 @@ ensure_scheduler() {
     fi
 }
 
-# ---------- 日志扫描：命中错误模式且不在白名单 → 输出「文件名|错误行」 ----------
+# ---------- 日志扫描：命中错误模式且不在白名单 → 逐行输出「文件名|错误行」 ----------
+# 2026-10-03 加固①：日志清单不再写死「调度/巡检/主脚本」三个，改为自动纳入 $DIR 下所有 *.log。
+#   背景：新增脚本只要写自己的日志文件，默认就落进扫描黑洞（当日实测该目录已有 4 个无人扫的 .log）。
+#   已停写/无更新的死日志由下面「20 分钟无更新即跳过」天然过滤，无需手工维护清单。
+# 2026-10-03 加固②：不再 head -1 + return（原实现一轮只报一条，叠加报警后 600 秒冷却，
+#   多个互不相关的错误要排队十分钟才浮出水面）。改为一次循环把所有命中都吐出来，由 main 汇总成一条通知。
+#   每个日志最多取 3 条，防止单文件刷屏把通知撑爆。
 scan_logs() {
     local f hit name fresh="$HOME/tmp/.scan_ref"
     touch -d "20 minutes ago" "$fresh" 2>/dev/null || touch "$fresh"
-    for name in 调度_日志 巡检_日志 主脚本_日志; do
-        f="$DIR/$name.log"
+    for f in "$DIR"/*.log; do
         [ -f "$f" ] || continue
         # 日志 20 分钟没更新 = 已冻结（脚本退出/卡死）：残留旧错误行不再告警，防止通知死循环
         [ "$f" -nt "$fresh" ] || continue
-        hit=$(tail -80 "$f" | grep -E "$ERR_PAT" | grep -vE "$IGNORE_PAT" | head -1)
-        if [ -n "$hit" ]; then
-            echo "$name.log|$hit"
-            return
-        fi
+        name="${f##*/}"
+        tail -80 "$f" | grep -E "$ERR_PAT" | grep -vE "$IGNORE_PAT" | head -3 | while IFS= read -r hit; do
+            printf '%s|%s\n' "$name" "$hit"
+        done
     done
 }
 
@@ -282,13 +286,13 @@ main() {
         ensure_scheduler
         self_check
         daily_patrol
-        local found fname errline
+        local found oneline
         found=$(scan_logs)
         if [ -n "$found" ]; then
-            fname="${found%%|*}"
-            errline="${found#*|}"
-            log "🚨 检测到错误：$fname → $errline"
-            notify_ccode "【自动流水线】$DIR/$fname 出现错误：$errline 。请：1)读 $DIR/$fname 全文及另两个日志定位根因 2)改文件前先 cp 一份 .bak 3)修复后推 GitHub（推前先备份线上旧版本或记下 commit sha）4)推送失败或被拒就停止重试并记录 5)在 $PROGRESS 追加一行含 FIXED 的说明 6)全程自动执行，无需等确认（已获用户全权授权）。调度器下轮循环自动加载新代码，无需重启。"
+            # 多行命中汇成一行（每条形如「文件名|错误行」）再入日志与通知：tmux send-keys 遇到裸换行会被当成回车
+            oneline="${found//$'\n'/ ；}"
+            log "🚨 检测到错误：$oneline"
+            notify_ccode "【自动流水线】下列日志出现错误：$oneline 。请：1)读上述日志全文定位根因 2)改文件前先 cp 一份 .bak 3)修复后推 GitHub（推前先备份线上旧版本或记下 commit sha）4)推送失败或被拒就停止重试并记录 5)在 $PROGRESS 追加一行含 FIXED 的说明 6)全程自动执行，无需等确认（已获用户全权授权）。调度器下轮循环自动加载新代码，无需重启。"
             auto_confirm_once   # 冷却期内自动确认兜底 + 防重复轰炸
         fi
         sleep 60
