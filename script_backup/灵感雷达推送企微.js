@@ -202,8 +202,27 @@ function saveBudget() {
 let dailyTokenCost = loadBudget();    // 今日累计 token（估算，从预算文件恢复）
 if (dailyTokenCost > 0) log("💰 今日已累计 " + dailyTokenCost + " token（预算 " + DAILY_BUDGET + "）");
 
+// ========== 主脚本单实例锁（2026-10-03 新增，防孤儿实例重复烧 token）==========
+// 起因：本机魔改版 forceStop() 实测空操作 —— 调度器换装/被重启时，它正在跑的主脚本杀不掉，变成孤儿
+// 继续整轮烧 token（当晚实测：换装后新旧两个主脚本并行，token 计数出现两条独立递增流，20:33 清场时
+// 引擎数=4）。与调度器同样的「抢锁 + 校验归属」思路：新实例启动即改写锁，旧孤儿在下一次 LLM 调用前
+// 发现锁易主就自行退出。校验点选在 callLLM() 是因为一轮里 LLM 调用最密集，孤儿最多几分钟就会被逮到。
+const INSTANCE_LOCK = "/storage/emulated/0/脚本/.主脚本实例锁";
+const MY_INSTANCE_ID = String(Date.now()) + "-" + Math.floor(Math.random() * 100000);
+try { files.write(INSTANCE_LOCK, MY_INSTANCE_ID); } catch (e) {}
+function guardInstance() {
+    try {
+        let cur = String(files.read(INSTANCE_LOCK)).trim();
+        if (cur && cur !== MY_INSTANCE_ID) {
+            log("🛑 检测到新实例已接管（本实例为残留孤儿），主动退出避免重复烧 token");
+            try { exit(); } catch (e) {}
+        }
+    } catch (e) {} // 读不到锁就默认自己仍是主，避免误退把生产搞停
+}
+
 // quality=true 时按能力优先（产品生成/重写用），日常按性价比优先；429 冷却切换、401/403 换 Key、其余错误逐档切换
 function callLLM(messages, maxTokens, quality, temp) {
+    guardInstance(); // 实例归属校验（孤儿自救）
     let tier = policyTier(quality);
     if (dailyTokenCost > DAILY_BUDGET) return null; // 统一预算闸门：所有调用入口先过这里，防失控闭环
     for (let k = 0; k < ZP_KEYS.length; k++) {
