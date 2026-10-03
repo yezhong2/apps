@@ -794,10 +794,20 @@ function functionalTest(name) {
             + (d2 ? "（点了没反应：" + d2 + "）" : "")
             + " —— 疑似占位/假功能，必须改成真能干活或直接删掉");
     }
-    if (res.alerts && res.alerts.length) {
-        log("功能实测 [" + pick + "]：点击中弹出的内容 → " + res.alerts.join(" ／ ").slice(0, 200));
+    // 【2026-10-03 新增维度·页内提示】弹个「开发中 / Coming soon / not implemented」既不抛异常、
+    // DOM 也真的变了，于是旧判据全判成「无问题」（用户实测反馈：「弹出英文的它直接就说报错0没效果0」）。
+    // 现在由钩子用 MutationObserver 抓「点击后新出现的文字」再去比对占位话术 —— 命中即报 issue。
+    let ph = res.placeholder || [];
+    if (ph.length) {
+        out.push("功能实测：" + ph.length + " 个按钮点了只弹出占位提示（该功能没做出来）：" + ph.slice(0, 4).join(" ／ "));
     }
-    log("功能实测 [" + pick + "]：按钮 " + (res.buttons || 0) + " 个，点击 " + (res.clicked || 0) + " 个，报错 " + ((res.errs && res.errs.length) || 0) + " 处，点了没效果 " + dead + " 个" + (out.length ? " ⚠️" : " ✓"));
+    if (res.alerts && res.alerts.length) {
+        log("功能实测 [" + pick + "]：浏览器弹窗内容 → " + res.alerts.join(" ／ ").slice(0, 200));
+    }
+    if (res.msgs && res.msgs.length) {
+        log("功能实测 [" + pick + "]：点击后出现的短文本 → " + res.msgs.slice(0, 6).join(" ／ ").slice(0, 220));
+    }
+    log("功能实测 [" + pick + "]：按钮 " + (res.buttons || 0) + " 个，点击 " + (res.clicked || 0) + " 个，报错 " + ((res.errs && res.errs.length) || 0) + " 处，点了没效果 " + dead + " 个，占位提示 " + ph.length + " 个" + (out.length ? " ⚠️" : " ✓"));
     return out;
 }
 
