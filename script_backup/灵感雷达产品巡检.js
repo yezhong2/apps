@@ -103,16 +103,26 @@ let MODEL_COOLDOWN = loadCooldowns();
 function saveCooldowns() {
     try { files.write(COOLDOWN_PATH, JSON.stringify(MODEL_COOLDOWN)); } catch (e) {}
 }
-function isCooling(model) {
-    return Date.now() < (MODEL_COOLDOWN[model] || 0);
+// 冷却键设计（2026-10-03 修，与主脚本保持一致）：429 按「模型@Key指纹」分别冷却（多把 Key 才能真正顶上限流）；
+// 网络类错误仍按整个模型冷却（服务端问题，与 Key 无关）。指纹为不可逆短哈希，不泄露 Key 原文。
+function keyTag(k) {
+    let h = 0;
+    for (let i = 0; i < String(k).length; i++) { h = (h * 31 + String(k).charCodeAt(i)) | 0; }
+    return (h >>> 0).toString(36).slice(0, 6);
 }
-function cooldown(model, secs) {
+function isCooling(model, key) {
     let now = Date.now();
-    let keys = Object.keys(MODEL_COOLDOWN);
-    for (let i = 0; i < keys.length; i++) {
-        if ((MODEL_COOLDOWN[keys[i]] || 0) < now) delete MODEL_COOLDOWN[keys[i]];
+    if (now < (MODEL_COOLDOWN[model] || 0)) return true;
+    if (key && now < (MODEL_COOLDOWN[model + "@" + keyTag(key)] || 0)) return true;
+    return false;
+}
+function cooldown(model, secs, key) {
+    let now = Date.now();
+    let ks = Object.keys(MODEL_COOLDOWN);
+    for (let i = 0; i < ks.length; i++) {
+        if ((MODEL_COOLDOWN[ks[i]] || 0) < now) delete MODEL_COOLDOWN[ks[i]];
     }
-    MODEL_COOLDOWN[model] = now + secs * 1000;
+    MODEL_COOLDOWN[key ? (model + "@" + keyTag(key)) : model] = now + secs * 1000;
     saveCooldowns();
 }
 let keyIdx = 0;
@@ -148,7 +158,7 @@ function callLLM(messages, maxTokens, quality, temp) {
         let key = ZP_KEYS[(keyIdx + k) % ZP_KEYS.length];
         for (let m = 0; m < tier.length; m++) {
             let model = tier[m];
-            if (isCooling(model)) { log("🧊 " + model + " 限流冷却中，跳过"); continue; }
+            if (isCooling(model, key)) { log("🧊 " + model + "@" + keyTag(key) + " 限流冷却中，跳过（换下一把 Key）"); continue; }
             try {
                 // 注意：必须用 postJson（对象参数）——AutoJs6 的 http.post 传字符串 body 会强制转对象报错
                 let r = http.postJson("https://open.bigmodel.cn/api/paas/v4/chat/completions", {
@@ -175,7 +185,7 @@ function callLLM(messages, maxTokens, quality, temp) {
                     log("⚠️ " + model + " 返回异常（额度耗尽/参数错误），自动切换下一档…");
                 } else if (sc === 429) {
                     log("🚦 " + model + " 限流(429)：冷却 5 分钟并切换…");
-                    cooldown(model, 300);
+                    cooldown(model, 300, key); // 429 按「模型@Key」分别冷却（多把 Key 才能真正顶上限流）
                     break; // 限流可能按 Key 或按模型计，直接换下一个 Key 最稳妥
                 } else if (sc === 401 || sc === 403) {
                     log("🔑 Key 无效(HTTP " + sc + ")，自动换下一个 Key…");
