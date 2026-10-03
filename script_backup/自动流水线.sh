@@ -30,6 +30,15 @@ WATCH_MIN=30     # 调度器日志超过此分钟数无更新 → 判定已停�
                  # 多条独立 token 计数流，3 小时白烧 3.35M token）。30 分钟覆盖常见冻结窗口。
                  # 另注：调度器侧已加单实例锁兜底——即便仍有误判，解冻后的旧实例会自动让位退出。
 
+# ---------- ccode 上下文看门狗（2026-10-03 新增）----------
+# 背景：ccode 会话的上下文越用越大（用户实测到 65% 变黄），而 ccode 自身**没有**「到某百分比自动折叠」
+# 这种开关（查过 ~/.carboncode/config.json，无相关项）。上下文一旦撑满，轻则每轮把大上下文再算一遍钱，
+# 重则直接崩——而 ccode 崩了并不会丢活：状态全在 PROGRESS.md，重建后按派活重读一遍就能接上。
+# 所以这里做的是「挑一个不会打断用户的时候主动换代」，而不是等它撞墙。
+CONTEXT_MAX=60          # 上下文达此百分比 → 记为换代候补
+CONTEXT_IDLE_MIN=6      # 且底栅连续这么多分钟没变化（= 真空闲）才敢换，避免打断用户正在进行的对话
+# 暂停开关：touch $HOME/tmp/.ccode_ctx_off
+
 # 触发修复的错误模式（精确措辞，避免把可容忍的失败当事故）
 ERR_PAT='密钥配置文件读取失败|提炼失败|所有 Key/模型均不可用|部署异常|部署失败|issue 提交失败|TypeError|ReferenceError|SyntaxError|Exception'
 # 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout/UnknownHostException——同模型重试+冷却切换自愈 / 巡检的 Rhino 编译参考——仅供参考、非浏览器问题，2026-10-02 实测误报后加入 / GitHub API 的 HTTP/2 抖动（SETTINGS preface，本地缓存兜底自愈，2026-10-03 加入）/ 引擎被强杀时网络调用的临终遗言（InterruptedIOException，2026-10-03 引擎清场实测）/ DNS 解析失败（多行报错的异常类名在第二行、第一行只有 Unable to resolve host，按行匹配漏网修正，2026-10-03 加入）/ TCP 连接失败 ConnectException（第三种网络抖动形态：DNS 通了、IP 也拿到了，但 TCP 连不上；与前两者同属瞬态。2026-10-03 15:30 实测：glm flash→flashx→air 连挂三个，换到 airx 就通了、产品照常产出——多模型降级链已自愈；真·整体断网仍会被「所有 Key/模型均不可用」捞出来，不受本白名单影响））
@@ -86,6 +95,36 @@ start_ccode() {
     else
         log "⚠️ ccode 重开后 60 秒内未见进程（疑似启动失败或被系统拦截），下轮复查"
     fi
+}
+
+# ---------- ccode 上下文看门狗：超阈值 + 真空闲 → 换代（重开新会话，状态由 PROGRESS 交接）----------
+# 安全阀三重：①底栅出现「正在响应中」= 正忙，直接不动；②底栅内容连续 CONTEXT_IDLE_MIN 分钟未变 = 真空闲；
+# ③暂停开关可随时关掉。三重都过了才动手 —— 宁可晚换，不可打断。
+check_ccode_context() {
+    [ -f "$HOME/tmp/.ccode_ctx_off" ] && return 0
+    ccode_alive || return 0
+    local pane pct
+    pane=$(tmux capture-pane -p -t "$CC_SESSION" 2>/dev/null) || return 0
+    case "$pane" in *正在响应中*) return 0 ;; esac          # 正忙 → 绝不打扰
+    pct=$(printf '%s\n' "$pane" | grep -oE "上下文 [0-9]+%" | tail -1 | grep -oE "[0-9]+")
+    [ -n "$pct" ] || return 0
+    local hf="$HOME/tmp/.ccode_pane_hash" ts="$HOME/tmp/.ccode_pane_ts" h now idle
+    h=$(printf '%s' "$pane" | md5sum | cut -d' ' -f1)
+    now=$(date +%s)
+    if [ "$(cat "$hf" 2>/dev/null)" != "$h" ]; then   # 底栅变了 → 有人在动/在跑，重置空闲计时
+        printf '%s' "$h" > "$hf"
+        echo "$now" > "$ts"
+        return 0
+    fi
+    idle=$(( now - $(cat "$ts" 2>/dev/null || echo "$now") ))
+    [ "$pct" -ge "$CONTEXT_MAX" ] || return 0
+    [ "$idle" -ge $(( CONTEXT_IDLE_MIN * 60 )) ] || return 0
+    log "🔄 ccode 上下文 ${pct}%（阈值 ${CONTEXT_MAX}%）且已空闲 $(( idle / 60 )) 分钟 → 自动换代"
+    echo "$now" > "$ts"
+    tmux kill-session -t "$CC_SESSION" 2>/dev/null
+    sleep 2
+    start_ccode   # 立刻重开：start_ccode 会带着「读 PROGRESS 接着干」的派活消息，状态不丢
+    log "🔄 ccode 换代完成（旧上下文 ${pct}%），新会话已接手"
 }
 
 # ---------- 通知 ccode ----------
@@ -287,6 +326,7 @@ main() {
     while true; do
         date +%s > "$PIPE_HB"   # 心跳（约每分钟一次）：AutoJs6 调度器靠它判断流水线死活
         start_ccode
+        check_ccode_context
         ensure_scheduler
         self_check
         daily_patrol
