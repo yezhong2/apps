@@ -202,6 +202,9 @@ function saveBudget() {
 let dailyTokenCost = loadBudget();    // 今日累计 token（估算，从预算文件恢复）
 if (dailyTokenCost > 0) log("💰 今日已累计 " + dailyTokenCost + " token（预算 " + DAILY_BUDGET + "）");
 
+// 「机器人改不动」告警的冷却台账：{产品名: 上次告警时间戳ms}，同一产品 24 小时最多告警一次
+const STUCK_ALERT_PATH = "/storage/emulated/0/脚本/意见/机器人改不动.json";
+
 // ========== 主脚本单实例锁（2026-10-03 新增，防孤儿实例重复烧 token）==========
 // 起因：本机魔改版 forceStop() 实测空操作 —— 调度器换装/被重启时，它正在跑的主脚本杀不掉，变成孤儿
 // 继续整轮烧 token（当晚实测：换装后新旧两个主脚本并行，token 计数出现两条独立递增流，20:33 清场时
@@ -1827,6 +1830,32 @@ function recordAdoption(sc, applied) {
     list.unshift(rec);
     if (list.length > 300) list = list.slice(0, 300);
     feedbackWriteJson(FEEDBACK_ADOPT_PATH, {updated: new Date().toLocaleString(), list: list});
+    // 【2026-10-03 新增】「机器人改不动」浮出机制：某产品反复改进失败却从不吭声，问题就烂在队列里 ——
+    // 实际案例：CodeSentry（5 个按钮 4 个是死的）AI 连改多次都过不了质检，全靠人眼才发现。
+    // 计数直接读采纳记录（无需新增状态，且对历史数据同样生效）；每累计 3 次失败告警一次（3/6/9…），
+    // 既不会漏、也不会每轮刷屏。
+    try {
+        if (!applied.ok && applied.product && applied.product !== "（通用建议）") {
+            let fail = 0;
+            list.forEach(function(r) {
+                if (r.product === applied.product && String(r.changes || "").indexOf("未自动改进") === 0) fail++;
+            });
+            // 防刷屏用「每产品 24 小时冷却」，**不能**用「次数是 3 的倍数」——
+            // 后者会让失败最多的产品卡在 4、5、7、8 次上一直闭嘴（实测：CodeSentry 失败 5 次，最该报的反而不报）。
+            let stuckSt = {};
+            try { stuckSt = JSON.parse(files.read(STUCK_ALERT_PATH)) || {}; } catch (e) {}
+            let lastStuck = stuckSt[applied.product] || 0;
+            if (fail >= 3 && (Date.now() - lastStuck) > 24 * 3600 * 1000) {
+                stuckSt[applied.product] = Date.now();
+                try { files.write(STUCK_ALERT_PATH, JSON.stringify(stuckSt)); } catch (e) {}
+                log("⚠️ 「机器人改不动」：" + applied.product + " 累计改进失败 " + fail + " 次，建议人工介入或删除该产品");
+                pushToWx("⚠️ 机器人改不动（需人工介入）",
+                    "产品：" + applied.product + "\n累计自动改进失败 " + fail + " 次，每次都过不了质检。\n最近一次原因：" + (applied.reason || "?") +
+                    "\n\n这个产品 AI 反复改不动，建议：① 人工重做 ② 直接删掉 ③ 从首页下架。\n" +
+                    "（它还会一直占着巡检的重报名额，把真正的新问题挤出去）");
+            }
+        }
+    } catch (e) {}
     let cb = feedbackReadJson(CONTRIB_PATH);
     let clist = (cb && Array.isArray(cb.list)) ? cb.list : [];
     let found = null;
