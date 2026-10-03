@@ -1420,7 +1420,10 @@ function deployToGithub(localFile, remotePath) {
                 timeout: 60000
             });
             if (resp.statusCode === 200 || resp.statusCode === 201) {
-                let link = "https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + remotePath;
+                // 文件名常含空格（如「2026-10-03_101223_VPN Law Trac.html」）与中文：URL 里必须编码，
+                // 否则在企微/微信等聊天里会被空格截断、点不动。用 encodeURI（不是 encodeURIComponent，
+                // 后者会把路径分隔符 / 也编码掉）。GitHub Pages 对 %20 正常返回 200，已实测。
+                let link = "https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + encodeURI(String(remotePath));
                 log("🌐 已自动上线：" + link);
                 return link;
             }
@@ -2144,6 +2147,20 @@ function runOnce() {
         ensureRepo();
         let link = deployToGithub("/storage/emulated/0/脚本/产出/" + htmlName, htmlName);
         if (link) links.push({name: htmlName, url: link});
+    }
+    // ===== 文案补直达链接（2026-10-03 新增，用户要求「所有文案把链接加上去」）=====
+    // 位置刻意放在部署成功之后：只有产品确实上线了才往文案里写链接，避免部署失败时文案挂着死链。
+    // 用程序拼接而不是让 AI 写：链接必须逐字符准确（含 %20 编码），交给模型容易写错或漏写；
+    // 且 AI 那一步（artPrompt）在部署之前就跑完了，那时还没法知道部署成没成。
+    if (outputs.article && links.length) {
+        try {
+            let artPath = "/storage/emulated/0/脚本/产出/" + artName;
+            let t = files.read(artPath);
+            if (t && t.indexOf(links[0].url) < 0) {
+                files.write(artPath, t.replace(/\s+$/, "") + "\n\n🔗 直达链接（完全免费，打开即用）：\n" + links[0].url + "\n");
+                log("🔗 已为文案追加直达链接：" + links[0].url);
+            }
+        } catch (e) { log("⚠️ 文案追加链接失败（不影响主流程）：" + e); }
     }
     // ===== 产品优化环：自动审查最新产品并上线 v2 =====
     let opt = null;
