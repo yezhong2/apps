@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Legal Navigator</title><meta name="description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
+<meta property="og:title" content="VPN Legal Navigator">
+<meta property="og:description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_082035_VPN Legal Na.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            max-width: 600px;
+        }
+        .search-bar {
+            background-color: #444;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .search-bar input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: #fff;
+        }
+        .search-bar input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0095ff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .search-bar input[type="submit"]:hover {
+            background-color: #006ee6;
+        }
+        .法规信息列表, .法规详情解读, .合规评估表单, .更新提醒通知, .问答社区入口 {
+            background-color: #444;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .法规信息列表 ul {
+            list-style: none;
+            padding: 0;
+        }
+        .法规信息列表 ul li {
+            background-color: #555;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .法规信息列表 ul li:hover {
+            background-color: #666;
+        }
+        .法规详情解读 h2, .合规评估表单 h2, .更新提醒通知 h2, .问答社区入口 h2 {
+            margin-top: 0;
+        }
+        .合规评估表单 input[type="file"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #555;
+            color: #fff;
+        }
+        .合规评估表单 input[type="submit"] {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #0095ff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .合规评估表单 input[type="submit"]:hover {
+            background-color: #006ee6;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Enter keyword to search VPN laws...">
+            <input type="submit" value="Search" onclick="searchLaws()">
+        </div>
+        <div class="法规信息列表" id="lawList">
+            <!-- Law items will be populated here -->
+        </div>
+        <div class="法规详情解读" id="lawDetails">
+            <!-- Law details will be populated here -->
+        </div>
+        <div class="合规评估表单" id="complianceForm">
+            <h2>Compliance Assessment</h2>
+            <input type="file" id="configFile" accept=".json">
+            <input type="submit" value="Assess Compliance" onclick="assessCompliance()">
+        </div>
+        <div class="更新提醒通知" id="updateNotifications">
+            <h2>Update Notifications</h2>
+            <!-- Notifications will be populated here -->
+        </div>
+        <div class="问答社区入口" id="communityQa">
+            <h2>Community Q&A</h2>
+            <!-- Q&A will be populated here -->
+        </div>
+    </div>
+    <script>
+        function searchLaws() {
+            var keyword = document.getElementById('searchInput').value;
+            // Logic to fetch and display VPN laws based on keyword
+        }
+
+        function populateLawList(laws) {
+            var list = document.getElementById('lawList');
+            list.innerHTML = '';
+            laws.forEach(function(law) {
+                var li = document.createElement('li');
+                li.textContent = law.title;
+                li.onclick = function() {
+                    displayLawDetails(law);
+                };
+                list.appendChild(li);
+            });
+        }
+
+        function displayLawDetails(law) {
+            var details = document.getElementById('lawDetails');
+            details.innerHTML = '<h2>' + law.title + '</h2><p>' + law.description + '</p>';
+        }
+
+        function assessCompliance() {
+            var fileInput = document.getElementById('configFile');
+            var file = fileInput.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var config = JSON.parse(e.target.result);
+                    // Logic to assess compliance based on the uploaded configuration
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Example data for demonstration purposes
+        var exampleLaws = [
+            { title: "Law 1", description: "Description of Law 1" },
+            { title: "Law 2", description: "Description of Law 2" }
+        ];
+
+        // Populate the law list with example data
+        populateLawList(exampleLaws);
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Compliance Assessment","Update Notifications":"Update Notifications","Community Q\u0026A":"Community Q\u0026A","Law 1":"Law 1","Description of Law 1":"Description of Law 1","Law 2":"Law 2","Description of Law 2":"Description of Law 2","__title__":"VPN Legal Navigator"},"zh-CN":{"VPN Legal Navigator":"VPN 法律导航","Compliance Assessment":"合规性评估","Update Notifications":"更新通知","Community Q\u0026A":"社区问答","Law 1":"法律 1","Description of Law 1":"法律 1 的描述","Law 2":"法律 2","Description of Law 2":"法律 2 的描述","__title__":"VPN 法律导航"},"es":{"VPN Legal Navigator":"Navegador Legal de VPN","Compliance Assessment":"Evaluación de Cumplimiento","Update Notifications":"Notificaciones de Actualización","Community Q\u0026A":"Preguntas y Respuestas de la Comunidad","Law 1":"Ley 1","Description of Law 1":"Descripción de la Ley 1","Law 2":"Ley 2","Description of Law 2":"Descripción de la Ley 2","__title__":"Navegador Legal de VPN"},"ja":{"VPN Legal Navigator":"VPN法的ナビゲーター","Compliance Assessment":"適合性評価","Update Notifications":"更新通知","Community Q\u0026A":"コミュニティQ\u0026A","Law 1":"法1","Description of Law 1":"法1の説明","Law 2":"法2","Description of Law 2":"法2の説明","__title__":"VPN法的ナビゲーター"},"ko":{"VPN Legal Navigator":"VPN 법적 안내자","Compliance Assessment":"합의성 평가","Update Notifications":"업데이트 알림","Community Q\u0026A":"커뮤니티 Q\u0026A","Law 1":"법 1","Description of Law 1":"법 1 설명","Law 2":"법 2","Description of Law 2":"법 2 설명","__title__":"VPN 법적 안내자"},"fr":{"VPN Legal Navigator":"Navigateur juridique VPN","Compliance Assessment":"Évaluation de la conformité","Update Notifications":"Notifications de mise à jour","Community Q\u0026A":"Communauté Q\u0026A","Law 1":"Loi 1","Description of Law 1":"Description de la Loi 1","Law 2":"Loi 2","Description of Law 2":"Description de la Loi 2","__title__":"Navigateur juridique VPN"},"de":{"VPN Legal Navigator":"VPN Rechtsnavigationshilfe","Compliance Assessment":"Konformitätsbewertung","Update Notifications":"Aktualisierungsbenachrichtigungen","Community Q\u0026A":"Gemeinschaft Q\u0026A","Law 1":"Recht 1","Description of Law 1":"Beschreibung von Recht 1","Law 2":"Recht 2","Description of Law 2":"Beschreibung von Recht 2","__title__":"VPN Rechtsnavigationshilfe"},"ru":{"VPN Legal Navigator":"VPN Юридический навигатор","Compliance Assessment":"Оценка соответствия","Update Notifications":"Уведомления о обновлениях","Community Q\u0026A":"Общественные вопросы и ответы","Law 1":"Закон 1","Description of Law 1":"Описание Закона 1","Law 2":"Закон 2","Description of Law 2":"Описание Закона 2","__title__":"VPN Юридический навигатор"},"pt":{"VPN Legal Navigator":"Navegador Legal de VPN","Compliance Assessment":"Avaliação de Conformidade","Update Notifications":"Notificações de Atualização","Community Q\u0026A":"Perguntas e Respostas da Comunidade","Law 1":"Lei 1","Description of Law 1":"Descrição da Lei 1","Law 2":"Lei 2","Description of Law 2":"Descrição da Lei 2","__title__":"Navegador Legal de VPN"},"ar":{"VPN Legal Navigator":"مستكشف القانوني للـ VPN","Compliance Assessment":"تقييم الامتثال","Update Notifications":"إخطارات التحديث","Community Q\u0026A":"أسئلة وأجوبة المجتمع","Law 1":"قانون 1","Description of Law 1":"وصف قانون 1","Law 2":"قانون 2","Description of Law 2":"وصف قانون 2","__title__":"مستكشف القانوني للـ VPN"},"hi":{"VPN Legal Navigator":"वीपीएन लैगल नेविगेटर","Compliance Assessment":"अनुपालन मूल्यांकन","Update Notifications":"अपडेट नोटिफिकेशन","Community Q\u0026A":"कम्युनिटी Q\u0026A","Law 1":"कानून 1","Description of Law 1":"कानून 1 का वर्णन","Law 2":"कानून 2","Description of Law 2":"कानून 2 का वर्णन","__title__":"वीपीएन लैगल नेविगेटर"},"id":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Assesmen Komplian","Update Notifications":"Pemberitahuan Pembaruan","Community Q\u0026A":"Komunitas Q\u0026A","Law 1":"Undang-undang 1","Description of Law 1":"Deskripsi Undang-undang 1","Law 2":"Undang-undang 2","Description of Law 2":"Deskripsi Undang-undang 2","__title__":"VPN Legal Navigator"},"vi":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Đánh giá tuân thủ","Update Notifications":"Thông báo cập nhật","Community Q\u0026A":"Cộng đồng hỏi đáp","Law 1":"Luật 1","Description of Law 1":"Mô tả Luật 1","Law 2":"Luật 2","Description of Law 2":"Mô tả Luật 2","__title__":"VPN Legal Navigator"},"th":{"VPN Legal Navigator":"VPN นักนำกฎหมาย","Compliance Assessment":"การประเมินความสอดคล้องกฎหมาย","Update Notifications":"การแจ้งเตือนการปรับปรุง","Community Q\u0026A":"Q\u0026A สังคม","Law 1":"กฎหมาย 1","Description of Law 1":"คำอธิบายของกฎหมาย 1","Law 2":"กฎหมาย 2","Description of Law 2":"คำอธิบายของกฎหมาย 2","__title__":"VPN นักนำกฎหมาย"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
