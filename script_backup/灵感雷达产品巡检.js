@@ -561,14 +561,21 @@ function markReported(name) {
 function loadOpenTitles() {
     let titles = [];
     for (let page = 1; page <= 3; page++) {
-        try {
-            let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues?state=open&labels=" + encodeURIComponent(FB_LABEL) + "&per_page=100&page=" + page, {headers: ghHeaders(), timeout: 30000});
-            if (r.statusCode !== 200) break;
-            let arr = r.body.json() || [];
-            if (!arr.length) break;
+        // 2026-10-04 加固：网络抖动不再直接 break——去重闸门看不全会把「已有 open 意见」漏判、导致重复提单，每页最多 3 次重试（间隔 4 秒）
+        let arr = null, stop = false;
+        for (let attempt = 1; attempt <= 3; attempt++) {
+            try {
+                let r = http.get("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues?state=open&labels=" + encodeURIComponent(FB_LABEL) + "&per_page=100&page=" + page, {headers: ghHeaders(), timeout: 30000});
+                if (r.statusCode === 200) { arr = r.body.json() || []; break; }
+                if (attempt < 3) sleep(4000);
+            } catch (e) { if (attempt < 3) sleep(4000); }
+        }
+        if (arr === null) { stop = true; } // 3 次都没拿到：与原语义一致地停止（宁可不全，也不能假装拉全）
+        else {
             arr.forEach(function(i) { if (i.title) titles.push(i.title); });
-            if (arr.length < 100) break;
-        } catch (e) { break; }
+            if (arr.length < 100) stop = true;
+        }
+        if (stop) break;
     }
     return titles;
 }
@@ -668,22 +675,29 @@ function fileIssue(name, staticIssues, findings) {
         });
     }
     body += "\n> 改进目标：已有产品「" + name + "」，请主脚本意见闭环自动评分处理：总分 ≥21 且判定采纳即自动改进上线，不采纳自动回复关闭。\n";
-    try {
-        let r = http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues", {
-            method: "POST",
-            headers: ghHeaders(),
-            body: JSON.stringify({title: title, body: body, labels: [CHECK_LABEL, FB_LABEL]}),
-            timeout: 30000
-        });
-        if (r.statusCode === 201) {
-            markReported(name);
-            log("📮 已提交意见 issue（自检+意见）：" + title);
-            return title;
+    // 2026-10-04 加固：网络抖动（DNS 闪断/超时）曾让整条意见直接丢失（VPN Privacy 实测 11 死按钮的报告就这么没了）。
+    // 提交整段最多重试 3 次（间隔 4 秒）——与主脚本 deployToGithub 的加固同款；有响应但非 201 属业务性失败，重试无益直接返回。
+    for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+            let r = http.request("https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/issues", {
+                method: "POST",
+                headers: ghHeaders(),
+                body: JSON.stringify({title: title, body: body, labels: [CHECK_LABEL, FB_LABEL]}),
+                timeout: 30000
+            });
+            if (r.statusCode === 201) {
+                markReported(name);
+                log("📮 已提交意见 issue（自检+意见）：" + title);
+                return title;
+            }
+            log("❌ issue 提交失败 HTTP " + r.statusCode + "：" + String(r.body).slice(0, 200));
+            return null; // 有响应但非 201：业务性失败，重试无益
+        } catch (e) {
+            log("⚠️ issue 提交网络异常（第 " + attempt + "/3 次）：" + String(e).slice(0, 120));
+            if (attempt < 3) sleep(4000);
         }
-        log("❌ issue 提交失败 HTTP " + r.statusCode + "：" + String(r.body).slice(0, 200));
-    } catch (e) {
-        log("❌ issue 提交失败：" + e);
     }
+    log("❌ issue 提交失败：3 次重试均超时/网络异常，本轮放弃（下轮巡检按日重报上限自动重试）；产品：" + name);
     return null;
 }
 
