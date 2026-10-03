@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Code Mentor - 免费智能代码助手</title>
+    <title>AI Code Mentor - 智能代码助手</title><meta name="description" content="Free online tool: AI Code Mentor - 智能代码助手. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Code Mentor - 智能代码助手">
+<meta property="og:description" content="Free online tool: AI Code Mentor - 智能代码助手. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-09-30_111857_AI Code Ment.html">
+<meta name="theme-color" content="#333333">
+
     <style>
         * {
             margin: 0;
@@ -99,18 +105,27 @@
             margin: 0 auto;
         }
         
-        .free-notice {
+        /* 代码示例引导 */
+        .code-example {
             background-color: var(--bg-tertiary);
             border-radius: 8px;
-            padding: 1rem;
+            padding: 1.5rem;
             margin: 2rem 0;
-            text-align: center;
             border: 1px solid var(--accent);
         }
         
-        .free-notice span {
+        .code-example h3 {
+            margin-bottom: 1rem;
             color: var(--accent);
-            font-weight: bold;
+        }
+        
+        .code-example pre {
+            background-color: var(--bg-primary);
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
         }
         
         /* 代码输入区 */
@@ -343,16 +358,6 @@
             gap: 1rem;
         }
         
-        #adSlot {
-            background-color: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 1rem;
-            width: 100%;
-            text-align: center;
-            color: var(--text-secondary);
-        }
-        
         /* 响应式设计 */
         @media (max-width: 768px) {
             .nav-links {
@@ -373,7 +378,7 @@
             }
         }
     </style>
-<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
     <header>
         <nav class="container">
@@ -392,11 +397,19 @@
     <main class="container">
         <section class="hero">
             <h1>AI Code Mentor</h1>
-            <p>您的免费智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。</p>
-            <div class="free-notice">
-                <span>完全免费 · 永久免费</span> - 不收费、无激活码、无收款
-            </div>
+            <p>您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。</p>
         </section>
+
+        <!-- 代码示例引导 -->
+        <div class="code-example">
+            <h3>示例：快速开始使用</h3>
+            <pre>// 输入您的代码
+function calculateSum(a, b) {
+    return a + b;
+}
+
+// 点击"分析代码"获取反馈</pre>
+        </div>
 
         <section id="code-analysis" class="code-section">
             <h2 class="section-title">
@@ -465,11 +478,12 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="free-notice">
-                    <span>完全免费 · 永久免费</span> - 不收费、无激活码、无收款
-                </div>
-                <div id="adSlot">
-                    广告 - 免费编程学习资源推荐
+                <div class="nav-links" style="flex-direction: column; align-items: center;">
+                    <a href="#code-analysis">代码分析</a>
+                    <a href="#smart-fix">智能纠错</a>
+                    <a href="#code-templates">代码模板</a>
+                    <a href="#code-compare">代码对比</a>
+                    <a href="#knowledge-base">知识库</a>
                 </div>
             </div>
         </div>
@@ -538,24 +552,27 @@
             const analysisResult = document.getElementById('analysis-result');
             const analysisContent = document.getElementById('analysisContent');
             
-            // 模拟AI分析结果
+            // 真实代码分析逻辑
+            const issues = analyzeCodeIssues(code);
+            const score = calculateCodeScore(code, issues);
+            
             analysisContent.innerHTML = `
                 <div class="result-card success-card">
-                    <div class="result-title">代码质量评分: 85/100</div>
-                    <div class="result-content">您的代码整体结构良好，变量命名清晰，逻辑流程合理。</div>
+                    <div class="result-title">代码质量评分: ${score}/100</div>
+                    <div class="result-content">${getScoreDescription(score)}</div>
                 </div>
+                ${issues.length > 0 ? `
+                <div class="result-card">
+                    <div class="result-title">发现的问题</div>
+                    <div class="result-content">
+                        ${issues.map(issue => `<div style="margin-bottom: 8px;">• ${issue}</div>`).join('')}
+                    </div>
+                </div>
+                ` : ''}
                 <div class="result-card">
                     <div class="result-title">优化建议</div>
                     <div class="result-content">
-                        1. 考虑将重复代码提取为函数<br>
-                        2. 添加适当的注释解释复杂逻辑<br>
-                        3. 考虑使用更现代的语法特性
-                    </div>
-                </div>
-                <div class="result-card">
-                    <div class="result-title">性能分析</div>
-                    <div class="result-content">
-                        代码执行效率良好，没有明显的性能瓶颈。循环和递归操作已优化。
+                        ${generateOptimizationSuggestions(code, issues)}
                     </div>
                 </div>
             `;
@@ -569,25 +586,273 @@
             analysisResult.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 分析代码问题
+        function analyzeCodeIssues(code) {
+            const issues = [];
+            const lines = code.split('\n');
+            
+            // 检查未使用的变量
+            const variables = [];
+            const usedVariables = [];
+            
+            lines.forEach((line, index) => {
+                // 检查变量声明
+                const varMatch = line.match(/(?:var|let|const)\s+(\w+)/);
+                if (varMatch && !line.includes('=') && !line.trim().startsWith('//')) {
+                    variables.push({ name: varMatch[1], line: index + 1 });
+                }
+                
+                // 检查变量使用
+                const usedMatches = line.match(/\b(\w+)\b/g);
+                if (usedMatches) {
+                    usedMatches.forEach(match => {
+                        if (!usedVariables.includes(match) && !line.trim().startsWith('//')) {
+                            usedVariables.push(match);
+                        }
+                    });
+                }
+            });
+            
+            // 查找未使用的变量
+            variables.forEach(varObj => {
+                if (!usedVariables.includes(varObj.name)) {
+                    issues.push(`第${varObj.line}行: 未使用的变量 "${varObj.name}"`);
+                }
+            });
+            
+            // 检查代码长度
+            if (lines.length > 50) {
+                issues.push(`代码过长 (${lines.length} 行)，建议拆分为多个函数或模块`);
+            }
+            
+            // 检查注释比例
+            const commentLines = lines.filter(line => line.trim().startsWith('//') || line.trim().startsWith('/*') || line.trim().startsWith('*')).length;
+            const commentRatio = commentLines / lines.length;
+            
+            if (commentRatio < 0.1) {
+                issues.push('注释比例过低，建议添加更多注释说明代码逻辑');
+            }
+            
+            // 检查函数长度
+            let inFunction = false;
+            let functionLineCount = 0;
+            let currentFunction = '';
+            
+            lines.forEach((line, index) => {
+                const functionMatch = line.match(/(?:function|const|let|var)\s+(\w+)\s*\(.*\)\s*\{/);
+                if (functionMatch && !inFunction) {
+                    inFunction = true;
+                    functionLineCount = 1;
+                    currentFunction = functionMatch[1];
+                } else if (inFunction) {
+                    functionLineCount++;
+                    if (line.trim() === '}') {
+                        if (functionLineCount > 20) {
+                            issues.push(`函数 "${currentFunction}" 过长 (${functionLineCount} 行)，建议拆分为更小的函数`);
+                        }
+                        inFunction = false;
+                        functionLineCount = 0;
+                    }
+                }
+            });
+            
+            return issues;
+        }
+
+        // 计算代码分数
+        function calculateCodeScore(code, issues) {
+            let score = 100;
+            
+            // 根据问题数量扣分
+            score -= issues.length * 5;
+            
+            // 根据代码长度调整分数
+            const lineCount = code.split('\n').length;
+            if (lineCount > 100) {
+                score -= 10;
+            } else if (lineCount < 10) {
+                score -= 5;
+            }
+            
+            // 根据缩进一致性调整分数
+            const inconsistentIndents = checkIndentation(code);
+            score -= inconsistentIndents * 2;
+            
+            // 确保分数在0-100之间
+            return Math.max(0, Math.min(100, score));
+        }
+
+        // 检查缩进一致性
+        function checkIndentation(code) {
+            const lines = code.split('\n');
+            let issues = 0;
+            let expectedIndent = 0;
+            
+            lines.forEach(line => {
+                const trimmed = line.trim();
+                if (trimmed === '') return;
+                
+                const indent = line.length - trimmed.length;
+                
+                // 检查是否是函数/类开始
+                if (trimmed.match(/(?:function|class|if|for|while|switch)\s*\(/) || 
+                    trimmed.match(/(?:function|class|if|for|while|switch)\s+\w+\s*\(/) ||
+                    trimmed.match(/(?:const|let|var)\s+\w+\s*=\s*\(.*\)\s*=>/)) {
+                    expectedIndent = indent + 2;
+                    return;
+                }
+                
+                // 检查是否是块结束
+                if (trimmed === '}') {
+                    expectedIndent = Math.max(0, expectedIndent - 2);
+                    return;
+                }
+                
+                // 检查当前缩进是否与预期一致
+                if (indent !== expectedIndent) {
+                    issues++;
+                }
+            });
+            
+            return issues;
+        }
+
+        // 获取分数描述
+        function getScoreDescription(score) {
+            if (score >= 90) return '代码质量优秀！结构清晰，易于维护。';
+            if (score >= 70) return '代码质量良好，有少量改进空间。';
+            if (score >= 50) return '代码质量一般，建议进行优化。';
+            return '代码质量较差，建议全面重构。';
+        }
+
+        // 生成优化建议
+        function generateOptimizationSuggestions(code, issues) {
+            let suggestions = '';
+            
+            // 检查是否可以提取重复代码
+            const duplicateBlocks = findDuplicateBlocks(code);
+            if (duplicateBlocks.length > 0) {
+                suggestions += `发现 ${duplicateBlocks.length} 处重复代码块，建议提取为函数。<br>`;
+            }
+            
+            // 检查是否可以使用更现代的语法
+            if (code.includes('var ')) {
+                suggestions += '考虑使用 let 或 const 替代 var，避免变量提升问题。<br>';
+            }
+            
+            // 检查是否可以使用箭头函数
+            if (code.includes('function(') && !code.includes('=>')) {
+                suggestions += '考虑使用箭头函数简化函数定义。<br>';
+            }
+            
+            // 检查是否可以使用解构赋值
+            if (code.match(/\.split\(/) || code.match(/\.map\(function/)) {
+                suggestions += '考虑使用解构赋值和箭头函数简化代码。<br>';
+            }
+            
+            // 检查是否可以使用模板字符串
+            if (code.includes('\' + ') || code.includes('" + ')) {
+                suggestions += '考虑使用模板字符串 (``) 替代字符串拼接。<br>';
+            }
+            
+            // 如果没有特定建议，提供通用建议
+            if (suggestions === '') {
+                suggestions = '代码整体结构良好，可以考虑添加更多注释和单元测试。';
+            }
+            
+            return suggestions;
+        }
+
+        // 查找重复代码块
+        function findDuplicateBlocks(code) {
+            const lines = code.split('\n');
+            const blocks = [];
+            let duplicates = [];
+            
+            // 提取代码块（函数、循环等内部代码）
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                
+                // 检查函数开始
+                if (line.match(/(?:function|const|let|var)\s+\w+\s*\(.*\)\s*\{/)) {
+                    const start = i;
+                    let depth = 0;
+                    
+                    for (let j = i; j < lines.length; j++) {
+                        if (lines[j].includes('{')) depth++;
+                        if (lines[j].includes('}')) depth--;
+                        
+                        if (depth === 0) {
+                            const block = lines.slice(i, j + 1).join('\n');
+                            blocks.push({ content: block, start: i, end: j });
+                            i = j;
+                            break;
+                        }
+                    }
+                }
+            }
+            
+            // 查找重复块
+            for (let i = 0; i < blocks.length; i++) {
+                for (let j = i + 1; j < blocks.length; j++) {
+                    if (blocks[i].content === blocks[j].content) {
+                        duplicates.push({
+                            first: blocks[i],
+                            second: blocks[j]
+                        });
+                    }
+                }
+            }
+            
+            return duplicates;
+        }
+
         // 显示纠错建议
         function showFixSuggestions(code) {
             const fixSection = document.getElementById('smart-fix');
             const fixContent = document.getElementById('fixContent');
             
-            // 模拟AI纠错结果
-            const issues = [
-                { type: 'warning', message: '未使用的变量: tempVar', suggestion: '删除未使用的变量或添加注释说明其用途' },
-                { type: 'error', message: '潜在空指针异常', suggestion: '在使用对象前检查是否为null' },
-                { type: 'info', message: '可以考虑使用更简洁的写法', suggestion: '将if-else简化为三元表达式' }
-            ];
+            // 真实代码纠错逻辑
+            const issues = analyzeCodeIssues(code);
+            const errorIssues = issues.filter(issue => 
+                issue.includes('未使用') || 
+                issue.includes('过长') || 
+                issue.includes('不一致')
+            );
             
-            fixContent.innerHTML = issues.map(issue => `
-                <div class="result-card ${issue.type === 'error' ? 'error-card' : ''}">
-                    <div class="result-title">${issue.type.toUpperCase()}: ${issue.message}</div>
-                    <div class="result-content">${issue.suggestion}</div>
-                </div>
-            `).join('');
+            const warningIssues = issues.filter(issue => 
+                issue.includes('注释比例') || 
+                issue.includes('建议')
+            );
             
+            let html = '';
+            
+            if (errorIssues.length > 0) {
+                html += '<div class="result-title">错误</div>';
+                errorIssues.forEach(issue => {
+                    html += `<div class="result-card error-card">
+                        <div class="result-content">${issue}</div>
+                    </div>`;
+                });
+            }
+            
+            if (warningIssues.length > 0) {
+                html += '<div class="result-title">警告</div>';
+                warningIssues.forEach(issue => {
+                    html += `<div class="result-card">
+                        <div class="result-content">${issue}</div>
+                    </div>`;
+                });
+            }
+            
+            if (html === '') {
+                html = '<div class="result-card success-card">
+                    <div class="result-title">未发现明显问题</div>
+                    <div class="result-content">代码结构良好，无明显错误。</div>
+                </div>';
+            }
+            
+            fixContent.innerHTML = html;
             fixSection.classList.add('active');
         }
 
@@ -610,31 +875,195 @@
             
             const compareResult = document.getElementById('compareResult');
             
-            // 模拟代码差异
+            // 真实代码对比逻辑
+            const differences = compareCodeDifferences(originalCode, modifiedCode);
+            const improvementScore = calculateImprovementScore(originalCode, modifiedCode, differences);
+            
             compareResult.innerHTML = `
                 <div class="result-card">
                     <div class="result-title">代码差异分析</div>
                     <div class="result-content">
-                        <p>检测到 <span style="color: var(--accent);">5</span> 处修改：</p>
+                        <p>检测到 <span style="color: var(--accent);">${differences.length}</span> 处修改：</p>
                         <ul style="margin-left: 20px; margin-top: 10px;">
-                            <li>第3行: 变量名从 <code style="color: var(--accent);">oldName</code> 更改为 <code style="color: var(--accent);">newName</code></li>
-                            <li>第7行: 添加了新的函数 <code style="color: var(--accent);">calculate()</code></li>
-                            <li>第12行: 修改了条件判断逻辑</li>
-                            <li>第15行: 删除了未使用的代码块</li>
-                            <li>第20行: 优化了循环结构</li>
+                            ${differences.map(diff => `<li>${diff.description}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
-                <div class="result-card success-card">
+                <div class="result-card ${improvementScore >= 0 ? 'success-card' : 'error-card'}">
                     <div class="result-title">修改评价</div>
                     <div class="result-content">
-                        修改整体提高了代码的可读性和性能，建议保留这些更改。
+                        ${improvementScore >= 0 ? 
+                            `修改提高了代码质量 ${improvementScore} 分。修改建议合理，建议保留这些更改。` :
+                            `修改降低了代码质量 ${Math.abs(improvementScore)} 分。建议重新考虑这些更改。`
+                        }
                     </div>
                 </div>
             `;
             
             compareResult.classList.add('active');
             compareResult.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 对比代码差异
+        function compareCodeDifferences(original, modified) {
+            const differences = [];
+            const originalLines = original.split('\n');
+            const modifiedLines = modified.split('\n');
+            
+            // 检查行数变化
+            if (originalLines.length !== modifiedLines.length) {
+                differences.push({
+                    type: 'size',
+                    description: `代码行数从 ${originalLines.length} 行变为 ${modifiedLines.length} 行`
+                });
+            }
+            
+            // 检查变量变化
+            const originalVars = extractVariables(original);
+            const modifiedVars = extractVariables(modified);
+            
+            // 检查新增变量
+            const addedVars = Object.keys(modifiedVars).filter(key => !originalVars[key]);
+            if (addedVars.length > 0) {
+                differences.push({
+                    type: 'variables',
+                    description: `新增变量: ${addedVars.join(', ')}`
+                });
+            }
+            
+            // 检查删除变量
+            const removedVars = Object.keys(originalVars).filter(key => !modifiedVars[key]);
+            if (removedVars.length > 0) {
+                differences.push({
+                    type: 'variables',
+                    description: `删除变量: ${removedVars.join(', ')}`
+                });
+            }
+            
+            // 检查函数变化
+            const originalFunctions = extractFunctions(original);
+            const modifiedFunctions = extractFunctions(modified);
+            
+            // 检查新增函数
+            const addedFunctions = Object.keys(modifiedFunctions).filter(key => !originalFunctions[key]);
+            if (addedFunctions.length > 0) {
+                differences.push({
+                    type: 'functions',
+                    description: `新增函数: ${addedFunctions.join(', ')}`
+                });
+            }
+            
+            // 检查删除函数
+            const removedFunctions = Object.keys(originalFunctions).filter(key => !modifiedFunctions[key]);
+            if (removedFunctions.length > 0) {
+                differences.push({
+                    type: 'functions',
+                    description: `删除函数: ${removedFunctions.join(', ')}`
+                });
+            }
+            
+            // 检查注释变化
+            const originalComments = countComments(original);
+            const modifiedComments = countComments(modified);
+            
+            if (originalComments !== modifiedComments) {
+                differences.push({
+                    type: 'comments',
+                    description: `注释数量从 ${originalComments} 变为 ${modifiedComments}`
+                });
+            }
+            
+            return differences;
+        }
+
+        // 提取变量
+        function extractVariables(code) {
+            const variables = {};
+            const lines = code.split('\n');
+            
+            lines.forEach(line => {
+                const varMatch = line.match(/(?:var|let|const)\s+(\w+)/);
+                if (varMatch) {
+                    variables[varMatch[1]] = true;
+                }
+            });
+            
+            return variables;
+        }
+
+        // 提取函数
+        function extractFunctions(code) {
+            const functions = {};
+            const lines = code.split('\n');
+            
+            lines.forEach(line => {
+                const funcMatch = line.match(/(?:function|const|let|var)\s+(\w+)\s*\(.*\)/);
+                if (funcMatch) {
+                    functions[funcMatch[1]] = true;
+                }
+            });
+            
+            return functions;
+        }
+
+        // 计算注释数量
+        function countComments(code) {
+            const lines = code.split('\n');
+            return lines.filter(line => 
+                line.trim().startsWith('//') || 
+                line.trim().startsWith('/*') || 
+                line.trim().startsWith('*')
+            ).length;
+        }
+
+        // 计算改进分数
+        function calculateImprovementScore(original, modified, differences) {
+            let score = 0;
+            
+            // 检查是否添加了注释
+            const originalComments = countComments(original);
+            const modifiedComments = countComments(modified);
+            
+            if (modifiedComments > originalComments) {
+                score += 5;
+            }
+            
+            // 检查是否删除了未使用的变量
+            const originalVars = extractVariables(original);
+            const modifiedVars = extractVariables(modified);
+            
+            const unusedVars = Object.keys(originalVars).filter(key => !modifiedVars[key]);
+            if (unusedVars.length > 0) {
+                score += unusedVars.length * 2;
+            }
+            
+            // 检查是否添加了函数
+            const originalFunctions = extractFunctions(original);
+            const modifiedFunctions = extractFunctions(modified);
+            
+            const addedFunctions = Object.keys(modifiedFunctions).filter(key => !originalFunctions[key]);
+            if (addedFunctions.length > 0) {
+                score += addedFunctions.length * 3;
+            }
+            
+            // 检查代码行数变化
+            const originalLines = original.split('\n').length;
+            const modifiedLines = modified.split('\n').length;
+            
+            if (modifiedLines < originalLines) {
+                score += Math.min(10, (originalLines - modifiedLines) * 0.5);
+            }
+            
+            // 检查是否使用了更现代的语法
+            if (modified.includes('=>') && !original.includes('=>')) {
+                score += 3;
+            }
+            
+            if (modified.includes('const ') && original.includes('var ')) {
+                score += 2;
+            }
+            
+            return score;
         }
 
         // 清空对比
@@ -664,7 +1093,7 @@
                 
                 if (filteredResults.length > 0) {
                     resultsContainer.innerHTML = filteredResults.map(item => `
-                        <div class="knowledge-item">
+                        <div class="knowledge-item" onclick="showKnowledgeDetail('${item.title}')">
                             <div class="knowledge-title">${item.title}</div>
                             <div class="knowledge-snippet">${item.snippet}</div>
                         </div>
@@ -673,6 +1102,14 @@
                     resultsContainer.innerHTML = '<div class="knowledge-item">未找到相关结果</div>';
                 }
             });
+        }
+
+        // 显示知识详情
+        function showKnowledgeDetail(title) {
+            const item = knowledgeBase.find(k => k.title === title);
+            if (item) {
+                showNotification(item.snippet, 'info');
+            }
         }
 
         // 显示通知
@@ -726,5 +1163,115 @@
             });
         });
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot">广告</div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Intelligent Code Assistant","首页":"Home","代码分析":"Code Analysis","智能纠错":"Intelligent Error Correction","代码模板":"Code Templates","代码对比":"Code Comparison","知识库":"Knowledge Base","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Your intelligent code assistant, providing code analysis, intelligent error correction, code templates, and knowledge query functions to help you become a more efficient developer.","示例：快速开始使用":"Example: Quick Start","📝 代码输入与分析":"📝 Code Input and Analysis","分析代码":"Analyze Code","清空代码":"Clear Code","🔍 代码分析结果":"🔍 Code Analysis Results","🔧 智能纠错建议":"🔧 Intelligent Error Correction Suggestions","📋 代码模板":"📋 Code Templates","🔀 代码对比":"🔀 Code Comparison","对比代码":"Compare Code","清空对比":"Clear Comparison","📚 知识库查询":"📚 Knowledge Base Query","检测到 ${differences.length} 处修改：":"Detected ${differences.length} modifications:","${diff.description}":"${diff.description}","React 函数组件":"React Functional Components","Express 服务器":"Express Server","Hello World!":"Hello World!","Python 类定义":"Python Class Definition","CSS Flexbox 布局":"CSS Flexbox Layout","Java 接口实现":"Java Interface Implementation","Vue 组件":"Vue Components","__title__":"AI Code Mentor - Intelligent Code Assistant"},"zh-CN":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - 智能代码助手","首页":"首页","代码分析":"代码分析","智能纠错":"智能纠错","代码模板":"代码模板","代码对比":"代码对比","知识库":"知识库","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。","示例：快速开始使用":"示例：快速开始使用","📝 代码输入与分析":"📝 代码输入与分析","分析代码":"分析代码","清空代码":"清空代码","🔍 代码分析结果":"🔍 代码分析结果","🔧 智能纠错建议":"🔧 智能纠错建议","📋 代码模板":"📋 代码模板","🔀 代码对比":"🔀 代码对比","对比代码":"对比代码","清空对比":"清空对比","📚 知识库查询":"📚 知识库查询","检测到 ${differences.length} 处修改：":"检测到 ${differences.length} 处修改：","${diff.description}":"${diff.description}","React 函数组件":"React 函数组件","Express 服务器":"Express 服务器","Hello World!":"Hello World!","Python 类定义":"Python 类定义","CSS Flexbox 布局":"CSS Flexbox 布局","Java 接口实现":"Java 接口实现","Vue 组件":"Vue 组件","__title__":"AI Code Mentor - 智能代码助手"},"es":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Asistente de código inteligente","首页":"Inicio","代码分析":"Análisis de código","智能纠错":"Corrección inteligente de errores","代码模板":"Plantillas de código","代码对比":"Comparación de código","知识库":"Biblioteca de conocimientos","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Su asistente de código inteligente, que ofrece análisis de código, corrección inteligente de errores, plantillas de código y búsqueda de conocimientos, ayudándole a convertirse en un desarrollador más eficiente.","示例：快速开始使用":"Ejemplo: Comienzo rápido","📝 代码输入与分析":"📝 Entrada y análisis de código","分析代码":"Análisis de código","清空代码":"Borrar código","🔍 代码分析结果":"🔍 Resultados del análisis de código","🔧 智能纠错建议":"🔧 Sugerencias de corrección inteligente","📋 代码模板":"📋 Plantilla de código","🔀 代码对比":"🔀 Comparación de código","对比代码":"Comparación de código","清空对比":"Borrar comparación","📚 知识库查询":"📚 Búsqueda en la biblioteca de conocimientos","检测到 ${differences.length} 处修改：":"Detectado ${differences.length} cambios:","${diff.description}":"${diff.description}","React 函数组件":"Componente de función React","Express 服务器":"Servidor Express","Hello World!":"¡Hola Mundo!","Python 类定义":"Definición de clase Python","CSS Flexbox 布局":"Diseño de布局 CSS Flexbox","Java 接口实现":"Implementación de interfaz Java","Vue 组件":"Componente Vue","__title__":"AI Code Mentor - Asistente de código inteligente"},"ja":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - 智能コードアシスタント","首页":"ホーム","代码分析":"コード分析","智能纠错":"インテリジェントエラーコール","代码模板":"コードテンプレート","代码对比":"コード比較","知识库":"知識庫","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"あなたのスマートコードアシスタント、コード分析、インテリジェントエラーコール、コードテンプレート、知識検索機能を提供し、より効率的な開発者になるお手伝いをします。","示例：快速开始使用":"例：速やかに使用を開始する","📝 代码输入与分析":"📝 コード入力と分析","分析代码":"コード分析","清空代码":"コードをクリアする","🔍 代码分析结果":"🔍 コード分析結果","🔧 智能纠错建议":"🔧 インテリジェントエラーコール提案","📋 代码模板":"📋 コードテンプレート","🔀 代码对比":"🔀 コード比較","对比代码":"コードを比較する","清空对比":"比較をクリアする","📚 知识库查询":"📚 知識庫検索","检测到 ${differences.length} 处修改：":"${differences.length} か所の修正が検出されました：","${diff.description}":"${diff.description}","React 函数组件":"React ファンクショナルコンポーネント","Express 服务器":"Express サーバー","Hello World!":"こんにちは、世界！","Python 类定义":"Python クラス定義","CSS Flexbox 布局":"CSS Flexbox レイアウト","Java 接口实现":"Java インターフェース実装","Vue 组件":"Vue コンポーネント","__title__":"AI Code Mentor - 智能コードアシスタント"},"ko":{"AI Code Mentor - 智能代码助手":"AI 코드 멘토 - 지능형 코드 비서","首页":"홈페이지","代码分析":"코드 분석","智能纠错":"지능형 수정","代码模板":"코드 템플릿","代码对比":"코드 대조","知识库":"지식庫","AI Code Mentor":"AI 코드 멘토","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"귀하의 지능형 코드 비서는 코드 분석, 지능형 수정, 코드 템플릿 및 지식 검색 기능을 제공하여 더 효율적인 개발자가 될 수 있도록 도와드립니다。","示例：快速开始使用":"예제: 빠르게 시작하기","📝 代码输入与分析":"📝 코드 입력 및 분석","分析代码":"코드 분석","清空代码":"코드를 비우기","🔍 代码分析结果":"🔍 코드 분석 결과","🔧 智能纠错建议":"🔧 지능형 수정 제안","📋 代码模板":"📋 코드 템플릿","🔀 代码对比":"🔀 코드 대조","对比代码":"대조 코드","清空对比":"대조를 비우기","📚 知识库查询":"📚 지식庫 검색","检测到 ${differences.length} 处修改":"${differences.length} 개의 수정을 감지했습니다：","${diff.description}":"${diff.description}","React 函数组件":"React 함수 컴포넌트","Express 服务器":"Express 서버","Hello World!":"안녕하세요 세상! (Hello World!)","Python 类定义":"Python 클래스 정의","CSS Flexbox 布局":"CSS Flexbox 레이아웃","Java 接口实现":"Java 인터페이스 구현","Vue 组件":"Vue 컴포넌트","__title__":"AI 코드 멘토 - 지능형 코드 비서"},"fr":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Assistant de code intelligent","首页":"Accueil","代码分析":"Analyse de code","智能纠错":"Correction intelligente","代码模板":"Modèles de code","代码对比":"Comparaison de code","知识库":"Banque de connaissances","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Votre assistant de code intelligent, fournissant des fonctionnalités d'analyse de code, de correction intelligente, de modèles de code et de recherche de connaissances, pour vous aider à devenir un développeur plus efficace.","示例：快速开始使用":"Exemple : Démarrage rapide","📝 代码输入与分析":"📝 Entrée et analyse de code","分析代码":"Analyser le code","清空代码":"Effacer le code","🔍 代码分析结果":"🔍 Résultat d'analyse de code","🔧 智能纠错建议":"🔧 Suggestions de correction intelligente","📋 代码模板":"📋 Modèle de code","🔀 代码对比":"🔀 Comparaison de code","对比代码":"Comparer le code","清空对比":"Effacer la comparaison","📚 知识库查询":"📚 Recherche dans la banque de connaissances","检测到 ${differences.length} 处修改：":"Détection de ${differences.length} modifications :","${diff.description}":"${diff.description}","React 函数组件":"Composant fonctionnel React","Express 服务器":"Serveur Express","Hello World!":"Hello World !","Python 类定义":"Définition de classe Python","CSS Flexbox 布局":"Mise en page Flexbox CSS","Java 接口实现":"Implémentation d'interface Java","Vue 组件":"Composant Vue","__title__":"AI Code Mentor - Assistant de code intelligent"},"de":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Künstlicher Intelligenz Code Mentor","首页":"Startseite","代码分析":"Codeanalyse","智能纠错":"Intelligente Fehlerkorrektur","代码模板":"Codevorlagen","代码对比":"Codevergleich","知识库":"Wissensdatenbank","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Ihr intelligenter Code-Assistent, der Codeanalyse, intelligente Fehlerkorrektur, Codevorlagen und Wissenssuche bietet, um Ihnen zu helfen, effizientere Entwickler zu werden.","示例：快速开始使用":"Beispiel: Schnell beginnen","📝 代码输入与分析":"📝 Codeeingabe und -analyse","分析代码":"Code analysieren","清空代码":"Code leeren","🔍 代码分析结果":"🔍 Codeanalyseergebnisse","🔧 智能纠错建议":"🔧 Intelligente Fehlerkorrekturvorschläge","📋 代码模板":"📋 Codevorlagen","🔀 代码对比":"🔀 Codevergleich","对比代码":"Code vergleichen","清空对比":"Vergleich leeren","📚 知识库查询":"📚 Wissensdatenbankabfrage","检测到 ${differences.length} 处修改：":"Erkannt ${differences.length} Änderungen:","${diff.description}":"${diff.description}","React 函数组件":"React-Funktionskomponente","Express 服务器":"Express-Server","Hello World!":"Hallo Welt!","Python 类定义":"Python-Klassendefinition","CSS Flexbox 布局":"CSS Flexbox-Layout","Java 接口实现":"Java-Schnittstellenimplementierung","Vue 组件":"Vue-Komponente","__title__":"AI Code Mentor - Künstlicher Intelligenz Code Mentor"},"ru":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - умный помощник по коду","首页":"Домашняя страница","代码分析":"Анализ кода","智能纠错":"Интеллектуальная коррекция ошибок","代码模板":"Шаблоны кода","代码对比":"Сравнение кода","知识库":"База знаний","AI Code Mentor":"AI Code Mentor - ваш умный помощник по коду, предоставляющий функции анализа кода, интеллектуальной коррекции ошибок, шаблонов кода и поиска знаний, помогая вам стать более эффективным разработчиком.","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Ваш умный помощник по коду, предоставляющий функции анализа кода, интеллектуальной коррекции ошибок, шаблонов кода и поиска знаний, помогая вам стать более эффективным разработчиком.","示例：快速开始使用":"Пример: быстрый запуск","📝 代码输入与分析":"📝 Ввод и анализ кода","分析代码":"Анализировать код","清空代码":"Очистить код","🔍 代码分析结果":"🔍 Результаты анализа кода","🔧 智能纠错建议":"🔧 Рекомендации по интеллектуальной коррекции ошибок","📋 代码模板":"📋 Шаблоны кода","🔀 代码对比":"🔀 Сравнение кода","对比代码":"Сравнить код","清空对比":"Очистить сравнение","📚 知识库查询":"📚 Поиск в базе знаний","检测到 ${differences.length} 处修改：":"Обнаружено ${differences.length} изменений:","${diff.description}":"${diff.description}","React 函数组件":"Компонент функции React","Express 服务器":"Сервер Express","Hello World!":"Привет, мир!","Python 类定义":"Определение класса Python","CSS Flexbox 布局":"Макет Flexbox CSS","Java 接口实现":"Реализация интерфейса Java","Vue 组件":"Компонент Vue","__title__":"AI Code Mentor - умный помощник по коду"},"pt":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Assistente de Código Inteligente","首页":"Página Inicial","代码分析":"Análise de Código","智能纠错":"Correção Inteligente","代码模板":"Modelo de Código","代码对比":"Comparação de Código","知识库":"Biblioteca de Conhecimento","AI Code Mentor":"AI Code Mentor","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Seu Assistente de Código Inteligente, oferece análise de código, correção inteligente, modelo de código e pesquisa de conhecimento, ajudando você a se tornar um desenvolvedor mais eficiente.","示例：快速开始使用":"Exemplo: Início Rápido","📝 代码输入与分析":"📝 Entrada e Análise de Código","分析代码":"Analisar Código","清空代码":"Limpar Código","🔍 代码分析结果":"🔍 Resultado da Análise de Código","🔧 智能纠错建议":"🔧 Sugerências de Correção Inteligente","📋 代码模板":"📋 Modelo de Código","🔀 代码对比":"🔀 Comparação de Código","对比代码":"Comparar Código","清空对比":"Limpar Comparação","📚 知识库查询":"📚 Pesquisa na Biblioteca de Conhecimento","检测到 ${differences.length} 处修改：":"Detectado ${differences.length} modificação(s):","${diff.description}":"${diff.description}","React 函数组件":"Componente de Função React","Express 服务器":"Servidor Express","Hello World!":"Olá Mundo!","Python 类定义":"Definição de Classe Python","CSS Flexbox 布局":"Layout Flexbox CSS","Java 接口实现":"Implementação de Interface Java","Vue 组件":"Componente Vue","__title__":"AI Code Mentor - Assistente de Código Inteligente"},"ar":{"AI Code Mentor - 智能代码助手":"مدير شيفرة الذكاء الاصطناعي - مساعد الكود الذكاء الاصطناعي","首页":"الصفحة الرئيسية","代码分析":"تحليل الكود","智能纠错":"تصحيح الذكاء الاصطناعي","代码模板":"نماذج الكود","代码对比":"مقارنة الكود","知识库":"المكتبة المعرفية","AI Code Mentor":"مدير شيفرة الذكاء الاصطناعي","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"مساعدك الذكاء الاصطناعي للكود، يقدم خدمات تحليل الكود، تصحيح الذكاء الاصطناعي، نماذج الكود، و استعلامات المكتبة المعرفية، لمساعدتك في أن تصبح مبرمجًا أكثر كفاءة.","示例：快速开始使用":"مثال: البدء بسرعة","📝 代码输入与分析":"📝 إدخال الكود وتحليله","分析代码":"تحليل الكود","清空代码":"إزالة الكود","🔍 代码分析结果":"🔍 نتائج تحليل الكود","🔧 智能纠错建议":"🔧 مقترحات تصحيح الذكاء الاصطناعي","📋 代码模板":"📋 نموذج الكود","🔀 代码对比":"🔀 مقارنة الكود","对比代码":"مقارنة الكود","清空对比":"إزالة المقارنة","📚 知识库查询":"📚 استعلامات المكتبة المعرفية","检测到 ${differences.length} 处修改":"تم اكتشاف ${differences.length} تعديل","${diff.description}":"${diff.description}","React 函数组件":"مكونات الوظائف لـ React","Express 服务器":"خادم Express","Hello World!":"مرحبًا العالم!","Python 类定义":"تعريف الفئات بلغة بايثون","CSS Flexbox 布局":"تخطيط Flexbox بلغة CSS","Java 接口实现":"تنفيذ واجهات لغة Java","Vue 组件":"مكونات Vue","__title__":"مدير شيفرة الذكاء الاصطناعي - مساعد الكود الذكاء الاصطناعي"},"hi":{"AI Code Mentor - 智能代码助手":"एआई कोड मेंटर - इंटेलिजेंट कोड सहायक","首页":"होम पेज","代码分析":"कोड विश्लेषण","智能纠错":"इंटेलिजेंट रिक्ताकार","代码模板":"कोड मॉडल","代码对比":"कोड तुलना","知识库":"ज्ञानकोश","AI Code Mentor":"एआई कोड मेंटर","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"आपके इंटेलिजेंट कोड सहायक, कोड विश्लेषण, इंटेलिजेंट रिक्ताकार, कोड मॉडल और ज्ञानकोश खोज की सुविधा प्रदान करता है, आपको अधिक कुशल डेवलपर बनने में मदद करता है。","示例：快速开始使用":"उदाहरण: तेजी से शुरू करें","📝 代码输入与分析":"📝 कोड इनपुट और विश्लेषण","分析代码":"कोड का विश्लेषण","清空代码":"कोड को साफ करें","🔍 代码分析结果":"🔍 कोड विश्लेषण परिणाम","🔧 智能纠错建议":"🔧 इंटेलिजेंट रिक्ताकार सुझाव","📋 代码模板":"📋 कोड मॉडल","🔀 代码对比":"🔀 कोड तुलना","对比代码":"कोड का तुलना","清空对比":"तुलना को साफ करें","📚 知识库查询":"📚 ज्ञानकोश खोज","检测到 ${differences.length} 处修改：":"दोनों में ${differences.length} स्थानों पर संशोधन पाया गया:","${diff.description}":"${diff.description}","React 函数组件":"रीएक्ट फ़ंक्शन कम्पोनेंट","Express 服务器":"एक्सप्रेस सर्वर","Hello World!":"हेलो वर्ल्ड!","Python 类定义":"पायथॉन क्लास विन्यास","CSS Flexbox 布局":"CSS फ्लेक्सबॉक्स विन्यास","Java 接口实现":"जावा इंटरफेस इम्प्लीकेशन","Vue 组件":"व्यू कम्पोनेंट","__title__":"एआई कोड मेंटर - इंटेलिजेंट कोड सहायक"},"id":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Asisten Kode Intelligens","首页":"Beranda","代码分析":"Analisis Kode","智能纠错":"Perbaikan Kode Intelligens","代码模板":"Templat Kode","代码对比":"Perbandingan Kode","知识库":"Pustaka Pengetahuan","AI Code Mentor":"AI Code Mentor, asisten kode intelligen yang menyediakan analisis kode, perbaikan kode intelligens, templat kode, dan pencarian pengetahuan untuk membantu Anda menjadi pengembang yang efisien.","示例：快速开始使用":"Contoh: Mulai Secara Cepat","📝 代码输入与分析":"Input dan Analisis Kode","分析代码":"Analisis Kode","清空代码":"Bersihkan Kode","🔍 代码分析结果":"Hasil Analisis Kode","🔧 智能纠错建议":"Saran Perbaikan Kode Intelligens","📋 代码模板":"Templat Kode","🔀 代码对比":"Perbandingan Kode","对比代码":"Bandingkan Kode","清空对比":"Bersihkan Perbandingan","📚 知识库查询":"Pencarian Pustaka Pengetahuan","检测到 ${differences.length} 处修改":"Ditemukan ${differences.length} perubahan:","${diff.description}":"${diff.description}","React 函数组件":"Komponen Fungsi React","Express 服务器":"Server Express","Hello World!":"Hello World!","Python 类定义":"Definisi Kelas Python","CSS Flexbox 布局":"Layout Flexbox CSS","Java 接口实现":"Realisasi Interface Java","Vue 组件":"Komponen Vue","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Anda adalah asisten kode cerdas, menyediakan analisis kode, perbaikan otomatis, template kode, dan fungsi pencarian pengetahuan, membantu Anda menjadi pengembang yang efisien.","检测到 ${differences.length} 处修改：":"Ditemukan ${differences.length} perubahan：","__title__":"AI Code Mentor - Asisten Kode Intelligens"},"vi":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - Trợ lý mã thông minh","首页":"Trang chủ","代码分析":"Phân tích mã","智能纠错":"Điều chỉnh thông minh","代码模板":"Mẫu mã","代码对比":"So sánh mã","知识库":"Cơ sở kiến thức","AI Code Mentor":"AI Code Mentor - Trợ lý mã thông minh của bạn, cung cấp chức năng phân tích mã, điều chỉnh thông minh, mẫu mã và tra cứu kiến thức, giúp bạn trở thành nhà phát triển hiệu quả hơn.","示例：快速开始使用":"Ví dụ: Bắt đầu nhanh chóng","📝 代码输入与分析":"Nhập mã và phân tích","分析代码":"Phân tích mã","清空代码":"Xóa mã","🔍 代码分析结果":"Kết quả phân tích mã","🔧 智能纠错建议":"Ý kiến điều chỉnh thông minh","📋 代码模板":"Mẫu mã","🔀 代码对比":"So sánh mã","对比代码":"So sánh mã","清空对比":"Xóa so sánh","📚 知识库查询":"Tra cứu cơ sở kiến thức","检测到 ${differences.length} 处修改":"Đã phát hiện ${differences.length} thay đổi:","${diff.description}":"${diff.description}","React 函数组件":"Thành phần hàm React","Express 服务器":"Máy chủ Express","Hello World!":"Chào thế giới!","Python 类定义":"Định nghĩa lớp Python","CSS Flexbox 布局":"Bố cục CSS Flexbox","Java 接口实现":"Thực hiện giao diện Java","Vue 组件":"Thành phần Vue","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"Người trợ lý mã thông minh của bạn, cung cấp chức năng phân tích mã, sửa lỗi thông minh, mẫu mã và tra cứu kiến thức, giúp bạn trở thành nhà phát triển hiệu quả hơn。","检测到 ${differences.length} 处修改：":"Đã phát hiện ${differences.length} thay đổi:","__title__":"AI Code Mentor - Trợ lý mã thông minh"},"th":{"AI Code Mentor - 智能代码助手":"AI Code Mentor - ช่วยเหลือรหัสโค้ดอินเทลลิเจนต์","首页":"หน้าแรก","代码分析":"วิเคราะห์รหัส","智能纠错":"การแก้ไขข้อผิดพลาดอัตโนมัติ","代码模板":"ตัวอย่างรหัส","代码对比":"เปรียบเทียบรหัส","知识库":"คลังความรู้","AI Code Mentor":"AI Code Mentor - ช่วยเหลือรหัสโค้ดอินเทลลิเจนต์","您的智能代码助手，提供代码分析、智能纠错、代码模板和知识查询功能，帮助您成为更高效的开发者。":"AI Code Mentor ของคุณ ที่ให้บริการวิเคราะห์รหัส การแก้ไขข้อผิดพลาดอัตโนมัติ ตัวอย่างรหัส และการค้นหาความรู้ ช่วยคุณกลายเป็นนักพัฒนาที่มีประสิทธิภาพมากขึ้น","示例：快速开始使用":"ตัวอย่าง: เริ่มใช้งานอย่างรวดเร็ว","📝 代码输入与分析":"📝 การเข้าถึงและวิเคราะห์รหัส","分析代码":"วิเคราะห์รหัส","清空代码":"ล้างรหัส","🔍 代码分析结果":"🔍 ผลลัพธ์วิเคราะห์รหัส","🔧 智能纠错建议":"🔧 ข้อเสนอแก้ไขข้อผิดพลาดอัตโนมัติ","📋 代码模板":"📋 ตัวอย่างรหัส","🔀 代码对比":"🔀 เปรียบเทียบรหัส","对比代码":"เปรียบเทียบรหัส","清空对比":"ล้างเปรียบเทียบ","📚 知识库查询":"📚 การค้นหาคลังความรู้","检测到 ${differences.length} 处修改：":"พบการแก้ไข ${differences.length} ส่วน:","${diff.description}":"${diff.description}","React 函数组件":"React คอมโพเนนต์ฟังก์ชัน","Express 服务器":"Express สังกัดเซิร์ฟเวอร์","Hello World!":"Hello World!","Python 类定义":"Python การกำหนดชั้น","CSS Flexbox 布局":"CSS Flexbox การจัดลำดับ","Java 接口实现":"Java การปฏิบัติการระหว่างระบบ","Vue 组件":"Vue คอมโพเนนต์","__title__":"AI Code Mentor - ช่วยเหลือรหัสโค้ดอินเทลลิเจนต์"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
 </html>
