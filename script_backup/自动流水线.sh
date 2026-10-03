@@ -290,6 +290,31 @@ ensure_scheduler() {
 # 2026-10-03 加固②：不再 head -1 + return（原实现一轮只报一条，叠加报警后 600 秒冷却，
 #   多个互不相关的错误要排队十分钟才浮出水面）。改为一次循环把所有命中都吐出来，由 main 汇总成一条通知。
 #   每个日志最多取 3 条，防止单文件刷屏把通知撑爆。
+# ---------- 错误行内容级去重（2026-10-04）：同一条错误行（含时间戳=同一事件）只告警一次，窗口 6 小时 ----------
+# 起因：巡检 issue 提交超时修复后，那条旧错误行仍留在「还没被下一轮重写」的日志里；10 分钟冷却 +
+# 20 分钟冻结窗的组合让它在 00:03→00:15 被二次告警（拿已修复的问题重复开工）。去重表存
+# $HOME/tmp/.error_alerted，每次扫描顺带裁剪（窗口 6 小时 + 上限 800 条），真·新事件（新时间戳）不受影响。
+DEDUP_WIN=21600
+dedup_mark() {
+    # $1 = "文件名|错误行"；是窗口内的新错误 → 登记并返回 0；已告警过 → 返回 1
+    local sf="$HOME/tmp/.error_alerted" now ts key line
+    now=$(date +%s)
+    key=$(printf '%s' "$1" | md5sum | cut -d' ' -f1)
+    mkdir -p "$HOME/tmp"
+    if [ -f "$sf" ]; then
+        : > "$sf.prune"
+        while read -r ts line; do
+            case "$ts" in ''|*[!0-9]*) continue;; esac
+            [ $(( now - ts )) -lt $DEDUP_WIN ] && printf '%s %s\n' "$ts" "$line" >> "$sf.prune"
+        done < "$sf"
+        tail -n 800 "$sf.prune" > "$sf.prune2" && mv "$sf.prune2" "$sf.prune"
+        mv "$sf.prune" "$sf"
+        grep -q " $key\$" "$sf" && return 1
+    fi
+    printf '%s %s\n' "$now" "$key" >> "$sf"
+    return 0
+}
+
 scan_logs() {
     local f hit name fresh="$HOME/tmp/.scan_ref"
     touch -d "20 minutes ago" "$fresh" 2>/dev/null || touch "$fresh"
@@ -299,7 +324,10 @@ scan_logs() {
         [ "$f" -nt "$fresh" ] || continue
         name="${f##*/}"
         tail -80 "$f" | grep -E "$ERR_PAT" | grep -vE "$IGNORE_PAT" | head -3 | while IFS= read -r hit; do
-            printf '%s|%s\n' "$name" "$hit"
+            # 内容级去重：同一事件（同文件名+同整行，含时间戳）只告警一次
+            if dedup_mark "$name|$hit"; then
+                printf '%s|%s\n' "$name" "$hit"
+            fi
         done
     done
 }
