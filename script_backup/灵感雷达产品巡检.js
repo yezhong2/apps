@@ -642,7 +642,7 @@ function fileIssue(name, staticIssues, findings) {
 }
 
 // ========== 主流程 ==========
-// ========== 功能实测层（真 WebView 加载 + 自动点击；每轮轮测 1 个产品；零 token）==========
+// ========== 功能实测层（真 WebView 加载 + 自动点击；每轮轮测最多 FT_MAX_PER_ROUND 个产品；零 token）==========
 // 由「灵感雷达功能实测.js」（ui 模式）执行：加载产品副本→注入错误捕获→点击全部按钮→结果经 hash 回传；
 // 发现并入该产品的 staticIssues → 走「意见」issue 同一闭环（评分≥21 自动改进上线）；
 // 无结果/超时不报 issue（防实测器自身兼容问题刷屏，只记日志供排查）
@@ -651,7 +651,8 @@ const FT_TASK_PATH = "/storage/emulated/0/脚本/功能实测_任务.json";
 const FT_RESULT_PATH = "/storage/emulated/0/脚本/功能实测_结果.json";
 const FT_CURSOR_PATH = "/storage/emulated/0/脚本/功能实测游标.txt";
 const FT_LOG_PATH = "/storage/emulated/0/脚本/功能实测_历史.json"; // {文件名: 上次实测时间戳ms} 防重复实测（2026-10-03 修）
-let FT_PICK_CACHE = null; // 本轮实测目标缓存：每轮只测 1 个产品；首次调用时计算并缓存（防循环中因历史更新而连环换选）
+const FT_MAX_PER_ROUND = 3; // 每轮实测产品数（2026-10-03 由 1 提到 3：37 个产品全量覆盖从「一整天」压到「几小时」；调大=覆盖快但每轮巡检变长，每个产品最多等 45 秒）
+let FT_PICK_CACHE = null; // 本轮实测目标缓存（数组，最多 FT_MAX_PER_ROUND 个）；首次调用时算好并缓存（防循环中因历史更新而连环换选）
 function loadFTLog() {
     try { let j = JSON.parse(files.read(FT_LOG_PATH)); if (j && typeof j === "object") return j; } catch (e) {}
     return {};
@@ -668,29 +669,44 @@ function functionalTest(name) {
     // ②没有新鲜变更 → 游标轮转，跳过 20 小时内已测过的产品（保证全量覆盖）；③全测过则回到纯轮转。
     if (FT_PICK_CACHE === null) {
         let hist0 = loadFTLog();
+        let picks = [];
         let cands = [];
         todayChanged().forEach(function(n) {
             let mt = 0;
             try { mt = new java.io.File(PRODUCT_DIR + "/" + n).lastModified(); } catch (e) {}
             if (!hist0[n] || mt > hist0[n]) cands.push({n: n, mt: mt});
         });
-        if (cands.length) {
-            cands.sort(function(a, b) { return b.mt - a.mt; });
-            FT_PICK_CACHE = cands[0].n;
-        } else {
+        // ① 变更优先：今天变过且改动晚于上次实测的产品，最近改动的排前面，取够 FT_MAX_PER_ROUND 个为止
+        cands.sort(function(a, b) { return b.mt - a.mt; });
+        for (let i = 0; i < cands.length && picks.length < FT_MAX_PER_ROUND; i++) picks.push(cands[i].n);
+        // ② 名额没用满 → 游标轮转补齐：跳过 20 小时内已测过的，且不与①重复（保证全量覆盖）
+        if (picks.length < FT_MAX_PER_ROUND) {
             let last = "";
             try { last = files.read(FT_CURSOR_PATH).trim(); } catch (e) {}
             let start = names.indexOf(last);
             let fresh = Date.now() - 20 * 3600 * 1000;
-            for (let k = 1; k <= names.length; k++) {
+            for (let k = 1; k <= names.length && picks.length < FT_MAX_PER_ROUND; k++) {
                 let n2 = names[(start + k) % names.length];
-                if (!hist0[n2] || hist0[n2] < fresh) { FT_PICK_CACHE = n2; break; }
+                if (picks.indexOf(n2) >= 0) continue;
+                if (!hist0[n2] || hist0[n2] < fresh) picks.push(n2);
             }
-            if (!FT_PICK_CACHE) FT_PICK_CACHE = names[(start + 1) % names.length];
         }
+        // ③ 兜底：②没能把名额填满（全都 20 小时内测过 / 候选与①重复）→ 放开时间限制做纯轮转补位，
+        //    保证每轮仍有足额实测产出。注意判断必须是「名额没满」而非「一个都没选到」——
+        //    否则①刚好只选中 1 个、②又补不上时，整轮会退化成只测 1 个（2026-10-03 单测 T4 抓到）。
+        if (picks.length < FT_MAX_PER_ROUND) {
+            let last2 = "";
+            try { last2 = files.read(FT_CURSOR_PATH).trim(); } catch (e) {}
+            let s2 = names.indexOf(last2);
+            for (let k = 1; k <= names.length && picks.length < FT_MAX_PER_ROUND; k++) {
+                let n3 = names[(s2 + k) % names.length];
+                if (picks.indexOf(n3) < 0) picks.push(n3);
+            }
+        }
+        FT_PICK_CACHE = picks;
     }
-    let pick = FT_PICK_CACHE;
-    if (pick !== name) return [];
+    if (FT_PICK_CACHE.indexOf(name) < 0) return [];
+    let pick = name;
     try { files.write(FT_CURSOR_PATH, pick); } catch (e) {}
     try { files.remove(FT_RESULT_PATH); } catch (e) {}
     try { files.write(FT_TASK_PATH, JSON.stringify({target: PRODUCT_DIR + "/" + pick, label: pick})); } catch (e) { return []; }
@@ -750,7 +766,7 @@ function main() {
         log("🔎 检查 " + name + "（" + html.length + " 字节）…");
         let staticIssues = staticCheck(name, html);
         compileAdvisory(name, html);
-        // 功能实测（真 WebView 自动点击，每轮 1 个产品轮转）——发现并入 staticIssues，走同一意见闭环
+        // 功能实测（真 WebView 自动点击，每轮最多 FT_MAX_PER_ROUND 个产品轮转）——发现并入 staticIssues，走同一意见闭环
         try {
             let ftIssues = functionalTest(name);
             if (ftIssues && ftIssues.length) staticIssues = staticIssues.concat(ftIssues);
