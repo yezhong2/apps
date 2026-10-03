@@ -189,7 +189,54 @@ function sleepUntilStart() {
     return true;
 }
 
+// ========== 单实例锁（2026-10-03 新增，根治多实例堆积烧 token）==========
+// 背景（2026-10-03 20:24 现场实测）：本机（荣耀）会把后台冻结 20-30 分钟一批，而流水线的判死阈值
+// 只有 12 分钟 —— 冻结中的调度器会被误判成「已停止」，流水线于是再拉起一个；旧实例解冻后与新实例
+// 并行双开。现场证据：调度日志每行都写两遍 + 主脚本日志出现 3 条独立递增的 token 计数流，
+// 3 小时白烧 3.35M token。**根因在流水线那侧无法修**：它的验证只看「日志有没有刷新」，
+// 分不清刷新的是新实例还是刚解冻的旧实例。所以必须在调度器自己这边留证：
+// 启动时抢锁（后启动者覆盖），每次判停时校验归属 —— 一旦锁不是自己的，说明已被新实例接管，主动让位退出。
+const INSTANCE_LOCK = "/storage/emulated/0/脚本/.调度器实例锁";
+const MY_INSTANCE_ID = String(Date.now()) + "-" + Math.floor(Math.random() * 100000);
+let instanceWarned = false;
+try { files.write(INSTANCE_LOCK, MY_INSTANCE_ID); } catch (e) {}
+function isOwner() {
+    try { return String(files.read(INSTANCE_LOCK)).trim() === MY_INSTANCE_ID; } catch (e) { return true; } // 读不到就默认自己仍是主，避免误退
+}
+
+// ========== 引擎堆积自检（2026-10-03 新增）==========
+// 本机魔改版 forceStop() 实测无效：子脚本跑完后引擎不释放、只会越堆越多（今早 9 个、今晚 8 个），
+// 两次都是人眼发现的。这里每轮自报一次引擎数，超阈值就企微告警，不再依赖人发现。
+// 计数方法照抄实测有效的 停全部脚本_临时.js（engines.all().length）。
+let lastEngineAlert = 0;
+function engineWatch(tag) {
+    try {
+        let all = engines.all();
+        let n = all ? all.length : 0;
+        let names = "";
+        try {
+            names = all.map(function (e) {
+                try { return e && e.getSource ? String(e.getSource()).split("/").pop() : "?"; } catch (e2) { return "?"; }
+            }).join("、");
+        } catch (e2) {}
+        if (n > 4) {
+            log("⚠️ 引擎堆积：" + tag + " 后仍有 " + n + " 个脚本引擎在跑（正常应 ≤2：调度器 + 当前子脚本）" + (names ? "：" + names : ""));
+            if (Date.now() - lastEngineAlert > 6 * 3600 * 1000) { // 6 小时冷却，防刷屏
+                lastEngineAlert = Date.now();
+                pipeWdNotify("⚠️ 灵感雷达：AutoJs 引擎堆积 " + n + " 个（正常应 ≤2），疑似魔改版 forceStop 失效导致子脚本未释放，会重复烧 token。\n处理：在 AutoJs6 里运行一次 脚本/停全部脚本_临时.js 清场，随后调度器会被流水线自动拉起。" + (names ? "\n清单：" + names : ""));
+            }
+        } else {
+            log("🧮 引擎自检正常：" + tag + " 后 " + n + " 个");
+        }
+    } catch (e) { log("⚠️ 引擎自检异常（不影响主流程）：" + e); }
+}
+
 function stopRequested() {
+    // 归属校验放在最前：解冻后的旧实例一旦发现锁易主，立刻让位（这是防双开的关键一步）
+    if (!isOwner()) {
+        if (!instanceWarned) { instanceWarned = true; try { log("🛑 检测到新实例已接管（本实例为解冻后的残留），主动退出避免双开烧 token"); } catch (e) {} }
+        return true;
+    }
     try {
         if (files.exists(STOP_FLAG)) {
             log("🛑 检测到停止标志 " + STOP_FLAG + "，调度器退出");
@@ -668,8 +715,10 @@ while (true) {
         if (!sleepUntilStart()) break;
         continue;
     }
+    let _roundTag = nextIsMain ? "主脚本" : "巡检脚本";
     if (nextIsMain) runOne(MAIN_SCRIPT, "主脚本", 120 * 60 * 1000);
     else runOne(PATROL_SCRIPT, "巡检脚本", 90 * 60 * 1000);
+    engineWatch(_roundTag); // 每轮结束自报引擎数，超阈值企微告警（防再次堆到 8-9 个却无人知）
     nextIsMain = !nextIsMain;
     if (nextIsMain) gapSleep(CFG.gapMin); // 一轮（主+巡）结束后休息
 }
