@@ -3,7 +3,12 @@ console.show();
 // 本机魔改版 Rhino 静默忽略 console.log 的赋值（实测），无法重定义双写。
 // 方案：定义全局 log()，脚本内所有 log( 已由 sed 批量替换为 log(。
 var LOG_FILE = "/storage/emulated/0/脚本/主脚本_日志.log";
-// 清空（覆盖模式，写测试.js 验证过的写法）
+// 轮转：先把上一轮日志存为 .prev（此前每轮直接清空，失败原因只活在当轮、无从回溯——优化失败无处排查）
+try {
+    var lf0 = new java.io.File(LOG_FILE);
+    if (lf0.exists()) lf0.renameTo(new java.io.File(LOG_FILE + ".prev"));
+} catch (e) {}
+// 清空（覆盖模式，写测试.js 验证过的写法；rename 后文件已不存在，这步是兜底）
 try {
     var f0 = new java.io.FileOutputStream(LOG_FILE, false);
     f0.close();
@@ -536,14 +541,26 @@ function localHardCheck(html, srcRef) {
         ["版权声明", "版权声明行（页面严禁出现 ©/版权字样）"],
         ["版权归", "版权声明行（页面严禁出现 ©/版权字样）"]
     ];
+    // 命中时把「命中的字样 + 附近上下文」一并带回失败原因（2026-10-03）：此前重写模型只收到一句笼统的
+    // 「含模拟分析式假功能」，不知道究竟命中了哪个字符串，第二轮便原样带回来 → 两轮耗尽、放弃优化。
+    // 实测：AI Artist Pa 两轮重写都栽在 "// Simulate AI processing" 这类注释上（模型把它当普通注释照抄）。
+    let hitCtx = function(idx, kw) {
+        let s0 = Math.max(0, idx - 60), e0 = Math.min(body.length, idx + String(kw).length + 80);
+        return String(body.slice(s0, e0)).replace(/\s+/g, " ").trim();
+    };
     for (let i = 0; i < forbidden.length; i++) {
-        if (body.toLowerCase().indexOf(String(forbidden[i][0]).toLowerCase()) >= 0) return "含" + forbidden[i][1]; // 大小写不敏感：Simulate/simulate 之类变体都要拦
+        let kw = String(forbidden[i][0]);
+        let hitIdx = body.toLowerCase().indexOf(kw.toLowerCase()); // 大小写不敏感：Simulate/simulate 之类变体都要拦
+        if (hitIdx >= 0) return "含" + forbidden[i][1] + "｜命中「" + kw + "」附近：「…" + hitCtx(hitIdx, kw) + "…」";
     }
     // 【禁伪随机】零 token 硬检查（2026-10-03）：Math.random 当结论/分数/指标是最常见的“能点但没用”假功能
     // （实测 AI Security 扫描=Math.random()>0.8?'Threat detected'；VPN Privacy 安全评分=random*100；Pi OS VPN 测速=random…）
-    if (/Math\.random\(\)\s*[<>]=?\s*0?\.\d/.test(body)) return "伪随机假结论（Math.random 当判定，必须真实计算）";
-    if (/Math\.random\(\)\s*\*\s*(?:100|40|20|50)\b/.test(body)) return "伪随机假分数（Math.random 当指标，必须真实计算）";
-    if (/Math\.random\(\)\s*\*\s*[A-Za-z_$][\w$]*\.length/.test(body)) return "伪随机抽固定模板（必须换成真实逻辑）";
+    let rndRes = [/Math\.random\(\)\s*[<>]=?\s*0?\.\d/, /Math\.random\(\)\s*\*\s*(?:100|40|20|50)\b/, /Math\.random\(\)\s*\*\s*[A-Za-z_$][\w$]*\.length/];
+    let rndNames = ["伪随机假结论（Math.random 当判定，必须真实计算）", "伪随机假分数（Math.random 当指标，必须真实计算）", "伪随机抽固定模板（必须换成真实逻辑）"];
+    for (let ri = 0; ri < rndRes.length; ri++) {
+        let rm = body.match(rndRes[ri]);
+        if (rm) return rndNames[ri] + "｜命中「" + String(rm[0]).replace(/\s+/g, " ") + "」附近：「…" + hitCtx(rm.index, rm[0]) + "…」";
+    }
     // 产品交互脚本必须存在：AI 重写时可能把产品 JS 整个删掉（DevBoost 实测死页面），零 token 硬拦截
     if (!/<script[\s>]/i.test(body)) return "产品交互脚本丢失（死页面）";
     // 必备件检查查整页：完全免费声明 + 广告位由页脚保证存在，这里作为最终兜底
@@ -1328,6 +1345,21 @@ function injectStandardBlock(html) {
     return html + block;
 }
 
+// 【优化历史·持久化】2026-10-03：主脚本日志每轮清空，优化成败与原因此前只活在当轮、无从回溯
+// （用户问「不知道来回多少轮了一直没优化出结果」——正是历史看不见）。这里每题每轮各记一条。
+function recordOptHistory(name, ok, why) {
+    try {
+        let f = "/storage/emulated/0/脚本/产出/优化历史.json";
+        let hist = {updated: "", list: []};
+        try { let t = files.read(f); if (t) hist = JSON.parse(t) || hist; } catch (e) {}
+        if (!hist.list) hist.list = [];
+        hist.updated = new Date().toLocaleString();
+        hist.list.push({time: hist.updated, product: String(name), ok: !!ok, reason: String(why || "").slice(0, 200)});
+        if (hist.list.length > 300) hist.list = hist.list.slice(-300);
+        files.write(f, JSON.stringify(hist, null, 2));
+    } catch (e) { log("⚠️ 优化历史记录失败：" + e); }
+}
+
 function optimizeProduct() {
     let dir = "/storage/emulated/0/脚本/产出";
     let list = [];
@@ -1361,7 +1393,7 @@ function optimizeProduct() {
     ], 800);
     if (dailyTokenCost > DAILY_BUDGET) return null;
     // 2) 重写 v2（air 模型，完整源码 + 优化清单 + 忠实重写要求）
-    let v2Prompt = "根据下面的产品完整源码和优化报告，输出改进版完整 HTML。\n【铁律】\n- 完整保留原有全部功能和 JS 逻辑，只做报告中列出的改进，禁止删减功能、禁止改变产品定位\n- 产品自身的交互脚本必须完整保留（按钮 onclick/事件引用的函数必须有定义），禁止删掉脚本输出死页面；若原页面本身就缺产品脚本，必须补全所有按钮的真实交互逻辑；【可运行铁律】getElementById/querySelector 引用的 id 必须真实存在（或脚本动态赋值），引用不一致（未定义函数/不存在的 id）会被零 token 检查打回\n- 不要改变页面原有文案语言（多语言翻译由系统统一处理）；所有按钮必须真实可交互，禁止 document.querySelector('.class') 单点绑定（只绑第一个元素），禁止伪随机假数据（随机分数+固定提示类）；【禁伪随机】Math.random 禁止生成结论/分数/状态/指标（必须真实计算，做不了就删掉该功能），深色 UI 按钮与背景对比要明显\n- 老产品中若存在收款码（shoukuan.png）、微信收款、价格、激活码（checkCode 等函数）、付费解锁等付费元素，必须全部删除；被锁定的功能一律改为免费可用\n- 【免费红线】严禁新增任何收款码/收款图片（shoukuan）、微信或支付宝收款、价格或金额、激活码/卡密、付费解锁/付费入口、打赏按钮——老产品没有的元素也不许加\n- 【设备红线】不得引入任何需要购买/连接外部设备的新功能（VR/AR 头显、手表手环、监测设备等）；设备类旧功能一律改为纯网页模拟演示版并明确标注\n- 源码里的页脚区块（从 <!-- free-ad-standard-2026 --> 到 </body> 之前）是系统注入的旧页脚，必须整体删除、不要照抄；页脚与免费声明由系统统一处理\n- 页面里不要写免费声明、广告位、License、贡献/奖励/隐私等声明文案（系统统一处理）\n- 【原创与版权铁律】严禁出现 ©、&copy;、Copyright、All rights reserved、版权/著作权字样与年份版权行——版权只在仓库根 LICENSE，页面一律不写；源码里已有的必须整体删除；年份一律用当前年份（2026）或相对时间，禁止 2023/2024/2025 等旧年份；不得使用真实公司/品牌/产品名，不得模仿或复刻任何现有产品\n- 【真实工具铁律】若原产品是“演示站”（功能靠固定文案/预置假数据装样子、含 simulation/模拟 类说明，或有只 console.log 不干活的空壳函数），必须重构为真实可用的工具：假功能删除或改为真实实现（真实计算/存储/处理）；**占位按钮（点了只弹「开发中/敬请期待/coming soon/即将上线/暂未开放」）同样必须做成真功能或直接删除，禁止保留「以后再说」的按钮**\n- 从 <!DOCTYPE html> 开始输出，禁止 markdown 代码围栏、禁止任何解释文字\n【优化报告】\n" + (ana || "") + "\n【产品完整源码】\n" + src;
+    let v2Prompt = "根据下面的产品完整源码和优化报告，输出改进版完整 HTML。\n【铁律】\n- 完整保留原有全部功能和 JS 逻辑，只做报告中列出的改进，禁止删减功能、禁止改变产品定位\n- 产品自身的交互脚本必须完整保留（按钮 onclick/事件引用的函数必须有定义），禁止删掉脚本输出死页面；若原页面本身就缺产品脚本，必须补全所有按钮的真实交互逻辑；【可运行铁律】getElementById/querySelector 引用的 id 必须真实存在（或脚本动态赋值），引用不一致（未定义函数/不存在的 id）会被零 token 检查打回\n- 不要改变页面原有文案语言（多语言翻译由系统统一处理）；所有按钮必须真实可交互，禁止 document.querySelector('.class') 单点绑定（只绑第一个元素），禁止伪随机假数据（随机分数+固定提示类）；【禁伪随机】Math.random 禁止生成结论/分数/状态/指标（必须真实计算，做不了就删掉该功能），深色 UI 按钮与背景对比要明显\n- 老产品中若存在收款码（shoukuan.png）、微信收款、价格、激活码（checkCode 等函数）、付费解锁等付费元素，必须全部删除；被锁定的功能一律改为免费可用\n- 【免费红线】严禁新增任何收款码/收款图片（shoukuan）、微信或支付宝收款、价格或金额、激活码/卡密、付费解锁/付费入口、打赏按钮——老产品没有的元素也不许加\n- 【设备红线】不得引入任何需要购买/连接外部设备的新功能（VR/AR 头显、手表手环、监测设备等）；设备类旧功能一律改为纯网页模拟演示版并明确标注\n- 源码里的页脚区块（从 <!-- free-ad-standard-2026 --> 到 </body> 之前）是系统注入的旧页脚，必须整体删除、不要照抄；页脚与免费声明由系统统一处理\n- 页面里不要写免费声明、广告位、License、贡献/奖励/隐私等声明文案（系统统一处理）\n- 【原创与版权铁律】严禁出现 ©、&copy;、Copyright、All rights reserved、版权/著作权字样与年份版权行——版权只在仓库根 LICENSE，页面一律不写；源码里已有的必须整体删除；年份一律用当前年份（2026）或相对时间，禁止 2023/2024/2025 等旧年份；不得使用真实公司/品牌/产品名，不得模仿或复刻任何现有产品\n- 【真实工具铁律】若原产品是“演示站”（功能靠固定文案/预置假数据装样子、含 simulation/模拟 类说明，或有只 console.log 不干活的空壳函数），必须重构为真实可用的工具：假功能删除或改为真实实现（真实计算/存储/处理）；**占位按钮（点了只弹「开发中/敬请期待/coming soon/即将上线/暂未开放」）同样必须做成真功能或直接删除，禁止保留「以后再说」的按钮**\n- 【字面禁词·注释也算】以下字样不得出现在输出的任何位置（不区分大小写；注释、字符串、变量名里出现同样判不合格）：// simulate、simulate ai、// 模拟、模拟分析结果、模拟分析过程、simulation for demonstration、demonstration purposes only、fake data、mock data、this is a demo、仅供演示、仅用于演示、这里可以添加、此处可以添加、待实现、尚未实现、功能开发中、敬请期待、敬请关注、coming soon、即将上线、暂未开放、尚未开放、simulate/simulation 的任何变体。原有此类注释一律**整行删除**（删注释不影响功能、不算删功能）；注释背后藏着假实现的，按【真实工具铁律】重做或删除；不要换个词继续写（如 // fake、// 假数据）\n- 从 <!DOCTYPE html> 开始输出，禁止 markdown 代码围栏、禁止任何解释文字\n【优化报告】\n" + (ana || "") + "\n【产品完整源码】\n" + src;
     let v2 = callLLM([
         {role: "system", content: "你是资深前端工程师。只输出代码。"},
         {role: "user", content: v2Prompt}
@@ -1372,6 +1404,7 @@ function optimizeProduct() {
     if (v2) v2 = injectStandardBlock(v2); // 标准区块注入（幂等）
     // 3) 自检：先本地硬检查（零 token、100% 准确），再 AI 查交互逻辑（最多重写 2 轮）
     let passed = false;
+    let lastFail = "";
     for (let round = 1; round <= 2 && v2; round++) {
         if (dailyTokenCost > DAILY_BUDGET) break;
         let failReason = localHardCheck(v2, src) || (!looksComplete(v2) ? "输出被截断（缺 </html> 结尾）" : "");
@@ -1383,6 +1416,7 @@ function optimizeProduct() {
             passed = true;
             break;
         }
+        lastFail = failReason;
         log("⚠️ v2 自检不通过（第" + round + "轮）：" + failReason + (round < 2 ? "，重写…" : "，已达重写上限"));
         if (round >= 2) break; // 最后一轮失败不再白烧一次重写 token
         // 【2026-10-03 关键修复】解除提示词自相矛盾 —— 这是「旧产品永远改不好」的真正根因。
@@ -1398,6 +1432,7 @@ function optimizeProduct() {
             retryPrompt += "\n【重要·重建授权】上一版失败的原因是触犯了**硬红线**（见上）。此时「完整保留原有功能」那条铁律**让位于红线**：\n"
                 + "· 凡是触发红线的功能/代码（假功能、模拟分析、占位按钮、伪随机结果、收费元素、版权行、设备依赖等），**必须整体丢弃**，按产品定位重新实现为真实可用的功能；\n"
                 + "· **允许删减、允许重写**这些部分，不得为了「保留」而原样照抄违规代码；\n"
+                + "· 命中字样（包括写在注释里的，如 // Simulate…）必须从输出中彻底清除——这类注释**整行删掉**即可，删注释不算删功能；\n"
                 + "· 红线之外的功能与产品定位仍然要保留。\n"
                 + "宁可把这个功能做成真实实现，也不要把违规代码留着过不了关。";
         }
@@ -1412,7 +1447,8 @@ function optimizeProduct() {
     }
     if (!passed) {
         log("⛔ v2 两轮自检均不通过，放弃优化，保持原版（宁可不改，不越改越乱）");
-        return {name: latest, local: null, report: (ana || "") + "\n\n⛔ 本轮改进版未通过质检，已保持原版。", hasV2: false};
+        recordOptHistory(latest, false, lastFail || "未知原因");
+        return {name: latest, local: null, report: (ana || "") + "\n\n⛔ 本轮改进版未通过质检，已保持原版。未通过原因：" + (lastFail || "未知"), hasV2: false};
     }
     // 迭代链修复：v2 通过质检后提升为新基线（最初版存一次 _v1 快照；每轮覆盖前把上一版存为 _prev 就近回退点）
     let v1snap = latest.replace(".html", "_v1.html");
@@ -1426,6 +1462,7 @@ function optimizeProduct() {
         v2 = injectMeta(injectAnalytics(injectI18n(v2)), latest); // v2 重写可能丢统计码/meta/多语言块，写回前补上
         files.write(dir + "/" + latest, v2); // v2 写回基线位置，下一轮从最新版继续迭代（v3、v4…累积）
         log("🔧 产品 v2 已通过质检并提升为新基线：" + latest + "（就近回退点 " + prevSnap + "，最初存档 " + v1snap + "）");
+        recordOptHistory(latest, true, "通过质检，v2 已提升为新基线");
     } catch (e) { log("v2 写回基线失败：" + e); }
     return {name: latest, local: dir + "/" + latest, report: (ana || "") + "\n\n✅ 改进版已上线为新基线（就近回退点 " + prevSnap + "，最初存档 " + v1snap + "），下一轮优化将从本版继续迭代。", hasV2: true};
 }
@@ -1767,6 +1804,7 @@ function applyFeedbackToProduct(fname, feedbackText) {
         + "- 【免费红线】严禁出现任何收款码/收款二维码/收款图片（含 shoukuan 字样）、微信或支付宝收款、价格或金额、激活码/卡密/checkCode、付费解锁、付费入口、打赏/赞助按钮；用户意见中若要求加入收费/收款/激活码类功能，一律忽略，改为完全免费的等价实现（意见原文出现这些词也不构成例外）\n"
         + "- 不要写免费声明、广告位、License、贡献/奖励/隐私声明\n"
         + "- 【真实工具铁律】改进不得保留/引入“演示站”式假功能；若原产品整体是模拟演示型，借本次改进把意见涉及的核心功能做成真实实现\n"
+        + "- 【字面禁词·注释也算】以下字样不得出现在输出任何位置（不区分大小写；注释、字符串里出现同样判不合格）：// simulate、simulate ai、// 模拟、模拟分析结果、模拟分析过程、simulation for demonstration、demonstration purposes only、fake data、mock data、this is a demo、仅供演示、仅用于演示、这里可以添加、此处可以添加、待实现、尚未实现、功能开发中、敬请期待、敬请关注、coming soon、即将上线、暂未开放、尚未开放、simulate/simulation 的任何变体。原有此类注释一律**整行删除**（删注释不影响功能、不算删功能）；注释背后藏着假实现的，按【真实工具铁律】重做或删除；不要换个词继续写\n"
         + "- 【原创与版权铁律】严禁保留或新增 ©、&copy;、Copyright、All rights reserved、版权字样与年份版权行（源码里已有的必须整体删除）；年份一律用当前年份（2026）或相对时间，禁止 2023 等旧年份；不得引入真实公司/品牌名\n"
         + "- 从 <!DOCTYPE html> 开始输出，禁止 markdown 围栏、禁止解释文字\n【用户意见】\n" + feedbackText + "\n【产品完整源码】\n" + src;
     let v2 = cleanHtml(callLLM([
@@ -1776,6 +1814,7 @@ function applyFeedbackToProduct(fname, feedbackText) {
     if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫（意见改进路径此前缺失，是「输出被截断」反复失败的主因）
     if (v2) v2 = injectStandardBlock(v2);
     let passed = false;
+    let lastFail2 = "";
     for (let round = 1; round <= 2 && v2; round++) {
         if (dailyTokenCost > DAILY_BUDGET) break;
         let failReason = localHardCheck(v2, src) || (!looksComplete(v2) ? "输出被截断（缺 </html> 结尾）" : "");
@@ -1785,6 +1824,7 @@ function applyFeedbackToProduct(fname, feedbackText) {
         }
         if (!failReason) { passed = true; break; }
         log("⚠️ 意见改进版自检不通过（第" + round + "轮）：" + failReason);
+        lastFail2 = failReason;
         if (round >= 2) break;
         // 同 v2 优化路径的「重建授权」修复（2026-10-03）：失败原因若是硬红线，必须抬到「保留原有功能」之上，
         // 否则 AI 又会照抄违规代码、第二轮照样失败 → 意见也永远落不了地。
@@ -1794,6 +1834,7 @@ function applyFeedbackToProduct(fname, feedbackText) {
             retryPrompt2 += "\n【重要·重建授权】上一版失败的原因是触犯了**硬红线**（见上）。此时「完整保留原有功能」让位于红线：\n"
                 + "· 凡是触发红线的功能/代码（假功能、模拟分析、占位按钮、伪随机结果、收费元素、版权行、设备依赖等），**必须整体丢弃**，按产品定位重新实现为真实可用的功能；\n"
                 + "· **允许删减、允许重写**这些部分，不得为了「保留」而原样照抄违规代码；\n"
+                + "· 命中字样（包括写在注释里的，如 // Simulate…）必须从输出中彻底清除——这类注释**整行删掉**即可，删注释不算删功能；\n"
                 + "· 红线之外的功能与产品定位仍然要保留。";
         }
         retryPrompt2 += "\n请重新完整输出修复后的 HTML。";
@@ -1804,7 +1845,7 @@ function applyFeedbackToProduct(fname, feedbackText) {
         if (v2 && !looksComplete(v2)) v2 = completeHtml(v2); // 截断续写守卫
         if (v2) v2 = injectStandardBlock(v2);
     }
-    if (!passed) return {ok: false, product: fname, reason: "改进版未通过质检，保持原版（宁可不改，不越改越乱）"};
+    if (!passed) return {ok: false, product: fname, reason: "改进版未通过质检，保持原版（宁可不改，不越改越乱）｜原因：" + (lastFail2 || "未知")};
     let prevSnap = fname.replace(".html", "_prev.html");
     ensureSnapDir();
     try { files.write(SNAP_DIR + "/" + prevSnap, html); } catch (e) {}
