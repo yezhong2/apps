@@ -100,7 +100,13 @@ let curEngine = null;
 try {
     events.on("exit", function() {
         if (curEngine) {
+            // 【2026-10-03 重要】本机魔改版 curEngine.forceStop() 实测**空操作**：调度器退出（换装/被流水线
+            // 重启/手动停止）时，它正在跑的子脚本杀不掉 → 变成孤儿继续烧 token（当晚实测：换装后新旧两个
+            // 主脚本并行，token 计数出现两条独立递增流；此前 19:38 那次误判重启也是同一后果）。
+            // 换用 engines.stopAllAndToast()，清场脚本实测它**确实有效**（报数 4→全灭）。
+            // 注释里提的副作用（把自身引擎标记为 destroyed）在退出时刻无影响 —— 反正本实例马上就没了。
             try { curEngine.forceStop(); } catch (e) {}
+            try { engines.stopAllAndToast(); } catch (e) {}
         }
         try { device.cancelKeepingAwake(); } catch (e) {} // 退出时恢复系统息屏策略
         try { if (typeof keepWakeLock !== "undefined" && keepWakeLock) keepWakeLock.release(); } catch (e) {}
