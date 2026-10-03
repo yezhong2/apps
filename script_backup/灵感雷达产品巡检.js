@@ -116,7 +116,7 @@ function cooldown(model, secs) {
     saveCooldowns();
 }
 let keyIdx = 0;
-const DAILY_BUDGET = 10000000;  // 与主脚本共用每日预算上限（实测峰值≈150K，千万基本不触发；单日失控硬顶≈¥10-20）
+const DAILY_BUDGET = 30000000;  // 与主脚本共用每日预算上限（2026-10-03 由 1000 万提到 3000 万——两处常量必须同步改，否则巡检会先于主脚本停 LLM 审查）；实测峰值≈150K 几乎不触发；单日失控硬顶≈¥30-60
 const BUDGET_RESERVE = 40000;  // 巡检最多花到 预算-4万，给主脚本每日运行留余量
 const BUDGET_PATH = "/storage/emulated/0/脚本/token预算.json";
 function dayKey() {
