@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi VPN Dashboard</title><meta name="description" content="Free online tool: Pi VPN Dashboard. No signup, no payment — free forever.">
+<meta property="og:title" content="Pi VPN Dashboard">
+<meta property="og:description" content="Free online tool: Pi VPN Dashboard. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_224844_Pi VPN Dashb.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #252525;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --accent: #6366f1;
+            --accent-hover: #7c7ff5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #333333;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* VPN Status Section */
+        .vpn-status {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .status-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--success);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .status-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .info-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .info-value {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .connect-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .connect-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .connect-btn.active {
+            background-color: var(--danger);
+        }
+        
+        /* Tools Section */
+        .tools-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .tool-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .tool-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .tool-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .input-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .input-field {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.75rem;
+            color: var(--text-primary);
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .tool-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        
+        .tool-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .result-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            word-break: break-all;
+            display: none;
+        }
+        
+        .result-box.show {
+            display: block;
+        }
+        
+        .copy-btn {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--border);
+        }
+        
+        /* User Info Section */
+        .user-info {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .user-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+        
+        .user-email {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .usage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .status-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span>🔒</span>
+                <span>Pi VPN</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#settings">Settings</a></li>
+                <li><a href="#help">Help Center</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- VPN Status Section -->
+        <section class="vpn-status">
+            <div class="status-header">
+                <h2 class="status-title">VPN Connection Status</h2>
+                <div class="status-indicator">
+                    <div class="status-dot"></div>
+                    <span>Connected</span>
+                </div>
+            </div>
+            
+            <div class="status-info">
+                <div class="info-item">
+                    <span class="info-label">Current Server</span>
+                    <span class="info-value" id="current-server">US-West-01</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">IP Address</span>
+                    <span class="info-value" id="current-ip">192.168.1.100</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Connection Speed</span>
+                    <span class="info-value" id="connection-speed">85.2 Mbps</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Data Transferred</span>
+                    <span class="info-value" id="data-transferred">1.2 GB</span>
+                </div>
+            </div>
+            
+            <button class="connect-btn active" id="toggle-connection">Disconnect VPN</button>
+        </section>
+
+        <!-- Tools Section -->
+        <section class="tools-section">
+            <h2 class="section-title">VPN Tools</h2>
+            
+            <div class="tools-grid">
+                <!-- URL Encryption Tool -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔗</div>
+                        <h3 class="tool-title">URL Encryption</h3>
+                    </div>
+                    <p class="tool-description">Enter a website URL to get a secure, encrypted link</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="url-input">Website URL</label>
+                        <input type="text" id="url-input" class="input-field" placeholder="https://example.com">
+                        <button class="tool-btn" id="encrypt-url-btn">Encrypt URL</button>
+                    </div>
+                    
+                    <div class="result-box" id="url-result">
+                        <div id="encrypted-url"></div>
+                        <button class="copy-btn" id="copy-url-btn">Copy Encrypted URL</button>
+                    </div>
+                </div>
+
+                <!-- Server Switch Tool -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">🌐</div>
+                        <h3 class="tool-title">Server Switch</h3>
+                    </div>
+                    <p class="tool-description">Switch to a specific server by IP address</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="ip-input">Server IP Address</label>
+                        <input type="text" id="ip-input" class="input-field" placeholder="192.168.1.100">
+                        <button class="tool-btn" id="switch-server-btn">Switch Server</button>
+                    </div>
+                    
+                    <div class="result-box" id="server-result">
+                        <div id="server-switch-status"></div>
+                    </div>
+                </div>
+
+                <!-- Encrypted Search Tool -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">🔍</div>
+                        <h3 class="tool-title">Encrypted Search</h3>
+                    </div>
+                    <p class="tool-description">Search the web with VPN encryption</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="search-input">Search Keywords</label>
+                        <input type="text" id="search-input" class="input-field" placeholder="Enter your search query">
+                        <button class="tool-btn" id="encrypted-search-btn">Encrypted Search</button>
+                    </div>
+                    
+                    <div class="result-box" id="search-result">
+                        <div id="encrypted-search-results"></div>
+                        <button class="copy-btn" id="copy-search-btn">Copy Search Results</button>
+                    </div>
+                </div>
+
+                <!-- Location Match Tool -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">📍</div>
+                        <h3 class="tool-title">Location Match</h3>
+                    </div>
+                    <p class="tool-description">Find the optimal server based on your location</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="location-input">Location</label>
+                        <input type="text" id="location-input" class="input-field" placeholder="New York, USA">
+                        <button class="tool-btn" id="match-location-btn">Find Optimal Server</button>
+                    </div>
+                    
+                    <div class="result-box" id="location-result">
+                        <div id="optimal-server"></div>
+                        <button class="copy-btn" id="copy-location-btn">Copy Server Info</button>
+                    </div>
+                </div>
+
+                <!-- Secure Data Transfer Tool -->
+                <div class="tool-card">
+                    <div class="tool-header">
+                        <div class="tool-icon">📤</div>
+                        <h3 class="tool-title">Secure Data Transfer</h3>
+                    </div>
+                    <p class="tool-description">Encrypt and transfer your personal data securely</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label" for="data-input">Personal Data</label>
+                        <textarea id="data-input" class="input-field" rows="4" placeholder="Enter your personal data to encrypt"></textarea>
+                        <button class="tool-btn" id="transfer-data-btn">Encrypt & Transfer</button>
+                    </div>
+                    
+                    <div class="result-box" id="data-result">
+                        <div id="encrypted-data"></div>
+                        <button class="copy-btn" id="copy-data-btn">Copy Encrypted Data</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Info Section -->
+        <section class="user-info">
+            <div class="user-header">
+                <div class="user-avatar">U</div>
+                <div class="user-details">
+                    <div class="user-name">User Account</div>
+                    <div class="user-email">user@example.com</div>
+                </div>
+            </div>
+            
+            <div class="usage-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="total-data">5.2 GB</div>
+                    <div class="stat-label">Total Data Used</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="session-count">24</div>
+                    <div class="stat-label">Sessions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="server-count">8</div>
+                    <div class="stat-label">Servers Used</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="uptime">98.5%</div>
+                    <div class="stat-label">Uptime</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">© 2026 Pi VPN Dashboard. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // VPN Connection Toggle
+        const toggleConnectionBtn = document.getElementById('toggle-connection');
+        const statusDot = document.querySelector('.status-dot');
+        const statusIndicatorText = document.querySelector('.status-indicator span');
+        
+        toggleConnectionBtn.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                this.classList.remove('active');
+                this.textContent = 'Connect VPN';
+                statusDot.style.backgroundColor = 'var(--danger)';
+                statusIndicatorText.textContent = 'Disconnected';
+            } else {
+                this.classList.add('active');
+                this.textContent = 'Disconnect VPN';
+                statusDot.style.backgroundColor = 'var(--success)';
+                statusIndicatorText.textContent = 'Connected';
+            }
+        });
+
+        // URL Encryption Tool
+        const encryptUrlBtn = document.getElementById('encrypt-url-btn');
+        const urlInput = document.getElementById('url-input');
+        const urlResult = document.getElementById('url-result');
+        const encryptedUrl = document.getElementById('encrypted-url');
+        const copyUrlBtn = document.getElementById('copy-url-btn');
+        
+        encryptUrlBtn.addEventListener('click', function() {
+            const url = urlInput.value.trim();
+            if (url) {
+                // Simple encryption simulation
+                const encrypted = 'https://pi-vpn.link/' + btoa(url);
+                encryptedUrl.textContent = encrypted;
+                urlResult.classList.add('show');
+                
+                // Update stats
+                const dataTransferred = document.getElementById('data-transferred');
+                const currentData = parseFloat(dataTransferred.textContent);
+                dataTransferred.textContent = (currentData + 0.1).toFixed(1) + ' GB';
+            }
+        });
+        
+        copyUrlBtn.addEventListener('click', function() {
+            const text = encryptedUrl.textContent;
+            navigator.clipboard.writeText(text);
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy Encrypted URL';
+            }, 2000);
+        });
+
+        // Server Switch Tool
+        const switchServerBtn = document.getElementById('switch-server-btn');
+        const ipInput = document.getElementById('ip-input');
+        const serverResult = document.getElementById('server-result');
+        const serverSwitchStatus = document.getElementById('server-switch-status');
+        
+        switchServerBtn.addEventListener('click', function() {
+            const ip = ipInput.value.trim();
+            if (ip) {
+                // Simulate server switch
+                serverSwitchStatus.textContent = `Switching to server: ${ip}...`;
+                serverResult.classList.add('show');
+                
+                setTimeout(() => {
+                    document.getElementById('current-server').textContent = `Server-${ip.replace(/\./g, '-')}`;
+                    document.getElementById('current-ip').textContent = ip;
+                    serverSwitchStatus.textContent = `Successfully switched to server: ${ip}`;
+                    
+                    // Update stats
+                    const serverCount = document.getElementById('server-count');
+                    serverCount.textContent = parseInt(serverCount.textContent) + 1;
+                }, 1500);
+            }
+        });
+
+        // Encrypted Search Tool
+        const encryptedSearchBtn = document.getElementById('encrypted-search-btn');
+        const searchInput = document.getElementById('search-input');
+        const searchResult = document.getElementById('search-result');
+        const encryptedSearchResults = document.getElementById('encrypted-search-results');
+        const copySearchBtn = document.getElementById('copy-search-btn');
+        
+        encryptedSearchBtn.addEventListener('click', function() {
+            const query = searchInput.value.trim();
+            if (query) {
+                // Simulate encrypted search
+                const results = [
+                    `Encrypted result 1 for "${query}": https://pi-vpn.link/search?q=${btoa(query)}1`,
+                    `Encrypted result 2 for "${query}": https://pi-vpn.link/search?q=${btoa(query)}2`,
+                    `Encrypted result 3 for "${query}": https://pi-vpn.link/search?q=${btoa(query)}3`
+                ];
+                
+                encryptedSearchResults.innerHTML = results.map(result => 
+                    `<div>${result}</div>`
+                ).join('');
+                
+                searchResult.classList.add('show');
+                
+                // Update stats
+                const sessionCount = document.getElementById('session-count');
+                sessionCount.textContent = parseInt(sessionCount.textContent) + 1;
+            }
+        });
+        
+        copySearchBtn.addEventListener('click', function() {
+            const text = encryptedSearchResults.textContent;
+            navigator.clipboard.writeText(text);
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy Search Results';
+            }, 2000);
+        });
+
+        // Location Match Tool
+        const matchLocationBtn = document.getElementById('match-location-btn');
+        const locationInput = document.getElementById('location-input');
+        const locationResult = document.getElementById('location-result');
+        const optimalServer = document.getElementById('optimal-server');
+        const copyLocationBtn = document.getElementById('copy-location-btn');
+        
+        matchLocationBtn.addEventListener('click', function() {
+            const location = locationInput.value.trim();
+            if (location) {
+                // Simulate location-based server matching
+                const servers = {
+                    'New York': 'US-East-01 (New York)',
+                    'Los Angeles': 'US-West-01 (Los Angeles)',
+                    'London': 'UK-01 (London)',
+                    'Tokyo': 'JP-01 (Tokyo)',
+                    'Sydney': 'AU-01 (Sydney)',
+                    'Paris': 'FR-01 (Paris)',
+                    'Berlin': 'DE-01 (Berlin)',
+                    'Toronto': 'CA-01 (Toronto)'
+                };
+                
+                const matchedServer = servers[location] || `Auto-selected server for ${location}`;
+                optimalServer.textContent = `Optimal server: ${matchedServer}`;
+                locationResult.classList.add('show');
+            }
+        });
+        
+        copyLocationBtn.addEventListener('click', function() {
+            const text = optimalServer.textContent;
+            navigator.clipboard.writeText(text);
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy Server Info';
+            }, 2000);
+        });
+
+        // Secure Data Transfer Tool
+        const transferDataBtn = document.getElementById('transfer-data-btn');
+        const dataInput = document.getElementById('data-input');
+        const dataResult = document.getElementById('data-result');
+        const encryptedData = document.getElementById('encrypted-data');
+        const copyDataBtn = document.getElementById('copy-data-btn');
+        
+        transferDataBtn.addEventListener('click', function() {
+            const data = dataInput.value.trim();
+            if (data) {
+                // Simulate data encryption
+                const encrypted = btoa(data);
+                encryptedData.textContent = `Encrypted data: ${encrypted}`;
+                dataResult.classList.add('show');
+                
+                // Update stats
+                const totalData = document.getElementById('total-data');
+                const currentData = parseFloat(totalData.textContent);
+                totalData.textContent = (currentData + 0.5).toFixed(1) + ' GB';
+            }
+        });
+        
+        copyDataBtn.addEventListener('click', function() {
+            const text = encryptedData.textContent;
+            navigator.clipboard.writeText(text);
+            this.textContent = 'Copied!';
+            setTimeout(() => {
+                this.textContent = 'Copy Encrypted Data';
+            }, 2000);
+        });
+
+        // Simulate connection speed updates
+        setInterval(() => {
+            const speedElement = document.getElementById('connection-speed');
+            const currentSpeed = parseFloat(speedElement.textContent);
+            const variation = (Math.random() - 0.5) * 10;
+            const newSpeed = Math.max(10, currentSpeed + variation);
+            speedElement.textContent = newSpeed.toFixed(1) + ' Mbps';
+        }, 3000);
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Pi VPN Dashboard":"Pi VPN Dashboard","Pi VPN":"Pi VPN","Home":"Home","Settings":"Settings","Help Center":"Help Center","VPN Connection Status":"VPN Connection Status","Connected":"Connected","Current Server":"Current Server","US-West-01":"US-West-01","IP Address":"IP Address","Connection Speed":"Connection Speed","85.2 Mbps":"85.2 Mbps","Data Transferred":"Data Transferred","1.2 GB":"1.2 GB","Disconnect VPN":"Disconnect VPN","VPN Tools":"VPN Tools","URL Encryption":"URL Encryption","Enter a website URL to get a secure, encrypted link":"Enter a website URL to get a secure, encrypted link","Website URL":"Website URL","Encrypt URL":"Encrypt URL","Copy Encrypted URL":"Copy Encrypted URL","Server Switch":"Server Switch","Switch to a specific server by IP address":"Switch to a specific server by IP address","Server IP Address":"Server IP Address","Switch Server":"Switch Server","Encrypted Search":"Encrypted Search","Search the web with VPN encryption":"Search the web with VPN encryption","Search Keywords":"Search Keywords","Copy Search Results":"Copy Search Results","Location Match":"Location Match","Find the optimal server based on your location":"Find the optimal server based on your location","Location":"Location","Find Optimal Server":"Find Optimal Server","Copy Server Info":"Copy Server Info","Secure Data Transfer":"Secure Data Transfer","Encrypt and transfer your personal data securely":"Encrypt and transfer your personal data securely","Personal Data":"Personal Data","Encrypt \u0026 Transfer":"Encrypt \u0026 Transfer","Copy Encrypted Data":"Copy Encrypted Data","Connect VPN":"Connect VPN","Copied!":"Copied!","New York":"New York","Los Angeles":"Los Angeles","__title__":"Pi VPN Dashboard"},"zh-CN":{"Pi VPN Dashboard":"Pi VPN仪表板","Pi VPN":"Pi VPN","Home":"首页","Settings":"设置","Help Center":"帮助中心","VPN Connection Status":"VPN连接状态","Connected":"已连接","Current Server":"当前服务器","US-West-01":"US-West-01","IP Address":"IP地址","Connection Speed":"连接速度","85.2 Mbps":"85.2 Mbps","Data Transferred":"已传输数据","1.2 GB":"1.2 GB","Disconnect VPN":"断开VPN","VPN Tools":"VPN工具","URL Encryption":"URL加密","Enter a website URL to get a secure, encrypted link":"输入网站URL以获取安全加密链接","Website URL":"网站URL","Encrypt URL":"加密URL","Copy Encrypted URL":"复制加密URL","Server Switch":"服务器切换","Switch to a specific server by IP address":"通过IP地址切换到特定服务器","Server IP Address":"服务器IP地址","Switch Server":"切换服务器","Encrypted Search":"加密搜索","Search the web with VPN encryption":"使用VPN加密搜索网络","Search Keywords":"搜索关键词","Copy Search Results":"复制搜索结果","Location Match":"位置匹配","Find the optimal server based on your location":"根据您的位置找到最佳服务器","Location":"位置","Find Optimal Server":"找到最佳服务器","Copy Server Info":"复制服务器信息","Secure Data Transfer":"安全数据传输","Encrypt and transfer your personal data securely":"加密并安全传输您的个人数据","Personal Data":"个人数据","Encrypt \u0026 Transfer":"加密 \u0026 转发","Copy Encrypted Data":"复制加密数据","Connect VPN":"连接VPN","Copied!":"已复制！","New York":"纽约","Los Angeles":"洛杉矶","__title__":"Pi VPN仪表板"},"es":{"Pi VPN Dashboard":"Panel de control de Pi VPN","Pi VPN":"Pi VPN","Home":"Inicio","Settings":"Ajustes","Help Center":"Centro de ayuda","VPN Connection Status":"Estado de conexión VPN","Connected":"Conectado","Current Server":"Servidor actual","US-West-01":"US-West-01","IP Address":"Dirección IP","Connection Speed":"Velocidad de conexión","85.2 Mbps":"85.2 Mbps","Data Transferred":"Datos transferidos","1.2 GB":"1.2 GB","Disconnect VPN":"Desconectar VPN","VPN Tools":"Herramientas VPN","URL Encryption":"Encriptación de URL","Enter a website URL to get a secure, encrypted link":"Ingrese una URL de sitio web para obtener un enlace seguro y encriptado","Website URL":"URL del sitio web","Encrypt URL":"Encriptar URL","Copy Encrypted URL":"Copiar URL encriptada","Server Switch":"Cambio de servidor","Switch to a specific server by IP address":"Cambiar a un servidor específico por dirección IP","Server IP Address":"Dirección IP del servidor","Switch Server":"Cambiar servidor","Encrypted Search":"Búsqueda encriptada","Search the web with VPN encryption":"Buscar en la web con encriptación VPN","Search Keywords":"Palabras clave de búsqueda","Copy Search Results":"Copiar resultados de búsqueda","Location Match":"Coincidencia de ubicación","Find the optimal server based on your location":"Encontrar el servidor óptimo basado en su ubicación","Location":"Ubicación","Find Optimal Server":"Encontrar servidor óptimo","Copy Server Info":"Copiar información del servidor","Secure Data Transfer":"Transferencia de datos segura","Encrypt and transfer your personal data securely":"Encriptar y transferir sus datos personales de manera segura","Personal Data":"Datos personales","Encrypt \u0026 Transfer":"Encriptar y transferir","Copy Encrypted Data":"Copiar datos encriptados","Connect VPN":"Conectar VPN","Copied!":"Copiado!","New York":"Nueva York","Los Angeles":"Los Ángeles","__title__":"Panel de control de Pi VPN"},"ja":{"Pi VPN Dashboard":"Pi VPN ダッシュボード","Pi VPN":"Pi VPN","Home":"ホーム","Settings":"設定","Help Center":"ヘルプセンター","VPN Connection Status":"VPN 接続状態","Connected":"接続中","Current Server":"現在のサーバー","US-West-01":"US-West-01","IP Address":"IP アドレス","Connection Speed":"接続速度","85.2 Mbps":"85.2 Mbps","Data Transferred":"転送データ量","1.2 GB":"1.2 GB","Disconnect VPN":"VPNを切断","VPN Tools":"VPN ツール","URL Encryption":"URL 暗号化","Enter a website URL to get a secure, encrypted link":"安全で暗号化されたリンクを取得するためのウェブサイト URL を入力してください","Website URL":"ウェブサイト URL","Encrypt URL":"URLを暗号化","Copy Encrypted URL":"暗号化された URL をコピー","Server Switch":"サーバー切り替え","Switch to a specific server by IP address":"IP アドレスに基づいて特定のサーバーに切り替え","Server IP Address":"サーバー IP アドレス","Switch Server":"サーバー切り替え","Encrypted Search":"暗号化検索","Search the web with VPN encryption":"VPN 暗号化でウェブを検索","Search Keywords":"検索キーワード","Copy Search Results":"検索結果をコピー","Location Match":"場所マッチ","Find the optimal server based on your location":"あなたの場所に基づいて最適なサーバーを見つけます","Location":"場所","Find Optimal Server":"最適なサーバーを見つける","Copy Server Info":"サーバー情報をコピー","Secure Data Transfer":"セキュアデータ転送","Encrypt and transfer your personal data securely":"あなたの個人情報を安全に暗号化して転送","Personal Data":"個人情報","Encrypt \u0026 Transfer":"暗号化 \u0026 転送","Copy Encrypted Data":"暗号化されたデータをコピー","Connect VPN":"VPN 接続","Copied!":"コピーしました！","New York":"ニューヨーク","Los Angeles":"ロサンゼルス","__title__":"Pi VPN ダッシュボード"},"ko":{"Pi VPN Dashboard":"Pi VPN 대시보드","Pi VPN":"Pi VPN","Home":"홈","Settings":"설정","Help Center":"도움 센터","VPN Connection Status":"VPN 연결 상태","Connected":"연결됨","Current Server":"현재 서버","US-West-01":"US-West-01","IP Address":"IP 주소","Connection Speed":"연결 속도","85.2 Mbps":"85.2 Mbps","Data Transferred":"전송된 데이터","1.2 GB":"1.2 GB","Disconnect VPN":"VPN 해제","VPN Tools":"VPN 도구","URL Encryption":"URL 암호화","Enter a website URL to get a secure, encrypted link":"안전하고 암호화된 링크를 얻기 위해 웹사이트 URL을 입력하세요","Website URL":"웹사이트 URL","Encrypt URL":"URL 암호화","Copy Encrypted URL":"암호화된 URL 복사","Server Switch":"서버 전환","Switch to a specific server by IP address":"IP 주소로 특정 서버로 전환","Server IP Address":"서버 IP 주소","Switch Server":"서버 전환","Encrypted Search":"암호화된 검색","Search the web with VPN encryption":"VPN 암호화로 웹을 검색","Search Keywords":"검색 키워드","Copy Search Results":"검색 결과 복사","Location Match":"위치 일치","Find the optimal server based on your location":"위치에 따라 최적의 서버를 찾아주세요","Location":"위치","Find Optimal Server":"최적의 서버 찾기","Copy Server Info":"서버 정보 복사","Secure Data Transfer":"안전한 데이터 전송","Encrypt and transfer your personal data securely":"개인 데이터를 안전하게 암호화하고 전송하세요","Personal Data":"개인 데이터","Encrypt \u0026 Transfer":"암호화 및 전송","Copy Encrypted Data":"암호화된 데이터 복사","Connect VPN":"VPN 연결","Copied!":"복사됨!","New York":"뉴욕","Los Angeles":"로스앤젤레스","__title__":"Pi VPN 대시보드"},"fr":{"Pi VPN Dashboard":"Tableau de bord Pi VPN","Pi VPN":"Pi VPN","Home":"Accueil","Settings":"Paramètres","Help Center":"Centre d'aide","VPN Connection Status":"Statut de connexion VPN","Connected":"Connecté","Current Server":"Serveur actuel","US-West-01":"US-West-01","IP Address":"Adresse IP","Connection Speed":"Vitesse de connexion","85.2 Mbps":"85.2 Mbps","Data Transferred":"Données transférées","1.2 GB":"1.2 GB","Disconnect VPN":"Déconnecter VPN","VPN Tools":"Outils VPN","URL Encryption":"Chiffrement d'URL","Enter a website URL to get a secure, encrypted link":"Saisissez une URL de site Web pour obtenir un lien sécurisé et chiffré","Website URL":"URL du site Web","Encrypt URL":"Chiffrer l'URL","Copy Encrypted URL":"Copier l'URL chiffrée","Server Switch":"Changement de serveur","Switch to a specific server by IP address":"Passer à un serveur spécifique par adresse IP","Server IP Address":"Adresse IP du serveur","Switch Server":"Changer de serveur","Encrypted Search":"Recherche chiffrée","Search the web with VPN encryption":"Recherchez sur le web avec le chiffrement VPN","Search Keywords":"Mots-clés de recherche","Copy Search Results":"Copier les résultats de recherche","Location Match":"Correspondance de localisation","Find the optimal server based on your location":"Trouvez le serveur optimal en fonction de votre emplacement","Location":"Localisation","Find Optimal Server":"Trouver le serveur optimal","Copy Server Info":"Copier les informations du serveur","Secure Data Transfer":"Transfert sécurisé de données","Encrypt and transfer your personal data securely":"Chiffrez et transférez vos données personnelles en toute sécurité","Personal Data":"Données personnelles","Encrypt \u0026 Transfer":"Chiffrer \u0026 Transférer","Copy Encrypted Data":"Copier les données chiffrées","Connect VPN":"Connecter VPN","Copied!":"Copié !","New York":"New York","Los Angeles":"Los Angeles","__title__":"Tableau de bord Pi VPN"},"de":{"Pi VPN Dashboard":"Pi VPN Dashboard","Pi VPN":"Pi VPN","Home":"Home","Settings":"Einstellungen","Help Center":"Hilfe-Center","VPN Connection Status":"VPN-Verbindungsstatus","Connected":"Verbunden","Current Server":"Aktueller Server","US-West-01":"US-West-01","IP Address":"IP-Adresse","Connection Speed":"Verbindungsgeschwindigkeit","85.2 Mbps":"85.2 Mbps","Data Transferred":"Übertragte Daten","1.2 GB":"1.2 GB","Disconnect VPN":"VPN trennen","VPN Tools":"VPN-Tools","URL Encryption":"URL-Verschlüsselung","Enter a website URL to get a secure, encrypted link":"Geben Sie eine Website-URL ein, um eine sichere, verschlüsselte Verbindung zu erhalten","Website URL":"Website-URL","Encrypt URL":"URL verschlüsseln","Copy Encrypted URL":"Verschlüsselte URL kopieren","Server Switch":"Server umschalten","Switch to a specific server by IP address":"Zu einem bestimmten Server über IP-Adresse wechseln","Server IP Address":"Server-IP-Adresse","Switch Server":"Server umschalten","Encrypted Search":"Verschlüsselter Suchvorgang","Search the web with VPN encryption":"Mit VPN-Verschlüsselung im Internet suchen","Search Keywords":"Suchbegriffe","Copy Search Results":"Suchergebnisse kopieren","Location Match":"Ort Übereinstimmung","Find the optimal server based on your location":"Den optimalen Server basierend auf Ihrem Standort finden","Location":"Standort","Find Optimal Server":"Optimalen Server finden","Copy Server Info":"Serverinformationen kopieren","Secure Data Transfer":"Sichere Datenübertragung","Encrypt and transfer your personal data securely":"Ihre persönlichen Daten sicher verschlüsseln und übertragen","Personal Data":"Persönliche Daten","Encrypt \u0026 Transfer":"Verschlüsseln \u0026 Übertragen","Copy Encrypted Data":"Verschlüsselte Daten kopieren","Connect VPN":"VPN verbinden","Copied!":"Kopiert!","New York":"New York","Los Angeles":"Los Angeles","__title__":"Pi VPN Dashboard"},"ru":{"Pi VPN Dashboard":"Pi VPN Дашборд","Pi VPN":"Pi VPN","Home":"Домашняя страница","Settings":"Настройки","Help Center":"Центр помощи","VPN Connection Status":"Статус подключения VPN","Connected":"Подключено","Current Server":"Текущий сервер","US-West-01":"US-West-01","IP Address":"IP-адрес","Connection Speed":"Скорость подключения","85.2 Mbps":"85.2 Мбит/с","Data Transferred":"Перenesено данных","1.2 GB":"1.2 ГБ","Disconnect VPN":"Отключить VPN","VPN Tools":"Инструменты VPN","URL Encryption":"Шифрование URL","Enter a website URL to get a secure, encrypted link":"Введи URL веб-сайта, чтобы получить безопасную, зашифрованную ссылку","Website URL":"URL веб-сайта","Encrypt URL":"Зашифровать URL","Copy Encrypted URL":"Копировать зашифрованный URL","Server Switch":"Переключение сервера","Switch to a specific server by IP address":"Переключиться на конкретный сервер по IP-адресу","Server IP Address":"IP-адрес сервера","Switch Server":"Переключить сервер","Encrypted Search":"Зашифрованный поиск","Search the web with VPN encryption":"Поиск в Интернете с зашифрованным VPN","Search Keywords":"Ключевые слова поиска","Copy Search Results":"Копировать результаты поиска","Location Match":"Совпадение местоположения","Find the optimal server based on your location":"Найти оптимальный сервер на основе вашего местоположения","Location":"Местоположение","Find Optimal Server":"Найти оптимальный сервер","Copy Server Info":"Копировать информацию о сервере","Secure Data Transfer":"Безопасная передача данных","Encrypt and transfer your personal data securely":"Зашифровать и безопасно передать ваши личные данные","Personal Data":"Личные данные","Encrypt \u0026 Transfer":"Зашифровать и передать","Copy Encrypted Data":"Копировать зашифрованные данные","Connect VPN":"Подключить VPN","Copied!":"Скопировано!","New York":"Нью-Йорк","Los Angeles":"Лос-Анджелес","__title__":"Pi VPN Дашборд"},"pt":{"Pi VPN Dashboard":"Painel do Pi VPN","Pi VPN":"Pi VPN","Home":"Início","Settings":"Configurações","Help Center":"Central de Ajuda","VPN Connection Status":"Status da Conexão VPN","Connected":"Conectado","Current Server":"Servidor Atual","US-West-01":"US-West-01","IP Address":"Endereço IP","Connection Speed":"Velocidade de Conexão","85.2 Mbps":"85.2 Mbps","Data Transferred":"Dados Transferidos","1.2 GB":"1.2 GB","Disconnect VPN":"Desconectar VPN","VPN Tools":"Ferramentas VPN","URL Encryption":"Criptografia de URL","Enter a website URL to get a secure, encrypted link":"Insira uma URL do site para obter um link seguro e criptografado","Website URL":"URL do Site","Encrypt URL":"Criptografar URL","Copy Encrypted URL":"Copiar URL Criptografada","Server Switch":"Alternar Servidor","Switch to a specific server by IP address":"Alternar para um servidor específico pelo endereço IP","Server IP Address":"Endereço IP do Servidor","Switch Server":"Alternar Servidor","Encrypted Search":"Pesquisa Criptografada","Search the web with VPN encryption":"Pesquise na web com criptografia VPN","Search Keywords":"Palavras-chave de Pesquisa","Copy Search Results":"Copiar Resultados da Pesquisa","Location Match":"Correspondência de Localização","Find the optimal server based on your location":"Encontre o servidor ótimo com base na sua localização","Location":"Localização","Find Optimal Server":"Encontrar Servidor Ótimo","Copy Server Info":"Copiar Informações do Servidor","Secure Data Transfer":"Transferência de Dados Segura","Encrypt and transfer your personal data securely":"Criptografe e transfira seus dados pessoais de forma segura","Personal Data":"Dados Pessoais","Encrypt \u0026 Transfer":"Criptografar \u0026 Transferir","Copy Encrypted Data":"Copiar Dados Criptografados","Connect VPN":"Conectar VPN","Copied!":"Copiado!","New York":"Nova York","Los Angeles":"Los Angeles","__title__":"Painel do Pi VPN"},"ar":{"Pi VPN Dashboard":"لوحة تحكم Pi VPN","Pi VPN":"Pi VPN","Home":"الصفحة الرئيسية","Settings":"الإعدادات","Help Center":"مركز المساعدة","VPN Connection Status":"حالة اتصال VPN","Connected":"متصل","Current Server":"خادم الحالي","US-West-01":"US-West-01","IP Address":"عنوان IP","Connection Speed":"سرعة الاتصال","85.2 Mbps":"85.2 Mbps","Data Transferred":"البيانات المرسلة","1.2 GB":"1.2 GB","Disconnect VPN":"فصل VPN","VPN Tools":"أدوات VPN","URL Encryption":"تشفير URL","Enter a website URL to get a secure, encrypted link":"أدخل عنوان موقع الويب للحصول على رابط آمن وم加密","Website URL":"عنوان الموقع الإلكتروني","Encrypt URL":"تشفير URL","Copy Encrypted URL":"نسخ URL المشفرة","Server Switch":"تبديل الخادم","Switch to a specific server by IP address":"الانتقال إلى خادم محدد باستخدام عنوان IP","Server IP Address":"عنوان IP للخادم","Switch Server":"تبديل الخادم","Encrypted Search":"البحث المشفر","Search the web with VPN encryption":"البحث في الإنترنت باستخدام تشفير VPN","Search Keywords":"كلمات البحث","Copy Search Results":"نسخ نتائج البحث","Location Match":"التطابق بالموقع","Find the optimal server based on your location":"إيجاد الخادم الأمثل بناءً على موقعك","Location":"الموقع","Find Optimal Server":"إيجاد الخادم الأمثل","Copy Server Info":"نسخ معلومات الخادم","Secure Data Transfer":"نقل البيانات الآمن","Encrypt and transfer your personal data securely":"تشفير نقل بياناتك الشخصية بشكل آمن","Personal Data":"بيانات شخصية","Encrypt \u0026 Transfer":"تشفير ونقل","Copy Encrypted Data":"نسخ البيانات المشفرة","Connect VPN":"اتصل بـ VPN","Copied!":"نسخت!","New York":"نيويورك","Los Angeles":"لوس أنجلوس","__title__":"لوحة تحكم Pi VPN"},"hi":{"Pi VPN Dashboard":"Pi VPN डैशबोर्ड","Pi VPN":"Pi VPN","Home":"होम","Settings":"सेटिंग्स","Help Center":"हेल्प सेंटर","VPN Connection Status":"VPN कनेक्शन स्टेटस","Connected":"कनेक्टेड","Current Server":"वर्तमान सर्वर","US-West-01":"US-West-01","IP Address":"IP पता","Connection Speed":"कनेक्शन गति","85.2 Mbps":"85.2 Mbps","Data Transferred":"डाटा हस्तांतरित","1.2 GB":"1.2 GB","Disconnect VPN":"VPN अलग करें","VPN Tools":"VPN टूल","URL Encryption":"URL एनक्रिप्शन","Enter a website URL to get a secure, encrypted link":"एक सुरक्षित, एनक्रिप्टिड लिंक पाने के लिए वेबसाइट URL भरें","Website URL":"वेबसाइट URL","Encrypt URL":"URL एनक्रिप्ट करें","Copy Encrypted URL":"एनक्रिप्टिड URL कॉपी करें","Server Switch":"सर्वर स्विच","Switch to a specific server by IP address":"IP पता द्वारा एक विशिष्ट सर्वर पर स्विच करें","Server IP Address":"सर्वर IP पता","Switch Server":"सर्वर स्विच करें","Encrypted Search":"एनक्रिप्टिड सर्च","Search the web with VPN encryption":"VPN एनक्रिप्शन के साथ वेब सर्च करें","Search Keywords":"सर्च कीवर्ड","Copy Search Results":"सर्च परिणाम कॉपी करें","Location Match":"स्थान समानता","Find the optimal server based on your location":"आपके स्थान के आधार पर उत्तम सर्वर खोजें","Location":"स्थान","Find Optimal Server":"उत्तम सर्वर खोजें","Copy Server Info":"सर्वर जानकारी कॉपी करें","Secure Data Transfer":"सुरक्षित डाटा हस्तांतरण","Encrypt and transfer your personal data securely":"आपके निजी डाटा को सुरक्षित रूप से एनक्रिप्ट करें और हस्तांतरित करें","Personal Data":"निजी डाटा","Encrypt \u0026 Transfer":"एनक्रिप्ट \u0026 हस्तांतरण","Copy Encrypted Data":"एनक्रिप्टिड डाटा कॉपी करें","Connect VPN":"VPN कनेक्ट करें","Copied!":"कॉपी किया!","New York":"न्यूयॉर्क","Los Angeles":"लॉस एंजिल्स","__title__":"Pi VPN डैशबोर्ड"},"id":{"Pi VPN Dashboard":"Dasbor Pi VPN","Pi VPN":"Pi VPN","Home":"Beranda","Settings":"Pengaturan","Help Center":"Pusat Bantuan","VPN Connection Status":"Status Koneksi VPN","Connected":"Terhubung","Current Server":"Server Saat Ini","US-West-01":"US-West-01","IP Address":"Alamat IP","Connection Speed":"Kecepatan Koneksi","85.2 Mbps":"85.2 Mbps","Data Transferred":"Data Dikirim","1.2 GB":"1.2 GB","Disconnect VPN":"Putus Koneksi VPN","VPN Tools":"Alat VPN","URL Encryption":"Enkripsi URL","Enter a website URL to get a secure, encrypted link":"Masukkan URL situs web untuk mendapatkan tautan yang aman dan dienkripsi","Website URL":"URL Situs Web","Encrypt URL":"Enkripsi URL","Copy Encrypted URL":"Salin URL yang Dientri","Server Switch":"Tukar Server","Switch to a specific server by IP address":"Tukar ke server khusus berdasarkan alamat IP","Server IP Address":"Alamat IP Server","Switch Server":"Tukar Server","Encrypted Search":"Pencarian Dientri","Search the web with VPN encryption":"Cari di web dengan enkripsi VPN","Search Keywords":"Kata Kunci Pencarian","Copy Search Results":"Salin Hasil Pencarian","Location Match":"Pencocokan Lokasi","Find the optimal server based on your location":"Cari server yang optimal berdasarkan lokasi Anda","Location":"Lokasi","Find Optimal Server":"Cari Server Optimal","Copy Server Info":"Salin Info Server","Secure Data Transfer":"Transfer Data Aman","Encrypt and transfer your personal data securely":"Enkripsi dan transfer data pribadi Anda dengan aman","Personal Data":"Data Pribadi","Encrypt \u0026 Transfer":"Enkripsi \u0026 Transfer","Copy Encrypted Data":"Salin Data yang Dientri","Connect VPN":"Hubungkan VPN","Copied!":"Disalin!","New York":"New York","Los Angeles":"Los Angeles","__title__":"Dasbor Pi VPN"},"vi":{"Pi VPN Dashboard":"Bảng điều khiển Pi VPN","Pi VPN":"Pi VPN","Home":"Trang chủ","Settings":"Cài đặt","Help Center":"Trung tâm trợ giúp","VPN Connection Status":"Trạng thái kết nối VPN","Connected":"Kết nối","Current Server":"Máy chủ hiện tại","US-West-01":"US-West-01","IP Address":"Địa chỉ IP","Connection Speed":"Tốc độ kết nối","85.2 Mbps":"85.2 Mbps","Data Transferred":"Dữ liệu đã truyền","1.2 GB":"1.2 GB","Disconnect VPN":"Ngắt kết nối VPN","VPN Tools":"Công cụ VPN","URL Encryption":"Mã hóa URL","Enter a website URL to get a secure, encrypted link":"Nhập URL của trang web để nhận một liên kết an toàn và mã hóa","Website URL":"URL trang web","Encrypt URL":"Mã hóa URL","Copy Encrypted URL":"Sao chép URL đã mã hóa","Server Switch":"Chuyển máy chủ","Switch to a specific server by IP address":"Chuyển sang máy chủ cụ thể bằng địa chỉ IP","Server IP Address":"Địa chỉ IP máy chủ","Switch Server":"Chuyển máy chủ","Encrypted Search":"Tìm kiếm mã hóa","Search the web with VPN encryption":"Tìm kiếm trên web với mã hóa VPN","Search Keywords":"Từ khóa tìm kiếm","Copy Search Results":"Sao chép kết quả tìm kiếm","Location Match":"Khớp vị trí","Find the optimal server based on your location":"Tìm máy chủ tối ưu dựa trên vị trí của bạn","Location":"Vị trí","Find Optimal Server":"Tìm máy chủ tối ưu","Copy Server Info":"Sao chép thông tin máy chủ","Secure Data Transfer":"Chuyển dữ liệu an toàn","Encrypt and transfer your personal data securely":"Mã hóa và chuyển dữ liệu cá nhân của bạn an toàn","Personal Data":"Dữ liệu cá nhân","Encrypt \u0026 Transfer":"Mã hóa \u0026 Chuyển","Copy Encrypted Data":"Sao chép dữ liệu đã mã hóa","Connect VPN":"Kết nối VPN","Copied!":"Đã sao chép!","New York":"New York","Los Angeles":"Los Angeles","__title__":"Bảng điều khiển Pi VPN"},"th":{"Pi VPN Dashboard":"Pi VPN แดชบอร์ด","Pi VPN":"Pi VPN","Home":"หน้าหลัก","Settings":"การตั้งค่า","Help Center":"ศูนย์ช่วยเหลือ","VPN Connection Status":"สถานะการเชื่อมต่อ VPN","Connected":"เชื่อมต่อแล้ว","Current Server":"เซิร์ฟเวอร์ปัจจุบัน","US-West-01":"US-West-01","IP Address":"ที่อยู่ IP","Connection Speed":"ความเร็วการเชื่อมต่อ","85.2 Mbps":"85.2 Mbps","Data Transferred":"ข้อมูลที่ถูกโอน","1.2 GB":"1.2 GB","Disconnect VPN":"ยกเลิกการเชื่อมต่อ VPN","VPN Tools":"เครื่องมือ VPN","URL Encryption":"การเข้ารหัส URL","Enter a website URL to get a secure, encrypted link":"ใส่ URL ของเว็บไซต์เพื่อได้รับลิงก์ที่มีความปลอดภัยและเข้ารหัส","Website URL":"URL ของเว็บไซต์","Encrypt URL":"เข้ารหัส URL","Copy Encrypted URL":"คัดลอก URL ที่เข้ารหัส","Server Switch":"เปลี่ยนเซิร์ฟเวอร์","Switch to a specific server by IP address":"เปลี่ยนไปยังเซิร์ฟเวอร์เฉพาะด้วยที่อยู่ IP","Server IP Address":"ที่อยู่ IP ของเซิร์ฟเวอร์","Switch Server":"เปลี่ยนเซิร์ฟเวอร์","Encrypted Search":"การค้นหาที่เข้ารหัส","Search the web with VPN encryption":"ค้นหาทางเว็บที่มีการเข้ารหัสด้วย VPN","Search Keywords":"คำค้นหา","Copy Search Results":"คัดลอกผลการค้นหา","Location Match":"ตรงกับสถานที่","Find the optimal server based on your location":"หาเซิร์ฟเวอร์ที่ดีที่สุดตามสถานที่ของคุณ","Location":"สถานที่","Find Optimal Server":"หาเซิร์ฟเวอร์ที่ดีที่สุด","Copy Server Info":"คัดลอกข้อมูลเซิร์ฟเวอร์","Secure Data Transfer":"การโอนข้อมูลที่มีความปลอดภัย","Encrypt and transfer your personal data securely":"เข้ารหัสและโอนข้อมูลส่วนบุคคลของคุณอย่างมีความปลอดภัย","Personal Data":"ข้อมูลส่วนบุคคล","Encrypt \u0026 Transfer":"เข้ารหัสและโอน","Copy Encrypted Data":"คัดลอกข้อมูลที่เข้ารหัส","Connect VPN":"เชื่อมต่อ VPN","Copied!":"คัดลอกแล้ว!","New York":"นิวยอร์ก","Los Angeles":"ลอสแอนเจลิส","__title__":"Pi VPN แดชบอร์ด"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
