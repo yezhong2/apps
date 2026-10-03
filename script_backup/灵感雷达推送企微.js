@@ -1887,6 +1887,26 @@ function findNearDup(pname) {
     }
     return null;
 }
+// 子主题扎堆检测（2026-10-03）：产品名前缀归一化后相同（前 6 字符）的今日产品 ≥3 个 → 视为扎堆，
+// 拦截第 4 个起的同主题变体。背景：当日大类=硬件周边时 AI 一天连出 5 个 VR 系产品（换名不换主题）。
+function themeCrowdToday(name) {
+    try {
+        let norm = function(s) {
+            return String(s || "").replace(/\.html$/i, "").split("_").pop().toLowerCase().replace(/[^a-z0-9\u4e00-\u9fa5]/g, "");
+        };
+        let key = norm(name).slice(0, 6);
+        if (key.length < 3) return null;
+        let dp = String(dateStr()).slice(0, 10); // 今天日期前缀（dateStr 含时间，取前 10 位）
+        let list = [];
+        try { list = files.listDir("/storage/emulated/0/脚本/产出", function(n) { return n.endsWith(".html") && n.indexOf(dp) === 0; }); } catch (e) { return null; }
+        let hit = 0;
+        for (let i = 0; i < list.length; i++) {
+            if (norm(list[i]).slice(0, 6) === key) hit++;
+        }
+        if (hit >= 3) return {key: key, count: hit};
+        return null;
+    } catch (e) { return null; }
+}
 // 从决策文本提取产品名用于文件名
 function extractProductName(decision) {
     try {
@@ -1998,7 +2018,7 @@ function runOnce() {
     } catch (e) {}
     let report = callLLM([
         {role: "system", content: SYSTEM_PROMPT},
-        {role: "user", content: "【今日必选方向大类】" + todayCat + "（今天的所有方向必须属于此大类）\n【已产出产品清单】（真实存在的产品，禁止同名或近亲变体）\n" + (existing.length ? "- " + existing.join("\n- ") : "（暂无）") + "\n【历史报告】（过去提过的方向，禁止重复，只能做深化版）\n" + (hist || "（暂无历史）") + "\n\n【今日头条】\n- " + uniq.join("\n- ")}
+        {role: "user", content: "【今日必选方向大类】" + todayCat + "（今天的所有方向必须属于此大类）\n【已产出产品清单】（真实存在的产品，禁止同名或近亲变体）\n" + (existing.length ? "- " + existing.join("\n- ") : "（暂无）") + "\n【子主题防扎堆硬规则】顺着上面清单自查：同一子主题（例如 VR、VPN、Pi、Health、宠物、日历等）今天最多 3 个；已达 3 个的子主题今天一律禁止再出（名字里带该主题词也不行），必须换本大类内的其它子领域，优先挑清单里还没出现过的\n【历史报告】（过去提过的方向，禁止重复，只能做深化版）\n" + (hist || "（暂无历史）") + "\n\n【今日头条】\n- " + uniq.join("\n- ")}
     ], 5000); // 提炼输出量大（5 个点子的深度推演 + 决策），3000 曾导致【决策】段被截断
     if (!report) {
         log("提炼失败：所有 Key/模型均不可用");
@@ -2029,38 +2049,43 @@ function runOnce() {
     let origName = pname;
     let execDecision = decision; // 真正拿去生成产物的方向（换选成功后替换为换选结果）
     let nearDup = (pname !== "产品" && decision) ? findNearDup(pname) : null;
+    let themeHit = (pname !== "产品" && decision) ? themeCrowdToday(pname) : null; // 子主题扎堆（2026-10-03：硬件周边日连出 5 个 VR 系）
     const SWAP_MAX = 2;
     let swapCount = 0;
-    while (nearDup && swapCount < SWAP_MAX) {
+    while ((nearDup || themeHit) && swapCount < SWAP_MAX) {
         swapCount++;
-        log("⛔ 近亲变体拦截：「" + pname + "」与已有「" + nearDup + "」相似度过高，换选第 " + swapCount + " 次…");
-        if (swapCount === 1) pushToWx("⚠️ 近亲变体拦截", "今日主推方向「" + origName + "」与已有产品「" + nearDup + "」高度相似，已拦下并自动换选报告中的下一方向（最多 " + SWAP_MAX + " 次）。");
+        let why = nearDup ? ("「" + pname + "」与已有「" + nearDup + "」相似度过高") : ("「" + pname + "」的子主题（" + themeHit.key + "）今天已产出 " + themeHit.count + " 个，扎堆");
+        log("⛔ " + (nearDup ? "近亲变体拦截" : "子主题扎堆拦截") + "：" + why + "，换选第 " + swapCount + " 次…");
+        if (swapCount === 1) pushToWx("⚠️ 方向拦截", "今日主推方向「" + origName + "」被拦（" + (nearDup ? "与已有产品近亲重复" : "子主题今天已扎堆") + "），已自动换选报告中的下一方向（最多 " + SWAP_MAX + " 次）。");
         let swap = callLLM([
             {role: "system", content: "你是自主推演引擎。只按格式输出，禁止解释。"},
-            {role: "user", content: "你的报告决策段如下：\n" + (decision || "").slice(0, 2000) + "\n\n主推方向「" + pname + "」与已有产品「" + nearDup + "」近亲重复，被硬规则拦截。请从决策段里 5 个打分方向中另选一个与已有产品明显不同的方向做主推。严格按此格式输出（第一行名字 2-15 位英文字母/中文，不含空格标点；第二行一句话理由）：\n今日主推方向：新名字\n理由：一句话"}
+            {role: "user", content: "你的报告决策段如下：\n" + (decision || "").slice(0, 2000) + "\n\n主推方向被硬规则拦截：" + why + "。请从决策段里 5 个打分方向中另选一个与已有产品明显不同、且今日子主题不扎堆的方向做主推。严格按此格式输出（第一行名字 2-15 位英文字母/中文，不含空格标点；第二行一句话理由）：\n今日主推方向：新名字\n理由：一句话"}
         ], 200);
         if (!swap) { log("⚠️ 换选失败（预算/Key 不可用），放弃换选"); break; }
         let newName = extractProductName(swap);
         if (newName === "产品") { log("⚠️ 换选输出无法提取名字，放弃换选：" + String(swap).slice(0, 80)); break; }
         let newDup = findNearDup(newName);
-        if (!newDup) {
+        let newTheme = themeCrowdToday(newName);
+        if (!newDup && !newTheme) {
             execDecision = swap;
             pname = newName;
             nearDup = null;
+            themeHit = null;
             log("🔀 已换选新主推方向：" + pname);
-            pushToWx("🔀 主推方向已换选", "原方向「" + origName + "」与已有产品近亲重复被拦，已换选为「" + pname + "」，继续生成。");
+            pushToWx("🔀 主推方向已换选", "原方向「" + origName + "」被拦（近亲重复/子主题扎堆），已换选为「" + pname + "」，继续生成。");
         } else {
             pname = newName;
             nearDup = newDup;
+            themeHit = newTheme;
         }
     }
     let outputs = {html: null, article: null};
-    if (decision && !nearDup) {
+    if (decision && !nearDup && !themeHit) {
         log("🔨 执行层启动：把主推方向做成实际产物…");
         outputs = buildProduct(execDecision);
-    } else if (nearDup) {
-        log("⛔ 换选 " + swapCount + " 次仍未找到不重复的方向，放弃本轮产品生成（防重复烧 token）");
-        pushToWx("⚠️ 近亲变体拦截", "换选 " + swapCount + " 次仍未找到不重复的方向，已放弃本轮生成。确认真要做深化版，把方向明确标成【v2】原名再人工处理。");
+    } else if (nearDup || themeHit) {
+        log("⛔ 换选 " + swapCount + " 次仍未找到不重复、不扎堆的方向，放弃本轮产品生成（防重复烧 token）");
+        pushToWx("⚠️ 方向拦截", "换选 " + swapCount + " 次仍未找到不重复且不扎堆的方向，已放弃本轮生成。确认真要做深化版，把方向明确标成【v2】原名再人工处理。");
     } else if (!decision) {
         log("⚠️ 报告缺少【决策】段，跳过执行层");
     }
