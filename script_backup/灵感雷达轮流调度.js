@@ -164,7 +164,10 @@ function gapSleep(min) {
     log("💤 轮间休息 " + min + " 分钟…");
     let until = Date.now() + min * 60 * 1000;
     while (Date.now() < until) {
-        sleep(30000); // 每 30 秒醒一次查停止标志，手动停止随时生效
+        sleep(30000);
+        // 2026-10-03 事故修复：原实现只在主循环顶端查停止标志，轮间休息期间（默认 1 分钟）吃不到标志，
+        // 换装时旧实例漏退 → 新旧双实例并行（双倍烧 token）。休息循环里也查，30 秒内必定响应。
+        if (stopRequested()) return;
         pipeWatchdog(); // Termux 心跳看门狗（内部节流 2 分钟）：轮间休息也要查
         updateStatus();
     }
