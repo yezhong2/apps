@@ -650,26 +650,55 @@ const FT_HARNESS_PATH = "/storage/emulated/0/脚本/灵感雷达功能实测.js"
 const FT_TASK_PATH = "/storage/emulated/0/脚本/功能实测_任务.json";
 const FT_RESULT_PATH = "/storage/emulated/0/脚本/功能实测_结果.json";
 const FT_CURSOR_PATH = "/storage/emulated/0/脚本/功能实测游标.txt";
+const FT_LOG_PATH = "/storage/emulated/0/脚本/功能实测_历史.json"; // {文件名: 上次实测时间戳ms} 防重复实测（2026-10-03 修）
+let FT_PICK_CACHE = null; // 本轮实测目标缓存：每轮只测 1 个产品；首次调用时计算并缓存（防循环中因历史更新而连环换选）
+function loadFTLog() {
+    try { let j = JSON.parse(files.read(FT_LOG_PATH)); if (j && typeof j === "object") return j; } catch (e) {}
+    return {};
+}
+function saveFTLog(j) {
+    try { files.write(FT_LOG_PATH, JSON.stringify(j)); } catch (e) {}
+}
 function functionalTest(name) {
     let names = collectBaselines();
     if (!names.length) return [];
-    // 挑选本轮目标：优先今天变过的产品（最可能带新问题，只测变更列表第一个），否则按游标轮转
-    let pick = null;
-    let today = todayChanged();
-    if (today.length) {
-        if (today.indexOf(name) < 0) return [];
-        pick = today[0];
-    } else {
-        let last = "";
-        try { last = files.read(FT_CURSOR_PATH).trim(); } catch (e) {}
-        pick = names[(names.indexOf(last) + 1) % names.length];
+    // 挑选本轮目标（2026-10-03 重构，修“同一产品整天重复实测”）：
+    // 原实现永远取今日变更列表的字母序第一个（AICodeHelper 整天被钉住重复测，游标轮转失效）；
+    // 现改为：①优先“今天变过、且改动晚于上次实测”的产品（取最近改动的那个）；
+    // ②没有新鲜变更 → 游标轮转，跳过 20 小时内已测过的产品（保证全量覆盖）；③全测过则回到纯轮转。
+    if (FT_PICK_CACHE === null) {
+        let hist0 = loadFTLog();
+        let cands = [];
+        todayChanged().forEach(function(n) {
+            let mt = 0;
+            try { mt = new java.io.File(PRODUCT_DIR + "/" + n).lastModified(); } catch (e) {}
+            if (!hist0[n] || mt > hist0[n]) cands.push({n: n, mt: mt});
+        });
+        if (cands.length) {
+            cands.sort(function(a, b) { return b.mt - a.mt; });
+            FT_PICK_CACHE = cands[0].n;
+        } else {
+            let last = "";
+            try { last = files.read(FT_CURSOR_PATH).trim(); } catch (e) {}
+            let start = names.indexOf(last);
+            let fresh = Date.now() - 20 * 3600 * 1000;
+            for (let k = 1; k <= names.length; k++) {
+                let n2 = names[(start + k) % names.length];
+                if (!hist0[n2] || hist0[n2] < fresh) { FT_PICK_CACHE = n2; break; }
+            }
+            if (!FT_PICK_CACHE) FT_PICK_CACHE = names[(start + 1) % names.length];
+        }
     }
+    let pick = FT_PICK_CACHE;
     if (pick !== name) return [];
     try { files.write(FT_CURSOR_PATH, pick); } catch (e) {}
     try { files.remove(FT_RESULT_PATH); } catch (e) {}
     try { files.write(FT_TASK_PATH, JSON.stringify({target: PRODUCT_DIR + "/" + pick, label: pick})); } catch (e) { return []; }
     log("功能实测启动：" + pick);
     try { engines.execScriptFile(FT_HARNESS_PATH); } catch (e) { log("功能实测器启动失败：" + e); return []; }
+    let hist = loadFTLog(); // 记录本次实测（attempt 即记，防无结果产品被无限重试；产品下次有变更时仍会被优先重测）
+    hist[pick] = Date.now();
+    saveFTLog(hist);
     // 等结果文件（本机 waitFor 不可靠，用结果文件轮询；上限 45 秒）
     let deadline = Date.now() + 45000;
     let res = null;
