@@ -610,9 +610,19 @@ function fileIssue(name, staticIssues, findings) {
             return "skip";
         }
     }
+    // 【2026-10-03 修·拆死锁】实测发现（"功能实测：" 前缀）是**机器点出来的客观事实**，不是 AI 的主观意见，
+    // 且天然有界。原先它和 AI 意见共用同一个日重报上限，造成死锁：产品被 AI 反复改不好 → 名额耗光 →
+    // 后面更硬的实测证据反而进不来。实际案例：CodeSentry 实测「5 个按钮 4 个是死的」，21:23 那条被判
+    // 「今日已重报 3 次」直接丢弃 —— 机器人改不动 + 新证据进不来 = 产品永久烂在队列里。
+    // 现在给实测发现额外 2 个名额（合计上限 3+2=5），仍然有界，也仍受上面「已有 open 意见」闸门约束。
+    let hasFT = false;
+    for (let i = 0; i < staticIssues.length; i++) {
+        if (String(staticIssues[i]).indexOf("功能实测：") === 0) { hasFT = true; break; }
+    }
+    let cap = MAX_RETRY_PER_DAY + (hasFT ? 2 : 0);
     let cnt = todayReportCount(name);
-    if (cnt >= MAX_RETRY_PER_DAY) {
-        log("⏭️ 该产品今日已重报 " + cnt + " 次（上限 " + MAX_RETRY_PER_DAY + "），明天再试：" + name);
+    if (cnt >= cap) {
+        log("⏭️ 该产品今日已重报 " + cnt + " 次（上限 " + cap + (hasFT ? "，已含实测额外 2 个名额" : "") + "），明天再试：" + name);
         return "skip";
     }
     let title = "【意见】" + name + "（巡检 " + dateStr() + "）";
