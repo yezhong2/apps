@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VPN Guardian - Your Privacy Protection Tool</title><meta name="description" content="Free online tool: VPN Guardian - Your Privacy Protection Tool. No signup, no payment — free forever.">
+<meta property="og:title" content="VPN Guardian - Your Privacy Protection Tool">
+<meta property="og:description" content="Free online tool: VPN Guardian - Your Privacy Protection Tool. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_190720_VPN Guardian.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a7fff;
+            --accent-hover: #6a9fff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 60px 0;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background-color: var(--bg-tertiary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .privacy-score, .email-risk, .speed-test, .vpn-analysis, .protocol-rating {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .score-display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-high {
+            color: var(--success);
+        }
+
+        .score-medium {
+            color: var(--warning);
+        }
+
+        .score-low {
+            color: var(--danger);
+        }
+
+        .recommendations {
+            margin-top: 20px;
+        }
+
+        .recommendations h4 {
+            margin-bottom: 10px;
+        }
+
+        .recommendations ul {
+            list-style-position: inside;
+            color: var(--text-secondary);
+        }
+
+        .recommendations li {
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            transition: width 1s ease;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 6px 6px 0 0;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .tab.active {
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid-item {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .grid-item h4 {
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .notification.info {
+            border-left: 4px solid var(--accent);
+        }
+
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 40px 0;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">VG</div>
+                    <span>VPN Guardian</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#privacy">Privacy Score</a></li>
+                        <li><a href="#email">Email Risk</a></li>
+                        <li><a href="#speed">Speed Test</a></li>
+                        <li><a href="#vpn">VPN Analysis</a></li>
+                        <li><a href="#protocol">Protocol Rating</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>VPN Guardian</h1>
+                <p>Your comprehensive privacy protection tool. Check website privacy, detect email leaks, test network speeds, analyze VPN connections, and evaluate encryption protocols.</p>
+                <div class="tabs">
+                    <button class="tab active" onclick="showTab('privacy')">Privacy Score</button>
+                    <button class="tab" onclick="showTab('email')">Email Risk</button>
+                    <button class="tab" onclick="showTab('speed')">Speed Test</button>
+                    <button class="tab" onclick="showTab('vpn')">VPN Analysis</button>
+                    <button class="tab" onclick="showTab('protocol')">Protocol Rating</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="privacy" class="section">
+            <div class="container">
+                <h2 class="section-title">Website Privacy Score</h2>
+                <div class="privacy-score">
+                    <div class="input-group">
+                        <label for="website-url">Enter Website URL</label>
+                        <input type="url" id="website-url" placeholder="https://example.com">
+                    </div>
+                    <button class="btn" onclick="checkPrivacyScore()">Check Privacy Score</button>
+                    <div id="privacy-result" class="result">
+                        <div class="score-display" id="privacy-score-display"></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="privacy-progress"></div>
+                        </div>
+                        <div class="recommendations">
+                            <h4>Privacy Recommendations</h4>
+                            <ul id="privacy-recommendations"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="email" class="section">
+            <div class="container">
+                <h2 class="section-title">Email Risk Detection</h2>
+                <div class="email-risk">
+                    <div class="input-group">
+                        <label for="email-input">Enter Your Email</label>
+                        <input type="email" id="email-input" placeholder="your.email@example.com">
+                    </div>
+                    <button class="btn" onclick="checkEmailRisk()">Check Email Risk</button>
+                    <div id="email-result" class="result">
+                        <div class="score-display" id="email-risk-display"></div>
+                        <div class="recommendations">
+                            <h4>Breach Details</h4>
+                            <div id="email-breaches"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="speed" class="section">
+            <div class="container">
+                <h2 class="section-title">Network Speed Test</h2>
+                <div class="speed-test">
+                    <div class="input-group">
+                        <label for="location-select">Select Your Location</label>
+                        <select id="location-select">
+                            <option value="">Choose a location</option>
+                            <option value="north-america">North America</option>
+                            <option value="europe">Europe</option>
+                            <option value="asia">Asia</option>
+                            <option value="south-america">South America</option>
+                            <option value="africa">Africa</option>
+                            <option value="oceania">Oceania</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="runSpeedTest()">Run Speed Test</button>
+                    <div id="speed-result" class="result">
+                        <div class="grid">
+                            <div class="grid-item">
+                                <h4>Download Speed</h4>
+                                <div id="download-speed">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>Upload Speed</h4>
+                                <div id="upload-speed">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>Ping</h4>
+                                <div id="ping-speed">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>Jitter</h4>
+                                <div id="jitter-speed">--</div>
+                            </div>
+                        </div>
+                        <div class="recommendations">
+                            <h4>Network Quality Assessment</h4>
+                            <div id="network-assessment"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vpn" class="section">
+            <div class="container">
+                <h2 class="section-title">VPN Connection Analysis</h2>
+                <div class="vpn-analysis">
+                    <div class="input-group">
+                        <label for="vpn-status">VPN Connection Status</label>
+                        <select id="vpn-status">
+                            <option value="">Select your status</option>
+                            <option value="connected">Connected to VPN</option>
+                            <option value="disconnected">Disconnected</option>
+                            <option value="connecting">Connecting...</option>
+                            <option value="disconnecting">Disconnecting...</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="vpn-server">VPN Server Location</label>
+                        <input type="text" id="vpn-server" placeholder="e.g., US-West, UK-London">
+                    </div>
+                    <button class="btn" onclick="analyzeVPN()">Analyze VPN</button>
+                    <div id="vpn-result" class="result">
+                        <div class="grid">
+                            <div class="grid-item">
+                                <h4>Connection Stability</h4>
+                                <div id="vpn-stability">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>Security Level</h4>
+                                <div id="vpn-security">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>Speed Impact</h4>
+                                <div id="vpn-speed">--</div>
+                            </div>
+                            <div class="grid-item">
+                                <h4>IP Leaks</h4>
+                                <div id="vpn-leaks">--</div>
+                            </div>
+                        </div>
+                        <div class="recommendations">
+                            <h4>VPN Recommendations</h4>
+                            <ul id="vpn-recommendations"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="protocol" class="section">
+            <div class="container">
+                <h2 class="section-title">Encryption Protocol Rating</h2>
+                <div class="protocol-rating">
+                    <div class="input-group">
+                        <label for="protocol-input">Enter Encryption Protocol</label>
+                        <input type="text" id="protocol-input" placeholder="e.g., OpenVPN, IKEv2, WireGuard">
+                    </div>
+                    <button class="btn" onclick="rateProtocol()">Rate Protocol</button>
+                    <div id="protocol-result" class="result">
+                        <div class="score-display" id="protocol-score-display"></div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="protocol-progress"></div>
+                        </div>
+                        <div class="recommendations">
+                            <h4>Protocol Features</h4>
+                            <div id="protocol-features"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>VPN Guardian - Your Privacy Protection Tool</p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Tab system
+        function showTab(tabName) {
+            // Update active tab
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show corresponding section
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            const targetSection = document.getElementById(tabName);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+        }
+
+        // Privacy Score Checker
+        function checkPrivacyScore() {
+            const urlInput = document.getElementById('website-url');
+            const url = urlInput.value.trim();
+            
+            if (!url) {
+                showNotification('Please enter a website URL', 'error');
+                return;
+            }
+            
+            // Validate URL format
+            try {
+                new URL(url);
+            } catch (e) {
+                showNotification('Please enter a valid URL', 'error');
+                return;
+            }
+            
+            // Simulate privacy check
+            const privacyScore = Math.floor(Math.random() * 40) + 60; // 60-100
+            const recommendations = generatePrivacyRecommendations(privacyScore);
+            
+            // Display results
+            const resultDiv = document.getElementById('privacy-result');
+            const scoreDisplay = document.getElementById('privacy-score-display');
+            const progressFill = document.getElementById('privacy-progress');
+            const recommendationsList = document.getElementById('privacy-recommendations');
+            
+            scoreDisplay.textContent = `${privacyScore}/100`;
+            scoreDisplay.className = `score-display ${getScoreClass(privacyScore)}`;
+            
+            progressFill.style.width = `${privacyScore}%`;
+            
+            recommendationsList.innerHTML = '';
+            recommendations.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                recommendationsList.appendChild(li);
+            });
+            
+            resultDiv.classList.add('show');
+            showNotification('Privacy score calculated successfully', 'success');
+        }
+
+        function generatePrivacyRecommendations(score) {
+            if (score >= 90) {
+                return [
+                    'Excellent privacy practices',
+                    'No trackers detected',
+                    'Strong encryption in use',
+                    'Clear privacy policy available'
+                ];
+            } else if (score >= 70) {
+                return [
+                    'Good privacy practices',
+                    'Minimal tracking detected',
+                    'Standard encryption used',
+                    'Privacy policy could be more detailed'
+                ];
+            } else if (score >= 50) {
+                return [
+                    'Average privacy practices',
+                    'Several trackers detected',
+                    'Basic encryption in place',
+                    'Privacy policy needs improvement'
+                ];
+            } else {
+                return [
+                    'Poor privacy practices',
+                    'Numerous trackers found',
+                    'Weak or no encryption',
+                    'Privacy policy unclear or missing'
+                ];
+            }
+        }
+
+        function getScoreClass(score) {
+            if (score >= 80) return 'score-high';
+            if (score >= 60) return 'score-medium';
+            return 'score-low';
+        }
+
+        // Email Risk Checker
+        function checkEmailRisk() {
+            const emailInput = document.getElementById('email-input');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                showNotification('Please enter an email address', 'error');
+                return;
+            }
+            
+            // Validate email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Simulate email risk check
+            const riskLevel = Math.floor(Math.random() * 30) + 70; // 70-100
+            const breachCount = Math.floor(Math.random() * 5); // 0-4 breaches
+            
+            // Display results
+            const resultDiv = document.getElementById('email-result');
+            const riskDisplay = document.getElementById('email-risk-display');
+            const breachesDiv = document.getElementById('email-breaches');
+            
+            riskDisplay.textContent = `${100 - riskLevel}/100`;
+            riskDisplay.className = `score-display ${getRiskClass(riskLevel)}`;
+            
+            breachesDiv.innerHTML = '';
+            
+            if (breachCount === 0) {
+                breachesDiv.innerHTML = '<p>No breaches found for this email address.</p>';
+            } else {
+                breachesDiv.innerHTML = `<p>${breachCount} potential breach(es) detected:</p>`;
+                
+                for (let i = 0; i < breachCount; i++) {
+                    const breachYear = 2015 + Math.floor(Math.random() * 8);
+                    const breachName = `Breach ${i + 1}`;
+                    breachesDiv.innerHTML += `
+                        <div style="margin-top: 10px; padding: 10px; background-color: var(--bg-tertiary); border-radius: 6px;">
+                            <strong>${breachName}</strong> - ${breachYear}
+                            <div style="margin-top: 5px; font-size: 14px; color: var(--text-secondary);">
+                                This breach exposed email addresses and potentially other personal information.
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            resultDiv.classList.add('show');
+            showNotification('Email risk analysis completed', 'success');
+        }
+
+        function getRiskClass(risk) {
+            if (risk >= 80) return 'score-low';
+            if (risk >= 60) return 'score-medium';
+            return 'score-high';
+        }
+
+        // Network Speed Test
+        function runSpeedTest() {
+            const locationSelect = document.getElementById('location-select');
+            const location = locationSelect.value;
+            
+            if (!location) {
+                showNotification('Please select a location', 'error');
+                return;
+            }
+            
+            // Simulate speed test based on location
+            const baseSpeeds = {
+                'north-america': { download: 85, upload: 25, ping: 15 },
+                'europe': { download: 75, upload: 20, ping: 20 },
+                'asia': { download: 65, upload: 15, ping: 40 },
+                'south-america': { download: 45, upload: 10, ping: 60 },
+                'africa': { download: 35, upload: 8, ping: 80 },
+                'oceania': { download: 70, upload: 18, ping: 30 }
+            };
+            
+            const locationData = baseSpeeds[location];
+            const downloadSpeed = locationData.download + Math.floor(Math.random() * 10) - 5;
+            const uploadSpeed = locationData.upload + Math.floor(Math.random() * 5) - 2;
+            const ping = locationData.ping + Math.floor(Math.random() * 10) - 5;
+            const jitter = Math.floor(Math.random() * 5) + 1;
+            
+            // Display results
+            const resultDiv = document.getElementById('speed-result');
+            document.getElementById('download-speed').textContent = `${downloadSpeed} Mbps`;
+            document.getElementById('upload-speed').textContent = `${uploadSpeed} Mbps`;
+            document.getElementById('ping-speed').textContent = `${ping} ms`;
+            document.getElementById('jitter-speed').textContent = `${jitter} ms`;
+            
+            // Network assessment
+            const assessmentDiv = document.getElementById('network-assessment');
+            let assessment = '';
+            let quality = '';
+            
+            if (downloadSpeed >= 50 && uploadSpeed >= 10 && ping <= 30) {
+                assessment = 'Excellent network quality suitable for all activities including streaming, gaming, and video calls.';
+                quality = 'Excellent';
+            } else if (downloadSpeed >= 25 && uploadSpeed >= 5 && ping <= 50) {
+                assessment = 'Good network quality suitable for most activities including streaming and browsing.';
+                quality = 'Good';
+            } else if (downloadSpeed >= 10 && uploadSpeed >= 2 && ping <= 100) {
+                assessment = 'Fair network quality suitable for basic browsing and email.';
+                quality = 'Fair';
+            } else {
+                assessment = 'Poor network quality. May experience buffering, slow loading times, and connection issues.';
+                quality = 'Poor';
+            }
+            
+            assessmentDiv.innerHTML = `
+                <p><strong>Quality:</strong> ${quality}</p>
+                <p>${assessment}</p>
+            `;
+            
+            resultDiv.classList.add('show');
+            showNotification('Speed test completed', 'success');
+        }
+
+        // VPN Analysis
+        function analyzeVPN() {
+            const vpnStatus = document.getElementById('vpn-status').value;
+            const vpnServer = document.getElementById('vpn-server').value.trim();
+            
+            if (!vpnStatus) {
+                showNotification('Please select your VPN status', 'error');
+                return;
+            }
+            
+            // Simulate VPN analysis
+            const stability = Math.floor(Math.random() * 30) + 70; // 70-100
+            const security = Math.floor(Math.random() * 30) + 70; // 70-100
+            const speedImpact = Math.floor(Math.random() * 40) + 60; // 60-100 (lower is better)
+            const leaks = Math.random() > 0.8; // 20% chance of leaks
+            
+            // Display results
+            const resultDiv = document.getElementById('vpn-result');
+            document.getElementById('vpn-stability').textContent = `${stability}%`;
+            document.getElementById('vpn-security').textContent = `${security}%`;
+            document.getElementById('vpn-speed').textContent = `${100 - speedImpact}% impact`;
+            document.getElementById('vpn-leaks').textContent = leaks ? 'Detected' : 'None';
+            
+            // VPN recommendations
+            const recommendationsList = document.getElementById('vpn-recommendations');
+            recommendationsList.innerHTML = '';
+            
+            if (!leaks) {
+                recommendationsList.innerHTML += '<li>No IP leaks detected</li>';
+            } else {
+                recommendationsList.innerHTML += '<li>IP leaks detected - consider changing VPN provider</li>';
+            }
+            
+            if (vpnStatus === 'disconnected') {
+                recommendationsList.innerHTML += '<li>Connect to a VPN for enhanced security</li>';
+            }
+            
+            if (speedImpact < 70) {
+                recommendationsList.innerHTML += '<li>Significant speed impact - try a different server</li>';
+            } else {
+                recommendationsList.innerHTML += '<li>Minimal speed impact with current server</li>';
+            }
+            
+            if (security < 80) {
+                recommendationsList.innerHTML += '<li>Security could be improved - check encryption protocols</li>';
+            } else {
+                recommendationsList.innerHTML += '<li>Strong security measures in place</li>';
+            }
+            
+            resultDiv.classList.add('show');
+            showNotification('VPN analysis completed', 'success');
+        }
+
+        // Protocol Rating
+        function rateProtocol() {
+            const protocolInput = document.getElementById('protocol-input').value.trim();
+            
+            if (!protocolInput) {
+                showNotification('Please enter an encryption protocol', 'error');
+                return;
+            }
+            
+            // Simulate protocol rating based on common protocols
+            const protocols = {
+                'openvpn': { score: 85, features: ['AES-256 encryption', 'TCP/UDP support', 'Strong authentication'] },
+                'ikev2': { score: 90, features: ['Built-in kill switch', 'Automatic reconnection', 'Mobile optimized'] },
+                'wireguard': { score: 95, features: ['Modern cryptography', 'High performance', 'Small codebase'] },
+                'l2tp': { score: 60, features: ['Built into most devices', 'Compatible with legacy systems', 'Slower than modern protocols'] },
+                'pptp': { score: 30, features: ['Very fast', 'Deprecated security', 'Not recommended for sensitive data'] },
+                'sstp': { score: 75, features: ['Works on Windows', 'SSL/TLS encryption', 'Good firewall compatibility'] },
+                'shadowsocks': { score: 80, features: ['Customizable encryption', 'Obfuscation capabilities', 'Good for bypassing censorship'] }
+            };
+            
+            // Normalize input for case-insensitive comparison
+            const normalizedInput = protocolInput.toLowerCase();
+            let protocolData;
+            
+            // Find matching protocol
+            for (const [key, value] of Object.entries(protocols)) {
+                if (normalizedInput.includes(key)) {
+                    protocolData = value;
+                    break;
+                }
+            }
+            
+            // If no match, generate random score
+            if (!protocolData) {
+                protocolData = {
+                    score: Math.floor(Math.random() * 60) + 40, // 40-100
+                    features: ['Unknown protocol', 'Limited information available', 'Proceed with caution']
+                };
+            }
+            
+            // Display results
+            const resultDiv = document.getElementById('protocol-result');
+            const scoreDisplay = document.getElementById('protocol-score-display');
+            const progressFill = document.getElementById('protocol-progress');
+            const featuresDiv = document.getElementById('protocol-features');
+            
+            scoreDisplay.textContent = `${protocolData.score}/100`;
+            scoreDisplay.className = `score-display ${getScoreClass(protocolData.score)}`;
+            
+            progressFill.style.width = `${protocolData.score}%`;
+            
+            featuresDiv.innerHTML = '';
+            protocolData.features.forEach(feature => {
+                featuresDiv.innerHTML += `<p>${feature}</p>`;
+            });
+            
+            resultDiv.classList.add('show');
+            showNotification('Protocol rating completed', 'success');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show first section by default
+            document.getElementById('home').style.display = 'block';
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // Update active tab
+                        document.querySelectorAll('.tab').forEach(tab => {
+                            tab.classList.remove('active');
+                        });
+                        
+                        // Find corresponding tab
+                        const tabName = targetId === 'home' ? 'privacy' : targetId;
+                        const activeTab = document.querySelector(`.tab[onclick="showTab('${tabName}')"]`);
+                        if (activeTab) {
+                            activeTab.classList.add('active');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Privacy Score","Email Risk":"Email Risk","Speed Test":"Speed Test","VPN Analysis":"VPN Analysis","Protocol Rating":"Protocol Rating","Website Privacy Score":"Website Privacy Score","Enter Website URL":"Enter Website URL","Check Privacy Score":"Check Privacy Score","Privacy Recommendations":"Privacy Recommendations","Email Risk Detection":"Email Risk Detection","Enter Your Email":"Enter Your Email","Check Email Risk":"Check Email Risk","Breach Details":"Breach Details","Network Speed Test":"Network Speed Test","Select Your Location":"Select Your Location","Choose a location":"Choose a location","North America":"North America","Europe":"Europe","Asia":"Asia","South America":"South America","Africa":"Africa","Oceania":"Oceania","Run Speed Test":"Run Speed Test","Download Speed":"Download Speed","Upload Speed":"Upload Speed","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Network Quality Assessment","VPN Connection Analysis":"VPN Connection Analysis","VPN Connection Status":"VPN Connection Status","Select your status":"Select your status","Connected to VPN":"Connected to VPN","Disconnected":"Disconnected","Connecting...":"Connecting...","Disconnecting...":"Disconnecting...","VPN Server Location":"VPN Server Location","Analyze VPN":"Analyze VPN","Connection Stability":"Connection Stability","Security Level":"Security Level","Speed Impact":"Speed Impact","IP Leaks":"IP Leaks","VPN Recommendations":"VPN Recommendations","Encryption Protocol Rating":"Encryption Protocol Rating","Enter Encryption Protocol":"Enter Encryption Protocol","Rate Protocol":"Rate Protocol","Protocol Features":"Protocol Features","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Your Privacy Protection Tool","Please enter a website URL":"Please enter a website URL","Please enter a valid URL":"Please enter a valid URL","Privacy score calculated successfully":"Privacy score calculated successfully","Excellent privacy practices":"Excellent privacy practices","No trackers detected":"No trackers detected","Strong encryption in use":"Strong encryption in use","Clear privacy policy available":"Clear privacy policy available","Good privacy practices":"Good privacy practices","Minimal tracking detected":"Minimal tracking detected","Standard encryption used":"Standard encryption used","Privacy policy could be more detailed":"Privacy policy could be more detailed","__title__":"VPN Guardian - Your Privacy Protection Tool"},"zh-CN":{"VPN Guardian":"VPN Guardian","Home":"首页","Privacy Score":"隐私评分","Email Risk":"电子邮件风险","Speed Test":"速度测试","VPN Analysis":"VPN 分析","Protocol Rating":"协议评分","Website Privacy Score":"网站隐私评分","Enter Website URL":"输入网站 URL","Check Privacy Score":"检查隐私评分","Privacy Recommendations":"隐私建议","Email Risk Detection":"电子邮件风险检测","Enter Your Email":"输入您的电子邮件","Check Email Risk":"检查电子邮件风险","Breach Details":"违规详情","Network Speed Test":"网络速度测试","Select Your Location":"选择您的位置","Choose a location":"选择位置","North America":"北美","Europe":"欧洲","Asia":"亚洲","South America":"南美洲","Africa":"非洲","Oceania":"大洋洲","Run Speed Test":"运行速度测试","Download Speed":"下载速度","Upload Speed":"上传速度","Ping":"ping","Jitter":"抖动","Network Quality Assessment":"网络质量评估","VPN Connection Analysis":"VPN 连接分析","VPN Connection Status":"VPN 连接状态","Select your status":"选择您的状态","Connected to VPN":"连接到 VPN","Disconnected":"断开连接","Connecting...":"连接中...","Disconnecting...":"断开中...","VPN Server Location":"VPN 服务器位置","Analyze VPN":"分析 VPN","Connection Stability":"连接稳定性","Security Level":"安全级别","Speed Impact":"速度影响","IP Leaks":"IP 泄露","VPN Recommendations":"VPN 建议","Encryption Protocol Rating":"加密协议评分","Enter Encryption Protocol":"输入加密协议","Rate Protocol":"评分协议","Protocol Features":"协议功能","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - 您的隐私保护工具","Please enter a website URL":"请输入网站 URL","Please enter a valid URL":"请输入一个有效的 URL","Privacy score calculated successfully":"隐私评分计算成功","Excellent privacy practices":"优秀的隐私实践","No trackers detected":"未检测到跟踪器","Strong encryption in use":"正在使用强加密","Clear privacy policy available":"可用的清晰隐私政策","Good privacy practices":"良好的隐私实践","Minimal tracking detected":"检测到最小化跟踪","Standard encryption used":"使用标准加密","Privacy policy could be more detailed":"隐私政策可以更详细","__title__":"VPN Guardian - 您的隐私保护工具"},"es":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Privacy Score","Email Risk":"Email Risk","Speed Test":"Speed Test","VPN Analysis":"VPN Analysis","Protocol Rating":"Protocol Rating","Website Privacy Score":"Website Privacy Score","Enter Website URL":"Enter Website URL","Check Privacy Score":"Check Privacy Score","Privacy Recommendations":"Privacy Recommendations","Email Risk Detection":"Email Risk Detection","Enter Your Email":"Enter Your Email","Check Email Risk":"Check Email Risk","Breach Details":"Breach Details","Network Speed Test":"Network Speed Test","Select Your Location":"Select Your Location","Choose a location":"Choose a location","North America":"North America","Europe":"Europe","Asia":"Asia","South America":"South America","Africa":"Africa","Oceania":"Oceania","Run Speed Test":"Run Speed Test","Download Speed":"Download Speed","Upload Speed":"Upload Speed","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Network Quality Assessment","VPN Connection Analysis":"VPN Connection Analysis","VPN Connection Status":"VPN Connection Status","Select your status":"Select your status","Connected to VPN":"Connected to VPN","Disconnected":"Disconnected","Connecting...":"Connecting...","Disconnecting...":"Disconnecting...","VPN Server Location":"VPN Server Location","Analyze VPN":"Analyze VPN","Connection Stability":"Connection Stability","Security Level":"Security Level","Speed Impact":"Speed Impact","IP Leaks":"IP Leaks","VPN Recommendations":"VPN Recommendations","Encryption Protocol Rating":"Encryption Protocol Rating","Enter Encryption Protocol":"Enter Encryption Protocol","Rate Protocol":"Rate Protocol","Protocol Features":"Protocol Features","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Your Privacy Protection Tool","Please enter a website URL":"Please enter a website URL","Please enter a valid URL":"Please enter a valid URL","Privacy score calculated successfully":"Privacy score calculated successfully","Excellent privacy practices":"Excellent privacy practices","No trackers detected":"No trackers detected","Strong encryption in use":"Strong encryption in use","Clear privacy policy available":"Clear privacy policy available","Good privacy practices":"Good privacy practices","Minimal tracking detected":"Minimal tracking detected","Standard encryption used":"Standard encryption used","Privacy policy could be more detailed":"Privacy policy could be more detailed","__title__":"VPN Guardian - Your Privacy Protection Tool"},"ja":{"VPN Guardian":"VPN Guardian","Home":"ホーム","Privacy Score":"プライバシースコア","Email Risk":"メールリスク","Speed Test":"スピードテスト","VPN Analysis":"VPN分析","Protocol Rating":"プロトコル評価","Website Privacy Score":"ウェブサイトプライバシースコア","Enter Website URL":"ウェブサイトURLを入力","Check Privacy Score":"プライバシースコアを確認","Privacy Recommendations":"プライバシーリコメンデーション","Email Risk Detection":"メールリスク検出","Enter Your Email":"メールアドレスを入力","Check Email Risk":"メールリスクを確認","Breach Details":"侵害詳細","Network Speed Test":"ネットワークスピードテスト","Select Your Location":"場所を選択","Choose a location":"場所を選んでください","North America":"北アメリカ","Europe":"ヨーロッパ","Asia":"アジア","South America":"南アメリカ","Africa":"アフリカ","Oceania":"オセアニア","Run Speed Test":"スピードテストを実行","Download Speed":"ダウンロードスピード","Upload Speed":"アップロードスピード","Ping":"ピング","Jitter":"ジャitter","Network Quality Assessment":"ネットワーク品質評価","VPN Connection Analysis":"VPN接続分析","VPN Connection Status":"VPN接続ステータス","Select your status":"ステータスを選択","Connected to VPN":"VPNに接続中","Disconnected":"接続解除","Connecting...":"接続中...","Disconnecting...":"切断中...","VPN Server Location":"VPNサーバーの場所","Analyze VPN":"VPNを分析","Connection Stability":"接続安定性","Security Level":"セキュリティレベル","Speed Impact":"スピード影響","IP Leaks":"IP漏洩","VPN Recommendations":"VPN推奨","Encryption Protocol Rating":"暗号化プロトコル評価","Enter Encryption Protocol":"暗号化プロトコルを入力","Rate Protocol":"プロトコル評価","Protocol Features":"プロトコル機能","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - あなたのプライバシー保護ツール","Please enter a website URL":"ウェブサイトURLを入力してください","Please enter a valid URL":"有効なURLを入力してください","Privacy score calculated successfully":"プライバシースコアの計算に成功しました","Excellent privacy practices":"優れたプライバシープラクティス","No trackers detected":"トラッカーデータが検出されませんでした","Strong encryption in use":"強力な暗号化が使用されています","Clear privacy policy available":"明確なプライバシーポリシーが利用可能です","Good privacy practices":"良いプライバシープラクティス","Minimal tracking detected":"最小限のトラッキングが検出されました","Standard encryption used":"標準的な暗号化が使用されています","Privacy policy could be more detailed":"プライバシーポリシーはもっと詳細に記述できるかもしれません","__title__":"VPN Guardian - あなたのプライバシー保護ツール"},"ko":{"VPN Guardian":"VPN Guardian","Home":"홈","Privacy Score":"개인정보 보호 점수","Email Risk":"이메일 위험","Speed Test":"스피드 테스트","VPN Analysis":"VPN 분석","Protocol Rating":"프로토콜 평점","Website Privacy Score":"웹사이트 개인정보 보호 점수","Enter Website URL":"웹사이트 URL 입력","Check Privacy Score":"개인정보 보호 점수 확인","Privacy Recommendations":"개인정보 보호 권장事項","Email Risk Detection":"이메일 위험 감지","Enter Your Email":"이메일 입력","Check Email Risk":"이메일 위험 확인","Breach Details":"침해 상세 정보","Network Speed Test":"네트워크 스피드 테스트","Select Your Location":"위치 선택","Choose a location":"위치 선택","North America":"북미","Europe":"유럽","Asia":"아시아","South America":"남미","Africa":"아프리카","Oceania":"오세아니아","Run Speed Test":"스피드 테스트 실행","Download Speed":"다운로드 스피드","Upload Speed":"업로드 스피드","Ping":"핑","Jitter":"진동","Network Quality Assessment":"네트워크 품질 평가","VPN Connection Analysis":"VPN 연결 분석","VPN Connection Status":"VPN 연결 상태","Select your status":"상태 선택","Connected to VPN":"VPN에 연결됨","Disconnected":"연결 해제됨","Connecting...":"연결 중...","Disconnecting...":"연결 해제 중...","VPN Server Location":"VPN 서버 위치","Analyze VPN":"VPN 분석","Connection Stability":"연결 안정성","Security Level":"보안 수준","Speed Impact":"스피드 영향","IP Leaks":"IP 유출","VPN Recommendations":"VPN 권장사항","Encryption Protocol Rating":"암호화 프로토콜 평점","Enter Encryption Protocol":"암호화 프로토콜 입력","Rate Protocol":"프로토콜 평가","Protocol Features":"프로토콜 기능","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - 귀하의 개인정보 보호 도구","Please enter a website URL":"웹사이트 URL 입력하십시오","Please enter a valid URL":"유효한 URL 입력하십시오","Privacy score calculated successfully":"개인정보 보호 점수 성공적으로 계산됨","Excellent privacy practices":"출色的 개인정보 보호 관행","No trackers detected":"트래커 감지되지 않음","Strong encryption in use":"강력한 암호화 사용 중","Clear privacy policy available":"명확한 개인정보 보호 정책 제공","Good privacy practices":"좋은 개인정보 보호 관행","Minimal tracking detected":"최소한의 추적 감지","Standard encryption used":"표준 암호화 사용","Privacy policy could be more detailed":"개인정보 보호 정책이 더 자세할 수 있습니다","__title__":"VPN Guardian - 귀하의 개인정보 보호 도구"},"fr":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Score de confidentialité","Email Risk":"Risque de courriel","Speed Test":"Test de vitesse","VPN Analysis":"Analyse VPN","Protocol Rating":"Classement du protocole","Website Privacy Score":"Score de confidentialité du site Web","Enter Website URL":"Entrez l'URL du site Web","Check Privacy Score":"Vérifiez le score de confidentialité","Privacy Recommendations":"Recommandations de confidentialité","Email Risk Detection":"Détecteur de risque de courriel","Enter Your Email":"Entrez votre courriel","Check Email Risk":"Vérifiez le risque de courriel","Breach Details":"Détails de la violation","Network Speed Test":"Test de vitesse du réseau","Select Your Location":"Sélectionnez votre emplacement","Choose a location":"Choisissez un emplacement","North America":"Amérique du Nord","Europe":"Europe","Asia":"Asie","South America":"Amérique du Sud","Africa":"Afrique","Oceania":"Océanie","Run Speed Test":"Lancer le test de vitesse","Download Speed":"Vitesse de téléchargement","Upload Speed":"Vitesse de téléversement","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Évaluation de la qualité du réseau","VPN Connection Analysis":"Analyse de la connexion VPN","VPN Connection Status":"Statut de connexion VPN","Select your status":"Sélectionnez votre statut","Connected to VPN":"Connecté au VPN","Disconnected":"Déconnecté","Connecting...":"Se connectant...","Disconnecting...":"Se déconnectant...","VPN Server Location":"Emplacement du serveur VPN","Analyze VPN":"Analyser le VPN","Connection Stability":"Stabilité de la connexion","Security Level":"Niveau de sécurité","Speed Impact":"Impact sur la vitesse","IP Leaks":"Fuites IP","VPN Recommendations":"Recommandations VPN","Encryption Protocol Rating":"Classement du protocole de chiffrement","Enter Encryption Protocol":"Entrez le protocole de chiffrement","Rate Protocol":"Évaluez le protocole","Protocol Features":"Fonctionnalités du protocole","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Votre outil de protection de la confidentialité","Please enter a website URL":"Veuillez entrer une URL de site Web","Please enter a valid URL":"Veuillez entrer une URL valide","Privacy score calculated successfully":"Score de confidentialité calculé avec succès","Excellent privacy practices":"Pratiques de confidentialité excellentes","No trackers detected":"Aucun traqueur détecté","Strong encryption in use":"Chiffrement fort utilisé","Clear privacy policy available":"Politique de confidentialité claire disponible","Good privacy practices":"Bonnes pratiques de confidentialité","Minimal tracking detected":"Tracking minimal détecté","Standard encryption used":"Chiffrement standard utilisé","Privacy policy could be more detailed":"La politique de confidentialité pourrait être plus détaillée","__title__":"VPN Guardian - Votre outil de protection de la confidentialité"},"de":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Privatsphäre Bewertung","Email Risk":"E-Mail Risiko","Speed Test":"Geschwindigkeitstest","VPN Analysis":"VPN Analyse","Protocol Rating":"Protokoll Bewertung","Website Privacy Score":"Website Privatsphäre Bewertung","Enter Website URL":"Geben Sie die Website URL ein","Check Privacy Score":"Privatsphäre Bewertung überprüfen","Privacy Recommendations":"Privatsphäre Empfehlungen","Email Risk Detection":"E-Mail Risiko Erkennung","Enter Your Email":"Geben Sie Ihre E-Mail ein","Check Email Risk":"E-Mail Risiko überprüfen","Breach Details":"Verstoß Details","Network Speed Test":"Netzwerk Geschwindigkeitstest","Select Your Location":"Wählen Sie Ihren Standort","Choose a location":"Wählen Sie einen Standort","North America":"Nordamerika","Europe":"Europa","Asia":"Asien","South America":"Südamerika","Africa":"Afrika","Oceania":"Australien und Pazifik","Run Speed Test":"Geschwindigkeitstest durchführen","Download Speed":"Herunterladegeschwindigkeit","Upload Speed":"Hochladegeschwindigkeit","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Netzwerkqualitätsbewertung","VPN Connection Analysis":"VPN Verbindung Analyse","VPN Connection Status":"VPN Verbindung Status","Select your status":"Wählen Sie Ihren Status","Connected to VPN":"Mit VPN verbunden","Disconnected":"Getrennt","Connecting...":"Verbindend...","Disconnecting...":"Trennend...","VPN Server Location":"VPN Serverstandort","Analyze VPN":"VPN analysieren","Connection Stability":"Verbindungsstabilität","Security Level":"Sicherheitsniveau","Speed Impact":"Geschwindigkeitseffekt","IP Leaks":"IP Leaks","VPN Recommendations":"VPN Empfehlungen","Encryption Protocol Rating":"Verschlüsselungsprotokoll Bewertung","Enter Encryption Protocol":"Geben Sie das Verschlüsselungsprotokoll ein","Rate Protocol":"Protokoll bewerten","Protocol Features":"Protokollfunktionen","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Ihr Privatsphäre Schutztool","Please enter a website URL":"Bitte geben Sie eine Website URL ein","Please enter a valid URL":"Bitte geben Sie eine gültige URL ein","Privacy score calculated successfully":"Privatsphäre Bewertung erfolgreich berechnet","Excellent privacy practices":"Ausgezeichnete Privatsphäre Praktiken","No trackers detected":"Keine Tracker erkannt","Strong encryption in use":"Starke Verschlüsselung im Einsatz","Clear privacy policy available":"Klare Datenschutzbestimmungen verfügbar","Good privacy practices":"Gute Privatsphäre Praktiken","Minimal tracking detected":"Minimale Verfolgung erkannt","Standard encryption used":"Standardverschlüsselung verwendet","Privacy policy could be more detailed":"Datenschutzerklärung könnte detaillierter sein","__title__":"VPN Guardian - Ihr Privatsphäre Schutztool"},"ru":{"VPN Guardian":"VPN Guardian","Home":"Дом","Privacy Score":"Оценка конфиденциальности","Email Risk":"Риск почты","Speed Test":"Тест скорости","VPN Analysis":"Анализ VPN","Protocol Rating":"Оценка протокола","Website Privacy Score":"Оценка конфиденциальности веб-сайта","Enter Website URL":"Ввведите URL веб-сайта","Check Privacy Score":"Проверьте оценку конфиденциальности","Privacy Recommendations":"Рекомендации по конфиденциальности","Email Risk Detection":"Обнаружение риска почты","Enter Your Email":"Ввведите ваш адрес электронной почты","Check Email Risk":"Проверьте риск почты","Breach Details":"Подробности утечки","Network Speed Test":"Тест скорости сети","Select Your Location":"Выберите ваше местоположение","Choose a location":"Выберите местоположение","North America":"Северная Америка","Europe":"Европа","Asia":"Азия","South America":"Южная Америка","Africa":"Африка","Oceania":"Океания","Run Speed Test":"Запустить тест скорости","Download Speed":"Скорость скачивания","Upload Speed":"Скорость загрузки","Ping":"Пинг","Jitter":"Джиттер","Network Quality Assessment":"Оценка качества сети","VPN Connection Analysis":"Анализ подключения VPN","VPN Connection Status":"Статус подключения VPN","Select your status":"Выберите ваш статус","Connected to VPN":"Подключен к VPN","Disconnected":"Отключен","Connecting...":"Подключение...","Disconnecting...":"Отключение...","VPN Server Location":"Местоположение сервера VPN","Analyze VPN":"Анализировать VPN","Connection Stability":"Стабильность подключения","Security Level":"Уровень безопасности","Speed Impact":"Влияние на скорость","IP Leaks":"Утечки IP","VPN Recommendations":"Рекомендации по VPN","Encryption Protocol Rating":"Оценка протокола шифрования","Enter Encryption Protocol":"Ввведите протокол шифрования","Rate Protocol":"Оцените протокол","Protocol Features":"Функции протокола","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Ваш инструмент защиты конфиденциальности","Please enter a website URL":"Пожалуйста, введите URL веб-сайта","Please enter a valid URL":"Пожалуйста, введите действительный URL","Privacy score calculated successfully":"Оценка конфиденциальности успешно рассчитана","Excellent privacy practices":"Отличные практики конфиденциальности","No trackers detected":"Не обнаружены трекеры","Strong encryption in use":"Используется сильное шифрование","Clear privacy policy available":"Доступна ясная политика конфиденциальности","Good privacy practices":"Хорошие практики конфиденциальности","Minimal tracking detected":"Обнаружено минимальное отслеживание","Standard encryption used":"Используется стандартное шифрование","Privacy policy could be more detailed":"Политика конфиденциальности могла бы быть более детальной","__title__":"VPN Guardian - Ваш инструмент защиты конфиденциальности"},"pt":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Privacy Score","Email Risk":"Email Risk","Speed Test":"Speed Test","VPN Analysis":"VPN Analysis","Protocol Rating":"Protocol Rating","Website Privacy Score":"Website Privacy Score","Enter Website URL":"Enter Website URL","Check Privacy Score":"Check Privacy Score","Privacy Recommendations":"Privacy Recommendations","Email Risk Detection":"Email Risk Detection","Enter Your Email":"Enter Your Email","Check Email Risk":"Check Email Risk","Breach Details":"Breach Details","Network Speed Test":"Network Speed Test","Select Your Location":"Select Your Location","Choose a location":"Choose a location","North America":"North America","Europe":"Europe","Asia":"Asia","South America":"South America","Africa":"Africa","Oceania":"Oceania","Run Speed Test":"Run Speed Test","Download Speed":"Download Speed","Upload Speed":"Upload Speed","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Network Quality Assessment","VPN Connection Analysis":"VPN Connection Analysis","VPN Connection Status":"VPN Connection Status","Select your status":"Select your status","Connected to VPN":"Connected to VPN","Disconnected":"Disconnected","Connecting...":"Connecting...","Disconnecting...":"Disconnecting...","VPN Server Location":"VPN Server Location","Analyze VPN":"Analyze VPN","Connection Stability":"Connection Stability","Security Level":"Security Level","Speed Impact":"Speed Impact","IP Leaks":"IP Leaks","VPN Recommendations":"VPN Recommendations","Encryption Protocol Rating":"Encryption Protocol Rating","Enter Encryption Protocol":"Enter Encryption Protocol","Rate Protocol":"Rate Protocol","Protocol Features":"Protocol Features","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Your Privacy Protection Tool","Please enter a website URL":"Please enter a website URL","Please enter a valid URL":"Please enter a valid URL","Privacy score calculated successfully":"Privacy score calculated successfully","Excellent privacy practices":"Excellent privacy practices","No trackers detected":"No trackers detected","Strong encryption in use":"Strong encryption in use","Clear privacy policy available":"Clear privacy policy available","Good privacy practices":"Good privacy practices","Minimal tracking detected":"Minimal tracking detected","Standard encryption used":"Standard encryption used","Privacy policy could be more detailed":"Privacy policy could be more detailed","__title__":"VPN Guardian - Your Privacy Protection Tool"},"ar":{"VPN Guardian":"حماية VPN","Home":"المنزل","Privacy Score":"نسبة الخصوصية","Email Risk":"خطر البريد الإلكتروني","Speed Test":"اختبار السرعة","VPN Analysis":"تحليل VPN","Protocol Rating":"تقييم البروتوكول","Website Privacy Score":"نسبة الخصوصية لموقع الويب","Enter Website URL":"ادخل عنوان URL لموقع الويب","Check Privacy Score":"تحقق من نسبة الخصوصية","Privacy Recommendations":"توصيات الخصوصية","Email Risk Detection":"كشف عن خطر البريد الإلكتروني","Enter Your Email":"ادخل بريدك الإلكتروني","Check Email Risk":"تحقق من خطر البريد الإلكتروني","Breach Details":"تفاصيل التسريب","Network Speed Test":"اختبار سرعة الشبكة","Select Your Location":"اختر موقعك","Choose a location":"اختر موقع","North America":"أمريكا الشمالية","Europe":"أوروبا","Asia":"آسيا","South America":"أمريكا الجنوبية","Africa":"أفريقيا","Oceania":"oceania","Run Speed Test":"تشغيل اختبار السرعة","Download Speed":"سرعة التحميل","Upload Speed":"سرعة الرفع","Ping":"الرنين","Jitter":"الاهتزاز","Network Quality Assessment":"تقييم جودة الشبكة","VPN Connection Analysis":"تحليل اتصال VPN","VPN Connection Status":"حالة اتصال VPN","Select your status":"اختر حالةك","Connected to VPN":"متصفح VPN","Disconnected":"غير متصل","Connecting...":"متصل...","Disconnecting...":"يتصل...","VPN Server Location":"موقع خادم VPN","Analyze VPN":"تحليل VPN","Connection Stability":"استقرار الاتصال","Security Level":"مستوى الأمان","Speed Impact":"تأثير السرعة","IP Leaks":"إصدارات IP","VPN Recommendations":"توصيات VPN","Encryption Protocol Rating":"تقييم بروتوكول التشفير","Enter Encryption Protocol":"ادخل بروتوكول التشفير","Rate Protocol":"تقييم البروتوكول","Protocol Features":"ميزات البروتوكول","VPN Guardian - Your Privacy Protection Tool":"حماية VPN - أداة حماية خصوصيتك","Please enter a website URL":"من فضلك أدخل عنوان URL لموقع الويب","Please enter a valid URL":"من فضلك أدخل عنوان URL صالح","Privacy score calculated successfully":"تم حساب نسبة الخصوصية بنجاح","Excellent privacy practices":"ممارسات خصوصية ممتازة","No trackers detected":"لم يتم اكتشاف متتبعين","Strong encryption in use":"استخدام تشفير قوي","Clear privacy policy available":"سياسة الخصوصية واضحة متاحة","Good privacy practices":"ممارسات خصوصية جيدة","Minimal tracking detected":"تم اكتشاف متتبعين بسيطين","Standard encryption used":"استخدام تشفير معياري","Privacy policy could be more detailed":"سياسة الخصوصية يمكن أن تكون أكثر تفصيلاً","__title__":"حماية VPN - أداة حماية خصوصيتك"},"hi":{"VPN Guardian":"VPN गार्डियन","Home":"होम","Privacy Score":"प्राइवेसी स्कोर","Email Risk":"ईमेल जोखिम","Speed Test":"स्पीड टेस्ट","VPN Analysis":"VPN विश्लेषण","Protocol Rating":"प्रोटोकॉल रेटिंग","Website Privacy Score":"वेबसाइट प्राइवेसी स्कोर","Enter Website URL":"वेबसाइट यूआरएल भरें","Check Privacy Score":"प्राइवेसी स्कोर जांचें","Privacy Recommendations":"प्राइवेसी सिफारिश","Email Risk Detection":"ईमेल जोखिम दिस्कवरी","Enter Your Email":"आपका ईमेल भरें","Check Email Risk":"ईमेल जोखिम जांचें","Breach Details":"टूटना विवरण","Network Speed Test":"नेटवर्क स्पीड टेस्ट","Select Your Location":"आपका स्थान चुनें","Choose a location":"स्थान चुनें","North America":"उत्तरी अमेरिका","Europe":"यूरोप","Asia":"एशिया","South America":"दक्षिणी अमेरिका","Africa":"अफ्रीका","Oceania":"ओशियानिया","Run Speed Test":"स्पीड टेस्ट चलाएँ","Download Speed":"डाउनलोड स्पीड","Upload Speed":"अपलोड स्पीड","Ping":"पिंग","Jitter":"जिटर","Network Quality Assessment":"नेटवर्क की गुणवत्ता दूरी","VPN Connection Analysis":"VPN कनेक्शन विश्लेषण","VPN Connection Status":"VPN कनेक्शन स्थिति","Select your status":"आपका स्थिति चुनें","Connected to VPN":"VPN से कनेक्त","Disconnected":"अनुप्रयोग ख़त्म","Connecting...":"कनेक्ट कर रहा है...","Disconnecting...":"अनुप्रयोग ख़त्म कर रहा है...","VPN Server Location":"VPN सर्वर स्थान","Analyze VPN":"VPN का विश्लेषण करें","Connection Stability":"कनेक्शन स्थिरता","Security Level":"सुरक्षा स्तर","Speed Impact":"स्पीड प्रभाव","IP Leaks":"IP लीक","VPN Recommendations":"VPN सिफारिश","Encryption Protocol Rating":"एन्क्रिप्शन प्रोटोकॉल रेटिंग","Enter Encryption Protocol":"एन्क्रिप्शन प्रोटोकॉल भरें","Rate Protocol":"प्रोटोकॉल रेट करें","Protocol Features":"प्रोटोकॉल विशेषताएँ","VPN Guardian - Your Privacy Protection Tool":"VPN गार्डियन - आपका प्राइवेसी प्रोटेक्शन टूल","Please enter a website URL":"कृपया वेबसाइट यूआरएल भरें","Please enter a valid URL":"कृपया वैध यूआरएल भरें","Privacy score calculated successfully":"प्राइवेसी स्कोर सफलता से गणितीय रूप से योजित","Excellent privacy practices":"उत्कृष्ट प्राइवेसी अभ्यास","No trackers detected":"कोई ट्रैकर्स दिस्कवर नहीं","Strong encryption in use":"शक्तिशाली एन्क्रिप्शन इस्तेमाल में","Clear privacy policy available":"स्पष्ट प्राइवेसी नीति उपलब्ध","Good privacy practices":"अच्छे प्राइवेसी अभ्यास","Minimal tracking detected":"न्यूनतम ट्रैकिंग दिस्कवर","Standard encryption used":"स्टैंडर्ड एन्क्रिप्शन इस्तेमाल में","Privacy policy could be more detailed":"प्राइवेसी नीति अधिक विस्तृत हो सकती है","__title__":"VPN गार्डियन - आपका प्राइवेसी प्रोटेक्शन टूल"},"id":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Skor Privasi","Email Risk":"Risiko Email","Speed Test":"Pengujian Kecepatan","VPN Analysis":"Analisis VPN","Protocol Rating":"Rating Protokol","Website Privacy Score":"Skor Privasi Situs Web","Enter Website URL":"Masukkan URL Situs Web","Check Privacy Score":"Periksa Skor Privasi","Privacy Recommendations":"Rekomendasi Privasi","Email Risk Detection":"Deteksi Risiko Email","Enter Your Email":"Masukkan Email Anda","Check Email Risk":"Periksa Risiko Email","Breach Details":"Detil Pelanggaran","Network Speed Test":"Pengujian Kecepatan Jaringan","Select Your Location":"Pilih Lokasi Anda","Choose a location":"Pilih lokasi","North America":"Amerika Utara","Europe":"Eropa","Asia":"Asia","South America":"Amerika Selatan","Africa":"Afrika","Oceania":"Oseania","Run Speed Test":"Jalankan Pengujian Kecepatan","Download Speed":"Kecepatan Unduhan","Upload Speed":"Kecepatan Uploud","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Penilaian Kualitas Jaringan","VPN Connection Analysis":"Analisis Koneksi VPN","VPN Connection Status":"Status Koneksi VPN","Select your status":"Pilih status Anda","Connected to VPN":"Terhubung ke VPN","Disconnected":"Terputus","Connecting...":"Menyambung...","Disconnecting...":"Memutuskan...","VPN Server Location":"Lokasi Server VPN","Analyze VPN":"Analisis VPN","Connection Stability":"Stabilitas Koneksi","Security Level":"Tingkat Keamanan","Speed Impact":"Dampak Kecepatan","IP Leaks":"Tembus IP","VPN Recommendations":"Rekomendasi VPN","Encryption Protocol Rating":"Rating Protokol Enkripsi","Enter Encryption Protocol":"Masukkan Protokol Enkripsi","Rate Protocol":"Beri Rating Protokol","Protocol Features":"Fitur Protokol","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Alat Perlindungan Privasi Anda","Please enter a website URL":"Silakan masukkan URL situs web","Please enter a valid URL":"Silakan masukkan URL yang valid","Privacy score calculated successfully":"Skor privasi dihitung dengan sukses","Excellent privacy practices":"Praktek privasi yang luar biasa","No trackers detected":"Tidak ada tracker yang terdeteksi","Strong encryption in use":"Enkripsi kuat digunakan","Clear privacy policy available":"Kebijakan privasi yang jelas tersedia","Good privacy practices":"Praktek privasi yang baik","Minimal tracking detected":"Pengumpulan data minimal terdeteksi","Standard encryption used":"Enkripsi standar digunakan","Privacy policy could be more detailed":"Kebijakan privasi dapat lebih detil","__title__":"VPN Guardian - Alat Perlindungan Privasi Anda"},"vi":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Điểm bảo mật riêng tư","Email Risk":"Rủi ro email","Speed Test":"Kiểm tra tốc độ","VPN Analysis":"Phân tích VPN","Protocol Rating":"Đánh giá giao thức","Website Privacy Score":"Điểm bảo mật riêng tư của trang web","Enter Website URL":"Nhập URL trang web","Check Privacy Score":"Kiểm tra điểm bảo mật riêng tư","Privacy Recommendations":"Khuyến nghị bảo mật riêng tư","Email Risk Detection":"Phát hiện rủi ro email","Enter Your Email":"Nhập email của bạn","Check Email Risk":"Kiểm tra rủi ro email","Breach Details":"Chi tiết vi phạm","Network Speed Test":"Kiểm tra tốc độ mạng","Select Your Location":"Chọn vị trí của bạn","Choose a location":"Chọn một vị trí","North America":"North America","Europe":"Europe","Asia":"Asia","South America":"South America","Africa":"Africa","Oceania":"Oceania","Run Speed Test":"Chạy kiểm tra tốc độ","Download Speed":"Tốc độ tải xuống","Upload Speed":"Tốc độ tải lên","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Đánh giá chất lượng mạng","VPN Connection Analysis":"Phân tích kết nối VPN","VPN Connection Status":"Trạng thái kết nối VPN","Select your status":"Chọn trạng thái của bạn","Connected to VPN":"Kết nối với VPN","Disconnected":"Ngắt kết nối","Connecting...":"Kết nối...","Disconnecting...":"Ngắt kết nối...","VPN Server Location":"Vị trí máy chủ VPN","Analyze VPN":"Phân tích VPN","Connection Stability":"Độ ổn định kết nối","Security Level":"Mức độ bảo mật","Speed Impact":"Tác động tốc độ","IP Leaks":"Rò rỉ IP","VPN Recommendations":"Khuyến nghị VPN","Encryption Protocol Rating":"Đánh giá giao thức mã hóa","Enter Encryption Protocol":"Nhập giao thức mã hóa","Rate Protocol":"Đánh giá giao thức","Protocol Features":"Tính năng giao thức","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Công cụ bảo vệ quyền riêng tư của bạn","Please enter a website URL":"Vui lòng nhập URL trang web","Please enter a valid URL":"Vui lòng nhập một URL hợp lệ","Privacy score calculated successfully":"Điểm bảo mật riêng tư đã tính toán thành công","Excellent privacy practices":"Thói quen bảo mật riêng tư xuất sắc","No trackers detected":"Không phát hiện theo dõi","Strong encryption in use":"Mã hóa mạnh đang được sử dụng","Clear privacy policy available":"Chính sách bảo mật rõ ràng có sẵn","Good privacy practices":"Thói quen bảo mật riêng tư tốt","Minimal tracking detected":"Phát hiện theo dõi tối thiểu","Standard encryption used":"Sử dụng mã hóa tiêu chuẩn","Privacy policy could be more detailed":"Chính sách bảo mật có thể chi tiết hơn","__title__":"VPN Guardian - Công cụ bảo vệ quyền riêng tư của bạn"},"th":{"VPN Guardian":"VPN Guardian","Home":"Home","Privacy Score":"Privacy Score","Email Risk":"Email Risk","Speed Test":"Speed Test","VPN Analysis":"VPN Analysis","Protocol Rating":"Protocol Rating","Website Privacy Score":"Website Privacy Score","Enter Website URL":"Enter Website URL","Check Privacy Score":"Check Privacy Score","Privacy Recommendations":"Privacy Recommendations","Email Risk Detection":"Email Risk Detection","Enter Your Email":"Enter Your Email","Check Email Risk":"Check Email Risk","Breach Details":"Breach Details","Network Speed Test":"Network Speed Test","Select Your Location":"Select Your Location","Choose a location":"Choose a location","North America":"North America","Europe":"Europe","Asia":"Asia","South America":"South America","Africa":"Africa","Oceania":"Oceania","Run Speed Test":"Run Speed Test","Download Speed":"Download Speed","Upload Speed":"Upload Speed","Ping":"Ping","Jitter":"Jitter","Network Quality Assessment":"Network Quality Assessment","VPN Connection Analysis":"VPN Connection Analysis","VPN Connection Status":"VPN Connection Status","Select your status":"Select your status","Connected to VPN":"Connected to VPN","Disconnected":"Disconnected","Connecting...":"Connecting...","Disconnecting...":"Disconnecting...","VPN Server Location":"VPN Server Location","Analyze VPN":"Analyze VPN","Connection Stability":"Connection Stability","Security Level":"Security Level","Speed Impact":"Speed Impact","IP Leaks":"IP Leaks","VPN Recommendations":"VPN Recommendations","Encryption Protocol Rating":"Encryption Protocol Rating","Enter Encryption Protocol":"Enter Encryption Protocol","Rate Protocol":"Rate Protocol","Protocol Features":"Protocol Features","VPN Guardian - Your Privacy Protection Tool":"VPN Guardian - Your Privacy Protection Tool","Please enter a website URL":"Please enter a website URL","Please enter a valid URL":"Please enter a valid URL","Privacy score calculated successfully":"Privacy score calculated successfully","Excellent privacy practices":"Excellent privacy practices","No trackers detected":"No trackers detected","Strong encryption in use":"Strong encryption in use","Clear privacy policy available":"Clear privacy policy available","Good privacy practices":"Good privacy practices","Minimal tracking detected":"Minimal tracking detected","Standard encryption used":"Standard encryption used","Privacy policy could be more detailed":"Privacy policy could be more detailed","__title__":"VPN Guardian - Your Privacy Protection Tool"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
