@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VPN Legal Navigator</title><meta name="description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
-<meta property="og:title" content="VPN Legal Navigator">
-<meta property="og:description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_082035_VPN Legal Na.html">
-<meta name="theme-color" content="#333333">
-
+    <title>VPN Legal Navigator</title>
+    <meta name="description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
+    <meta property="og:title" content="VPN Legal Navigator">
+    <meta property="og:description" content="Free online tool: VPN Legal Navigator. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_082035_VPN legal Na.html">
+    <meta name="theme-color" content="#333333">
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -52,6 +53,7 @@
             background-color: #444;
             padding: 20px;
             margin-bottom: 20px;
+            border-radius: 5px;
         }
         .法规信息列表 ul {
             list-style: none;
@@ -63,12 +65,14 @@
             margin-bottom: 10px;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
         .法规信息列表 ul li:hover {
             background-color: #666;
         }
         .法规详情解读 h2, .合规评估表单 h2, .更新提醒通知 h2, .问答社区入口 h2 {
             margin-top: 0;
+            color: #0095ff;
         }
         .合规评估表单 input[type="file"] {
             padding: 10px;
@@ -76,6 +80,8 @@
             border-radius: 5px;
             background-color: #555;
             color: #fff;
+            width: 100%;
+            margin-bottom: 10px;
         }
         .合规评估表单 input[type="submit"] {
             padding: 10px 20px;
@@ -84,85 +90,463 @@
             background-color: #0095ff;
             color: #fff;
             cursor: pointer;
+            width: 100%;
         }
         .合规评估表单 input[type="submit"]:hover {
             background-color: #006ee6;
+        }
+        .assessment-result {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #555;
+            border-radius: 5px;
+            display: none;
+        }
+        .assessment-result h3 {
+            margin-top: 0;
+            color: #00ff88;
+        }
+        .assessment-result ul {
+            padding-left: 20px;
+        }
+        .update-item {
+            background-color: #555;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .update-date {
+            color: #0095ff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .qa-item {
+            background-color: #555;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .qa-question {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .qa-answer {
+            display: none;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #666;
+        }
+        .usage-guide {
+            background-color: #444;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .usage-guide h3 {
+            margin-top: 0;
+            color: #0095ff;
+        }
+        .usage-guide ul {
+            padding-left: 20px;
+        }
+        .usage-guide li {
+            margin-bottom: 8px;
         }
     </style>
 <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
     <div class="container">
+        <div class="usage-guide">
+            <h3>How to Use VPN Legal Navigator</h3>
+            <ul>
+                <li>Use the search bar to find VPN-related laws by keyword</li>
+                <li>Click on any law to see detailed interpretation</li>
+                <li>Upload your VPN configuration file for compliance assessment</li>
+                <li>Check for the latest updates on VPN regulations</li>
+                <li>Join the community Q&A to ask questions and share knowledge</li>
+            </ul>
+        </div>
+        
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Enter keyword to search VPN laws...">
             <input type="submit" value="Search" onclick="searchLaws()">
         </div>
-        <div class="法规信息列表" id="lawList">
-            <!-- Law items will be populated here -->
-        </div>
-        <div class="法规详情解读" id="lawDetails">
-            <!-- Law details will be populated here -->
-        </div>
+        
         <div class="合规评估表单" id="complianceForm">
             <h2>Compliance Assessment</h2>
-            <input type="file" id="configFile" accept=".json">
+            <p>Upload your VPN configuration file to assess compliance with current regulations:</p>
+            <input type="file" id="configFile" accept=".json,.txt">
             <input type="submit" value="Assess Compliance" onclick="assessCompliance()">
+            <div class="assessment-result" id="assessmentResult">
+                <h3>Assessment Results</h3>
+                <div id="assessmentContent"></div>
+            </div>
         </div>
+        
+        <div class="法规信息列表" id="lawList">
+            <h2>VPN Laws and Regulations</h2>
+            <ul id="lawListContent">
+                <!-- Law items will be populated here -->
+            </ul>
+        </div>
+        
+        <div class="法规详情解读" id="lawDetails">
+            <h2>Law Details</h2>
+            <div id="lawDetailsContent">
+                <p>Select a law from the list to view detailed interpretation.</p>
+            </div>
+        </div>
+        
         <div class="更新提醒通知" id="updateNotifications">
-            <h2>Update Notifications</h2>
-            <!-- Notifications will be populated here -->
+            <h2>Latest Updates</h2>
+            <div id="updateContent">
+                <!-- Notifications will be populated here -->
+            </div>
         </div>
+        
         <div class="问答社区入口" id="communityQa">
             <h2>Community Q&A</h2>
-            <!-- Q&A will be populated here -->
+            <p>Ask questions about VPN laws and share your knowledge with the community:</p>
+            <div id="qaContent">
+                <!-- Q&A will be populated here -->
+            </div>
         </div>
     </div>
+
     <script>
+        // VPN laws database
+        const vpnLaws = [
+            {
+                id: 1,
+                title: "General Data Protection Regulation (GDPR)",
+                description: "EU regulation on data protection and privacy for all individuals within the European Union and the European Economic Area.",
+                details: "The GDPR requires that personal data must be processed lawfully, fairly and in a transparent manner. It applies to any organization that offers goods or services to people in the EU, or that monitors their behavior. VPN providers must ensure they comply with data processing requirements, including obtaining explicit consent for data collection and implementing appropriate security measures.",
+                region: "European Union",
+                effectiveDate: "2018-05-25",
+                lastUpdated: "2023-07-15"
+            },
+            {
+                id: 2,
+                title: "Communications Assistance for Law Enforcement Act (CALEA)",
+                description: "US law requiring telecommunications carriers and equipment manufacturers to ensure their equipment, facilities, and services can be intercepted.",
+                details: "CALEA requires telecommunications carriers to provide technical assistance to law enforcement agencies for the purpose of electronic surveillance. This has implications for VPN providers, as they may be required to provide backdoor access to encrypted communications. VPN providers must navigate the balance between user privacy and legal obligations.",
+                region: "United States",
+                effectiveDate: "1994-10-25",
+                lastUpdated: "2022-11-30"
+            },
+            {
+                id: 3,
+                title: "Personal Information Protection Law (PIPL)",
+                description: "Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.",
+                details: "PIPL imposes strict requirements on the processing of personal information, including the necessity principle, purpose limitation, and data minimization. It also requires explicit consent for processing sensitive personal information. VPN providers operating in China or handling Chinese users' data must comply with these requirements, which may include data localization requirements.",
+                region: "China",
+                effectiveDate: "2021-11-01",
+                lastUpdated: "2023-05-20"
+            },
+            {
+                id: 4,
+                title: "Investigatory Powers Act 2016 (IPA)",
+                description: "UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.",
+                details: "IPA includes provisions that require ISPs to retain internet connection records for 12 months, and allows for the examination of external communications data. VPN providers must be aware of these requirements and may be required to assist law enforcement when legally compelled. The act also includes provisions for bulk collection of communications data.",
+                region: "United Kingdom",
+                effectiveDate: "2016-12-15",
+                lastUpdated: "2022-09-10"
+            },
+            {
+                id: 5,
+                title: "Russian Law on Information Information",
+                description: "Russian regulation requiring VPN providers to block access to websites included in the federal registry.",
+                details: "Russian law requires VPN and other internet service providers to block access to websites that are included in the federal registry of banned websites. This has led to many VPN providers either ceasing operations in Russia or implementing measures to bypass these blocks. The law also requires data localization, with personal data of Russian citizens must be stored on servers located in Russia.",
+                region: "Russia",
+                effectiveDate: "2017-11-01",
+                lastUpdated: "2023-03-18"
+            }
+        ];
+
+        // Community Q&A data
+        const communityQA = [
+            {
+                id: 1,
+                question: "Are VPNs legal in my country?",
+                answer: "The legality of VPNs varies by country. In most countries, using a VPN is legal as long as you're not engaging in illegal activities. However, some countries like China, Russia, and Iran have restrictions on VPN use. Always check your local laws before using a VPN.",
+                helpful: 42,
+                answeredBy: "Legal Expert"
+            },
+            {
+                id: 2,
+                question: "What should I look for in a VPN for privacy?",
+                answer: "When choosing a VPN for privacy, consider factors like a strict no-logs policy, strong encryption (preferably AES-256), a kill switch feature, servers in privacy-friendly jurisdictions, and independent security audits. Also look for DNS leak protection and a transparent privacy policy.",
+                helpful: 37,
+                answeredBy: "Privacy Advocate"
+            },
+            {
+                id: 3,
+                question: "Can my ISP see that I'm using a VPN?",
+                answer: "Your ISP can see that you're connected to a VPN server, but they can't see your internet activity beyond that. The VPN encrypts your traffic, so your ISP only knows you're connected to the VPN provider's server, not what you're doing online.",
+                helpful: 28,
+                answeredBy: "Tech Expert"
+            }
+        ];
+
+        // Update notifications
+        const updateNotifications = [
+            {
+                date: "2023-10-15",
+                title: "New EU Data Protection Guidelines for VPN Providers",
+                summary: "The European Data Protection Board has released new guidelines specifically for VPN providers, emphasizing data minimization and transparency."
+            },
+            {
+                date: "2023-09-22",
+                title: "US Court Ruling on VPN Privacy Rights",
+                summary: "A federal court has ruled that VPN providers cannot be forced to log user activity without a proper warrant, strengthening privacy protections."
+            },
+            {
+                date: "2023-08-30",
+                title: "India Proposes New Regulations for VPN Services",
+                summary: "The Indian government has proposed new regulations requiring VPN providers to store user data for up to five years, raising privacy concerns."
+            }
+        ];
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateLawList(vpnLaws);
+            populateUpdates(updateNotifications);
+            populateCommunityQA(communityQA);
+        });
+
         function searchLaws() {
-            var keyword = document.getElementById('searchInput').value;
-            // Logic to fetch and display VPN laws based on keyword
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const filteredLaws = vpnLaws.filter(law => 
+                law.title.toLowerCase().includes(keyword) || 
+                law.description.toLowerCase().includes(keyword) ||
+                law.region.toLowerCase().includes(keyword)
+            );
+            
+            populateLawList(filteredLaws);
+            
+            if (filteredLaws.length === 0) {
+                document.getElementById('lawListContent').innerHTML = 
+                    '<li>No laws found matching your search. Try a different keyword.</li>';
+            }
         }
 
         function populateLawList(laws) {
-            var list = document.getElementById('lawList');
-            list.innerHTML = '';
-            laws.forEach(function(law) {
-                var li = document.createElement('li');
-                li.textContent = law.title;
+            const lawListContent = document.getElementById('lawListContent');
+            lawListContent.innerHTML = '';
+            
+            laws.forEach(law => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>${law.title}</strong> (${law.region})
+                    <br><small>${law.description}</small>
+                `;
                 li.onclick = function() {
                     displayLawDetails(law);
                 };
-                list.appendChild(li);
+                lawListContent.appendChild(li);
             });
         }
 
         function displayLawDetails(law) {
-            var details = document.getElementById('lawDetails');
-            details.innerHTML = '<h2>' + law.title + '</h2><p>' + law.description + '</p>';
+            const lawDetailsContent = document.getElementById('lawDetailsContent');
+            lawDetailsContent.innerHTML = `
+                <h2>${law.title}</h2>
+                <p><strong>Region:</strong> ${law.region}</p>
+                <p><strong>Effective Date:</strong> ${law.effectiveDate}</p>
+                <p><strong>Last Updated:</strong> ${law.lastUpdated}</p>
+                <p>${law.details}</p>
+            `;
         }
 
         function assessCompliance() {
-            var fileInput = document.getElementById('configFile');
-            var file = fileInput.files[0];
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    var config = JSON.parse(e.target.result);
-                    // Logic to assess compliance based on the uploaded configuration
-                };
-                reader.readAsText(file);
+            const fileInput = document.getElementById('configFile');
+            const assessmentResult = document.getElementById('assessmentResult');
+            const assessmentContent = document.getElementById('assessmentContent');
+            
+            if (!fileInput.files.length) {
+                alert('Please select a configuration file to assess.');
+                return;
             }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    let config;
+                    
+                    // Try to parse as JSON, if fails, treat as text
+                    try {
+                        config = JSON.parse(content);
+                    } catch (jsonError) {
+                        config = { rawContent: content };
+                    }
+                    
+                    // Perform compliance assessment
+                    const assessment = performComplianceAssessment(config);
+                    
+                    // Display results
+                    assessmentContent.innerHTML = `
+                        <p><strong>Overall Compliance Score:</strong> ${assessment.score}%</p>
+                        <h4>Compliance Status:</h4>
+                        <ul>
+                            ${assessment.issues.map(issue => 
+                                `<li style="color: ${issue.severity === 'high' ? '#ff5555' : issue.severity === 'medium' ? '#ffaa00' : '#55ff55'}">
+                                    ${issue.message}
+                                </li>`
+                            ).join('')}
+                        </ul>
+                        <h4>Recommendations:</h4>
+                        <ul>
+                            ${assessment.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                        </ul>
+                    `;
+                    
+                    assessmentResult.style.display = 'block';
+                } catch (error) {
+                    assessmentContent.innerHTML = 
+                        `<p style="color: #ff5555;">Error processing file: ${error.message}</p>`;
+                    assessmentResult.style.display = 'block';
+                }
+            };
+            
+            reader.readAsText(file);
         }
 
-        // Example data for demonstration purposes
-        var exampleLaws = [
-            { title: "Law 1", description: "Description of Law 1" },
-            { title: "Law 2", description: "Description of Law 2" }
-        ];
+        function performComplianceAssessment(config) {
+            let score = 100;
+            const issues = [];
+            const recommendations = [];
+            
+            // Check for encryption requirements
+            if (config.encryption) {
+                const encryption = config.encryption.toLowerCase();
+                if (encryption !== 'aes-256' && encryption !== 'chacha20-poly1305') {
+                    score -= 20;
+                    issues.push({
+                        message: 'Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.',
+                        severity: 'high'
+                    });
+                    recommendations.push('Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305');
+                }
+            } else {
+                score -= 30;
+                issues.push({
+                    message: 'No encryption method specified.',
+                    severity: 'high'
+                });
+                recommendations.push('Implement strong encryption for all traffic');
+            }
+            
+            // Check for logging policy
+            if (config.logging) {
+                if (config.logging === 'full' || config.logging === 'verbose') {
+                    score -= 25;
+                    issues.push({
+                        message: 'Full logging policy detected. This compromises user privacy.',
+                        severity: 'high'
+                    });
+                    recommendations.push('Implement a strict no-logs policy');
+                } else if (config.logging === 'minimal') {
+                    score -= 10;
+                    issues.push({
+                        message: 'Minimal logging policy may still collect some user data.',
+                        severity: 'medium'
+                    });
+                    recommendations.push('Consider implementing a complete no-logs policy');
+                }
+            } else {
+                recommendations.push('Define and document your logging policy');
+            }
+            
+            // Check for jurisdiction
+            if (config.jurisdiction) {
+                const privacyFriendly = ['Switzerland', 'Panama', 'British Virgin Islands', 'Iceland', 'Sweden'];
+                if (!privacyFriendly.includes(config.jurisdiction)) {
+                    score -= 15;
+                    issues.push({
+                        message: `Operating in ${config.jurisdiction} may have data retention laws.`,
+                        severity: 'medium'
+                    });
+                    recommendations.push('Consider hosting in a privacy-friendly jurisdiction');
+                }
+            } else {
+                recommendations.push('Specify your jurisdiction in the configuration');
+            }
+            
+            // Check for kill switch
+            if (!config.killSwitch || config.killSwitch === false) {
+                score -= 15;
+                issues.push({
+                    message: 'Kill switch not enabled. Users\' traffic may be exposed if VPN connection drops.',
+                    severity: 'medium'
+                });
+                recommendations.push('Enable kill switch functionality');
+            }
+            
+            // Check for DNS leak protection
+            if (!config.dnsLeakProtection || config.dnsLeakProtection === false) {
+                score -= 10;
+                issues.push({
+                    message: 'DNS leak protection not enabled. DNS requests may be exposed.',
+                    severity: 'medium'
+                });
+                recommendations.push('Enable DNS leak protection');
+            }
+            
+            // Ensure score is between 0 and 100
+            score = Math.max(0, Math.min(100, score));
+            
+            return {
+                score: score,
+                issues: issues,
+                recommendations: recommendations
+            };
+        }
 
-        // Populate the law list with example data
-        populateLawList(exampleLaws);
+        function populateUpdates(updates) {
+            const updateContent = document.getElementById('updateContent');
+            updateContent.innerHTML = '';
+            
+            updates.forEach(update => {
+                const updateItem = document.createElement('div');
+                updateItem.className = 'update-item';
+                updateItem.innerHTML = `
+                    <div class="update-date">${update.date}</div>
+                    <h4>${update.title}</h4>
+                    <p>${update.summary}</p>
+                `;
+                updateContent.appendChild(updateItem);
+            });
+        }
+
+        function populateCommunityQA(qa) {
+            const qaContent = document.getElementById('qaContent');
+            qaContent.innerHTML = '';
+            
+            qa.forEach(item => {
+                const qaItem = document.createElement('div');
+                qaItem.className = 'qa-item';
+                qaItem.innerHTML = `
+                    <div class="qa-question">${item.question}</div>
+                    <div class="qa-answer">
+                        <p>${item.answer}</p>
+                        <p><small>Answered by: ${item.answeredBy} | Helpful: ${item.helpful}</small></p>
+                    </div>
+                `;
+                
+                qaItem.onclick = function() {
+                    const answer = this.querySelector('.qa-answer');
+                    answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+                };
+                
+                qaContent.appendChild(qaItem);
+            });
+        }
     </script>
-<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Compliance Assessment","Update Notifications":"Update Notifications","Community Q\u0026A":"Community Q\u0026A","Law 1":"Law 1","Description of Law 1":"Description of Law 1","Law 2":"Law 2","Description of Law 2":"Description of Law 2","__title__":"VPN Legal Navigator"},"zh-CN":{"VPN Legal Navigator":"VPN 法律导航","Compliance Assessment":"合规性评估","Update Notifications":"更新通知","Community Q\u0026A":"社区问答","Law 1":"法律 1","Description of Law 1":"法律 1 的描述","Law 2":"法律 2","Description of Law 2":"法律 2 的描述","__title__":"VPN 法律导航"},"es":{"VPN Legal Navigator":"Navegador Legal de VPN","Compliance Assessment":"Evaluación de Cumplimiento","Update Notifications":"Notificaciones de Actualización","Community Q\u0026A":"Preguntas y Respuestas de la Comunidad","Law 1":"Ley 1","Description of Law 1":"Descripción de la Ley 1","Law 2":"Ley 2","Description of Law 2":"Descripción de la Ley 2","__title__":"Navegador Legal de VPN"},"ja":{"VPN Legal Navigator":"VPN法的ナビゲーター","Compliance Assessment":"適合性評価","Update Notifications":"更新通知","Community Q\u0026A":"コミュニティQ\u0026A","Law 1":"法1","Description of Law 1":"法1の説明","Law 2":"法2","Description of Law 2":"法2の説明","__title__":"VPN法的ナビゲーター"},"ko":{"VPN Legal Navigator":"VPN 법적 안내자","Compliance Assessment":"합의성 평가","Update Notifications":"업데이트 알림","Community Q\u0026A":"커뮤니티 Q\u0026A","Law 1":"법 1","Description of Law 1":"법 1 설명","Law 2":"법 2","Description of Law 2":"법 2 설명","__title__":"VPN 법적 안내자"},"fr":{"VPN Legal Navigator":"Navigateur juridique VPN","Compliance Assessment":"Évaluation de la conformité","Update Notifications":"Notifications de mise à jour","Community Q\u0026A":"Communauté Q\u0026A","Law 1":"Loi 1","Description of Law 1":"Description de la Loi 1","Law 2":"Loi 2","Description of Law 2":"Description de la Loi 2","__title__":"Navigateur juridique VPN"},"de":{"VPN Legal Navigator":"VPN Rechtsnavigationshilfe","Compliance Assessment":"Konformitätsbewertung","Update Notifications":"Aktualisierungsbenachrichtigungen","Community Q\u0026A":"Gemeinschaft Q\u0026A","Law 1":"Recht 1","Description of Law 1":"Beschreibung von Recht 1","Law 2":"Recht 2","Description of Law 2":"Beschreibung von Recht 2","__title__":"VPN Rechtsnavigationshilfe"},"ru":{"VPN Legal Navigator":"VPN Юридический навигатор","Compliance Assessment":"Оценка соответствия","Update Notifications":"Уведомления о обновлениях","Community Q\u0026A":"Общественные вопросы и ответы","Law 1":"Закон 1","Description of Law 1":"Описание Закона 1","Law 2":"Закон 2","Description of Law 2":"Описание Закона 2","__title__":"VPN Юридический навигатор"},"pt":{"VPN Legal Navigator":"Navegador Legal de VPN","Compliance Assessment":"Avaliação de Conformidade","Update Notifications":"Notificações de Atualização","Community Q\u0026A":"Perguntas e Respostas da Comunidade","Law 1":"Lei 1","Description of Law 1":"Descrição da Lei 1","Law 2":"Lei 2","Description of Law 2":"Descrição da Lei 2","__title__":"Navegador Legal de VPN"},"ar":{"VPN Legal Navigator":"مستكشف القانوني للـ VPN","Compliance Assessment":"تقييم الامتثال","Update Notifications":"إخطارات التحديث","Community Q\u0026A":"أسئلة وأجوبة المجتمع","Law 1":"قانون 1","Description of Law 1":"وصف قانون 1","Law 2":"قانون 2","Description of Law 2":"وصف قانون 2","__title__":"مستكشف القانوني للـ VPN"},"hi":{"VPN Legal Navigator":"वीपीएन लैगल नेविगेटर","Compliance Assessment":"अनुपालन मूल्यांकन","Update Notifications":"अपडेट नोटिफिकेशन","Community Q\u0026A":"कम्युनिटी Q\u0026A","Law 1":"कानून 1","Description of Law 1":"कानून 1 का वर्णन","Law 2":"कानून 2","Description of Law 2":"कानून 2 का वर्णन","__title__":"वीपीएन लैगल नेविगेटर"},"id":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Assesmen Komplian","Update Notifications":"Pemberitahuan Pembaruan","Community Q\u0026A":"Komunitas Q\u0026A","Law 1":"Undang-undang 1","Description of Law 1":"Deskripsi Undang-undang 1","Law 2":"Undang-undang 2","Description of Law 2":"Deskripsi Undang-undang 2","__title__":"VPN Legal Navigator"},"vi":{"VPN Legal Navigator":"VPN Legal Navigator","Compliance Assessment":"Đánh giá tuân thủ","Update Notifications":"Thông báo cập nhật","Community Q\u0026A":"Cộng đồng hỏi đáp","Law 1":"Luật 1","Description of Law 1":"Mô tả Luật 1","Law 2":"Luật 2","Description of Law 2":"Mô tả Luật 2","__title__":"VPN Legal Navigator"},"th":{"VPN Legal Navigator":"VPN นักนำกฎหมาย","Compliance Assessment":"การประเมินความสอดคล้องกฎหมาย","Update Notifications":"การแจ้งเตือนการปรับปรุง","Community Q\u0026A":"Q\u0026A สังคม","Law 1":"กฎหมาย 1","Description of Law 1":"คำอธิบายของกฎหมาย 1","Law 2":"กฎหมาย 2","Description of Law 2":"คำอธิบายของกฎหมาย 2","__title__":"VPN นักนำกฎหมาย"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"How to Use VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Use the search bar to find VPN-related laws by keyword","Click on any law to see detailed interpretation":"Click on any law to see detailed interpretation","Upload your VPN configuration file for compliance assessment":"Upload your VPN configuration file for compliance assessment","Check for the latest updates on VPN regulations":"Check for the latest updates on VPN regulations","Join the community Q\u0026A to ask questions and share knowledge":"Join the community Q\u0026A to ask questions and share knowledge","Compliance Assessment":"Compliance Assessment","Upload your VPN configuration file to assess compliance with current regulations:":"Upload your VPN configuration file to assess compliance with current regulations:","Assessment Results":"Assessment Results","VPN Laws and Regulations":"VPN Laws and Regulations","Law Details":"Law Details","Select a law from the list to view detailed interpretation.":"Select a law from the list to view detailed interpretation.","Latest Updates":"Latest Updates","Community Q\u0026A":"Community Q\u0026A","Ask questions about VPN laws and share your knowledge with the community:":"Ask questions about VPN laws and share your knowledge with the community:","European Union":"European Union","United States":"United States","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.","United Kingdom":"United Kingdom","Russian Law on Information Information":"Russian Law on Information Information","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"Russian regulation requiring VPN providers to block access to websites included in the federal registry.","Are VPNs legal in my country?":"Are VPNs legal in my country?","Legal Expert":"Legal Expert","What should I look for in a VPN for privacy?":"What should I look for in a VPN for privacy?","Privacy Advocate":"Privacy Advocate","Can my ISP see that I'm using a VPN?":"Can my ISP see that I'm using a VPN?","re connected to a VPN server, but they can":"re connected to a VPN server, but they can","re connected to the VPN provider":"re connected to the VPN provider","Tech Expert":"Tech Expert","New EU Data Protection Guidelines for VPN Providers":"New EU Data Protection Guidelines for VPN Providers","US Court Ruling on VPN Privacy Rights":"US Court Ruling on VPN Privacy Rights","India Proposes New Regulations for VPN Services":"India Proposes New Regulations for VPN Services","Please select a configuration file to assess.":"Please select a configuration file to assess.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305","No encryption method specified.":"No encryption method specified.","Implement strong encryption for all traffic":"Implement strong encryption for all traffic","Full logging policy detected. This compromises user privacy.":"Full logging policy detected. This compromises user privacy.","Implement a strict no-logs policy":"Implement a strict no-logs policy","Minimal logging policy may still collect some user data.":"Minimal logging policy may still collect some user data.","Consider implementing a complete no-logs policy":"Consider implementing a complete no-logs policy","Define and document your logging policy":"Define and document your logging policy","British Virgin Islands":"British Virgin Islands","Consider hosting in a privacy-friendly jurisdiction":"Consider hosting in a privacy-friendly jurisdiction","__title__":"VPN Legal Navigator"},"zh-CN":{"VPN Legal Navigator":"VPN 法律导航","How to Use VPN Legal Navigator":"如何使用 VPN 法律导航","Use the search bar to find VPN-related laws by keyword":"使用搜索栏通过关键词查找 VPN 相关法律","Click on any law to see detailed interpretation":"点击任何法律查看详细解释","Upload your VPN configuration file for compliance assessment":"上传您的 VPN 配置文件以进行合规性评估","Check for the latest updates on VPN regulations":"检查 VPN 规章的最新更新","Join the community Q\u0026A to ask questions and share knowledge":"加入社区问答以提问和分享知识","Compliance Assessment":"合规性评估","Upload your VPN configuration file to assess compliance with current regulations":"上传您的 VPN 配置文件以评估是否符合现行法规","Assessment Results":"评估结果","VPN Laws and Regulations":"VPN 法律法规","Law Details":"法律详情","Select a law from the list to view detailed interpretation":"从列表中选择一项法律以查看详细解释","Latest Updates":"最新更新","Community Q\u0026A":"社区问答","Ask questions about VPN laws and share your knowledge with the community":"提问关于 VPN 法律并与社区分享您的知识","European Union":"欧盟","United States":"美国","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"中国关于个人信息处理的法律，在某些方面比 GDPR 要求更严格。","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"英国法律赋予执法和情报机构额外的权力进行监控和数据收集。","United Kingdom":"英国","Russian Law on Information Information":"俄罗斯信息法","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"俄罗斯规定 VPN 提供商必须阻止访问联邦登记册中包含的网站。","Are VPNs legal in my country?":"我的国家 VPN 是否合法？","Legal Expert":"法律专家","What should I look for in a VPN for privacy?":"我应该寻找哪些隐私 VPN？","Privacy Advocate":"隐私倡导者","Can my ISP see that I'm using a VPN?":"我的 ISP 能看到我在使用 VPN 吗？","re connected to a VPN server, but they can":"重新连接到 VPN 服务器，但他们可以","re connected to the VPN provider":"重新连接到 VPN 提供商","Tech Expert":"技术专家","New EU Data Protection Guidelines for VPN Providers":"针对 VPN 提供商的新欧盟数据保护指南","US Court Ruling on VPN Privacy Rights":"美国法院关于 VPN 隐私权的裁决","India Proposes New Regulations for VPN Services":"印度提议针对 VPN 服务的新法规","Please select a configuration file to assess.":"请选择一个配置文件进行评估。","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"检测到弱加密方法。建议：AES-256 或 ChaCha20-Poly1305。","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"升级到更强的加密协议，如 AES-256 或 ChaCha20-Poly1305","No encryption method specified.":"未指定加密方法。","Implement strong encryption for all traffic":"为所有流量实施强加密","Full logging policy detected. This compromises user privacy.":"检测到完整的日志记录策略。这会损害用户隐私。","Implement a strict no-logs policy":"实施严格的零日志记录策略","Minimal logging policy may still collect some user data.":"最少的日志记录策略可能仍然会收集一些用户数据。","Consider implementing a complete no-logs policy":"考虑实施完整的零日志记录策略","Define and document your logging policy":"定义并记录您的日志记录策略","British Virgin Islands":"英属维尔京群岛","Consider hosting in a privacy-friendly jurisdiction":"考虑在隐私友好的司法管辖区托管","Select a law from the list to view detailed interpretation.":"从列表中选择一项法律以查看详细解释。","Ask questions about VPN laws and share your knowledge with the community:":"关于VPN法律提出问题并与社区分享您的知识：","__title__":"VPN 法律导航"},"es":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Cómo usar VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Usa la barra de búsqueda para encontrar leyes relacionadas con VPN por palabra clave","Click on any law to see detailed interpretation":"Haz clic en cualquier ley para ver una interpretación detallada","Upload your VPN configuration file for compliance assessment":"Sube tu archivo de configuración de VPN para evaluar el cumplimiento","Check for the latest updates on VPN regulations":"Revisa las últimas actualizaciones sobre regulaciones de VPN","Join the community Q\u0026A to ask questions and share knowledge":"Únete a la comunidad de preguntas y respuestas para hacer preguntas y compartir conocimientos","Compliance Assessment":"Evaluación de Cumplimiento","Upload your VPN configuration file to assess compliance with current regulations":"Sube tu archivo de configuración de VPN para evaluar el cumplimiento con las regulaciones actuales","Assessment Results":"Resultados de la Evaluación","VPN Laws and Regulations":"Leyes y Regulaciones de VPN","Law Details":"Detalles de la Ley","Select a law from the list to view detailed interpretation":"Selecciona una ley de la lista para ver una interpretación detallada","Latest Updates":"Últimas Actualizaciones","Community Q\u0026A":"Preguntas y Respuestas de la Comunidad","Ask questions about VPN laws and share your knowledge with the community":"Hace preguntas sobre leyes de VPN y comparte tus conocimientos con la comunidad","European Union":"Unión Europea","United States":"Estados Unidos","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"Ley china reguladora del procesamiento de información personal, con requisitos más estrictos que el GDPR en ciertos aspectos","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"Ley del Reino Unido que otorga poderes adicionales a las agencias de aplicación de la ley e inteligencia para la vigilancia y la recopilación de datos","United Kingdom":"Reino Unido","Russian Law on Information Information":"Ley rusa sobre información información","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"Regulación rusa que requiere a los proveedores de VPN que bloqueen el acceso a sitios web incluidos en el registro federal","Are VPNs legal in my country?":"¿Son legales los VPN en mi país?","Legal Expert":"Experto en Derecho","What should I look for in a VPN for privacy?":"¿Qué debo buscar en un VPN para la privacidad?","Privacy Advocate":"Abogado por la Privacidad","Can my ISP see that I'm using a VPN?":"¿Puede mi ISP ver que estoy usando un VPN?","re connected to a VPN server, but they can":"se re conectaron a un servidor VPN, pero pueden","re connected to the VPN provider":"se re conectaron al proveedor de VPN","Tech Expert":"Experto en Tecnología","New EU Data Protection Guidelines for VPN Providers":"Nuevas Directrices de Protección de Datos de la UE para Proveedores de VPN","US Court Ruling on VPN Privacy Rights":"Sentencia del Tribunal de EE. UU. sobre Derechos de Privacidad de VPN","India Proposes New Regulations for VPN Services":"India propone nuevas regulaciones para servicios de VPN","Please select a configuration file to assess":"Por favor, selecciona un archivo de configuración para evaluar","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Método de cifrado débil detectado. Recomendado: AES-256 o ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Actualiza a un protocolo de cifrado más fuerte como AES-256 o ChaCha20-Poly1305","No encryption method specified.":"No se especificó método de cifrado.","Implement strong encryption for all traffic":"Implementa cifrado fuerte para todo el tráfico","Full logging policy detected. This compromises user privacy.":"Se detectó política de registro completa. Esto compromete la privacidad del usuario.","Implement a strict no-logs policy":"Implementa una política estricta de no registro","Minimal logging policy may still collect some user data.":"La política de registro mínima puede seguir recopilando algunos datos del usuario.","Consider implementing a complete no-logs policy":"Considera implementar una política completa de no registro","Define and document your logging policy":"Define y documenta tu política de registro","British Virgin Islands":" Islas Vírgenes Británicas","Consider hosting in a privacy-friendly jurisdiction":"Considera alojar en una jurisdicción amiga de la privacidad","__title__":"VPN Legal Navigator"},"ja":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"VPN Legal Navigatorの使い方","Use the search bar to find VPN-related laws by keyword":"検索バーを使用してキーワードでVPN関連の法律を検索","Click on any law to see detailed interpretation":"どの法律でも詳細な解釈を見るためにクリック","Upload your VPN configuration file for compliance assessment":"VPN設定ファイルをアップロードして規制遵守の評価を行う","Check for the latest updates on VPN regulations":"VPN規制の最新の更新を確認","Join the community Q\u0026A to ask questions and share knowledge":"コミュニティのQ\u0026Aに参加して質問をしたり知識を共有したり","Compliance Assessment":"規制遵守評価","Upload your VPN configuration file to assess compliance with current regulations":"現在の規制に従う評価を行うためにVPN設定ファイルをアップロード","Assessment Results":"評価結果","VPN Laws and Regulations":"VPNの法律と規制","Law Details":"法律の詳細","Select a law from the list to view detailed interpretation.":"リストから法律を選択して詳細な解釈を見る","Latest Updates":"最新の更新","Community Q\u0026A":"コミュニティQ\u0026A","Ask questions about VPN laws and share your knowledge with the community":"VPNの法律に関する質問をしたり、コミュニティと知識を共有","European Union":"欧州連合","United States":"アメリカ合衆国","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"特定の点でGDPRを超える厳しい要件を持つ中国の個人情報処理を規制する法律。","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"監視とデータ収集のために警察と情報機関に追加の権力を与えるイギリスの法律。","United Kingdom":"イギリス","Russian Law on Information Information":"情報情報に関するロシアの法律","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"連邦登記に含まれるウェブサイトへのアクセスをブロックするようにVPNプロバイダーを要求するロシアの規制。","Are VPNs legal in my country?":"私の国ではVPNが合法ですか？","Legal Expert":"法律専門家","What should I look for in a VPN for privacy?":"プライバシーのためのVPNで何を探すべきですか？","Privacy Advocate":"プライバシー擁護者","Can my ISP see that I'm using a VPN?":"ISPはVPNを使用していることを見つけることができますか？","re connected to a VPN server, but they can":"VPNサーバーに再接続されていますが、彼らは","re connected to the VPN provider":"VPNプロバイダーに再接続されています","Tech Expert":"テクノロジー専門家","New EU Data Protection Guidelines for VPN Providers":"VPNプロバイダーのための新しいEUデータ保護ガイドライン","US Court Ruling on VPN Privacy Rights":"VPNプライバシー権に関する米国の裁判所判決","India Proposes New Regulations for VPN Services":"インドはVPNサービスのための新しい規制を提案","Please select a configuration file to assess.":"評価を行うために設定ファイルを選択してください。","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"脆弱な暗号化方法が検出されました。推奨：AES-256またはChaCha20-Poly1305。","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"AES-256やChaCha20-Poly1305などの強力な暗号化プロトコルにアップグレード","No encryption method specified.":"暗号化方法が指定されていません。","Implement strong encryption for all traffic":"すべてのトラフィックに対して強力な暗号化を実装","Full logging policy detected. This compromises user privacy.":"完全なログポリシーが検出されました。これはユーザーのプライバシーを侵害します。","Implement a strict no-logs policy":"厳格なノーログポリシーを実装","Minimal logging policy may still collect some user data.":"最小限のログポリシーでもユーザーデータを一部収集する可能性があります。","Consider implementing a complete no-logs policy":"完全なノーログポリシーを実装を検討","Define and document your logging policy":"ログポリシーを定義し、文書化","British Virgin Islands":"ブリティッシュ・ビルギン・アイランド","Consider hosting in a privacy-friendly jurisdiction":"プライバシーに優しい司法管轄地でホスティングを検討","Upload your VPN configuration file to assess compliance with current regulations:":"現在の規制に適合するかを評価するためにVPN設定ファイルをアップロードしてください：","Ask questions about VPN laws and share your knowledge with the community:":"VPNの法律に関する質問をし、コミュニティと知識を共有してください：","__title__":"VPN Legal Navigator"},"ko":{"Are VPNs legal in my country?":"VPN이 나라에서 법적이나요?","Legal Expert":"법적 전문가","What should I look for in a VPN for privacy?":"개인정보를 위한 VPN에서 무엇을 찾아야 하나요?","Privacy Advocate":"개인정보 보호 운동가","Can my ISP see that I'm using a VPN?":"인터넷 서비스 제공자(ISP)가 VPN을 사용하고 있다는 걸 알 수 있나요?","re connected to a VPN server, but they can":"VPN 서버에 다시 연결되었지만, 그들은 할 수 있습니다","re connected to the VPN provider":"VPN 제공자에 다시 연결되었습니다","Tech Expert":"기술 전문가","New EU Data Protection Guidelines for VPN Providers":"VPN 제공자를 위한 새로운 EU 데이터 보호 지침","US Court Ruling on VPN Privacy Rights":"VPN 개인정보 권리에 대한 미국 법원 판결","India Proposes New Regulations for VPN Services":"인도가 VPN 서비스에 대한 새로운 규제를 제안했습니다","Please select a configuration file to assess.":"평가하기 위해 구성 파일을 선택해 주세요.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"ضع운 암호화 방법이 감지되었습니다. 권장: AES-256 또는 ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"AES-256 또는 ChaCha20-Poly1305와 같은 강력한 암호화 프로토콜로 업그레이드하세요","No encryption method specified.":"암호화 방법이 지정되지 않았습니다.","Implement strong encryption for all traffic":"모든 트래픽에 강력한 암호화를 구현하세요","Full logging policy detected. This compromises user privacy.":"전체 로깅 정책이 감지되었습니다. 이는 사용자 개인정보를 위협합니다.","Implement a strict no-logs policy":"없日志 정책을 구현하세요","Minimal logging policy may still collect some user data.":"최소 로깅 정책은 여전히 일부 사용자 데이터를 수집할 수 있습니다.","Consider implementing a complete no-logs policy":"완전한 없日志 정책을 구현하는 것을 고려하세요","Define and document your logging policy":"당신의 로깅 정책을 정의하고 문서화하세요","British Virgin Islands":"british virgin islands","Consider hosting in a privacy-friendly jurisdiction":"개인정보 보호 친화적 지역에서 호스팅을 고려하세요","VPN Legal Navigator":"VPN 법적 안내자","How to Use VPN Legal Navigator":"VPN 법적 안내자 사용법","Use the search bar to find VPN-related laws by keyword":"검색 바를 사용하여 키워드로 VPN 관련 법률을 찾으세요","Click on any law to see detailed interpretation":"어떤 법률을 클릭하면 상세한 해석을 볼 수 있습니다","Upload your VPN configuration file for compliance assessment":"합의성 평가를 위해 VPN 구성 파일을 업로드하세요","Check for the latest updates on VPN regulations":"VPN 규제의 최신 업데이트를 확인하세요","Join the community Q\u0026A to ask questions and share knowledge":"질문하고 지식을 공유하기 위해 커뮤니티 Q\u0026A에 참여하세요","Compliance Assessment":"합의성 평가","Upload your VPN configuration file to assess compliance with current regulations":"현재 규제와의 합의성을 평가하기 위해 VPN 구성 파일을 업로드하세요","Assessment Results":"평가 결과","VPN Laws and Regulations":"VPN 법률 및 규제","Law Details":"법률 상세 정보","Select a law from the list to view detailed interpretation":"리스트에서 법률을 선택하여 상세한 해석을 볼 수 있습니다","Latest Updates":"최신 업데이트","Community Q\u0026A":"커뮤니티 Q\u0026A","Ask questions about VPN laws and share your knowledge with the community":"VPN 법률에 대한 질문을 하고 커뮤니티와 지식을 공유하세요","European Union":"유럽 연합","United States":"미국","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"개인 정보 처리를 규제하는 중국 법률, 특정 측면에서 GDPR보다 더 엄격한 요구 사항을 가지고 있습니다","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"감시 및 데이터 수집을 위해 법 집행 기관과 정보 기관에 추가 권한을 부여하는 영국 법률","United Kingdom":"영국","Russian Law on Information Information":"정보 정보 법","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"연邦 등록에 포함된 웹사이트에 접근을 차단하도록 VPN 제공업체를 요구하는 러시아 규제","__title__":"VPN 법적 안내자"},"fr":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Comment utiliser VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Utilisez la barre de recherche pour trouver des lois liées au VPN par mot-clé","Click on any law to see detailed interpretation":"Cliquez sur une loi pour voir l'interprétation détaillée","Upload your VPN configuration file for compliance assessment":"Téléchargez votre fichier de configuration VPN pour l'évaluation de la conformité","Check for the latest updates on VPN regulations":"Vérifiez les dernières mises à jour sur les réglementations VPN","Join the community Q\u0026A to ask questions and share knowledge":"Rejoignez la communauté Q\u0026A pour poser des questions et partager des connaissances","Compliance Assessment":"Évaluation de la conformité","Upload your VPN configuration file to assess compliance with current regulations":"Téléchargez votre fichier de configuration VPN pour évaluer la conformité avec les réglementations actuelles","Assessment Results":"Résultats de l'évaluation","VPN Laws and Regulations":"Lois et réglementations VPN","Law Details":"Détails de la loi","Select a law from the list to view detailed interpretation":"Sélectionnez une loi de la liste pour voir l'interprétation détaillée","Latest Updates":"Dernières mises à jour","Community Q\u0026A":"Communauté Q\u0026A","Ask questions about VPN laws and share your knowledge with the community":"Posez des questions sur les lois VPN et partagez vos connaissances avec la communauté","European Union":"Union européenne","United States":"États-Unis","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"Loi chinoise réglementant le traitement des informations personnelles, avec des exigences plus strictes que le GDPR dans certains aspects","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"Loi britannique conférant des pouvoirs supplémentaires aux agences de répression et de renseignement pour la surveillance et la collecte de données","United Kingdom":"Royaume-Uni","Russian Law on Information Information":"Loi russe sur l'information","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"Réglementation russe obligeant les fournisseurs de VPN à bloquer l'accès aux sites web inclus dans le registre fédéral","Are VPNs legal in my country?":"Les VPN sont-ils légaux dans mon pays?","Legal Expert":"Expert juridique","What should I look for in a VPN for privacy?":"Que dois-je chercher dans un VPN pour la confidentialité?","Privacy Advocate":"Avocat de la vie privée","Can my ISP see that I'm using a VPN?":"Mon FAI peut-il voir que j'utilise un VPN?","re connected to a VPN server, but they can":"re connecté à un serveur VPN, mais ils peuvent","re connected to the VPN provider":"re connecté au fournisseur VPN","Tech Expert":"Expert technique","New EU Data Protection Guidelines for VPN Providers":"Nouvelles directives de protection des données de l'UE pour les fournisseurs de VPN","US Court Ruling on VPN Privacy Rights":"Réglementation proposée par l'Inde pour les services VPN","Please select a configuration file to assess":"Veuillez sélectionner un fichier de configuration à évaluer","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Méthode de chiffrement faible détectée. Recommandé : AES-256 ou ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Mettez à niveau vers un protocole de chiffrement plus fort comme AES-256 ou ChaCha20-Poly1305","No encryption method specified.":"Aucune méthode de chiffrement spécifiée.","Implement strong encryption for all traffic":"Mettez en œuvre une forte chiffrement pour tout le trafic","Full logging policy detected. This compromises user privacy.":"Politique de journalisation complète détectée. Cela compromet la vie privée de l'utilisateur.","Implement a strict no-logs policy":"Mettez en œuvre une politique de non-journalisation stricte","Minimal logging policy may still collect some user data.":"La politique de journalisation minimale peut toujours collecter certains données utilisateur.","Consider implementing a complete no-logs policy":"Considérez la mise en œuvre d'une politique de non-journalisation complète","Define and document your logging policy":"Définissez et documentez votre politique de journalisation","British Virgin Islands":"Îles Vierges britanniques","Consider hosting in a privacy-friendly jurisdiction":"Considérez l'hébergement dans une juridiction favorable à la vie privée","__title__":"VPN Legal Navigator"},"de":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Wie man VPN Legal Navigator verwendet","Use the search bar to find VPN-related laws by keyword":"Verwenden Sie die Suchleiste, um VPN-bezogene Gesetze über Schlüsselwörter zu finden","Click on any law to see detailed interpretation":"Klicken Sie auf ein Gesetz, um eine detaillierte Interpretation zu sehen","Upload your VPN configuration file for compliance assessment":"Laden Sie Ihre VPN-Konfigurationsdatei zum Prüfen der Einhaltung hoch","Check for the latest updates on VPN regulations":"Prüfen Sie nach den neuesten Updates zu VPN-Gesetzen","Join the community Q\u0026A to ask questions and share knowledge":"Treten Sie der Community-Fragen-und-Antworten-Plattform bei, um Fragen zu stellen und Wissen zu teilen","Compliance Assessment":"Einhaltungskontrolle","Upload your VPN configuration file to assess compliance with current regulations":"Laden Sie Ihre VPN-Konfigurationsdatei hoch, um die Einhaltung aktueller Gesetze zu überprüfen","Assessment Results":"Ergebnisse der Bewertung","VPN Laws and Regulations":"VPN-Gesetze und -Verordnungen","Law Details":"Gesetzesdetails","Select a law from the list to view detailed interpretation.":"Wählen Sie ein Gesetz aus der Liste aus, um eine detaillierte Interpretation anzuzeigen.","Latest Updates":"Neueste Updates","Community Q\u0026A":"Community-Fragen-und-Antworten","Ask questions about VPN laws and share your knowledge with the community:":"Stellen Sie Fragen zu VPN-Gesetzen und teilen Sie Ihr Wissen mit der Community:","European Union":"Europäische Union","United States":"Vereinigte Staaten","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"Chinesisches Gesetz zur Regelung der Verarbeitung personenbezogener Daten, das in bestimmten Aspekten strengere Anforderungen als die DSGVO stellt.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"UK-Gesetz, das den Strafverfolgungs- und Geheimdiensteinrichtungen zusätzliche Befugnisse zur Überwachung und Datenerhebung gewährt.","United Kingdom":"Vereinigtes Königreich","Russian Law on Information Information":"Russisches Gesetz über Information","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"Russische Verordnung, die VPN-Anbietern vorschreibt, den Zugang zu Websites zu sperren, die im bundesweiten Register enthalten sind.","Are VPNs legal in my country?":"Sind VPNs in meinem Land legal?","Legal Expert":"Rechtsexperte","What should I look for in a VPN for privacy?":"Wonach sollte ich bei einem VPN für den Datenschutz suchen?","Privacy Advocate":"Datenschutzanwalt","Can my ISP see that I'm using a VPN?":"Kann mein ISP sehen, dass ich einen VPN verwende?","re connected to a VPN server, but they can":"wieder verbunden mit einem VPN-Server, aber sie können","re connected to the VPN provider":"wieder verbunden mit dem VPN-Anbieter","Tech Expert":"Technikexperte","New EU Data Protection Guidelines for VPN Providers":"Neue Datenschutzrichtlinien der EU für VPN-Anbieter","US Court Ruling on VPN Privacy Rights":"US-Gerichtsurteil über VPN-Privatrechte","India Proposes New Regulations for VPN Services":"Indien schlägt neue Regulierungen für VPN-Dienste vor","Please select a configuration file to assess.":"Bitte wählen Sie eine Konfigurationsdatei zum Prüfen aus.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Schwache Verschlüsselungsmethode erkannt. Empfohlen: AES-256 oder ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Aktualisieren Sie auf ein stärkeres Verschlüsselungsprotokoll wie AES-256 oder ChaCha20-Poly1305","No encryption method specified.":"Keine Verschlüsselungsmethode angegeben.","Implement strong encryption for all traffic":"Führen Sie starke Verschlüsselung für alle Datenverkehr durch","Full logging policy detected. This compromises user privacy.":"Vollständige Protokollierungsrichtlinie erkannt. Dies beeinträchtigt die Benutzerprivatsphäre.","Implement a strict no-logs policy":"Führen Sie eine strenge No-Logs-Richtlinie ein","Minimal logging policy may still collect some user data.":"Eine minimale Protokollierungsrichtlinie kann dennoch einige Benutzerdaten sammeln.","Consider implementing a complete no-logs policy":"Überlegen Sie, eine vollständige No-Logs-Richtlinie einzuführen","Define and document your logging policy":"Definieren und dokumentieren Sie Ihre Protokollierungsrichtlinie","British Virgin Islands":"Britische Jungferninseln","Consider hosting in a privacy-friendly jurisdiction":"Überlegen Sie, in einem datenschutzfreundlichen Hoheitsgebiet zu hosten","__title__":"VPN Legal Navigator"},"ru":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Как использовать VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Используйте строку поиска для поиска законов, связанных с VPN, по ключевому слову","Click on any law to see detailed interpretation":"Нажмите на любой закон, чтобы увидеть детальное толкование","Upload your VPN configuration file for compliance assessment":"Загрузите файл конфигурации VPN для оценки соответствия требованиям","Check for the latest updates on VPN regulations":"Проверьте последние обновления в области регулирования VPN","Join the community Q\u0026A to ask questions and share knowledge":"Присоединяйтесь к сообществу Q\u0026A, чтобы задавать вопросы и делиться знаниями","Compliance Assessment":"Оценка соответствия требованиям","Upload your VPN configuration file to assess compliance with current regulations":"Загрузите файл конфигурации VPN для оценки соответствия текущим требованиям","Assessment Results":"Результаты оценки","VPN Laws and Regulations":"Законодательство и регуляции VPN","Law Details":"Подробности закона","Select a law from the list to view detailed interpretation":"Выберите закон из списка, чтобы увидеть детальное толкование","Latest Updates":"Последние обновления","Community Q\u0026A":"Сообщество Q\u0026A","Ask questions about VPN laws and share your knowledge with the community":"Задавайте вопросы о законах VPN и делитесь своими знаниями с сообществом","European Union":"Европейский союз","United States":"США","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"Китайский закон, регулирующий обработку персональных данных, с более строгими требованиями, чем GDPR в некоторых аспектах","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"Британский закон, предоставляющий дополнительные права правоохранительным органам и органам разведки для наблюдения и сбора данных","United Kingdom":"Великобритания","Russian Law on Information Information":"Российский закон о информации","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"Российское регулирование, требующее от провайдеров VPN блокировать доступ к сайтам, включенным в федеральный реестр","Are VPNs legal in my country?":"Допустимы ли VPN в моей стране?","Legal Expert":"Юридический эксперт","What should I look for in a VPN for privacy?":"Что я должен искать в VPN для конфиденциальности?","Privacy Advocate":"Активист за конфиденциальность","Can my ISP see that I'm using a VPN?":"Может ли мой провайдер Интернета увидеть, что я использую VPN?","re connected to a VPN server, but they can":"восстановлен соединение с сервером VPN, но они могут","re connected to the VPN provider":"восстановлен соединение с провайдером VPN","Tech Expert":"Технический эксперт","New EU Data Protection Guidelines for VPN Providers":"Новые guidelines по защите данных ЕС для провайдеров VPN","US Court Ruling on VPN Privacy Rights":"Решение суда США по правам на конфиденциальность VPN","India Proposes New Regulations for VPN Services":"Индия предлагает новые регуляции для услуг VPN","Please select a configuration file to assess":"Пожалуйста, выберите файл конфигурации для оценки","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Обнаружен слабый метод шифрования. Рекомендуется: AES-256 или ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Обновите до более сильного протокола шифрования, например, AES-256 или ChaCha20-Poly1305","No encryption method specified.":"Не указан метод шифрования.","Implement strong encryption for all traffic":"Реализуйте сильное шифрование для всего трафика","Full logging policy detected. This compromises user privacy.":"Обнаружена полная политика ведения журналов. Это компрометирует конфиденциальность пользователя.","Implement a strict no-logs policy":"Реализуйте строгую политику без ведения журналов","Minimal logging policy may still collect some user data.":"Минимальная политика ведения журналов может все еще собирать некоторые данные пользователя.","Consider implementing a complete no-logs policy":"Рассмотрите возможность реализации полной политики без ведения журналов","Define and document your logging policy":"Определите и документируйте свою политику ведения журналов","British Virgin Islands":"Британские Виргинские острова","Consider hosting in a privacy-friendly jurisdiction":"Рассмотрите возможность размещения в юрисдикции, дружественной к конфиденциальности","__title__":"VPN Legal Navigator"},"pt":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Como Usar o VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Use a barra de pesquisa para encontrar leis relacionadas ao VPN por palavras-chave","Click on any law to see detailed interpretation":"Clique em qualquer lei para ver a interpretação detalhada","Upload your VPN configuration file for compliance assessment":"Carregue seu arquivo de configuração VPN para avaliação de conformidade","Check for the latest updates on VPN regulations":"Verifique as últimas atualizações sobre regulamentações de VPN","Join the community Q\u0026A to ask questions and share knowledge":"Junte-se à comunidade Perguntas \u0026 Respostas para fazer perguntas e compartilhar conhecimento","Compliance Assessment":"Avaliação de Conformidade","Upload your VPN configuration file to assess compliance with current regulations":"Carregue seu arquivo de configuração VPN para avaliar a conformidade com as regulamentações atuais","Assessment Results":"Resultados da Avaliação","VPN Laws and Regulations":"Leis e Regulamentações de VPN","Law Details":"Detalhes da Lei","Select a law from the list to view detailed interpretation.":"Selecione uma lei da lista para ver a interpretação detalhada.","Latest Updates":"Últimas Atualizações","Community Q\u0026A":"Comunidade Perguntas \u0026 Respostas","Ask questions about VPN laws and share your knowledge with the community:":"Faça perguntas sobre leis de VPN e compartilhe seu conhecimento com a comunidade:","European Union":"União Europeia","United States":"Estados Unidos","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"Lei chinesa regulamentando o processamento de informações pessoais, com requisitos mais rigorosos que o GDPR em alguns aspectos.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"Lei do Reino Unido que concede poderes adicionais às agências de enforcement e inteligência para vigilância e coleta de dados.","United Kingdom":"Reino Unido","Russian Law on Information Information":"Lei da Rússia sobre Informação","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"Regulamentação russa que obriga os provedores de VPN a bloquear o acesso aos sites incluídos no registro federal.","Are VPNs legal in my country?":"Os VPNs são legais no meu país?","Legal Expert":"Experto em Direito","What should I look for in a VPN for privacy?":"O que devo procurar em um VPN para privacidade?","Privacy Advocate":"Advogado pela Privacidade","Can my ISP see that I'm using a VPN?":"Meu ISP pode ver que estou usando um VPN?","re connected to a VPN server, but they can":"voltar a se conectar a um servidor VPN, mas eles podem","re connected to the VPN provider":"voltar a se conectar ao provedor de VPN","Tech Expert":"Experto em Tecnologia","New EU Data Protection Guidelines for VPN Providers":"Novas Diretrizes de Proteção de Dados da UE para Provedores de VPN","US Court Ruling on VPN Privacy Rights":"Decisão de Tribunal dos EUA sobre Direitos de Privacidade de VPN","India Proposes New Regulations for VPN Services":"India Propõe Novas Regulamentações para Serviços de VPN","Please select a configuration file to assess.":"Por favor, selecione um arquivo de configuração para avaliar.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Método de criptografia fraca detectado. Recomendado: AES-256 ou ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Atualize para um protocolo de criptografia mais forte como AES-256 ou ChaCha20-Poly1305","No encryption method specified.":"Nenhum método de criptografia especificado.","Implement strong encryption for all traffic":"Implemente criptografia forte para todo o tráfego","Full logging policy detected. This compromises user privacy.":"Política de registro completa detectada. Isso compromete a privacidade do usuário.","Implement a strict no-logs policy":"Implemente uma política rigorosa de não-registro","Minimal logging policy may still collect some user data.":"Política de registro mínima pode ainda coletar alguns dados do usuário.","Consider implementing a complete no-logs policy":"Considere implementar uma política completa de não-registro","Define and document your logging policy":"Defina e documente sua política de registro","British Virgin Islands":"Ilhas Virgens Britânicas","Consider hosting in a privacy-friendly jurisdiction":"Considere hospedar em uma jurisdição amiga da privacidade","__title__":"VPN Legal Navigator"},"ar":{"VPN Legal Navigator":"مستكشف القانون الخاص بـ VPN","How to Use VPN Legal Navigator":"كيفية استخدام مستكشف القانون الخاص بـ VPN","Use the search bar to find VPN-related laws by keyword":"استخدم شريط البحث للبحث عن قوانين VPN ذات صلة بكلمة المفتاح","Click on any law to see detailed interpretation":"انقر على أي قانون لرؤية التفسير التفصيلي","Upload your VPN configuration file for compliance assessment":"رفع ملف تكوين VPN الخاص بك لتحديد التزام","Check for the latest updates on VPN regulations":"تحقق من أحدث التحديثات بشأن قوانين VPN","Join the community Q\u0026A to ask questions and share knowledge":"انضم إلى مجتمع الأسئلة والأجوبة لطرح الأسئلة ومشاركة المعرفة","Compliance Assessment":"تقييم التزام","Upload your VPN configuration file to assess compliance with current regulations":"رفع ملف تكوين VPN الخاص بك لتقييم التزامه باللوائح الحالية","Assessment Results":"نتائج التقييم","VPN Laws and Regulations":"قوانين ولوائح VPN","Law Details":"تفاصيل القانون","Select a law from the list to view detailed interpretation.":"اختر قانونًا من القائمة لرؤية التفسير التفصيلي.","Latest Updates":"أحدث التحديثات","Community Q\u0026A":"أسئلة وأجوبة المجتمع","Ask questions about VPN laws and share your knowledge with the community:":"طرح الأسئلة حول قوانين VPN ومشاركة معرفةك مع المجتمع:","European Union":"الاتحاد الأوروبي","United States":"الولايات المتحدة","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"قانون الصين الخاص بمعالجة بيانات الأفراد، الذي يحتوي على متطلبات أكثر صرامة من GDPR في بعض الجوانب.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"قانون المملكة المتحدة الذي يمنح السلطات التنفيذية وأجهزة الاستخبارات سلطة إضافية للمراقبة وجمع البيانات.","United Kingdom":"المملكة المتحدة","Russian Law on Information Information":"قانون روسيا على المعلومات المعلومات","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"التنظيم الروسي الذي يتطلب من مزودي VPN حظر الوصول إلى المواقع التي تم تسجيلها في السجل الفيدرالي.","Are VPNs legal in my country?":"هل يُعتبر استخدام VPN قانوني في بلدي؟","Legal Expert":"خبير قانوني","What should I look for in a VPN for privacy?":"ما الذي يجب البحث عنه في VPN للحماية الشخصية؟","Privacy Advocate":"مناصر الخصوصية","Can my ISP see that I'm using a VPN?":"هل يمكن لمزودي الخدمة أن يروا أنني أستخدم VPN؟","re connected to a VPN server, but they can":"إعادة الاتصال بسيرفر VPN، لكنهم يستطيعون","re connected to the VPN provider":"إعادة الاتصال بالمزود الخاص بـ VPN","Tech Expert":"خبير تقني","New EU Data Protection Guidelines for VPN Providers":"إرشادات جديدة لحماية البيانات في الاتحاد الأوروبي للمزودين بـ VPN","US Court Ruling on VPN Privacy Rights":"قرار المحكمة الأمريكية بشأن حقوق الخصوصية الخاصة بـ VPN","India Proposes New Regulations for VPN Services":"تقترح الهند إجراءات جديدة للخدمات الخاصة بـ VPN","Please select a configuration file to assess.":"يرجى اختيار ملف تكوين للاختبار.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"تم اكتشاف طريقة التشفير الضعيفة. التوصية: AES-256 أو ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"تحديث إلى بروتوكول تشفير أقوى مثل AES-256 أو ChaCha20-Poly1305","No encryption method specified.":"لم يتم تحديد طريقة التشفير.","Implement strong encryption for all traffic":"تنفيذ تشفير قوي لجميع البيانات","Full logging policy detected. This compromises user privacy.":"تم اكتشاف سياسة السجلات الكاملة. هذا يضعف خصوصية المستخدم.","Implement a strict no-logs policy":"تنفيذ سياسة لا تسجيل صارمة","Minimal logging policy may still collect some user data.":"سياسة السجلات الدنيا قد تجمع بعض بيانات المستخدم.","Consider implementing a complete no-logs policy":"اعتبار تنفيذ سياسة لا تسجيل كاملة","Define and document your logging policy":"تحديد وتوثيق سياسة السجلات الخاصة بك","British Virgin Islands":"جزر فيرجن البريطانية","Consider hosting in a privacy-friendly jurisdiction":"النظر في استضافة الخدمات في منطقة قانونية تحترم الخصوصية","__title__":"مستكشف القانون الخاص بـ VPN"},"hi":{"VPN Legal Navigator":"VPN लेजल नेविगेटर","How to Use VPN Legal Navigator":"VPN लेजल नेविगेटर का कैसे उपयोग करें","Use the search bar to find VPN-related laws by keyword":"सर्च बार का उपयोग करके VPN-संबंधित कानूनों को कीवर्ड द्वारा खोजें","Click on any law to see detailed interpretation":"किसी कानून पर क्लिक करके विस्तृत व्याख्या देखें","Upload your VPN configuration file for compliance assessment":"अपना VPN कॉन्फ़िगरेशन फ़ाइल अपलोड करके अनुपालन मूल्यांकन के लिए","Check for the latest updates on VPN regulations":"VPN नियमों पर किनारी अद्यतन की जाँच करें","Join the community Q\u0026A to ask questions and share knowledge":"सवाल पूछने और ज्ञान साझा करने के लिए कम्यूनिटी Q\u0026A में शामिल हों","Compliance Assessment":"अनुपालन मूल्यांकन","Upload your VPN configuration file to assess compliance with current regulations:":"वर्तमान नियमों के अनुपालन की मूल्यांकन के लिए अपना VPN कॉन्फ़िगरेशन फ़ाइल अपलोड करें:","Assessment Results":"मूल्यांकन परिणाम","VPN Laws and Regulations":"VPN कानून और नियम","Law Details":"कानून का विवरण","Select a law from the list to view detailed interpretation.":"सूची से किसी कानून को चुनकर विस्तृत व्याख्या देखें.","Latest Updates":"नवीनतम अद्यतन","Community Q\u0026A":"कम्यूनिटी Q\u0026A","Ask questions about VPN laws and share your knowledge with the community:":"VPN कानूनों के बारे में सवाल पूछें और अपना ज्ञान कम्यूनिटी से साझा करें:","European Union":"यूरोपीय संघ","United States":"संयुक्त राज्य अमेरिका","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"व्यक्तिगत जानकारी के प्रसंस्करण को नियंत्रित करने वाला चीनी कानून, कुछ पहलुओं में GDPR से अधिक सख्त आवश्यकताओं के साथ.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"अवलोकन और डाटा संग्रह के लिए कानूनी और खुफिया एजेंसियों को अतिरिक्त शक्तियां प्रदान करने वाला ब्रिटेन का कानून.","United Kingdom":"यूनाइटेड किंगडम","Russian Law on Information Information":"सूचना पर रूसी कानून","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"फेडरल रजिस्ट्री में शामिल वेबसाइटों को ब्लॉक करने के लिए VPN प्रदाताओं को आवश्यकता करने वाला रूसी नियम.","Are VPNs legal in my country?":"मेरे देश में VPN कानूनी हैं क्या?","Legal Expert":"कानूनी विशेषज्ञ","What should I look for in a VPN for privacy?":"गोपनीयता के लिए VPN में मैं क्या खोजना चाहूं?","Privacy Advocate":"गोपनीयता अधिवक्ता","Can my ISP see that I'm using a VPN?":"क्या मेरा ISP देख सकता है कि मैं VPN इस्तेमाल कर रहा हूं?","re connected to a VPN server, but they can":"VPN सर्वर से फिर से कनेक्शन कर दिया, लेकिन वे","re connected to the VPN provider":"VPN प्रोवाइडर से फिर से कनेक्शन कर दिया","Tech Expert":"टेक्नोलॉजी विशेषज्ञ","New EU Data Protection Guidelines for VPN Providers":"VPN प्रोवाइडर्स के लिए नए यूरोपीय संघ डेटा सुरक्षा दिशानिर्देश","US Court Ruling on VPN Privacy Rights":"VPN गोपनीयता अधिकारों पर अमेरिकी अदालत का निर्णय","India Proposes New Regulations for VPN Services":"भारत ने VPN सेवाओं के लिए नए नियमन प्रस्तावित किए","Please select a configuration file to assess.":"कृपया एक विन्यास फ़ाइल चुनें ताकि आकलन किया जा सके.","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"कमजोर एनक्रिप्शन विधि दिसा. सिफारिश: AES-256 या ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"AES-256 या ChaCha20-Poly1305 जैसे मजबूत एनक्रिप्शन प्रोटोकॉल को अपग्रेड करें","No encryption method specified.":"कोई एनक्रिप्शन विधि निर्दिष्ट नहीं की गई.","Implement strong encryption for all traffic":"सभी ट्रैफिक के लिए मजबूत एनक्रिप्शन कार्यान्वित करें","Full logging policy detected. This compromises user privacy.":"पूर्ण लॉगिंग नीति दिसी. यह उपयोगकर्ता की गोपनीयता को खतरे में डालती है.","Implement a strict no-logs policy":"एक सख्त नो-लॉग्स नीति कार्यान्वित करें","Minimal logging policy may still collect some user data.":"न्यूनतम लॉगिंग नीति अभी भी कुछ उपयोगकर्ता डाटा संग्रहित कर सकती है.","Consider implementing a complete no-logs policy":"पूर्ण नो-लॉग्स नीति कार्यान्वित करने की सोचें","Define and document your logging policy":"अपनी लॉगिंग नीति को परिभाषित और दस्तावेजीकृत करें","British Virgin Islands":"ब्रिटिश वरिंग द्वीप","Consider hosting in a privacy-friendly jurisdiction":"गोपनीयता-मित्री अधिकारिता में होस्टिंग करने की सोचें","__title__":"VPN लेजल नेविगेटर"},"id":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Bagaimana cara menggunakan VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Gunakan bilah pencari untuk mencari undang-undang yang berhubungan dengan VPN melalui kata kunci","Click on any law to see detailed interpretation":"Klik pada undang-undang apapun untuk melihat interpretasi detil","Upload your VPN configuration file for compliance assessment":"Unggah berkas konfigurasi VPN Anda untuk penilaian kesiapan","Check for the latest updates on VPN regulations":"Periksa pembaruan terbaru tentang regulasi VPN","Join the community Q\u0026A to ask questions and share knowledge":" Bergabung dengan komunitas Q\u0026A untuk bertanya dan berbagi pengetahuan","Compliance Assessment":"Penilaian Kesiapan","Upload your VPN configuration file to assess compliance with current regulations":"Unggah berkas konfigurasi VPN Anda untuk mengevaluasi kesiapan sesuai dengan regulasi saat ini","Assessment Results":"Hasil Penilaian","VPN Laws and Regulations":"Undang-undang dan Regulasi VPN","Law Details":"Detil Undang-undang","Select a law from the list to view detailed interpretation":"Pilih undang-undang dari daftar untuk melihat interpretasi detil","Latest Updates":"Pembaruan Terbaru","Community Q\u0026A":"Komunitas Q\u0026A","Ask questions about VPN laws and share your knowledge with the community":"Tanya pertanyaan tentang undang-undang VPN dan bagikan pengetahuan Anda dengan komunitas","European Union":"Uni Eropa","United States":"Amerika Serikat","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"Undang-undang Cina tentang pengolahan informasi pribadi, dengan persyarat yang lebih ketat daripada GDPR di beberapa aspek","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"Undang-undang Inggris yang memberikan kekuatan tambahan kepada badan eksekutif dan agensi intelijen untuk pengawasan dan pengumpulan data","United Kingdom":"United Kingdom","Russian Law on Information Information":"Undang-undang Rusia tentang Informasi Informasi","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"Regulasi Rusia yang memerlukan provider VPN untuk blokir akses ke situs web yang termasuk dalam registrasi federal","Are VPNs legal in my country?":"Apakah VPN sah di negaraku?","Legal Expert":"Ahli Hukum","What should I look for in a VPN for privacy?":"Apa yang harus saya cari di VPN untuk privasi?","Privacy Advocate":"Pempromosikan Privasi","Can my ISP see that I'm using a VPN?":"Apakah ISP saya dapat melihat bahwa saya menggunakan VPN?","re connected to a VPN server, but they can":"kembali terhubung ke server VPN, tetapi mereka dapat","re connected to the VPN provider":"kembali terhubung ke provider VPN","Tech Expert":"Ahli Teknologi","New EU Data Protection Guidelines for VPN Providers":"Pedoman Baru Uni Eropa tentang Perlindungan Data untuk Provider VPN","US Court Ruling on VPN Privacy Rights":"Keputusan Pengadilan AS tentang Hak Privasi VPN","India Proposes New Regulations for VPN Services":"India Menyusun Regulasi Baru untuk Layanan VPN","Please select a configuration file to assess":"Silakan pilih berkas konfigurasi untuk dievaluasi","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Metode pengenkripsi lemah terdeteksi. Recomendasi: AES-256 atau ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Tingkatkan protokol pengenkripsi yang kuat seperti AES-256 atau ChaCha20-Poly1305","No encryption method specified.":"Tidak ada metode pengenkripsi yang ditentukan.","Implement strong encryption for all traffic":"Laksanakan pengenkripsi kuat untuk semua lalu lintas","Full logging policy detected. This compromises user privacy.":"Polisi perekam penuh terdeteksi. Ini mengkhianati privasi pengguna.","Implement a strict no-logs policy":"Laksanakan polisi tanpa perekam yang ketat","Minimal logging policy may still collect some user data.":"Polisi perekam minimal masih dapat mengumpulkan beberapa data pengguna","Consider implementing a complete no-logs policy":"Berhati-hatilah melaksanakan polisi tanpa perekam yang lengkap","Define and document your logging policy":"Tentukan dan dokumentasikan polisi perekam Anda","British Virgin Islands":"Kepulauan Virgin Britania","Consider hosting in a privacy-friendly jurisdiction":"Berhati-hatilah untuk menyelenggarakan di yurisdiksi yang ramah bagi privasi","Select a law from the list to view detailed interpretation.":"Pilih undang-undang dari daftar untuk melihat interpretasi detil.","Ask questions about VPN laws and share your knowledge with the community:":"Tanyakan pertanyaan tentang undang-undang VPN dan bagikan pengetahuannya dengan komunitas:","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"Undang-undang Cina yang mengatur pemrosesan informasi pribadi, dengan persyaratannya yang lebih ketat daripada GDPR di beberapa aspek.","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"Undang-undang Inggris yang memberikan kekuatan tambahan kepada badan eksekutif dan agen intelijen untuk pengawasan dan pengumpulan data.","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"Peraturan Rusia yang memerlukan pemberi VPN untuk blokir akses ke situs web yang termasuk dalam registrasi federal.","Please select a configuration file to assess.":"Silakan pilih berkas konfigurasi untuk dievaluasi.","__title__":"VPN Legal Navigator"},"vi":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"Cách sử dụng VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"Sử dụng thanh tìm kiếm để tìm luật liên quan đến VPN bằng từ khóa","Click on any law to see detailed interpretation":"Nhấn vào bất kỳ luật nào để xem giải thích chi tiết","Upload your VPN configuration file for compliance assessment":"Tải lên tệp cấu hình VPN của bạn để đánh giá tuân thủ","Check for the latest updates on VPN regulations":"Kiểm tra các cập nhật mới nhất về quy định VPN","Join the community Q\u0026A to ask questions and share knowledge":"Tham gia cộng đồng hỏi đáp để hỏi câu hỏi và chia sẻ kiến thức","Compliance Assessment":"Đánh giá tuân thủ","Upload your VPN configuration file to assess compliance with current regulations":"Tải lên tệp cấu hình VPN của bạn để đánh giá tuân thủ các quy định hiện hành","Assessment Results":"Kết quả đánh giá","VPN Laws and Regulations":"Luật và quy định VPN","Law Details":"Chi tiết luật","Select a law from the list to view detailed interpretation":"Chọn một luật từ danh sách để xem giải thích chi tiết","Latest Updates":"Cập nhật mới nhất","Community Q\u0026A":"Cộng đồng hỏi đáp","Ask questions about VPN laws and share your knowledge with the community":"Hỏi câu hỏi về luật VPN và chia sẻ kiến thức với cộng đồng","European Union":"Liên minh châu Âu","United States":"Hoa Kỳ","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"Luật của Trung Quốc điều chỉnh việc xử lý thông tin cá nhân, có yêu cầu chặt chẽ hơn GDPR ở một số khía cạnh","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"Luật của Vương quốc Anh cấp thêm quyền lực cho các cơ quan thực thi pháp luật và cơ quan tình báo để giám sát và thu thập dữ liệu","United Kingdom":"Vương quốc Anh","Russian Law on Information Information":"Luật của Nga về Thông tin Thông tin","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"Quy định của Nga yêu cầu các nhà cung cấp VPN chặn truy cập vào các trang web được liệt kê trong sổ đăng ký liên bang","Are VPNs legal in my country?":"VPN có hợp pháp ở đất nước tôi không?","Legal Expert":"Chuyên gia pháp lý","What should I look for in a VPN for privacy?":"Tôi nên tìm kiếm điều gì trong VPN để đảm bảo quyền riêng tư?","Privacy Advocate":"Đại diện quyền riêng tư","Can my ISP see that I'm using a VPN?":"Dịch vụ cung cấp Internet của tôi có thể thấy tôi đang sử dụng VPN không?","re connected to a VPN server, but they can":"lại kết nối đến máy chủ VPN, nhưng họ có thể","re connected to the VPN provider":"lại kết nối đến nhà cung cấp VPN","Tech Expert":"Chuyên gia công nghệ","New EU Data Protection Guidelines for VPN Providers":"Hướng dẫn mới của Liên minh châu Âu về Bảo vệ Dữ liệu cho các nhà cung cấp VPN","US Court Ruling on VPN Privacy Rights":"Quyết định của tòa án Hoa Kỳ về Quyền riêng tư VPN","India Proposes New Regulations for VPN Services":"Ấn Độ đề xuất các quy định mới cho dịch vụ VPN","Please select a configuration file to assess":"Vui lòng chọn tệp cấu hình để đánh giá","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"Phát hiện phương pháp mã hóa yếu. Đề xuất: AES-256 hoặc ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"Cập nhật lên giao thức mã hóa mạnh hơn như AES-256 hoặc ChaCha20-Poly1305","No encryption method specified.":"Chưa chỉ định phương pháp mã hóa.","Implement strong encryption for all traffic":"Thực hiện mã hóa mạnh cho tất cả lưu lượng","Full logging policy detected. This compromises user privacy.":"Phát hiện chính sách ghi lại đầy đủ. Điều này vi phạm quyền riêng tư của người dùng.","Implement a strict no-logs policy":"Thực hiện chính sách không ghi lại chặt chẽ","Minimal logging policy may still collect some user data.":"Chính sách ghi lại tối thiểu có thể vẫn thu thập một số dữ liệu người dùng.","Consider implementing a complete no-logs policy":"Thinking about implementing a complete no-logs policy","Define and document your logging policy":"Định nghĩa và ghi lại chính sách ghi lại của bạn","British Virgin Islands":"Quần đảo British Virgin","Consider hosting in a privacy-friendly jurisdiction":"Thinking about hosting in a privacy-friendly jurisdiction","__title__":"VPN Legal Navigator"},"th":{"VPN Legal Navigator":"VPN Legal Navigator","How to Use VPN Legal Navigator":"How to Use VPN Legal Navigator","Use the search bar to find VPN-related laws by keyword":"ใช้แบบค้นหาเพื่อหากฏหมายที่เกี่ยวกับ VPN ด้วยคำที่ค้นหา","Click on any law to see detailed interpretation":"คลิกบนกฏหมายใดก็ได้เพื่อดูการอธิบายละเอียด","Upload your VPN configuration file for compliance assessment":"โหลดไฟล์การตั้งค่า VPN ของคุณเพื่อประเมินความสอดคล้อง","Check for the latest updates on VPN regulations":"ตรวจสอบการปรับปรุงล่าสุดของกฏหมาย VPN","Join the community Q\u0026A to ask questions and share knowledge":"เข้าร่วมชุมชน Q\u0026A ที่นี่เพื่อถามคำถามและแบ่งปันความรู้","Compliance Assessment":"ประเมินความสอดคล้อง","Upload your VPN configuration file to assess compliance with current regulations":"โหลดไฟล์การตั้งค่า VPN ของคุณเพื่อประเมินความสอดคล้องกับกฏหมายปัจจุบัน","Assessment Results":"ผลการประเมิน","VPN Laws and Regulations":"กฏหมายและกฏระเบียบ VPN","Law Details":"รายละเอียดกฏหมาย","Select a law from the list to view detailed interpretation":"เลือกกฏหมายจากรายการเพื่อดูการอธิบายละเอียด","Latest Updates":"ปรับปรุงล่าสุด","Community Q\u0026A":"Community Q\u0026A","Ask questions about VPN laws and share your knowledge with the community":"ถามคำถามเกี่ยวกับกฏหมาย VPN และแบ่งปันความรู้กับชุมชน","European Union":"ยุโรป","United States":"สหรัฐอเมริกา","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects":"กฏหมายของจีนที่ควบคุมการประมวลผลข้อมูลส่วนบุคคล ซึ่งมีข้อกำหนดที่เข้มงวดกว่า GDPR ในบางด้าน","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection":"กฏหมายของสหราชอาณาจักรที่มอบอำนาจเพิ่มเติมแก่หน่วยงานตำรวจและหน่วยงานข่าวกรองเพื่อการตรวจสอบและการรวบรวมข้อมูล","United Kingdom":"สหราชอาณาจักร","Russian Law on Information Information":"กฏหมายของรัสเซียเกี่ยวกับข้อมูล","Russian regulation requiring VPN providers to block access to websites included in the federal registry":"กฏระเบียบของรัสเซียที่กำหนดให้ผู้ให้บริการ VPN หยุดบริการเข้าถึงเว็บไซต์ที่ระบุในบันทึกของรัฐ","Are VPNs legal in my country?":"VPN ถือเป็นกฏหมายในประเทศของฉันหรือไม่?","Legal Expert":"ผู้เชี่ยวชาญด้านกฏหมาย","What should I look for in a VPN for privacy?":"ฉันควรหาอะไรใน VPN สำหรับความเป็นส่วนตัว?","Privacy Advocate":"นักสนับสนุนความเป็นส่วนตัว","Can my ISP see that I'm using a VPN?":"ISP ของฉันจะเห็นว่าฉันใช้ VPN หรือไม่?","re connected to a VPN server, but they can":"เราได้เชื่อมต่อกับเซิร์ฟเวอร์ VPN แล้ว แต่พวกเขาสามารถ","re connected to the VPN provider":"เราได้เชื่อมต่อกับผู้ให้บริการ VPN","Tech Expert":"ผู้เชี่ยวชาญด้านเทคโนโลยี","New EU Data Protection Guidelines for VPN Providers":"แนวทางการปกป้องข้อมูลใหม่ของสหภาพยุโรปสำหรับผู้ให้บริการ VPN","US Court Ruling on VPN Privacy Rights":"คำตัดสินของศาลสหรัฐเกี่ยวกับสิทธิ์ความเป็นส่วนตัวของ VPN","India Proposes New Regulations for VPN Services":"อินเดียเสนอกฏระเบียบใหม่สำหรับบริการ VPN","Please select a configuration file to assess.":"กรุณาเลือกไฟล์การตั้งค่าเพื่อประเมิน","Weak encryption method detected. Recommended: AES-256 or ChaCha20-Poly1305.":"มีวิธีการเข้ารหัสที่อ่อนแน่น แนะนำ: AES-256 หรือ ChaCha20-Poly1305.","Upgrade to stronger encryption protocol like AES-256 or ChaCha20-Poly1305":"ปรับระดับเป็นโปรโตคอลเข้ารหัสที่แข็งแกร่งของ AES-256 หรือ ChaCha20-Poly1305","No encryption method specified.":"ยังไม่เฉพาะระบบเข้ารหัส","Implement strong encryption for all traffic":"ใช้การเข้ารหัสที่แข็งแกร่งสำหรับการส่งสัญญาณทั้งหมด","Full logging policy detected. This compromises user privacy.":"มีนโยบายบันทึกเต็ม นี่เป็นการขาดความเป็นส่วนตัวของผู้ใช้","Implement a strict no-logs policy":"ใช้นโยบายบันทึกที่ไม่มีบันทึก","Minimal logging policy may still collect some user data.":"นโยบายบันทึกขั้นต่ำอาจยังรวบรวมข้อมูลผู้ใช้บางส่วน","Consider implementing a complete no-logs policy":"คิดถึงการใช้นโยบายบันทึกที่ไม่มีบันทึกทั้งหมด","Define and document your logging policy":"กำหนดและบันทึกนโยบายบันทึกของคุณ","British Virgin Islands":"British Virgin Islands","Select a law from the list to view detailed interpretation.":"เลือกกฎหมายจากรายการเพื่อดูการอธิบายละเอียด:","Ask questions about VPN laws and share your knowledge with the community:":"ถามคำถามเกี่ยวกับกฎหมาย VPN และแบ่งสรรความรู้ของคุณกับชุมชน:","Chinese law regulating the processing of personal information, with stricter requirements than GDPR in certain aspects.":"กฎหมายของจีนที่ควบคุมการประมวลผลข้อมูลส่วนบุคคล ซึ่งมีข้อกำหนดที่เข้มงวดกว่า GDPR ในบางด้าน:","UK law granting additional powers to law enforcement and intelligence agencies for surveillance and data collection.":"กฎหมายของสหราชอาณาจักรที่มอบอำนาจเพิ่มเติมแก่หน่วยงานตำรวจและหน่วยงานข่าวกรองเพื่อการสังเกตการณ์และการรวบรวมข้อมูล:","Russian regulation requiring VPN providers to block access to websites included in the federal registry.":"กฎบัญญัติของรัสเซียที่กำหนดให้ผู้ให้บริการ VPN หยุดบริการเข้าถึงเว็บไซต์ที่อยู่ในบันทึกของรัฐ:","Consider hosting in a privacy-friendly jurisdiction":"จินตนาการใช้การเก็บข้อมูลในเขตที่เป็นมุมมองด้านプライバシー","__title__":"VPN Legal Navigator"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -272,5 +656,5 @@ document.addEventListener("DOMContentLoaded",init);
 init();
 }
 watchMutations();
-})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+})();</script><!-- radar-i18n-end --></body>
 </html>
