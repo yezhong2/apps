@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Health Monitor</title><meta name="description" content="Free online tool: Phone Health Monitor. No signup, no payment — free forever.">
+<meta property="og:title" content="Phone Health Monitor">
+<meta property="og:description" content="Free online tool: Phone Health Monitor. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_153223_Phone Health.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        input[type="text"], input[type="number"], input[type="date"], input[type="password"], select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: #fff;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #0056b3;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003d82;
+        }
+        .report {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 5px;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <h1>Phone Health Monitor</h1>
+        <div id="login">
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <button onclick="register()">Register</button>
+        </div>
+        <div id="phone-model" style="display:none;">
+            <input type="text" id="phone-model-input" placeholder="Enter your phone model">
+            <button onclick="submitPhoneModel()">Submit</button>
+        </div>
+        <div id="health-data" style="display:none;">
+            <h2>Health Data Input</h2>
+            <input type="number" id="steps" placeholder="Daily Steps">
+            <input type="date" id="sleep-date" placeholder="Sleep Date">
+            <input type="text" id="sleep-duration" placeholder="Sleep Duration (hours)">
+            <input type="text" id="diet" placeholder="Dietary Intake">
+            <input type="text" id="medication" placeholder="Medication Information">
+            <button onclick="submitHealthData()">Submit Health Data</button>
+        </div>
+        <div id="health-report" style="display:none;">
+            <h2>Health Report & Analysis</h2>
+            <div class="report" id="steps-report"></div>
+            <div class="report" id="sleep-report"></div>
+            <div class="report" id="diet-report"></div>
+            <div class="report" id="medication-report"></div>
+        </div>
+        <div id="feedback-settings" style="display:none;">
+            <h2>User Feedback & Settings</h2>
+            <input type="text" id="feedback" placeholder="Feedback">
+            <button onclick="submitFeedback()">Submit Feedback</button>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            // Add logic to login
+        }
+
+        function register() {
+            // Add logic to register
+        }
+
+        function submitPhoneModel() {
+            var phoneModel = document.getElementById('phone-model-input').value;
+            document.getElementById('phone-model').style.display = 'none';
+            document.getElementById('health-data').style.display = 'block';
+        }
+
+        function submitHealthData() {
+            var steps = document.getElementById('steps').value;
+            var sleepDate = document.getElementById('sleep-date').value;
+            var sleepDuration = document.getElementById('sleep-duration').value;
+            var diet = document.getElementById('diet').value;
+            var medication = document.getElementById('medication').value;
+            document.getElementById('health-data').style.display = 'none';
+            document.getElementById('health-report').style.display = 'block';
+            document.getElementById('steps-report').innerText = 'Steps: ' + steps;
+            document.getElementById('sleep-report').innerText = 'Sleep Date: ' + sleepDate + ', Duration: ' + sleepDuration + ' hours';
+            document.getElementById('diet-report').innerText = 'Dietary Intake: ' + diet;
+            document.getElementById('medication-report').innerText = 'Medication Information: ' + medication;
+        }
+
+        function submitFeedback() {
+            var feedback = document.getElementById('feedback').value;
+            document.getElementById('feedback-settings').style.display = 'none';
+            // Add logic to submit feedback
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Phone Health Monitor":"Phone Health Monitor","Login":"Login","Register":"Register","Submit":"Submit","Health Data Input":"Health Data Input","Submit Health Data":"Submit Health Data","Health Report \u0026 Analysis":"Health Report \u0026 Analysis","User Feedback \u0026 Settings":"User Feedback \u0026 Settings","Submit Feedback":"Submit Feedback","Sleep Date:":"Sleep Date:","Dietary Intake:":"Dietary Intake:","Medication Information:":"Medication Information:","__title__":"Phone Health Monitor"},"zh-CN":{"Phone Health Monitor":"手机健康监控","Login":"登录","Register":"注册","Submit":"提交","Health Data Input":"健康数据输入","Submit Health Data":"提交健康数据","Health Report \u0026 Analysis":"健康报告与分析","User Feedback \u0026 Settings":"用户反馈与设置","Submit Feedback":"提交反馈","Sleep Date:":"睡眠日期：","Dietary Intake:":"饮食摄入：","Medication Information:":"用药信息：","__title__":"手机健康监控"},"es":{"Phone Health Monitor":"Monitor de Salud del Teléfono","Login":"Iniciar sesión","Register":"Registrarse","Submit":"Enviar","Health Data Input":"Ingreso de Datos de Salud","Submit Health Data":"Enviar Datos de Salud","Health Report \u0026 Analysis":"Informe y Análisis de Salud","User Feedback \u0026 Settings":"Comentarios del Usuario y Ajustes","Submit Feedback":"Enviar Comentarios","Sleep Date:":"Fecha de Sueño:","Dietary Intake:":"Ingesta Dietética:","Medication Information:":"Información sobre Medicamentos:","__title__":"Monitor de Salud del Teléfono"},"ja":{"Phone Health Monitor":"Phone Health Monitor","Login":"Login","Register":"Register","Submit":"Submit","Health Data Input":"Health Data Input","Submit Health Data":"Submit Health Data","Health Report \u0026 Analysis":"Health Report \u0026 Analysis","User Feedback \u0026 Settings":"User Feedback \u0026 Settings","Submit Feedback":"Submit Feedback","Sleep Date:":"Sleep Date:","Dietary Intake:":"Dietary Intake:","Medication Information:":"Medication Information:","__title__":"Phone Health Monitor"},"ko":{"Phone Health Monitor":"폰 헬스 모니터","Login":"로그인","Register":"가입","Submit":"제출","Health Data Input":"헬스 데이터 입력","Submit Health Data":"헬스 데이터 제출","Health Report \u0026 Analysis":"헬스 리포트 \u0026 분석","User Feedback \u0026 Settings":"사용자 피드백 \u0026 설정","Submit Feedback":"피드백 제출","Sleep Date:":"수면 날짜:","Dietary Intake:":"영양 섭취:","Medication Information:":"의약 정보:","__title__":"폰 헬스 모니터"},"fr":{"Phone Health Monitor":"Téléphone de surveillance de la santé","Login":"Se connecter","Register":"S'inscrire","Submit":"Soumettre","Health Data Input":"Entrée de données de santé","Submit Health Data":"Soumettre les données de santé","Health Report \u0026 Analysis":"Rapport et analyse de santé","User Feedback \u0026 Settings":"Retour d'information de l'utilisateur et paramètres","Submit Feedback":"Soumettre un retour d'information","Sleep Date:":"Date de sommeil :","Dietary Intake:":"Apport alimentaire :","Medication Information:":"Informations sur les médicaments :","__title__":"Téléphone de surveillance de la santé"},"de":{"Phone Health Monitor":"Phone Health Monitor","Login":"Login","Register":"Register","Submit":"Submit","Health Data Input":"Gesundheitsdaten Eingabe","Submit Health Data":"Gesundheitsdaten einreichen","Health Report \u0026 Analysis":"Gesundheitsbericht \u0026 Analyse","User Feedback \u0026 Settings":"Benutzerfeedback \u0026 Einstellungen","Submit Feedback":"Feedback einreichen","Sleep Date:":"Schlafdatum:","Dietary Intake:":"Ernährungsintake:","Medication Information:":"Medikationsinformation:","__title__":"Phone Health Monitor"},"ru":{"Phone Health Monitor":"Phone Health Monitor","Login":"Вход","Register":"Регистрация","Submit":"Отправить","Health Data Input":"Ввод данных о здоровье","Submit Health Data":"Отправка данных о здоровье","Health Report \u0026 Analysis":"Отчет и анализ о здоровье","User Feedback \u0026 Settings":"Обратная связь и настройки пользователя","Submit Feedback":"Отправить обратную связь","Sleep Date:":"Дата сна:","Dietary Intake:":"Вход питательных веществ:","Medication Information:":"Информация о лекарствах:","__title__":"Phone Health Monitor"},"pt":{"Phone Health Monitor":"Monitor de Saúde do Telefone","Login":"Entrar","Register":"Registrar","Submit":"Enviar","Health Data Input":"Entrada de Dados de Saúde","Submit Health Data":"Enviar Dados de Saúde","Health Report \u0026 Analysis":"Relatório e Análise de Saúde","User Feedback \u0026 Settings":"Feedback do Usuário e Configurações","Submit Feedback":"Enviar Feedback","Sleep Date:":"Data do Sono:","Dietary Intake:":"Ingestão Dietética:","Medication Information:":"Informações sobre Medicamentos:","__title__":"Monitor de Saúde do Telefone"},"ar":{"Phone Health Monitor":"مراقبة صحة الهاتف","Login":"تسجيل الدخول","Register":"التسجيل","Submit":"إرسال","Health Data Input":"إدخال بيانات الصحة","Submit Health Data":"إرسال بيانات الصحة","Health Report \u0026 Analysis":"تقرير الصحة وتحليل","User Feedback \u0026 Settings":"ملاحظات المستخدم وإعدادات","Submit Feedback":"إرسال ملاحظات","Sleep Date:":"تاريخ النوم:","Dietary Intake:":"تناول الغذاء:","Medication Information:":"معلومات الدواء:","__title__":"مراقبة صحة الهاتف"},"hi":{"Phone Health Monitor":"�फोन हेल्थ मॉनिटर","Login":"लॉगिन","Register":"रजिस्टर","Submit":"सबमिट","Health Data Input":"हेल्थ डेटा इनपुट","Submit Health Data":"हेल्थ डेटा सबमिट","Health Report \u0026 Analysis":"हेल्थ रिपोर्ट एंड एनालिसिस","User Feedback \u0026 Settings":"यूज़र फ़ीडबैक एंड सेटिंग्स","Submit Feedback":"सबमिट फ़ीडबैक","Sleep Date:":"स्लीप डेटा:","Dietary Intake:":"डायटेरी इनटेक:","Medication Information:":"मेडिकेशन इन्फ़ॉर्मेशन:","__title__":"�फोन हेल्थ मॉनिटर"},"id":{"Phone Health Monitor":"Pemantau Kesehatan Ponsel","Login":"Masuk","Register":"Daftar","Submit":"Kirim","Health Data Input":"Input Data Kesehatan","Submit Health Data":"Kirim Data Kesehatan","Health Report \u0026 Analysis":"Laporan \u0026 Analisis Kesehatan","User Feedback \u0026 Settings":"Feedback Pengguna \u0026 Pengaturan","Submit Feedback":"Kirim Feedback","Sleep Date:":"Tanggal Tidur:","Dietary Intake:":"Pemakaian Makanan:","Medication Information:":"Informasi Obat:","__title__":"Pemantau Kesehatan Ponsel"},"vi":{"Phone Health Monitor":"Đồng hồ theo dõi sức khỏe điện thoại","Login":"Đăng nhập","Register":"Đăng ký","Submit":"Gửi","Health Data Input":"Nhập dữ liệu sức khỏe","Submit Health Data":"Gửi dữ liệu sức khỏe","Health Report \u0026 Analysis":"Báo cáo và phân tích sức khỏe","User Feedback \u0026 Settings":"Phản hồi và cài đặt người dùng","Submit Feedback":"Gửi phản hồi","Sleep Date:":"Ngày ngủ:","Dietary Intake:":"Liều lượng ăn uống:","Medication Information:":"Thông tin về thuốc:","__title__":"Đồng hồ theo dõi sức khỏe điện thoại"},"th":{"Phone Health Monitor":"โปรแกรมตรวจสุขภาพโทรศัพท์","Login":"เข้าสู่ระบบ","Register":"ลงทะเบียน","Submit":"ยื่น","Health Data Input":"การใส่ข้อมูลสุขภาพ","Submit Health Data":"ยื่นข้อมูลสุขภาพ","Health Report \u0026 Analysis":"รายงานและการวิเคราะห์สุขภาพ","User Feedback \u0026 Settings":"ความเห็นของผู้ใช้และการตั้งค่า","Submit Feedback":"ยื่นความเห็น","Sleep Date:":"วันที่นอน:","Dietary Intake:":"การบริโภคอาหาร:","Medication Information:":"ข้อมูลยา:","__title__":"โปรแกรมตรวจสุขภาพโทรศัพท์"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
