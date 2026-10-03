@@ -328,8 +328,33 @@ function loadReviewLog() {
 }
 function markReviewed(name) {
     let log = loadReviewLog();
-    log[name] = dateStr();
+    let mt = 0;
+    try { mt = new java.io.File(PRODUCT_DIR + "/" + name).lastModified(); } catch (e) {}
+    // 记「日期 + 审查时刻 + 当时的文件 mtime」：mtime 是判断「改过没有」的唯一依据
+    log[name] = {d: dateStr(), t: Date.now(), mt: mt};
     try { files.write(REVIEW_LOG_PATH, JSON.stringify(log)); } catch (e) {}
+}
+// 历史里存的可能是新格式 {d,t,mt} 或旧的「日期字符串」，统一取出日期供排序用
+function reviewDate(name, log) {
+    let r = log[name];
+    if (r && typeof r === "object") return r.d || "";
+    return r || "";
+}
+// 【2026-10-03 新增·省 token 的关键闸门】要不要送 LLM 审查
+// 背景：原来 39 个产品每轮全部送审 —— 实测单轮 39 × 7854 = 306K token，巡检约 10 分钟一轮，
+// 折合约 1.84M/小时，30M 日预算约 16 小时见底。**这才是「token 用得快」的主因**（远大于此前那起双开）。
+// 新规则：只审「上次审查之后文件被改动过」的产品；未改动的做 24 小时兜底复检。
+// 静态检查（零 token）仍每轮全量跑，发现能力不受影响 —— 省掉的只是反复送审同一份没变过的源码。
+function shouldReview(name) {
+    let log = loadReviewLog();
+    let h = log[name];
+    if (!h) return true;                                    // 从没审过 → 必审
+    let rec = (h && typeof h === "object") ? h : {d: String(h || ""), t: 0, mt: 0};
+    let mt = 0;
+    try { mt = new java.io.File(PRODUCT_DIR + "/" + name).lastModified(); } catch (e) {}
+    if (mt > (rec.mt || 0)) return true;                     // 上次审查之后被改过 → 必审
+    if (!rec.t) return true;                                 // 旧格式没记时间戳 → 本轮审一次并升级格式
+    return (Date.now() - rec.t) > 24 * 3600 * 1000;          // 未改动：24 小时兜底复检
 }
 
 // 巡检目标 = 全部基线产品：今日变更（新品/改版）排最前（最可能有新问题），其余按「最久未审 → 最近已审」排队；
@@ -342,8 +367,8 @@ function pickTargets() {
     let log = loadReviewLog();
     let rest = collectBaselines().filter(function(n) { return picked.indexOf(n) < 0; });
     rest.sort(function(a, b) {
-        let da = log[a] || "";
-        let db = log[b] || "";
+        let da = reviewDate(a, log);
+        let db = reviewDate(b, log);
         if (da !== db) return da < db ? -1 : 1;
         return a < b ? -1 : 1;
     });
@@ -466,6 +491,7 @@ function reviewProduct(name, html) {
         log("💰 预算余量不足（" + dailyTokenCost + "/" + DAILY_BUDGET + "），跳过 LLM 审查层，仅静态检查");
         return null; // null = 预算跳过、本轮未审查（不计入审查历史，下次优先）
     }
+    if (!shouldReview(name)) return null; // 源码自上轮审查后没变过 → 不重复送审（null = 本轮未审查，不记历史）
     // 审查视界：20000 会砍掉长产品的交互脚本尾部（实测 AI Code Ment 脚本在 13906-27193 字节），
     // 42KB 级产品（BrainWaveHea 42638）同样被 30000 截断盲区覆盖尾部监测 JS；50000 覆盖当前全部产品（最大 43KB）
     let src = html.length > 50000 ? html.slice(0, 50000) + "\n<!-- 源码过长已截断 -->" : html;
