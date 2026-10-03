@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRGameMaster - Create Interactive 3D Game Scenes</title><meta name="description" content="Free online tool: VRGameMaster - Create Interactive 3D Game Scenes. No signup, no payment — free forever.">
+<meta property="og:title" content="VRGameMaster - Create Interactive 3D Game Scenes">
+<meta property="og:description" content="Free online tool: VRGameMaster - Create Interactive 3D Game Scenes. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_074357_VRGameMaster.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #646cff;
+            --accent-hover: #7b7dff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+            padding: 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        /* Input Styles */
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Button Styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #5cbf60;
+        }
+
+        /* Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Preview Area */
+        .preview-area {
+            min-height: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .preview-placeholder svg {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 2px dashed #444;
+            border-radius: 4px;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover .file-upload-label {
+            border-color: var(--accent);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #444;
+        }
+
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        /* Script Editor */
+        .script-editor {
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            min-height: 200px;
+        }
+
+        /* Test Results */
+        .test-results {
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            padding: 1rem;
+            min-height: 200px;
+            white-space: pre-wrap;
+        }
+
+        .test-output {
+            color: var(--success);
+        }
+
+        .test-error {
+            color: var(--error);
+        }
+
+        /* Scene List */
+        .scene-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .scene-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .scene-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .scene-card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .scene-card-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">VRGameMaster</div>
+            <div class="nav-links">
+                <a href="#scene-builder" class="nav-link">Scene Builder</a>
+                <a href="#character-customizer" class="nav-link">Character Customizer</a>
+                <a href="#script-editor" class="nav-link">Script Editor</a>
+                <a href="#game-tester" class="nav-link">Game Tester</a>
+                <a href="#scene-gallery" class="nav-link">Gallery</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Scene Builder Section -->
+        <section id="scene-builder" class="section">
+            <h2 class="section-title">Virtual Scene Builder</h2>
+            <p>Create 3D game scenes with natural language descriptions</p>
+            
+            <div class="two-column">
+                <div>
+                    <label for="scene-description">Scene Description</label>
+                    <textarea id="scene-description" rows="5" placeholder="Describe your scene in detail..."></textarea>
+                    
+                    <button class="btn" id="generate-scene">Generate 3D Scene</button>
+                    
+                    <div id="scene-generation-status" style="display: none; margin-top: 1rem;">
+                        <div class="spinner"></div>
+                        <span>Generating scene...</span>
+                    </div>
+                </div>
+                
+                <div class="preview-area">
+                    <div class="preview-placeholder" id="scene-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <p>Scene preview will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Character Customizer Section -->
+        <section id="character-customizer" class="section">
+            <h2 class="section-title">Character Customizer</h2>
+            <p>Upload an image to create an interactive 3D character model</p>
+            
+            <div class="two-column">
+                <div>
+                    <label>Upload Character Image</label>
+                    <div class="file-upload">
+                        <input type="file" id="character-image" accept="image/*">
+                        <label for="character-image" class="file-upload-label">
+                            Click to upload or drag and drop
+                        </label>
+                    </div>
+                    
+                    <label for="character-name">Character Name</label>
+                    <input type="text" id="character-name" placeholder="Enter character name">
+                    
+                    <label for="character-description">Character Description</label>
+                    <textarea id="character-description" rows="3" placeholder="Describe your character..."></textarea>
+                    
+                    <button class="btn" id="generate-character">Generate 3D Character</button>
+                </div>
+                
+                <div class="preview-area">
+                    <div class="preview-placeholder" id="character-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        <p>Character preview will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Script Editor Section -->
+        <section id="script-editor" class="section">
+            <h2 class="section-title">Interactive Script Editor</h2>
+            <p>Create dialogue and actions for your game characters</p>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="dialogue">Dialogue</button>
+                <button class="tab" data-tab="actions">Actions</button>
+                <button class="tab" data-tab="events">Events</button>
+            </div>
+            
+            <div id="dialogue-tab" class="tab-content">
+                <label for="character-select">Select Character</label>
+                <select id="character-select">
+                    <option value="">Select a character</option>
+                </select>
+                
+                <label for="dialogue-text">Dialogue Text</label>
+                <textarea id="dialogue-text" rows="5" placeholder="Enter dialogue text..."></textarea>
+                
+                <label for="dialogue-triggers">Triggers</label>
+                <input type="text" id="dialogue-triggers" placeholder="e.g., player approaches, item picked up">
+                
+                <button class="btn" id="add-dialogue">Add Dialogue</button>
+            </div>
+            
+            <div id="actions-tab" class="tab-content" style="display: none;">
+                <label for="action-type">Action Type</label>
+                <select id="action-type">
+                    <option value="movement">Movement</option>
+                    <option value="animation">Animation</option>
+                    <option value="interaction">Interaction</option>
+                </select>
+                
+                <label for="action-details">Action Details</label>
+                <textarea id="action-details" rows="5" placeholder="Describe the action..."></textarea>
+                
+                <button class="btn" id="add-action">Add Action</button>
+            </div>
+            
+            <div id="events-tab" class="tab-content" style="display: none;">
+                <label for="event-type">Event Type</label>
+                <select id="event-type">
+                    <option value="trigger">Trigger</option>
+                    <option value="condition">Condition</option>
+                    <option value="consequence">Consequence</option>
+                </select>
+                
+                <label for="event-details">Event Details</label>
+                <textarea id="event-details" rows="5" placeholder="Describe the event..."></textarea>
+                
+                <button class="btn" id="add-event">Add Event</button>
+            </div>
+            
+            <div class="script-editor" id="script-preview">
+                <!-- Script preview will appear here -->
+            </div>
+        </section>
+
+        <!-- Game Tester Section -->
+        <section id="game-tester" class="section">
+            <h2 class="section-title">Game Tester</h2>
+            <p>Test your game with custom commands</p>
+            
+            <div class="two-column">
+                <div>
+                    <label for="test-command">Test Command</label>
+                    <input type="text" id="test-command" placeholder="Enter test command...">
+                    
+                    <button class="btn" id="run-test">Run Test</button>
+                    
+                    <div id="test-controls" style="margin-top: 1rem;">
+                        <button class="btn btn-secondary" id="start-game">Start Game</button>
+                        <button class="btn btn-secondary" id="pause-game">Pause Game</button>
+                        <button class="btn btn-secondary" id="reset-game">Reset Game</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3>Test Results</h3>
+                    <div class="test-results" id="test-results">
+                        <!-- Test results will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Scene Gallery Section -->
+        <section id="scene-gallery" class="section">
+            <h2 class="section-title">Scene Gallery</h2>
+            <p>Browse and share your created scenes</p>
+            
+            <div style="margin-bottom: 1rem;">
+                <button class="btn btn-success" id="share-scene">Share Current Scene</button>
+                <button class="btn btn-secondary" id="refresh-gallery">Refresh Gallery</button>
+            </div>
+            
+            <div class="scene-list" id="scene-list">
+                <!-- Scene cards will appear here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Global state
+        const state = {
+            scenes: [],
+            characters: [],
+            scripts: {
+                dialogue: [],
+                actions: [],
+                events: []
+            },
+            testResults: [],
+            currentScene: null,
+            currentCharacter: null
+        };
+
+        // Utility functions
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function saveToLocalStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        function loadFromLocalStorage(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        }
+
+        // Scene Builder
+        document.getElementById('generate-scene').addEventListener('click', function() {
+            const description = document.getElementById('scene-description').value.trim();
+            
+            if (!description) {
+                showNotification('Please enter a scene description', 'warning');
+                return;
+            }
+            
+            const status = document.getElementById('scene-generation-status');
+            status.style.display = 'block';
+            
+            // Simulate scene generation
+            setTimeout(() => {
+                status.style.display = 'none';
+                
+                // Create a simple scene representation
+                const scene = {
+                    id: Date.now(),
+                    name: `Scene ${state.scenes.length + 1}`,
+                    description: description,
+                    preview: `Generated scene based on: ${description.substring(0, 50)}...`,
+                    timestamp: new Date().toISOString()
+                };
+                
+                state.scenes.push(scene);
+                state.currentScene = scene;
+                
+                // Update preview
+                const preview = document.getElementById('scene-preview');
+                preview.innerHTML = `
+                    <div style="text-align: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" />
+                        </svg>
+                        <h3>${scene.name}</h3>
+                        <p>${scene.preview}</p>
+                    </div>
+                `;
+                
+                showNotification('Scene generated successfully!');
+                saveToLocalStorage('vrGameScenes', state.scenes);
+            }, 2000);
+        });
+
+        // Character Customizer
+        document.getElementById('character-image').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const label = document.querySelector('.file-upload-label');
+                    label.textContent = file.name;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('generate-character').addEventListener('click', function() {
+            const imageInput = document.getElementById('character-image');
+            const name = document.getElementById('character-name').value.trim();
+            const description = document.getElementById('character-description').value.trim();
+            
+            if (!imageInput.files[0]) {
+                showNotification('Please upload a character image', 'warning');
+                return;
+            }
+            
+            if (!name) {
+                showNotification('Please enter a character name', 'warning');
+                return;
+            }
+            
+            // Create a simple character representation
+            const character = {
+                id: Date.now(),
+                name: name,
+                description: description,
+                image: URL.createObjectURL(imageInput.files[0]),
+                timestamp: new Date().toISOString()
+            };
+            
+            state.characters.push(character);
+            state.currentCharacter = character;
+            
+            // Update preview
+            const preview = document.getElementById('character-preview');
+            preview.innerHTML = `
+                <div style="text-align: center;">
+                    <img src="${character.image}" alt="${character.name}" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+                    <h3>${character.name}</h3>
+                    <p>${character.description || 'No description provided'}</p>
+                </div>
+            `;
+            
+            // Update character select in script editor
+            const select = document.getElementById('character-select');
+            const option = document.createElement('option');
+            option.value = character.id;
+            option.textContent = character.name;
+            select.appendChild(option);
+            
+            showNotification('Character generated successfully!');
+            saveToLocalStorage('vrGameCharacters', state.characters);
+        });
+
+        // Script Editor Tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabName = this.dataset.tab;
+                
+                // Update active tab
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show corresponding tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(`${tabName}-tab`).style.display = 'block';
+                
+                updateScriptPreview();
+            });
+        });
+
+        // Add Dialogue
+        document.getElementById('add-dialogue').addEventListener('click', function() {
+            const characterId = document.getElementById('character-select').value;
+            const text = document.getElementById('dialogue-text').value.trim();
+            const triggers = document.getElementById('dialogue-triggers').value.trim();
+            
+            if (!characterId) {
+                showNotification('Please select a character', 'warning');
+                return;
+            }
+            
+            if (!text) {
+                showNotification('Please enter dialogue text', 'warning');
+                return;
+            }
+            
+            const character = state.characters.find(c => c.id == characterId);
+            
+            state.scripts.dialogue.push({
+                id: Date.now(),
+                characterId: characterId,
+                characterName: character.name,
+                text: text,
+                triggers: triggers || 'default',
+                timestamp: new Date().toISOString()
+            });
+            
+            // Clear inputs
+            document.getElementById('dialogue-text').value = '';
+            document.getElementById('dialogue-triggers').value = '';
+            
+            updateScriptPreview();
+            showNotification('Dialogue added successfully!');
+            saveToLocalStorage('vrGameScripts', state.scripts);
+        });
+
+        // Add Action
+        document.getElementById('add-action').addEventListener('click', function() {
+            const type = document.getElementById('action-type').value;
+            const details = document.getElementById('action-details').value.trim();
+            
+            if (!details) {
+                showNotification('Please enter action details', 'warning');
+                return;
+            }
+            
+            state.scripts.actions.push({
+                id: Date.now(),
+                type: type,
+                details: details,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Clear input
+            document.getElementById('action-details').value = '';
+            
+            updateScriptPreview();
+            showNotification('Action added successfully!');
+            saveToLocalStorage('vrGameScripts', state.scripts);
+        });
+
+        // Add Event
+        document.getElementById('add-event').addEventListener('click', function() {
+            const type = document.getElementById('event-type').value;
+            const details = document.getElementById('event-details').value.trim();
+            
+            if (!details) {
+                showNotification('Please enter event details', 'warning');
+                return;
+            }
+            
+            state.scripts.events.push({
+                id: Date.now(),
+                type: type,
+                details: details,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Clear input
+            document.getElementById('event-details').value = '';
+            
+            updateScriptPreview();
+            showNotification('Event added successfully!');
+            saveToLocalStorage('vrGameScripts', state.scripts);
+        });
+
+        // Update Script Preview
+        function updateScriptPreview() {
+            const preview = document.getElementById('script-preview');
+            let content = '';
+            
+            // Dialogue
+            if (state.scripts.dialogue.length > 0) {
+                content += '=== DIALOGUE ===\n';
+                state.scripts.dialogue.forEach(d => {
+                    content += `[${d.characterName}] ${d.text} (triggers: ${d.triggers})\n`;
+                });
+            }
+            
+            // Actions
+            if (state.scripts.actions.length > 0) {
+                content += '\n=== ACTIONS ===\n';
+                state.scripts.actions.forEach(a => {
+                    content += `[${a.type.toUpperCase()}] ${a.details}\n`;
+                });
+            }
+            
+            // Events
+            if (state.scripts.events.length > 0) {
+                content += '\n=== EVENTS ===\n';
+                state.scripts.events.forEach(e => {
+                    content += `[${e.type.toUpperCase()}] ${e.details}\n`;
+                });
+            }
+            
+            if (content === '') {
+                content = 'No script elements added yet. Add dialogue, actions, or events to see your script here.';
+            }
+            
+            preview.textContent = content;
+        }
+
+        // Game Tester
+        document.getElementById('run-test').addEventListener('click', function() {
+            const command = document.getElementById('test-command').value.trim();
+            
+            if (!command) {
+                showNotification('Please enter a test command', 'warning');
+                return;
+            }
+            
+            const results = document.getElementById('test-results');
+            results.innerHTML += `\n> ${command}`;
+            
+            // Simulate command execution
+            setTimeout(() => {
+                let output = '';
+                
+                // Simple command parser
+                if (command.toLowerCase().includes('move')) {
+                    output = 'Character moved successfully.';
+                } else if (command.toLowerCase().includes('interact')) {
+                    output = 'Interaction completed.';
+                } else if (command.toLowerCase().includes('dialogue')) {
+                    const dialogues = state.scripts.dialogue;
+                    if (dialogues.length > 0) {
+                        output = `Available dialogues: ${dialogues.length}`;
+                    } else {
+                        output = 'No dialogues available.';
+                    }
+                } else if (command.toLowerCase().includes('action')) {
+                    const actions = state.scripts.actions;
+                    if (actions.length > 0) {
+                        output = `Available actions: ${actions.length}`;
+                    } else {
+                        output = 'No actions available.';
+                    }
+                } else if (command.toLowerCase().includes('event')) {
+                    const events = state.scripts.events;
+                    if (events.length > 0) {
+                        output = `Available events: ${events.length}`;
+                    } else {
+                        output = 'No events available.';
+                    }
+                } else {
+                    output = 'Command not recognized. Try: move, interact, dialogue, action, or event.';
+                }
+                
+                results.innerHTML += `\n${output}\n`;
+                results.scrollTop = results.scrollHeight;
+                
+                showNotification('Test completed!');
+            }, 1000);
+        });
+
+        document.getElementById('start-game').addEventListener('click', function() {
+            showNotification('Game started!');
+            document.getElementById('test-results').innerHTML += '\n[GAME] Game started.\n';
+        });
+
+        document.getElementById('pause-game').addEventListener('click', function() {
+            showNotification('Game paused!');
+            document.getElementById('test-results').innerHTML += '\n[GAME] Game paused.\n';
+        });
+
+        document.getElementById('reset-game').addEventListener('click', function() {
+            showNotification('Game reset!');
+            document.getElementById('test-results').innerHTML = '';
+        });
+
+        // Scene Gallery
+        document.getElementById('share-scene').addEventListener('click', function() {
+            if (!state.currentScene) {
+                showNotification('No scene to share. Please create a scene first.', 'warning');
+                return;
+            }
+            
+            // Simulate sharing
+            showNotification('Scene shared successfully!');
+            
+            // Add to gallery if not already there
+            if (!state.scenes.find(s => s.id === state.currentScene.id)) {
+                state.scenes.push(state.currentScene);
+                saveToLocalStorage('vrGameScenes', state.scenes);
+            }
+            
+            updateSceneGallery();
+        });
+
+        document.getElementById('refresh-gallery').addEventListener('click', function() {
+            updateSceneGallery();
+            showNotification('Gallery refreshed!');
+        });
+
+        // Update Scene Gallery
+        function updateSceneGallery() {
+            const gallery = document.getElementById('scene-list');
+            gallery.innerHTML = '';
+            
+            if (state.scenes.length === 0) {
+                gallery.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No scenes shared yet.</p>';
+                return;
+            }
+            
+            state.scenes.forEach(scene => {
+                const card = document.createElement('div');
+                card.className = 'scene-card';
+                card.innerHTML = `
+                    <div class="scene-card-title">${scene.name}</div>
+                    <div class="scene-card-description">${scene.preview}</div>
+                    <div style="margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);">
+                        ${new Date(scene.timestamp).toLocaleDateString()}
+                    </div>
+                `;
+                
+                card.addEventListener('click', function() {
+                    state.currentScene = scene;
+                    document.getElementById('scene-description').value = scene.description;
+                    showNotification(`Loaded scene: ${scene.name}`);
+                });
+                
+                gallery.appendChild(card);
+            });
+        }
+
+        // Initialize from localStorage
+        function initializeApp() {
+            const savedScenes = loadFromLocalStorage('vrGameScenes');
+            const savedCharacters = loadFromLocalStorage('vrGameCharacters');
+            const savedScripts = loadFromLocalStorage('vrGameScripts');
+            
+            if (savedScenes) {
+                state.scenes = savedScenes;
+                updateSceneGallery();
+            }
+            
+            if (savedCharacters) {
+                state.characters = savedCharacters;
+                // Update character select in script editor
+                savedCharacters.forEach(character => {
+                    const select = document.getElementById('character-select');
+                    const option = document.createElement('option');
+                    option.value = character.id;
+                    option.textContent = character.name;
+                    select.appendChild(option);
+                });
+            }
+            
+            if (savedScripts) {
+                state.scripts = savedScripts;
+                updateScriptPreview();
+            }
+        }
+
+        // Initialize app on load
+        document.addEventListener('DOMContentLoaded', initializeApp);
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Create Interactive 3D Game Scenes","Scene Builder":"Scene Builder","Character Customizer":"Character Customizer","Script Editor":"Script Editor","Game Tester":"Game Tester","Gallery":"Gallery","Virtual Scene Builder":"Virtual Scene Builder","Create 3D game scenes with natural language descriptions":"Create 3D game scenes with natural language descriptions","Scene Description":"Scene Description","Generate 3D Scene":"Generate 3D Scene","Generating scene...":"Generating scene...","Scene preview will appear here":"Scene preview will appear here","Upload an image to create an interactive 3D character model":"Upload an image to create an interactive 3D character model","Upload Character Image":"Upload Character Image","Click to upload or drag and drop":"Click to upload or drag and drop","Character Name":"Character Name","Character Description":"Character Description","Generate 3D Character":"Generate 3D Character","Character preview will appear here":"Character preview will appear here","Interactive Script Editor":"Interactive Script Editor","Create dialogue and actions for your game characters":"Create dialogue and actions for your game characters","Dialogue":"Dialogue","Actions":"Actions","Events":"Events","Select Character":"Select Character","Select a character":"Select a character","Dialogue Text":"Dialogue Text","Triggers":"Triggers","Add Dialogue":"Add Dialogue","Action Type":"Action Type","Movement":"Movement","Animation":"Animation","Interaction":"Interaction","Action Details":"Action Details","Add Action":"Add Action","Event Type":"Event Type","Trigger":"Trigger","Condition":"Condition","Consequence":"Consequence","Event Details":"Event Details","Add Event":"Add Event","Test your game with custom commands":"Test your game with custom commands","Test Command":"Test Command","Run Test":"Run Test","Start Game":"Start Game","Pause Game":"Pause Game","Reset Game":"Reset Game","Test Results":"Test Results","Scene Gallery":"Scene Gallery","Browse and share your created scenes":"Browse and share your created scenes","Share Current Scene":"Share Current Scene","Refresh Gallery":"Refresh Gallery","Please enter a scene description":"Please enter a scene description","text-align: center;":"text-align: center;","Scene generated successfully!":"Scene generated successfully!","Please upload a character image":"Please upload a character image","Please enter a character name":"Please enter a character name","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"No description provided","Character generated successfully!":"Character generated successfully!","Please select a character":"Please select a character","__title__":"VRGameMaster - Create Interactive 3D Game Scenes"},"zh-CN":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - 创建交互式3D游戏场景","Scene Builder":"场景构建器","Character Customizer":"角色定制器","Script Editor":"脚本编辑器","Game Tester":"游戏测试员","Gallery":"画廊","Virtual Scene Builder":"虚拟场景构建器","Create 3D game scenes with natural language descriptions":"使用自然语言描述创建3D游戏场景","Scene Description":"场景描述","Generate 3D Scene":"生成3D场景","Generating scene...":"正在生成场景...","Scene preview will appear here":"场景预览将在此处显示","Upload an image to create an interactive 3D character model":"上传图片以创建交互式3D角色模型","Upload Character Image":"上传角色图像","Click to upload or drag and drop":"点击上传或拖放","Character Name":"角色名称","Character Description":"角色描述","Generate 3D Character":"生成3D角色","Character preview will appear here":"角色预览将在此处显示","Interactive Script Editor":"交互式脚本编辑器","Create dialogue and actions for your game characters":"为您的游戏角色创建对话和动作","Dialogue":"对话","Actions":"动作","Events":"事件","Select Character":"选择角色","Select a character":"选择一个角色","Dialogue Text":"对话文本","Triggers":"触发器","Add Dialogue":"添加对话","Action Type":"动作类型","Movement":"移动","Animation":"动画","Interaction":"交互","Action Details":"动作详情","Add Action":"添加动作","Event Type":"事件类型","Trigger":"触发","Condition":"条件","Consequence":"后果","Event Details":"事件详情","Add Event":"添加事件","Test your game with custom commands":"使用自定义命令测试您的游戏","Test Command":"测试命令","Run Test":"运行测试","Start Game":"开始游戏","Pause Game":"暂停游戏","Reset Game":"重置游戏","Test Results":"测试结果","Scene Gallery":"场景画廊","Browse and share your created scenes":"浏览和分享您创建的场景","Share Current Scene":"分享当前场景","Refresh Gallery":"刷新画廊","Please enter a scene description":"请输入场景描述","text-align: center;":"text-align: center;","Scene generated successfully!":"场景生成成功！","Please upload a character image":"请上传角色图像","Please enter a character name":"请输入角色名称","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"未提供描述","Character generated successfully!":"角色生成成功！","Please select a character":"请选择一个角色","__title__":"VRGameMaster - 创建交互式3D游戏场景"},"es":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Crea escenas de juegos 3D interactivas","Scene Builder":"Constructor de escenas","Character Customizer":"Personalizador de personajes","Script Editor":"Editor de scripts","Game Tester":"Probador de juegos","Gallery":"Galería","Virtual Scene Builder":"Constructor de escenas virtuales","Create 3D game scenes with natural language descriptions":"Crea escenas de juegos 3D con descripciones naturales","Scene Description":"Descripción de la escena","Generate 3D Scene":"Generar escena 3D","Generating scene...":"Generando escena...","Scene preview will appear here":"La vista previa de la escena aparecerá aquí","Upload an image to create an interactive 3D character model":"Sube una imagen para crear un modelo de personaje interactivo 3D","Upload Character Image":"Subir imagen de personaje","Click to upload or drag and drop":"Haz clic para subir o arrastrar y soltar","Character Name":"Nombre del personaje","Character Description":"Descripción del personaje","Generate 3D Character":"Generar personaje 3D","Character preview will appear here":"La vista previa del personaje aparecerá aquí","Interactive Script Editor":"Editor de scripts interactivos","Create dialogue and actions for your game characters":"Crea diálogos y acciones para tus personajes de juego","Dialogue":"Diálogo","Actions":"Acciones","Events":"Eventos","Select Character":"Seleccionar personaje","Select a character":"Seleccionar un personaje","Dialogue Text":"Texto del diálogo","Triggers":"Desencadenantes","Add Dialogue":"Añadir diálogo","Action Type":"Tipo de acción","Movement":"Movimiento","Animation":"Animación","Interaction":"Interacción","Action Details":"Detalles de la acción","Add Action":"Añadir acción","Event Type":"Tipo de evento","Trigger":"Desencadenante","Condition":"Condición","Consequence":"Consecuencia","Event Details":"Detalles del evento","Add Event":"Añadir evento","Test your game with custom commands":"Prueba tu juego con comandos personalizados","Test Command":"Comando de prueba","Run Test":"Ejecutar prueba","Start Game":"Iniciar juego","Pause Game":"Pausar juego","Reset Game":"Reiniciar juego","Test Results":"Resultados de la prueba","Scene Gallery":"Galería de escenas","Browse and share your created scenes":"Explora y comparte tus escenas creadas","Share Current Scene":"Compartir escena actual","Refresh Gallery":"Actualizar galería","Please enter a scene description":"Por favor, introduce una descripción de la escena","text-align: center;":"text-align: center;","Scene generated successfully!":"¡Escena generada con éxito!","Please upload a character image":"Por favor, sube una imagen de personaje","Please enter a character name":"Por favor, introduce un nombre de personaje","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"No se proporcionó descripción","Character generated successfully!":"¡Personaje generado con éxito!","Please select a character":"Por favor, selecciona un personaje","__title__":"VRGameMaster - Crea escenas de juegos 3D interactivas"},"ja":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - インタラクティブな3Dゲームシーンを作成する","Scene Builder":"シーンビルダー","Character Customizer":"キャラクターカスタマイザ","Script Editor":"スクリプトエディタ","Game Tester":"ゲームテスター","Gallery":"ギャラリー","Virtual Scene Builder":"バーチャルシーンビルダー","Create 3D game scenes with natural language descriptions":"自然言語記述で3Dゲームシーンを作成する","Scene Description":"シーン説明","Generate 3D Scene":"3Dシーンの生成","Generating scene...":"シーンを生成中...","Scene preview will appear here":"シーンプレビューがここに表示されます","Upload an image to create an interactive 3D character model":"インタラクティブな3Dキャラクターモデルを作成するために画像をアップロードする","Upload Character Image":"キャラクターアイコンをアップロード","Click to upload or drag and drop":"アップロードするためにクリックまたはドラッグ＆ドロップ","Character Name":"キャラクター名","Character Description":"キャラクターデスクリプション","Generate 3D Character":"3Dキャラクターの生成","Character preview will appear here":"キャラクタープレビューがここに表示されます","Interactive Script Editor":"インタラクティブスクリプトエディタ","Create dialogue and actions for your game characters":"ゲームキャラクターのためのダイアログとアクションを作成する","Dialogue":"ダイアログ","Actions":"アクション","Events":"イベント","Select Character":"キャラクターを選択","Select a character":"キャラクターを選択してください","Dialogue Text":"ダイアログテキスト","Triggers":"トリガー","Add Dialogue":"ダイアログを追加","Action Type":"アクションタイプ","Movement":"動き","Animation":"アニメーション","Interaction":"インタラクション","Action Details":"アクション詳細","Add Action":"アクションを追加","Event Type":"イベントタイプ","Trigger":"トリガー","Condition":"条件","Consequence":"結果","Event Details":"イベント詳細","Add Event":"イベントを追加","Test your game with custom commands":"カスタムコマンドでゲームをテストする","Test Command":"テストコマンド","Run Test":"テストを実行","Start Game":"ゲームを開始","Pause Game":"ゲームを一時停止","Reset Game":"ゲームをリセット","Test Results":"テスト結果","Scene Gallery":"シーンギャラリー","Browse and share your created scenes":"作成したシーンを閲覧および共有する","Share Current Scene":"現在のシーンを共有","Refresh Gallery":"ギャラリーを更新","Please enter a scene description":"シーン説明を入力してください","text-align: center;":"text-align: center;","Scene generated successfully!":"シーンの生成に成功しました！","Please upload a character image":"キャラクターアイコンをアップロードしてください","Please enter a character name":"キャラクター名を入力してください","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"説明が提供されていません","Character generated successfully!":"キャラクターの生成に成功しました！","Please select a character":"キャラクターを選択してください","__title__":"VRGameMaster - インタラクティブな3Dゲームシーンを作成する"},"ko":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - 인터랙티브 3D 게임 시나리오 생성","Scene Builder":"시나리오 빌더","Character Customizer":"캐릭터 커스터마이저","Script Editor":"스크립트 편집기","Game Tester":"게임 테스터","Gallery":"갤러리","Virtual Scene Builder":"가상 시나리오 빌더","Create 3D game scenes with natural language descriptions":"자연어 설명으로 3D 게임 시나리오 생성","Scene Description":"시나리오 설명","Generate 3D Scene":"3D 시나리오 생성","Generating scene...":"시나리오 생성 중...","Scene preview will appear here":"시나리오 미리보기가 여기에 나타납니다","Upload an image to create an interactive 3D character model":"인터랙티브 3D 캐릭터 모델을 생성하기 위해 이미지를 업로드하세요","Upload Character Image":"캐릭터 이미지 업로드","Click to upload or drag and drop":"업로드하려면 클릭하거나 드래그 앤 드롭하세요","Character Name":"캐릭터 이름","Character Description":"캐릭터 설명","Generate 3D Character":"3D 캐릭터 생성","Character preview will appear here":"캐릭터 미리보기가 여기에 나타납니다","Interactive Script Editor":"인터랙티브 스크립트 편집기","Create dialogue and actions for your game characters":"게임 캐릭터의 대화와 행동을 생성하세요","Dialogue":"대화","Actions":"행동","Events":"이벤트","Select Character":"캐릭터 선택","Select a character":"캐릭터 선택","Dialogue Text":"대화 텍스트","Triggers":"트리거","Add Dialogue":"대화 추가","Action Type":"행동 유형","Movement":"이동","Animation":"애니메이션","Interaction":"인터랙션","Action Details":"행동 상세","Add Action":"행동 추가","Event Type":"이벤트 유형","Trigger":"트리거","Condition":"조건","Consequence":"결과","Event Details":"이벤트 상세","Add Event":"이벤트 추가","Test your game with custom commands":"사용자 정의 명령으로 게임을 테스트하세요","Test Command":"테스트 명령","Run Test":"테스트 실행","Start Game":"게임 시작","Pause Game":"게임 일시 중지","Reset Game":"게임 재시작","Test Results":"테스트 결과","Scene Gallery":"시나리오 갤러리","Browse and share your created scenes":"생성한 시나리오를 탐색하고 공유하세요","Share Current Scene":"현재 시나리오 공유","Refresh Gallery":"갤러리 새로 고침","Please enter a scene description":"시나리오 설명을 입력하세요","text-align: center;":"text-align: center;","Scene generated successfully!":"시나리오 생성 성공!","Please upload a character image":"캐릭터 이미지를 업로드하세요","Please enter a character name":"캐릭터 이름을 입력하세요","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"설명이 제공되지 않았습니다","Character generated successfully!":"캐릭터 생성 성공!","Please select a character":"캐릭터를 선택하세요","__title__":"VRGameMaster - 인터랙티브 3D 게임 시나리오 생성"},"fr":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Créer des Scènes de Jeux 3D Interactives","Scene Builder":"Constructeur de Scène","Character Customizer":"Personnalisateur de Personnage","Script Editor":"Éditeur de Script","Game Tester":"Testeur de Jeu","Gallery":"Galerie","Virtual Scene Builder":"Constructeur de Scène Virtuelle","Create 3D game scenes with natural language descriptions":"Créer des scènes de jeux 3D avec des descriptions naturelles","Scene Description":"Description de la Scène","Generate 3D Scene":"Générer une Scène 3D","Generating scene...":"Génération de la scène...","Scene preview will appear here":"Aperçu de la scène apparaîtra ici","Upload an image to create an interactive 3D character model":"Télécharger une image pour créer un modèle de personnage 3D interactif","Upload Character Image":"Télécharger l'Image du Personnage","Click to upload or drag and drop":"Cliquez pour télécharger ou glissez-déposez","Character Name":"Nom du Personnage","Character Description":"Description du Personnage","Generate 3D Character":"Générer un Personnage 3D","Character preview will appear here":"Aperçu du personnage apparaîtra ici","Interactive Script Editor":"Éditeur de Script Interactif","Create dialogue and actions for your game characters":"Créer des dialogues et des actions pour vos personnages de jeu","Dialogue":"Dialogue","Actions":"Actions","Events":"Événements","Select Character":"Sélectionner un Personnage","Select a character":"Sélectionnez un personnage","Dialogue Text":"Texte du Dialogue","Triggers":"Déclencheurs","Add Dialogue":"Ajouter un Dialogue","Action Type":"Type d'Action","Movement":"Mouvement","Animation":"Animation","Interaction":"Interaction","Action Details":"Détails de l'Action","Add Action":"Ajouter une Action","Event Type":"Type d'Événement","Trigger":"Déclencheur","Condition":"Condition","Consequence":"Conséquence","Event Details":"Détails de l'Événement","Add Event":"Ajouter un Événement","Test your game with custom commands":"Testez votre jeu avec des commandes personnalisées","Test Command":"Commande de Test","Run Test":"Exécuter le Test","Start Game":"Démarrer le Jeu","Pause Game":"Mettre le Jeu en Pause","Reset Game":"Réinitialiser le Jeu","Test Results":"Résultats du Test","Scene Gallery":"Galerie de Scène","Browse and share your created scenes":"Naviguez et partagez vos scènes créées","Share Current Scene":"Partager la Scène Actuelle","Refresh Gallery":"Rafraîchir la Galerie","Please enter a scene description":"Veuillez saisir une description de la scène","text-align: center;":"text-align: center;","Scene generated successfully!":"Scène générée avec succès!","Please upload a character image":"Veuillez télécharger une image de personnage","Please enter a character name":"Veuillez saisir un nom de personnage","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Aucune description fournie","Character generated successfully!":"Personnage généré avec succès!","Please select a character":"Veuillez sélectionner un personnage","__title__":"VRGameMaster - Créer des Scènes de Jeux 3D Interactives"},"de":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Erstellen Sie interaktive 3D-Spiel-Szenen","Scene Builder":"Szenen-Builder","Character Customizer":"Charakter-Anpasser","Script Editor":"Skript-Editor","Game Tester":"Spiel-Tester","Gallery":"Galerie","Virtual Scene Builder":"Virtueller Szenen-Builder","Create 3D game scenes with natural language descriptions":"Erstellen Sie 3D-Spiel-Szenen mit natürlichen Sprachbeschreibungen","Scene Description":"Szenenbeschreibung","Generate 3D Scene":"Erstellen Sie eine 3D-Szene","Generating scene...":"Erstelle Szene...","Scene preview will appear here":"Hier wird eine Vorschau der Szene angezeigt","Upload an image to create an interactive 3D character model":"Laden Sie ein Bild hoch, um ein interaktives 3D-Charaktermodell zu erstellen","Upload Character Image":"Laden Sie das Charakterbild hoch","Click to upload or drag and drop":"Klicken Sie zum Hochladen oder ziehen und loslassen","Character Name":"Charaktername","Character Description":"Charakterbeschreibung","Generate 3D Character":"Erstellen Sie einen 3D-Charakter","Character preview will appear here":"Hier wird eine Vorschau des Charakters angezeigt","Interactive Script Editor":"Interaktiver Skript-Editor","Create dialogue and actions for your game characters":"Erstellen Sie Dialoge und Aktionen für Ihre Spielcharaktere","Dialogue":"Dialog","Actions":"Aktionen","Events":"Ereignisse","Select Character":"Wählen Sie einen Charakter","Select a character":"Wählen Sie einen Charakter","Dialogue Text":"Dialogtext","Triggers":"Auslöser","Add Dialogue":"Dialog hinzufügen","Action Type":"Aktionstyp","Movement":"Bewegung","Animation":"Animation","Interaction":"Interaktion","Action Details":"Aktion Details","Add Action":"Aktion hinzufügen","Event Type":"Ereignistyp","Trigger":"Auslöser","Condition":"Bedingung","Consequence":"Konsequenz","Event Details":"Ereignis Details","Add Event":"Ereignis hinzufügen","Test your game with custom commands":"Testen Sie Ihr Spiel mit benutzerdefinierten Befehlen","Test Command":"Testbefehl","Run Test":"Test ausführen","Start Game":"Spiel starten","Pause Game":"Spiel pausieren","Reset Game":"Spiel zurücksetzen","Test Results":"Testergebnisse","Scene Gallery":"Szenengalerie","Browse and share your created scenes":"Durchsuchen und teilen Sie Ihre erstellten Szenen","Share Current Scene":"Aktuelle Szene teilen","Refresh Gallery":"Galerie aktualisieren","Please enter a scene description":"Bitte geben Sie eine Szenenbeschreibung ein","text-align: center;":"text-align: center;","Scene generated successfully!":"Szene erfolgreich erstellt!","Please upload a character image":"Bitte laden Sie ein Charakterbild hoch","Please enter a character name":"Bitte geben Sie einen Charakternamen ein","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Keine Beschreibung bereitgestellt","Character generated successfully!":"Charakter erfolgreich erstellt!","Please select a character":"Bitte wählen Sie einen Charakter","__title__":"VRGameMaster - Erstellen Sie interaktive 3D-Spiel-Szenen"},"ru":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Создание интерактивных 3D сцен","Scene Builder":"Создатель сцены","Character Customizer":"Настройщик персонажа","Script Editor":"Редактор скриптов","Game Tester":"Тестер игры","Gallery":"Галерея","Virtual Scene Builder":"Виртуальный создатель сцены","Create 3D game scenes with natural language descriptions":"Создание 3D сцен с использованием естественного языка","Scene Description":"Описание сцены","Generate 3D Scene":"Создать 3D сцену","Generating scene...":"Генерация сцены...","Scene preview will appear here":"Предварительный просмотр сцены появится здесь","Upload an image to create an interactive 3D character model":"Загрузите изображение для создания интерактивной 3D модели персонажа","Upload Character Image":"Загрузить изображение персонажа","Click to upload or drag and drop":"Нажмите, чтобы загрузить или перетащите","Character Name":"Имя персонажа","Character Description":"Описание персонажа","Generate 3D Character":"Создать 3D персонаж","Character preview will appear here":"Предварительный просмотр персонажа появится здесь","Interactive Script Editor":"Интерактивный редактор скриптов","Create dialogue and actions for your game characters":"Создание диалогов и действий для персонажей вашей игры","Dialogue":"Диалог","Actions":"Действия","Events":"События","Select Character":"Выберите персонажа","Select a character":"Выберите персонажа","Dialogue Text":"Текст диалога","Triggers":"Триггеры","Add Dialogue":"Добавить диалог","Action Type":"Тип действия","Movement":"Движение","Animation":"Анимация","Interaction":"Интеракция","Action Details":"Подробности действия","Add Action":"Добавить действие","Event Type":"Тип события","Trigger":"Триггер","Condition":"Условие","Consequence":"Следствие","Event Details":"Подробности события","Add Event":"Добавить событие","Test your game with custom commands":"Тестирование вашей игры с пользовательскими командами","Test Command":"Команда теста","Run Test":"Запустить тест","Start Game":"Начать игру","Pause Game":"Приостановить игру","Reset Game":"Сбросить игру","Test Results":"Результаты теста","Scene Gallery":"Галерея сцен","Browse and share your created scenes":"Просматривайте и делитесь своими созданными сценами","Share Current Scene":"Поделиться текущей сценой","Refresh Gallery":"Обновить галерею","Please enter a scene description":"Пожалуйста, введите описание сцены","text-align: center;":"text-align: center;","Scene generated successfully!":"Сцена успешно создана!","Please upload a character image":"Пожалуйста, загрузите изображение персонажа","Please enter a character name":"Пожалуйста, введите имя персонажа","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Описание не предоставлено","Character generated successfully!":"Персонаж успешно создан!","Please select a character":"Пожалуйста, выберите персонажа","__title__":"VRGameMaster - Создание интерактивных 3D сцен"},"pt":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Crie Cenas Interativas 3D de Jogos","Scene Builder":"Construtor de Cenas","Character Customizer":"Personalizador de Personagens","Script Editor":"Editor de Scripts","Game Tester":"Testador de Jogos","Gallery":"Galeria","Virtual Scene Builder":"Construtor de Cenas Virtuais","Create 3D game scenes with natural language descriptions":"Crie cenas de jogos 3D com descrições naturais","Scene Description":"Descrição da Cena","Generate 3D Scene":"Gerar Cena 3D","Generating scene...":"Gerando cena...","Scene preview will appear here":"A prévia da cena aparecerá aqui","Upload an image to create an interactive 3D character model":"Carregue uma imagem para criar um modelo de personagem interativo 3D","Upload Character Image":"Carregar Imagem do Personagem","Click to upload or drag and drop":"Clique para carregar ou arraste e solte","Character Name":"Nome do Personagem","Character Description":"Descrição do Personagem","Generate 3D Character":"Gerar Personagem 3D","Character preview will appear here":"A prévia do personagem aparecerá aqui","Interactive Script Editor":"Editor de Script Interativo","Create dialogue and actions for your game characters":"Crie diálogos e ações para seus personagens de jogo","Dialogue":"Diálogo","Actions":"Ações","Events":"Eventos","Select Character":"Selecionar Personagem","Select a character":"Selecione um personagem","Dialogue Text":"Texto do Diálogo","Triggers":"Gatilhos","Add Dialogue":"Adicionar Diálogo","Action Type":"Tipo de Ação","Movement":"Movimento","Animation":"Animação","Interaction":"Interação","Action Details":"Detalhes da Ação","Add Action":"Adicionar Ação","Event Type":"Tipo de Evento","Trigger":"Gatilho","Condition":"Condição","Consequence":"Consequência","Event Details":"Detalhes do Evento","Add Event":"Adicionar Evento","Test your game with custom commands":"Teste seu jogo com comandos personalizados","Test Command":"Comando de Teste","Run Test":"Executar Teste","Start Game":"Iniciar Jogo","Pause Game":"Pausar Jogo","Reset Game":"Reiniciar Jogo","Test Results":"Resultados do Teste","Scene Gallery":"Galeria de Cenas","Browse and share your created scenes":"Navegue e compartilhe suas cenas criadas","Share Current Scene":"Compartilhar Cena Atual","Refresh Gallery":"Atualizar Galeria","Please enter a scene description":"Por favor, insira uma descrição da cena","text-align: center;":"text-align: center;","Scene generated successfully!":"Cena gerada com sucesso!","Please upload a character image":"Por favor, carregue uma imagem do personagem","Please enter a character name":"Por favor, insira o nome do personagem","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Nenhuma descrição fornecida","Character generated successfully!":"Personagem gerado com sucesso!","Please select a character":"Por favor, selecione um personagem","__title__":"VRGameMaster - Crie Cenas Interativas 3D de Jogos"},"ar":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - أنشئ مشاهد الألعاب التفاعلية 3D","Scene Builder":"مُنشئ المشهد","Character Customizer":"مُعدل الشخصيات","Script Editor":"مُعدل السيناريو","Game Tester":"مُحاكم اللعبة","Gallery":"المعرض","Virtual Scene Builder":"مُنشئ المشهد الافتراضي","Create 3D game scenes with natural language descriptions":"أنشئ مشاهد الألعاب التفاعلية 3D باستخدام وصف باللغة الطبيعية","Scene Description":"وصف المشهد","Generate 3D Scene":"إنشاء مشهد 3D","Generating scene...":"جارٍ إنشاء المشهد...","Scene preview will appear here":"سيظهر عرض المشهد هنا","Upload an image to create an interactive 3D character model":"رفع صورة لإنشاء نموذج شخصية تفاعلي 3D","Upload Character Image":"رفع صورة الشخصية","Click to upload or drag and drop":"انقر لرفع أو سحب وإفلات","Character Name":"اسم الشخصية","Character Description":"وصف الشخصية","Generate 3D Character":"إنشاء شخصية 3D","Character preview will appear here":"سيظهر عرض الشخصية هنا","Interactive Script Editor":"مُعدل السيناريو التفاعلي","Create dialogue and actions for your game characters":"أنشئ حوارات وأفعال لأشخاص ألعابك","Dialogue":"الحوار","Actions":"الأفعال","Events":"الوقائع","Select Character":"اختر شخصية","Select a character":"اختر شخصية","Dialogue Text":"نص الحوار","Triggers":"المُحفزات","Add Dialogue":"إضافة حوار","Action Type":"نوع الفعل","Movement":"الحركة","Animation":"التحريك","Interaction":"التواصل","Action Details":"تفاصيل الفعل","Add Action":"إضافة فعل","Event Type":"نوع الحدث","Trigger":"المُحفز","Condition":"الشروط","Consequence":"النتيجة","Event Details":"تفاصيل الحدث","Add Event":"إضافة حدث","Test your game with custom commands":"اختبار لعبتك باستخدام أوامر مخصصة","Test Command":"أمر الاختبار","Run Test":"تشغيل الاختبار","Start Game":"بدء اللعبة","Pause Game":"إيقاف اللعبة","Reset Game":"إعادة تعيين اللعبة","Test Results":"نتائج الاختبار","Scene Gallery":"معرض المشاهد","Browse and share your created scenes":"استعرض وشارك المشاهد التي أنشأتها","Share Current Scene":"مشاركة المشهد الحالي","Refresh Gallery":"تحديث المعرض","Please enter a scene description":"يرجى إدخال وصف المشهد","text-align: center;":"text-align: center;","Scene generated successfully!":"تم إنشاء المشهد بنجاح!","Please upload a character image":"يرجى رفع صورة الشخصية","Please enter a character name":"يرجى إدخال اسم الشخصية","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"لم يُقدم أي وصف","Character generated successfully!":"تم إنشاء الشخصية بنجاح!","Please select a character":"يرجى اختيار شخصية","__title__":"VRGameMaster - أنشئ مشاهد الألعاب التفاعلية 3D"},"hi":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - इंटरैक्टिव 3D गेम सीन बनाएं","Scene Builder":"सीन बिल्डर","Character Customizer":"कैरेक्टर कस्टमाइज़र","Script Editor":"स्क्रिप्ट एडिटर","Game Tester":"गेम टेस्टर","Gallery":"गैलरी","Virtual Scene Builder":"वर्चुअल सीन बिल्डर","Create 3D game scenes with natural language descriptions":"प्राकृतिक भाषा विवरणों के साथ 3D गेम सीन बनाएं","Scene Description":"सीन विवरण","Generate 3D Scene":"3D सीन जेनरेट करें","Generating scene...":"सीन जेनरेट हो रहा है...","Scene preview will appear here":"सीन प्रीव्यू यहाँ दिखाई देगा","Upload an image to create an interactive 3D character model":"इंटरैक्टिव 3D कैरेक्टर मॉडल बनाने के लिए एक छवि अपलोड करें","Upload Character Image":"कैरेक्टर छवि अपलोड करें","Click to upload or drag and drop":"अपलोड करने के लिए क्लिक करें या ड्रैग एंड ड्रॉप करें","Character Name":"कैरेक्टर का नाम","Character Description":"कैरेक्टर विवरण","Generate 3D Character":"3D कैरेक्टर जेनरेट करें","Character preview will appear here":"कैरेक्टर प्रीव्यू यहाँ दिखाई देगा","Interactive Script Editor":"इंटरैक्टिव स्क्रिप्ट एडिटर","Create dialogue and actions for your game characters":"अपने गेम कैरेक्टर्स के लिए डायलॉग और एक्शन बनाएं","Dialogue":"डायलॉग","Actions":"एक्शन","Events":"इवेंट्स","Select Character":"कैरेक्टर चुनें","Select a character":"एक कैरेक्टर चुनें","Dialogue Text":"डायलॉग टेक्स्ट","Triggers":"ट्रिगर्स","Add Dialogue":"डायलॉग जोड़ें","Action Type":"एक्शन प्रकार","Movement":"आंदोलन","Animation":"एनिमेशन","Interaction":"इंटरैक्शन","Action Details":"एक्शन विवरण","Add Action":"एक्शन जोड़ें","Event Type":"इवेंट प्रकार","Trigger":"ट्रिगर","Condition":"शर्त","Consequence":"परिणाम","Event Details":"इवेंट विवरण","Add Event":"इवेंट जोड़ें","Test your game with custom commands":"कस्टम कमांड्स के साथ अपने गेम का परीक्षण करें","Test Command":"टेस्ट कमांड","Run Test":"टेस्ट चलाएं","Start Game":"गेम शुरू करें","Pause Game":"गेम रोकें","Reset Game":"गेम रीसेट करें","Test Results":"टेस्ट रिजल्ट्स","Scene Gallery":"सीन गैलरी","Browse and share your created scenes":"अपने बनाए सीन ब्राउज़ और शेयर करें","Share Current Scene":"वर्तमान सीन शेयर करें","Refresh Gallery":"गैलरी रीफ्रेश करें","Please enter a scene description":"कृपया एक सीन विवरण दर्ज करें","text-align: center;":"text-align: center;","Scene generated successfully!":"सीन सफलतापूर्वक जेनरेट हुआ!","Please upload a character image":"कृपया एक कैरेक्टर छवि अपलोड करें","Please enter a character name":"कृपया एक कैरेक्टर नाम दर्ज करें","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"कोई विवरण प्रदान नहीं किया गया","Character generated successfully!":"कैरेक्टर सफलतापूर्वक जेनरेट हुआ!","Please select a character":"कृपया एक कैरेक्टर चुनें","__title__":"VRGameMaster - इंटरैक्टिव 3D गेम सीन बनाएं"},"id":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Buat Adegan Permainan 3D Interaktif","Scene Builder":"Pembangun Adegan","Character Customizer":"Penyesuaik Karakter","Script Editor":"Penyunting Skrip","Game Tester":"Penguji Permainan","Gallery":"Galeri","Virtual Scene Builder":"Pembangun Adegan Virtual","Create 3D game scenes with natural language descriptions":"Buat adegan permainan 3D dengan deskripsi bahasa alami","Scene Description":"Deskripsi Adegan","Generate 3D Scene":"Hasilkan Adegan 3D","Generating scene...":"Menghasilkan adegan...","Scene preview will appear here":"Pratinjau adegan akan muncul di sini","Upload an image to create an interactive 3D character model":"Unggah gambar untuk membuat model karakter 3D interaktif","Upload Character Image":"Unggah Gambar Karakter","Click to upload or drag and drop":"Klik untuk mengunggah atau seret dan jatuhkan","Character Name":"Nama Karakter","Character Description":"Deskripsi Karakter","Generate 3D Character":"Hasilkan Karakter 3D","Character preview will appear here":"Pratinjau karakter akan muncul di sini","Interactive Script Editor":"Penyunting Skrip Interaktif","Create dialogue and actions for your game characters":"Buat dialog dan aksi untuk karakter permainan Anda","Dialogue":"Dialog","Actions":"Aksi","Events":"Peristiwa","Select Character":"Pilih Karakter","Select a character":"Pilih sebuah karakter","Dialogue Text":"Teks Dialog","Triggers":"Pemicu","Add Dialogue":"Tambah Dialog","Action Type":"Jenis Aksi","Movement":"Gerakan","Animation":"Animasi","Interaction":"Interaksi","Action Details":"Detail Aksi","Add Action":"Tambah Aksi","Event Type":"Jenis Peristiwa","Trigger":"Pemicu","Condition":"Kondisi","Consequence":"Akibat","Event Details":"Detail Peristiwa","Add Event":"Tambah Peristiwa","Test your game with custom commands":"Uji permainan Anda dengan perintah kustom","Test Command":"Perintah Uji","Run Test":"Jalankan Uji","Start Game":"Mulai Permainan","Pause Game":"Jeda Permainan","Reset Game":"Reset Permainan","Test Results":"Hasil Uji","Scene Gallery":"Galeri Adegan","Browse and share your created scenes":"Jelajahi dan bagikan adegan yang Anda buat","Share Current Scene":"Bagikan Adegan Saat Ini","Refresh Gallery":"Segarkan Galeri","Please enter a scene description":"Silakan masukkan deskripsi adegan","text-align: center;":"text-align: center;","Scene generated successfully!":"Adegan berhasil dihasilkan!","Please upload a character image":"Silakan unggah gambar karakter","Please enter a character name":"Silakan masukkan nama karakter","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Tidak ada deskripsi yang diberikan","Character generated successfully!":"Karakter berhasil dihasilkan!","Please select a character":"Silakan pilih sebuah karakter","__title__":"VRGameMaster - Buat Adegan Permainan 3D Interaktif"},"vi":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - Tạo Cảnh Trò Chơi 3D Tương Tác","Scene Builder":"Trình Xây Dựng Cảnh","Character Customizer":"Tùy Chỉnh Nhân Vật","Script Editor":"Trình Soạn Thảo Kịch Bản","Game Tester":"Kiểm Tra Trò Chơi","Gallery":"Thư Viện","Virtual Scene Builder":"Trình Xây Dựng Cảnh Ảo","Create 3D game scenes with natural language descriptions":"Tạo cảnh trò chơi 3D với mô tả ngôn ngữ tự nhiên","Scene Description":"Mô Tả Cảnh","Generate 3D Scene":"Tạo Cảnh 3D","Generating scene...":"Đang tạo cảnh...","Scene preview will appear here":"Xem trước cảnh sẽ xuất hiện ở đây","Upload an image to create an interactive 3D character model":"Tải lên hình ảnh để tạo mô hình nhân vật 3D tương tác","Upload Character Image":"Tải Lên Hình Ảnh Nhân Vật","Click to upload or drag and drop":"Nhấp để tải lên hoặc kéo và thả","Character Name":"Tên Nhân Vật","Character Description":"Mô Tả Nhân Vật","Generate 3D Character":"Tạo Nhân Vật 3D","Character preview will appear here":"Xem trước nhân vật sẽ xuất hiện ở đây","Interactive Script Editor":"Trình Soạn Thảo Kịch Bản Tương Tác","Create dialogue and actions for your game characters":"Tạo đối thoại và hành động cho nhân vật trò chơi của bạn","Dialogue":"Đối Thoại","Actions":"Hành Động","Events":"Sự Kiện","Select Character":"Chọn Nhân Vật","Select a character":"Chọn một nhân vật","Dialogue Text":"Văn Bản Đối Thoại","Triggers":"Kích Hoạt","Add Dialogue":"Thêm Đối Thoại","Action Type":"Loại Hành Động","Movement":"Di Chuyển","Animation":"Hoạt Hình","Interaction":"Tương Tác","Action Details":"Chi Tiết Hành Động","Add Action":"Thêm Hành Động","Event Type":"Loại Sự Kiện","Trigger":"Kích Hoạt","Condition":"Điều Kiện","Consequence":"Hậu Quả","Event Details":"Chi Tiết Sự Kiện","Add Event":"Thêm Sự Kiện","Test your game with custom commands":"Kiểm tra trò chơi của bạn với các lệnh tùy chỉnh","Test Command":"Lệnh Kiểm Tra","Run Test":"Chạy Kiểm Tra","Start Game":"Bắt Đầu Trò Chơi","Pause Game":"Tạm Dừng Trò Chơi","Reset Game":"Đặt Lại Trò Chơi","Test Results":"Kết Quả Kiểm Tra","Scene Gallery":"Thư Viện Cảnh","Browse and share your created scenes":"Duyệt và chia sẻ các cảnh đã tạo của bạn","Share Current Scene":"Chia Sẻ Cảnh Hiện Tại","Refresh Gallery":"Làm Mới Thư Viện","Please enter a scene description":"Vui lòng nhập mô tả cảnh","text-align: center;":"text-align: center;","Scene generated successfully!":"Cảnh đã được tạo thành công!","Please upload a character image":"Vui lòng tải lên hình ảnh nhân vật","Please enter a character name":"Vui lòng nhập tên nhân vật","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"Không có mô tả nào được cung cấp","Character generated successfully!":"Nhân vật đã được tạo thành công!","Please select a character":"Vui lòng chọn một nhân vật","__title__":"VRGameMaster - Tạo Cảnh Trò Chơi 3D Tương Tác"},"th":{"VRGameMaster - Create Interactive 3D Game Scenes":"VRGameMaster - สร้างฉากเกม 3D แบบโต้ตอบ","Scene Builder":"ตัวสร้างฉาก","Character Customizer":"ตัวปรับแต่งตัวละคร","Script Editor":"ตัวแก้ไขสคริปต์","Game Tester":"ทดสอบเกม","Gallery":"แกลเลอรี","Virtual Scene Builder":"ตัวสร้างฉากเสมือนจริง","Create 3D game scenes with natural language descriptions":"สร้างฉากเกม 3D ด้วยคำอธิบายภาษาธรรมชาติ","Scene Description":"คำอธิบายฉาก","Generate 3D Scene":"สร้างฉาก 3D","Generating scene...":"กำลังสร้างฉาก...","Scene preview will appear here":"ตัวอย่างฉากจปรากฏที่นี่","Upload an image to create an interactive 3D character model":"อัปโหลดรูปเพื่อสร้างโมเดลตัวละคร 3D แบบโต้ตอบ","Upload Character Image":"อัปโหลดรูปตัวละคร","Click to upload or drag and drop":"คลิกเพื่ออัปโหลดหรือลากวาง","Character Name":"ชื่อตัวละคร","Character Description":"คำอธิบายตัวละคร","Generate 3D Character":"สร้างตัวละคร 3D","Character preview will appear here":"ตัวอย่างตัวละครจปรากฏที่นี่","Interactive Script Editor":"ตัวแก้ไขสคริปต์แบบโต้ตอบ","Create dialogue and actions for your game characters":"สร้างบทสนทนาและการกระทำสำหรับตัวละครในเกมของคุณ","Dialogue":"บทสนทนา","Actions":"การกระทำ","Events":"เหตุการณ์","Select Character":"เลือกตัวละคร","Select a character":"เลือกตัวละคร","Dialogue Text":"ข้อความบทสนทนา","Triggers":"ตัวกระตุ้น","Add Dialogue":"เพิ่มบทสนทนา","Action Type":"ประเภทการกระทำ","Movement":"การเคลื่อนที่","Animation":"การเคลื่อนไหว","Interaction":"การโต้ตอบ","Action Details":"รายละเอียดการกระทำ","Add Action":"เพิ่มการกระทำ","Event Type":"ประเภทเหตุการณ์","Trigger":"ตัวกระตุ้น","Condition":"เงื่อนไข","Consequence":"ผลลัพธ์","Event Details":"รายละเอียดเหตุการณ์","Add Event":"เพิ่มเหตุการณ์","Test your game with custom commands":"ทดสอบเกมของคุณด้วยคำสั่งที่กำหนดเอง","Test Command":"คำสั่งทดสอบ","Run Test":"เรียกใช้การทดสอบ","Start Game":"เริ่มเกม","Pause Game":"หยุดเกมชั่วคราว","Reset Game":"รีเซ็ตเกม","Test Results":"ผลการทดสอบ","Scene Gallery":"แกลเลอรีฉาก","Browse and share your created scenes":"เรียกดูและแชร์ฉากที่คุณสร้าง","Share Current Scene":"แชร์ฉากปัจจุบัน","Refresh Gallery":"รีเฟรชแกลเลอรี","Please enter a scene description":"กรุณาป้อนคำอธิบายฉาก","text-align: center;":"text-align: center;","Scene generated successfully!":"สร้างฉากสำเร็จ!","Please upload a character image":"กรุณาอัปโหลดรูปตัวละคร","Please enter a character name":"กรุณาป้อนชื่อตัวละคร","width: 100px; height: 100px; border-radius: 50%; object-fit: cover;":"width: 100px; height: 100px; border-radius: 50%; object-fit: cover;","No description provided":"ไม่ได้ให้คำอธิบาย","Character generated successfully!":"สร้างตัวละครสำเร็จ!","Please select a character":"กรุณาเลือกตัวละคร","__title__":"VRGameMaster - สร้างฉากเกม 3D แบบโต้ตอบ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
