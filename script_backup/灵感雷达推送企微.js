@@ -1960,7 +1960,7 @@ function buildProduct(decision) {
     out.html = html;
     if (dailyTokenCost > DAILY_BUDGET) return out;
     // 2) 发布文案
-    let artPrompt = "根据下面的产品方向，写一篇小红书风格种草文案：\n- 第一行是标题（带 2-3 个相关话题标签）\n- 正文 300-500 字，口语化、有真实感，突出它解决什么痛点、适合谁用\n- 输出纯文本，禁止 markdown 符号\n产品方向：\n" + decision.slice(0, 1500);
+    let artPrompt = "根据下面的产品方向，写一篇小红书风格种草文案：\n- 第一行是标题（带 2-3 个相关话题标签）\n- 正文 300-500 字，口语化、有真实感，突出它解决什么痛点、适合谁用\n- 【硬性红线】这个产品是纯网页工具：①严禁把它描述成实体商品/硬件（禁处理器/芯片/显示屏/套装/实体/开箱/配件/链接设备 等硬件词，禁编造“佩戴/把玩/连接”等物理场景）②它完全免费，严禁催促购买/下单（禁 入手/购买/下单/抢购/价格/评论区链接 等，写“直接打开网页就能用”即可）③禁止提及任何其它产品/品牌/竞品名④禁止编造产品方向里不存在的功能或数据\n- 输出纯文本，禁止 markdown 符号\n产品方向：\n" + decision.slice(0, 1500);
     let article = callLLM([
         {role: "system", content: "你是小红书爆款文案写手。只输出文案正文。"},
         {role: "user", content: artPrompt}
