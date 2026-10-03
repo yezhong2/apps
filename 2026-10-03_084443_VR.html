@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Game MasterKit</title><meta name="description" content="Free online tool: VR Game MasterKit. No signup, no payment — free forever.">
+<meta property="og:title" content="VR Game MasterKit">
+<meta property="og:description" content="Free online tool: VR Game MasterKit. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_084443_VR.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #7b68ee;
+            --accent-hover: #9280ff;
+            --border: #333333;
+            --success: #4caf50;
+            --error: #f44336;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Search Section */
+        .search-section {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+        
+        .search-button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        /* Main Content */
+        main {
+            padding: 2rem 0;
+        }
+        
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        /* Virtual Scene Preview */
+        .scene-input {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+        
+        .scene-preview {
+            width: 100%;
+            height: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scene-placeholder {
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        
+        .scene-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Game Resource Search */
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .resource-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .resource-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resource-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .resource-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        /* Game Tutorial */
+        .tutorial-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .tutorial-video {
+            width: 100%;
+            height: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tutorial-steps {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .tutorial-step {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tutorial-step:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .step-number {
+            color: var(--accent);
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        
+        /* Community Interaction */
+        .community-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .community-input {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .community-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .post {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .post-author {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .post-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .post-content {
+            margin-bottom: 1rem;
+        }
+        
+        .post-comments {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .comment {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .comment:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        
+        .comment-content {
+            margin-top: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        /* Game Statistics */
+        .stats-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .stats-input {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .stats-input input {
+            flex: 1;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+        
+        .chart-container {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            height: 300px;
+            position: relative;
+        }
+        
+        .chart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-input {
+                flex-direction: column;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">VR Game MasterKit</div>
+            <ul class="nav-links">
+                <li><a href="#scene">Scene Preview</a></li>
+                <li><a href="#resources">Resources</a></li>
+                <li><a href="#tutorials">Tutorials</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#stats">Statistics</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <h1 style="margin-bottom: 1rem;">VR Game MasterKit - Your Ultimate VR Gaming Companion</h1>
+            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">Create virtual scenes, find game resources, learn tutorials, interact with the community, and track your gaming statistics all in one place.</p>
+            <div class="search-container">
+                <input type="text" id="globalSearch" class="search-input" placeholder="Search for games, tutorials, or community posts...">
+                <button id="globalSearchBtn" class="search-button">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Virtual Scene Preview -->
+        <section id="scene" class="section">
+            <h2 class="section-title">Virtual Scene Preview</h2>
+            <input type="text" id="sceneInput" class="scene-input" placeholder="Describe your virtual scene...">
+            <button id="generateScene" class="search-button">Generate Scene</button>
+            <div id="scenePreview" class="scene-preview">
+                <div class="scene-placeholder">
+                    <p>Enter a scene description and click "Generate Scene" to create a preview</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Resource Search -->
+        <section id="resources" class="section">
+            <h2 class="section-title">Game Resource Search</h2>
+            <input type="text" id="resourceInput" class="scene-input" placeholder="Enter game keywords...">
+            <button id="searchResources" class="search-button">Search Resources</button>
+            <div id="resourceList" class="resource-list">
+                <!-- Resources will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Game Tutorial -->
+        <section id="tutorials" class="section">
+            <h2 class="section-title">Game Tutorial Generator</h2>
+            <input type="text" id="tutorialInput" class="scene-input" placeholder="Enter game name...">
+            <button id="generateTutorial" class="search-button">Generate Tutorial</button>
+            <div id="tutorialContainer" class="tutorial-container">
+                <div class="tutorial-video">
+                    <div class="scene-placeholder">
+                        <p>Tutorial video will appear here</p>
+                    </div>
+                </div>
+                <div id="tutorialSteps" class="tutorial-steps">
+                    <p style="color: var(--text-secondary);">Tutorial steps will appear here</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Interaction -->
+        <section id="community" class="section">
+            <h2 class="section-title">Community Interaction</h2>
+            <textarea id="communityInput" class="community-input" placeholder="Ask a question or share something with the community..."></textarea>
+            <button id="postToCommunity" class="search-button">Post to Community</button>
+            <div id="communityPosts" class="community-posts">
+                <!-- Community posts will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Game Statistics -->
+        <section id="stats" class="section">
+            <h2 class="section-title">Game Statistics</h2>
+            <div class="stats-container">
+                <div class="stats-input">
+                    <input type="text" id="statsInput" placeholder="Enter game data (comma-separated values)">
+                    <button id="generateStats" class="search-button">Generate Statistics</button>
+                </div>
+                <div id="chartContainer" class="chart-container">
+                    <canvas id="statsChart" class="chart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 VR Game MasterKit - All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scene Preview Functionality
+        document.getElementById('generateScene').addEventListener('click', function() {
+            const sceneInput = document.getElementById('sceneInput').value;
+            const scenePreview = document.getElementById('scenePreview');
+            
+            if (sceneInput.trim() === '') {
+                scenePreview.innerHTML = '<div class="scene-placeholder"><p>Please enter a scene description</p></div>';
+                return;
+            }
+            
+            // Create a simple 3D-like representation using canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = scenePreview.offsetWidth;
+            canvas.height = scenePreview.offsetHeight;
+            canvas.className = 'scene-canvas';
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Draw a gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#1a237e');
+            gradient.addColorStop(1, '#4a148c');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw some geometric shapes to represent the scene
+            ctx.fillStyle = '#e1bee7';
+            ctx.beginPath();
+            ctx.arc(canvas.width/2, canvas.height/2, 80, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = '#ce93d8';
+            ctx.beginPath();
+            ctx.moveTo(canvas.width/2 - 100, canvas.height/2 + 50);
+            ctx.lineTo(canvas.width/2, canvas.height/2);
+            ctx.lineTo(canvas.width/2 + 100, canvas.height/2 + 50);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Add text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Scene: ' + sceneInput, canvas.width/2, canvas.height - 20);
+            
+            scenePreview.innerHTML = '';
+            scenePreview.appendChild(canvas);
+        });
+        
+        // Game Resource Search Functionality
+        document.getElementById('searchResources').addEventListener('click', function() {
+            const resourceInput = document.getElementById('resourceInput').value;
+            const resourceList = document.getElementById('resourceList');
+            
+            if (resourceInput.trim() === '') {
+                resourceList.innerHTML = '<p style="color: var(--text-secondary);">Please enter keywords to search for resources</p>';
+                return;
+            }
+            
+            // Simulate resource search with mock data
+            const mockResources = [
+                { title: '3D Models Pack', description: 'High-quality 3D models for VR environments', link: '#' },
+                { title: 'Sound Effects Library', description: 'Immersive audio for VR games', link: '#' },
+                { title: 'VR Controllers', description: 'Optimized controller assets', link: '#' },
+                { title: 'Environment Textures', description: 'Realistic textures for VR scenes', link: '#' },
+                { title: 'VR UI Kit', description: 'User interface components for VR', link: '#' },
+                { title: 'Animation Assets', description: 'Pre-made animations for VR characters', link: '#' }
+            ];
+            
+            resourceList.innerHTML = '';
+            
+            mockResources.forEach(resource => {
+                const resourceCard = document.createElement('div');
+                resourceCard.className = 'resource-card';
+                resourceCard.innerHTML = `
+                    <h3 class="resource-title">${resource.title}</h3>
+                    <p class="resource-description">${resource.description}</p>
+                    <a href="${resource.link}" class="resource-link">Download</a>
+                `;
+                resourceList.appendChild(resourceCard);
+            });
+        });
+        
+        // Game Tutorial Generator Functionality
+        document.getElementById('generateTutorial').addEventListener('click', function() {
+            const tutorialInput = document.getElementById('tutorialInput').value;
+            const tutorialContainer = document.getElementById('tutorialContainer');
+            
+            if (tutorialInput.trim() === '') {
+                tutorialContainer.querySelector('.tutorial-video').innerHTML = '<div class="scene-placeholder"><p>Please enter a game name</p></div>';
+                document.getElementById('tutorialSteps').innerHTML = '<p style="color: var(--text-secondary);">Tutorial steps will appear here</p>';
+                return;
+            }
+            
+            // Create a mock tutorial video
+            const videoContainer = tutorialContainer.querySelector('.tutorial-video');
+            videoContainer.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="width: 100px; height: 100px; background-color: var(--accent); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center;">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="white">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                    </div>
+                    <p>Tutorial Video: ${tutorialInput}</p>
+                </div>
+            `;
+            
+            // Generate mock tutorial steps
+            const mockSteps = [
+                { step: 1, title: 'Getting Started', content: 'Introduction to the game and basic controls' },
+                { step: 2, title: 'Movement & Navigation', content: 'Learn how to move around the virtual environment' },
+                { step: 3, title: 'Combat Basics', content: 'Master the combat system and weapon handling' },
+                { step: 4, title: 'Advanced Techniques', content: 'Pro tips and advanced strategies for experienced players' }
+            ];
+            
+            const tutorialSteps = document.getElementById('tutorialSteps');
+            tutorialSteps.innerHTML = '';
+            
+            mockSteps.forEach(step => {
+                const stepElement = document.createElement('div');
+                stepElement.className = 'tutorial-step';
+                stepElement.innerHTML = `
+                    <span class="step-number">Step ${step.step}:</span>
+                    <strong>${step.title}</strong>
+                    <p style="margin-top: 0.5rem; color: var(--text-secondary);">${step.content}</p>
+                `;
+                tutorialSteps.appendChild(stepElement);
+            });
+        });
+        
+        // Community Interaction Functionality
+        document.getElementById('postToCommunity').addEventListener('click', function() {
+            const communityInput = document.getElementById('communityInput').value;
+            const communityPosts = document.getElementById('communityPosts');
+            
+            if (communityInput.trim() === '') {
+                return;
+            }
+            
+            // Create a new post
+            const post = document.createElement('div');
+            post.className = 'post';
+            
+            const date = new Date();
+            const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            
+            post.innerHTML = `
+                <div class="post-header">
+                    <span class="post-author">You</span>
+                    <span class="post-date">${formattedDate}</span>
+                </div>
+                <div class="post-content">${communityInput}</div>
+                <div class="post-comments">
+                    <div class="comment">
+                        <div class="comment-author">Community Helper</div>
+                        <div class="comment-content">Thanks for sharing! This is a great topic for discussion.</div>
+                    </div>
+                </div>
+            `;
+            
+            // Insert the new post at the beginning
+            communityPosts.insertBefore(post, communityPosts.firstChild);
+            
+            // Clear the input
+            document.getElementById('communityInput').value = '';
+        });
+        
+        // Game Statistics Functionality
+        document.getElementById('generateStats').addEventListener('click', function() {
+            const statsInput = document.getElementById('statsInput').value;
+            const chartCanvas = document.getElementById('statsChart');
+            const ctx = chartCanvas.getContext('2d');
+            
+            if (statsInput.trim() === '') {
+                ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+                ctx.fillStyle = '#b0b0b0';
+                ctx.font = '16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Enter game data to generate statistics', chartCanvas.width/2, chartCanvas.height/2);
+                return;
+            }
+            
+            // Parse the input data
+            const data = statsInput.split(',').map(item => parseFloat(item.trim()));
+            
+            // Set canvas dimensions
+            chartCanvas.width = chartCanvas.offsetWidth;
+            chartCanvas.height = chartCanvas.offsetHeight;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+            
+            // Chart settings
+            const padding = 40;
+            const chartWidth = chartCanvas.width - padding * 2;
+            const chartHeight = chartCanvas.height - padding * 2;
+            const barWidth = chartWidth / data.length;
+            const maxValue = Math.max(...data);
+            
+            // Draw bars
+            data.forEach((value, index) => {
+                const barHeight = (value / maxValue) * chartHeight;
+                const x = padding + index * barWidth;
+                const y = chartCanvas.height - padding - barHeight;
+                
+                // Draw bar
+                ctx.fillStyle = '#7b68ee';
+                ctx.fillRect(x + barWidth * 0.1, y, barWidth * 0.8, barHeight);
+                
+                // Draw value label
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(value, x + barWidth / 2, y - 5);
+                
+                // Draw index label
+                ctx.fillText(`Game ${index + 1}`, x + barWidth / 2, chartCanvas.height - padding + 20);
+            });
+            
+            // Draw axes
+            ctx.strokeStyle = '#b0b0b0';
+            ctx.beginPath();
+            ctx.moveTo(padding, padding);
+            ctx.lineTo(padding, chartCanvas.height - padding);
+            ctx.lineTo(chartCanvas.width - padding, chartCanvas.height - padding);
+            ctx.stroke();
+        });
+        
+        // Global Search Functionality
+        document.getElementById('globalSearchBtn').addEventListener('click', function() {
+            const searchQuery = document.getElementById('globalSearch').value;
+            
+            if (searchQuery.trim() === '') {
+                return;
+            }
+            
+            // Find the relevant section based on the query
+            if (searchQuery.toLowerCase().includes('scene')) {
+                document.getElementById('scene').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('sceneInput').value = searchQuery;
+                document.getElementById('generateScene').click();
+            } else if (searchQuery.toLowerCase().includes('resource') || searchQuery.toLowerCase().includes('asset')) {
+                document.getElementById('resources').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('resourceInput').value = searchQuery;
+                document.getElementById('searchResources').click();
+            } else if (searchQuery.toLowerCase().includes('tutorial') || searchQuery.toLowerCase().includes('learn')) {
+                document.getElementById('tutorials').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('tutorialInput').value = searchQuery;
+                document.getElementById('generateTutorial').click();
+            } else if (searchQuery.toLowerCase().includes('community') || searchQuery.toLowerCase().includes('question')) {
+                document.getElementById('community').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('communityInput').value = searchQuery;
+            } else if (searchQuery.toLowerCase().includes('stat') || searchQuery.toLowerCase().includes('data')) {
+                document.getElementById('stats').scrollIntoView({ behavior: 'smooth' });
+                document.getElementById('statsInput').value = searchQuery;
+                document.getElementById('generateStats').click();
+            }
+        });
+        
+        // Initialize with some sample community posts
+        document.addEventListener('DOMContentLoaded', function() {
+            const communityPosts = document.getElementById('communityPosts');
+            
+            const samplePosts = [
+                {
+                    author: 'VR Enthusiast',
+                    date: '2026-05-15 14:30',
+                    content: 'Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?',
+                    comments: [
+                        { author: 'Tech Guru', content: 'Yes! The new controllers are a game changer. The precision is incredible.' },
+                        { author: 'Casual Gamer', content: 'I agree! It makes the whole experience so much more immersive.' }
+                    ]
+                },
+                {
+                    author: 'Game Developer',
+                    date: '2026-05-14 10:15',
+                    content: 'Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?',
+                    comments: [
+                        { author: 'UI Designer', content: 'Consider using hand gestures for menu navigation. It feels more natural in VR.' }
+                    ]
+                }
+            ];
+            
+            samplePosts.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <span class="post-author">${post.author}</span>
+                        <span class="post-date">${post.date}</span>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-comments">
+                        ${post.comments.map(comment => `
+                            <div class="comment">
+                                <div class="comment-author">${comment.author}</div>
+                                <div class="comment-content">${comment.content}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                communityPosts.appendChild(postElement);
+            });
+            
+            // Initialize empty chart
+            const chartCanvas = document.getElementById('statsChart');
+            const ctx = chartCanvas.getContext('2d');
+            chartCanvas.width = chartCanvas.offsetWidth;
+            chartCanvas.height = chartCanvas.offsetHeight;
+            ctx.fillStyle = '#b0b0b0';
+            ctx.font = '16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Enter game data to generate statistics', chartCanvas.width/2, chartCanvas.height/2);
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VR Game MasterKit":"VR Game MasterKit","Scene Preview":"Scene Preview","Resources":"Resources","Tutorials":"Tutorials","Community":"Community","Statistics":"Statistics","VR Game MasterKit - Your Ultimate VR Gaming Companion":"VR Game MasterKit - Your Ultimate VR Gaming Companion","Search":"Search","Virtual Scene Preview":"Virtual Scene Preview","Generate Scene":"Generate Scene","Game Resource Search":"Game Resource Search","Search Resources":"Search Resources","Game Tutorial Generator":"Game Tutorial Generator","Generate Tutorial":"Generate Tutorial","Tutorial video will appear here":"Tutorial video will appear here","Tutorial steps will appear here":"Tutorial steps will appear here","Community Interaction":"Community Interaction","Post to Community":"Post to Community","Game Statistics":"Game Statistics","Generate Statistics":"Generate Statistics","High-quality 3D models for VR environments":"High-quality 3D models for VR environments","Sound Effects Library":"Sound Effects Library","Immersive audio for VR games":"Immersive audio for VR games","VR Controllers":"VR Controllers","Optimized controller assets":"Optimized controller assets","Environment Textures":"Environment Textures","Realistic textures for VR scenes":"Realistic textures for VR scenes","VR UI Kit":"VR UI Kit","User interface components for VR":"User interface components for VR","Animation Assets":"Animation Assets","Pre-made animations for VR characters":"Pre-made animations for VR characters","text-align: center;":"text-align: center;","M8 5v14l11-7z":"M8 5v14l11-7z","Getting Started":"Getting Started","Introduction to the game and basic controls":"Introduction to the game and basic controls","Movement \u0026 Navigation":"Movement \u0026 Navigation","Learn how to move around the virtual environment":"Learn how to move around the virtual environment","Combat Basics":"Combat Basics","Master the combat system and weapon handling":"Master the combat system and weapon handling","Advanced Techniques":"Advanced Techniques","Pro tips and advanced strategies for experienced players":"Pro tips and advanced strategies for experienced players","Enter game data to generate statistics":"Enter game data to generate statistics","VR Enthusiast":"VR Enthusiast","Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?":"Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?","Tech Guru":"Tech Guru","Yes! The new controllers are a game changer. The precision is incredible.":"Yes! The new controllers are a game changer. The precision is incredible.","Casual Gamer":"Casual Gamer","I agree! It makes the whole experience so much more immersive.":"I agree! It makes the whole experience so much more immersive.","Game Developer":"Game Developer","Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?":"Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?","__title__":"VR Game MasterKit"},"zh-CN":{"VR Game MasterKit":"VR游戏大师套件","Scene Preview":"场景预览","Resources":"资源","Tutorials":"教程","Community":"社区","Statistics":"统计","VR Game MasterKit - Your Ultimate VR Gaming Companion":"VR游戏大师套件 - 您终极的VR游戏伴侣","Search":"搜索","Virtual Scene Preview":"虚拟场景预览","Generate Scene":"生成场景","Game Resource Search":"游戏资源搜索","Search Resources":"搜索资源","Game Tutorial Generator":"游戏教程生成器","Generate Tutorial":"生成教程","Tutorial video will appear here":"教程视频将在此处显示","Tutorial steps will appear here":"教程步骤将在此处显示","Community Interaction":"社区互动","Post to Community":"发布到社区","Game Statistics":"游戏统计","Generate Statistics":"生成统计","High-quality 3D models for VR environments":"适用于VR环境的优质3D模型","Sound Effects Library":"音效库","Immersive audio for VR games":"适用于VR游戏的沉浸式音频","VR Controllers":"VR控制器","Optimized controller assets":"优化的控制器资源","Environment Textures":"环境纹理","Realistic textures for VR scenes":"适用于VR场景的逼真纹理","VR UI Kit":"VR UI套件","User interface components for VR":"适用于VR的用户界面组件","Animation Assets":"动画资源","Pre-made animations for VR characters":"为VR角色预设的动画","text-align: center;":"text-align: center;","M8 5v14l11-7z":"M8 5v14l11-7z","Getting Started":"开始使用","Introduction to the game and basic controls":"游戏介绍及基本控制","Movement \u0026 Navigation":"移动与导航","Learn how to move around the virtual environment":"学习如何在虚拟环境中移动","Combat Basics":"战斗基础","Master the combat system and weapon handling":"掌握战斗系统和武器操作","Advanced Techniques":"高级技巧","Pro tips and advanced strategies for experienced players":"专业技巧和高级策略，适用于经验丰富的玩家","Enter game data to generate statistics":"输入游戏数据以生成统计","VR Enthusiast":"VR爱好者","Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?":"刚刚尝试了新的VR运动控制器。触觉反馈太棒了！还有其他人有这种体验吗？","Tech Guru":"技术专家","Yes! The new controllers are a game changer. The precision is incredible.":"是的！新的控制器是游戏变革者。精度令人难以置信。","Casual Gamer":"休闲玩家","I agree! It makes the whole experience so much more immersive.":"我同意！这使得整个体验更加沉浸。","Game Developer":"游戏开发者","Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?":"寻求对我的新VR解谜游戏的反馈。有任何改进用户界面的建议吗？","__title__":"VR游戏大师套件"},"es":{"VR Game MasterKit":"VR Game MasterKit","Scene Preview":"Vista previa de escena","Resources":"Recursos","Tutorials":"Tutoriales","Community":"Comunidad","Statistics":"Estadísticas","VR Game MasterKit - Your Ultimate VR Gaming Companion":"VR Game MasterKit - Tu compañero de juegos VR definitivo","Search":"Búsqueda","Virtual Scene Preview":"Vista previa de escena virtual","Generate Scene":"Generar escena","Game Resource Search":"Búsqueda de recursos de juego","Search Resources":"Buscar recursos","Game Tutorial Generator":"Generador de tutoriales de juego","Generate Tutorial":"Generar tutorial","Tutorial video will appear here":"El video del tutorial aparecerá aquí","Tutorial steps will appear here":"Los pasos del tutorial aparecerán aquí","Community Interaction":"Interacción de la comunidad","Post to Community":"Publicar en la comunidad","Game Statistics":"Estadísticas del juego","Generate Statistics":"Generar estadísticas","High-quality 3D models for VR environments":"Modelos 3D de alta calidad para entornos VR","Sound Effects Library":"Biblioteca de efectos de sonido","Immersive audio for VR games":"Audio inmersivo para juegos VR","VR Controllers":"Controladores VR","Optimized controller assets":"Activos de controlador optimizados","Environment Textures":"Texturas de entorno","Realistic textures for VR scenes":"Texturas realistas para escenas VR","VR UI Kit":"Kit de UI VR","User interface components for VR":"Componentes de interfaz de usuario para VR","Animation Assets":"Activos de animación","Pre-made animations for VR characters":"Animaciones pre-hechas para personajes VR","text-align: center;":"text-align: center;","M8 5v14l11-7z":"M8 5v14l11-7z","Getting Started":"Comenzando","Introduction to the game and basic controls":"Introducción al juego y controles básicos","Movement \u0026 Navigation":"Movimiento y navegación","Learn how to move around the virtual environment":"Aprende a moverte por el entorno virtual","Combat Basics":"Básicos del combate","Master the combat system and weapon handling":"Dominar el sistema de combate y el manejo de armas","Advanced Techniques":"Técnicas avanzadas","Pro tips and advanced strategies for experienced players":"Consejos de experto y estrategias avanzadas para jugadores experimentados","Enter game data to generate statistics":"Ingrese los datos del juego para generar estadísticas","VR Enthusiast":"Enthusiasta de VR","Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?":"Acabo de probar los nuevos controladores de movimiento VR. ¡El retroalimentación táctil es asombrosa! ¿Alguien más ha experimentado esto?","Tech Guru":"Gurú de la tecnología","Yes! The new controllers are a game changer. The precision is incredible.":"¡Sí! Los nuevos controladores son un cambio de juego. La precisión es increíble.","Casual Gamer":"Jugador casual","I agree! It makes the whole experience so much more immersive.":"¡Estoy de acuerdo! Hace que toda la experiencia sea mucho más inmersiva.","Game Developer":"Desarrollador de juegos","Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?":"Buscando comentarios sobre mi nuevo juego de puzzles VR. ¿Tienen alguna sugerencia para mejorar la interfaz de usuario?","__title__":"VR Game MasterKit"},"ja":{"VR Game MasterKit":"VR Game MasterKit","Scene Preview":"シーンプレビュー","Resources":"リソース","Tutorials":"チュートリアル","Community":"コミュニティ","Statistics":"統計","VR Game MasterKit - Your Ultimate VR Gaming Companion":"VR Game MasterKit - Your Ultimate VR Gaming Companion","Search":"検索","Virtual Scene Preview":"バーチャルシーンプレビュー","Generate Scene":"シーンの生成","Game Resource Search":"ゲームリソース検索","Search Resources":"リソースの検索","Game Tutorial Generator":"ゲームチュートリアル生成器","Generate Tutorial":"チュートリアルの生成","Tutorial video will appear here":"チュートリアルビデオがここに表示されます","Tutorial steps will appear here":"チュートリアルステップがここに表示されます","Community Interaction":"コミュニティとの交流","Post to Community":"コミュニティに投稿","Game Statistics":"ゲーム統計","Generate Statistics":"統計の生成","High-quality 3D models for VR environments":"VR環境用の高品質3Dモデル","Sound Effects Library":"サウンドエフェクトライブラリ","Immersive audio for VR games":"VRゲームのための没入感のあるオーディオ","VR Controllers":"VRコントローラー","Optimized controller assets":"最適化されたコントローラーアセット","Environment Textures":"環境テクスチャ","Realistic textures for VR scenes":"VRシーンのためのリアルなテクスチャ","VR UI Kit":"VR UIキット","User interface components for VR":"VRのためのユーザーインターフェースコンポーネント","Animation Assets":"アニメーションアセット","Pre-made animations for VR characters":"VRキャラクターのための事前作成アニメーション","text-align: center;":"text-align: center;","M8 5v14l11-7z":"M8 5v14l11-7z","Getting Started":"始めましょう","Introduction to the game and basic controls":"ゲームと基本的なコントロールの紹介","Movement \u0026 Navigation":"移動とナビゲーション","Learn how to move around the virtual environment":"バーチャル環境を移動する方法を学ぶ","Combat Basics":"戦闘の基本","Master the combat system and weapon handling":"戦闘システムと武器の操作をマスターする","Advanced Techniques":"高度な技術","Pro tips and advanced strategies for experienced players":"上級プレイヤーのためのプロのヒントと高度な戦略","Enter game data to generate statistics":"ゲームデータを入力して統計を生成する","VR Enthusiast":"VRエナシスト","Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?":"新しいVRモーションコントローラーを試してみました。ハapticsフィードバックは驚くほど素晴らしいです！他の人も同じ経験をしましたか？","Tech Guru":"テックガルー","Yes! The new controllers are a game changer. The precision is incredible.":"はい！新しいコントローラーはゲームチェンジャーです。精度は驚くほどです。","Casual Gamer":"カジュアルゲーマー","I agree! It makes the whole experience so much more immersive.":"同意します！それで体験全体がもっと没入感のあるものになります。","Game Developer":"ゲーム開発者","Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?":"新しいVRパズルゲームに関するフィードバックを探しています。ユーザーインターフェースを改善するための提案はありますか？","__title__":"VR Game MasterKit"},"ko":{"VR Game MasterKit":"VR 게임 마스터킷","Scene Preview":"장면 미리보기","Resources":"자원","Tutorials":"튜토리얼","Community":"커뮤니티","Statistics":"통계","VR Game MasterKit - Your Ultimate VR Gaming Companion":"VR 게임 마스터킷 - 당신의 최종 VR 게임 컴패니언","Search":"검색","Virtual Scene Preview":"가상 장면 미리보기","Generate Scene":"장면 생성","Game Resource Search":"게임 자원 검색","Search Resources":"자원 검색","Game Tutorial Generator":"게임 튜토리얼 생성기","Generate Tutorial":"튜토리얼 생성","Tutorial video will appear here":"튜토리얼 비디오가 여기에 나타납니다","Tutorial steps will appear here":"튜토리얼 단계가 여기에 나타납니다","Community Interaction":"커뮤니티 상호작용","Post to Community":"커뮤니티에 게시","Game Statistics":"게임 통계","Generate Statistics":"통계 생성","High-quality 3D models for VR environments":"VR 환경용 고품질 3D 모델","Sound Effects Library":"사운드 효과 라이브러리","Immersive audio for VR games":"VR 게임용 몰입형 오디오","VR Controllers":"VR 컨트롤러","Optimized controller assets":" 최적화된 컨트롤러 자산","Environment Textures":"환경 텍스처","Realistic textures for VR scenes":"VR 장면용 현실적인 텍스처","VR UI Kit":"VR UI 키트","User interface components for VR":"VR용 사용자 인터페이스 구성 요소","Animation Assets":"애니메이션 자산","Pre-made animations for VR characters":"VR 캐릭터용 사전 제작 애니메이션","text-align: center;":"text-align: center;","M8 5v14l11-7z":"M8 5v14l11-7z","Getting Started":"시작하기","Introduction to the game and basic controls":"게임과 기본 제어 방법 소개","Movement \u0026 Navigation":"이동 및 탐색","Learn how to move around the virtual environment":"가상 환경에서 이동하는 방법을 배우세요","Combat Basics":"전투 기본","Master the combat system and weapon handling":"전투 시스템과 무기 처리를 마스터하세요","Advanced Techniques":"고급 기술","Pro tips and advanced strategies for experienced players":"경험 많은 플레이어용 프로 팁과 고급 전략","Enter game data to generate statistics":"게임 데이터를 입력하여 통계 생성","VR Enthusiast":"VR 열혈팬","Just tried the new VR motion controllers. The haptic feedback is amazing! Has anyone else experienced this?":"새로운 VR 움직임 컨트롤러를 시도했어요. 힕티크 피드백이 정말 놀라워요! 다른 사람들도 이 경험을 했나요?","Tech Guru":"테크 구루","Yes! The new controllers are a game changer. The precision is incredible.":"네! 새로운 컨트롤러는 게임을 바꾸는 요소예요. 정확도가 놀라워요.","Casual Gamer":"캐주얼 게이머","I agree! It makes the whole experience so much more immersive.":"제 동의와 같아요! 전체 경험을 훨씬 더 몰입감 있게 만들어요.","Game Developer":"게임 개발자","Looking for feedback on my new VR puzzle game. Any suggestions for improving the user interface?":"내 새로운 VR 패uzzle 게임에 대한 피드백을 찾고 있어요. 사용자 인터페이스를 개선하는 데 대한 제안이 있나요?","__title__":"VR 게임 마스터킷"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
