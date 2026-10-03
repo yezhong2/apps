@@ -17,6 +17,8 @@ function log(msg) {
 var TASK_PATH = "/storage/emulated/0/脚本/功能实测_任务.json";
 var RESULT_PATH = "/storage/emulated/0/脚本/功能实测_结果.json";
 var TMP_HTML = "/storage/emulated/0/脚本/_功能实测临时页.html"; // 放脚本根目录（不进产出/，不污染产品列表）
+var HOOK_PATH = "/storage/emulated/0/脚本/_功能实测钩子.js"; // 注入代码独立成文件：可 node --check 单独校验，避开旧版字符串拼接的引号转义陷阱
+var alertsNative = []; // alert/confirm/prompt 文本。**不能**在回调里 loadUrl 注入——弹窗未关闭时 JS 线程被阻塞、注入语句要等弹窗关掉才执行，故先存原生数组、finish 时并入结果
 
 var task = null;
 try { task = JSON.parse(files.read(TASK_PATH)); } catch (e) {}
@@ -30,6 +32,7 @@ function finish(rep) {
     if (finished) return;
     finished = true;
     rep = rep || {};
+    try { if (alertsNative.length && !rep.alerts) rep.alerts = alertsNative.slice(0, 8); } catch (e) {}
     rep.label = label;
     rep.step = step;
     rep.ts = new Date().toLocaleString();
@@ -42,22 +45,11 @@ function finish(rep) {
 // 1) 注入测试钩子（onerror 收集 + __runTest 驱动）到临时副本
 var html = "";
 try { html = files.read(task.target); } catch (e) { finish({fatal: "读取产品失败：" + e}); }
-var HOOK = "<script>window.__tErr=[];" +
-    "window.onerror=function(m,s,l){try{window.__tErr.push(String(m).slice(0,120));}catch(e){}return false;};" +
-    "window.__runTest=function(){" +
-    "var rep={buttons:0,clicked:0,errs:[],errAfter:0};" +
-    "try{" +
-    "var els=document.querySelectorAll('button,[onclick],input[type=button],input[type=submit]');" +
-    "rep.buttons=els.length;" +
-    "var n=Math.min(els.length,20);" +
-    "for(var i=0;i<n;i++){try{els[i].click();rep.clicked++;}catch(e){}}" +
-    "}catch(e){rep.fatal='驱动异常:'+String(e).slice(0,120);}" +
-    "setTimeout(function(){" +
-    "rep.errs=window.__tErr.slice(0,8);" +
-    "rep.errAfter=window.__tErr.length;" +
-    "try{location.hash='__t='+encodeURIComponent(JSON.stringify(rep));}catch(e){}" +
-    "},1500);" +
-    "};</script>";
+// 钩子代码改为从独立文件读入（2026-10-03）：旧版用字符串拼接把钩子硬塞在源码里，引号转义极易写错且无法单独校验。
+var HOOK_SRC = "";
+try { HOOK_SRC = files.read(HOOK_PATH); } catch (e) {}
+if (!HOOK_SRC || HOOK_SRC.length < 200) { finish({fatal: "钩子文件读取失败：" + HOOK_PATH + "（实测无法进行，请检查文件是否存在）"}); }
+var HOOK = "<script>" + HOOK_SRC + "</script>";
 html = html.replace(/<head[^>]*>/i, function(m) { return m + HOOK; });
 if (html.indexOf("__runTest") < 0) html = HOOK + html;
 try { files.write(TMP_HTML, html); } catch (e) { finish({fatal: "临时页写入失败：" + e}); }
@@ -76,9 +68,9 @@ step = "settings-ok";
 
 try {
     wv.setWebChromeClient(new JavaAdapter(android.webkit.WebChromeClient, {
-        onJsAlert: function(view, url, message, result) { try { result.confirm(); } catch (e) {} return true; },
-        onJsConfirm: function(view, url, message, result) { try { result.confirm(); } catch (e) {} return true; },
-        onJsPrompt: function(view, url, message, defaultValue, result) { try { result.confirm(""); } catch (e) {} return true; }
+        onJsAlert: function(view, url, message, result) { try { alertsNative.push("alert: " + String(message).slice(0, 60)); } catch (e) {} try { result.confirm(); } catch (e) {} return true; },
+        onJsConfirm: function(view, url, message, result) { try { alertsNative.push("confirm: " + String(message).slice(0, 60)); } catch (e) {} try { result.confirm(); } catch (e) {} return true; },
+        onJsPrompt: function(view, url, message, defaultValue, result) { try { alertsNative.push("prompt: " + String(message).slice(0, 60)); } catch (e) {} try { result.confirm(""); } catch (e) {} return true; }
     }));
     wv.setWebViewClient(new JavaAdapter(android.webkit.WebViewClient, {
         onPageFinished: function(view, url) {
