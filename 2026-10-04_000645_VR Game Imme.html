@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Game Immersion Enhancer</title><meta name="description" content="Free online tool: VR Game Immersion Enhancer. No signup, no payment — free forever.">
+<meta property="og:title" content="VR Game Immersion Enhancer">
+<meta property="og:description" content="Free online tool: VR Game Immersion Enhancer. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-04_000645_VR Game Imme.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --background-dark: #0f172a;
+            --surface-dark: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent: #ec4899;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navigation */
+        header {
+            background-color: var(--surface-dark);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            width: 100%;
+        }
+        
+        .hero-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-section p {
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background-color: var(--surface-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        
+        .feature-button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .feature-button:active {
+            transform: scale(0.98);
+        }
+        
+        /* Control Panel */
+        .control-panel {
+            background-color: var(--surface-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .control-panel h2 {
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--background-dark);
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            cursor: pointer;
+        }
+        
+        .control-group input[type="file"] {
+            display: none;
+        }
+        
+        .file-upload-btn {
+            display: inline-block;
+            background-color: var(--surface-dark);
+            color: var(--text-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid var(--primary-color);
+            transition: background-color 0.3s;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .file-upload-btn:hover {
+            background-color: rgba(99, 102, 241, 0.2);
+        }
+        
+        .status-display {
+            background-color: var(--background-dark);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            min-height: 150px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .status-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .status-label {
+            color: var(--text-secondary);
+        }
+        
+        .status-value {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        /* Settings Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: var(--surface-dark);
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h2 {
+            color: var(--primary-color);
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .close-modal:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Help Section */
+        .help-section {
+            background-color: var(--surface-dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .help-section h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .faq-item {
+            margin-bottom: 1rem;
+        }
+        
+        .faq-question {
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem 0;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .faq-answer {
+            color: var(--text-secondary);
+            padding: 0.5rem 0;
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-item.active .faq-question::after {
+            content: "▼";
+        }
+        
+        .faq-question::after {
+            content: "▶";
+            font-size: 0.8rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--surface-dark);
+            padding: 1.5rem 0;
+            text-align: center;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 4px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">VR Enhancer</div>
+            <div class="nav-links">
+                <a href="#features" class="nav-link active">Features</a>
+                <a href="#controls" class="nav-link">Controls</a>
+                <a href="#settings" class="nav-link">Settings</a>
+                <a href="#help" class="nav-link">Help</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        <section class="hero-section">
+            <h1>VR Game Immersion Enhancer</h1>
+            <p>Enhance your virtual reality gaming experience with our advanced tools for visual optimization, sound environment simulation, and motion feedback calibration.</p>
+        </section>
+        
+        <section id="features" class="features-section">
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>Real-time Visual Optimization</h3>
+                    <p>Automatically adjust and enhance your VR game visuals for the best possible image quality.</p>
+                    <button class="feature-button" id="visualOptBtn">Optimize Visuals</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Sound Environment Simulation</h3>
+                    <p>Create immersive 3D audio environments that respond to your game environment.</p>
+                    <button class="feature-button" id="soundSimBtn">Simulate Audio</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Motion Feedback System</h3>
+                    <p>Calibrate and enhance your body movement tracking for precise in-game actions.</p>
+                    <button class="feature-button" id="motionFeedbackBtn">Calibrate Motion</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Lighting Environment Control</h3>
+                    <p>Adjust lighting conditions in your VR environment to match your preferences.</p>
+                    <button class="feature-button" id="lightingCtrlBtn">Control Lighting</button>
+                </div>
+                
+                <div class="feature-card">
+                    <h3>Controller Calibration</h3>
+                    <p>Fine-tune your VR controllers for accurate and responsive gameplay.</p>
+                    <button class="feature-button" id="controllerCalBtn">Calibrate Controller</button>
+                </div>
+            </div>
+        </section>
+        
+        <section id="controls" class="control-panel">
+            <h2>Control Panel</h2>
+            
+            <div class="control-group">
+                <label for="visualUpload">Upload VR Game Image</label>
+                <input type="file" id="visualUpload" accept="image/*">
+                <label for="visualUpload" class="file-upload-btn">Choose Image File</label>
+            </div>
+            
+            <div class="control-group">
+                <label for="visualQuality">Visual Quality: <span id="qualityValue">80%</span></label>
+                <input type="range" id="visualQuality" min="0" max="100" value="80">
+            </div>
+            
+            <div class="control-group">
+                <label for="audioIntensity">Audio Intensity: <span id="audioValue">70%</span></label>
+                <input type="range" id="audioIntensity" min="0" max="100" value="70">
+            </div>
+            
+            <div class="control-group">
+                <label for="motionSensitivity">Motion Sensitivity: <span id="motionValue">60%</span></label>
+                <input type="range" id="motionSensitivity" min="0" max="100" value="60">
+            </div>
+            
+            <div class="control-group">
+                <label for="lightingIntensity">Lighting Intensity: <span id="lightValue">50%</span></label>
+                <input type="range" id="lightingIntensity" min="0" max="100" value="50">
+            </div>
+            
+            <button class="feature-button" id="applyAllBtn">Apply All Settings</button>
+            
+            <div class="status-display" id="statusDisplay">
+                <div class="status-item">
+                    <span class="status-label">Visual Status:</span>
+                    <span class="status-value" id="visualStatus">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Audio Status:</span>
+                    <span class="status-value" id="audioStatus">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Motion Status:</span>
+                    <span class="status-value" id="motionStatus">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Lighting Status:</span>
+                    <span class="status-value" id="lightingStatus">Ready</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Controller Status:</span>
+                    <span class="status-value" id="controllerStatus">Ready</span>
+                </div>
+            </div>
+        </section>
+        
+        <section id="help" class="help-section">
+            <h2>Help Center</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">How do I start enhancing my VR experience?</div>
+                <div class="faq-answer">Simply upload your VR game image or start with the default settings. Use the control sliders to adjust each parameter according to your preferences, then click "Apply All Settings" to enhance your experience.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">What is visual optimization?</div>
+                <div class="faq-answer">Visual optimization automatically enhances your VR game's image quality by adjusting contrast, sharpness, color balance, and other visual parameters to provide the best possible image quality on your device.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">How does the sound environment simulation work?</div>
+                <div class="faq-answer">Our sound simulation creates 3D audio environments that respond to your game's virtual space. It adjusts audio positioning, reverb, and other spatial audio parameters to create a more immersive soundscape.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Can I save my settings?</div>
+                <div class="faq-answer">Yes, your settings are automatically saved to your browser's local storage. They will be restored the next time you use the enhancer.</div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">Is this compatible with all VR headsets?</div>
+                <div class="faq-answer">Our enhancer is designed to work with most popular VR headsets including Oculus, HTC Vive, PlayStation VR, and Windows Mixed Reality. Some features may vary depending on your specific device.</div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" id="feedbackLink">Feedback</a>
+                <a href="#" id="aboutLink">About</a>
+                <a href="#" id="contactLink">Contact</a>
+            </div>
+            <p>&copy; 2026 VR Game Immersion Enhancer</p>
+        </div>
+    </footer>
+    
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Advanced Settings</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="control-group">
+                <label for="renderScale">Render Scale: <span id="renderValue">100%</span></label>
+                <input type="range" id="renderScale" min="50" max="200" value="100">
+            </div>
+            
+            <div class="control-group">
+                <label for="fovAdjust">Field of View: <span id="fovValue">90°</span></label>
+                <input type="range" id="fovAdjust" min="60" max="120" value="90">
+            </div>
+            
+            <div class="control-group">
+                <label for="refreshRate">Refresh Rate: <span id="refreshValue">90Hz</span></label>
+                <input type="range" id="refreshRate" min="60" max="120" value="90">
+            </div>
+            
+            <div class="control-group">
+                <label for="audioProfile">Audio Profile</label>
+                <select id="audioProfile" style="width: 100%; padding: 0.5rem; background-color: var(--background-dark); color: var(--text-primary); border: 1px solid var(--primary-color); border-radius: 4px;">
+                    <option value="balanced">Balanced</option>
+                    <option value="bass-heavy">Bass Heavy</option>
+                    <option value="treble-heavy">Treble Heavy</option>
+                    <option value="cinematic">Cinematic</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="motionProfile">Motion Profile</label>
+                <select id="motionProfile" style="width: 100%; padding: 0.5rem; background-color: var(--background-dark); color: var(--text-primary); border: 1px solid var(--primary-color); border-radius: 4px;">
+                    <option value="standard">Standard</option>
+                    <option value="enhanced">Enhanced Precision</option>
+                    <option value="aggressive">Aggressive Response</option>
+                </select>
+            </div>
+            
+            <button class="feature-button" id="saveSettingsBtn">Save Settings</button>
+        </div>
+    </div>
+    
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+        
+        // FAQ toggle functionality
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+        
+        // Settings modal functionality
+        const settingsModal = document.getElementById('settingsModal');
+        const openSettingsBtn = document.querySelector('#settings .nav-link');
+        const closeModalBtn = document.getElementById('closeModal');
+        
+        openSettingsBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            settingsModal.style.display = 'flex';
+        });
+        
+        closeModalBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
+        
+        // Slider value updates
+        const sliders = [
+            { id: 'visualQuality', valueId: 'qualityValue', suffix: '%' },
+            { id: 'audioIntensity', valueId: 'audioValue', suffix: '%' },
+            { id: 'motionSensitivity', valueId: 'motionValue', suffix: '%' },
+            { id: 'lightingIntensity', valueId: 'lightValue', suffix: '%' },
+            { id: 'renderScale', valueId: 'renderValue', suffix: '%' },
+            { id: 'fovAdjust', valueId: 'fovValue', suffix: '°' },
+            { id: 'refreshRate', valueId: 'refreshValue', suffix: 'Hz' }
+        ];
+        
+        sliders.forEach(slider => {
+            const sliderElement = document.getElementById(slider.id);
+            const valueElement = document.getElementById(slider.valueId);
+            
+            sliderElement.addEventListener('input', function() {
+                valueElement.textContent = this.value + slider.suffix;
+            });
+        });
+        
+        // File upload functionality
+        const visualUpload = document.getElementById('visualUpload');
+        const fileUploadBtn = document.querySelector('.file-upload-btn');
+        
+        fileUploadBtn.addEventListener('click', function() {
+            visualUpload.click();
+        });
+        
+        visualUpload.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                fileUploadBtn.textContent = 'Selected: ' + fileName;
+                
+                // Simulate visual processing
+                document.getElementById('visualStatus').textContent = 'Processing...';
+                
+                setTimeout(() => {
+                    document.getElementById('visualStatus').textContent = 'Optimized';
+                }, 2000);
+            }
+        });
+        
+        // Feature buttons functionality
+        document.getElementById('visualOptBtn').addEventListener('click', function() {
+            const quality = document.getElementById('visualQuality').value;
+            
+            // Simulate visual optimization
+            document.getElementById('visualStatus').textContent = 'Optimizing...';
+            
+            setTimeout(() => {
+                document.getElementById('visualStatus').textContent = 'Optimized at ' + quality + '%';
+            }, 1500);
+        });
+        
+        document.getElementById('soundSimBtn').addEventListener('click', function() {
+            const intensity = document.getElementById('audioIntensity').value;
+            
+            // Simulate audio simulation
+            document.getElementById('audioStatus').textContent = 'Simulating...';
+            
+            setTimeout(() => {
+                document.getElementById('audioStatus').textContent = 'Simulated at ' + intensity + '%';
+            }, 1500);
+        });
+        
+        document.getElementById('motionFeedbackBtn').addEventListener('click', function() {
+            const sensitivity = document.getElementById('motionSensitivity').value;
+            
+            // Simulate motion calibration
+            document.getElementById('motionStatus').textContent = 'Calibrating...';
+            
+            setTimeout(() => {
+                document.getElementById('motionStatus').textContent = 'Calibrated at ' + sensitivity + '%';
+            }, 1500);
+        });
+        
+        document.getElementById('lightingCtrlBtn').addEventListener('click', function() {
+            const intensity = document.getElementById('lightingIntensity').value;
+            
+            // Simulate lighting adjustment
+            document.getElementById('lightingStatus').textContent = 'Adjusting...';
+            
+            setTimeout(() => {
+                document.getElementById('lightingStatus').textContent = 'Adjusted to ' + intensity + '%';
+            }, 1500);
+        });
+        
+        document.getElementById('controllerCalBtn').addEventListener('click', function() {
+            // Simulate controller calibration
+            document.getElementById('controllerStatus').textContent = 'Calibrating...';
+            
+            setTimeout(() => {
+                document.getElementById('controllerStatus').textContent = 'Calibrated';
+            }, 1500);
+        });
+        
+        // Apply all settings
+        document.getElementById('applyAllBtn').addEventListener('click', function() {
+            // Reset all statuses
+            document.getElementById('visualStatus').textContent = 'Applying...';
+            document.getElementById('audioStatus').textContent = 'Applying...';
+            document.getElementById('motionStatus').textContent = 'Applying...';
+            document.getElementById('lightingStatus').textContent = 'Applying...';
+            document.getElementById('controllerStatus').textContent = 'Applying...';
+            
+            // Simulate applying all settings
+            setTimeout(() => {
+                document.getElementById('visualStatus').textContent = 'Applied';
+                document.getElementById('audioStatus').textContent = 'Applied';
+                document.getElementById('motionStatus').textContent = 'Applied';
+                document.getElementById('lightingStatus').textContent = 'Applied';
+                document.getElementById('controllerStatus').textContent = 'Applied';
+            }, 2000);
+        });
+        
+        // Save settings
+        document.getElementById('saveSettingsBtn').addEventListener('click', function() {
+            const settings = {
+                visualQuality: document.getElementById('visualQuality').value,
+                audioIntensity: document.getElementById('audioIntensity').value,
+                motionSensitivity: document.getElementById('motionSensitivity').value,
+                lightingIntensity: document.getElementById('lightingIntensity').value,
+                renderScale: document.getElementById('renderScale').value,
+                fovAdjust: document.getElementById('fovAdjust').value,
+                refreshRate: document.getElementById('refreshRate').value,
+                audioProfile: document.getElementById('audioProfile').value,
+                motionProfile: document.getElementById('motionProfile').value
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('vrEnhancerSettings', JSON.stringify(settings));
+            
+            // Close modal
+            settingsModal.style.display = 'none';
+            
+            // Show confirmation
+            const confirmMsg = document.createElement('div');
+            confirmMsg.textContent = 'Settings saved successfully!';
+            confirmMsg.style.position = 'fixed';
+            confirmMsg.style.top = '20px';
+            confirmMsg.style.left = '50%';
+            confirmMsg.style.transform = 'translateX(-50%)';
+            confirmMsg.style.backgroundColor = 'var(--success)';
+            confirmMsg.style.color = 'white';
+            confirmMsg.style.padding = '10px 20px';
+            confirmMsg.style.borderRadius = '4px';
+            confirmMsg.style.zIndex = '1001';
+            document.body.appendChild(confirmMsg);
+            
+            setTimeout(() => {
+                confirmMsg.remove();
+            }, 3000);
+        });
+        
+        // Load saved settings on page load
+        window.addEventListener('load', function() {
+            const savedSettings = localStorage.getItem('vrEnhancerSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                
+                // Apply saved settings
+                document.getElementById('visualQuality').value = settings.visualQuality || 80;
+                document.getElementById('audioIntensity').value = settings.audioIntensity || 70;
+                document.getElementById('motionSensitivity').value = settings.motionSensitivity || 60;
+                document.getElementById('lightingIntensity').value = settings.lightingIntensity || 50;
+                document.getElementById('renderScale').value = settings.renderScale || 100;
+                document.getElementById('fovAdjust').value = settings.fovAdjust || 90;
+                document.getElementById('refreshRate').value = settings.refreshRate || 90;
+                document.getElementById('audioProfile').value = settings.audioProfile || 'balanced';
+                document.getElementById('motionProfile').value = settings.motionProfile || 'standard';
+                
+                // Update display values
+                sliders.forEach(slider => {
+                    const valueElement = document.getElementById(slider.valueId);
+                    const sliderElement = document.getElementById(slider.id);
+                    if (valueElement && sliderElement) {
+                        valueElement.textContent = sliderElement.value + slider.suffix;
+                    }
+                });
+            }
+        });
+        
+        // Footer links functionality
+        document.getElementById('feedbackLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create feedback form modal
+            const feedbackModal = document.createElement('div');
+            feedbackModal.className = 'modal';
+            feedbackModal.style.display = 'flex';
+            
+            feedbackModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Send Feedback</h2>
+                        <button class="close-modal" id="closeFeedback">&times;</button>
+                    </div>
+                    <form id="feedbackForm">
+                        <div class="control-group">
+                            <label for="feedbackType">Feedback Type</label>
+                            <select id="feedbackType" style="width: 100%; padding: 0.5rem; background-color: var(--background-dark); color: var(--text-primary); border: 1px solid var(--primary-color); border-radius: 4px;">
+                                <option value="bug">Bug Report</option>
+                                <option value="feature">Feature Request</option>
+                                <option value="improvement">Improvement</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="control-group">
+                            <label for="feedbackMessage">Your Message</label>
+                            <textarea id="feedbackMessage" style="width: 100%; min-height: 150px; padding: 0.5rem; background-color: var(--background-dark); color: var(--text-primary); border: 1px solid var(--primary-color); border-radius: 4px;"></textarea>
+                        </div>
+                        <button type="submit" class="feature-button">Send Feedback</button>
+                    </form>
+                </div>
+            `;
+            
+            document.body.appendChild(feedbackModal);
+            
+            // Close feedback modal
+            document.getElementById('closeFeedback').addEventListener('click', function() {
+                feedbackModal.remove();
+            });
+            
+            // Handle feedback form submission
+            document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const feedbackType = document.getElementById('feedbackType').value;
+                const feedbackMessage = document.getElementById('feedbackMessage').value;
+                
+                if (feedbackMessage.trim() === '') {
+                    return;
+                }
+                
+                // Simulate sending feedback
+                const confirmMsg = document.createElement('div');
+                confirmMsg.textContent = 'Feedback sent successfully! Thank you.';
+                confirmMsg.style.position = 'fixed';
+                confirmMsg.style.top = '20px';
+                confirmMsg.style.left = '50%';
+                confirmMsg.style.transform = 'translateX(-50%)';
+                confirmMsg.style.backgroundColor = 'var(--success)';
+                confirmMsg.style.color = 'white';
+                confirmMsg.style.padding = '10px 20px';
+                confirmMsg.style.borderRadius = '4px';
+                confirmMsg.style.zIndex = '1001';
+                document.body.appendChild(confirmMsg);
+                
+                setTimeout(() => {
+                    confirmMsg.remove();
+                    feedbackModal.remove();
+                }, 3000);
+            });
+        });
+        
+        document.getElementById('aboutLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create about modal
+            const aboutModal = document.createElement('div');
+            aboutModal.className = 'modal';
+            aboutModal.style.display = 'flex';
+            
+            aboutModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>About VR Game Immersion Enhancer</h2>
+                        <button class="close-modal" id="closeAbout">&times;</button>
+                    </div>
+                    <p>VR Game Immersion Enhancer is a tool designed to improve your virtual reality gaming experience by optimizing visuals, enhancing audio, calibrating motion controls, and adjusting environmental settings.</p>
+                    <p>Our advanced algorithms analyze your VR setup and game environment to provide the best possible immersion tailored to your specific hardware and preferences.</p>
+                    <p>Version 1.0.0</p>
+                </div>
+            `;
+            
+            document.body.appendChild(aboutModal);
+            
+            // Close about modal
+            document.getElementById('closeAbout').addEventListener('click', function() {
+                aboutModal.remove();
+            });
+        });
+        
+        document.getElementById('contactLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Create contact modal
+            const contactModal = document.createElement('div');
+            contactModal.className = 'modal';
+            contactModal.style.display = 'flex';
+            
+            contactModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Contact Us</h2>
+                        <button class="close-modal" id="closeContact">&times;</button>
+                    </div>
+                    <p>Email: support@vrenhancer.com</p>
+                    <p>For technical support, feature requests, or general inquiries, please reach out to us using the email above.</p>
+                </div>
+            `;
+            
+            document.body.appendChild(contactModal);
+            
+            // Close contact modal
+            document.getElementById('closeContact').addEventListener('click', function() {
+                contactModal.remove();
+            });
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Features":"Features","Controls":"Controls","Settings":"Settings","Help":"Help","VR Game Immersion Enhancer":"VR Game Immersion Enhancer","Real-time Visual Optimization":"Real-time Visual Optimization","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Automatically adjust and enhance your VR game visuals for the best possible image quality.","Optimize Visuals":"Optimize Visuals","Sound Environment Simulation":"Sound Environment Simulation","Create immersive 3D audio environments that respond to your game environment.":"Create immersive 3D audio environments that respond to your game environment.","Simulate Audio":"Simulate Audio","Motion Feedback System":"Motion Feedback System","Calibrate and enhance your body movement tracking for precise in-game actions.":"Calibrate and enhance your body movement tracking for precise in-game actions.","Calibrate Motion":"Calibrate Motion","Lighting Environment Control":"Lighting Environment Control","Adjust lighting conditions in your VR environment to match your preferences.":"Adjust lighting conditions in your VR environment to match your preferences.","Control Lighting":"Control Lighting","Controller Calibration":"Controller Calibration","Fine-tune your VR controllers for accurate and responsive gameplay.":"Fine-tune your VR controllers for accurate and responsive gameplay.","Calibrate Controller":"Calibrate Controller","Control Panel":"Control Panel","Upload VR Game Image":"Upload VR Game Image","Choose Image File":"Choose Image File","Visual Quality: 80%":"Visual Quality: 80%","Audio Intensity: 70%":"Audio Intensity: 70%","Motion Sensitivity: 60%":"Motion Sensitivity: 60%","Lighting Intensity: 50%":"Lighting Intensity: 50%","Apply All Settings":"Apply All Settings","Visual Status:":"Visual Status:","Ready":"Ready","Audio Status:":"Audio Status:","Motion Status:":"Motion Status:","Lighting Status:":"Lighting Status:","Controller Status:":"Controller Status:","Help Center":"Help Center","Feedback":"Feedback","About":"About","Contact":"Contact","Advanced Settings":"Advanced Settings","\u0026times;":"\u0026times;","Render Scale: 100%":"Render Scale: 100%","Field of View: 90°":"Field of View: 90°","Refresh Rate: 90Hz":"Refresh Rate: 90Hz","Audio Profile":"Audio Profile","Balanced":"Balanced","Bass Heavy":"Bass Heavy","Treble Heavy":"Treble Heavy","Cinematic":"Cinematic","Motion Profile":"Motion Profile","Standard":"Standard","Enhanced Precision":"Enhanced Precision","Aggressive Response":"Aggressive Response","Save Settings":"Save Settings","Processing...":"Processing...","Optimizing...":"Optimizing...","Optimized at":"Optimized at","Simulating...":"Simulating...","Simulated at":"Simulated at","Calibrating...":"Calibrating...","Calibrated at":"Calibrated at","__title__":"VR Game Immersion Enhancer"},"zh-CN":{"Features":"功能","Controls":"控制","Settings":"设置","Help":"帮助","VR Game Immersion Enhancer":"VR游戏沉浸增强器","Real-time Visual Optimization":"实时视觉优化","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"自动调整并增强您的VR游戏视觉，以获得最佳图像质量。","Optimize Visuals":"优化视觉","Sound Environment Simulation":"声音环境模拟","Create immersive 3D audio environments that respond to your game environment.":"创建响应游戏环境的沉浸式3D音频环境。","Simulate Audio":"模拟音频","Motion Feedback System":"运动反馈系统","Calibrate and enhance your body movement tracking for precise in-game actions.":"校准并增强您的身体运动跟踪，以实现精确的游戏动作。","Calibrate Motion":"校准运动","Lighting Environment Control":"照明环境控制","Adjust lighting conditions in your VR environment to match your preferences.":"调整您的VR环境中的照明条件以匹配您的偏好。","Control Lighting":"控制照明","Controller Calibration":"控制器校准","Fine-tune your VR controllers for accurate and responsive gameplay.":"微调您的VR控制器以实现准确和响应灵敏的游戏体验。","Calibrate Controller":"校准控制器","Control Panel":"控制面板","Upload VR Game Image":"上传VR游戏图像","Choose Image File":"选择图像文件","Visual Quality: 80%":"视觉质量：80%","Audio Intensity: 70%":"音频强度：70%","Motion Sensitivity: 60%":"运动灵敏度：60%","Lighting Intensity: 50%":"照明强度：50%","Apply All Settings":"应用所有设置","Visual Status":"视觉状态：","Ready":"准备","Audio Status":"音频状态：","Motion Status":"运动状态：","Lighting Status":"照明状态：","Controller Status":"控制器状态：","Help Center":"帮助中心","Feedback":"反馈","About":"关于","Contact":"联系","Advanced Settings":"高级设置","\u0026times;":"\u0026times;","Render Scale: 100%":"渲染比例：100%","Field of View: 90°":"视野：90°","Refresh Rate: 90Hz":"刷新率：90Hz","Audio Profile":"音频配置文件","Balanced":"平衡","Bass Heavy":"低音重","Treble Heavy":"高音重","Cinematic":"电影","Motion Profile":"运动配置文件","Standard":"标准","Enhanced Precision":"增强精度","Aggressive Response":"积极响应","Save Settings":"保存设置","Processing...":"处理中...","Optimizing...":"优化中...","Optimized at":"优化于","Simulating...":"模拟中...","Simulated at":"模拟于","Calibrating...":"校准中...","Calibrated at":"校准于","Visual Status:":"视觉状态：","Audio Status:":"音频状态：","Motion Status:":"运动状态：","Lighting Status:":"照明状态：","Controller Status:":"控制器状态：","__title__":"VR游戏沉浸增强器"},"es":{"Features":"Características","Controls":"Controles","Settings":"Ajustes","Help":"Ayuda","VR Game Immersion Enhancer":"Mejorador de Inmersión en Juegos VR","Real-time Visual Optimization":"Optimización Visual en Tiempo Real","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Ajusta y mejora automáticamente las visualidades de tu juego VR para obtener la mejor calidad de imagen posible.","Optimize Visuals":"Optimizar Visuals","Sound Environment Simulation":"Simulación de Entorno de Sonido","Create immersive 3D audio environments that respond to your game environment.":"Crea entornos de audio 3D inmersivos que responden a tu entorno de juego.","Simulate Audio":"Simular Audio","Motion Feedback System":"Sistema de Retroalimentación de Movimiento","Calibrate and enhance your body movement tracking for precise in-game actions.":"Calibra y mejora el seguimiento de tus movimientos corporales para acciones precisas en el juego.","Calibrate Motion":"Calibrar Movimiento","Lighting Environment Control":"Control de Entorno de Iluminación","Adjust lighting conditions in your VR environment to match your preferences.":"Ajusta las condiciones de iluminación en tu entorno VR para ajustar a tus preferencias.","Control Lighting":"Controlar Iluminación","Controller Calibration":"Calibración del Controlador","Fine-tune your VR controllers for accurate and responsive gameplay.":"Afinar tus controladores VR para un juego preciso y reactivo.","Calibrate Controller":"Calibrar Controlador","Control Panel":"Panel de Control","Upload VR Game Image":"Subir Imagen de Juego VR","Choose Image File":"Elegir Archivo de Imagen","Visual Quality: 80%":"Calidad Visual: 80%","Audio Intensity: 70%":"Intensidad de Audio: 70%","Motion Sensitivity: 60%":"Sensibilidad de Movimiento: 60%","Lighting Intensity: 50%":"Intensidad de Iluminación: 50%","Apply All Settings":"Aplicar Todos los Ajustes","Visual Status":"Estado Visual:","Ready":"Listo","Audio Status":"Estado de Audio:","Motion Status":"Estado de Movimiento:","Lighting Status":"Estado de Iluminación:","Controller Status":"Estado del Controlador:","Help Center":"Centro de Ayuda","Feedback":"Reacción","About":"Acerca de","Contact":"Contacto","Advanced Settings":"Ajustes Avanzados","\u0026times;":"\u0026times;","Render Scale: 100%":"Escala de Renderizado: 100%","Field of View: 90°":"Ángulo de Visión: 90°","Refresh Rate: 90Hz":"Tasa de Actualización: 90Hz","Audio Profile":"Perfil de Audio","Balanced":"Equilibrado","Bass Heavy":"Bajo Intenso","Treble Heavy":"Agudos Intensos","Cinematic":"Cinematográfico","Motion Profile":"Perfil de Movimiento","Standard":"Estándar","Enhanced Precision":"Precisión Mejorada","Aggressive Response":"Respuesta Agresiva","Save Settings":"Guardar Ajustes","Processing...":"Procesando...","Optimizing...":"Optimizando...","Optimized at":"Optimizado en","Simulating...":"Simulando...","Simulated at":"Simulado en","Calibrating...":"Calibrando...","Calibrated at":"Calibrado en","Visual Status:":"Estado Visual:","Audio Status:":"Estado de Audio:","Motion Status:":"Estado de Movimiento:","Lighting Status:":"Estado de Iluminación:","Controller Status:":"Estado del Controlador:","__title__":"Mejorador de Inmersión en Juegos VR"},"ja":{"Features":"機能","Controls":"コントロール","Settings":"設定","Help":"ヘルプ","VR Game Immersion Enhancer":"VRゲーム没入感強化機能","Real-time Visual Optimization":"リアルタイム視覚最適化","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"最適な画像品質のため、自動的にVRゲームの視覚を調整し強化します。","Optimize Visuals":"視覚最適化","Sound Environment Simulation":"音環境シミュレーション","Create immersive 3D audio environments that respond to your game environment.":"ゲーム環境に反応する没入感のある3D音環境を作成します。","Simulate Audio":"音シミュレーション","Motion Feedback System":"動作フィードバックシステム","Calibrate and enhance your body movement tracking for precise in-game actions.":"正確なゲーム内アクションのため、体の動きのトラッキングを調整し強化します。","Calibrate Motion":"動作調整","Lighting Environment Control":"照明環境制御","Adjust lighting conditions in your VR environment to match your preferences.":"VR環境の照明条件を好みに合わせて調整します。","Control Lighting":"照明制御","Controller Calibration":"コントローラー調整","Fine-tune your VR controllers for accurate and responsive gameplay.":"正確かつ反応の良いゲームプレイのため、VRコントローラーを微調整します。","Calibrate Controller":"コントローラー調整","Control Panel":"コントロールパネル","Upload VR Game Image":"VRゲーム画像のアップロード","Choose Image File":"画像ファイルを選択","Visual Quality: 80%":"視覚品質: 80%","Audio Intensity: 70%":"音量: 70%","Motion Sensitivity: 60%":"動作感度: 60%","Lighting Intensity: 50%":"照明強度: 50%","Apply All Settings":"全ての設定を適用","Visual Status:":"視覚状態:","Ready":"準備完了","Audio Status:":"音状態:","Motion Status:":"動作状態:","Lighting Status:":"照明状態:","Controller Status:":"コントローラー状態:","Help Center":"ヘルプセンター","Feedback":"フィードバック","About":"について","Contact":"連絡先","Advanced Settings":"高度な設定","\u0026times;":"\u0026times;","Render Scale: 100%":"レンダリングスケール: 100%","Field of View: 90°":"視野角: 90°","Refresh Rate: 90Hz":"リフレッシュレート: 90Hz","Audio Profile":"オーディオプロファイル","Balanced":"バランス","Bass Heavy":"低音重","Treble Heavy":"高音重","Cinematic":"映画風","Motion Profile":"動作プロファイル","Standard":"標準","Enhanced Precision":"高精度","Aggressive Response":"攻撃的な反応","Save Settings":"設定を保存","Processing...":"処理中...","Optimizing...":"最適化中...","Optimized at":"最適化済み:","Simulating...":"シミュレーション中...","Simulated at":"シミュレーション済み:","Calibrating...":"調整中...","Calibrated at":"調整済み:","__title__":"VRゲーム没入感強化機能"},"ko":{"Features":"기능","Controls":"제어","Settings":"설정","Help":"도움말","VR Game Immersion Enhancer":"VR 게임 임베이션 강화기","Real-time Visual Optimization":"실시간 시각 최적화","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"가장 좋은 이미지 품질을 위해 자동으로 조정하고 강화합니다.","Optimize Visuals":"시각 최적화","Sound Environment Simulation":"사운드 환경 시뮬레이션","Create immersive 3D audio environments that respond to your game environment.":"게임 환경에 반응하는 임베이션 3D 오디오 환경을 만듭니다.","Simulate Audio":"오디오 시뮬레이션","Motion Feedback System":"모션 피드백 시스템","Calibrate and enhance your body movement tracking for precise in-game actions.":"정확한 게임 내 행동을 위해 몸의 움직임 추적을 조정하고 강화합니다.","Calibrate Motion":"모션 조정","Lighting Environment Control":"빛 환경 제어","Adjust lighting conditions in your VR environment to match your preferences.":"VR 환경의 조명 조건을 선호하는 것과 일치하게 조정합니다.","Control Lighting":"조명 제어","Controller Calibration":"컨트롤러 조정","Fine-tune your VR controllers for accurate and responsive gameplay.":"정확하고 반응성 있는 게임 플레이를 위해 VR 컨트롤러를 정밀하게 조정합니다.","Calibrate Controller":"컨트롤러 조정","Control Panel":"제어판","Upload VR Game Image":"VR 게임 이미지 업로드","Choose Image File":"이미지 파일 선택","Visual Quality: 80%":"시각 품질: 80%","Audio Intensity: 70%":"오디오 강도: 70%","Motion Sensitivity: 60%":"모션 민감도: 60%","Lighting Intensity: 50%":"빛 강도: 50%","Apply All Settings":"모든 설정 적용","Visual Status:":"시각 상태:","Ready":"준비","Audio Status:":"오디오 상태:","Motion Status:":"모션 상태:","Lighting Status:":"빛 상태:","Controller Status:":"컨트롤러 상태:","Help Center":"도움 센터","Feedback":"피드백","About":"정보","Contact":"연락처","Advanced Settings":"고급 설정","\u0026times;":"\u0026times;","Render Scale: 100%":"렌더 스케일: 100%","Field of View: 90°":"시야각: 90°","Refresh Rate: 90Hz":"새로고침 빈도: 90Hz","Audio Profile":"오디오 프로필","Balanced":"균형 잡힌","Bass Heavy":"베이스 강조","Treble Heavy":"트레블 강조","Cinematic":"시네마틱","Motion Profile":"모션 프로필","Standard":"기본","Enhanced Precision":"강화된 정밀도","Aggressive Response":"공격적인 반응","Save Settings":"설정 저장","Processing...":"처리 중...","Optimizing...":"최적화 중...","Optimized at":"최적화됨:","Simulating...":"시뮬레이션 중...","Simulated at":"시뮬레이션됨:","Calibrating...":"조정 중...","Calibrated at":"조정됨:","__title__":"VR 게임 임베이션 강화기"},"fr":{"Features":"Fonctionnalités","Controls":"Contrôles","Settings":"Paramètres","Help":"Aide","VR Game Immersion Enhancer":"Améliorateur d'immersion de jeu VR","Real-time Visual Optimization":"Optimisation visuelle en temps réel","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Ajuste et améliore automatiquement les visuels de votre jeu VR pour obtenir la meilleure qualité d'image possible.","Optimize Visuals":"Optimiser les visuels","Sound Environment Simulation":"Simulation d'environnement sonore","Create immersive 3D audio environments that respond to your game environment.":"Créez des environnements audio immersifs 3D qui réagissent à votre environnement de jeu.","Simulate Audio":"Simuler le son","Motion Feedback System":"Système de retour de mouvement","Calibrate and enhance your body movement tracking for precise in-game actions.":"Calibrez et améliorez le suivi de vos mouvements corporels pour des actions précises dans le jeu.","Calibrate Motion":"Calibrer le mouvement","Lighting Environment Control":"Contrôle de l'environnement d'éclairage","Adjust lighting conditions in your VR environment to match your preferences.":"Ajustez les conditions d'éclairage dans votre environnement VR pour correspondre à vos préférences.","Control Lighting":"Contrôler l'éclairage","Controller Calibration":"Calibration du contrôleur","Fine-tune your VR controllers for accurate and responsive gameplay.":"Ajustez finement vos contrôleurs VR pour des gameplay précis et réactif.","Calibrate Controller":"Calibrer le contrôleur","Control Panel":"Panneau de contrôle","Upload VR Game Image":"Télécharger l'image de jeu VR","Choose Image File":"Choisir un fichier image","Visual Quality: 80%":"Qualité visuelle : 80%","Audio Intensity: 70%":"Intensité audio : 70%","Motion Sensitivity: 60%":"Sensibilité de mouvement : 60%","Lighting Intensity: 50%":"Intensité d'éclairage : 50%","Apply All Settings":"Appliquer tous les paramètres","Visual Status":"Statut visuel","Ready":"Prêt","Audio Status":"Statut audio","Motion Status":"Statut de mouvement","Lighting Status":"Statut d'éclairage","Controller Status":"Statut du contrôleur","Help Center":"Centre d'aide","Feedback":"Retour d'information","About":"À propos","Contact":"Contact","Advanced Settings":"Paramètres avancés","\u0026times;":"\u0026times;","Render Scale: 100%":"Échelle de rendu : 100%","Field of View: 90°":"Champ de vision : 90°","Refresh Rate: 90Hz":"Taux de rafraîchissement : 90Hz","Audio Profile":"Profil audio","Balanced":"Équilibré","Bass Heavy":"Basse lourde","Treble Heavy":"Aigu fort","Cinematic":"Cinématique","Motion Profile":"Profil de mouvement","Standard":"Standard","Enhanced Precision":"Précision améliorée","Aggressive Response":"Réponse agressive","Save Settings":"Enregistrer les paramètres","Processing...":"Traitement...","Optimizing...":"Optimisation...","Optimized at":"Optimisé à","Simulating...":"Simulation...","Simulated at":"Simulé à","Calibrating...":"Calibration...","Calibrated at":"Calibré à","Visual Status:":"Statut Visuel:","Audio Status:":"Statut Audio:","Motion Status:":"Statut de Mouvement:","Lighting Status:":"Statut d'Éclairage:","Controller Status:":"Statut du Contrôleur:","__title__":"Améliorateur d'immersion de jeu VR"},"de":{"Features":"Funktionen","Controls":"Steuerungen","Settings":"Einstellungen","Help":"Hilfe","VR Game Immersion Enhancer":"VR-Spiel-Immersion-Booster","Real-time Visual Optimization":"Sofortige visuelle Optimierung","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Automatische Anpassung und Verbesserung der VR-Spiel-Visuals für die bestmögliche Bildqualität.","Optimize Visuals":"Visuelle Optimierung","Sound Environment Simulation":"LauterungsUmgebungssimulation","Create immersive 3D audio environments that respond to your game environment.":"Erstellen Sie immersive 3D-Audio-Umgebungen, die auf Ihre Spielumgebung reagieren.","Simulate Audio":"Audio simulieren","Motion Feedback System":"Bewegungsfeedback-System","Calibrate and enhance your body movement tracking for precise in-game actions.":"Kalibrieren und verbessern Sie die Bewegungstracking Ihres Körpers für präzise In-Game-Aktionen.","Calibrate Motion":"Bewegung kalibrieren","Lighting Environment Control":"Lichtumgebungssteuerung","Adjust lighting conditions in your VR environment to match your preferences.":"Passen Sie die Lichtbedingungen in Ihrer VR-Umgebung an Ihre Vorlieben an.","Control Lighting":"Licht steuern","Controller Calibration":"Controllerkalibrierung","Fine-tune your VR controllers for accurate and responsive gameplay.":"Feinabstimmung Ihrer VR-Controller für präzise und reagierende Spielabläufe.","Calibrate Controller":"Controller kalibrieren","Control Panel":"Steuerungsbedienfeld","Upload VR Game Image":"VR-Spielbild hochladen","Choose Image File":"Wählen Sie eine Bilddatei aus","Visual Quality: 80%":"Visuelle Qualität: 80%","Audio Intensity: 70%":"Lautstärke: 70%","Motion Sensitivity: 60%":"Bewegungsempfindlichkeit: 60%","Lighting Intensity: 50%":"Lichtintensität: 50%","Apply All Settings":"Alle Einstellungen anwenden","Visual Status":"Visueller Status","Ready":"Bereit","Audio Status":"Audio-Status","Motion Status":"Bewegungsstatus","Lighting Status":"Lichtstatus","Controller Status":"Controllerstatus","Help Center":"Hilfe-Center","Feedback":"Rückmeldung","About":"Über","Contact":"Kontakt","Advanced Settings":"Erweiterte Einstellungen","\u0026times;":"\u0026times;","Render Scale: 100%":"Renderverschachtelung: 100%","Field of View: 90°":"Sichtfeld: 90°","Refresh Rate: 90Hz":"Aktualisierungsrate: 90Hz","Audio Profile":"Audio-Profil","Balanced":"Gleichgewicht","Bass Heavy":"Basslastig","Treble Heavy":"Hochtonlastig","Cinematic":"Kino","Motion Profile":"Bewegungsprofil","Standard":"Standard","Enhanced Precision":"Erweiterte Präzision","Aggressive Response":"Aggressive Reaktion","Save Settings":"Einstellungen speichern","Processing...":"Verarbeitung...","Optimizing...":"Optimierung...","Optimized at":"Optimiert bei","Simulating...":"Simulierung...","Simulated at":"Simuliert bei","Calibrating...":"Kalibrierung...","Calibrated at":"Kalibriert bei","Visual Status:":"Visueller Status:","Audio Status:":"Audiverhältigkeit:","Motion Status:":"Bewegungsstatus:","Lighting Status:":"Beleuchtungsstatus:","Controller Status:":"Controllerstatus:","__title__":"VR-Spiel-Immersion-Booster"},"ru":{"Features":"Функции","Controls":"Управление","Settings":"Настройки","Help":"Справка","VR Game Immersion Enhancer":"Усилитель погружения в VR-игры","Real-time Visual Optimization":"Реальное время визуальной оптимизации","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Автоматически настраивать и улучшать визуальные элементы вашей VR-игры для достижения наилучшего качества изображения.","Optimize Visuals":"Оптимизация визуальных элементов","Sound Environment Simulation":"Симуляция звуковой среды","Create immersive 3D audio environments that respond to your game environment.":"Создайте immersive 3D аудиосреды, которые реагируют на вашу игровую среду.","Simulate Audio":"Симуляция звука","Motion Feedback System":"Система обратной связи движения","Calibrate and enhance your body movement tracking for precise in-game actions.":"Калибруйте и улучшайте отслеживание движений вашего тела для точных действий в игре.","Calibrate Motion":"Калибровка движения","Lighting Environment Control":"Управление световой средой","Adjust lighting conditions in your VR environment to match your preferences.":"Настройте условия освещения в вашей VR-среде в соответствии с вашими предпочтениями.","Control Lighting":"Управление освещением","Controller Calibration":"Калибровка контроллера","Fine-tune your VR controllers for accurate and responsive gameplay.":"Подстройте ваши VR-контроллеры для точной и отзывчивой игры.","Calibrate Controller":"Калибровка контроллера","Control Panel":"Панель управления","Upload VR Game Image":"Загрузите изображение VR-игры","Choose Image File":"Выберите файл изображения","Visual Quality: 80%":"Качество изображения: 80%","Audio Intensity: 70%":"Интенсивность звука: 70%","Motion Sensitivity: 60%":"Чувствительность движения: 60%","Lighting Intensity: 50%":"Интенсивность света: 50%","Apply All Settings":"Применить все настройки","Visual Status":"Статус изображения:","Ready":"Готово","Audio Status":"Статус звука:","Motion Status":"Статус движения:","Lighting Status":"Статус света:","Controller Status":"Статус контроллера","Help Center":"Центр помощи","Feedback":"Обратная связь","About":"О нас","Contact":"Контакт","Advanced Settings":"Дополнительные настройки","\u0026times;":"\u0026times;","Render Scale: 100%":"Масштаб рендеринга: 100%","Field of View: 90°":"Угол обзора: 90°","Refresh Rate: 90Hz":"Частота обновления: 90Hz","Audio Profile":"Аудиопрофиль","Balanced":"Балансированный","Bass Heavy":"Сильный бас","Treble Heavy":"Сильные высокие частоты","Cinematic":"Кинематический","Motion Profile":"Профиль движения","Standard":"Стандартный","Enhanced Precision":"Улучшенная точность","Aggressive Response":"Агрессивная реакция","Save Settings":"Сохранить настройки","Processing...":"Обработка...","Optimizing...":"Оптимизация...","Optimized at":"Оптимизировано в","Simulating...":"Симуляция...","Simulated at":"Симулировано в","Calibrating...":"Калибровка...","Calibrated at":"Калибровано в","Visual Status:":"Visual Status:","Audio Status:":"Audio Status:","Motion Status:":"Motion Status:","Lighting Status:":"Lighting Status:","Controller Status:":"Controller Status:","__title__":"Усилитель погружения в VR-игры"},"pt":{"Features":"Características","Controls":"Controles","Settings":"Configurações","Help":"Ajuda","VR Game Immersion Enhancer":"Melhorador de Imersão em Jogos VR","Real-time Visual Optimization":"Otimização Visual em Tempo Real","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Ajuste e melhore automaticamente os visuais do seu jogo VR para a melhor qualidade de imagem possível.","Optimize Visuals":"Otimizar Visuais","Sound Environment Simulation":"Simulação de Ambiente Sonoro","Create immersive 3D audio environments that respond to your game environment.":"Crie ambientes auditivos imersivos 3D que respondem ao seu ambiente de jogo.","Simulate Audio":"Simular Áudio","Motion Feedback System":"Sistema de Feedback de Movimento","Calibrate and enhance your body movement tracking for precise in-game actions.":"Calibre e melhore o rastreamento do movimento do seu corpo para ações precisas no jogo.","Calibrate Motion":"Calibrar Movimento","Lighting Environment Control":"Controle de Ambiente de Iluminação","Adjust lighting conditions in your VR environment to match your preferences.":"Ajuste as condições de iluminação no seu ambiente VR para combinar com suas preferências.","Control Lighting":"Controlar Iluminação","Controller Calibration":"Calibração do Controle","Fine-tune your VR controllers for accurate and responsive gameplay.":"Afinar seus controles VR para um jogo preciso e responsivo.","Calibrate Controller":"Calibrar Controle","Control Panel":"Painel de Controle","Upload VR Game Image":"Carregar Imagem de Jogo VR","Choose Image File":"Escolher Arquivo de Imagem","Visual Quality: 80%":"Qualidade Visual: 80%","Audio Intensity: 70%":"Intensidade de Áudio: 70%","Motion Sensitivity: 60%":"Sensibilidade de Movimento: 60%","Lighting Intensity: 50%":"Intensidade de Iluminação: 50%","Apply All Settings":"Aplicar Todas as Configurações","Visual Status":"Status Visual:","Ready":"Pronto","Audio Status":"Status de Áudio:","Motion Status":"Status de Movimento:","Lighting Status":"Status de Iluminação:","Controller Status":"Status do Controle","Help Center":"Central de Ajuda","Feedback":"Feedback","About":"Sobre","Contact":"Contato","Advanced Settings":"Configurações Avançadas","\u0026times;":"\u0026times;","Render Scale: 100%":"Escala de Renderização: 100%","Field of View: 90°":" Ângulo de Visão: 90°","Refresh Rate: 90Hz":"Taxa de Atualização: 90Hz","Audio Profile":"Perfil de Áudio","Balanced":"Balanceado","Bass Heavy":"Bass Intenso","Treble Heavy":"Agudos Intensos","Cinematic":"Cinematográfico","Motion Profile":"Perfil de Movimento","Standard":"Padrão","Enhanced Precision":"Precisão Aumentada","Aggressive Response":"Resposta Agressiva","Save Settings":"Salvar Configurações","Processing...":"Processando...","Optimizing...":"Otimizando...","Optimized at":"Otimizado em","Simulating...":"Simulando...","Simulated at":"Simulado em","Calibrating...":"Calibrando...","Calibrated at":"Calibrado em","Visual Status:":"Status Visual:","Audio Status:":"Status de Áudio:","Motion Status:":"Status de Movimento:","Lighting Status:":"Status de Iluminação:","Controller Status:":"Status do Controlador:","__title__":"Melhorador de Imersão em Jogos VR"},"ar":{"Features":"الميزات","Controls":"التحكم","Settings":"الإعدادات","Help":"المساعدة","VR Game Immersion Enhancer":"مزود تعميق لعب الألعاب الافتراضية","Real-time Visual Optimization":"تحسين البصرى في الوقت الحقيقي","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"تقديم ضبط وتحسين واجهة العرض الخاصة بلعبة الافتراضية الخاصة بك تلقائيًا للحصول على أفضل جودة صورة ممكنة.","Optimize Visuals":"تحسين الواجهة البصرية","Sound Environment Simulation":"إنشاء بيئات صوتية تعملىة ثلاثية الأبعاد تستجيب لبيئة اللعبة الخاصة بك.","Simulate Audio":"تقديم محاكاة الصوت","Motion Feedback System":"نظام رد الفعل الحركي","Calibrate and enhance your body movement tracking for precise in-game actions.":"ضبط وتحسين تتبع حركة جسمك للحصول على إجراءات دقيقة داخل اللعبة.","Calibrate Motion":"ضبط الحركة","Lighting Environment Control":"تحكم في بيئة الإضاءة","Adjust lighting conditions in your VR environment to match your preferences.":"ضبط ظروف الإضاءة في بيئتك الافتراضية لتتناسب مع تفضيلاتك.","Control Lighting":"تحكم في الإضاءة","Controller Calibration":"ضبط مقياس التحكم","Fine-tune your VR controllers for accurate and responsive gameplay.":"تعديل مقياسات التحكم الخاصة بك في الافتراضية للحصول على لعب دقيق ومستجيب.","Calibrate Controller":"ضبط التحكم","Control Panel":"لوحة التحكم","Upload VR Game Image":"تحميل صورة لعبة الافتراضية","Choose Image File":"اختر ملف الصورة","Visual Quality: 80%":"جودة الواجهة البصرية: 80%","Audio Intensity: 70%":"قوة الصوت: 70%","Motion Sensitivity: 60%":"حساسية الحركة: 60%","Lighting Intensity: 50%":"قوة الإضاءة: 50%","Apply All Settings":"تطبيق جميع الإعدادات","Visual Status:":"حالة الواجهة البصرية:","Ready":"جاهز","Audio Status:":"حالة الصوت:","Motion Status:":"حالة الحركة:","Lighting Status:":"حالة الإضاءة:","Controller Status:":"حالة التحكم:","Help Center":"مركز المساعدة","Feedback":"التعليقات","About":"عن","Contact":"اتصل بنا","Advanced Settings":"إعدادات متقدمة","\u0026times;":"\u0026times;","Render Scale: 100%":"مقياس الرسم: 100%","Field of View: 90°":"مجال الرؤية: 90°","Refresh Rate: 90Hz":"معدل التحديث: 90Hz","Audio Profile":"ملف الصوت","Balanced":"متوازن","Bass Heavy":"الطنين الثقيل","Treble Heavy":"الطنين العالي الثقيل","Cinematic":"سينمائي","Motion Profile":"ملف الحركة","Standard":"معياري","Enhanced Precision":"دقة محسنة","Aggressive Response":"رد فعل عدواني","Save Settings":"حفظ الإعدادات","Processing...":"معالجة...","Optimizing...":"تحسين...","Optimized at":"تحسين عند","Simulating...":"محاكاة...","Simulated at":"محاكاة عند","Calibrating...":"ضبط...","Calibrated at":"ضبط عند","Create immersive 3D audio environments that respond to your game environment.":"أنشئ بيئات صوتية 3D مذهلة تستجيب لبيئة لعبتك.","__title__":"مزود تعميق لعب الألعاب الافتراضية"},"hi":{"Features":"फीचर्स","Controls":"कंट्रोल्स","Settings":"सेटिंग्स","Help":"हेल्प","VR Game Immersion Enhancer":"वीआर गेम इमर्शन एन्हैंसर","Real-time Visual Optimization":"रियल-टाइम विजुअल ऑप्टिमाइजेशन","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"आपके वीआर गेम के विजुअल को सर्वश्रेष्ठ इमेज क्वालिटी के लिए स्वचालित रूप से समायोजित और बेहतर बनाएं。","Optimize Visuals":"विजुअल्स ऑप्टिमाइजेट करें","Sound Environment Simulation":"साउंड एनवायरनमेंट सिमुलेशन","Create immersive 3D audio environments that respond to your game environment.":"अपने गेम एनवायरन्मेंट के अनुसार प्रतिसाद देने वाले इमर्शिव 3D ऑडियो एनवायरन्स बनाएं。","Simulate Audio":"ऑडियो सिमुलेट करें","Motion Feedback System":"मोशन फ़ीडबैक सिस्टम","Calibrate and enhance your body movement tracking for precise in-game actions.":"अपने शरीर के गतिशीलता ट्रैकिंग को कैलिब्रेट और बेहतर बनाएं ताकि गेम में सटीक एक्शन हो सके。","Calibrate Motion":"मोशन कैलिब्रेट करें","Lighting Environment Control":"लाइटिंग एनवायरन्मेंट कंट्रोल","Adjust lighting conditions in your VR environment to match your preferences.":"अपने वीआर एनवायरन्मेंट में लाइटिंग की स्थिति को अपनी पसंद के अनुसार समायोजित करें。","Control Lighting":"लाइटिंग कंट्रोल करें","Controller Calibration":"कंट्रोलर कैलिब्रेट करें","Fine-tune your VR controllers for accurate and responsive gameplay.":"अपने वीआर कंट्रोलर्स को सटीक और प्रतिक्रियाशील गेमप्लेय के लिए फाइन-टून करें。","Calibrate Controller":"कंट्रोलर कैलिब्रेट करें","Control Panel":"कंट्रोल पैनल","Upload VR Game Image":"वीआर गेम इमेज अपलोड करें","Choose Image File":"इमेज फ़ाइल चुनें","Visual Quality: 80%":"विजुअल क्वालिटी: 80%","Audio Intensity: 70%":"ऑडियो इंटेंसिटी: 70%","Motion Sensitivity: 60%":"मोशन सेंसिटिविटी: 60%","Lighting Intensity: 50%":"लाइटिंग इंटेंसिटी: 50%","Apply All Settings":"सभी सेटिंग्स लागू करें","Visual Status:":"विजुअल स्टेटस: ","Ready":"प्रणाली तैयार","Audio Status:":"ऑडियो स्टेटस: ","Motion Status:":"मोशन स्टेटस: ","Lighting Status:":"लाइटिंग स्टेटस: ","Controller Status:":"कंट्रोलर स्टेटस: ","Help Center":"हेल्प सेंटर","Feedback":"फ़ीडबैक","About":"बारे में","Contact":"संपर्क","Advanced Settings":"प्रगत सेटिंग्स","\u0026times;":"\u0026times;","Render Scale: 100%":"रेंडर स्केल: 100%","Field of View: 90°":"फील्ड ऑफ व्यू: 90°","Refresh Rate: 90Hz":"रिफ़्रेश रेट: 90Hz","Audio Profile":"ऑडियो प्रोफाइल","Balanced":"संतुलित","Bass Heavy":"बास भारी","Treble Heavy":"ट्रिबल भारी","Cinematic":"सिनेमेटिक","Motion Profile":"मोशन प्रोफाइल","Standard":"स्टैंडर्ड","Enhanced Precision":"एनहैंस्ड प्रेसिशन","Aggressive Response":"आक्रामक प्रतिक्रिया","Save Settings":"सेटिंग्स सहेजें","Processing...":"प्रोसेसिंग...","Optimizing...":"ऑप्टिमाइजिंग...","Optimized at":"ऑप्टिमाइजेड at","Simulating...":"सिमुलेटिंग...","Simulated at":"सिमुलेटेड at","Calibrating...":"कैलिब्रेटिंग...","Calibrated at":"कैलिब्रेटेड at","__title__":"वीआर गेम इमर्शन एन्हैंसर"},"id":{"Features":"Fitur","Controls":"Kontrol","Settings":"Pengaturan","Help":"Bantuan","VR Game Immersion Enhancer":"Peningkatan Imersiv Permainan VR","Real-time Visual Optimization":"Optimasi Visual Nyata Waktu","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Tajuk dan tingkatkan secara otomatis visual permainan VR anda untuk kualitas gambar yang terbaik mungkin.","Optimize Visuals":"Optimalisir Visual","Sound Environment Simulation":"Simulasi Lingkungan Suara","Create immersive 3D audio environments that respond to your game environment.":"Buat lingkungan audio 3D yang imersif yang menyesuaikan diri dengan lingkungan permainan anda.","Simulate Audio":"Simulasikan Suara","Motion Feedback System":"Sistem Tanggapan Gerakan","Calibrate and enhance your body movement tracking for precise in-game actions.":"Kalibrasi dan tingkatkan pengawasan gerakan tubuh anda untuk tindakan yang akurat dalam permainan.","Calibrate Motion":"Kalibrasi Gerakan","Lighting Environment Control":"Kontrol Lingkungan Pencahayaan","Adjust lighting conditions in your VR environment to match your preferences.":"Sesuaikan kondisi pencahayaan lingkungan VR anda untuk memenuhi preferensi anda.","Control Lighting":"Kontrol Pencahayaan","Controller Calibration":"Kalibrasi Pengawal","Fine-tune your VR controllers for accurate and responsive gameplay.":"Tingkatkan pengaturan pengawal VR anda untuk pertunjukan yang akurat dan tanggap.","Calibrate Controller":"Kalibrasi Pengawal","Control Panel":"Panel Kontrol","Upload VR Game Image":"Unggah Gambar Permainan VR","Choose Image File":"Pilih Berkas Gambar","Visual Quality: 80%":"Kualitas Visual: 80%","Audio Intensity: 70%":"Kekuatan Audio: 70%","Motion Sensitivity: 60%":"Sensitivitas Gerakan: 60%","Lighting Intensity: 50%":"Kekuatan Pencahayaan: 50%","Apply All Settings":"Terapkan Semua Pengaturan","Visual Status:":"Status Visual:","Ready":"Siap","Audio Status:":"Status Audio:","Motion Status:":"Status Gerakan:","Lighting Status:":"Status Pencahayaan:","Controller Status:":"Status Pengawal:","Help Center":"Pusat Bantuan","Feedback":"Umpan Balik","About":"Tentang","Contact":"Kontak","Advanced Settings":"Pengaturan Tingkat Lanjut","\u0026times;":"\u0026times;","Render Scale: 100%":"Skala Render: 100%","Field of View: 90°":"Layang Pandang: 90°","Refresh Rate: 90Hz":"Laju Pembaruan: 90Hz","Audio Profile":"Profil Audio","Balanced":"Seimbang","Bass Heavy":"Bass Berat","Treble Heavy":"Treble Berat","Cinematic":"Cinematik","Motion Profile":"Profil Gerakan","Standard":"Standar","Enhanced Precision":"Presisi Ditingkatkan","Aggressive Response":"Tanggapan Pemimpin","Save Settings":"Simpan Pengaturan","Processing...":"Memproses...","Optimizing...":"Menoptimalisir...","Optimized at":"Dinoptimalisir di","Simulating...":"Mensimulasikan...","Simulated at":"Disimulasikan di","Calibrating...":"Kalibrasi...","Calibrated at":"Dikalibrasi di","__title__":"Peningkatan Imersiv Permainan VR"},"vi":{"Features":"Tính năng","Controls":"Phím điều khiển","Settings":"Cài đặt","Help":"Trợ giúp","VR Game Immersion Enhancer":"Bộ tăng cường thụ thụ động trò chơi VR","Real-time Visual Optimization":"Tối ưu hóa hình ảnh thực thời","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"Tự động điều chỉnh và tăng cường hình ảnh trò chơi VR của bạn để đạt được chất lượng hình ảnh tốt nhất có thể.","Optimize Visuals":"Tối ưu hóa hình ảnh","Sound Environment Simulation":"Tạo môi trường âm thanh thụ thụ động","Create immersive 3D audio environments that respond to your game environment.":"Tạo môi trường âm thanh 3D thụ thụ động mà phản ứng với môi trường trò chơi của bạn.","Simulate Audio":"Tạo môi trường âm thanh","Motion Feedback System":"Hệ thống phản hồi chuyển động","Calibrate and enhance your body movement tracking for precise in-game actions.":"Cân chỉnh và tăng cường theo dõi chuyển động cơ thể của bạn để thực hiện các hành động chính xác trong trò chơi.","Calibrate Motion":"Cân chỉnh chuyển động","Lighting Environment Control":"Kiểm soát môi trường ánh sáng","Adjust lighting conditions in your VR environment to match your preferences.":"Điều chỉnh điều kiện ánh sáng trong môi trường VR của bạn để phù hợp với sở thích của bạn.","Control Lighting":"Kiểm soát ánh sáng","Controller Calibration":"Cân chỉnh điều khiển","Fine-tune your VR controllers for accurate and responsive gameplay.":"Chỉnh tinh điều khiển VR của bạn để đạt được hiệu suất chính xác và phản hồi nhanh.","Calibrate Controller":"Cân chỉnh điều khiển","Control Panel":"Bảng điều khiển","Upload VR Game Image":"Tải lên hình ảnh trò chơi VR","Choose Image File":"Chọn tệp hình ảnh","Visual Quality: 80%":"Chất lượng hình ảnh: 80%","Audio Intensity: 70%":"Độ mạnh âm thanh: 70%","Motion Sensitivity: 60%":"Độ nhạy chuyển động: 60%","Lighting Intensity: 50%":"Độ mạnh ánh sáng: 50%","Apply All Settings":"Áp dụng tất cả các cài đặt","Visual Status:":"Trạng thái hình ảnh:","Ready":"Sẵn sàng","Audio Status:":"Trạng thái âm thanh:","Motion Status:":"Trạng thái chuyển động:","Lighting Status:":"Trạng thái ánh sáng:","Controller Status:":"Trạng thái điều khiển:","Help Center":"Trung tâm trợ giúp","Feedback":"Phản hồi","About":"Về chúng tôi","Contact":"Liên hệ","Advanced Settings":"Cài đặt nâng cao","\u0026times;":"\u0026times;","Render Scale: 100%":"Tỷ lệ render: 100%","Field of View: 90°":"Khu vực nhìn: 90°","Refresh Rate: 90Hz":"Tần số làm mới: 90Hz","Audio Profile":"Hồ sơ âm thanh","Balanced":"Balan","Bass Heavy":"Trầm mạnh","Treble Heavy":"Trên mạnh","Cinematic":"Cinematic","Motion Profile":"Hồ sơ chuyển động","Standard":"Tiêu chuẩn","Enhanced Precision":"Tăng cường độ chính xác","Aggressive Response":"Phản hồi hung hãn","Save Settings":"Lưu cài đặt","Processing...":"Đang xử lý...","Optimizing...":"Đang tối ưu hóa...","Optimized at":"Tối ưu hóa tại","Simulating...":"Đang tạo môi trường âm thanh...","Simulated at":"Tạo môi trường âm thanh tại","Calibrating...":"Đang cân chỉnh...","Calibrated at":"Cân chỉnh tại","__title__":"Bộ tăng cường thụ thụ động trò chơi VR"},"th":{"Features":"คุณสมบัติ","Controls":"การควบคุม","Settings":"การตั้งค่า","Help":"ช่วยเหลือ","VR Game Immersion Enhancer":"เครื่องมือปรับปรุงความบินตอนในเกม VR","Real-time Visual Optimization":"การปรับปรุงภาพทันที","Automatically adjust and enhance your VR game visuals for the best possible image quality.":"ปรับปรุงและปรับเปลี่ยนภาพของเกม VR โดยอัตโนมัติเพื่อให้มีคุณภาพภาพที่ดีที่สุด","Optimize Visuals":"ปรับปรุงภาพ","Sound Environment Simulation":"การจำลองสภาพเสียง","Create immersive 3D audio environments that respond to your game environment.":"สร้างสภาพเสียง 3D ที่ทำให้มีความบินตอนและตอบสนองต่อสภาพแวดล้อมของเกมของคุณ","Simulate Audio":"จำลองเสียง","Motion Feedback System":"ระบบตอบสนองการเคลื่อนไหว","Calibrate and enhance your body movement tracking for precise in-game actions.":"ปรับเทียบและปรับปรุงการตามรอยการเคลื่อนไหวของร่างกายของคุณเพื่อให้มีการกระทำที่เหมาะสมในเกม","Calibrate Motion":"ปรับเทียบการเคลื่อนไหว","Lighting Environment Control":"การควบคุมสภาพแสง","Adjust lighting conditions in your VR environment to match your preferences.":"ปรับสภาพแสงในสภาพแวดล้อม VR ของคุณเพื่อให้สอดคล้องกับความต้องการของคุณ","Control Lighting":"ควบคุมแสง","Controller Calibration":"ปรับเทียบคอนโทรลเลอร์","Fine-tune your VR controllers for accurate and responsive gameplay.":"ปรับเทียบคอนโทรลเลอร์ VR ของคุณเพื่อให้มีการเล่นที่เหมาะสมและตอบสนอง","Calibrate Controller":"ปรับเทียบคอนโทรลเลอร์","Control Panel":"แผงควบคุม","Upload VR Game Image":"อัพโหลดภาพเกม VR","Choose Image File":"เลือกไฟล์ภาพ","Visual Quality: 80%":"คุณภาพภาพ: 80%","Audio Intensity: 70%":"ขนาดเสียง: 70%","Motion Sensitivity: 60%":"ความละเอียดการเคลื่อนไหว: 60%","Lighting Intensity: 50%":"ขนาดแสง: 50%","Apply All Settings":"ปรับปรุงทั้งหมด","Visual Status:":"สถานะภาพ: ","Ready":"พร้อม","Audio Status:":"สถานะเสียง: ","Motion Status:":"สถานะการเคลื่อนไหว: ","Lighting Status:":"สถานะแสง: ","Controller Status:":"สถานะคอนโทรลเลอร์: ","Help Center":"ศูนย์ช่วยเหลือ","Feedback":"ความเห็น","About":"เกี่ยวกับ","Contact":"ติดต่อ","Advanced Settings":"การตั้งค่าขั้นสูง","\u0026times;":"\u0026times;","Render Scale: 100%":"ขนาดการแสดง: 100%","Field of View: 90°":"ขอบเขตมองเห็น: 90°","Refresh Rate: 90Hz":"อัตราการปรับปรุง: 90Hz","Audio Profile":"โพรไฟล์เสียง","Balanced":"สมดุล","Bass Heavy":"ต่ำ","Treble Heavy":"สูง","Cinematic":"ภาพยนตร์","Motion Profile":"โพรไฟล์การเคลื่อนไหว","Standard":"มาตรฐาน","Enhanced Precision":"ความละเอียดที่เพิ่มขึ้น","Aggressive Response":"การตอบสนองที่แข็งแกร่ง","Save Settings":"บันทึกการตั้งค่า","Processing...":"กำลังประมวลผล...","Optimizing...":"กำลังปรับปรุง...","Optimized at":"ปรับปรุงที่","Simulating...":"กำลังจำลอง...","Simulated at":"จำลองที่","Calibrating...":"กำลังปรับเทียบ...","Calibrated at":"ปรับเทียบที่","__title__":"เครื่องมือปรับปรุงความบินตอนในเกม VR"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
