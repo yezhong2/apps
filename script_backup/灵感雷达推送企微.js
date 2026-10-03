@@ -1363,34 +1363,49 @@ function deployToGithub(localFile, remotePath) {
         log("ℹ️ 未配置 GitHub，跳过自动上线（产品已存本地产出文件夹）");
         return null;
     }
-    try {
-        let content = files.read(localFile);
-        let bytes = new java.lang.String(content).getBytes("UTF-8");
-        let b64 = android.util.Base64.encodeToString(bytes, 2); // NO_WRAP
-        let url = "https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/contents/" + remotePath;
-        // 查旧 sha（更新文件需要）
-        let sha = null;
+    // 2026-10-03 加固：网络抖动（如 DNS 闪断）不再一次定生死——整个“查 sha + PUT”最多重试 3 次（间隔 4 秒）。
+    // 背景：08:54/09:30 两次域名解析抖动导致上传直接失败、产品滞留本地（双开期间 07:54-08:04 的产物同理）。
+    let lastErr = "";
+    for (let attempt = 1; attempt <= 3; attempt++) {
         try {
-            let r = http.get(url, {headers: ghHeaders(), timeout: 30000});
-            if (r.statusCode === 200) sha = r.body.json().sha;
-        } catch (e) {}
-        let body = {message: "auto deploy " + remotePath, content: b64};
-        if (sha) body.sha = sha;
-        let resp = http.request(url, {
-            method: "PUT",
-            headers: ghHeaders(),
-            body: JSON.stringify(body),
-            timeout: 60000
-        });
-        if (resp.statusCode === 200 || resp.statusCode === 201) {
-            let link = "https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + remotePath;
-            log("🌐 已自动上线：" + link);
-            return link;
+            let content = files.read(localFile);
+            let bytes = new java.lang.String(content).getBytes("UTF-8");
+            let b64 = android.util.Base64.encodeToString(bytes, 2); // NO_WRAP
+            let url = "https://api.github.com/repos/" + GITHUB_USER + "/" + GITHUB_REPO + "/contents/" + remotePath;
+            // 查旧 sha（更新文件需要；抖动时查不到 → PUT 已存在文件会 409，交给重试重查）
+            let sha = null;
+            try {
+                let r = http.get(url, {headers: ghHeaders(), timeout: 30000});
+                if (r.statusCode === 200) sha = r.body.json().sha;
+            } catch (e) {}
+            let body = {message: "auto deploy " + remotePath, content: b64};
+            if (sha) body.sha = sha;
+            let resp = http.request(url, {
+                method: "PUT",
+                headers: ghHeaders(),
+                body: JSON.stringify(body),
+                timeout: 60000
+            });
+            if (resp.statusCode === 200 || resp.statusCode === 201) {
+                let link = "https://" + GITHUB_USER + ".github.io/" + GITHUB_REPO + "/" + remotePath;
+                log("🌐 已自动上线：" + link);
+                return link;
+            }
+            if (resp.statusCode === 409 || resp.statusCode === 422) {
+                // sha 缺失或过期（常因查 sha 时网络抖动）：值得重试
+                lastErr = "HTTP " + resp.statusCode + "（sha 缺失/过期）";
+                log("⚠️ 部署 " + remotePath + " 第 " + attempt + "/3 次遇 " + lastErr + "，重试…");
+            } else {
+                log("⚠️ 部署失败 HTTP " + resp.statusCode + "：" + resp.body.string().slice(0, 200));
+                return null; // 语义性错误：不重试（保持原有可见性）
+            }
+        } catch (e) {
+            lastErr = String(e);
+            log("⚠️ 部署请求异常（第 " + attempt + "/3 次）：" + e);
         }
-        log("⚠️ 部署失败 HTTP " + resp.statusCode + "：" + resp.body.string().slice(0, 200));
-    } catch (e) {
-        log("❌ 部署异常：" + e);
+        if (attempt < 3) sleep(4000);
     }
+    log("❌ 部署异常（3 次均失败，产品滞留本地，待下轮或人工补传）：" + remotePath + " → " + lastErr);
     return null;
 }
 
