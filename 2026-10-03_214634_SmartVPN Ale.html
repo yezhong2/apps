@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartVPN Alert - Network Security Analysis Tool</title><meta name="description" content="Free online tool: SmartVPN Alert - Network Security Analysis Tool. No signup, no payment — free forever.">
+<meta property="og:title" content="SmartVPN Alert - Network Security Analysis Tool">
+<meta property="og:description" content="Free online tool: SmartVPN Alert - Network Security Analysis Tool. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_214634_SmartVPN Ale.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0b8;
+            --accent: #4ecca3;
+            --accent-hover: #6ee8c0;
+            --danger: #ff6b6b;
+            --warning: #ffd93d;
+            --info: #6bcf7f;
+            --border: #2d3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+            background: linear-gradient(135deg, var(--accent), #2ecc71);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 1.5rem;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent), #6bcf7f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-button {
+            padding: 1rem 2rem;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Features */
+        .features {
+            padding: 4rem 0;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--accent), #6bcf7f);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-button {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .feature-button:hover {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+
+        /* Results Section */
+        .results {
+            padding: 3rem 0;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-title {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .close-results {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-results:hover {
+            color: var(--danger);
+        }
+
+        .result-content {
+            padding: 1.5rem;
+            background-color: var(--bg-primary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .result-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .result-label {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .result-value {
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-safe {
+            background-color: rgba(107, 207, 127, 0.2);
+            color: var(--info);
+        }
+
+        .status-warning {
+            background-color: rgba(255, 217, 61, 0.2);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background-color: rgba(255, 107, 107, 0.2);
+            color: var(--danger);
+        }
+
+        .history-item {
+            background-color: var(--bg-secondary);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent);
+        }
+
+        .history-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Help Section */
+        .help {
+            padding: 4rem 0;
+            background-color: var(--bg-tertiary);
+            margin-top: 4rem;
+        }
+
+        .help h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .help-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .help-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .help-card h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav li {
+                margin-left: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--bg-tertiary);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            border-left: 4px solid var(--info);
+        }
+
+        .toast.error {
+            border-left: 4px solid var(--danger);
+        }
+
+        .toast.warning {
+            border-left: 4px solid var(--warning);
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">🛡️</div>
+                <span>SmartVPN Alert</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#help">Help</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Network Security Analysis Tool</h1>
+            <p>Detect blocked websites, analyze IP addresses, query domain information, and diagnose network issues with our comprehensive security analysis tool.</p>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" class="search-input" id="quickSearch" placeholder="Enter website URL, IP address, domain, or keyword to analyze">
+                    <button class="search-button" id="quickSearchBtn">Quick Analysis</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2>Security Analysis Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚫</div>
+                    <h3>Website Block Detection</h3>
+                    <p>Check if a website is accessible or blocked in your region</p>
+                    <button class="feature-button" id="blockDetectionBtn">Detect Website Block</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Blocked Content Search</h3>
+                    <p>Search for information about blocked websites and content</p>
+                    <button class="feature-button" id="blockedSearchBtn">Search Blocked Content</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🌐</div>
+                    <h3>IP Address Analysis</h3>
+                    <p>Analyze IP addresses to determine location and status</p>
+                    <button class="feature-button" id="ipAnalysisBtn">Analyze IP Address</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">📡</div>
+                    <h3>Domain Information</h3>
+                    <p>Query domain DNS records and historical changes</p>
+                    <button class="feature-button" id="domainInfoBtn">Query Domain Info</button>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Network Diagnosis</h3>
+                    <p>Diagnose network connection issues and measure speed</p>
+                    <button class="feature-button" id="networkDiagnosisBtn">Diagnose Network</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <section class="results" id="results">
+            <div class="results-header">
+                <h2 class="results-title" id="resultsTitle">Analysis Results</h2>
+                <button class="close-results" id="closeResults">✕</button>
+            </div>
+            <div class="result-content" id="resultContent">
+                <!-- Results will be populated here -->
+            </div>
+        </section>
+    </div>
+
+    <section class="help" id="help">
+        <div class="container">
+            <h2>How to Use SmartVPN Alert</h2>
+            <div class="help-grid">
+                <div class="help-card">
+                    <div class="help-icon">1️⃣</div>
+                    <h3>Quick Analysis</h3>
+                    <p>Enter any URL, IP, domain, or keyword in the search box for instant analysis</p>
+                </div>
+                
+                <div class="help-card">
+                    <div class="help-icon">2️⃣</div>
+                    <h3>Feature Tools</h3>
+                    <p>Use specific tools for detailed analysis of different network elements</p>
+                </div>
+                
+                <div class="help-card">
+                    <div class="help-icon">3️⃣</div>
+                    <h3>Review Results</h3>
+                    <p>Check detailed reports with security status and recommendations</p>
+                </div>
+                
+                <div class="help-card">
+                    <div class="help-icon">4️⃣</div>
+                    <h3>Take Action</h3>
+                    <p>Use the insights to improve your network security and accessibility</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>© 2026 SmartVPN Alert - Network Security Analysis Tool</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type;
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Results display function
+        function showResults(title, content) {
+            const resultsSection = document.getElementById('results');
+            const resultsTitle = document.getElementById('resultsTitle');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultsTitle.textContent = title;
+            resultContent.innerHTML = content;
+            resultsSection.classList.add('active');
+            
+            // Scroll to results
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close results
+        document.getElementById('closeResults').addEventListener('click', function() {
+            document.getElementById('results').classList.remove('active');
+        });
+
+        // Website Block Detection
+        document.getElementById('blockDetectionBtn').addEventListener('click', function() {
+            const url = prompt('Enter website URL to check for blocking:');
+            if (!url) return;
+            
+            const content = `
+                <div class="result-item">
+                    <div class="result-label">Website:</div>
+                    <div class="result-value">${url}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Status:</div>
+                    <div class="result-value">
+                        <span class="status-badge ${isBlocked(url) ? 'status-danger' : 'status-safe'}">
+                            ${isBlocked(url) ? 'BLOCKED' : 'ACCESSIBLE'}
+                        </span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Region:</div>
+                    <div class="result-value">Your current location</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Last Checked:</div>
+                    <div class="result-value">${new Date().toLocaleString()}</div>
+                </div>
+            `;
+            
+            showResults('Website Block Detection', content);
+        });
+
+        // Blocked Content Search
+        document.getElementById('blockedSearchBtn').addEventListener('click', function() {
+            const keyword = prompt('Enter keyword to search for blocked content:');
+            if (!keyword) return;
+            
+            const results = searchBlockedContent(keyword);
+            let content = `
+                <div class="result-item">
+                    <div class="result-label">Search Term:</div>
+                    <div class="result-value">${keyword}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Results Found:</div>
+                    <div class="result-value">${results.length} matching results</div>
+                </div>
+            `;
+            
+            if (results.length > 0) {
+                content += '<div class="result-item"><div class="result-label">Blocked Sites:</div>';
+                results.forEach(result => {
+                    content += `
+                        <div class="history-item">
+                            <div class="result-value">${result.name}</div>
+                            <div class="result-value">${result.description}</div>
+                            <div class="history-date">Blocked: ${result.blockedDate}</div>
+                        </div>
+                    `;
+                });
+                content += '</div>';
+            }
+            
+            showResults('Blocked Content Search', content);
+        });
+
+        // IP Address Analysis
+        document.getElementById('ipAnalysisBtn').addEventListener('click', function() {
+            const ip = prompt('Enter IP address to analyze:');
+            if (!ip) return;
+            
+            const analysis = analyzeIP(ip);
+            const content = `
+                <div class="result-item">
+                    <div class="result-label">IP Address:</div>
+                    <div class="result-value">${ip}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Location:</div>
+                    <div class="result-value">${analysis.location}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">ISP:</div>
+                    <div class="result-value">${analysis.isp}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Status:</div>
+                    <div class="result-value">
+                        <span class="status-badge ${analysis.status === 'Blocked' ? 'status-danger' : 'status-safe'}">
+                            ${analysis.status}
+                        </span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Risk Level:</div>
+                    <div class="result-value">${analysis.riskLevel}</div>
+                </div>
+            `;
+            
+            showResults('IP Address Analysis', content);
+        });
+
+        // Domain Information
+        document.getElementById('domainInfoBtn').addEventListener('click', function() {
+            const domain = prompt('Enter domain to query:');
+            if (!domain) return;
+            
+            const info = queryDomain(domain);
+            const content = `
+                <div class="result-item">
+                    <div class="result-label">Domain:</div>
+                    <div class="result-value">${domain}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Registrar:</div>
+                    <div class="result-value">${info.registrar}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">DNS Records:</div>
+                    <div class="result-value">${info.dnsRecords.join(', ')}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Domain Age:</div>
+                    <div class="result-value">${info.age} years</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Historical Changes:</div>
+                    <div class="result-value">${info.changes.length} changes detected</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Recent Changes:</div>
+                </div>
+            `;
+            
+            info.changes.forEach(change => {
+                content += `
+                    <div class="history-item">
+                        <div class="history-date">${change.date}</div>
+                        <div class="result-value">${change.description}</div>
+                    </div>
+                `;
+            });
+            
+            showResults('Domain Information', content);
+        });
+
+        // Network Diagnosis
+        document.getElementById('networkDiagnosisBtn').addEventListener('click', function() {
+            const connectionType = prompt('Enter connection type (e.g., WiFi, Ethernet):') || 'WiFi';
+            const diagnosis = diagnoseNetwork(connectionType);
+            
+            const content = `
+                <div class="result-item">
+                    <div class="result-label">Connection Type:</div>
+                    <div class="result-value">${connectionType}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Download Speed:</div>
+                    <div class="result-value">${diagnosis.downloadSpeed} Mbps</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Upload Speed:</div>
+                    <div class="result-value">${diagnosis.uploadSpeed} Mbps</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Ping:</div>
+                    <div class="result-value">${diagnosis.ping} ms</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Connection Quality:</div>
+                    <div class="result-value">
+                        <span class="status-badge ${diagnosis.quality === 'Good' ? 'status-safe' : diagnosis.quality === 'Fair' ? 'status-warning' : 'status-danger'}">
+                            ${diagnosis.quality}
+                        </span>
+                    </div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">Issues Detected:</div>
+                    <div class="result-value">${diagnosis.issues.length > 0 ? diagnosis.issues.join(', ') : 'No issues detected'}</div>
+                </div>
+            `;
+            
+            showResults('Network Diagnosis', content);
+        });
+
+        // Quick Search
+        document.getElementById('quickSearchBtn').addEventListener('click', function() {
+            const input = document.getElementById('quickSearch').value.trim();
+            if (!input) {
+                showToast('Please enter a URL, IP address, domain, or keyword', 'warning');
+                return;
+            }
+            
+            // Determine input type and perform appropriate analysis
+            if (isURL(input)) {
+                const content = `
+                    <div class="result-item">
+                        <div class="result-label">Website:</div>
+                        <div class="result-value">${input}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Status:</div>
+                        <div class="result-value">
+                            <span class="status-badge ${isBlocked(input) ? 'status-danger' : 'status-safe'}">
+                                ${isBlocked(input) ? 'BLOCKED' : 'ACCESSIBLE'}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Region:</div>
+                        <div class="result-value">Your current location</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Last Checked:</div>
+                        <div class="result-value">${new Date().toLocaleString()}</div>
+                    </div>
+                `;
+                showResults('Quick Website Analysis', content);
+            } else if (isIP(input)) {
+                const analysis = analyzeIP(input);
+                const content = `
+                    <div class="result-item">
+                        <div class="result-label">IP Address:</div>
+                        <div class="result-value">${input}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Location:</div>
+                        <div class="result-value">${analysis.location}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">ISP:</div>
+                        <div class="result-value">${analysis.isp}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Status:</div>
+                        <div class="result-value">
+                            <span class="status-badge ${analysis.status === 'Blocked' ? 'status-danger' : 'status-safe'}">
+                                ${analysis.status}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Risk Level:</div>
+                        <div class="result-value">${analysis.riskLevel}</div>
+                    </div>
+                `;
+                showResults('Quick IP Analysis', content);
+            } else if (isDomain(input)) {
+                const info = queryDomain(input);
+                const content = `
+                    <div class="result-item">
+                        <div class="result-label">Domain:</div>
+                        <div class="result-value">${input}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Registrar:</div>
+                        <div class="result-value">${info.registrar}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">DNS Records:</div>
+                        <div class="result-value">${info.dnsRecords.join(', ')}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Domain Age:</div>
+                        <div class="result-value">${info.age} years</div>
+                    </div>
+                `;
+                showResults('Quick Domain Analysis', content);
+            } else {
+                // Treat as keyword search
+                const results = searchBlockedContent(input);
+                let content = `
+                    <div class="result-item">
+                        <div class="result-label">Search Term:</div>
+                        <div class="result-value">${input}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Results Found:</div>
+                        <div class="result-value">${results.length} matching results</div>
+                    </div>
+                `;
+                
+                if (results.length > 0) {
+                    content += '<div class="result-item"><div class="result-label">Blocked Sites:</div>';
+                    results.slice(0, 3).forEach(result => {
+                        content += `
+                            <div class="history-item">
+                                <div class="result-value">${result.name}</div>
+                                <div class="result-value">${result.description}</div>
+                                <div class="history-date">Blocked: ${result.blockedDate}</div>
+                            </div>
+                        `;
+                    });
+                    content += '</div>';
+                }
+                
+                showResults('Quick Content Search', content);
+            }
+        });
+
+        // Utility functions
+        function isURL(str) {
+            try {
+                new URL(str);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function isIP(str) {
+            const ipRegex = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+            return ipRegex.test(str);
+        }
+
+        function isDomain(str) {
+            const domainRegex = /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9]\.[a-zA-Z]{2,}$/;
+            return domainRegex.test(str);
+        }
+
+        function isBlocked(url) {
+            // Simulate blocked websites check
+            const blockedSites = [
+                'socialmediaexample.com',
+                'newsrestricted.com',
+                'streamingplatform.com'
+            ];
+            
+            try {
+                const domain = new URL(url).hostname;
+                return blockedSites.some(blocked => domain.includes(blocked));
+            } catch (e) {
+                return false;
+            }
+        }
+
+        function searchBlockedContent(keyword) {
+            // Simulate search results
+            const blockedContent = [
+                {
+                    name: 'Social Media Platform',
+                    description: 'Popular social networking site restricted in some regions',
+                    blockedDate: '2023-01-15'
+                },
+                {
+                    name: 'News Website',
+                    description: 'Independent news source covering restricted topics',
+                    blockedDate: '2023-03-22'
+                },
+                {
+                    name: 'Streaming Service',
+                    description: 'Video streaming platform with restricted content',
+                    blockedDate: '2023-05-10'
+                }
+            ];
+            
+            // Filter results based on keyword
+            if (!keyword) return blockedContent;
+            
+            const lowerKeyword = keyword.toLowerCase();
+            return blockedContent.filter(item => 
+                item.name.toLowerCase().includes(lowerKeyword) || 
+                item.description.toLowerCase().includes(lowerKeyword)
+            );
+        }
+
+        function analyzeIP(ip) {
+            // Simulate IP analysis
+            const locations = [
+                'New York, USA',
+                'London, UK',
+                'Tokyo, Japan',
+                'Sydney, Australia',
+                'Toronto, Canada'
+            ];
+            
+            const isps = [
+                'Internet Service Provider A',
+                'Global Communications Ltd',
+                'Network Solutions Inc',
+                'Connect Worldwide',
+                'DataLink Communications'
+            ];
+            
+            const riskLevels = ['Low', 'Medium', 'High'];
+            
+            return {
+                location: locations[Math.floor(Math.random() * locations.length)],
+                isp: isps[Math.floor(Math.random() * isps.length)],
+                status: Math.random() > 0.7 ? 'Blocked' : 'Allowed',
+                riskLevel: riskLevels[Math.floor(Math.random() * riskLevels.length)]
+            };
+        }
+
+        function queryDomain(domain) {
+            // Simulate domain query
+            const registrars = [
+                'GoDaddy',
+                'Namecheap',
+                'Cloudflare',
+                'Google Domains',
+                'Bluehost'
+            ];
+            
+            const dnsRecords = ['A', 'MX', 'TXT', 'NS', 'SOA'];
+            
+            // Calculate domain age (random between 1-10 years)
+            const creationYear = 2026 - Math.floor(Math.random() * 10) - 1;
+            const age = 2026 - creationYear;
+            
+            // Generate historical changes
+            const changes = [];
+            const changeTypes = [
+                'DNS records updated',
+                'Name server changed',
+                'Registration renewed',
+                'Privacy protection enabled',
+                'Domain transferred'
+            ];
+            
+            const numChanges = Math.floor(Math.random() * 5) + 1;
+            for (let i = 0; i < numChanges; i++) {
+                const changeDate = new Date(2026, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+                changes.push({
+                    date: changeDate.toLocaleDateString(),
+                    description: changeTypes[Math.floor(Math.random() * changeTypes.length)]
+                });
+            }
+            
+            // Sort changes by date (newest first)
+            changes.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            return {
+                registrar: registrars[Math.floor(Math.random() * registrars.length)],
+                dnsRecords: dnsRecords.slice(0, Math.floor(Math.random() * 3) + 2),
+                age: age,
+                changes: changes
+            };
+        }
+
+        function diagnoseNetwork(connectionType) {
+            // Simulate network diagnosis
+            const qualities = ['Excellent', 'Good', 'Fair', 'Poor'];
+            const issues = [
+                'High latency detected',
+                'Packet loss observed',
+                'Unstable connection',
+                'DNS resolution slow',
+                'Bandwidth throttling'
+            ];
+            
+            // Generate realistic speeds based on connection type
+            let downloadSpeed, uploadSpeed, ping;
+            
+            if (connectionType.toLowerCase().includes('wifi')) {
+                downloadSpeed = Math.floor(Math.random() * 100) + 20; // 20-120 Mbps
+                uploadSpeed = Math.floor(Math.random() * 30) + 5; // 5-35 Mbps
+                ping = Math.floor(Math.random() * 50) + 10; // 10-60 ms
+            } else if (connectionType.toLowerCase().includes('ethernet')) {
+                downloadSpeed = Math.floor(Math.random() * 200) + 100; // 100-300 Mbps
+                uploadSpeed = Math.floor(Math.random() * 50) + 20; // 20-70 Mbps
+                ping = Math.floor(Math.random() * 20) + 5; // 5-25 ms
+            } else {
+                downloadSpeed = Math.floor(Math.random() * 150) + 50; // 50-200 Mbps
+                uploadSpeed = Math.floor(Math.random() * 40) + 10; // 10-50 Mbps
+                ping = Math.floor(Math.random() * 40) + 10; // 10-50 ms
+            }
+            
+            // Determine quality based on metrics
+            let quality = 'Excellent';
+            if (ping > 40 || downloadSpeed < 30) quality = 'Poor';
+            else if (ping > 20 || downloadSpeed < 50) quality = 'Fair';
+            else if (ping > 10 || downloadSpeed < 80) quality = 'Good';
+            
+            // Generate random issues
+            const detectedIssues = [];
+            const numIssues = Math.floor(Math.random() * 3);
+            for (let i = 0; i < numIssues; i++) {
+                detectedIssues.push(issues[Math.floor(Math.random() * issues.length)]);
+            }
+            
+            // Remove duplicates
+            const uniqueIssues = [...new Set(detectedIssues)];
+            
+            return {
+                downloadSpeed: downloadSpeed,
+                uploadSpeed: uploadSpeed,
+                ping: ping,
+                quality: quality,
+                issues: uniqueIssues
+            };
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - Network Security Analysis Tool","SmartVPN Alert":"SmartVPN Alert","Features":"Features","Help":"Help","Network Security Analysis Tool":"Network Security Analysis Tool","Quick Analysis":"Quick Analysis","Security Analysis Features":"Security Analysis Features","Website Block Detection":"Website Block Detection","Check if a website is accessible or blocked in your region":"Check if a website is accessible or blocked in your region","Detect Website Block":"Detect Website Block","Blocked Content Search":"Blocked Content Search","Search for information about blocked websites and content":"Search for information about blocked websites and content","Search Blocked Content":"Search Blocked Content","IP Address Analysis":"IP Address Analysis","Analyze IP addresses to determine location and status":"Analyze IP addresses to determine location and status","Analyze IP Address":"Analyze IP Address","Domain Information":"Domain Information","Query domain DNS records and historical changes":"Query domain DNS records and historical changes","Query Domain Info":"Query Domain Info","Network Diagnosis":"Network Diagnosis","Diagnose network connection issues and measure speed":"Diagnose network connection issues and measure speed","Diagnose Network":"Diagnose Network","Analysis Results":"Analysis Results","How to Use SmartVPN Alert":"How to Use SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Enter any URL, IP, domain, or keyword in the search box for instant analysis","Feature Tools":"Feature Tools","Use specific tools for detailed analysis of different network elements":"Use specific tools for detailed analysis of different network elements","Review Results":"Review Results","Check detailed reports with security status and recommendations":"Check detailed reports with security status and recommendations","Take Action":"Take Action","Use the insights to improve your network security and accessibility":"Use the insights to improve your network security and accessibility","Enter website URL to check for blocking:":"Enter website URL to check for blocking:","Enter keyword to search for blocked content:":"Enter keyword to search for blocked content:","Enter IP address to analyze:":"Enter IP address to analyze:","Enter domain to query:":"Enter domain to query:","No issues detected":"No issues detected","Please enter a URL, IP address, domain, or keyword":"Please enter a URL, IP address, domain, or keyword","Quick Website Analysis":"Quick Website Analysis","Quick IP Analysis":"Quick IP Analysis","Quick Domain Analysis":"Quick Domain Analysis","Quick Content Search":"Quick Content Search","Social Media Platform":"Social Media Platform","Popular social networking site restricted in some regions":"Popular social networking site restricted in some regions","News Website":"News Website","Independent news source covering restricted topics":"Independent news source covering restricted topics","Streaming Service":"Streaming Service","Video streaming platform with restricted content":"Video streaming platform with restricted content","New York, USA":"New York, USA","London, UK":"London, UK","Tokyo, Japan":"Tokyo, Japan","Sydney, Australia":"Sydney, Australia","Toronto, Canada":"Toronto, Canada","Internet Service Provider A":"Internet Service Provider A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"SmartVPN Alert - Network Security Analysis Tool"},"zh-CN":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - 网络安全分析工具","SmartVPN Alert":"SmartVPN Alert","Features":"功能","Help":"帮助","Network Security Analysis Tool":"网络安全分析工具","Quick Analysis":"快速分析","Security Analysis Features":"安全分析功能","Website Block Detection":"网站封锁检测","Check if a website is accessible or blocked in your region":"检查网站在你的地区是否可访问或被封锁","Detect Website Block":"检测网站封锁","Blocked Content Search":"封锁内容搜索","Search for information about blocked websites and content":"搜索有关封锁网站和内容的信息","Search Blocked Content":"搜索封锁内容","IP Address Analysis":"IP地址分析","Analyze IP addresses to determine location and status":"分析IP地址以确定位置和状态","Analyze IP Address":"分析IP地址","Domain Information":"域名信息","Query domain DNS records and historical changes":"查询域名DNS记录和历史变更","Query Domain Info":"查询域名信息","Network Diagnosis":"网络诊断","Diagnose network connection issues and measure speed":"诊断网络连接问题并测量速度","Diagnose Network":"诊断网络","Analysis Results":"分析结果","How to Use SmartVPN Alert":"如何使用SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"在搜索框中输入任何URL、IP、域名或关键词进行即时分析","Feature Tools":"功能工具","Use specific tools for detailed analysis of different network elements":"使用特定工具对不同网络元素进行详细分析","Review Results":"查看结果","Check detailed reports with security status and recommendations":"检查包含安全状态和建议的详细报告","Take Action":"采取行动","Use the insights to improve your network security and accessibility":"使用洞察力来提高您的网络安全和可访问性","Enter website URL to check for blocking:":"输入网站URL以检查封锁：","Enter keyword to search for blocked content:":"输入关键词以搜索封锁内容：","Enter IP address to analyze:":"输入要分析的IP地址：","Enter domain to query:":"输入要查询的域名：","No issues detected":"未发现任何问题","Please enter a URL, IP address, domain, or keyword":"请输入URL、IP地址、域名或关键词","Quick Website Analysis":"快速网站分析","Quick IP Analysis":"快速IP分析","Quick Domain Analysis":"快速域名分析","Quick Content Search":"快速内容搜索","Social Media Platform":"社交媒体平台","Popular social networking site restricted in some regions":"在某些地区受限的流行社交网站","News Website":"新闻网站","Independent news source covering restricted topics":"涵盖受限主题的独立新闻来源","Streaming Service":"流媒体服务","Video streaming platform with restricted content":"内容受限的视频流媒体平台","New York, USA":"美国纽约","London, UK":"英国伦敦","Tokyo, Japan":"日本东京","Sydney, Australia":"澳大利亚悉尼","Toronto, Canada":"加拿大多伦多","Internet Service Provider A":"互联网服务提供商A","Global Communications Ltd":"全球通信有限公司","Network Solutions Inc":"网络解决方案公司","Connect Worldwide":"全球连接","__title__":"SmartVPN Alert - 网络安全分析工具"},"es":{"SmartVPN Alert - Network Security Analysis Tool":"Alerta SmartVPN - Herramienta de Análisis de Seguridad de Red","SmartVPN Alert":"Alerta SmartVPN","Features":"Características","Help":"Ayuda","Network Security Analysis Tool":"Herramienta de Análisis de Seguridad de Red","Quick Analysis":"Análisis Rápido","Security Analysis Features":"Características de Análisis de Seguridad","Website Block Detection":"Detección de Bloqueo de Sitio Web","Check if a website is accessible or blocked in your region":"Verifique si un sitio web es accesible o bloqueado en su región","Detect Website Block":"Detectar Bloqueo de Sitio Web","Blocked Content Search":"Búsqueda de Contenido Bloqueado","Search for information about blocked websites and content":"Búsqueda de información sobre sitios web y contenido bloqueados","Search Blocked Content":"Buscar Contenido Bloqueado","IP Address Analysis":"Análisis de Dirección IP","Analyze IP addresses to determine location and status":"Análisis de direcciones IP para determinar ubicación y estado","Analyze IP Address":"Análisis de Dirección IP","Domain Information":"Información de Dominio","Query domain DNS records and historical changes":"Consulta registros DNS de dominio y cambios históricos","Query Domain Info":"Consulta Información de Dominio","Network Diagnosis":"Diagnóstico de Red","Diagnose network connection issues and measure speed":"Diagnóstico de problemas de conexión de red y medición de velocidad","Diagnose Network":"Diagnóstico de Red","Analysis Results":"Resultados del Análisis","How to Use SmartVPN Alert":"Cómo Usar Alerta SmartVPN","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Ingrese cualquier URL, IP, dominio o palabra clave en la caja de búsqueda para un análisis instantáneo","Feature Tools":"Herramientas de Características","Use specific tools for detailed analysis of different network elements":"Use herramientas específicas para un análisis detallado de diferentes elementos de red","Review Results":"Revisar Resultados","Check detailed reports with security status and recommendations":"Ver informes detallados con estado de seguridad y recomendaciones","Take Action":"Tomar Acción","Use the insights to improve your network security and accessibility":"Use las insigmas para mejorar la seguridad y accesibilidad de su red","Enter website URL to check for blocking:":"Ingrese la URL del sitio web para verificar el bloqueo:","Enter keyword to search for blocked content:":"Ingrese una palabra clave para buscar contenido bloqueado:","Enter IP address to analyze:":"Ingrese la dirección IP para analizar:","Enter domain to query:":"Ingrese el dominio para consultar:","No issues detected":"No se detectaron problemas","Please enter a URL, IP address, domain, or keyword":"Por favor, ingrese una URL, dirección IP, dominio o palabra clave","Quick Website Analysis":"Análisis Rápido de Sitio Web","Quick IP Analysis":"Análisis Rápido de IP","Quick Domain Analysis":"Análisis Rápido de Dominio","Quick Content Search":"Búsqueda Rápida de Contenido","Social Media Platform":"Plataforma de Redes Sociales","Popular social networking site restricted in some regions":"Sitio de redes sociales populares restringido en algunas regiones","News Website":"Sitio de Noticias","Independent news source covering restricted topics":"Fuente de noticias independientes cubriendo temas restringidos","Streaming Service":"Servicio de Streaming","Video streaming platform with restricted content":"Plataforma de video streaming con contenido restringido","New York, USA":"Nueva York, EE. UU.","London, UK":"Londres, Reino Unido","Tokyo, Japan":"Tokio, Japón","Sydney, Australia":"Sydney, Australia","Toronto, Canada":"Toronto, Canadá","Internet Service Provider A":"Proveedor de Servicios de Internet A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"Alerta SmartVPN - Herramienta de Análisis de Seguridad de Red"},"ja":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - ネットワークセキュリティ分析ツール","SmartVPN Alert":"SmartVPN Alert","Features":"特徴","Help":"ヘルプ","Network Security Analysis Tool":"ネットワークセキュリティ分析ツール","Quick Analysis":"迅速分析","Security Analysis Features":"セキュリティ分析機能","Website Block Detection":"ウェブサイトブロック検出","Check if a website is accessible or blocked in your region":"あなたの地域でウェブサイトがアクセス可能かブロックされているかを確認","Detect Website Block":"ウェブサイトブロックの検出","Blocked Content Search":"ブロックされたコンテンツの検索","Search for information about blocked websites and content":"ブロックされたウェブサイトおよびコンテンツに関する情報を検索","Search Blocked Content":"ブロックされたコンテンツの検索","IP Address Analysis":"IPアドレス分析","Analyze IP addresses to determine location and status":"IPアドレスを分析して場所とステータスを決定","Analyze IP Address":"IPアドレスの分析","Domain Information":"ドメイン情報","Query domain DNS records and historical changes":"ドメインのDNSレコードおよび歴史的な変更をクエリ","Query Domain Info":"ドメイン情報のクエリ","Network Diagnosis":"ネットワーク診断","Diagnose network connection issues and measure speed":"ネットワーク接続の問題を診断し、速度を測定","Diagnose Network":"ネットワークの診断","Analysis Results":"分析結果","How to Use SmartVPN Alert":"SmartVPN Alertの使い方","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"検索ボックスにURL、IP、ドメイン、またはキーワードを入力して即時分析","Feature Tools":"機能ツール","Use specific tools for detailed analysis of different network elements":"異なるネットワーク要素の詳細な分析に特別なツールを使用","Review Results":"結果の確認","Check detailed reports with security status and recommendations":"セキュリティステータスと推奨事項を含む詳細なレポートを確認","Take Action":"行動を起こす","Use the insights to improve your network security and accessibility":"洞察を利用してネットワークのセキュリティとアクセス性を向上","Enter website URL to check for blocking:":"ブロッキングを確認するウェブサイトURLを入力:","Enter keyword to search for blocked content:":"ブロックされたコンテンツを検索するキーワードを入力:","Enter IP address to analyze:":"分析するIPアドレスを入力:","Enter domain to query:":"クエリするドメインを入力:","No issues detected":"問題が検出されませんでした","Please enter a URL, IP address, domain, or keyword":"URL、IPアドレス、ドメイン、またはキーワードを入力してください","Quick Website Analysis":"迅速なウェブサイト分析","Quick IP Analysis":"迅速なIPアナリシス","Quick Domain Analysis":"迅速なドメイン分析","Quick Content Search":"迅速なコンテンツ検索","Social Media Platform":"一部の地域で制限されている人気のソーシャルメディアプラットフォーム","News Website":"制限されたトピックをカバーする独立したニュースソース","Streaming Service":"制限されたコンテンツを持つビデオストリーミングプラットフォーム","New York, USA":"アメリカ、ニューヨーク","London, UK":"イギリス、ロンドン","Tokyo, Japan":"日本、東京","Sydney, Australia":"オーストラリア、シドニー","Toronto, Canada":"カナダ、トロント","Internet Service Provider A":"インターネットサービスプロバイダーA","Global Communications Ltd":"グローバルコミュニケーション株式会社","Network Solutions Inc":"ネットワークソリューション株式会社","Connect Worldwide":"コネクトワールド","Popular social networking site restricted in some regions":"一部地域で制限されている人気のソーシャルネットワークサイト","Independent news source covering restricted topics":"制限されたトピックをカバーする独立したニュースソース","Video streaming platform with restricted content":"制限されたコンテンツを持つビデオストリーミングプラットフォーム","__title__":"SmartVPN Alert - ネットワークセキュリティ分析ツール"},"ko":{"SmartVPN Alert - Network Security Analysis Tool":"스마트VPN 알림 - 네트워크 보안 분석 도구","SmartVPN Alert":"스마트VPN 알림","Features":"기능","Help":"도움말","Network Security Analysis Tool":"네트워크 보안 분석 도구","Quick Analysis":"빠른 분석","Security Analysis Features":"보안 분석 기능","Website Block Detection":"웹사이트 블록 감지","Check if a website is accessible or blocked in your region":"귀하의 지역에서 웹사이트가 접근 가능한지 또는 블록된지 확인","Detect Website Block":"웹사이트 블록 감지","Blocked Content Search":"블록된 콘텐츠 검색","Search for information about blocked websites and content":"블록된 웹사이트 및 콘텐츠에 대한 정보를 검색","Search Blocked Content":"블록된 콘텐츠 검색","IP Address Analysis":"IP 주소 분석","Analyze IP addresses to determine location and status":"IP 주소를 분석하여 위치와 상태를 결정","Analyze IP Address":"IP 주소 분석","Domain Information":"도메인 정보","Query domain DNS records and historical changes":"도메인 DNS 기록 및 역사적 변경 사항을 조회","Query Domain Info":"도메인 정보 조회","Network Diagnosis":"네트워크 진단","Diagnose network connection issues and measure speed":"네트워크 연결 문제를 진단하고 속도를 측정","Diagnose Network":"네트워크 진단","Analysis Results":"분석 결과","How to Use SmartVPN Alert":"스마트VPN 알림 사용법","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"검색 상자에 URL, IP, 도메인, 또는 키워드를 입력하여 즉시 분석","Feature Tools":"기능 도구","Use specific tools for detailed analysis of different network elements":"다양한 네트워크 요소의 상세 분석을 위해 특정 도구를 사용","Review Results":"결과 검토","Check detailed reports with security status and recommendations":"보안 상태 및 권장 사항이 포함된 상세 보고서를 확인","Take Action":"작업 수행","Use the insights to improve your network security and accessibility":"인사이트를 사용하여 네트워크 보안 및 접근성을 개선","Enter website URL to check for blocking:":"블록 여부를 확인할 웹사이트 URL을 입력하세요:","Enter keyword to search for blocked content:":"블록된 콘텐츠를 검색할 키워드를 입력하세요:","Enter IP address to analyze:":"분석할 IP 주소를 입력하세요:","Enter domain to query:":"조회할 도메인을 입력하세요:","No issues detected":"문제가 발견되지 않았습니다","Please enter a URL, IP address, domain, or keyword":"URL, IP 주소, 도메인, 또는 키워드를 입력하세요","Quick Website Analysis":"빠른 웹사이트 분석","Quick IP Analysis":"빠른 IP 분석","Quick Domain Analysis":"빠른 도메인 분석","Quick Content Search":"빠른 콘텐츠 검색","Social Media Platform":"일부 지역에서 제한된 소셜 미디어 플랫폼","News Website":"제한된 주제를 다루는 독립 뉴스 사이트","Streaming Service":"제한된 콘텐츠가 있는 비디오 스트리밍 플랫폼","New York, USA":"미국 뉴욕","London, UK":"영국 런던","Tokyo, Japan":"일본 토키오","Sydney, Australia":"오스트레일리아 시드니","Toronto, Canada":"캐나다 토론토","Internet Service Provider A":"인터넷 서비스 제공자 A","Global Communications Ltd":"글로벌 커뮤니케이션 제한","Network Solutions Inc":"네트워크 솔루션 제한","Connect Worldwide":"워LD와 연결","Popular social networking site restricted in some regions":"일부 지역에서 제한된 소셜 네트워킹 사이트","Independent news source covering restricted topics":"제한된 주제를 다루는 독립 뉴스 소스","Video streaming platform with restricted content":"제한된 콘텐츠를 포함한 비디오 스트리밍 플랫폼","__title__":"스마트VPN 알림 - 네트워크 보안 분석 도구"},"fr":{"SmartVPN Alert - Network Security Analysis Tool":"Alerte SmartVPN - Outil d'analyse de sécurité réseau","SmartVPN Alert":"Alerte SmartVPN","Features":"Fonctionnalités","Help":"Aide","Network Security Analysis Tool":"Outil d'analyse de sécurité réseau","Quick Analysis":"Analyse rapide","Security Analysis Features":"Fonctionnalités d'analyse de sécurité","Website Block Detection":"Détecteur de blocage de site web","Check if a website is accessible or blocked in your region":"Vérifiez si un site web est accessible ou bloqué dans votre région","Detect Website Block":"Détecter le blocage de site web","Blocked Content Search":"Recherche de contenu bloqué","Search for information about blocked websites and content":"Recherchez des informations sur les sites web et le contenu bloqués","Search Blocked Content":"Recherche de contenu bloqué","IP Address Analysis":"Analyse d'adresse IP","Analyze IP addresses to determine location and status":"Analyser les adresses IP pour déterminer l'emplacement et le statut","Analyze IP Address":"Analyser l'adresse IP","Domain Information":"Informations sur le domaine","Query domain DNS records and historical changes":"Requête des enregistrements DNS du domaine et des changements historiques","Query Domain Info":"Requête d'informations sur le domaine","Network Diagnosis":"Diagnostic réseau","Diagnose network connection issues and measure speed":"Diagnostiquer les problèmes de connexion réseau et mesurer la vitesse","Diagnose Network":"Diagnostiquer le réseau","Analysis Results":"Résultats de l'analyse","How to Use SmartVPN Alert":"Comment utiliser l'Alerte SmartVPN","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Entrez n'importe quel URL, IP, domaine ou mot-clé dans la boîte de recherche pour une analyse instantanée","Feature Tools":"Outils de fonctionnalités","Use specific tools for detailed analysis of different network elements":"Utilisez des outils spécifiques pour une analyse détaillée de différents éléments réseau","Review Results":"Examiner les résultats","Check detailed reports with security status and recommendations":"Vérifiez des rapports détaillés avec le statut de sécurité et les recommandations","Take Action":"Prendre des mesures","Use the insights to improve your network security and accessibility":"Utilisez les insights pour améliorer la sécurité et l'accessibilité de votre réseau","Enter website URL to check for blocking:":"Entrez l'URL du site web pour vérifier le blocage :","Enter keyword to search for blocked content:":"Entrez un mot-clé pour rechercher du contenu bloqué :","Enter IP address to analyze:":"Entrez l'adresse IP à analyser :","Enter domain to query:":"Entrez le domaine à interroger :","No issues detected":"Aucun problème détecté","Please enter a URL, IP address, domain, or keyword":"Veuillez entrer une URL, une adresse IP, un domaine ou un mot-clé","Quick Website Analysis":"Analyse rapide de site web","Quick IP Analysis":"Analyse rapide d'IP","Quick Domain Analysis":"Analyse rapide de domaine","Quick Content Search":"Recherche rapide de contenu","Social Media Platform":"Plateforme de média social","Popular social networking site restricted in some regions":"Site de réseautage social populaire restreint dans certaines régions","News Website":"Site d'actualités","Independent news source covering restricted topics":"Source d'actualités indépendante couvrant des sujets restreints","Streaming Service":"Service de streaming","Video streaming platform with restricted content":"Plateforme de streaming vidéo avec contenu restreint","New York, USA":"New York, États-Unis","London, UK":"Londres, Royaume-Uni","Tokyo, Japan":"Tokyo, Japon","Sydney, Australia":"Sydney, Australie","Toronto, Canada":"Toronto, Canada","Internet Service Provider A":"Fournisseur de services Internet A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"Alerte SmartVPN - Outil d'analyse de sécurité réseau"},"de":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - Netzwerksicherheitsanalyse-Tool","SmartVPN Alert":"SmartVPN Alert","Features":"Funktionen","Help":"Hilfe","Network Security Analysis Tool":"Netzwerksicherheitsanalyse-Tool","Quick Analysis":"Schnelle Analyse","Security Analysis Features":"Sicherheitsanalysefunktionen","Website Block Detection":"Website-Blockierungserkennung","Check if a website is accessible or blocked in your region":"Überprüfen Sie, ob eine Website in Ihrer Region zugänglich oder blockiert ist","Detect Website Block":"Website-Blockierung erkennen","Blocked Content Search":"Suche nach Informationen über blockierte Websites und Inhalte","Search Blocked Content":"Nach blockierten Inhalten suchen","IP Address Analysis":"IP-Adresseanalyse","Analyze IP addresses to determine location and status":"Analysieren Sie IP-Adressen, um Standort und Status zu bestimmen","Analyze IP Address":"IP-Adresse analysieren","Domain Information":"Domain-Informationen","Query domain DNS records and historical changes":"Abfrage von Domain-DNS-Einträgen und historischen Änderungen","Query Domain Info":"Domain-Information abfragen","Network Diagnosis":"Netzwerkdiagnose","Diagnose network connection issues and measure speed":"Diagnostizieren Sie Netzwerkverbindungsprobleme und messen Sie die Geschwindigkeit","Diagnose Network":"Netzwerk diagnostizieren","Analysis Results":"Analysergebnisse","How to Use SmartVPN Alert":"Wie man SmartVPN Alert verwendet","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Geben Sie jede URL, IP, Domain oder Schlüsselwort in das Suchfeld ein, um eine sofortige Analyse durchzuführen","Feature Tools":"Funktionstools","Use specific tools for detailed analysis of different network elements":"Verwenden Sie spezifische Tools für eine detaillierte Analyse verschiedener Netzwekteile","Review Results":"Ergebnisse überprüfen","Check detailed reports with security status and recommendations":"Überprüfen Sie detaillierte Berichte mit Sicherheitsstatus und Empfehlungen","Take Action":"Handeln","Use the insights to improve your network security and accessibility":"Verwenden Sie die Erkenntnisse, um Ihre Netzwerksicherheit und Zugänglichkeit zu verbessern","Enter website URL to check for blocking:":"Geben Sie die Website-URL ein, um zu überprüfen, ob sie blockiert ist:","Enter keyword to search for blocked content:":"Geben Sie ein Schlüsselwort ein, um nach blockierten Inhalten zu suchen:","Enter IP address to analyze:":"Geben Sie die IP-Adresse ein, die analysiert werden soll:","Enter domain to query:":"Geben Sie die zu abfragende Domain ein:","No issues detected":"Keine Probleme erkannt","Please enter a URL, IP address, domain, or keyword":"Bitte geben Sie eine URL, IP-Adresse, Domain oder ein Schlüsselwort ein","Quick Website Analysis":"Schnelle Website-Analyse","Quick IP Analysis":"Schnelle IP-Analyse","Quick Domain Analysis":"Schnelle Domain-Analyse","Quick Content Search":"Schnelle Inhaltsuche","Social Media Platform":"Populäre soziale Netzwerkplattform, die in einigen Regionen eingeschränkt ist","News Website":"Unabhängige Nachrichtenquelle, die eingeschränkte Themen abdeckt","Streaming Service":"Video-Streaming-Plattform mit eingeschränktem Inhalt","New York, USA":"New York, USA","London, UK":"London, UK","Tokyo, Japan":"Tokyo, Japan","Sydney, Australia":"Sydney, Australien","Toronto, Canada":"Toronto, Kanada","Internet Service Provider A":"Internetdienstanbieter A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","Search for information about blocked websites and content":"Suche nach Informationen über blockierte Websites und Inhalte","Popular social networking site restricted in some regions":"Beliebte soziale Netzwerkseite in einigen Regionen eingeschränkt","Independent news source covering restricted topics":"Unabhängige Nachrichtenquelle, die eingeschränkte Themen abdeckt","Video streaming platform with restricted content":"Video-Streaming-Plattform mit eingeschränktem Inhalt","__title__":"SmartVPN Alert - Netzwerksicherheitsanalyse-Tool"},"ru":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - Инструмент анализа сетевой безопасности","SmartVPN Alert":"SmartVPN Alert","Features":"Функции","Help":"Справка","Network Security Analysis Tool":"Инструмент анализа сетевой безопасности","Quick Analysis":"Быстрый анализ","Security Analysis Features":"Функции анализа безопасности","Website Block Detection":"Обнаружение блокировки веб-сайта","Check if a website is accessible or blocked in your region":"Проверьте, доступен ли веб-сайт или он заблокирован в вашей зоне","Detect Website Block":"Обнаружить блокировку веб-сайта","Blocked Content Search":"Поиск заблокированного контента","Search for information about blocked websites and content":"Искать информацию о заблокированных веб-сайтах и контенте","Search Blocked Content":"Искать заблокированный контент","IP Address Analysis":"Анализ IP-адреса","Analyze IP addresses to determine location and status":"Анализ IP-адресов для определения местоположения и статуса","Analyze IP Address":"Анализ IP-адреса","Domain Information":"Информация о домене","Query domain DNS records and historical changes":"Запрос информации о DNS-записях домена и исторических изменениях","Query Domain Info":"Запрос информации о домене","Network Diagnosis":"Диагностика сетевого подключения и измерение скорости","Diagnose Network":"Диагностика сети","Analysis Results":"Результаты анализа","How to Use SmartVPN Alert":"Как использовать SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Введите любую URL, IP, домен или ключевое слово в строку поиска для мгновенного анализа","Feature Tools":"Инструменты функций","Use specific tools for detailed analysis of different network elements":"Используйте специфические инструменты для детального анализа различных элементов сети","Review Results":"Просмотр результатов","Check detailed reports with security status and recommendations":"Проверьте детальные отчеты с состоянием безопасности и рекомендациями","Take Action":"Принять меры","Use the insights to improve your network security and accessibility":"Используйте инсайты для улучшения безопасности и доступности вашей сети","Enter website URL to check for blocking:":"Введите URL веб-сайта для проверки блокировки:","Enter keyword to search for blocked content:":"Введите ключевое слово для поиска заблокированного контента:","Enter IP address to analyze:":"Введите IP-адрес для анализа:","Enter domain to query:":"Введите домен для запроса:","No issues detected":"Не обнаружены проблемы","Please enter a URL, IP address, domain, or keyword":"Пожалуйста, введите URL, IP-адрес, домен или ключевое слово","Quick Website Analysis":"Быстрый анализ веб-сайта","Quick IP Analysis":"Быстрый анализ IP-адреса","Quick Domain Analysis":"Быстрый анализ домена","Quick Content Search":"Быстрый поиск контента","Social Media Platform":"Популярная социальная сеть, ограниченная в некоторых регионах","News Website":"Независимый источник новостей, освещающий ограниченные темы","Streaming Service":"Платформа потокового видео с ограниченным контентом","New York, USA":"Нью-Йорк, США","London, UK":"Лондон, Великобритания","Tokyo, Japan":"Токио, Япония","Sydney, Australia":"Сидней, Австралия","Toronto, Canada":"Торонто, Канада","Internet Service Provider A":"Поставщик услуг Интернета A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","Diagnose network connection issues and measure speed":"Диагностировать проблемы с подключением к сети и измерять скорость","Popular social networking site restricted in some regions":"Популярная социальная сеть, ограниченная в некоторых регионах","Independent news source covering restricted topics":"Независимый источник новостей, освещающий ограниченные темы","Video streaming platform with restricted content":"Платформа потокового видео с ограниченным контентом","__title__":"SmartVPN Alert - Инструмент анализа сетевой безопасности"},"pt":{"SmartVPN Alert - Network Security Analysis Tool":"Alerta SmartVPN - Ferramenta de Análise de Segurança de Rede","SmartVPN Alert":"Alerta SmartVPN","Features":"Características","Help":"Ajuda","Network Security Analysis Tool":"Ferramenta de Análise de Segurança de Rede","Quick Analysis":"Análise Rápida","Security Analysis Features":"Características de Análise de Segurança","Website Block Detection":"Detecção de Bloqueio de Website","Check if a website is accessible or blocked in your region":"Verifique se um website é acessível ou bloqueado na sua região","Detect Website Block":"Detectar Bloqueio de Website","Blocked Content Search":"Busca de Conteúdo Bloqueado","Search for information about blocked websites and content":"Procure informações sobre websites e conteúdo bloqueados","Search Blocked Content":"Procurar Conteúdo Bloqueado","IP Address Analysis":"Análise de Endereço IP","Analyze IP addresses to determine location and status":"Analisar endereços IP para determinar localização e status","Analyze IP Address":"Analisar Endereço IP","Domain Information":"Informações de Domínio","Query domain DNS records and historical changes":"Consultar registros DNS do domínio e mudanças históricas","Query Domain Info":"Consultar Informações de Domínio","Network Diagnosis":"Diagnóstico de Rede","Diagnose network connection issues and measure speed":"Diagnosticar problemas de conexão de rede e medir a velocidade","Diagnose Network":"Diagnosticar Rede","Analysis Results":"Resultados da Análise","How to Use SmartVPN Alert":"Como Usar o Alerta SmartVPN","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Insira qualquer URL, IP, domínio ou palavra-chave na caixa de pesquisa para análise instantânea","Feature Tools":"Ferramentas de Características","Use specific tools for detailed analysis of different network elements":"Use ferramentas específicas para análise detalhada de diferentes elementos de rede","Review Results":"Revisar Resultados","Check detailed reports with security status and recommendations":"Verifique relatórios detalhados com status de segurança e recomendações","Take Action":"Tomar Ação","Use the insights to improve your network security and accessibility":"Use as percepções para melhorar a segurança e a acessibilidade da sua rede","Enter website URL to check for blocking:":"Insira a URL do website para verificar bloqueio:","Enter keyword to search for blocked content:":"Insira a palavra-chave para procurar conteúdo bloqueado:","Enter IP address to analyze:":"Insira o endereço IP para analisar:","Enter domain to query:":"Insira o domínio para consultar:","No issues detected":"Nenhum problema detectado","Please enter a URL, IP address, domain, or keyword":"Por favor, insira uma URL, endereço IP, domínio ou palavra-chave","Quick Website Analysis":"Análise Rápida de Website","Quick IP Analysis":"Análise Rápida de IP","Quick Domain Analysis":"Análise Rápida de Domínio","Quick Content Search":"Procura Rápida de Conteúdo","Social Media Platform":"Plataforma de Mídia Social","Popular social networking site restricted in some regions":"Site de rede social popular restrito em algumas regiões","News Website":"Website de Notícias","Independent news source covering restricted topics":"Fonte de notícias independente cobrindo tópicos restritos","Streaming Service":"Serviço de Transmissão","Video streaming platform with restricted content":"Plataforma de transmissão de vídeo com conteúdo restrito","New York, USA":"Nova York, EUA","London, UK":"Londres, Reino Unido","Tokyo, Japan":"Tóquio, Japão","Sydney, Australia":"Sydney, Austrália","Toronto, Canada":"Toronto, Canadá","Internet Service Provider A":"provedor de serviços de Internet A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"Alerta SmartVPN - Ferramenta de Análise de Segurança de Rede"},"ar":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - أداة تحليل أمان الشبكة","SmartVPN Alert":"SmartVPN Alert","Features":"الميزات","Help":"المساعدة","Network Security Analysis Tool":"أداة تحليل أمان الشبكة","Quick Analysis":"تحليل سريع","Security Analysis Features":"ميزات تحليل الأمان","Website Block Detection":"كشف عن حظر المواقع","Check if a website is accessible or blocked in your region":"تحقق مما إذا كانت الموقع متاحًا أو محظورًا في منطقتك","Detect Website Block":"كشف عن حظر الموقع","Blocked Content Search":"بحث عن محتوى محظور","Search for information about blocked websites and content":"البحث عن معلومات حول المواقع المحظورة والمحتوى","Search Blocked Content":"البحث عن محتوى محظور","IP Address Analysis":"تحليل عنوان الـ IP","Analyze IP addresses to determine location and status":"تحليل عناوين الـ IP لتحديد الموقع والوضع","Analyze IP Address":"تحليل عنوان الـ IP","Domain Information":"معلومات النطاق","Query domain DNS records and historical changes":"استعلام سجلات DNS للنطاق وتغيراته التاريخية","Query Domain Info":"استعلام معلومات النطاق","Network Diagnosis":"تشخيص الشبكة","Diagnose network connection issues and measure speed":"تشخيص مشاكل اتصال الشبكة وقياس السرعة","Diagnose Network":"تشخيص الشبكة","Analysis Results":"نتائج التحليل","How to Use SmartVPN Alert":"كيفية استخدام SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"أدخل أي URL، IP، نطاق، أو كلمة مفتاح في مربع البحث للحصول على تحليل فوري","Feature Tools":"أدوات الميزات","Use specific tools for detailed analysis of different network elements":"استخدام أدوات محددة للتحليل التفصيلي لأجزاء مختلفة من الشبكة","Review Results":"مراجعة النتائج","Check detailed reports with security status and recommendations":"تحقق من التقارير التفصيلية مع حالة الأمان والاقتراحات","Take Action":"اتخذ الإجراء","Use the insights to improve your network security and accessibility":"استخدام الإدراكات لتحسين أمان شبكتك وسهولة الوصول إليها","Enter website URL to check for blocking:":"أدخل عنوان الموقع للتحقق من الحظر:","Enter keyword to search for blocked content:":"أدخل كلمة مفتاح للبحث عن محتوى محظور:","Enter IP address to analyze:":"أدخل عنوان الـ IP للتحليل:","Enter domain to query:":"أدخل النطاق للاستعلام:","No issues detected":"لم يتم اكتشاف أي مشاكل","Please enter a URL, IP address, domain, or keyword":"يرجى إدخال URL، عنوان الـ IP، نطاق، أو كلمة مفتاح","Quick Website Analysis":"تحليل موقع سريع","Quick IP Analysis":"تحليل IP سريع","Quick Domain Analysis":"تحليل نطاق سريع","Quick Content Search":"بحث محتوى سريع","Social Media Platform":"منصة وسائل التواصل الاجتماعي","Popular social networking site restricted in some regions":"موقع شبكة التواصل الاجتماعي الشائع محظور في بعض المناطق","News Website":"موقع الأخبار","Independent news source covering restricted topics":"مصدر الأخبار المستقل الذي يغطي مواضيع محظورة","Streaming Service":"خدمة البث التدفق","Video streaming platform with restricted content":"منصة بث الفيديو التي تحتوي على محتوى محظور","New York, USA":"نيويورك، الولايات المتحدة الأمريكية","London, UK":"لندن، المملكة المتحدة","Tokyo, Japan":"توكيو، اليابان","Sydney, Australia":"سيدني، أستراليا","Toronto, Canada":"تورونتو، كندا","Internet Service Provider A":"مقدم خدمات الإنترنت أ","Global Communications Ltd":"شركة الاتصالات العالمية المحدودة","Network Solutions Inc":"شركة حلول الشبكة المحدودة","Connect Worldwide":"اتصل بالعالم","__title__":"SmartVPN Alert - أداة تحليل أمان الشبكة"},"hi":{"SmartVPN Alert - Network Security Analysis Tool":"स्मार्टवीपन अलर्ट - नेटवर्क सेक्युरिटी एनेलिसिस टूल","SmartVPN Alert":"स्मार्टवीपन अलर्ट","Features":"फीचर्स","Help":"हेल्प","Network Security Analysis Tool":"नेटवर्क सेक्युरिटी एनेलिसिस टूल","Quick Analysis":"क्विक एनेलिसिस","Security Analysis Features":"सेक्युरिटी एनेलिसिस फीचर्स","Website Block Detection":"वेबसाइट ब्लॉक डिटेक्शन","Check if a website is accessible or blocked in your region":"आपके क्षेत्र में एक वेबसाइट अवलंब्य है या नहीं जानने के लिए जाँच करें","Detect Website Block":"वेबसाइट ब्लॉक डिटेक्ट करें","Blocked Content Search":"ब्लॉक्ड कंटेंट सर्च","Search for information about blocked websites and content":"ब्लॉक्ड वेबसाइट्स और कंटेंट के बारे में जानकारी खोजें","Search Blocked Content":"ब्लॉक्ड कंटेंट खोजें","IP Address Analysis":"आईपी एड्रेस एनेलिसिस","Analyze IP addresses to determine location and status":"स्थान और स्थिति निर्धारित करने के लिए आईपी एड्रेसें एनेलिस करें","Analyze IP Address":"आईपी एड्रेस एनेलिस करें","Domain Information":"डोमेन इन्फॉर्मेशन","Query domain DNS records and historical changes":"डोमेन डीएनएस रिकॉर्ड्स और ऐतिहासिक परिवर्तनों को क्वेरी करें","Query Domain Info":"डोमेन इन्फॉर्मेशन क्वेरी करें","Network Diagnosis":"नेटवर्क डायग्नोसिस","Diagnose network connection issues and measure speed":"नेटवर्क कनेक्शन के मसलों को निदान करें और गति मापें","Diagnose Network":"नेटवर्क डायग्नोसिस करें","Analysis Results":"एनेलिसिस परिणाम","How to Use SmartVPN Alert":"स्मार्टवीपन अलर्ट का उपयोग कैसे करें","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"इनस्टैंट एनेलिसिस के लिए सर्च बॉक्स में किसी भी यूआरएल, आईपी, डोमेन या कीवर्ड दाखिल करें","Feature Tools":"फीचर टूल्स","Use specific tools for detailed analysis of different network elements":"विभिन्न नेटवर्क एलीमेंट्स के विस्तृत एनेलिसिस के लिए विशिष्ट टूल्स का उपयोग करें","Review Results":"परिणामों की समीक्षा करें","Check detailed reports with security status and recommendations":"सुरक्षा स्थिति और सिफारिशों के साथ विस्तृत रिपोर्ट्स की जाँच करें","Take Action":"शासन लें","Use the insights to improve your network security and accessibility":"अपनी नेटवर्क सेक्युरिटी और अवलंब्यता को सुधारने के लिए अंतर्दृष्टि का उपयोग करें","Enter website URL to check for blocking:":"ब्लॉकिंग की जाँच के लिए वेबसाइट यूआरएल दाखिल करें:","Enter keyword to search for blocked content:":"ब्लॉक्ड कंटेंट के लिए खोज के लिए कीवर्ड दाखिल करें:","Enter IP address to analyze:":"एनेलिसिस के लिए आईपी एड्रेस दाखिल करें:","Enter domain to query:":"क्वेरी के लिए डोमेन दाखिल करें:","No issues detected":"कोई मसले नहीं पाए गए","Please enter a URL, IP address, domain, or keyword":"कृपया एक यूआरएल, आईपी एड्रेस, डोमेन या कीवर्ड दाखिल करें","Quick Website Analysis":"क्विक वेबसाइट एनेलिसिस","Quick IP Analysis":"क्विक आईपी एनेलिसिस","Quick Domain Analysis":"क्विक डोमेन एनेलिसिस","Quick Content Search":"क्विक कंटेंट खोज","Social Media Platform":"सोशल मीडिया प्लैटफॉर्म","Popular social networking site restricted in some regions":"कुछ क्षेत्रों में प्रसिद्ध सोशल नेटवर्किंग साइट निषिद्ध","News Website":"समाचार वेबसाइट","Independent news source covering restricted topics":"निषिद्ध विषयों को कवर करने वाला स्वतंत्र समाचार स्रोत","Streaming Service":"स्ट्रीमिंग सर्विस","Video streaming platform with restricted content":"निषिद्ध कंटेंट वाली वीडियो स्ट्रीमिंग प्लैटफॉर्म","New York, USA":"न्यूयॉर्क, यूएसए","London, UK":"लंदन, यूके","Tokyo, Japan":"टोक्यो, जापान","Sydney, Australia":"सिडनी, ऑस्ट्रेलिया","Toronto, Canada":"टोरंटो, कनाडा","Internet Service Provider A":"इंटरनेट सर्विस प्रोवाइडर ए","Global Communications Ltd":"ग्लोबल कम्यूनिकेशंस लिमिटेड","Network Solutions Inc":"नेटवर्क सॉल्यूशंस इंक","Connect Worldwide":"कनेक्ट वर्ल्डवाइड","__title__":"स्मार्टवीपन अलर्ट - नेटवर्क सेक्युरिटी एनेलिसिस टूल"},"id":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - Alat Analisis Keamanan Jaringan","SmartVPN Alert":"Pemberitahuan SmartVPN","Features":"Fitur","Help":"Bantuan","Network Security Analysis Tool":"Alat Analisis Keamanan Jaringan","Quick Analysis":"Analisis Cepat","Security Analysis Features":"Fitur Analisis Keamanan","Website Block Detection":"Deteksi Blok Situs Web","Check if a website is accessible or blocked in your region":"Periksa apakah situs web dapat diakses atau diblok di wilayah Anda","Detect Website Block":"Deteksi Blok Situs Web","Blocked Content Search":"Pencarian Konten Diblok","Search for information about blocked websites and content":"Cari informasi tentang situs web dan konten yang diblok","Search Blocked Content":"Cari Konten Diblok","IP Address Analysis":"Analisis Alamat IP","Analyze IP addresses to determine location and status":"Analisis alamat IP untuk menentukan lokasi dan status","Analyze IP Address":"Analisis Alamat IP","Domain Information":"Informasi Domain","Query domain DNS records and historical changes":"Pencarian rekam DNS domain dan perubahan sejarah","Query Domain Info":"Pencarian Informasi Domain","Network Diagnosis":"Diagnosa Jaringan","Diagnose network connection issues and measure speed":"Diagnosa masalah koneksi jaringan dan mengukur kecepatan","Diagnose Network":"Diagnosa Jaringan","Analysis Results":"Hasil Analisis","How to Use SmartVPN Alert":"Cara Menggunakan SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Masukkan URL, IP, domain, atau kata kunci apapun di kotak pencarian untuk analisis instan","Feature Tools":"Alat Fitur","Use specific tools for detailed analysis of different network elements":"Gunakan alat khusus untuk analisis detil elemen jaringan yang berbeda","Review Results":"Tinjau Hasil","Check detailed reports with security status and recommendations":"Periksa laporan detil dengan status keamanan dan rekomendasi","Take Action":"ambil tindakan","Use the insights to improve your network security and accessibility":"Gunakan wawasan untuk meningkatkan keamanan dan aksesibilitas jaringan Anda","Enter website URL to check for blocking:":"Masukkan URL situs web untuk periksa blok:","Enter keyword to search for blocked content:":"Masukkan kata kunci untuk mencari konten yang diblok:","Enter IP address to analyze:":"Masukkan alamat IP untuk analisis:","Enter domain to query:":"Masukkan domain untuk mencari:","No issues detected":"Tidak ada masalah yang terdeteksi","Please enter a URL, IP address, domain, or keyword":"Silakan masukkan URL, alamat IP, domain, atau kata kunci","Quick Website Analysis":"Analisis Situs Web Cepat","Quick IP Analysis":"Analisis IP Cepat","Quick Domain Analysis":"Analisis Domain Cepat","Quick Content Search":"Pencarian Konten Cepat","Social Media Platform":"Platform Media Sosial","Popular social networking site restricted in some regions":"Situs jejaring sosial populer yang dibatas di beberapa wilayah","News Website":"Situs Berita","Independent news source covering restricted topics":"Sumber berita independen yang menutupi topik yang dibatas","Streaming Service":"Layanan Streaming","Video streaming platform with restricted content":"Platform streaming video dengan konten yang dibatas","New York, USA":"New York, Amerika Serikat","London, UK":"London, Inggris","Tokyo, Japan":"Tokyo, Jepang","Sydney, Australia":"Sydney, Australia","Toronto, Canada":"Toronto, Kanada","Internet Service Provider A":"Pemberi Layanan Internet A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"SmartVPN Alert - Alat Analisis Keamanan Jaringan"},"vi":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - Công cụ phân tích an toàn mạng","SmartVPN Alert":"SmartVPN Alert","Features":"Tính năng","Help":"Trợ giúp","Network Security Analysis Tool":"Công cụ phân tích an toàn mạng","Quick Analysis":"Phân tích nhanh","Security Analysis Features":"Tính năng phân tích an toàn","Website Block Detection":"Phát hiện chặn trang web","Check if a website is accessible or blocked in your region":"Kiểm tra xem một trang web có thể truy cập hoặc bị chặn trong khu vực của bạn hay không","Detect Website Block":"Phát hiện chặn trang web","Blocked Content Search":"Tìm kiếm nội dung bị chặn","Search for information about blocked websites and content":"Tìm kiếm thông tin về các trang web và nội dung bị chặn","Search Blocked Content":"Tìm kiếm nội dung bị chặn","IP Address Analysis":"Phân tích địa chỉ IP","Analyze IP addresses to determine location and status":"Phân tích địa chỉ IP để xác định vị trí và trạng thái","Analyze IP Address":"Phân tích địa chỉ IP","Domain Information":"Thông tin tên miền","Query domain DNS records and historical changes":"Tra cứu bản ghi DNS và thay đổi lịch sử tên miền","Query Domain Info":"Tra cứu thông tin tên miền","Network Diagnosis":"Chẩn đoán mạng","Diagnose network connection issues and measure speed":"Chẩn đoán vấn đề kết nối mạng và đo tốc độ","Diagnose Network":"Chẩn đoán mạng","Analysis Results":"Kết quả phân tích","How to Use SmartVPN Alert":"Cách sử dụng SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"Nhập bất kỳ URL, IP, tên miền hoặc từ khóa nào vào ô tìm kiếm để phân tích tức thời","Feature Tools":"Công cụ tính năng","Use specific tools for detailed analysis of different network elements":"Sử dụng các công cụ cụ thể để phân tích chi tiết các yếu tố mạng khác nhau","Review Results":"Xem lại kết quả","Check detailed reports with security status and recommendations":"Kiểm tra báo cáo chi tiết với trạng thái bảo mật và các khuyến nghị","Take Action":"Thực hiện hành động","Use the insights to improve your network security and accessibility":"Sử dụng những thông tin để cải thiện bảo mật và khả năng truy cập mạng của bạn","Enter website URL to check for blocking:":"Nhập URL của trang web để kiểm tra chặn:","Enter keyword to search for blocked content:":"Nhập từ khóa để tìm kiếm nội dung bị chặn:","Enter IP address to analyze:":"Nhập địa chỉ IP để phân tích:","Enter domain to query:":"Nhập tên miền để tra cứu:","No issues detected":"Không phát hiện vấn đề","Please enter a URL, IP address, domain, or keyword":"Vui lòng nhập URL, địa chỉ IP, tên miền hoặc từ khóa","Quick Website Analysis":"Phân tích trang web nhanh","Quick IP Analysis":"Phân tích IP nhanh","Quick Domain Analysis":"Phân tích tên miền nhanh","Quick Content Search":"Tìm kiếm nội dung nhanh","Social Media Platform":" 平台 mạng xã hội","Popular social networking site restricted in some regions":"Trang mạng xã hội phổ biến bị hạn chế ở một số khu vực","News Website":"Trang tin tức","Independent news source covering restricted topics":"Nguồn tin tức độc lập bao gồm các chủ đề bị hạn chế","Streaming Service":"Dịch vụ phát trực tuyến","Video streaming platform with restricted content":" 平台 phát video trực tuyến với nội dung bị hạn chế","New York, USA":"New York, USA","London, UK":"London, UK","Tokyo, Japan":"Tokyo, Japan","Sydney, Australia":"Sydney, Australia","Toronto, Canada":"Toronto, Canada","Internet Service Provider A":"Nhà cung cấp dịch vụ Internet A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"SmartVPN Alert - Công cụ phân tích an toàn mạng"},"th":{"SmartVPN Alert - Network Security Analysis Tool":"SmartVPN Alert - โปรแกรมวิเคราะห์ความปลอดภัยเครือข่าย","SmartVPN Alert":"SmartVPN Alert","Features":"คุณสมบัติ","Help":"ช่วยเหลือ","Network Security Analysis Tool":"โปรแกรมวิเคราะห์ความปลอดภัยเครือข่าย","Quick Analysis":"วิเคราะห์รวดเร็ว","Security Analysis Features":"คุณสมบัติวิเคราะห์ความปลอดภัย","Website Block Detection":"การตรวจจับการบล็อคเว็บไซต์","Check if a website is accessible or blocked in your region":"ตรวจสอบว่าเว็บไซต์สามารถเข้าถึงหรือถูกบล็อคในพื้นที่ของคุณ","Detect Website Block":"ตรวจจับการบล็อคเว็บไซต์","Blocked Content Search":"การค้นหาเนื้อหาที่ถูกบล็อค","Search for information about blocked websites and content":"ค้นหาข้อมูลเกี่ยวกับเว็บไซต์และเนื้อหาที่ถูกบล็อค","Search Blocked Content":"ค้นหาเนื้อหาที่ถูกบล็อค","IP Address Analysis":"วิเคราะห์ที่อยู่ IP","Analyze IP addresses to determine location and status":"วิเคราะห์ที่อยู่ IP ในการตัดสินสถานที่และสถานะ","Analyze IP Address":"วิเคราะห์ที่อยู่ IP","Domain Information":"ข้อมูลโดเมน","Query domain DNS records and historical changes":"ค้นหาบันทึก DNS และการเปลี่ยนแปลงประวัติของโดเมน","Query Domain Info":"ค้นหาข้อมูลโดเมน","Network Diagnosis":"การวินิจฉัยเครือข่าย","Diagnose network connection issues and measure speed":"วินิจฉัยปัญหาการเชื่อมต่อเครือข่ายและวัดความเร็ว","Diagnose Network":"วินิจฉัยเครือข่าย","Analysis Results":"ผลการวิเคราะห์","How to Use SmartVPN Alert":"วิธีการใช้ SmartVPN Alert","Enter any URL, IP, domain, or keyword in the search box for instant analysis":"ใส่ URL, IP, โดเมน หรือคำกำหนดในช่องค้นหาเพื่อวิเคราะห์ทันที","Feature Tools":"เครื่องมือคุณสมบัติ","Use specific tools for detailed analysis of different network elements":"ใช้เครื่องมือเฉพาะสำหรับการวิเคราะห์ละเอียดขององค์ประกอบเครือข่ายต่าง ๆ","Review Results":"ตรวจสอบผลการวิเคราะห์","Check detailed reports with security status and recommendations":"ตรวจสอบรายงานละเอียดรวมสถานะความปลอดภัยและข้อแนะนำ","Take Action":"ดำเนินการ","Use the insights to improve your network security and accessibility":"ใช้ความเข้าใจเพื่อปรับปรุงความปลอดภัยและความเข้าถึงเครือข่ายของคุณ","Enter website URL to check for blocking:":"ใส่ URL เว็บไซต์เพื่อตรวจสอบการบล็อค:","Enter keyword to search for blocked content:":"ใส่คำกำหนดเพื่อค้นหาเนื้อหาที่ถูกบล็อค:","Enter IP address to analyze:":"ใส่ที่อยู่ IP ในการวิเคราะห์:","Enter domain to query:":"ใส่โดเมนเพื่อค้นหา:","No issues detected":"ไม่มีปัญหาที่ตรวจพบ","Please enter a URL, IP address, domain, or keyword":"กรุณาใส่ URL, ที่อยู่ IP, โดเมน หรือคำกำหนด","Quick Website Analysis":"วิเคราะห์เว็บไซต์รวดเร็ว","Quick IP Analysis":"วิเคราะห์ IP รวดเร็ว","Quick Domain Analysis":"วิเคราะห์โดเมนรวดเร็ว","Quick Content Search":"การค้นหาเนื้อหารวดเร็ว","Social Media Platform":"แพลตฟอร์มสื่อสังคม","Popular social networking site restricted in some regions":"เว็บไซต์สื่อสังคมที่ถูกจำกัดในบางพื้นที่","News Website":"เว็บไซต์ข่าว","Independent news source covering restricted topics":"แหล่งข่าวอิสระที่เข้าครอบคลุมหัวข้อที่ถูกจำกัด","Streaming Service":"บริการสตรีมิ่ง","Video streaming platform with restricted content":"แพลตฟอร์มสตรีมิ่งวิดีโอที่มีเนื้อหาที่ถูกจำกัด","New York, USA":"นิวยอร์ก สหรัฐอเมริกา","London, UK":"ลอนดอน สหราชอาณาจักร","Tokyo, Japan":"โตเกียว ญี่ปุ่น","Sydney, Australia":"ซิดนีย์ ออสเตรเลีย","Toronto, Canada":"โทรอนโต แคนาดา","Internet Service Provider A":"บริษัทให้บริการอินเทอร์เน็ต A","Global Communications Ltd":"Global Communications Ltd","Network Solutions Inc":"Network Solutions Inc","Connect Worldwide":"Connect Worldwide","__title__":"SmartVPN Alert - โปรแกรมวิเคราะห์ความปลอดภัยเครือข่าย"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
