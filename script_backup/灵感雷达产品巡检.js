@@ -745,7 +745,23 @@ function functionalTest(name) {
     if (res.errs && res.errs.length) out.push("功能实测：点击交互触发 JS 报错 " + res.errs.length + " 处，例如「" + String(res.errs[0]).slice(0, 100) + "」");
     if (res.fatal) out.push("功能实测：页面/实测器异常（" + String(res.fatal).slice(0, 100) + "）");
     if (res.timeout) out.push("功能实测：页面 25 秒内未完成点击响应（卡死或驱动失败，卡在 " + (res.step || "?") + "）");
-    log("功能实测 [" + pick + "]：按钮 " + (res.buttons || 0) + " 个，点击 " + (res.clicked || 0) + " 个，报错 " + ((res.errs && res.errs.length) || 0) + " 处" + (out.length ? " ⚠️" : " ✓"));
+    // 【2026-10-03 新增维度】「点了没反应 / 只弹个提示」在旧版实测器里完全不可见 —— 它们都不抛异常。
+    // 这正是用户反复反馈的「按钮点了没触发该有的功能，却显示 0 报错」：实测器当时只验「会不会崩」，
+    // 没验「点了有没有用」。现在按 无效果按钮占比 判定：≥ 一半即认定「整站按钮多为安慰剂」。
+    let dead = (res.noeffect || []).length + (res.alertonly || []).length;
+    let clickedN = res.clicked || 0;
+    if (clickedN > 0 && dead >= Math.max(2, Math.ceil(clickedN / 2))) {
+        let d1 = (res.alertonly || []).slice(0, 4).join("、");
+        let d2 = (res.noeffect || []).slice(0, 4).join("、");
+        out.push("功能实测：" + dead + "/" + clickedN + " 个按钮点了没有任何实际效果"
+            + (d1 ? "（只弹提示：" + d1 + "）" : "")
+            + (d2 ? "（点了没反应：" + d2 + "）" : "")
+            + " —— 疑似占位/假功能，必须改成真能干活或直接删掉");
+    }
+    if (res.alerts && res.alerts.length) {
+        log("功能实测 [" + pick + "]：点击中弹出的内容 → " + res.alerts.join(" ／ ").slice(0, 200));
+    }
+    log("功能实测 [" + pick + "]：按钮 " + (res.buttons || 0) + " 个，点击 " + (res.clicked || 0) + " 个，报错 " + ((res.errs && res.errs.length) || 0) + " 处，点了没效果 " + dead + " 个" + (out.length ? " ⚠️" : " ✓"));
     return out;
 }
 
