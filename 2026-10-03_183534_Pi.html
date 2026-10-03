@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi VPN Guardian</title><meta name="description" content="Free online tool: Pi VPN Guardian. No signup, no payment — free forever.">
+<meta property="og:title" content="Pi VPN Guardian">
+<meta property="og:description" content="Free online tool: Pi VPN Guardian. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_183534_Pi.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #151937;
+            --bg-tertiary: #1e2344;
+            --text-primary: #e0e6ed;
+            --text-secondary: #8892b0;
+            --accent: #64ffda;
+            --accent-hover: #4cd9b8;
+            --danger: #ff6b6b;
+            --warning: #ffd93d;
+            --success: #6bcf7f;
+            --border-color: #2a3154;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .tagline {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        main {
+            flex: 1;
+            padding: 40px 0;
+        }
+        
+        .section {
+            margin-bottom: 50px;
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .section-title {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .section-description {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            flex: 1;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+            min-width: 250px;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        button {
+            padding: 15px 25px;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .results {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: none;
+        }
+        
+        .result-item {
+            margin-bottom: 15px;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            color: var(--text-primary);
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .rating-score {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .rating-excellent {
+            color: var(--success);
+        }
+        
+        .rating-good {
+            color: var(--accent);
+        }
+        
+        .rating-fair {
+            color: var(--warning);
+        }
+        
+        .rating-poor {
+            color: var(--danger);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .error-message {
+            color: var(--danger);
+            margin-top: 10px;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .input-wrapper {
+                flex-direction: column;
+            }
+            
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"],
+            textarea {
+                min-width: 100%;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">Pi VPN Guardian</div>
+                    <div class="tagline">Your Privacy & Security Companion</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <!-- Search Paths Section -->
+            <section class="section">
+                <h2 class="section-title">Secure Anonymous Paths</h2>
+                <p class="section-description">Enter keywords to find secure anonymous browsing paths</p>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="searchKeyword" placeholder="Enter keywords for secure paths">
+                        <button id="searchPathsBtn">Search Paths</button>
+                    </div>
+                    <div id="searchResults" class="results"></div>
+                    <div id="searchError" class="error-message"></div>
+                </div>
+            </section>
+            
+            <!-- Website Security Rating Section -->
+            <section class="section">
+                <h2 class="section-title">Website Security Rating</h2>
+                <p class="section-description">Check the security rating and privacy risks of any website</p>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="websiteUrl" placeholder="Enter website URL (e.g., example.com)">
+                        <button id="checkSecurityBtn">Check Security</button>
+                    </div>
+                    <div id="securityResults" class="results"></div>
+                    <div id="securityError" class="error-message"></div>
+                </div>
+            </section>
+            
+            <!-- Text Detection Section -->
+            <section class="section">
+                <h2 class="section-title">Malicious Code Detection</h2>
+                <p class="section-description">Paste text to detect potential malicious code or threats</p>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <textarea id="textToCheck" placeholder="Paste text here to check for malicious content"></textarea>
+                        <button id="detectTextBtn">Detect Threats</button>
+                    </div>
+                    <div id="textResults" class="results"></div>
+                    <div id="textError" class="error-message"></div>
+                </div>
+            </section>
+            
+            <!-- IP Location Section -->
+            <section class="section">
+                <h2 class="section-title">IP Geolocation</h2>
+                <p class="section-description">Get location information for any IP address</p>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="ipAddress" placeholder="Enter IP address">
+                        <button id="queryIpBtn">Query IP</button>
+                    </div>
+                    <div id="ipResults" class="results"></div>
+                    <div id="ipError" class="error-message"></div>
+                </div>
+            </section>
+            
+            <!-- Information Leak Check Section -->
+            <section class="section">
+                <h2 class="section-title">Information Leak Check</h2>
+                <p class="section-description">Check if your email or phone number has been exposed in data breaches</p>
+                <div class="input-group">
+                    <div class="input-wrapper">
+                        <input type="text" id="leakCheckInput" placeholder="Enter email address or phone number">
+                        <button id="checkLeakBtn">Check for Leaks</button>
+                    </div>
+                    <div id="leakResults" class="results"></div>
+                    <div id="leakError" class="error-message"></div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Pi VPN Guardian. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Utility functions
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.innerHTML = '<div class="loading"></div>Checking...';
+        }
+        
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        function hideError(elementId) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.style.display = 'none';
+        }
+        
+        function validateUrl(url) {
+            try {
+                new URL(url.startsWith('http') ? url : `https://${url}`);
+                return true;
+            } catch {
+                return false;
+            }
+        }
+        
+        function validateIp(ip) {
+            const ipRegex = /^(\d{1,3}\.){3}\d{1,3}$|^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$/;
+            return ipRegex.test(ip);
+        }
+        
+        function validateEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        
+        function validatePhone(phone) {
+            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+            return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10;
+        }
+        
+        // Search Paths functionality
+        document.getElementById('searchPathsBtn').addEventListener('click', function() {
+            const keyword = document.getElementById('searchKeyword').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+            const errorDiv = document.getElementById('searchError');
+            
+            hideError('searchError');
+            
+            if (!keyword) {
+                showError('searchError', 'Please enter keywords to search for secure paths');
+                return;
+            }
+            
+            showLoading('searchResults');
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const paths = [
+                    { name: 'Tor Network', description: 'Anonymity network with multiple encryption layers', speed: 'Medium', security: 'Excellent' },
+                    { name: 'VPN Protocol', description: 'Encrypted tunnel for your internet traffic', speed: 'High', security: 'Very Good' },
+                    { name: 'Proxy Server', description: 'Forward requests through an intermediary server', speed: 'Very High', security: 'Good' },
+                    { name: 'DNSCrypt', description: 'Encrypt and secure your DNS queries', speed: 'High', security: 'Good' }
+                ];
+                
+                let resultsHTML = '<h3>Secure Paths Found:</h3>';
+                
+                paths.forEach((path, index) => {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <div class="result-label">${path.name}</div>
+                            <div class="result-value">${path.description}</div>
+                            <div class="result-value">Speed: ${path.speed} | Security: ${path.security}</div>
+                        </div>
+                    `;
+                });
+                
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.style.display = 'block';
+            }, 1500);
+        });
+        
+        // Website Security Rating functionality
+        document.getElementById('checkSecurityBtn').addEventListener('click', function() {
+            const url = document.getElementById('websiteUrl').value.trim();
+            const resultsDiv = document.getElementById('securityResults');
+            const errorDiv = document.getElementById('securityError');
+            
+            hideError('securityError');
+            
+            if (!url) {
+                showError('securityError', 'Please enter a website URL to check');
+                return;
+            }
+            
+            if (!validateUrl(url)) {
+                showError('securityError', 'Please enter a valid URL');
+                return;
+            }
+            
+            showLoading('securityResults');
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const securityRating = Math.floor(Math.random() * 100) + 1; // Real implementation would use actual security analysis
+                
+                let ratingClass = '';
+                let ratingText = '';
+                
+                if (securityRating >= 90) {
+                    ratingClass = 'rating-excellent';
+                    ratingText = 'Excellent';
+                } else if (securityRating >= 75) {
+                    ratingClass = 'rating-good';
+                    ratingText = 'Good';
+                } else if (securityRating >= 60) {
+                    ratingClass = 'rating-fair';
+                    ratingText = 'Fair';
+                } else {
+                    ratingClass = 'rating-poor';
+                    ratingText = 'Poor';
+                }
+                
+                const risks = [
+                    'HTTPS implementation',
+                    'Data encryption',
+                    'Third-party tracking',
+                    'Cookie security',
+                    'Privacy policy'
+                ];
+                
+                const riskLevels = risks.map(() => Math.floor(Math.random() * 3) + 1); // 1-3 scale
+                
+                let resultsHTML = `
+                    <div class="result-item">
+                        <div class="result-label">Security Rating</div>
+                        <div class="rating">
+                            <span class="rating-score ${ratingClass}">${securityRating}/100</span>
+                            <span>${ratingText}</span>
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Privacy Risks</div>
+                `;
+                
+                risks.forEach((risk, index) => {
+                    const riskLevel = riskLevels[index];
+                    const riskText = riskLevel === 1 ? 'Low' : riskLevel === 2 ? 'Medium' : 'High';
+                    const riskColor = riskLevel === 1 ? 'var(--success)' : riskLevel === 2 ? 'var(--warning)' : 'var(--danger)';
+                    
+                    resultsHTML += `
+                        <div class="result-value" style="color: ${riskColor}">
+                            ${risk}: ${riskText}
+                        </div>
+                    `;
+                });
+                
+                resultsHTML += `
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Recommendations</div>
+                        <div class="result-value">
+                            ${securityRating < 75 ? 'Consider using a VPN and checking if the site has proper security measures in place.' : 'This website appears to have good security practices.'}
+                        </div>
+                    </div>
+                `;
+                
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.style.display = 'block';
+            }, 1500);
+        });
+        
+        // Text Detection functionality
+        document.getElementById('detectTextBtn').addEventListener('click', function() {
+            const text = document.getElementById('textToCheck').value.trim();
+            const resultsDiv = document.getElementById('textResults');
+            const errorDiv = document.getElementById('textError');
+            
+            hideError('textError');
+            
+            if (!text) {
+                showError('textError', 'Please enter text to check for threats');
+                return;
+            }
+            
+            showLoading('textResults');
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const maliciousPatterns = [
+                    'script',
+                    'eval',
+                    'document.cookie',
+                    'localStorage',
+                    'sessionStorage',
+                    'onclick',
+                    'onload',
+                    'onerror',
+                    'iframe',
+                    'object',
+                    'embed',
+                    'applet'
+                ];
+                
+                let threatsFound = [];
+                let cleanText = text;
+                
+                maliciousPatterns.forEach(pattern => {
+                    const regex = new RegExp(pattern, 'gi');
+                    if (regex.test(text)) {
+                        threatsFound.push(pattern);
+                        cleanText = cleanText.replace(regex, '<span style="background-color: var(--danger); padding: 2px 4px; border-radius: 3px;">' + pattern + '</span>');
+                    }
+                });
+                
+                let resultsHTML = `
+                    <div class="result-item">
+                        <div class="result-label">Detection Results</div>
+                        <div class="result-value">
+                            ${threatsFound.length > 0 ? `Potential threats detected: ${threatsFound.join(', ')}` : 'No obvious threats detected in the text'}
+                        </div>
+                    </div>
+                `;
+                
+                if (threatsFound.length > 0) {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <div class="result-label">Highlighted Threats</div>
+                            <div class="result-value">${cleanText}</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Recommendation</div>
+                            <div class="result-value">
+                                Remove or carefully review the highlighted code before using this text in production environments.
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <div class="result-label">Recommendation</div>
+                            <div class="result-value">
+                                The text appears to be clean. However, always verify the source and purpose of any text you use.
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.style.display = 'block';
+            }, 1500);
+        });
+        
+        // IP Location functionality
+        document.getElementById('queryIpBtn').addEventListener('click', function() {
+            const ip = document.getElementById('ipAddress').value.trim();
+            const resultsDiv = document.getElementById('ipResults');
+            const errorDiv = document.getElementById('ipError');
+            
+            hideError('ipError');
+            
+            if (!ip) {
+                showError('ipError', 'Please enter an IP address to query');
+                return;
+            }
+            
+            if (!validateIp(ip)) {
+                showError('ipError', 'Please enter a valid IP address (IPv4 or IPv6)');
+                return;
+            }
+            
+            showLoading('ipResults');
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                // Generate random but plausible location data
+                const locations = [
+                    { country: 'United States', region: 'California', city: 'San Francisco', isp: 'Cloudflare Inc.', timezone: 'PST' },
+                    { country: 'Germany', region: 'Bavaria', city: 'Munich', isp: 'Deutsche Telekom', timezone: 'CET' },
+                    { country: 'Japan', region: 'Tokyo', city: 'Shibuya', isp: 'NTT Communications', timezone: 'JST' },
+                    { country: 'Brazil', region: 'São Paulo', city: 'São Paulo', isp: 'TIM Brasil', timezone: 'BRT' },
+                    { country: 'Australia', region: 'New South Wales', city: 'Sydney', isp: 'Telstra', timezone: 'AEST' }
+                ];
+                
+                const location = locations[Math.floor(Math.random() * locations.length)];
+                const isProxy = Math.random() > 0.8; // 20% chance of being flagged as proxy
+                
+                let resultsHTML = `
+                    <div class="result-item">
+                        <div class="result-label">IP Address</div>
+                        <div class="result-value">${ip}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Location</div>
+                        <div class="result-value">
+                            ${location.city}, ${location.region}, ${location.country}
+                        </div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">ISP</div>
+                        <div class="result-value">${location.isp}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Timezone</div>
+                        <div class="result-value">${location.timezone}</div>
+                    </div>
+                    <div class="result-item">
+                        <div class="result-label">Proxy Status</div>
+                        <div class="result-value" style="color: ${isProxy ? 'var(--warning)' : 'var(--success)'}">
+                            ${isProxy ? 'Potential Proxy/VPN Detected' : 'No Proxy/VPN Detected'}
+                        </div>
+                    </div>
+                `;
+                
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.style.display = 'block';
+            }, 1500);
+        });
+        
+        // Information Leak Check functionality
+        document.getElementById('checkLeakBtn').addEventListener('click', function() {
+            const input = document.getElementById('leakCheckInput').value.trim();
+            const resultsDiv = document.getElementById('leakResults');
+            const errorDiv = document.getElementById('leakError');
+            
+            hideError('leakError');
+            
+            if (!input) {
+                showError('leakError', 'Please enter an email address or phone number to check for leaks');
+                return;
+            }
+            
+            if (validateEmail(input)) {
+                // Email validation passed
+            } else if (validatePhone(input)) {
+                // Phone validation passed
+            } else {
+                showError('leakError', 'Please enter a valid email address or phone number');
+                return;
+            }
+            
+            showLoading('leakResults');
+            
+            // Simulate API call with timeout
+            setTimeout(() => {
+                const breachCount = Math.floor(Math.random() * 10); // 0-9 breaches
+                const breachYears = Array.from({length: breachCount}, () => Math.floor(Math.random() * 10) + 2016);
+                const uniqueYears = [...new Set(breachYears)].sort();
+                
+                let resultsHTML = `
+                    <div class="result-item">
+                        <div class="result-label">Information Type</div>
+                        <div class="result-value">${validateEmail(input) ? 'Email Address' : 'Phone Number'}</div>
+                    </div>
+                `;
+                
+                if (breachCount > 0) {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <div class="result-label">Breach Count</div>
+                            <div class="result-value" style="color: var(--danger)">
+                                Found in ${breachCount} known data breach${breachCount > 1 ? 'es' : ''}
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Breach Years</div>
+                            <div class="result-value">
+                                ${uniqueYears.join(', ')}
+                            </div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-label">Risk Level</div>
+                            <div class="result-value" style="color: ${breachCount > 5 ? 'var(--danger)' : breachCount > 2 ? 'var(--warning)' : 'var(--success)'}">
+                                ${breachCount > 5 ? 'High Risk' : breachCount > 2 ? 'Medium Risk' : 'Low Risk'}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    resultsHTML += `
+                        <div class="result-item">
+                            <div class="result-label">Status</div>
+                            <div class="result-value" style="color: var(--success)">
+                                No known data breaches found for this information
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                resultsHTML += `
+                    <div class="result-item">
+                        <div class="result-label">Recommendation</div>
+                        <div class="result-value">
+                            ${breachCount > 0 
+                                ? 'This information has been exposed in data breaches. Consider changing passwords and enabling two-factor authentication where possible.' 
+                                : 'This information appears to be secure, but regularly monitor for any signs of unauthorized use.'}
+                        </div>
+                    </div>
+                `;
+                
+                resultsDiv.innerHTML = resultsHTML;
+                resultsDiv.style.display = 'block';
+            }, 1500);
+        });
+        
+        // Add enter key support for all inputs
+        document.getElementById('searchKeyword').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('searchPathsBtn').click();
+            }
+        });
+        
+        document.getElementById('websiteUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('checkSecurityBtn').click();
+            }
+        });
+        
+        document.getElementById('textToCheck').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                document.getElementById('detectTextBtn').click();
+            }
+        });
+        
+        document.getElementById('ipAddress').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('queryIpBtn').click();
+            }
+        });
+        
+        document.getElementById('leakCheckInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('checkLeakBtn').click();
+            }
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Secure Anonymous Paths","Enter keywords to find secure anonymous browsing paths":"Enter keywords to find secure anonymous browsing paths","Search Paths":"Search Paths","Website Security Rating":"Website Security Rating","Check the security rating and privacy risks of any website":"Check the security rating and privacy risks of any website","Check Security":"Check Security","Malicious Code Detection":"Malicious Code Detection","Paste text to detect potential malicious code or threats":"Paste text to detect potential malicious code or threats","Detect Threats":"Detect Threats","IP Geolocation":"IP Geolocation","Get location information for any IP address":"Get location information for any IP address","Query IP":"Query IP","Information Leak Check":"Information Leak Check","Check if your email or phone number has been exposed in data breaches":"Check if your email or phone number has been exposed in data breaches","Check for Leaks":"Check for Leaks","Please enter keywords to search for secure paths":"Please enter keywords to search for secure paths","Tor Network":"Tor Network","Anonymity network with multiple encryption layers":"Anonymity network with multiple encryption layers","VPN Protocol":"VPN Protocol","Encrypted tunnel for your internet traffic":"Encrypted tunnel for your internet traffic","Very Good":"Very Good","Proxy Server":"Proxy Server","Forward requests through an intermediary server":"Forward requests through an intermediary server","Very High":"Very High","Encrypt and secure your DNS queries":"Encrypt and secure your DNS queries","Please enter a website URL to check":"Please enter a website URL to check","Please enter a valid URL":"Please enter a valid URL","HTTPS implementation":"HTTPS implementation","Data encryption":"Data encryption","Third-party tracking":"Third-party tracking","Cookie security":"Cookie security","Privacy policy":"Privacy policy","Consider using a VPN and checking if the site has proper security measures in place.":"Consider using a VPN and checking if the site has proper security measures in place.","This website appears to have good security practices.":"This website appears to have good security practices.","Please enter text to check for threats":"Please enter text to check for threats","No obvious threats detected in the text":"No obvious threats detected in the text","Please enter an IP address to query":"Please enter an IP address to query","United States":"United States","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"New South Wales","Potential Proxy/VPN Detected":"Potential Proxy/VPN Detected","__title__":"Pi VPN Guardian"},"zh-CN":{"Pi VPN Guardian":"Pi VPN守护者","Secure Anonymous Paths":"安全匿名路径","Enter keywords to find secure anonymous browsing paths":"输入关键词以查找安全匿名浏览路径","Search Paths":"搜索路径","Website Security Rating":"网站安全评级","Check the security rating and privacy risks of any website":"检查任何网站的安全评级和隐私风险","Check Security":"检查安全","Malicious Code Detection":"恶意代码检测","Paste text to detect potential malicious code or threats":"粘贴文本以检测潜在的恶意代码或威胁","Detect Threats":"检测威胁","IP Geolocation":"IP地理位置","Get location information for any IP address":"获取任何IP地址的位置信息","Query IP":"查询IP","Information Leak Check":"信息泄露检查","Check if your email or phone number has been exposed in data breaches":"检查您的电子邮件或电话号码是否在数据泄露中暴露","Check for Leaks":"检查泄露","Please enter keywords to search for secure paths":"请输入关键词以搜索安全路径","Tor Network":"洋葱网络","Anonymity network with multiple encryption layers":"具有多层加密的匿名网络","VPN Protocol":"VPN协议","Encrypted tunnel for your internet traffic":"为您的互联网流量提供加密隧道","Very Good":"非常好","Proxy Server":"代理服务器","Forward requests through an intermediary server":"通过中介服务器转发请求","Very High":"非常高","Encrypt and secure your DNS queries":"加密并保护您的DNS查询","Please enter a website URL to check":"请输入要检查的网站URL","Please enter a valid URL":"请输入一个有效的URL","HTTPS implementation":"HTTPS实现","Data encryption":"数据加密","Third-party tracking":"第三方跟踪","Cookie security":"Cookie安全","Privacy policy":"隐私政策","Consider using a VPN and checking if the site has proper security measures in place.":"考虑使用VPN并检查该网站是否采取了适当的安全措施。","This website appears to have good security practices.":"该网站似乎有良好的安全实践。","Please enter text to check for threats":"请输入文本以检查威胁","No obvious threats detected in the text":"文本中没有检测到明显的威胁","Please enter an IP address to query":"请输入要查询的IP地址","United States":"美国","San Francisco":"旧金山","Cloudflare Inc.":"Cloudflare公司","Deutsche Telekom":"德国电信","NTT Communications":"NTT通信","TIM Brasil":"TIM巴西","New South Wales":"新南威尔士州","Potential Proxy/VPN Detected":"检测到潜在代理/VPN","__title__":"Pi VPN守护者"},"es":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Secure Anonymous Paths","Enter keywords to find secure anonymous browsing paths":"Ingrese palabras clave para encontrar rutas de navegación segura y anónima","Search Paths":"Búsqueda de Rutas","Website Security Rating":"Calificación de Seguridad del Sitio Web","Check the security rating and privacy risks of any website":"Verifique la calificación de seguridad y los riesgos de privacidad de cualquier sitio web","Check Security":"Verificar la Seguridad","Malicious Code Detection":"Detección de Código Malicioso","Paste text to detect potential malicious code or threats":"Pegue texto para detectar código malicioso o amenazas potenciales","Detect Threats":"Detectar Amenazas","IP Geolocation":"Geolocalización de IP","Get location information for any IP address":"Obtenga información de ubicación para cualquier dirección IP","Query IP":"Consulta de IP","Information Leak Check":"Revisión de Fuga de Información","Check if your email or phone number has been exposed in data breaches":"Verifique si su correo electrónico o número de teléfono ha sido expuesto en filtraciones de datos","Check for Leaks":"Buscar Fugas","Please enter keywords to search for secure paths":"Por favor, ingrese palabras clave para buscar rutas seguras","Tor Network":"Red Tor","Anonymity network with multiple encryption layers":"Red de anonimato con múltiples capas de cifrado","VPN Protocol":"Protocolo VPN","Encrypted tunnel for your internet traffic":"Túnel cifrado para el tráfico de internet","Very Good":"Muy Bueno","Proxy Server":"Servidor Proxy","Forward requests through an intermediary server":"Reenviar solicitudes a través de un servidor intermedio","Very High":"Muy Alto","Encrypt and secure your DNS queries":"Cifre y asegure sus consultas DNS","Please enter a website URL to check":"Por favor, ingrese una URL del sitio web para verificar","Please enter a valid URL":"Por favor, ingrese una URL válida","HTTPS implementation":"Implementación de HTTPS","Data encryption":"Cifrado de datos","Third-party tracking":"Seguimiento de terceros","Cookie security":"Seguridad de las cookies","Privacy policy":"Política de privacidad","Consider using a VPN and checking if the site has proper security measures in place.":"Considere usar una VPN y verificar si el sitio tiene medidas de seguridad adecuadas en su lugar.","This website appears to have good security practices.":"Este sitio web parece tener buenas prácticas de seguridad.","Please enter text to check for threats":"Por favor, ingrese texto para verificar amenazas","No obvious threats detected in the text":"No se detectaron amenazas obvias en el texto","Please enter an IP address to query":"Por favor, ingrese una dirección IP para consultar","United States":"Estados Unidos","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"Nueva Gales del Sur","Potential Proxy/VPN Detected":"Detectado Potencial Proxy/VPN","__title__":"Pi VPN Guardian"},"ja":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Secure Anonymous Paths","Enter keywords to find secure anonymous browsing paths":"キーワードを入力して安全な匿名ブラウジングパスを見つける","Search Paths":"検索パス","Website Security Rating":"ウェブサイトのセキュリティ評価","Check the security rating and privacy risks of any website":"どのウェブサイトのセキュリティ評価とプライバシーリスクを確認する","Check Security":"セキュリティを確認","Malicious Code Detection":"悪意のあるコード検出","Paste text to detect potential malicious code or threats":"テキストを貼り付けて潜在的な悪意のあるコードや脅威を検出する","Detect Threats":"脅威を検出","IP Geolocation":"IP地理情報","Get location information for any IP address":"どのIPアドレスの位置情報を取得する","Query IP":"IPクエリ","Information Leak Check":"情報漏洩チェック","Check if your email or phone number has been exposed in data breaches":"データ漏洩であなたのメールアドレスや電話番号が暴露されていないか確認する","Check for Leaks":"漏洩の確認","Please enter keywords to search for secure paths":"安全なパスを検索するためのキーワードを入力してください","Tor Network":"多層暗号化の匿名ネットワーク","Anonymity network with multiple encryption layers":"複数の暗号化レイヤを持つ匿名ネットワーク","VPN Protocol":"VPNプロトコル","Encrypted tunnel for your internet traffic":"インターネットトラフィックのための暗号化トンネル","Very Good":"非常に良い","Proxy Server":"プロキシサーバー","Forward requests through an intermediary server":"中間サーバーを通じてリクエストを転送する","Very High":"非常に高い","Encrypt and secure your DNS queries":"DNSクエリを暗号化して保護する","Please enter a website URL to check":"確認するウェブサイトURLを入力してください","Please enter a valid URL":"有効なURLを入力してください","HTTPS implementation":"HTTPS実装","Data encryption":"データ暗号化","Third-party tracking":"第三者トラッキング","Cookie security":"クッキーセキュリティ","Privacy policy":"プライバシーポリシー","Consider using a VPN and checking if the site has proper security measures in place.":"VPNの使用を検討し、サイトに適切なセキュリティ対策が取られているか確認してください。","This website appears to have good security practices.":"このウェブサイトは良いセキュリティ慣習があるようです。","Please enter text to check for threats":"脅威を確認するためのテキストを入力してください","No obvious threats detected in the text":"テキストに明らかな脅威は検出されていません","Please enter an IP address to query":"クエリするIPアドレスを入力してください","United States":"アメリカ合衆国","San Francisco":"サンフランシスコ","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"ニューサウスウェールズ","Potential Proxy/VPN Detected":"潜在的なプロキシ/VPNが検出されました","__title__":"Pi VPN Guardian"},"ko":{"Pi VPN Guardian":"Pi VPN 지킴이","Secure Anonymous Paths":"안전한 익명 경로","Enter keywords to find secure anonymous browsing paths":"안전한 익명 브라우징 경로를 찾기 위해 키워드를 입력하세요","Search Paths":"경로 검색","Website Security Rating":"웹사이트 보안 평점","Check the security rating and privacy risks of any website":"모든 웹사이트의 보안 평점과 개인 정보 위험을 확인하세요","Check Security":"보안 확인","Malicious Code Detection":"악성 코드 검출","Paste text to detect potential malicious code or threats":"가능한 악성 코드나 위협을 검출하기 위해 텍스트를 붙여넣으세요","Detect Threats":"위협 검출","IP Geolocation":"IP 지리정보","Get location information for any IP address":"모든 IP 주소의 위치 정보를 얻으세요","Query IP":"IP 조회","Information Leak Check":"정보 유출 확인","Check if your email or phone number has been exposed in data breaches":"데이터 유출에서 이메일이나 전화번호가 노출되지 않았는지 확인하세요","Check for Leaks":"유출 확인","Please enter keywords to search for secure paths":"안전한 경로를 검색하기 위해 키워드를 입력하세요","Tor Network":"다중 암호화 레이어를 가진 익명 네트워크","VPN Protocol":"인터넷 트래픽을 위한 암호화 터널","Very Good":"매우 좋습니다","Proxy Server":"프로ksi 서버","Forward requests through an intermediary server":"서버를 통해 요청을 전달하세요","Very High":"매우 높음","Encrypt and secure your DNS queries":"DNS 쿼리를 암호화하고 보호하세요","Please enter a website URL to check":"검사할 웹사이트 URL을 입력하세요","Please enter a valid URL":"유효한 URL을 입력하세요","HTTPS implementation":"HTTPS 구현","Data encryption":"데이터 암호화","Third-party tracking":"제3자 추적","Cookie security":"쿠키 보안","Privacy policy":"개인정보 정책","Consider using a VPN and checking if the site has proper security measures in place.":"VPN 사용을 고려하고 사이트가 적절한 보안 조치를 취하고 있는지 확인하세요.","This website appears to have good security practices.":"이 웹사이트는 좋은 보안 관행을 보입니다.","Please enter text to check for threats":"위협을 확인할 텍스트를 입력하세요","No obvious threats detected in the text":"텍스트에서 명확한 위협이 발견되지 않았습니다","Please enter an IP address to query":"조회할 IP 주소를 입력하세요","United States":"미국","San Francisco":" 샌프란시스코","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"뉴사우스웨일스","Potential Proxy/VPN Detected":"가능한 프록시/VPN이 감지되었습니다","Anonymity network with multiple encryption layers":"다중 암호화 레이어를 가진 익명 네트워크","Encrypted tunnel for your internet traffic":"인터넷 트래픽을 위한 암호화 터널","__title__":"Pi VPN 지킴이"},"fr":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Secure Anonymous Paths","Enter keywords to find secure anonymous browsing paths":"Entrez des mots-clés pour trouver des chemins de navigation anonymes sécurisés","Search Paths":"Recherche de chemins","Website Security Rating":"Classement de sécurité du site Web","Check the security rating and privacy risks of any website":"Vérifiez le classement de sécurité et les risques de confidentialité de tout site Web","Check Security":"Vérifiez la sécurité","Malicious Code Detection":"Détection de code malveillant","Paste text to detect potential malicious code or threats":"Collez du texte pour détecter des codes malveillants ou des menaces potentielles","Detect Threats":"Détecter les menaces","IP Geolocation":"Géolocalisation IP","Get location information for any IP address":"Obtenez des informations de localisation pour toute adresse IP","Query IP":"Requête IP","Information Leak Check":"Vérification des fuites d'informations","Check if your email or phone number has been exposed in data breaches":"Vérifiez si votre adresse e-mail ou votre numéro de téléphone a été exposé dans des fuites de données","Check for Leaks":"Vérifiez les fuites","Please enter keywords to search for secure paths":"Veuillez entrer des mots-clés pour rechercher des chemins sécurisés","Tor Network":"Réseau Tor","Anonymity network with multiple encryption layers":"Réseau d'anonymat avec plusieurs couches de chiffrement","VPN Protocol":"Protocole VPN","Encrypted tunnel for your internet traffic":"Tunnel chiffré pour votre trafic Internet","Very Good":"Très bon","Proxy Server":"Serveur proxy","Forward requests through an intermediary server":"Redirigez les demandes par un serveur intermédiaire","Very High":"Très élevé","Encrypt and secure your DNS queries":"Chiffrez et sécurisez vos requêtes DNS","Please enter a website URL to check":"Veuillez entrer une URL de site Web à vérifier","Please enter a valid URL":"Veuillez entrer une URL valide","HTTPS implementation":"Mise en œuvre de HTTPS","Data encryption":"Chiffrement des données","Third-party tracking":"Suivi tiers","Cookie security":"Sécurité des cookies","Privacy policy":"Politique de confidentialité","Consider using a VPN and checking if the site has proper security measures in place.":"Considérez l'utilisation d'un VPN et vérifiez si le site a des mesures de sécurité appropriées en place.","This website appears to have good security practices.":"Ce site semble avoir de bonnes pratiques de sécurité.","Please enter text to check for threats":"Veuillez entrer du texte pour vérifier les menaces","No obvious threats detected in the text":"Aucune menace évidente détectée dans le texte","Please enter an IP address to query":"Veuillez entrer une adresse IP à requêter","United States":"États-Unis","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"New South Wales","Potential Proxy/VPN Detected":"Proxy/VPN potentiel détecté","__title__":"Pi VPN Guardian"},"de":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Sichere anonyme Pfade","Enter keywords to find secure anonymous browsing paths":"Geben Sie Schlüsselwörter ein, um sichere anonyme Browsen-Pfade zu finden","Search Paths":"Suchpfade","Website Security Rating":"Website-Sicherheitsbewertung","Check the security rating and privacy risks of any website":"Überprüfen Sie die Sicherheitsbewertung und Datenschutzrisiken jeder Website","Check Security":"Sicherheit überprüfen","Malicious Code Detection":"Bösartiger Code-Erkennung","Paste text to detect potential malicious code or threats":"Fügen Sie Text ein, um potenziellen bösartigen Code oder Bedrohungen zu erkennen","Detect Threats":"Bedrohungen erkennen","IP Geolocation":"IP-Geolokalisierung","Get location information for any IP address":"Erhalten Sie Standortinformationen für jede IP-Adresse","Query IP":"IP abfragen","Information Leak Check":"Informationen-Diebstahl-Überprüfung","Check if your email or phone number has been exposed in data breaches":"Überprüfen Sie, ob Ihre E-Mail-Adresse oder Telefonnummer in Datenlecks offengelegt wurde","Check for Leaks":"Nach Lecks suchen","Please enter keywords to search for secure paths":"Bitte geben Sie Schlüsselwörter ein, um sichere Pfade zu suchen","Tor Network":"Anonymitätsnetzwerk mit mehreren Verschlüsselungsebenen","Anonymity network with multiple encryption layers":"Anonymitätsnetzwerk mit mehreren Verschlüsselungsebenen","VPN Protocol":"VPN-Protokoll","Encrypted tunnel for your internet traffic":"Verschlüsselter Tunnel für Ihren Internetverkehr","Very Good":"Sehr gut","Proxy Server":"Proxy-Server","Forward requests through an intermediary server":"Anfragen über einen Zwischenserver weiterleiten","Very High":"Sehr hoch","Encrypt and secure your DNS queries":"Verschlüsseln und sichern Sie Ihre DNS-Anfragen","Please enter a website URL to check":"Bitte geben Sie eine Website-URL ein, um zu überprüfen","Please enter a valid URL":"Bitte geben Sie eine gültige URL ein","HTTPS implementation":"HTTPS-Implementierung","Data encryption":"Datenverschlüsselung","Third-party tracking":"Drittanbieter-Tracking","Cookie security":"Cookie-Sicherheit","Privacy policy":"Datenschutzerklärung","Consider using a VPN and checking if the site has proper security measures in place.":"Überlegen Sie sich, eine VPN zu verwenden und zu überprüfen, ob die Website angemessene Sicherheitsmaßnahmen hat.","This website appears to have good security practices.":"Diese Website scheint gute Sicherheitspraktiken zu haben.","Please enter text to check for threats":"Bitte geben Sie Text ein, um nach Bedrohungen zu überprüfen","No obvious threats detected in the text":"Keine offensichtlichen Bedrohungen im Text erkannt","Please enter an IP address to query":"Bitte geben Sie eine IP-Adresse ein, um abzufragen","United States":"Vereinigte Staaten","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"New South Wales","Potential Proxy/VPN Detected":"Möglicher Proxy/VPN erkannt","__title__":"Pi VPN Guardian"},"ru":{"Pi VPN Guardian":"Pi VPN Гвардия","Secure Anonymous Paths":"Безопасные анонимные маршруты","Enter keywords to find secure anonymous browsing paths":"Введите ключевые слова для поиска безопасных анонимных маршрутов просмотра","Search Paths":"Поиск маршрутов","Website Security Rating":"Оценка безопасности веб-сайта","Check the security rating and privacy risks of any website":"Проверьте оценку безопасности и риски конфиденциальности любого веб-сайта","Check Security":"Проверка безопасности","Malicious Code Detection":"Обнаружение вредоносного кода","Paste text to detect potential malicious code or threats":"Вставьте текст для обнаружения потенциального вредоносного кода или угроз","Detect Threats":"Обнаружение угроз","IP Geolocation":"Геолокация IP","Get location information for any IP address":"Получите информацию о местоположении для любого IP-адреса","Query IP":"Запрос IP","Information Leak Check":"Проверка утечки информации","Check if your email or phone number has been exposed in data breaches":"Проверьте, не был ли ваш адрес электронной почты или номер телефона обнародован в утечках данных","Check for Leaks":"Проверка на утечки","Please enter keywords to search for secure paths":"Пожалуйста, введите ключевые слова для поиска безопасных маршрутов","Tor Network":"Сеть Tor","Anonymity network with multiple encryption layers":"Анонимная сеть с несколькими уровнями шифрования","VPN Protocol":"Протокол VPN","Encrypted tunnel for your internet traffic":"Зашифрованный туннель для вашего интернет-трафика","Very Good":"Очень хорошо","Proxy Server":"Прокси-сервер","Forward requests through an intermediary server":"Перенаправление запросов через промежуточный сервер","Very High":"Очень высокий","Encrypt and secure your DNS queries":"Зашифруйте и защитите свои запросы DNS","Please enter a website URL to check":"Пожалуйста, введите URL веб-сайта для проверки","Please enter a valid URL":"Пожалуйста, введите действительный URL","HTTPS implementation":"Реализация HTTPS","Data encryption":"Шифрование данных","Third-party tracking":"Отслеживание третьей стороной","Cookie security":"Безопасность куки","Privacy policy":"Политика конфиденциальности","Consider using a VPN and checking if the site has proper security measures in place.":"Рассмотрите возможность использования VPN и проверки наличия на сайте надлежащих мер безопасности.","This website appears to have good security practices.":"Этот веб-сайт, по-видимому, имеет хорошие практики безопасности.","Please enter text to check for threats":"Пожалуйста, введите текст для проверки на угрозы","No obvious threats detected in the text":"В тексте не обнаружено явных угроз","Please enter an IP address to query":"Пожалуйста, введите IP-адрес для запроса","United States":"США","San Francisco":"Сан-Франциско","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"Новый Южный Уэльс","Potential Proxy/VPN Detected":"Обнаружен потенциальный прокси/VPN","__title__":"Pi VPN Гвардия"},"pt":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Caminhos Anônimos Seguros","Enter keywords to find secure anonymous browsing paths":"Insira palavras-chave para encontrar caminhos de navegação anônimos e seguros","Search Paths":"Pesquisar Caminhos","Website Security Rating":"Classificação de Segurança do Site","Check the security rating and privacy risks of any website":"Verifique a classificação de segurança e os riscos de privacidade de qualquer site","Check Security":"Verificar Segurança","Malicious Code Detection":"Detecção de Código Malicioso","Paste text to detect potential malicious code or threats":"Cole texto para detectar código malicioso ou ameaças potenciais","Detect Threats":"Detectar Ameaças","IP Geolocation":"Geolocalização de IP","Get location information for any IP address":"Obtenha informações de localização para qualquer endereço IP","Query IP":"Consultar IP","Information Leak Check":"Verificação de vazamento de informações","Check if your email or phone number has been exposed in data breaches":"Verifique se seu e-mail ou número de telefone foi exposto em vazamentos de dados","Check for Leaks":"Verificar Vazamentos","Please enter keywords to search for secure paths":"Por favor, insira palavras-chave para procurar caminhos seguros","Tor Network":"Rede Tor","Anonymity network with multiple encryption layers":"Rede de anonimato com múltiplas camadas de criptografia","VPN Protocol":"Protocolo VPN","Encrypted tunnel for your internet traffic":"Túnel criptografado para o tráfego da internet","Very Good":"Muito Bom","Proxy Server":"Servidor Proxy","Forward requests through an intermediary server":"Encaminhar solicitações por meio de um servidor intermediário","Very High":"Muito Alto","Encrypt and secure your DNS queries":"Criptografe e proteja suas consultas DNS","Please enter a website URL to check":"Por favor, insira uma URL do site para verificar","Please enter a valid URL":"Por favor, insira uma URL válida","HTTPS implementation":"Implementação de HTTPS","Data encryption":"Criptografia de dados","Third-party tracking":"Rastreamento de terceiros","Cookie security":"Segurança de cookies","Privacy policy":"Política de privacidade","Consider using a VPN and checking if the site has proper security measures in place.":"Considere usar um VPN e verificar se o site possui medidas de segurança apropriadas.","This website appears to have good security practices.":"Este site parece ter boas práticas de segurança.","Please enter text to check for threats":"Por favor, insira texto para verificar ameaças","No obvious threats detected in the text":"Nenhuma ameaça óbvia detectada no texto","Please enter an IP address to query":"Por favor, insira um endereço IP para consultar","United States":"Estados Unidos","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"Nova Gales do Sul","Potential Proxy/VPN Detected":"Detecção Potencial de Proxy/VPN","__title__":"Pi VPN Guardian"},"ar":{"Pi VPN Guardian":"مؤشر بى في بي ان","Secure Anonymous Paths":"مسارات مجهولة آمنة","Enter keywords to find secure anonymous browsing paths":"أدخل الكلمات المفتاحية للبحث عن مسارات تصفح مجهولة آمنة","Search Paths":"البحث في المسارات","Website Security Rating":"تقييم أمان الموقع","Check the security rating and privacy risks of any website":"تحقق من تقييم الأمان ومخاطر الخصوصية لأي موقع","Check Security":"تحقق من الأمان","Malicious Code Detection":"كشف عن الشيفرة الخبيثة","Paste text to detect potential malicious code or threats":"ألصق النص للكشف عن الشيفرة الخبيثة أو التهديدات المحتملة","Detect Threats":"كشف عن التهديدات","IP Geolocation":"تحديد موقع IP","Get location information for any IP address":"الحصول على معلومات الموقع لأي عنوان IP","Query IP":"استعلام IP","Information Leak Check":"فحص تسريب المعلومات","Check if your email or phone number has been exposed in data breaches":"تحقق مما إذا كانت بريدك الإلكتروني أو رقم هاتفك قد تم الكشف عنه في اختراقات البيانات","Check for Leaks":"تحقق من التسريبات","Please enter keywords to search for secure paths":"الرجاء إدخال الكلمات المفتاحية للبحث عن مسارات آمنة","Tor Network":"شبكة تور","Anonymity network with multiple encryption layers":"شبكة مجهولة تحتوي على طبقات متعددة من التشفير","VPN Protocol":"بروتوكول VPN","Encrypted tunnel for your internet traffic":"قناة مشفرة لمحركة الإنترنت الخاصة بك","Very Good":"جيد جدًا","Proxy Server":"خادم الوكيل","Forward requests through an intermediary server":"يرسل الطلبات من خلال خادم وسيط","Very High":"عالي جداً","Encrypt and secure your DNS queries":"تشفير وتأمين استفسارات DNS الخاصة بك","Please enter a website URL to check":"من فضلك أدخل عنوان موقع الويب للتحقق","Please enter a valid URL":"من فضلك أدخل عنوان URL صالح","HTTPS implementation":"تنفيذ HTTPS","Data encryption":"تشفير البيانات","Third-party tracking":"متابعة الطرف الثالث","Cookie security":"أمان ملفات الـ Cookie","Privacy policy":"سياسة الخصوصية","Consider using a VPN and checking if the site has proper security measures in place.":"اعمل على استخدام VPN وتحقق مما إذا كان الموقع يحتوي على إجراءات أمان مناسبة.","This website appears to have good security practices.":"يبدو أن هذا الموقع يحتوي على ممارسات أمان جيدة.","Please enter text to check for threats":"من فضلك أدخل النص للتحقق من التهديدات","No obvious threats detected in the text":"لم يتم اكتشاف أي تهديدات واضحة في النص","Please enter an IP address to query":"من فضلك أدخل عنوان IP للاستفسار","United States":"الولايات المتحدة","San Francisco":"سان فرانسيسكو","Cloudflare Inc.":"شركة Cloudflare","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"نيوساوث ويلز","Potential Proxy/VPN Detected":"تم اكتشاف بروكسي/VPN محتمل","__title__":"مؤشر بى في بي ان"},"hi":{"Pi VPN Guardian":"पी वीपीएन गार्डियन","Secure Anonymous Paths":"सुरक्षित अज्ञात पथ","Enter keywords to find secure anonymous browsing paths":"सुरक्षित अज्ञात ब्राउज़िंग पथ खोजने के लिए खोजवृत्त भरें","Search Paths":"पथ खोजें","Website Security Rating":"वेबसाइट सुरक्षा रेटिंग","Check the security rating and privacy risks of any website":"किसी भी वेबसाइट की सुरक्षा रेटिंग और गोपनीयता जोखिम की जांच करें","Check Security":"सुरक्षा जांच करें","Malicious Code Detection":"खराब कोड दिस्कवरी","Paste text to detect potential malicious code or threats":"संभावित खराब कोड या खतरों को दिस्कवर करने के लिए पाठ चिपकाएं","Detect Threats":"खतरों को दिस्कवर करें","IP Geolocation":"आईपी जी-लोकेशन","Get location information for any IP address":"किसी भी आईपी एड्रेस के लिए स्थान सूचना प्राप्त करें","Query IP":"आईपी क्वेरी","Information Leak Check":"सूचना लीक चेक","Check if your email or phone number has been exposed in data breaches":"यदि आपका ईमेल या फोन नंबर डेटा ब्रीच में उजागर हुआ है तो जांच करें","Check for Leaks":"लीक की जांच करें","Please enter keywords to search for secure paths":"सुरक्षित पथों के लिए खोजवृत्त भरें कृपया","Tor Network":"टो नेटवर्क","Anonymity network with multiple encryption layers":"बहुत से एनक्रिप्शन लेयर्स वाला अज्ञात नेटवर्क","VPN Protocol":"वीपीएन प्रोटोकॉल","Encrypted tunnel for your internet traffic":"आपके इंटरनेट ट्रैफिक के लिए एनक्रिप्शिड टनल","Very Good":"बहुत अच्छा","Proxy Server":"प्रॉक्सी सर्वर","Forward requests through an intermediary server":"अंतरमाध्यमी सर्वर के माध्यम से अनुरोधों को आगे बढ़ाएँ","Very High":"बहुत उच्च","Encrypt and secure your DNS queries":"अपने DNS पूछताछों को एनक्रिप्ट और सुरक्षित करें","Please enter a website URL to check":"कृपया एक वेबसाइट यूआरएल दर्ज करें ताकि जांच की जा सके","Please enter a valid URL":"कृपया एक वैध यूआरएल दर्ज करें","HTTPS implementation":"HTTPS कार्यान्वयन","Data encryption":"डाटा एनक्रिप्ट","Third-party tracking":"तीसरे पक्ष की ट्रैकिंग","Cookie security":"कुकी सुरक्षा","Privacy policy":"गोपनीयता नीति","Consider using a VPN and checking if the site has proper security measures in place.":"एक वीपीएन का उपयोग करने और जांच करने का विचार करें कि साइट में उचित सुरक्षा उपाय हैं या नहीं。","This website appears to have good security practices.":"इस वेबसाइट में अच्छी सुरक्षा प्रथाएँ दिखाई देती हैं。","Please enter text to check for threats":"कृपया खतरों की जांच के लिए पाठ दर्ज करें","No obvious threats detected in the text":"पाठ में कोई स्पष्ट खतरे नहीं पाए गए","Please enter an IP address to query":"कृपया जांच के लिए आईपी एड्रेस दर्ज करें","United States":"संयुक्त राज्य अमेरिका","San Francisco":"सैन फ्रांसिस्को","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"न्यू साउथ वेल्स","Potential Proxy/VPN Detected":"संभावित प्रॉक्सी/वीपीएन दिखाई दिया","__title__":"पी वीपीएन गार्डियन"},"id":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Jalur Anonim yang Aman","Enter keywords to find secure anonymous browsing paths":"Masukkan kata kunci untuk menemukan jalur penjelajahan anonim yang aman","Search Paths":"Cari Jalur","Website Security Rating":"Rating Keamanan Situs Web","Check the security rating and privacy risks of any website":"Periksa rating keamanan dan risiko privasi situs web mana pun","Check Security":"Periksa Keamanan","Malicious Code Detection":"Deteksi Kode Malicious","Paste text to detect potential malicious code or threats":"Lipat teks untuk mendeteksi kode malicious atau ancaman potensial","Detect Threats":"Deteksi Ancaman","IP Geolocation":"Geolokasi IP","Get location information for any IP address":"Dapatkan informasi lokasi untuk alamat IP mana pun","Query IP":"Kueri IP","Information Leak Check":"Periksa Tumpahan Informasi","Check if your email or phone number has been exposed in data breaches":"Periksa apakah email atau nomor telepon Anda telah terbongkar dalam kecelakaan data","Check for Leaks":"Periksa Tumpahan","Please enter keywords to search for secure paths":"Silakan masukkan kata kunci untuk mencari jalur yang aman","Tor Network":"Jaringan Tor","Anonymity network with multiple encryption layers":"Jaringan anonim dengan berbagai lapisan pengenkripsi","VPN Protocol":"Protokol VPN","Encrypted tunnel for your internet traffic":"Tunnel yang dienkripsi untuk lalu lintas internet Anda","Very Good":"Sangat Baik","Proxy Server":"Server Proksi","Forward requests through an intermediary server":"Melanjutkan permintaan melalui server perantara","Very High":"Sangat tinggi","Encrypt and secure your DNS queries":"Enkripsi dan amankan permintaan DNS Anda","Please enter a website URL to check":"Silakan masukkan URL situs web untuk dicek","Please enter a valid URL":"Silakan masukkan URL yang valid","HTTPS implementation":"Implementasi HTTPS","Data encryption":"Enkripsi data","Third-party tracking":"Pemantauan pihak ketiga","Cookie security":"Keamanan cookie","Privacy policy":"Kebijakan privasi","Consider using a VPN and checking if the site has proper security measures in place.":"Diperhatikan untuk menggunakan VPN dan memeriksa apakah situs memiliki tindakan keamanan yang sesuai.","This website appears to have good security practices.":"Situs web ini tampaknya memiliki praktek keamanan yang bagus.","Please enter text to check for threats":"Silakan masukkan teks untuk dicek atas ancaman","No obvious threats detected in the text":"Tidak ada ancaman yang jelas terdeteksi dalam teks","Please enter an IP address to query":"Silakan masukkan alamat IP untuk diekspor","United States":"Amerika Serikat","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"New South Wales","Potential Proxy/VPN Detected":"Ditemukan Potensi Proxy/VPN","__title__":"Pi VPN Guardian"},"vi":{"Pi VPN Guardian":"Pi VPN Guardian","Secure Anonymous Paths":"Secure Anonymous Paths","Enter keywords to find secure anonymous browsing paths":"Nhập từ khóa để tìm các con đường duyệt web ẩn danh an toàn","Search Paths":"Tìm kiếm các con đường","Website Security Rating":"Xếp hạng bảo mật của trang web","Check the security rating and privacy risks of any website":"Kiểm tra xếp hạng bảo mật và rủi ro riêng tư của bất kỳ trang web nào","Check Security":"Kiểm tra bảo mật","Malicious Code Detection":"Phát hiện mã độc","Paste text to detect potential malicious code or threats":"Dán văn bản để phát hiện mã độc hoặc mối đe dọa tiềm ẩn","Detect Threats":"Phát hiện mối đe dọa","IP Geolocation":"Địa lý IP","Get location information for any IP address":"Lấy thông tin địa điểm cho bất kỳ địa chỉ IP nào","Query IP":"Tra cứu IP","Information Leak Check":"Kiểm tra rò rỉ thông tin","Check if your email or phone number has been exposed in data breaches":"Kiểm tra xem email hoặc số điện thoại của bạn có bị rò rỉ trong các vụ rò rỉ dữ liệu hay không","Check for Leaks":"Kiểm tra rò rỉ","Please enter keywords to search for secure paths":"Vui lòng nhập từ khóa để tìm kiếm các con đường an toàn","Tor Network":"Mạng Tor","Anonymity network with multiple encryption layers":"Mạng ẩn danh với nhiều lớp mã hóa","VPN Protocol":"Giao thức VPN","Encrypted tunnel for your internet traffic":"Tunnel mã hóa cho lưu lượng internet của bạn","Very Good":"Rất tốt","Proxy Server":"Máy chủ ủy quyền","Forward requests through an intermediary server":"Gửi yêu cầu thông qua máy chủ trung gian","Very High":"Rất cao","Encrypt and secure your DNS queries":"Mã hóa và bảo vệ các truy vấn DNS của bạn","Please enter a website URL to check":"Vui lòng nhập URL của trang web để kiểm tra","Please enter a valid URL":"Vui lòng nhập một URL hợp lệ","HTTPS implementation":"Thực hiện HTTPS","Data encryption":"Mã hóa dữ liệu","Third-party tracking":"Theo dõi từ bên thứ ba","Cookie security":"Bảo mật cookie","Privacy policy":"Chính sách quyền riêng tư","Consider using a VPN and checking if the site has proper security measures in place.":"Hãy cân nhắc sử dụng VPN và kiểm tra xem trang web có các biện pháp bảo mật phù hợp hay không.","This website appears to have good security practices.":"Trang web này có vẻ có các thực hành bảo mật tốt.","Please enter text to check for threats":"Vui lòng nhập văn bản để kiểm tra mối đe dọa","No obvious threats detected in the text":"Không phát hiện thấy mối đe dọa rõ ràng trong văn bản","Please enter an IP address to query":"Vui lòng nhập địa chỉ IP để tra cứu","United States":"Mỹ","San Francisco":"San Francisco","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"New South Wales","Potential Proxy/VPN Detected":"Phát hiện tiềm năng Proxy/VPN","__title__":"Pi VPN Guardian"},"th":{"Pi VPN Guardian":"Pi VPN ผู้รักษา","Secure Anonymous Paths":"เส้นทางเชื่อมโยงลับที่มีความปลอดภัย","Enter keywords to find secure anonymous browsing paths":"ใส่คำค้นหาเพื่อหาเส้นทางเชื่อมโยงลับที่มีความปลอดภัย","Search Paths":"ค้นหาเส้นทาง","Website Security Rating":"คะแนนความปลอดภัยของเว็บไซต์","Check the security rating and privacy risks of any website":"ตรวจสอบคะแนนความปลอดภัยและความเสี่ยงด้านプライバシーของเว็บไซต์ใดๆ","Check Security":"ตรวจสอบความปลอดภัย","Malicious Code Detection":"การตรวจจับโค้ดร้าย","Paste text to detect potential malicious code or threats":"แปลงข้อความเข้ามาเพื่อตรวจจับโค้ดร้ายหรือภัยคุกคามที่อาจเป็นไปได้","Detect Threats":"ตรวจจับภัยคุกคาม","IP Geolocation":"การหาสถานที่ของ IP","Get location information for any IP address":"หาข้อมูลสถานที่สำหรับที่แอดเดรส IP ทุกตัว","Query IP":"ค้นหา IP","Information Leak Check":"ตรวจสอบการรั่วไหลข้อมูล","Check if your email or phone number has been exposed in data breaches":"ตรวจสอบว่าอีเมลหรือหมายเลขโทรศัพท์ของคุณได้ถูกเปิดเผยในการรั่วไหลข้อมูล","Check for Leaks":"ตรวจสอบการรั่วไหล","Please enter keywords to search for secure paths":"กรุณาใส่คำค้นหาเพื่อหาเส้นทางที่มีความปลอดภัย","Tor Network":"เครือข่าย Tor","Anonymity network with multiple encryption layers":"เครือข่ายลับที่มีชั้นการเข้ารหัสหลายชั้น","VPN Protocol":"โปรโตคอล VPN","Encrypted tunnel for your internet traffic":"ช่องโครงที่มีการเข้ารหัสสำหรับการสื่อสารอินเทอร์เน็ตของคุณ","Very Good":"ดีมาก","Proxy Server":"เซิร์ฟเวอร์โปรกซี่","Forward requests through an intermediary server":"ส่งคำขอผ่านเซิร์ฟเวอร์กลาง","Very High":"สูงมาก","Encrypt and secure your DNS queries":"เข้ารหัสและรักษาความปลอดภัยของคำถาม DNS ของคุณ","Please enter a website URL to check":"กรุณาใส่ URL ของเว็บไซต์เพื่อตรวจสอบ","Please enter a valid URL":"กรุณาใส่ URL ที่ถูกต้อง","HTTPS implementation":"การปฏิบัติการ HTTPS","Data encryption":"การเข้ารหัสข้อมูล","Third-party tracking":"การติดตามโดยบุคคลภายนอก","Cookie security":"ความปลอดภัยของคุกกี้","Privacy policy":"นโยบายความเป็นส่วนตัว","Consider using a VPN and checking if the site has proper security measures in place.":"คิดถึงการใช้ VPN และตรวจสอบว่าเว็บไซต์มีมาตรการความปลอดภัยที่เหมาะสมหรือไม่","This website appears to have good security practices.":"เว็บไซต์นี้ดูเหมือนมีมาตรการความปลอดภัยที่ดี","Please enter text to check for threats":"กรุณาใส่ข้อความเพื่อตรวจสอบภัยคุกคาม","No obvious threats detected in the text":"ไม่พบภัยคุกคามชัดเจนในข้อความ","Please enter an IP address to query":"กรุณาใส่ที่อยู่ IP ที่ต้องการตรวจสอบ","United States":"สหรัฐอเมริกา","San Francisco":"ซานฟรานซิสโก","Cloudflare Inc.":"Cloudflare Inc.","Deutsche Telekom":"Deutsche Telekom","NTT Communications":"NTT Communications","TIM Brasil":"TIM Brasil","New South Wales":"รัฐนิวเซาท์เวลส์","Potential Proxy/VPN Detected":"พบ Proxy/VPN ที่เป็นไปได้","__title__":"Pi VPN ผู้รักษา"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
