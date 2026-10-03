@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRGameInsight - VR Game Analysis Platform</title><meta name="description" content="Free online tool: VRGameInsight - VR Game Analysis Platform. No signup, no payment — free forever.">
+<meta property="og:title" content="VRGameInsight - VR Game Analysis Platform">
+<meta property="og:description" content="Free online tool: VRGameInsight - VR Game Analysis Platform. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_074432_VRGameInsigh.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #bb86fc;
+            --accent-hover: #985eff;
+            --success: #03dac6;
+            --warning: #cf6679;
+            --border: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .search-container {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        
+        .search-box {
+            flex: 1;
+            padding: 12px 16px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px 0 0 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .search-btn {
+            padding: 12px 20px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 0 8px 8px 0;
+            color: var(--bg-primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            margin-top: 20px;
+        }
+        
+        .nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav-item {
+            background-color: var(--bg-tertiary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .nav-item.active {
+            background-color: var(--accent);
+        }
+        
+        main {
+            padding: 30px 0;
+        }
+        
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+        }
+        
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .game-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background-color: var(--bg-primary);
+        }
+        
+        .game-info {
+            padding: 15px;
+        }
+        
+        .game-title {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: var(--bg-primary);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--border);
+        }
+        
+        .result-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            min-height: 100px;
+        }
+        
+        .compatibility-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .compatibility-item {
+            background-color: var(--bg-primary);
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-compatible {
+            background-color: var(--success);
+            color: var(--bg-primary);
+        }
+        
+        .status-partial {
+            background-color: var(--warning);
+            color: var(--bg-primary);
+        }
+        
+        .status-incompatible {
+            background-color: #cf6679;
+            color: var(--bg-primary);
+        }
+        
+        .performance-meter {
+            margin-top: 20px;
+        }
+        
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .meter-bar {
+            height: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .meter-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+        
+        .comments-container {
+            margin-top: 20px;
+        }
+        
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .comment {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .comment-date {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .comment-text {
+            margin-bottom: 10px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .comment-action {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .comment-action:hover {
+            color: var(--accent);
+        }
+        
+        .sentiment-indicator {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        
+        .sentiment-positive {
+            background-color: var(--success);
+            color: var(--bg-primary);
+        }
+        
+        .sentiment-negative {
+            background-color: var(--warning);
+            color: var(--bg-primary);
+        }
+        
+        .sentiment-neutral {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+        }
+        
+        .spinner {
+            border: 4px solid var(--bg-tertiary);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .game-detail {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .game-detail-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .game-detail-info h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        
+        .game-detail-meta {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .meta-value {
+            font-weight: bold;
+        }
+        
+        .game-description {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+        
+        .update-log {
+            margin-top: 30px;
+        }
+        
+        .update-item {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .update-date {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .game-detail {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-detail-image {
+                height: 250px;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-container {
+                width: 100%;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">VRGameInsight</div>
+            </div>
+            <div class="search-container">
+                <input type="text" id="gameSearch" class="search-box" placeholder="Search for games, news, or analysis...">
+                <button id="searchBtn" class="search-btn">Search</button>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item active" data-tab="games">Games</li>
+                <li class="nav-item" data-tab="reviews">Review Analysis</li>
+                <li class="nav-item" data-tab="compatibility">Compatibility</li>
+                <li class="nav-item" data-tab="performance">Performance</li>
+                <li class="nav-item" data-tab="community">Community</li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Games Section -->
+            <section id="games-section" class="section">
+                <h2 class="section-title">VR Game Database</h2>
+                <div class="tab-container">
+                    <div class="tab active" data-game-tab="popular">Popular Games</div>
+                    <div class="tab" data-game-tab="new">New Releases</div>
+                    <div class="tab" data-game-tab="upcoming">Upcoming</div>
+                </div>
+                <div class="tab-content active" id="popular-games">
+                    <div class="game-grid" id="popularGamesGrid"></div>
+                </div>
+                <div class="tab-content" id="new-games">
+                    <div class="game-grid" id="newGamesGrid"></div>
+                </div>
+                <div class="tab-content" id="upcoming-games">
+                    <div class="game-grid" id="upcomingGamesGrid"></div>
+                </div>
+            </section>
+
+            <!-- Game Detail Section -->
+            <section id="game-detail-section" class="section" style="display: none;">
+                <h2 class="section-title">Game Details</h2>
+                <div id="gameDetailContent"></div>
+            </section>
+
+            <!-- Review Analysis Section -->
+            <section id="reviews-section" class="section" style="display: none;">
+                <h2 class="section-title">Review Analysis</h2>
+                <div class="input-group">
+                    <label class="input-label" for="reviewInput">Enter review text to analyze:</label>
+                    <textarea id="reviewInput" class="text-input" rows="5" placeholder="Paste review text here..."></textarea>
+                </div>
+                <button id="analyzeReviewBtn" class="btn">Analyze Review</button>
+                <div id="reviewAnalysisResult" class="result-box" style="display: none;">
+                    <h3>Sentiment Analysis</h3>
+                    <div id="sentimentResult"></div>
+                    <h3 style="margin-top: 20px;">Key Topics</h3>
+                    <div id="topicsResult"></div>
+                </div>
+            </section>
+
+            <!-- Compatibility Section -->
+            <section id="compatibility-section" class="section" style="display: none;">
+                <h2 class="section-title">VR Device Compatibility</h2>
+                <div class="input-group">
+                    <label class="input-label" for="deviceInput">Enter your VR device model:</label>
+                    <input type="text" id="deviceInput" class="text-input" placeholder="e.g., Oculus Quest 2, HTC Vive">
+                </div>
+                <button id="checkCompatibilityBtn" class="btn">Check Compatibility</button>
+                <div id="compatibilityResult" class="result-box" style="display: none;">
+                    <h3>Compatibility Results</h3>
+                    <ul id="compatibilityList" class="compatibility-list"></ul>
+                </div>
+            </section>
+
+            <!-- Performance Section -->
+            <section id="performance-section" class="section" style="display: none;">
+                <h2 class="section-title">Game Performance Assessment</h2>
+                <div class="input-group">
+                    <label class="input-label" for="gameSelect">Select Game:</label>
+                    <select id="gameSelect" class="text-input">
+                        <option value="">Choose a game...</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="cpuInput">CPU (GHz):</label>
+                    <input type="number" id="cpuInput" class="text-input" step="0.1" min="1" max="10" placeholder="e.g., 3.5">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="gpuInput">GPU:</label>
+                    <input type="text" id="gpuInput" class="text-input" placeholder="e.g., NVIDIA RTX 3080">
+                </div>
+                <div class="input-group">
+                    <label class="input-label" for="ramInput">RAM (GB):</label>
+                    <input type="number" id="ramInput" class="text-input" min="4" max="32" placeholder="e.g., 16">
+                </div>
+                <button id="assessPerformanceBtn" class="btn">Assess Performance</button>
+                <div id="performanceResult" class="result-box" style="display: none;">
+                    <h3>Performance Assessment</h3>
+                    <div class="performance-meter">
+                        <div class="meter-label">
+                            <span>Frame Rate</span>
+                            <span id="fpsValue">-- fps</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div id="fpsBar" class="meter-fill" style="width: 0%; background-color: var(--accent);"></div>
+                        </div>
+                    </div>
+                    <div class="performance-meter" style="margin-top: 20px;">
+                        <div class="meter-label">
+                            <span>Graphical Quality</span>
+                            <span id="qualityValue">--</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div id="qualityBar" class="meter-fill" style="width: 0%; background-color: var(--success);"></div>
+                        </div>
+                    </div>
+                    <div class="performance-meter" style="margin-top: 20px;">
+                        <div class="meter-label">
+                            <span>Stability</span>
+                            <span id="stabilityValue">--</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div id="stabilityBar" class="meter-fill" style="width: 0%; background-color: var(--warning);"></div>
+                        </div>
+                    </div>
+                    <div id="performanceTips" style="margin-top: 20px;"></div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community-section" class="section" style="display: none;">
+                <h2 class="section-title">Community Hub</h2>
+                <div class="input-group">
+                    <label class="input-label" for="communityPost">Post a question or comment:</label>
+                    <textarea id="communityPost" class="text-input" rows="4" placeholder="What would you like to ask the community?"></textarea>
+                </div>
+                <button id="submitPostBtn" class="btn">Submit Post</button>
+                <div id="communityPosts" class="comments-container"></div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Game database (simulated)
+        const gameDatabase = {
+            popular: [
+                { id: 1, title: "Beat Saber", genre: "Rhythm", rating: 4.8, players: "2M+" },
+                { id: 2, title: "Half-Life: Alyx", genre: "Action", rating: 4.9, players: "500K+" },
+                { id: 3, title: "Superhot VR", genre: "Action", rating: 4.7, players: "300K+" },
+                { id: 4, title: "Skyrim VR", genre: "RPG", rating: 4.5, players: "200K+" },
+                { id: 5, title: "Rec Room", genre: "Social", rating: 4.6, players: "3M+" },
+                { id: 6, title: "Population: One", genre: "Battle Royale", rating: 4.4, players: "150K+" }
+            ],
+            new: [
+                { id: 7, title: "The Walking Ones", genre: "Horror", rating: 4.3, players: "50K+" },
+                { id: 8, title: "After the Fall", genre: "Survival", rating: 4.2, players: "30K+" },
+                { id: 9, title: "Phantom: Covert Ops", genre: "Stealth", rating: 4.6, players: "70K+" },
+                { id: 10, title: "Synapse", genre: "Puzzle", rating: 4.5, players: "40K+" }
+            ],
+            upcoming: [
+                { id: 11, title: "Star Wars: Tales from the Galaxy's Edge", genre: "Adventure", release: "Q3 2026" },
+                { id: 12, title: "I Expect You To Die 3", genre: "Puzzle", release: "Q4 2026" },
+                { id: 13, title: "The Light Brigade", genre: "Roguelike", release: "Q1 2027" },
+                { id: 14, title: "Asgard's Wrath 2", genre: "RPG", release: "Q2 2027" }
+            ]
+        };
+
+        // Game details (simulated)
+        const gameDetails = {
+            1: {
+                title: "Beat Saber",
+                genre: "Rhythm",
+                developer: "Beat Games",
+                releaseDate: "May 2018",
+                rating: 4.8,
+                description: "Beat Saber is a virtual reality rhythm game where your goal is to slash the blocks flying towards you in perfect sync with the music. With a variety of songs and difficulty levels, it's the ultimate VR rhythm experience.",
+                image: "https://via.placeholder.com/300x400?text=Beat+Saber",
+                updates: [
+                    { date: "June 2026", content: "New songs added: Imagine Dragons, The Weeknd, and Dua Lipa" },
+                    { date: "April 2026", content: "New game mode: Marathon Challenge with 100 song streaks" },
+                    { date: "January 2026", content: "Custom song creation tools released for community" }
+                ]
+            },
+            2: {
+                title: "Half-Life: Alyx",
+                genre: "Action",
+                developer: "Valve",
+                releaseDate: "March 2020",
+                rating: 4.9,
+                description: "Half-Life: Alyx is the next installment in the Half-Life series. Set between Half-Life and Half-Life 2, players take on the role of Alyx Vance as she and her father Eli fight against the Combine occupation in City 17.",
+                image: "https://via.placeholder.com/300x400?text=Half-Life+Alyx",
+                updates: [
+                    { date: "May 2026", content: "New expansion: The Uprising, focusing on the resistance movement" },
+                    { date: "December 2025", content: "Added support for full hand tracking without controllers" },
+                    { date: "August 2025", content: "Performance optimizations for lower-end VR hardware" }
+                ]
+            }
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Populate games
+            populateGames();
+            
+            // Setup navigation
+            setupNavigation();
+            
+            // Setup game tabs
+            setupGameTabs();
+            
+            // Setup search
+            setupSearch();
+            
+            // Setup review analysis
+            setupReviewAnalysis();
+            
+            // Setup compatibility check
+            setupCompatibilityCheck();
+            
+            // Setup performance assessment
+            setupPerformanceAssessment();
+            
+            // Setup community
+            setupCommunity();
+            
+            // Load community posts from localStorage
+            loadCommunityPosts();
+        });
+
+        // Populate games
+        function populateGames() {
+            // Populate popular games
+            const popularGrid = document.getElementById('popularGamesGrid');
+            gameDatabase.popular.forEach(game => {
+                popularGrid.appendChild(createGameCard(game));
+            });
+            
+            // Populate new games
+            const newGrid = document.getElementById('newGamesGrid');
+            gameDatabase.new.forEach(game => {
+                newGrid.appendChild(createGameCard(game));
+            });
+            
+            // Populate upcoming games
+            const upcomingGrid = document.getElementById('upcomingGamesGrid');
+            gameDatabase.upcoming.forEach(game => {
+                upcomingGrid.appendChild(createGameCard(game, true));
+            });
+            
+            // Populate game select dropdown
+            const gameSelect = document.getElementById('gameSelect');
+            [...gameDatabase.popular, ...gameDatabase.new].forEach(game => {
+                const option = document.createElement('option');
+                option.value = game.id;
+                option.textContent = game.title;
+                gameSelect.appendChild(option);
+            });
+        }
+
+        // Create game card
+        function createGameCard(game, isUpcoming = false) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <div class="game-image" style="background-color: #333;"></div>
+                <div class="game-info">
+                    <h3 class="game-title">${game.title}</h3>
+                    <div class="game-meta">
+                        <span>${game.genre}</span>
+                        <span>${isUpcoming ? `Release: ${game.release}` : `${game.rating} ⭐ | ${game.players}`}</span>
+                    </div>
+                </div>
+            `;
+            
+            card.addEventListener('click', function() {
+                showGameDetail(game.id);
+            });
+            
+            return card;
+        }
+
+        // Setup navigation
+        function setupNavigation() {
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all nav items
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    const sections = ['games', 'reviews', 'compatibility', 'performance', 'community'];
+                    sections.forEach(section => {
+                        const sectionElement = document.getElementById(`${section}-section`);
+                        if (sectionElement) {
+                            sectionElement.style.display = 'none';
+                        }
+                    });
+                    
+                    // Show selected section
+                    const tab = this.getAttribute('data-tab');
+                    const selectedSection = document.getElementById(`${tab}-section`);
+                    if (selectedSection) {
+                        selectedSection.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        // Setup game tabs
+        function setupGameTabs() {
+            const gameTabs = document.querySelectorAll('[data-game-tab]');
+            gameTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    gameTabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Hide all tab contents
+                    const tabContents = ['popular-games', 'new-games', 'upcoming-games'];
+                    tabContents.forEach(content => {
+                        const contentElement = document.getElementById(content);
+                        if (contentElement) {
+                            contentElement.style.display = 'none';
+                        }
+                    });
+                    
+                    // Show selected tab content
+                    const tabId = `${this.getAttribute('data-game-tab')}-games`;
+                    const selectedContent = document.getElementById(tabId);
+                    if (selectedContent) {
+                        selectedContent.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        // Setup search
+        function setupSearch() {
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('gameSearch');
+            
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+
+        // Perform search
+        function performSearch() {
+            const searchTerm = document.getElementById('gameSearch').value.toLowerCase();
+            if (!searchTerm) return;
+            
+            // Search in game titles
+            const allGames = [...gameDatabase.popular, ...gameDatabase.new, ...gameDatabase.upcoming];
+            const foundGames = allGames.filter(game => 
+                game.title.toLowerCase().includes(searchTerm) || 
+                game.genre.toLowerCase().includes(searchTerm)
+            );
+            
+            if (foundGames.length > 0) {
+                // Show first found game's detail
+                showGameDetail(foundGames[0].id);
+            } else {
+                // Show no results message
+                alert('No games found matching your search.');
+            }
+        }
+
+        // Show game detail
+        function showGameDetail(gameId) {
+            const game = gameDetails[gameId];
+            if (!game) {
+                // If detailed game not found, use basic info
+                const allGames = [...gameDatabase.popular, ...gameDatabase.new, ...gameDatabase.upcoming];
+                const basicGame = allGames.find(g => g.id === gameId);
+                if (basicGame) {
+                    const detailContent = document.getElementById('gameDetailContent');
+                    detailContent.innerHTML = `
+                        <div class="game-detail">
+                            <div>
+                                <div class="game-image" style="background-color: #333;"></div>
+                            </div>
+                            <div class="game-detail-info">
+                                <h2>${basicGame.title}</h2>
+                                <div class="game-detail-meta">
+                                    <div class="meta-item">
+                                        <span class="meta-label">Genre</span>
+                                        <span class="meta-value">${basicGame.genre}</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Rating</span>
+                                        <span class="meta-value">${basicGame.rating} ⭐</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <span class="meta-label">Players</span>
+                                        <span class="meta-value">${basicGame.players}</span>
+                                    </div>
+                                </div>
+                                <p class="game-description">Detailed information about ${basicGame.title} is not available in our database. Please check back later for more comprehensive details.</p>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                const detailContent = document.getElementById('gameDetailContent');
+                detailContent.innerHTML = `
+                    <div class="game-detail">
+                        <div>
+                            <img src="${game.image}" alt="${game.title}" class="game-detail-image">
+                        </div>
+                        <div class="game-detail-info">
+                            <h2>${game.title}</h2>
+                            <div class="game-detail-meta">
+                                <div class="meta-item">
+                                    <span class="meta-label">Genre</span>
+                                    <span class="meta-value">${game.genre}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Developer</span>
+                                    <span class="meta-value">${game.developer}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Release Date</span>
+                                    <span class="meta-value">${game.releaseDate}</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Rating</span>
+                                    <span class="meta-value">${game.rating} ⭐</span>
+                                </div>
+                            </div>
+                            <p class="game-description">${game.description}</p>
+                            
+                            <div class="update-log">
+                                <h3>Recent Updates</h3>
+                                ${game.updates.map(update => `
+                                    <div class="update-item">
+                                        <div class="update-date">${update.date}</div>
+                                        <div>${update.content}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Show game detail section
+            document.getElementById('game-detail-section').style.display = 'block';
+            
+            // Scroll to game detail
+            document.getElementById('game-detail-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Setup review analysis
+        function setupReviewAnalysis() {
+            const analyzeBtn = document.getElementById('analyzeReviewBtn');
+            const reviewInput = document.getElementById('reviewInput');
+            
+            analyzeBtn.addEventListener('click', function() {
+                const reviewText = reviewInput.value.trim();
+                if (!reviewText) {
+                    return;
+                }
+                
+                // Show loading
+                const resultDiv = document.getElementById('reviewAnalysisResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Simulate analysis
+                setTimeout(() => {
+                    const sentiment = analyzeSentiment(reviewText);
+                    const topics = extractTopics(reviewText);
+                    
+                    resultDiv.innerHTML = `
+                        <h3>Sentiment Analysis</h3>
+                        <div class="sentiment-indiction sentiment-${sentiment.type}">${sentiment.type.toUpperCase()} - ${sentiment.confidence}% confidence</div>
+                        <div style="margin-top: 15px;">
+                            <strong>Key Phrases:</strong>
+                            <ul style="margin-top: 10px; padding-left: 20px;">
+                                ${sentiment.phrases.map(p => `<li>${p}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <h3 style="margin-top: 20px;">Key Topics</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                            ${topics.map(topic => `
+                                <span class="sentiment-indiction sentiment-neutral">${topic}</span>
+                            `).join('')}
+                        </div>
+                    `;
+                }, 1500);
+            });
+        }
+
+        // Analyze sentiment (simulated)
+        function analyzeSentiment(text) {
+            const positiveWords = ['amazing', 'great', 'love', 'fantastic', 'excellent', 'awesome', 'perfect', 'brilliant', 'superb', 'outstanding'];
+            const negativeWords = ['terrible', 'awful', 'hate', 'bad', 'poor', 'disappointing', 'boring', 'frustrating', 'broken', 'buggy'];
+            
+            const words = text.toLowerCase().split(/\s+/);
+            let positiveCount = 0;
+            let negativeCount = 0;
+            
+            words.forEach(word => {
+                if (positiveWords.some(pw => word.includes(pw))) positiveCount++;
+                if (negativeWords.some(nw => word.includes(nw))) negativeCount++;
+            });
+            
+            const total = positiveCount + negativeCount;
+            let type, confidence;
+            
+            if (total === 0) {
+                type = 'neutral';
+                confidence = 50;
+            } else if (positiveCount > negativeCount) {
+                type = 'positive';
+                confidence = Math.min(90, 50 + (positiveCount / total) * 40);
+            } else {
+                type = 'negative';
+                confidence = Math.min(90, 50 + (negativeCount / total) * 40);
+            }
+            
+            // Extract key phrases
+            const phrases = [];
+            if (positiveCount > 0) {
+                phrases.push("Enjoyable gameplay", "Good graphics", "Immersive experience");
+            }
+            if (negativeCount > 0) {
+                phrases.push("Performance issues", "Steep learning curve", "Limited content");
+            }
+            if (positiveCount === 0 && negativeCount === 0) {
+                phrases.push("Mixed opinions", "Average experience", "Standard gameplay");
+            }
+            
+            return { type, confidence, phrases };
+        }
+
+        // Extract topics (simulated)
+        function extractTopics(text) {
+            const topics = ["Graphics", "Performance", "Gameplay", "Story", "Controls", "Content", "Multiplayer", "Price"];
+            const selectedTopics = [];
+            
+            // Randomly select 3-5 topics
+            const count = Math.floor(Math.random() * 3) + 3;
+            const shuffled = [...topics].sort(() => 0.5 - Math.random());
+            
+            for (let i = 0; i < count; i++) {
+                selectedTopics.push(shuffled[i]);
+            }
+            
+            return selectedTopics;
+        }
+
+        // Setup compatibility check
+        function setupCompatibilityCheck() {
+            const checkBtn = document.getElementById('checkCompatibilityBtn');
+            const deviceInput = document.getElementById('deviceInput');
+            
+            checkBtn.addEventListener('click', function() {
+                const device = deviceInput.value.trim();
+                if (!device) {
+                    return;
+                }
+                
+                // Show loading
+                const resultDiv = document.getElementById('compatibilityResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Simulate compatibility check
+                setTimeout(() => {
+                    const compatibility = checkDeviceCompatibility(device);
+                    
+                    const list = document.getElementById('compatibilityList');
+                    list.innerHTML = compatibility.map(game => `
+                        <li class="compatibility-item">
+                            <span>${game.title}</span>
+                            <span class="status-badge status-${game.status}">${game.status}</span>
+                        </li>
+                    `).join('');
+                    
+                    resultDiv.innerHTML = `
+                        <h3>Compatibility Results for ${device}</h3>
+                        <ul id="compatibilityList" class="compatibility-list">
+                            ${list.innerHTML}
+                        </ul>
+                    `;
+                }, 1500);
+            });
+        }
+
+        // Check device compatibility (simulated)
+        function checkDeviceCompatibility(device) {
+            // Simulated compatibility data
+            const allGames = [...gameDatabase.popular, ...gameDatabase.new];
+            const compatibility = allGames.map(game => {
+                // Randomly assign compatibility status
+                const rand = Math.random();
+                let status;
+                
+                if (device.toLowerCase().includes('quest') || device.toLowerCase().includes('oculus')) {
+                    // Oculus devices generally have better compatibility
+                    if (rand > 0.2) status = 'compatible';
+                    else if (rand > 0.05) status = 'partial';
+                    else status = 'incompatible';
+                } else if (device.toLowerCase().includes('vive') || device.toLowerCase().includes('htc')) {
+                    // HTC Vive devices
+                    if (rand > 0.3) status = 'compatible';
+                    else if (rand > 0.1) status = 'partial';
+                    else status = 'incompatible';
+                } else {
+                    // Other devices
+                    if (rand > 0.4) status = 'compatible';
+                    else if (rand > 0.2) status = 'partial';
+                    else status = 'incompatible';
+                }
+                
+                return {
+                    title: game.title,
+                    status: status
+                };
+            });
+            
+            return compatibility;
+        }
+
+        // Setup performance assessment
+        function setupPerformanceAssessment() {
+            const assessBtn = document.getElementById('assessPerformanceBtn');
+            const gameSelect = document.getElementById('gameSelect');
+            const cpuInput = document.getElementById('cpuInput');
+            const gpuInput = document.getElementById('gpuInput');
+            const ramInput = document.getElementById('ramInput');
+            
+            assessBtn.addEventListener('click', function() {
+                const gameId = gameSelect.value;
+                const cpu = parseFloat(cpuInput.value);
+                const gpu = gpuInput.value.trim();
+                const ram = parseInt(ramInput.value);
+                
+                if (!gameId || !cpu || !gpu || !ram) {
+                    return;
+                }
+                
+                // Show loading
+                const resultDiv = document.getElementById('performanceResult');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Simulate performance assessment
+                setTimeout(() => {
+                    const performance = assessPerformance(gameId, cpu, gpu, ram);
+                    
+                    // Update results
+                    document.getElementById('fpsValue').textContent = `${performance.fps} fps`;
+                    document.getElementById('fpsBar').style.width = `${performance.fpsPercentage}%`;
+                    
+                    document.getElementById('qualityValue').textContent = performance.quality;
+                    document.getElementById('qualityBar').style.width = `${performance.qualityPercentage}%`;
+                    
+                    document.getElementById('stabilityValue').textContent = performance.stability;
+                    document.getElementById('stabilityBar').style.width = `${performance.stabilityPercentage}%`;
+                    
+                    document.getElementById('performanceTips').innerHTML = `
+                        <h4>Performance Tips:</h4>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            ${performance.tips.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    `;
+                }, 1500);
+            });
+        }
+
+        // Assess performance (simulated)
+        function assessPerformance(gameId, cpu, gpu, ram) {
+            // Get game requirements (simulated)
+            const gameRequirements = {
+                1: { minCpu: 2.5, minGpu: "GTX 960", minRam: 8 }, // Beat Saber
+                2: { minCpu: 3.5, minGpu: "GTX 1070", minRam: 12 }, // Half-Life: Alyx
+                3: { minCpu: 2.0, minGpu: "GTX 780", minRam: 8 }, // Superhot VR
+                4: { minCpu: 3.0, minGpu: "GTX 970", minRam: 8 }, // Skyrim VR
+                5: { minCpu: 2.0, minGpu: "GTX 780", minRam: 4 }, // Rec Room
+                6: { minCpu: 2.5, minGpu: "GTX 960", minRam: 8 }, // Population: One
+                7: { minCpu: 2.5, minGpu: "GTX 1050", minRam: 8 }, // The Walking Ones
+                8: { minCpu: 3.0, minGpu: "GTX 970", minRam: 8 }, // After the Fall
+                9: { minCpu: 2.0, minGpu: "GTX 780", minRam: 8 }, // Phantom: Covert Ops
+                10: { minCpu: 2.0, minGpu: "GTX 780", minRam: 8 } // Synapse
+            };
+            
+            const requirements = gameRequirements[gameId] || { minCpu: 2.5, minGpu: "GTX 960", minRam: 8 };
+            
+            // Calculate performance metrics
+            const cpuScore = Math.min(100, (cpu / requirements.minCpu) * 50);
+            const gpuScore = calculateGpuScore(gpu, requirements.minGpu);
+            const ramScore = Math.min(100, (ram / requirements.minRam) * 50);
+            
+            const overallScore = (cpuScore + gpuScore + ramScore) / 3;
+            
+            // Calculate FPS (simulated)
+            const fps = Math.floor(overallScore * 0.6 + Math.random() * 20);
+            const fpsPercentage = Math.min(100, fps / 2);
+            
+            // Determine quality setting
+            let quality, qualityPercentage;
+            if (overallScore > 80) {
+                quality = "Ultra";
+                qualityPercentage = 100;
+            } else if (overallScore > 60) {
+                quality = "High";
+                qualityPercentage = 80;
+            } else if (overallScore > 40) {
+                quality = "Medium";
+                qualityPercentage = 60;
+            } else {
+                quality = "Low";
+                qualityPercentage = 40;
+            }
+            
+            // Determine stability
+            let stability, stabilityPercentage;
+            if (overallScore > 70) {
+                stability = "Stable";
+                stabilityPercentage = 90;
+            } else if (overallScore > 50) {
+                stability = "Minor Issues";
+                stabilityPercentage = 70;
+            } else {
+                stability = "Unstable";
+                stabilityPercentage = 50;
+            }
+            
+            // Generate tips
+            const tips = generatePerformanceTips(cpu, gpu, ram, requirements, overallScore);
+            
+            return {
+                fps,
+                fpsPercentage,
+                quality,
+                qualityPercentage,
+                stability,
+                stabilityPercentage,
+                tips
+            };
+        }
+
+        // Calculate GPU score (simplified)
+        function calculateGpuScore(userGpu, minGpu) {
+            // Simplified GPU hierarchy
+            const gpuHierarchy = {
+                "GTX 780": 1,
+                "GTX 960": 2,
+                "GTX 970": 3,
+                "GTX 1050": 4,
+                "GTX 1070": 5,
+                "GTX 1080": 6,
+                "RTX 2060": 7,
+                "RTX 2070": 8,
+                "RTX 2080": 9,
+                "RTX 3080": 10,
+                "RTX 3090": 11
+            };
+            
+            const userScore = gpuHierarchy[userGpu] || 1;
+            const minScore = gpuHierarchy[minGpu] || 1;
+            
+            return Math.min(100, (userScore / minScore) * 50);
+        }
+
+        // Generate performance tips
+        function generatePerformanceTips(cpu, gpu, ram, requirements, overallScore) {
+            const tips = [];
+            
+            if (cpu < requirements.minCpu * 1.2) {
+                tips.push("Consider upgrading your CPU for better performance");
+            }
+            
+            if (overallScore < 60) {
+                tips.push("Lower graphics settings to improve frame rate");
+            }
+            
+            if (ram < requirements.minRam * 1.5) {
+                tips.push("Close background applications to free up RAM");
+            }
+            
+            if (overallScore > 80) {
+                tips.push("Your system can handle higher texture quality settings");
+            }
+            
+            if (!tips.length) {
+                tips.push("Your system meets recommended requirements");
+            }
+            
+            return tips;
+        }
+
+        // Setup community
+        function setupCommunity() {
+            const submitBtn = document.getElementById('submitPostBtn');
+            const postInput = document.getElementById('communityPost');
+            
+            submitBtn.addEventListener('click', function() {
+                const postText = postInput.value.trim();
+                if (!postText) {
+                    return;
+                }
+                
+                // Create new post
+                const post = {
+                    id: Date.now(),
+                    author: "Anonymous User",
+                    text: postText,
+                    date: new Date().toISOString(),
+                    likes: 0,
+                    replies: []
+                };
+                
+                // Add to community posts
+                addCommunityPost(post);
+                
+                // Clear input
+                postInput.value = '';
+            });
+        }
+
+        // Add community post
+        function addCommunityPost(post) {
+            const postsContainer = document.getElementById('communityPosts');
+            
+            const postElement = document.createElement('div');
+            postElement.className = 'comment';
+            postElement.innerHTML = `
+                <div class="comment-header">
+                    <span class="comment-author">${post.author}</span>
+                    <span class="comment-date">${formatDate(post.date)}</span>
+                </div>
+                <div class="comment-text">${post.text}</div>
+                <div class="comment-actions">
+                    <span class="comment-action" onclick="likeComment(${post.id})">Like (${post.likes})</span>
+                    <span class="comment-action">Reply</span>
+                </div>
+                <div id="replies-${post.id}"></div>
+            `;
+            
+            postsContainer.insertBefore(postElement, postsContainer.firstChild);
+            
+            // Save to localStorage
+            saveCommunityPosts();
+        }
+
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                return "Today";
+            } else if (diffDays === 1) {
+                return "Yesterday";
+            } else if (diffDays < 7) {
+                return `${diffDays} days ago`;
+            } else {
+                return date.toLocaleDateString();
+            }
+        }
+
+        // Like comment
+        function likeComment(postId) {
+            // This would normally update the actual post data
+            // For this demo, we'll just increment the like count in the UI
+            const likeElement = document.querySelector(`[onclick="likeComment(${postId})"]`);
+            const currentLikes = parseInt(likeElement.textContent.match(/\d+/)[0]);
+            likeElement.textContent = `Like (${currentLikes + 1})`;
+            
+            // Save to localStorage
+            saveCommunityPosts();
+        }
+
+        // Save community posts to localStorage
+        function saveCommunityPosts() {
+            const posts = document.querySelectorAll('.comment');
+            const postsData = [];
+            
+            posts.forEach(post => {
+                const author = post.querySelector('.comment-author').textContent;
+                const text = post.querySelector('.comment-text').textContent;
+                const date = post.querySelector('.comment-date').textContent;
+                const likes = parseInt(post.querySelector('.comment-action').textContent.match(/\d+/)[0]);
+                
+                postsData.push({
+                    author,
+                    text,
+                    date,
+                    likes,
+                    replies: []
+                });
+            });
+            
+            localStorage.setItem('vrGameInsightPosts', JSON.stringify(postsData));
+        }
+
+        // Load community posts from localStorage
+        function loadCommunityPosts() {
+            const savedPosts = localStorage.getItem('vrGameInsightPosts');
+            if (savedPosts) {
+                const postsData = JSON.parse(savedPosts);
+                postsData.forEach(post => {
+                    const postElement = document.createElement('div');
+                    postElement.className = 'comment';
+                    postElement.innerHTML = `
+                        <div class="comment-header">
+                            <span class="comment-author">${post.author}</span>
+                            <span class="comment-date">${post.date}</span>
+                        </div>
+                        <div class="comment-text">${post.text}</div>
+                        <div class="comment-actions">
+                            <span class="comment-action" onclick="likeComment(${post.id})">Like (${post.likes})</span>
+                            <span class="comment-action">Reply</span>
+                        </div>
+                        <div id="replies-${post.id}"></div>
+                    `;
+                    
+                    document.getElementById('communityPosts').appendChild(postElement);
+                });
+            }
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VR Game Analysis Platform","Search":"Search","Games":"Games","Review Analysis":"Review Analysis","Compatibility":"Compatibility","Performance":"Performance","Community":"Community","VR Game Database":"VR Game Database","Game Details":"Game Details","Enter review text to analyze:":"Enter review text to analyze:","Analyze Review":"Analyze Review","Sentiment Analysis":"Sentiment Analysis","Key Topics":"Key Topics","VR Device Compatibility":"VR Device Compatibility","Enter your VR device model:":"Enter your VR device model:","Check Compatibility":"Check Compatibility","Compatibility Results":"Compatibility Results","Game Performance Assessment":"Game Performance Assessment","Select Game:":"Select Game:","Choose a game...":"Choose a game...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Assess Performance","Performance Assessment":"Performance Assessment","Frame Rate":"Frame Rate","-- fps":"-- fps","Graphical Quality":"Graphical Quality","Stability":"Stability","Community Hub":"Community Hub","Post a question or comment:":"Post a question or comment:","Submit Post":"Submit Post","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Covert Ops","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Tales from the Galaxy's Edge","Q3 2026":"Q3 2026","I Expect You To Die 3":"I Expect You To Die 3","Q4 2026":"Q4 2026","The Light Brigade":"The Light Brigade","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Asgard's Wrath 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"May 2018","June 2026":"June 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"New songs added: Imagine Dragons, The Weeknd, and Dua Lipa","April 2026":"April 2026","New game mode: Marathon Challenge with 100 song streaks":"New game mode: Marathon Challenge with 100 song streaks","January 2026":"January 2026","Custom song creation tools released for community":"Custom song creation tools released for community","March 2020":"March 2020","May 2026":"May 2026","New expansion: The Uprising, focusing on the resistance movement":"New expansion: The Uprising, focusing on the resistance movement","__title__":"VRGameInsight - VR Game Analysis Platform"},"zh-CN":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VR游戏分析平台","Search":"搜索","Games":"游戏","Review Analysis":"评论分析","Compatibility":"兼容性","Performance":"性能","Community":"社区","VR Game Database":"VR游戏数据库","Game Details":"游戏详情","Enter review text to analyze:":"输入评论文本以进行分析：","Analyze Review":"分析评论","Sentiment Analysis":"情感分析","Key Topics":"关键话题","VR Device Compatibility":"VR设备兼容性","Enter your VR device model:":"输入您的VR设备型号：","Check Compatibility":"检查兼容性","Compatibility Results":"兼容性结果","Game Performance Assessment":"游戏性能评估","Select Game:":"选择游戏：","Choose a game...":"选择一个游戏...","CPU (GHz):":"CPU (GHz)：","GPU:":"GPU：","RAM (GB):":"RAM (GB)：","Assess Performance":"评估性能","Performance Assessment":"性能评估","Frame Rate":"帧率","-- fps":"-- fps","Graphical Quality":"图形质量","Stability":"稳定性","Community Hub":"社区中心","Post a question or comment:":"发布一个问题或评论：","Submit Post":"提交帖子","Beat Saber":"节奏大师","Half-Life: Alyx":"半条命：爱莉克斯","Superhot VR":"超级热VR","Skyrim VR":"天际VR","Rec Room":"聚会房间","Population: One":"一人之境","Battle Royale":"大逃杀","The Walking Ones":"行尸走肉","After the Fall":"坠落之后","Phantom: Covert Ops":"幻影：秘密行动","Star Wars: Tales from the Galaxy's Edge":"星球大战：银河边缘的故事","Q3 2026":"2026年第三季度","I Expect You To Die 3":"我期待你死3","Q4 2026":"2026年第四季度","The Light Brigade":"光之骑兵","Q1 2027":"2027年第一季度","Asgard's Wrath 2":"阿斯加德之怒2","Q2 2027":"2027年第二季度","Beat Games":"节奏游戏","May 2018":"2018年5月","June 2026":"2026年6月","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"新增歌曲：Imagine Dragons, The Weeknd和Dua Lipa","April 2026":"2026年4月","New game mode: Marathon Challenge with 100 song streaks":"新游戏模式：100首歌曲连击的马拉松挑战","January 2026":"2026年1月","Custom song creation tools released for community":"为社区发布自定义歌曲创建工具","March 2020":"2020年3月","May 2026":"2026年5月","New expansion: The Uprising, focusing on the resistance movement":"新扩展：起义，专注于抵抗运动","__title__":"VRGameInsight - VR游戏分析平台"},"es":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Plataforma de Análisis de Juegos de RV","Search":"Búsqueda","Games":"Juegos","Review Analysis":"Análisis de Revisión","Compatibility":"Compatibilidad","Performance":"Rendimiento","Community":"Comunidad","VR Game Database":"Base de Datos de Juegos de RV","Game Details":"Detalles del Juego","Enter review text to analyze:":"Introduce el texto de la revisión a analizar:","Analyze Review":"Analizar Revisión","Sentiment Analysis":"Análisis de Sentimiento","Key Topics":"Temas Principales","VR Device Compatibility":"Compatibilidad con Dispositivos de RV","Enter your VR device model:":"Introduce el modelo de tu dispositivo de RV:","Check Compatibility":"Verificar Compatibilidad","Compatibility Results":"Resultados de Compatibilidad","Game Performance Assessment":"Evaluación del Rendimiento del Juego","Select Game:":"Seleccionar Juego:","Choose a game...":"Elegir un juego...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Evaluar Rendimiento","Performance Assessment":"Evaluación de Rendimiento","Frame Rate":"Tasa de Cuadros","-- fps":"-- fps","Graphical Quality":"Calidad Gráfica","Stability":"Estabilidad","Community Hub":"Centro de Comunidad","Post a question or comment:":"Publicar una pregunta o comentario:","Submit Post":"Enviar Publicación","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Población: Uno","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"Después del Caída","Phantom: Covert Ops":"Phantom: Operaciones Encubiertas","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Cuentos del borde de la Galaxia","Q3 2026":"Q3 2026","I Expect You To Die 3":"Espero que Tú Muertas 3","Q4 2026":"Q4 2026","The Light Brigade":"La Brigada de la Luz","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Ira de Asgard 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Mayo 2018","June 2026":"Junio 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Nuevas canciones añadidas: Imagine Dragons, The Weeknd y Dua Lipa","April 2026":"Abril 2026","New game mode: Marathon Challenge with 100 song streaks":"Nuevo modo de juego: Desafío de Maratón con 100 canciones seguidas","January 2026":"Enero 2026","Custom song creation tools released for community":"Herramientas de creación de canciones personalizadas lanzadas para la comunidad","March 2020":"Marzo 2020","May 2026":"Mayo 2026","New expansion: The Uprising, focusing on the resistance movement":"Nueva expansión: The Uprising, centrada en el movimiento de resistencia","__title__":"VRGameInsight - Plataforma de Análisis de Juegos de RV"},"ja":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VRゲーム分析プラットフォーム","Search":"検索","Games":"ゲーム","Review Analysis":"レビュー分析","Compatibility":"互換性","Performance":"パフォーマンス","Community":"コミュニティ","VR Game Database":"VRゲームデータベース","Game Details":"ゲーム詳細","Enter review text to analyze:":"レビューテキストを入力して分析してください：","Analyze Review":"レビューを分析する","Sentiment Analysis":"感情分析","Key Topics":"キーワード","VR Device Compatibility":"VRデバイス互換性","Enter your VR device model:":"あなたのVRデバイスモデルを入力してください：","Check Compatibility":"互換性を確認する","Compatibility Results":"互換性結果","Game Performance Assessment":"ゲームパフォーマンス評価","Select Game:":"ゲームを選択してください：","Choose a game...":"ゲームを選んでください...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"パフォーマンスを評価する","Performance Assessment":"パフォーマンス評価","Frame Rate":"フレームレート","-- fps":"-- fps","Graphical Quality":"グラフィカルクオリティ","Stability":"安定性","Community Hub":"コミュニティハブ","Post a question or comment:":"質問やコメントを投稿してください：","Submit Post":"投稿を送信する","Beat Saber":"ビートサベージ","Half-Life: Alyx":"ハーフライフ：アリックス","Superhot VR":"スーパーハットVR","Skyrim VR":"スカイリムVR","Rec Room":"リクリームルーム","Population: One":"人口：一人","Battle Royale":"バトルロイヤル","The Walking Ones":"ウォーキングオンズ","After the Fall":"アフターザーフォール","Phantom: Covert Ops":"ファントム：コバートオペレーション","Star Wars: Tales from the Galaxy's Edge":"スターウォーズ：銀河の端の物語","Q3 2026":"Q3 2026","I Expect You To Die 3":"I Expect You To Die 3","Q4 2026":"Q4 2026","The Light Brigade":"ライトブリゲード","Q1 2027":"Q1 2027","Asgard's Wrath 2":"アsgardの怒り2","Q2 2027":"Q2 2027","Beat Games":"ビートゲームズ","May 2018":"2018年5月","June 2026":"2026年6月","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"新しい曲が追加されました：Imagine Dragons、The Weeknd、そしてDua Lipa","April 2026":"2026年4月","New game mode: Marathon Challenge with 100 song streaks":"新しいゲームモード：100曲連続のマラソンチャレンジ","January 2026":"2026年1月","Custom song creation tools released for community":"コミュニティ用のカスタム曲作成ツールがリリースされました","March 2020":"2020年3月","May 2026":"2026年5月","New expansion: The Uprising, focusing on the resistance movement":"新しい拡張コンテンツ：The Uprising、抵抗運動に焦点を当てています","__title__":"VRGameInsight - VRゲーム分析プラットフォーム"},"ko":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VR 게임 분석 플랫폼","Search":"검색","Games":"게임","Review Analysis":"리뷰 분석","Compatibility":"호환성","Performance":"성능","Community":"커뮤니티","VR Game Database":"VR 게임 데이터베이스","Game Details":"게임 상세 정보","Enter review text to analyze:":"분석할 리뷰 텍스트를 입력하세요:","Analyze Review":"리뷰 분석","Sentiment Analysis":"감정 분석","Key Topics":"주요 주제","VR Device Compatibility":"VR 장치 호환성","Enter your VR device model:":"귀하의 VR 장치 모델을 입력하세요:","Check Compatibility":"호환성 확인","Compatibility Results":"호환성 결과","Game Performance Assessment":"게임 성능 평가","Select Game:":"게임 선택:","Choose a game...":"게임을 선택하세요...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"성능 평가","Performance Assessment":"성능 평가","Frame Rate":"프레임 레이트","-- fps":"-- fps","Graphical Quality":"그래픽 품질","Stability":"안정성","Community Hub":"커뮤니티 중심","Post a question or comment:":"질문이나 의견을 게시하세요:","Submit Post":"게시물 제출","Beat Saber":"비트 사베르","Half-Life: Alyx":"반생: 애리克斯","Superhot VR":"슈퍼핏 VR","Skyrim VR":"스카이리ム VR","Rec Room":"리크룸","Population: One":"인구: 하나","Battle Royale":"배틀 로얄","The Walking Ones":"ウォ킹 원즈","After the Fall":"뒤로부터","Phantom: Covert Ops":"파antom: 은밀 작전","Star Wars: Tales from the Galaxy's Edge":"스타워즈: 갈러지의 Edge 이야기","Q3 2026":"Q3 2026","I Expect You To Die 3":"나는 네가 죽어야 한다고 기대한다 3","Q4 2026":"Q4 2026","The Light Brigade":"라이트 브리게드","Q1 2027":"Q1 2027","Asgard's Wrath 2":"아스가드의 분노 2","Q2 2027":"Q2 2027","Beat Games":"비트 게임","May 2018":"5월 2018","June 2026":"6월 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"새로운 노래 추가: Imagine Dragons, The Weeknd, and Dua Lipa","April 2026":"4월 2026","New game mode: Marathon Challenge with 100 song streaks":"새 게임 모드: 100 곡 연속의 마라톤 챌린지","January 2026":"1월 2026","Custom song creation tools released for community":"커뮤니티용 커스텀 노래 생성 도구 출시","March 2020":"3월 2020","May 2026":"5월 2026","New expansion: The Uprising, focusing on the resistance movement":"새 확장 패키지: The Uprising, 저항 운동에 중점을 둠","__title__":"VRGameInsight - VR 게임 분석 플랫폼"},"fr":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Plateforme d'analyse de jeux VR","Search":"Recherche","Games":"Jeux","Review Analysis":"Analyse de critique","Compatibility":"Compatibilité","Performance":"Performance","Community":"Communauté","VR Game Database":"Base de données de jeux VR","Game Details":"Détails du jeu","Enter review text to analyze:":"Entrez le texte de la critique à analyser:","Analyze Review":"Analyser la critique","Sentiment Analysis":"Analyse de l'opinion","Key Topics":"Thèmes principaux","VR Device Compatibility":"Compatibilité du périphérique VR","Enter your VR device model:":"Entrez le modèle de votre périphérique VR:","Check Compatibility":"Vérifier la compatibilité","Compatibility Results":"Résultats de compatibilité","Game Performance Assessment":"Évaluation de la performance du jeu","Select Game:":"Sélectionnez un jeu:","Choose a game...":"Choisissez un jeu...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Évaluer la performance","Performance Assessment":"Évaluation de la performance","Frame Rate":"Taux de rafraîchissement","-- fps":"-- fps","Graphical Quality":"Qualité graphique","Stability":"Stabilité","Community Hub":"Centre communautaire","Post a question or comment:":"Poster une question ou un commentaire:","Submit Post":"Soumettre le message","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Opérations secrètes","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Histoires de l'Étoile de la Guerre","Q3 2026":"Q3 2026","I Expect You To Die 3":"Je m'attends à ce que tu meures 3","Q4 2026":"Q4 2026","The Light Brigade":"La Légion de Lumière","Q1 2027":"Q1 2027","Asgard's Wrath 2":"La Colère d'Asgard 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Mai 2018","June 2026":"Juin 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Nouvelles chansons ajoutées : Imagine Dragons, The Weeknd et Dua Lipa","April 2026":"Avril 2026","New game mode: Marathon Challenge with 100 song streaks":"Nouveau mode de jeu : Marathon Challenge avec des séquences de 100 chansons","January 2026":"Janvier 2026","Custom song creation tools released for community":"Outils de création de chansons personnalisées libérés pour la communauté","March 2020":"Mars 2020","May 2026":"Mai 2026","New expansion: The Uprising, focusing on the resistance movement":"Nouvelle extension : The Uprising, se concentrant sur le mouvement de résistance","__title__":"VRGameInsight - Plateforme d'analyse de jeux VR"},"de":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VR-Spielanalyse-Plattform","Search":"Suche","Games":"Spiele","Review Analysis":"Bewertungsanalyse","Compatibility":"Kompatibilität","Performance":"Leistung","Community":"Community","VR Game Database":"VR-Spiel-Datenbank","Game Details":"Spiel-Details","Enter review text to analyze:":"Geben Sie den zu analysierenden Bewertungstext ein:","Analyze Review":"Bewertung analysieren","Sentiment Analysis":"Stimmungsanalyse","Key Topics":"Schlüsselthemen","VR Device Compatibility":"VR-Gerätekompatibilität","Enter your VR device model:":"Geben Sie Ihr VR-Gerätmodell ein:","Check Compatibility":"Kompatibilität überprüfen","Compatibility Results":"Kompatibilitätsergebnisse","Game Performance Assessment":"Spielleistungsbeurteilung","Select Game:":"Wählen Sie ein Spiel:","Choose a game...":"Wählen Sie ein Spiel...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Leistung beurteilen","Performance Assessment":"Leistungsbeurteilung","Frame Rate":"Bildwiederholrate","-- fps":"-- fps","Graphical Quality":"Grafische Qualität","Stability":"Stabilität","Community Hub":"Community-Zentrum","Post a question or comment:":"Eine Frage oder einen Kommentar posten:","Submit Post":"Beitrag einreichen","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Bevölkerung: Einziger","Battle Royale":"Battle Royale","The Walking Ones":"Die Wandernden","After the Fall":"Nach dem Sturz","Phantom: Covert Ops":"Phantom: Geheime Operationen","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Geschichten vom Rand des Galaxienrandes","Q3 2026":"Q3 2026","I Expect You To Die 3":"Ich Erwarte, Dass Du 3 Tötest","Q4 2026":"Q4 2026","The Light Brigade":"Das Lichtgeschwader","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Zorn Asgards 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Mai 2018","June 2026":"Juni 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Neue Lieder hinzugefügt: Imagine Dragons, The Weeknd und Dua Lipa","April 2026":"April 2026","New game mode: Marathon Challenge with 100 song streaks":"Neuer Spielmodus: Marathon Challenge mit 100-Song-Serie","January 2026":"Januar 2026","Custom song creation tools released for community":"Benutzerdefinierte Song-Erstellungstools für die Community freigegeben","March 2020":"März 2020","May 2026":"Mai 2026","New expansion: The Uprising, focusing on the resistance movement":"Neue Erweiterung: Der Aufstand, der sich auf den Widerstand konzentriert","__title__":"VRGameInsight - VR-Spielanalyse-Plattform"},"ru":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Платформа анализа VR-игр","Search":"Поиск","Games":"Игры","Review Analysis":"Анализ отзывов","Compatibility":"Совместимость","Performance":"Производительность","Community":"Сообщество","VR Game Database":"База данных VR-игр","Game Details":"Подробности игры","Enter review text to analyze:":"Введи текст отзыва для анализа:","Analyze Review":"Анализировать отзыв","Sentiment Analysis":"Анализ настроения","Key Topics":"Ключевые темы","VR Device Compatibility":"Совместимость VR-устройств","Enter your VR device model:":"Введи модель вашего VR-устройства:","Check Compatibility":"Проверить совместимость","Compatibility Results":"Результаты совместимости","Game Performance Assessment":"Оценка производительности игры","Select Game:":"Выберите игру:","Choose a game...":"Выберите игру...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Оценить производительность","Performance Assessment":"Оценка производительности","Frame Rate":"Частота кадров","-- fps":"-- fps","Graphical Quality":"Графическое качество","Stability":"Стабильность","Community Hub":"Центр сообщества","Post a question or comment:":"Опубликуйте вопрос или комментарий:","Submit Post":"Подтвердить публикацию","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Covert Ops","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Tales from the Galaxy's Edge","Q3 2026":"Q3 2026","I Expect You To Die 3":"I Expect You To Die 3","Q4 2026":"Q4 2026","The Light Brigade":"The Light Brigade","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Asgard's Wrath 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Май 2018","June 2026":"Июнь 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Добавлены новые песни: Imagine Dragons, The Weeknd и Dua Lipa","April 2026":"Апрель 2026","New game mode: Marathon Challenge with 100 song streaks":"Новый режим игры: Marathon Challenge с серией из 100 песен","January 2026":"Январь 2026","Custom song creation tools released for community":"Выпущены инструменты для создания пользовательских песен для сообщества","March 2020":"Март 2020","May 2026":"Май 2026","New expansion: The Uprising, focusing on the resistance movement":"Новая дополнение: The Uprising, сосредоточенное на движении сопротивления","__title__":"VRGameInsight - Платформа анализа VR-игр"},"pt":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Plataforma de Análise de Jogos de RV","Search":"Pesquisa","Games":"Jogos","Review Analysis":"Análise de Revisão","Compatibility":"Compatibilidade","Performance":"Desempenho","Community":"Comunidade","VR Game Database":"Banco de Dados de Jogos de RV","Game Details":"Detalhes do Jogo","Enter review text to analyze:":"Insira o texto da revisão para análise:","Analyze Review":"Analisar Revisão","Sentiment Analysis":"Análise de Sentimento","Key Topics":"Tópicos Principais","VR Device Compatibility":"Compatibilidade do Dispositivo de RV","Enter your VR device model:":"Insira o modelo do seu dispositivo de RV:","Check Compatibility":"Verificar Compatibilidade","Compatibility Results":"Resultados de Compatibilidade","Game Performance Assessment":"Avaliação de Desempenho do Jogo","Select Game:":"Selecione um Jogo:","Choose a game...":"Escolha um jogo...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Avaliar Desempenho","Performance Assessment":"Avaliação de Desempenho","Frame Rate":"Taxa de Quadros","-- fps":"-- fps","Graphical Quality":"Qualidade Gráfica","Stability":"Estabilidade","Community Hub":"Hub da Comunidade","Post a question or comment:":"Publique uma pergunta ou comentário:","Submit Post":"Enviar Post","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"População: Um","Battle Royale":"Battle Royale","The Walking Ones":"Os Andantes","After the Fall":"Depois da Queda","Phantom: Covert Ops":"Fantasma: Operações Secretas","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Contos da Borda da Galáxia","Q3 2026":"Q3 2026","I Expect You To Die 3":"Eu Espero que Você Morra 3","Q4 2026":"Q4 2026","The Light Brigade":"A Guarda Luminosa","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Aira de Asgard 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Maio 2018","June 2026":"Junho 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Novas músicas adicionadas: Imagine Dragons, The Weeknd e Dua Lipa","April 2026":"Abril 2026","New game mode: Marathon Challenge with 100 song streaks":"Novo modo de jogo: Desafio de Maratona com sequências de 100 músicas","January 2026":"Janeiro 2026","Custom song creation tools released for community":"Ferramentas de criação de músicas personalizadas lançadas para a comunidade","March 2020":"Março 2020","May 2026":"Maio 2026","New expansion: The Uprising, focusing on the resistance movement":"Nova expansão: A Insurreição, focando no movimento de resistência","__title__":"VRGameInsight - Plataforma de Análise de Jogos de RV"},"ar":{"VRGameInsight - VR Game Analysis Platform":"منصة تحليل ألعاب الواقع الافتراضي - VRGameInsight","Search":"البحث","Games":"الألعاب","Review Analysis":"تحليل المراجعة","Compatibility":"التوافق","Performance":"السرعة","Community":"المجتمع","VR Game Database":"قاعدة بيانات ألعاب الواقع الافتراضي","Game Details":"تفاصيل اللعبة","Enter review text to analyze:":"أدخل نص المراجعة للتحليل:","Analyze Review":"تحليل المراجعة","Sentiment Analysis":"تحليل المشاعر","Key Topics":"المواضيع الرئيسية","VR Device Compatibility":"توافق أجهزة الواقع الافتراضي","Enter your VR device model:":"أدخل نموذج جهاز الواقع الافتراضي الخاص بك:","Check Compatibility":"تحقق من التوافق","Compatibility Results":"نتائج التوافق","Game Performance Assessment":"تقييم سرعة اللعبة","Select Game:":"اختر لعبة:","Choose a game...":"اختر لعبة...","CPU (GHz):":"معالج (GHz):","GPU:":"لوحة الرسومات:","RAM (GB):":"ذاكرة الوصول العشوائي (GB):","Assess Performance":"تقييم السرعة","Performance Assessment":"تقييم السرعة","Frame Rate":"معدل الإطارات","-- fps":"-- fps","Graphical Quality":"جودة الرسومات","Stability":"الاستقرار","Community Hub":"مركز المجتمع","Post a question or comment:":"أرسل سؤالاً أو تعليقاً:","Submit Post":"تقديم المنشور","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"السكان: واحد","Battle Royale":"الباتل رويال","The Walking Ones":"الذين يمشون","After the Fall":"بعد السقوط","Phantom: Covert Ops":"الشبح: العمليات السرية","Star Wars: Tales from the Galaxy's Edge":"حرب النجوم: قصص حافة المجرة","Q3 2026":"الربع الثالث 2026","I Expect You To Die 3":"أتوقع منك أن تموت 3","Q4 2026":"الربع الرابع 2026","The Light Brigade":"فرقة الضوء","Q1 2027":"الربع الأول 2027","Asgard's Wrath 2":"غضب اسجارد 2","Q2 2027":"الربع الثاني 2027","Beat Games":"Beat Games","May 2018":"مايو 2018","June 2026":"يونيو 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"أضيفت أغاني جديدة: Imagine Dragons، The Weeknd، و Dua Lipa","April 2026":"أبريل 2026","New game mode: Marathon Challenge with 100 song streaks":"نمط لعبة جديد: تحدي الماراثون مع سلسلة من 100 أغنية","January 2026":"يناير 2026","Custom song creation tools released for community":"أطلقت أدوات إنشاء الأغاني المخصصة للمجتمع","March 2020":"مارس 2020","May 2026":"مايو 2026","New expansion: The Uprising, focusing on the resistance movement":"إضافة جديدة: الثورة، تركز على حركة المقاومة","__title__":"منصة تحليل ألعاب الواقع الافتراضي - VRGameInsight"},"hi":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - VR गेम एनालिसिस प्लेटफॉर्म","Search":"खोज","Games":"गेम्स","Review Analysis":"रिव्यू एनालिसिस","Compatibility":"संगतता","Performance":"प्रदर्शन","Community":"समुदाय","VR Game Database":"VR गेम डेटाबेस","Game Details":"गेम विवरण","Enter review text to analyze:":"एनालिसिस के लिए रिव्यू टेक्स्ट दर्ज करें:","Analyze Review":"रिव्यू एनालाइज करें","Sentiment Analysis":"सेंटिमेंट एनालिसिस","Key Topics":"मुख्य विषय","VR Device Compatibility":"VR डिवाइस संगतता","Enter your VR device model:":"अपना VR डिवाइस मॉडल दर्ज करें:","Check Compatibility":"संगतता जांचें","Compatibility Results":"संगतता परिणाम","Game Performance Assessment":"गेम प्रदर्शन आकलन","Select Game:":"गेम चुनें:","Choose a game...":"एक गेम चुनें...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"प्रदर्शन आकलन करें","Performance Assessment":"प्रदर्शन आकलन","Frame Rate":"फ्रेम रेट","-- fps":"-- fps","Graphical Quality":"ग्राफिकल क्वालिटी","Stability":"स्थिरता","Community Hub":"समुदाय हब","Post a question or comment:":"एक प्रश्न या टिप्पणी पोस्ट करें:","Submit Post":"पोस्ट सबमिट करें","Beat Saber":"बीट सेबर","Half-Life: Alyx":"हाफ-लाइफ: एलिक्स","Superhot VR":"सुपरहॉट VR","Skyrim VR":"स्कायरिम VR","Rec Room":"रेक रूम","Population: One":"पॉपुलेशन: वन","Battle Royale":"बैटल रॉयल","The Walking Ones":"द वॉकिंग वन्स","After the Fall":"आफ्टर द फॉल","Phantom: Covert Ops":"फैंटम: कोवर्ट ऑप्स","Star Wars: Tales from the Galaxy's Edge":"स्टार वॉर्स: टेल्स फ्रॉम द गैलेक्सी'एज","Q3 2026":"Q3 2026","I Expect You To Die 3":"मैं आपसे मरने की उम्मीद करता हूं 3","Q4 2026":"Q4 2026","The Light Brigade":"द लाइट ब्रिगेड","Q1 2027":"Q1 2027","Asgard's Wrath 2":"अस्गार्ड्स राथ 2","Q2 2027":"Q2 2027","Beat Games":"बीट गेम्स","May 2018":"मई 2018","June 2026":"जून 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"नए गाने जोड़े गए: इमैजिन ड्रैगन्स, द वीकेंड, और डुआ लिपा","April 2026":"अप्रैल 2026","New game mode: Marathon Challenge with 100 song streaks":"नया गेम मोड: मैराथन चैलेंज 100 गानों के स्ट्रीक के साथ","January 2026":"जनवरी 2026","Custom song creation tools released for community":"समुदाय के लिए कस्टम गाना निर्माण टूल जारी किए गए","March 2020":"मार्च 2020","May 2026":"मई 2026","New expansion: The Uprising, focusing on the resistance movement":"नए विस्तार: द अपराइजिंग, प्रतिरोध आंदोलन पर केंद्रित","__title__":"VRGameInsight - VR गेम एनालिसिस प्लेटफॉर्म"},"id":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Platform Analisis Game VR","Search":"Pencarian","Games":"Game","Review Analysis":"Analisis Ulasan","Compatibility":"Kompatibilitas","Performance":"Performa","Community":"Komunitas","VR Game Database":"Database Game VR","Game Details":"Detail Game","Enter review text to analyze:":"Masukkan teks ulasan untuk dianalisis:","Analyze Review":"Analisis Ulasan","Sentiment Analysis":"Analisis Sentimen","Key Topics":"Topik Utama","VR Device Compatibility":"Kompatibilitas Perangkat VR","Enter your VR device model:":"Masukkan model perangkat VR Anda:","Check Compatibility":"Periksa Kompatibilitas","Compatibility Results":"Hasil Kompatibilitas","Game Performance Assessment":"Evaluasi Performa Game","Select Game:":"Pilih Game:","Choose a game...":"Pilih sebuah game...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Evaluasi Performa","Performance Assessment":"Evaluasi Performa","Frame Rate":"Tingkat Frame","-- fps":"-- fps","Graphical Quality":"Kualitas Grafis","Stability":"Stabilitas","Community Hub":"Pusat Komunitas","Post a question or comment:":"Ajukan pertanyaan atau komentar:","Submit Post":"Kirim Postingan","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Covert Ops","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Tales from the Galaxy's Edge","Q3 2026":"Q3 2026","I Expect You To Die 3":"I Expect You To Die 3","Q4 2026":"Q4 2026","The Light Brigade":"The Light Brigade","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Asgard's Wrath 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"Mei 2018","June 2026":"Juni 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Lagu baru ditambahkan: Imagine Dragons, The Weeknd, dan Dua Lipa","April 2026":"April 2026","New game mode: Marathon Challenge with 100 song streaks":"Mode game baru: tantangan Maraton dengan 100 lagu berturut-turut","January 2026":"Januari 2026","Custom song creation tools released for community":"Alat pembuatan lagu kustom dirilis untuk komunitas","March 2020":"Maret 2020","May 2026":"Mei 2026","New expansion: The Uprising, focusing on the resistance movement":"Ekspansi baru: The Uprising, fokus pada gerakan perlawanan","__title__":"VRGameInsight - Platform Analisis Game VR"},"vi":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - Nền tảng Phân tích Trò chơi VR","Search":"Tìm kiếm","Games":"Trò chơi","Review Analysis":"Phân tích Đánh giá","Compatibility":"Tương thích","Performance":"Hiệu suất","Community":"Cộng đồng","VR Game Database":"Cơ sở dữ liệu Trò chơi VR","Game Details":"Chi tiết Trò chơi","Enter review text to analyze:":"Nhập văn bản đánh giá để phân tích:","Analyze Review":"Phân tích Đánh giá","Sentiment Analysis":"Phân tích Tình cảm","Key Topics":"Chủ đề Chính","VR Device Compatibility":"Tương Thiết bị VR","Enter your VR device model:":"Nhập mô hình thiết bị VR của bạn:","Check Compatibility":"Kiểm tra Tương thích","Compatibility Results":"Kết quả Tương thích","Game Performance Assessment":"Đánh giá Hiệu suất Trò chơi","Select Game:":"Chọn Trò chơi:","Choose a game...":"Chọn một trò chơi...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"Đánh giá Hiệu suất","Performance Assessment":"Đánh giá Hiệu suất","Frame Rate":"Tỷ lệ Khung hình","-- fps":"-- fps","Graphical Quality":"Chất lượng Đồ họa","Stability":"Ổn định","Community Hub":"Trung tâm Cộng đồng","Post a question or comment:":"Đăng câu hỏi hoặc bình luận:","Submit Post":"Gửi Bài đăng","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Covert Ops","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Tales from the Galaxy's Edge","Q3 2026":"Quý 3 2026","I Expect You To Die 3":"Tôi Mong Bạn Sẽ Chết 3","Q4 2026":"Quý 4 2026","The Light Brigade":"The Light Brigade","Q1 2027":"Quý 1 2027","Asgard's Wrath 2":"Sự Giận Dữ của Asgard 2","Q2 2027":"Quý 2 2027","Beat Games":"Beat Games","May 2018":"Tháng 5 2018","June 2026":"Tháng 6 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"Bài hát mới được thêm: Imagine Dragons, The Weeknd, và Dua Lipa","April 2026":"Tháng 4 2026","New game mode: Marathon Challenge with 100 song streaks":"Chế độ trò chơi mới: Thử thách Marathon với chuỗi 100 bài hát","January 2026":"Tháng 1 2026","Custom song creation tools released for community":"Công cụ tạo bài hát tùy chỉnh được phát hành cho cộng đồng","March 2020":"Tháng 3 2020","May 2026":"Tháng 5 2026","New expansion: The Uprising, focusing on the resistance movement":"Bản mở rộng mới: The Uprising, tập trung vào phong trào kháng chiến","__title__":"VRGameInsight - Nền tảng Phân tích Trò chơi VR"},"th":{"VRGameInsight - VR Game Analysis Platform":"VRGameInsight - แพลตฟอร์มวิเคราะห์เกม VR","Search":"ค้นหา","Games":"เกม","Review Analysis":"วิเคราะห์รีวิว","Compatibility":"ความเข้ากันได้","Performance":"ประสิทธิภาพ","Community":"ชุมชน","VR Game Database":"ฐานข้อมูลเกม VR","Game Details":"รายละเอียดเกม","Enter review text to analyze:":"ป้อนข้อความรีวิวเพื่อวิเคราะห์:","Analyze Review":"วิเคราะห์รีวิว","Sentiment Analysis":"วิเคราะห์อารมณ์","Key Topics":"หัวข้อสำคัญ","VR Device Compatibility":"ความเข้ากันได้ของอุปกรณ์ VR","Enter your VR device model:":"ป้อนรุ่นอุปกรณ์ VR ของคุณ:","Check Compatibility":"ตรวจสอบความเข้ากันได้","Compatibility Results":"ผลการตรวจสอบความเข้ากันได้","Game Performance Assessment":"ประเมินประสิทธิภาพเกม","Select Game:":"เลือกเกม:","Choose a game...":"เลือกเกม...","CPU (GHz):":"CPU (GHz):","GPU:":"GPU:","RAM (GB):":"RAM (GB):","Assess Performance":"ประเมินประสิทธิภาพ","Performance Assessment":"การประเมินประสิทธิภาพ","Frame Rate":"อัตราเฟรม","-- fps":"-- fps","Graphical Quality":"คุณภาพกราฟิก","Stability":"เสถียรภาพ","Community Hub":"ศูนย์ชุมชน","Post a question or comment:":"โพสต์คำถามหรือความคิดเห็น:","Submit Post":"ส่งโพสต์","Beat Saber":"Beat Saber","Half-Life: Alyx":"Half-Life: Alyx","Superhot VR":"Superhot VR","Skyrim VR":"Skyrim VR","Rec Room":"Rec Room","Population: One":"Population: One","Battle Royale":"Battle Royale","The Walking Ones":"The Walking Ones","After the Fall":"After the Fall","Phantom: Covert Ops":"Phantom: Covert Ops","Star Wars: Tales from the Galaxy's Edge":"Star Wars: Tales from the Galaxy's Edge","Q3 2026":"Q3 2026","I Expect You To Die 3":"I Expect You To Die 3","Q4 2026":"Q4 2026","The Light Brigade":"The Light Brigade","Q1 2027":"Q1 2027","Asgard's Wrath 2":"Asgard's Wrath 2","Q2 2027":"Q2 2027","Beat Games":"Beat Games","May 2018":"May 2018","June 2026":"June 2026","New songs added: Imagine Dragons, The Weeknd, and Dua Lipa":"เพลงใหม่เพิ่มเข้ามา: Imagine Dragons, The Weeknd, และ Dua Lipa","April 2026":"April 2026","New game mode: Marathon Challenge with 100 song streaks":"โหมดเกมใหม่: Marathon Challenge ด้วยการทำสถิติ 100 เพลงติดต่อกัน","January 2026":"January 2026","Custom song creation tools released for community":"เครื่องมือสร้างเพลงกำหนดเองเปิดให้ชุมชน","March 2020":"March 2020","May 2026":"May 2026","New expansion: The Uprising, focusing on the resistance movement":"เนื้อหาเพิ่มเติมใหม่: The Uprising เน้นไปที่ขบวนการต่อต้าน","__title__":"VRGameInsight - แพลตฟอร์มวิเคราะห์เกม VR"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
