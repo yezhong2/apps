@@ -28,8 +28,8 @@ WATCH_MIN=12     # 调度器日志超过此分钟数无更新 → 判定已停�
 
 # 触发修复的错误模式（精确措辞，避免把可容忍的失败当事故）
 ERR_PAT='密钥配置文件读取失败|提炼失败|所有 Key/模型均不可用|部署异常|部署失败|issue 提交失败|TypeError|ReferenceError|SyntaxError|Exception'
-# 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout/UnknownHostException——同模型重试+冷却切换自愈 / 巡检的 Rhino 编译参考——仅供参考、非浏览器问题，2026-10-02 实测误报后加入 / GitHub API 的 HTTP/2 抖动（SETTINGS preface，本地缓存兜底自愈，2026-10-03 加入））
-IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException|UnknownHostException|Rhino 编译不过|功能实测|SETTINGS preface'
+# 已知可容忍、不触发修复的噪音（单路信源失败 / V2EX 超时 / 常亮失败等老问题 / GLM 调用 SocketTimeout/UnknownHostException——同模型重试+冷却切换自愈 / 巡检的 Rhino 编译参考——仅供参考、非浏览器问题，2026-10-02 实测误报后加入 / GitHub API 的 HTTP/2 抖动（SETTINGS preface，本地缓存兜底自愈，2026-10-03 加入）/ 引擎被强杀时网络调用的临终遗言（InterruptedIOException，2026-10-03 引擎清场实测））
+IGNORE_PAT='推送第|知乎 失败|微博 失败|V2EX|屏幕常亮开启失败|读取失败，跳过|页脚迁移失败|SocketTimeoutException|UnknownHostException|Rhino 编译不过|功能实测|SETTINGS preface|InterruptedIOException'
 
 log() { echo "[$(date '+%F %T')] $*" >> "$PROGRESS"; }
 
