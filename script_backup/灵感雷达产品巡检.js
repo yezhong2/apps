@@ -697,7 +697,13 @@ const FT_TASK_PATH = "/storage/emulated/0/脚本/功能实测_任务.json";
 const FT_RESULT_PATH = "/storage/emulated/0/脚本/功能实测_结果.json";
 const FT_CURSOR_PATH = "/storage/emulated/0/脚本/功能实测游标.txt";
 const FT_LOG_PATH = "/storage/emulated/0/脚本/功能实测_历史.json"; // {文件名: 上次实测时间戳ms} 防重复实测（2026-10-03 修）
-const FT_MAX_PER_ROUND = 3; // 每轮实测产品数（2026-10-03 由 1 提到 3：37 个产品全量覆盖从「一整天」压到「几小时」；调大=覆盖快但每轮巡检变长，每个产品最多等 45 秒）
+const FT_MAX_PER_ROUND = 8; // 每轮实测产品数。2026-10-03 演进：1 → 3 → 8。
+// 量化过的取舍（每个产品约 20-40 秒；纯 WebView 点击、**零 token**，代价只是时间）：
+//   3 个/轮  → 巡检约 3.5 分钟/轮，主脚本约 6 次/小时，全量覆盖一轮约 2 小时（实测被故障拖到 7-10 小时）
+//   39 个/轮（每轮全测）→ 巡检约 23 分钟/轮，主脚本频率被砍到 1/3 —— 主脚本才是产出产品的那一头，不划算
+//   8 个/轮（当前）→ 巡检约 7.5 分钟/轮，主脚本降到约 4.6 次/小时（-28%），全量覆盖约 1 小时
+// 结论：用 28% 的生产降幅换 6 倍的覆盖速度。想再快就调这个数，代价是主脚本频率下降。
+const FT_RESERVE_FOR_ROTATION = 2; // 每轮至少留这么多名额给「游标轮转」：防「变更优先」把名额吃光 → 没改过的产品被永远饿死
 let FT_PICK_CACHE = null; // 本轮实测目标缓存（数组，最多 FT_MAX_PER_ROUND 个）；首次调用时算好并缓存（防循环中因历史更新而连环换选）
 function loadFTLog() {
     try { let j = JSON.parse(files.read(FT_LOG_PATH)); if (j && typeof j === "object") return j; } catch (e) {}
@@ -724,7 +730,10 @@ function functionalTest(name) {
         });
         // ① 变更优先：今天变过且改动晚于上次实测的产品，最近改动的排前面，取够 FT_MAX_PER_ROUND 个为止
         cands.sort(function(a, b) { return b.mt - a.mt; });
-        for (let i = 0; i < cands.length && picks.length < FT_MAX_PER_ROUND; i++) picks.push(cands[i].n);
+        // 「变更优先」最多占用 FT_MAX_PER_ROUND - FT_RESERVE_FOR_ROTATION 个名额，剩下至少 2 个留给游标轮转。
+        // 否则产品频繁改版时，名额全被变更产品吃掉，没改过的产品永远轮不到（CodeSentry 整天没被实点就是这样来的）。
+        let maxChanged = Math.max(1, FT_MAX_PER_ROUND - FT_RESERVE_FOR_ROTATION);
+        for (let i = 0; i < cands.length && picks.length < maxChanged; i++) picks.push(cands[i].n);
         // ② 名额没用满 → 游标轮转补齐：跳过 20 小时内已测过的，且不与①重复（保证全量覆盖）
         if (picks.length < FT_MAX_PER_ROUND) {
             let last = "";
