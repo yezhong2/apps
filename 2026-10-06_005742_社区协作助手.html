@@ -1,0 +1,2060 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Collaboration Assistant</title>
+    <meta name="description" content="Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.">
+    <meta property="og:title" content="Community Collaboration Assistant">
+    <meta property="og:description" content="Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-06_005742_社区协作助手.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a7c7e;
+            --accent-hover: #5a9c9e;
+            --border: #333333;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .logo-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 10px 0;
+            position: sticky;
+            top: 70px;
+            z-index: 99;
+        }
+
+        .nav-list {
+            display: flex;
+            list-style: none;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--bg-secondary);
+        }
+
+        .nav-list::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .nav-list::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        .nav-item {
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 20px 0 80px;
+            min-height: calc(100vh - 200px);
+        }
+
+        .workspace {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .workspace-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        /* Document Editor */
+        .document-editor {
+            display: none;
+        }
+
+        .document-editor.active {
+            display: block;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .editor-btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .editor-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .editor-btn.active {
+            background-color: var(--accent);
+        }
+
+        .editor-content {
+            width: 100%;
+            min-height: 400px;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 15px;
+            resize: vertical;
+            font-family: inherit;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Image Gallery */
+        .image-gallery {
+            display: none;
+        }
+
+        .image-gallery.active {
+            display: block;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background-color: rgba(74, 124, 126, 0.1);
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background-color: rgba(74, 124, 126, 0.2);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+            background-color: var(--bg-tertiary);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-item-actions {
+            opacity: 1;
+        }
+
+        .gallery-action-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* Discussion Area */
+        .discussion-area {
+            display: none;
+        }
+
+        .discussion-area.active {
+            display: block;
+        }
+
+        .discussion-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .discussion-textarea {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 10px;
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .discussion-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .post {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .post-author {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .post-time {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .post-content {
+            margin-bottom: 10px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-action {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .post-action:hover {
+            color: var(--accent);
+        }
+
+        /* File Manager */
+        .file-manager {
+            display: none;
+        }
+
+        .file-manager.active {
+            display: block;
+        }
+
+        .upload-file-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-file-area:hover {
+            border-color: var(--accent);
+            background-color: rgba(74, 124, 126, 0.1);
+        }
+
+        .file-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .file-icon {
+            width: 30px;
+            height: 30px;
+            background-color: var(--bg-primary);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .file-name {
+            font-weight: 500;
+        }
+
+        .file-size {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Todo List */
+        .todo-list {
+            display: none;
+        }
+
+        .todo-list.active {
+            display: block;
+        }
+
+        .todo-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .todo-text {
+            flex: 1;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 10px;
+            color: var(--text-primary);
+        }
+
+        .todo-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .todo-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 12px 15px;
+        }
+
+        .todo-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .todo-checkbox.checked {
+            background-color: var(--success);
+        }
+
+        .todo-checkbox.checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+        }
+
+        .todo-text {
+            flex: 1;
+        }
+
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            color: var(--text-secondary);
+        }
+
+        .todo-delete {
+            background: none;
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0 5px;
+        }
+
+        /* Bottom Toolbar */
+        .bottom-toolbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 10px 0;
+            z-index: 98;
+        }
+
+        .toolbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .toolbar-btn {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .toolbar-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .toolbar-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Helper Tooltip */
+        .helper-tooltip {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 101;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .helper-tooltip.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .helper-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .helper-title {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .helper-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .helper-content {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Settings Panel */
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            z-index: 102;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .settings-panel.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .settings-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .setting-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .setting-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .setting-option {
+            padding: 8px 15px;
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .setting-option:hover {
+            border-color: var(--accent);
+        }
+
+        .setting-option.active {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-close:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 101;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-item {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+
+            .editor-toolbar {
+                gap: 5px;
+            }
+
+            .editor-btn {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+
+            .toolbar-actions {
+                gap: 10px;
+            }
+
+            .toolbar-btn {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-10 {
+            margin-bottom: 10px;
+        }
+
+        .mb-20 {
+            margin-bottom: 20px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-column {
+            flex-direction: column;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .gap-10 {
+            gap: 10px;
+        }
+
+        .gap-15 {
+            gap: 15px;
+        }
+
+        .p-10 {
+            padding: 10px;
+        }
+
+        .p-15 {
+            padding: 15px;
+        }
+
+        .rounded {
+            border-radius: 5px;
+        }
+
+        .cursor-pointer {
+            cursor: pointer;
+        }
+    </style>
+    <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div>
+                <div class="logo">Community Collaboration Assistant</div>
+                <div class="logo-subtitle">Quick collaboration, real-time editing</div>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li class="nav-item active" data-tab="documents">
+                    <span class="nav-icon">📄</span>
+                    Documents
+                </li>
+                <li class="nav-item" data-tab="images">
+                    <span class="nav-icon">🖼️</span>
+                    Images
+                </li>
+                <li class="nav-item" data-tab="discussion">
+                    <span class="nav-icon">💬</span>
+                    Discussion
+                </li>
+                <li class="nav-item" data-tab="files">
+                    <span class="nav-icon">📁</span>
+                    Files
+                </li>
+                <li class="nav-item" data-tab="todos">
+                    <span class="nav-icon">✅</span>
+                    Todos
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="workspace">
+                <!-- Document Editor -->
+                <div id="documents" class="document-editor active">
+                    <div class="workspace-header">
+                        <h2 class="workspace-title">Document Editor</h2>
+                    </div>
+                    <div class="editor-toolbar">
+                        <button class="editor-btn" id="bold-btn">
+                            <span>B</span>
+                            Bold
+                        </button>
+                        <button class="editor-btn" id="italic-btn">
+                            <span>I</span>
+                            Italic
+                        </button>
+                        <button class="editor-btn" id="underline-btn">
+                            <span>U</span>
+                            Underline
+                        </button>
+                        <button class="editor-btn" id="heading-btn">
+                            <span>H1</span>
+                            Heading
+                        </button>
+                        <button class="editor-btn" id="list-btn">
+                            <span>•</span>
+                            List
+                        </button>
+                        <button class="editor-btn" id="link-btn">
+                            <span>🔗</span>
+                            Link
+                        </button>
+                        <button class="editor-btn" id="save-doc-btn">
+                            <span>💾</span>
+                            Save
+                        </button>
+                    </div>
+                    <div id="editor-content" contenteditable="true" class="editor-content" placeholder="Start typing your document...">Welcome to the Community Collaboration Assistant! You can start typing here to create your document.</div>
+                </div>
+
+                <!-- Image Gallery -->
+                <div id="images" class="image-gallery">
+                    <div class="workspace-header">
+                        <h2 class="workspace-title">Image Gallery</h2>
+                    </div>
+                    <div class="upload-area" id="image-upload-area">
+                        <p>Drag & drop images here or click to browse</p>
+                        <input type="file" id="image-input" accept="image/*" multiple style="display: none;">
+                    </div>
+                    <div class="gallery-grid" id="gallery-grid"></div>
+                </div>
+
+                <!-- Discussion Area -->
+                <div id="discussion" class="discussion-area">
+                    <div class="workspace-header">
+                        <h2 class="workspace-title">Discussion</h2>
+                    </div>
+                    <div class="discussion-input">
+                        <textarea class="discussion-textarea" id="discussion-input" placeholder="Share your thoughts..."></textarea>
+                        <button class="toolbar-btn" id="post-btn">Post</button>
+                    </div>
+                    <div class="discussion-posts" id="discussion-posts"></div>
+                </div>
+
+                <!-- File Manager -->
+                <div id="files" class="file-manager">
+                    <div class="workspace-header">
+                        <h2 class="workspace-title">Shared Files</h2>
+                    </div>
+                    <div class="upload-file-area" id="file-upload-area">
+                        <p>Drag & drop files here or click to browse</p>
+                        <input type="file" id="file-input" multiple style="display: none;">
+                    </div>
+                    <div class="file-list" id="file-list"></div>
+                </div>
+
+                <!-- Todo List -->
+                <div id="todos" class="todo-list">
+                    <div class="workspace-header">
+                        <h2 class="workspace-title">Todo List</h2>
+                    </div>
+                    <div class="todo-input">
+                        <input type="text" class="todo-text" id="todo-input" placeholder="Add a new task...">
+                        <button class="toolbar-btn" id="add-todo-btn">Add</button>
+                    </div>
+                    <div class="todo-items" id="todo-items"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="bottom-toolbar">
+        <div class="container toolbar-content">
+            <div class="toolbar-actions">
+                <button class="toolbar-btn" id="save-btn">
+                    <span>💾</span> Save All
+                </button>
+                <button class="toolbar-btn" id="undo-btn">
+                    <span>↩️</span> Undo
+                </button>
+                <button class="toolbar-btn" id="redo-btn">
+                    <span>↪️</span> Redo
+                </button>
+            </div>
+            <div class="toolbar-actions">
+                <button class="toolbar-btn" id="share-btn">
+                    <span>🔗</span> Share
+                </button>
+                <button class="toolbar-btn" id="settings-btn">
+                    <span>⚙️</span> Settings
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="helper-tooltip" id="helper-tooltip">
+        <div class="helper-header">
+            <div class="helper-title">Welcome!</div>
+            <button class="helper-close" id="helper-close">✕</button>
+        </div>
+        <div class="helper-content">
+            Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="settings-panel" id="settings-panel">
+        <div class="settings-header">
+            <div class="settings-title">Settings</div>
+            <button class="settings-close" id="settings-close">✕</button>
+        </div>
+        <div class="settings-content">
+            <div class="setting-group">
+                <div class="setting-label">Font Size</div>
+                <div class="setting-options">
+                    <button class="setting-option" data-setting="font-size" data-value="small">Small</button>
+                    <button class="setting-option active" data-setting="font-size" data-value="medium">Medium</button>
+                    <button class="setting-option" data-setting="font-size" data-value="large">Large</button>
+                </div>
+            </div>
+            <div class="setting-group">
+                <div class="setting-label">Line Height</div>
+                <div class="setting-options">
+                    <button class="setting-option" data-setting="line-height" data-value="1.2">Compact</button>
+                    <button class="setting-option active" data-setting="line-height" data-value="1.6">Normal</button>
+                    <button class="setting-option" data-setting="line-height" data-value="2.0">Spacious</button>
+                </div>
+            </div>
+            <div class="setting-group">
+                <div class="setting-label">Theme</div>
+                <div class="setting-options">
+                    <button class="setting-option active" data-setting="theme" data-value="dark">Dark</button>
+                    <button class="setting-option" data-setting="theme" data-value="light">Light</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const tab = this.getAttribute('data-tab');
+                    
+                    // Update active nav item
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding workspace
+                    const workspaces = document.querySelectorAll('.document-editor, .image-gallery, .discussion-area, .file-manager, .todo-list');
+                    workspaces.forEach(workspace => {
+                        workspace.classList.remove('active');
+                        if (workspace.id === tab) {
+                            workspace.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Show helper tooltip on first visit
+            if (!localStorage.getItem('visited')) {
+                showHelperTooltip('Welcome!', 'Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.');
+                localStorage.setItem('visited', 'true');
+            }
+
+            // Helper tooltip functions
+            function showHelperTooltip(title, content) {
+                const tooltip = document.getElementById('helper-tooltip');
+                tooltip.querySelector('.helper-title').textContent = title;
+                tooltip.querySelector('.helper-content').textContent = content;
+                tooltip.classList.add('show');
+                
+                // Auto-hide after 3 seconds
+                setTimeout(() => {
+                    tooltip.classList.remove('show');
+                }, 3000);
+            }
+
+            document.getElementById('helper-close').addEventListener('click', function() {
+                document.getElementById('helper-tooltip').classList.remove('show');
+            });
+
+            // Document editor functions
+            const docEditor = document.getElementById('editor-content');
+            let docHistory = [];
+            let docHistoryIndex = -1;
+
+            // Save document state for undo/redo
+            function saveDocState() {
+                docHistory = docHistory.slice(0, docHistoryIndex + 1);
+                docHistory.push(docEditor.innerHTML);
+                docHistoryIndex++;
+                
+                // Limit history to 50 states
+                if (docHistory.length > 50) {
+                    docHistory.shift();
+                    docHistoryIndex--;
+                }
+                
+                // Update undo/redo buttons
+                updateUndoRedoButtons();
+            }
+
+            // Initial save
+            saveDocState();
+
+            // Update undo/redo buttons state
+            function updateUndoRedoButtons() {
+                const undoBtn = document.getElementById('undo-btn');
+                const redoBtn = document.getElementById('redo-btn');
+                
+                undoBtn.disabled = docHistoryIndex <= 0;
+                redoBtn.disabled = docHistoryIndex >= docHistory.length - 1;
+            }
+
+            // Format buttons
+            document.getElementById('bold-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && selection.toString().length > 0) {
+                    document.execCommand('bold', false, null);
+                    saveDocState();
+                } else {
+                    showHelperTooltip('No Selection', 'Please select some text to make it bold.');
+                }
+            });
+
+            document.getElementById('italic-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && selection.toString().length > 0) {
+                    document.execCommand('italic', false, null);
+                    saveDocState();
+                } else {
+                    showHelperTooltip('No Selection', 'Please select some text to make it italic.');
+                }
+            });
+
+            document.getElementById('underline-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && selection.toString().length > 0) {
+                    document.execCommand('underline', false, null);
+                    saveDocState();
+                } else {
+                    showHelperTooltip('No Selection', 'Please select some text to underline it.');
+                }
+            });
+
+            document.getElementById('heading-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0) {
+                    const range = selection.getRangeAt(0);
+                    const selectedText = range.toString();
+                    
+                    if (selectedText) {
+                        const heading = document.createElement('h1');
+                        heading.textContent = selectedText;
+                        
+                        range.deleteContents();
+                        range.insertNode(heading);
+                        saveDocState();
+                    } else {
+                        showHelperTooltip('No Selection', 'Please select some text to make it a heading.');
+                    }
+                }
+            });
+
+            document.getElementById('list-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && selection.toString().length > 0) {
+                    document.execCommand('insertUnorderedList', false, null);
+                    saveDocState();
+                } else {
+                    showHelperTooltip('No Selection', 'Please select some text to create a list.');
+                }
+            });
+
+            document.getElementById('link-btn').addEventListener('click', function() {
+                const selection = window.getSelection();
+                if (selection.rangeCount > 0 && selection.toString().length > 0) {
+                    const url = prompt('Enter URL:');
+                    if (url) {
+                        document.execCommand('createLink', false, url);
+                        saveDocState();
+                    }
+                } else {
+                    showHelperTooltip('No Selection', 'Please select some text to make it a link.');
+                }
+            });
+
+            document.getElementById('save-doc-btn').addEventListener('click', function() {
+                saveDocState();
+                showHelperTooltip('Saved!', 'Your document has been saved locally.');
+            });
+
+            docEditor.addEventListener('input', function() {
+                saveDocState();
+            });
+
+            // Update button states when selection changes
+            docEditor.addEventListener('mouseup', updateButtonStates);
+            docEditor.addEventListener('keyup', updateButtonStates);
+
+            function updateButtonStates() {
+                const buttons = ['bold-btn', 'italic-btn', 'underline-btn'];
+                buttons.forEach(buttonId => {
+                    const button = document.getElementById(buttonId);
+                    if (document.queryCommandState(buttonId.replace('-btn', ''))) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            // Undo/redo functionality
+            document.getElementById('undo-btn').addEventListener('click', function() {
+                if (docHistoryIndex > 0) {
+                    docHistoryIndex--;
+                    docEditor.innerHTML = docHistory[docHistoryIndex];
+                    updateUndoRedoButtons();
+                    showHelperTooltip('Undone', 'Action has been undone.');
+                }
+            });
+
+            document.getElementById('redo-btn').addEventListener('click', function() {
+                if (docHistoryIndex < docHistory.length - 1) {
+                    docHistoryIndex++;
+                    docEditor.innerHTML = docHistory[docHistoryIndex];
+                    updateUndoRedoButtons();
+                    showHelperTooltip('Redone', 'Action has been redone.');
+                }
+            });
+
+            // Image gallery functions
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageInput = document.getElementById('image-input');
+            const galleryGrid = document.getElementById('gallery-grid');
+            let uploadedImages = [];
+
+            // Display existing images if they exist
+            const savedImages = localStorage.getItem('uploadedImages');
+            if (savedImages) {
+                uploadedImages = JSON.parse(savedImages);
+                uploadedImages.forEach((src, index) => {
+                    addImageToGallery(src, index);
+                });
+            }
+
+            imageUploadArea.addEventListener('click', function() {
+                imageInput.click();
+            });
+
+            imageUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            imageUploadArea.addEventListener('dragleave', function() {
+                this.classList.remove('dragover');
+            });
+
+            imageUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                handleImageFiles(files);
+            });
+
+            imageInput.addEventListener('change', function() {
+                handleImageFiles(this.files);
+            });
+
+            function handleImageFiles(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            const index = uploadedImages.length;
+                            uploadedImages.push(e.target.result);
+                            localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                            addImageToGallery(e.target.result, index);
+                            showHelperTooltip('Uploaded!', 'Image has been added to the gallery.');
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    }
+                }
+            }
+
+            function addImageToGallery(src, index) {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.innerHTML = `
+                    <img src="${src}" alt="Uploaded image">
+                    <div class="gallery-item-actions">
+                        <button class="gallery-action-btn download-btn" data-index="${index}">Download</button>
+                        <button class="gallery-action-btn delete-btn" data-index="${index}">Delete</button>
+                    </div>
+                `;
+                
+                galleryGrid.appendChild(galleryItem);
+            }
+
+            // Use event delegation for gallery actions
+            galleryGrid.addEventListener('click', function(e) {
+                if (e.target.classList.contains('download-btn')) {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    const src = uploadedImages[index];
+                    
+                    // Create a real blob with the image data
+                    fetch(src)
+                        .then(res => res.blob())
+                        .then(blob => {
+                            const url = URL.createObjectURL(blob);
+                            const link = document.createElement('a');
+                            link.href = url;
+                            link.download = `image-${index}.png`;
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                            URL.revokeObjectURL(url);
+                        });
+                }
+                
+                if (e.target.classList.contains('delete-btn')) {
+                    const index = parseInt(e.target.getAttribute('data-index'));
+                    uploadedImages.splice(index, 1);
+                    localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                    galleryGrid.innerHTML = '';
+                    uploadedImages.forEach((src, newIndex) => {
+                        addImageToGallery(src, newIndex);
+                    });
+                    showHelperTooltip('Deleted!', 'Image has been removed from the gallery.');
+                }
+            });
+
+            // Discussion functions
+            const discussionInput = document.getElementById('discussion-input');
+            const postBtn = document.getElementById('post-btn');
+            const discussionPosts = document.getElementById('discussion-posts');
+            let discussionPostsData = [];
+
+            // Display existing posts if they exist
+            const savedPosts = localStorage.getItem('discussionPosts');
+            if (savedPosts) {
+                discussionPostsData = JSON.parse(savedPosts);
+                discussionPostsData.forEach(post => {
+                    addPostToDiscussion(post);
+                });
+            }
+
+            postBtn.addEventListener('click', function() {
+                if (discussionInput.value.trim()) {
+                    const post = {
+                        id: Date.now(),
+                        author: 'You',
+                        content: discussionInput.value,
+                        timestamp: new Date().toLocaleString(),
+                        likes: 0,
+                        comments: []
+                    };
+                    
+                    discussionPostsData.unshift(post);
+                    localStorage.setItem('discussionPosts', JSON.stringify(discussionPostsData));
+                    addPostToDiscussion(post);
+                    discussionInput.value = '';
+                    showHelperTooltip('Posted!', 'Your message has been shared in the discussion.');
+                }
+            });
+
+            function addPostToDiscussion(post) {
+                const postElement = document.createElement('div');
+                postElement.className = 'post';
+                postElement.innerHTML = `
+                    <div class="post-header">
+                        <div class="post-author">${post.author}</div>
+                        <div class="post-time">${post.timestamp}</div>
+                    </div>
+                    <div class="post-content">${post.content}</div>
+                    <div class="post-actions">
+                        <div class="post-action like-btn" data-id="${post.id}">
+                            👍 ${post.likes} Likes
+                        </div>
+                        <div class="post-action comment-btn" data-id="${post.id}">
+                            💬 Comment
+                        </div>
+                    </div>
+                `;
+                
+                discussionPosts.insertBefore(postElement, discussionPosts.firstChild);
+            }
+
+            // Use event delegation for post actions
+            discussionPosts.addEventListener('click', function(e) {
+                if (e.target.classList.contains('like-btn')) {
+                    const postId = parseInt(e.target.getAttribute('data-id'));
+                    const post = discussionPostsData.find(p => p.id === postId);
+                    
+                    if (post) {
+                        post.likes++;
+                        e.target.textContent = `👍 ${post.likes} Likes`;
+                        localStorage.setItem('discussionPosts', JSON.stringify(discussionPostsData));
+                    }
+                }
+                
+                if (e.target.classList.contains('comment-btn')) {
+                    const postId = parseInt(e.target.getAttribute('data-id'));
+                    const post = discussionPostsData.find(p => p.id === postId);
+                    
+                    if (post) {
+                        const comment = prompt('Add a comment:');
+                        if (comment && comment.trim()) {
+                            post.comments.push({
+                                author: 'You',
+                                content: comment,
+                                timestamp: new Date().toLocaleString()
+                            });
+                            localStorage.setItem('discussionPosts', JSON.stringify(discussionPostsData));
+                            showHelperTooltip('Commented!', 'Your comment has been added.');
+                        }
+                    }
+                }
+            });
+
+            // File manager functions
+            const fileUploadArea = document.getElementById('file-upload-area');
+            const fileInput = document.getElementById('file-input');
+            const fileList = document.getElementById('file-list');
+            let uploadedFiles = [];
+
+            // Display existing files if they exist
+            const savedFiles = localStorage.getItem('uploadedFiles');
+            if (savedFiles) {
+                uploadedFiles = JSON.parse(savedFiles);
+                uploadedFiles.forEach(file => {
+                    addFileToList(file);
+                });
+            }
+
+            fileUploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            fileUploadArea.addEventListener('dragleave', function() {
+                this.classList.remove('dragover');
+            });
+
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                handleFileUpload(files);
+            });
+
+            fileInput.addEventListener('change', function() {
+                handleFileUpload(this.files);
+            });
+
+            function handleFileUpload(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    
+                    const fileData = {
+                        id: Date.now() + i,
+                        name: file.name,
+                        size: formatFileSize(file.size),
+                        type: file.type,
+                        timestamp: new Date().toLocaleString(),
+                        content: null
+                    };
+                    
+                    uploadedFiles.push(fileData);
+                    localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+                    addFileToList(fileData);
+                    
+                    // Read file content for actual download
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        fileData.content = e.target.result;
+                        const fileIndex = uploadedFiles.findIndex(f => f.id === fileData.id);
+                        if (fileIndex !== -1) {
+                            uploadedFiles[fileIndex].content = e.target.result;
+                            localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+                        }
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+                else return (bytes / 1048576).toFixed(1) + ' MB';
+            }
+
+            function addFileToList(file) {
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-icon">📄</div>
+                        <div>
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${file.size} • ${file.timestamp}</div>
+                        </div>
+                    </div>
+                    <div class="file-actions">
+                        <button class="gallery-action-btn download-btn" data-id="${file.id}">Download</button>
+                        <button class="gallery-action-btn delete-btn" data-id="${file.id}">Delete</button>
+                    </div>
+                `;
+                
+                fileList.appendChild(fileItem);
+            }
+
+            // Use event delegation for file actions
+            fileList.addEventListener('click', function(e) {
+                if (e.target.classList.contains('download-btn')) {
+                    const fileId = parseInt(e.target.getAttribute('data-id'));
+                    const file = uploadedFiles.find(f => f.id === fileId);
+                    
+                    if (file && file.content) {
+                        const url = URL.createObjectURL(base64ToBlob(file.content, file.type));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = file.name;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                        URL.revokeObjectURL(url);
+                    }
+                }
+                
+                if (e.target.classList.contains('delete-btn')) {
+                    const fileId = parseInt(e.target.getAttribute('data-id'));
+                    const fileIndex = uploadedFiles.findIndex(f => f.id === fileId);
+                    
+                    if (fileIndex !== -1) {
+                        uploadedFiles.splice(fileIndex, 1);
+                        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+                        fileList.innerHTML = '';
+                        uploadedFiles.forEach(file => {
+                            addFileToList(file);
+                        });
+                        showHelperTooltip('Deleted!', 'File has been removed.');
+                    }
+                }
+            });
+
+            // Todo list functions
+            const todoInput = document.getElementById('todo-input');
+            const addTodoBtn = document.getElementById('add-todo-btn');
+            const todoItems = document.getElementById('todo-items');
+            let todoList = [];
+
+            // Display existing todos if they exist
+            const savedTodos = localStorage.getItem('todoList');
+            if (savedTodos) {
+                todoList = JSON.parse(savedTodos);
+                todoList.forEach(todo => {
+                    addTodoItem(todo);
+                });
+            }
+
+            addTodoBtn.addEventListener('click', function() {
+                if (todoInput.value.trim()) {
+                    const todo = {
+                        id: Date.now(),
+                        text: todoInput.value,
+                        completed: false
+                    };
+                    
+                    todoList.unshift(todo);
+                    localStorage.setItem('todoList', JSON.stringify(todoList));
+                    addTodoItem(todo);
+                    todoInput.value = '';
+                    showHelperTooltip('Added!', 'Task has been added to your list.');
+                }
+            });
+
+            todoInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && todoInput.value.trim()) {
+                    const todo = {
+                        id: Date.now(),
+                        text: todoInput.value,
+                        completed: false
+                    };
+                    
+                    todoList.unshift(todo);
+                    localStorage.setItem('todoList', JSON.stringify(todoList));
+                    addTodoItem(todo);
+                    todoInput.value = '';
+                    showHelperTooltip('Added!', 'Task has been added to your list.');
+                }
+            });
+
+            function addTodoItem(todo) {
+                const todoItem = document.createElement('div');
+                todoItem.className = 'todo-item' + (todo.completed ? ' completed' : '');
+                todoItem.innerHTML = `
+                    <div class="todo-checkbox ${todo.completed ? 'checked' : ''}" data-id="${todo.id}"></div>
+                    <div class="todo-text">${todo.text}</div>
+                    <button class="todo-delete" data-id="${todo.id}">✕</button>
+                `;
+                
+                todoItems.insertBefore(todoItem, todoItems.firstChild);
+            }
+
+            // Use event delegation for todo actions
+            todoItems.addEventListener('click', function(e) {
+                if (e.target.classList.contains('todo-checkbox')) {
+                    const todoId = parseInt(e.target.getAttribute('data-id'));
+                    const todoIndex = todoList.findIndex(t => t.id === todoId);
+                    
+                    if (todoIndex !== -1) {
+                        todoList[todoIndex].completed = !todoList[todoIndex].completed;
+                        localStorage.setItem('todoList', JSON.stringify(todoList));
+                        
+                        // Update UI
+                        const todoItem = e.target.parentElement;
+                        if (todoList[todoIndex].completed) {
+                            todoItem.classList.add('completed');
+                            e.target.classList.add('checked');
+                        } else {
+                            todoItem.classList.remove('completed');
+                            e.target.classList.remove('checked');
+                        }
+                        
+                        showHelperTooltip(todoList[todoIndex].completed ? 'Completed!' : 'Reopened!', 'Task status has been updated.');
+                    }
+                }
+                
+                if (e.target.classList.contains('todo-delete')) {
+                    const todoId = parseInt(e.target.getAttribute('data-id'));
+                    const todoIndex = todoList.findIndex(t => t.id === todoId);
+                    
+                    if (todoIndex !== -1) {
+                        todoList.splice(todoIndex, 1);
+                        localStorage.setItem('todoList', JSON.stringify(todoList));
+                        e.target.parentElement.remove();
+                        showHelperTooltip('Deleted!', 'Task has been removed from your list.');
+                    }
+                }
+            });
+
+            // Bottom toolbar functions
+            document.getElementById('save-btn').addEventListener('click', function() {
+                // Save all data
+                saveDocState();
+                localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                localStorage.setItem('discussionPosts', JSON.stringify(discussionPostsData));
+                localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+                localStorage.setItem('todoList', JSON.stringify(todoList));
+                
+                showHelperTooltip('Saved!', 'All your work has been saved locally.');
+            });
+
+            document.getElementById('share-btn').addEventListener('click', function() {
+                // Create a shareable link with all data
+                const data = {
+                    document: docEditor.innerHTML,
+                    images: uploadedImages,
+                    posts: discussionPostsData,
+                    files: uploadedFiles,
+                    todos: todoList
+                };
+                
+                const compressed = LZString.compressToUTF16(JSON.stringify(data));
+                const shareUrl = `${window.location.origin}${window.location.pathname}?data=${encodeURIComponent(compressed)}`;
+                
+                navigator.clipboard.writeText(shareUrl).then(function() {
+                    showHelperTooltip('Copied!', 'Share link has been copied to clipboard.');
+                }).catch(function() {
+                    showHelperTooltip('Error', 'Unable to copy link. Please try again.');
+                });
+            });
+
+            // Settings panel functions
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsPanel = document.getElementById('settings-panel');
+            const settingsClose = document.getElementById('settings-close');
+            const overlay = document.getElementById('overlay');
+
+            settingsBtn.addEventListener('click', function() {
+                settingsPanel.classList.add('show');
+                overlay.classList.add('show');
+            });
+
+            settingsClose.addEventListener('click', function() {
+                settingsPanel.classList.remove('show');
+                overlay.classList.remove('show');
+            });
+
+            overlay.addEventListener('click', function() {
+                settingsPanel.classList.remove('show');
+                overlay.classList.remove('show');
+            });
+
+            // Setting options
+            const settingOptions = document.querySelectorAll('.setting-option');
+            settingOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const setting = this.getAttribute('data-setting');
+                    const value = this.getAttribute('data-value');
+                    
+                    // Update active option
+                    const siblings = document.querySelectorAll(`[data-setting="${setting}"]`);
+                    siblings.forEach(sibling => sibling.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Apply setting
+                    applySetting(setting, value);
+                });
+            });
+
+            function applySetting(setting, value) {
+                switch(setting) {
+                    case 'font-size':
+                        docEditor.style.fontSize = value === 'small' ? '14px' : value === 'medium' ? '16px' : '18px';
+                        break;
+                    case 'line-height':
+                        docEditor.style.lineHeight = value;
+                        break;
+                    case 'theme':
+                        if (value === 'light') {
+                            document.documentElement.style.setProperty('--bg-primary', '#ffffff');
+                            document.documentElement.style.setProperty('--bg-secondary', '#f5f5f5');
+                            document.documentElement.style.setProperty('--bg-tertiary', '#e0e0e0');
+                            document.documentElement.style.setProperty('--text-primary', '#000000');
+                            document.documentElement.style.setProperty('--text-secondary', '#666666');
+                            document.documentElement.style.setProperty('--border', '#cccccc');
+                        } else {
+                            document.documentElement.style.setProperty('--bg-primary', '#121212');
+                            document.documentElement.style.setProperty('--bg-secondary', '#1e1e1e');
+                            document.documentElement.style.setProperty('--bg-tertiary', '#2a2a2a');
+                            document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                            document.documentElement.style.setProperty('--text-secondary', '#b0b0b0');
+                            document.documentElement.style.setProperty('--border', '#333333');
+                        }
+                        break;
+                }
+                
+                showHelperTooltip('Settings Applied', `Your ${setting} preference has been updated.`);
+            }
+
+            // Utility functions
+            function base64ToBlob(base64, mimeType) {
+                const byteCharacters = atob(base64);
+                const byteNumbers = new Array(byteCharacters.length);
+                
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                
+                const byteArray = new Uint8Array(byteNumbers);
+                return new Blob([byteArray], { type: mimeType });
+            }
+
+            // Check for shared data in URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const sharedData = urlParams.get('data');
+            
+            if (sharedData) {
+                try {
+                    const decompressed = LZString.decompressFromUTF16(sharedData);
+                    const data = JSON.parse(decompressed);
+                    
+                    // Load shared data
+                    if (data.document) {
+                        docEditor.innerHTML = data.document;
+                        saveDocState();
+                    }
+                    
+                    if (data.images && data.images.length > 0) {
+                        uploadedImages = data.images;
+                        localStorage.setItem('uploadedImages', JSON.stringify(uploadedImages));
+                        galleryGrid.innerHTML = '';
+                        uploadedImages.forEach((src, index) => {
+                            addImageToGallery(src, index);
+                        });
+                    }
+                    
+                    if (data.posts && data.posts.length > 0) {
+                        discussionPostsData = data.posts;
+                        localStorage.setItem('discussionPosts', JSON.stringify(discussionPostsData));
+                        discussionPosts.innerHTML = '';
+                        discussionPostsData.forEach(post => {
+                            addPostToDiscussion(post);
+                        });
+                    }
+                    
+                    if (data.files && data.files.length > 0) {
+                        uploadedFiles = data.files;
+                        localStorage.setItem('uploadedFiles', JSON.stringify(uploadedFiles));
+                        fileList.innerHTML = '';
+                        uploadedFiles.forEach(file => {
+                            addFileToList(file);
+                        });
+                    }
+                    
+                    if (data.todos && data.todos.length > 0) {
+                        todoList = data.todos;
+                        localStorage.setItem('todoList', JSON.stringify(todoList));
+                        todoItems.innerHTML = '';
+                        todoList.forEach(todo => {
+                            addTodoItem(todo);
+                        });
+                    }
+                    
+                    showHelperTooltip('Shared Content Loaded', 'All shared content has been imported.');
+                } catch (error) {
+                    console.error('Error loading shared data:', error);
+                    showHelperTooltip('Error', 'Unable to load shared content.');
+                }
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Community Collaboration Assistant":"Community Collaboration Assistant","Quick collaboration, real-time editing":"Quick collaboration, real-time editing","Documents":"Documents","Images":"Images","Discussion":"Discussion","Files":"Files","Todos":"Todos","Document Editor":"Document Editor","Bold":"Bold","Italic":"Italic","Underline":"Underline","H1":"H1","Heading":"Heading","List":"List","Link":"Link","Save":"Save","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Welcome to the Community Collaboration Assistant! You can start typing here to create your document.","Image Gallery":"Image Gallery","Drag \u0026 drop images here or click to browse":"Drag \u0026 drop images here or click to browse","Post":"Post","Shared Files":"Shared Files","Drag \u0026 drop files here or click to browse":"Drag \u0026 drop files here or click to browse","Todo List":"Todo List","Add":"Add","Save All":"Save All","Undo":"Undo","Redo":"Redo","Share":"Share","Settings":"Settings","Welcome!":"Welcome!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.","Font Size":"Font Size","Small":"Small","Medium":"Medium","Large":"Large","Line Height":"Line Height","Compact":"Compact","Normal":"Normal","Spacious":"Spacious","Theme":"Theme","Dark":"Dark","Light":"Light","Download":"Download","Delete":"Delete",".png":".png","Likes":"Likes","💬 Comment":"💬 Comment","Start typing your document...":"Start typing your document...","Share your thoughts...":"Share your thoughts...","Add a new task...":"Add a new task...","DOMContentLoaded":"DOMContentLoaded","No Selection":"No Selection","Please select some text to make it bold.":"Please select some text to make it bold.","Please select some text to make it italic.":"Please select some text to make it italic.","Please select some text to underline it.":"Please select some text to underline it.","Please select some text to make it a heading.":"Please select some text to make it a heading.","Please select some text to create a list.":"Please select some text to create a list.","Enter URL:":"Enter URL:","Please select some text to make it a link.":"Please select some text to make it a link.","Saved!":"Saved!","Your document has been saved locally.":"Your document has been saved locally.","Undone":"Undone","Action has been undone.":"Action has been undone.","Redone":"Redone","Action has been redone.":"Action has been redone.","Uploaded!":"Uploaded!","Image has been added to the gallery.":"Image has been added to the gallery.","Uploaded image":"Uploaded image","gallery-action-btn download-btn":"gallery-action-btn download-btn","gallery-action-btn delete-btn":"gallery-action-btn delete-btn","Deleted!":"Deleted!","Image has been removed from the gallery.":"Image has been removed from the gallery.","You":"You","Posted!":"Posted!","Your message has been shared in the discussion.":"Your message has been shared in the discussion.","post-action like-btn":"post-action like-btn","post-action comment-btn":"post-action comment-btn","Add a comment:":"Add a comment:","Commented!":"Commented!","Your comment has been added.":"Your comment has been added.","KB":"KB","MB":"MB","File has been removed.":"File has been removed.","Added!":"Added!","Task has been added to your list.":"Task has been added to your list.","Enter":"Enter","Completed!":"Completed!","Reopened!":"Reopened!","Task status has been updated.":"Task status has been updated.","Task has been removed from your list.":"Task has been removed from your list.","All your work has been saved locally.":"All your work has been saved locally.","Copied!":"Copied!","Share link has been copied to clipboard.":"Share link has been copied to clipboard.","Error":"Error","Unable to copy link. Please try again.":"Unable to copy link. Please try again.","Settings Applied":"Settings Applied","Shared Content Loaded":"Shared Content Loaded","All shared content has been imported.":"All shared content has been imported.","__title__":"Community Collaboration Assistant","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Error loading shared data:","Unable to load shared content.":"Unable to load shared content.","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Community Collaboration Assistant":"社区协作助手","Quick collaboration, real-time editing":"快速协作，实时编辑","Documents":"文档","Images":"图片","Discussion":"讨论","Files":"文件","Todos":"待办事项","Document Editor":"文档编辑器","Bold":"粗体","Italic":"斜体","Underline":"下划线","Heading":"标题","List":"列表","Link":"链接","Save":"保存","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"欢迎使用社区协作助手！您可以从这里开始输入来创建您的文档。","Image Gallery":"图片库","Drag \u0026 drop images here or click to browse":"将图片拖放到此处或点击浏览","Post":"发布","Shared Files":"共享文件","Drag \u0026 drop files here or click to browse":"将文件拖放到此处或点击浏览","Todo List":"待办列表","Add":"添加","Save All":"全部保存","Undo":"撤销","Redo":"重做","Share":"分享","Settings":"设置","Welcome!":"欢迎！","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"从创建新文档或上传图片开始。使用底部的工具栏来保存、撤销或分享您的作品。","Font Size":"字体大小","Small":"小","Medium":"中","Large":"大","Line Height":"行高","Compact":"紧凑","Normal":"正常","Spacious":"宽敞","Theme":"主题","Dark":"暗","Light":"亮","Download":"下载","Delete":"删除","Likes":"点赞","💬 Comment":"💬 评论","Start typing your document...":"开始输入您的文档...","Share your thoughts...":"分享您的想法...","Add a new task...":"添加新任务...","No Selection":"无选择","Please select some text to make it bold.":"请选择一些文本使其变为粗体。","Please select some text to make it italic.":"请选择一些文本使其变为斜体。","Please select some text to underline it.":"请选择一些文本为其添加下划线。","Please select some text to make it a heading.":"请选择一些文本使其成为标题。","Please select some text to create a list.":"请选择一些文本以创建列表。","Enter URL:":"输入网址：","Please select some text to make it a link.":"请选择一些文本使其成为链接。","Saved!":"已保存！","Your document has been saved locally.":"您的文档已本地保存。","Undone":"撤销","Action has been undone.":"操作已撤销。","Redone":"重做","Action has been redone.":"操作已重做。","Uploaded!":"上传成功！","Image has been added to the gallery.":"图片已添加到相册。","Uploaded image":"上传的图片","gallery-action-btn download-btn":"相册操作按钮 下载","gallery-action-btn delete-btn":"相册操作按钮 删除","Deleted!":"删除成功！","Image has been removed from the gallery.":"图片已从相册中移除。","You":"您","Posted!":"发布成功！","Your message has been shared in the discussion.":"您的消息已在讨论中分享。","post-action like-btn":"帖子操作按钮 点赞","post-action comment-btn":"帖子操作按钮 评论","Add a comment:":"添加评论：","Commented!":"评论成功！","Your comment has been added.":"您的评论已添加。","File has been removed.":"文件已移除。","Added!":"添加成功！","Task has been added to your list.":"任务已添加到您的列表。","Enter":"输入","Completed!":"完成！","Reopened!":"重新打开！","Task status has been updated.":"任务状态已更新。","Task has been removed from your list.":"任务已从您的列表中移除。","All your work has been saved locally.":"您所有的工作已本地保存。","Copied!":"复制成功！","Share link has been copied to clipboard.":"分享链接已复制到剪贴板。","Error":"错误","Unable to copy link. Please try again.":"无法复制链接。请重试。","Settings Applied":"设置已应用","Shared Content Loaded":"共享内容已加载","All shared content has been imported.":"所有共享内容已导入。","__title__":"社区协作助手","完全免费":"完全免费","提意见":"提意见","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"免费在线工具：社区协作助手。无需注册，无需付费 — 永久免费。","og:title":"og:title","og:description":"og:description","og:type":"…","og:url":"…","Segoe UI":"…","LA_COLLECT":"…","image/*":"…","image/":"…","Error loading shared data:":"加载共享数据出错：","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Unable to load shared content.":"无法加载共享内容。",".png":".png","DOMContentLoaded":"DOM完全加载","KB":"KB","MB":"MB"},"es":{"Community Collaboration Assistant":"Asistente de Colaboración Comunitaria","Quick collaboration, real-time editing":"Colaboración rápida, edición en tiempo real","Documents":"Documentos","Images":"Imágenes","Discussion":"Discusión","Files":"Archivos","Document Editor":"Editor de Documentos","Bold":"Negrita","Italic":"Cursiva","Underline":"Subrayado","Heading":"Encabezado","List":"Lista","Link":"Enlace","Save":"Guardar","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"¡Bienvenido al Asistente de Colaboración Comunitaria! Puede comenzar a escribir aquí para crear su documento.","Image Gallery":"Galería de Imágenes","Drag \u0026 drop images here or click to browse":"Arrastre y suelte imágenes aquí o haga clic para explorar","Post":"Publicar","Shared Files":"Archivos Compartidos","Drag \u0026 drop files here or click to browse":"Arrastre y suelte archivos aquí o haga clic para explorar","Todo List":"Lista de Tareas","Add":"Agregar","Save All":"Guardar Todo","Undo":"Deshacer","Redo":"Rehacer","Share":"Compartir","Settings":"Ajustes","Welcome!":"¡Bienvenido!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Comience creando un nuevo documento o subiendo imágenes. Use la barra de herramientas inferior para guardar, deshacer o compartir su trabajo.","Font Size":"Tamaño de Fuente","Small":"Pequeño","Medium":"Mediano","Large":"Grande","Line Height":"Altura de Línea","Compact":"Compacto","Spacious":"Espacioso","Theme":"Tema","Dark":"Oscuro","Light":"Claro","Download":"Descargar","Delete":"Eliminar","Likes":"Me gusta","💬 Comment":"💬 Comentar","Start typing your document...":"Empiece a escribir su documento...","Share your thoughts...":"Compartir sus pensamientos...","Add a new task...":"Agregar una nueva tarea...","No Selection":"Ninguna Selección","Please select some text to make it bold.":"Por favor, seleccione algún texto para hacerlo en negrita.","Please select some text to make it italic.":"Por favor, seleccione algún texto para hacerlo en cursiva.","Please select some text to underline it.":"Por favor, seleccione algún texto para subrayarlo.","Please select some text to make it a heading.":"Por favor, seleccione algún texto para hacerlo un encabezado.","Please select some text to create a list.":"Por favor, seleccione algún texto para crear una lista.","Enter URL:":"Ingrese la URL:","Please select some text to make it a link.":"Por favor, seleccione algún texto para hacerlo un enlace.","Saved!":"¡Guardado!","Your document has been saved locally.":"Su documento ha sido guardado localmente.","Undone":"Deshacer","Action has been undone.":"La acción ha sido deshecha.","Redone":"Rehacer","Action has been redone.":"La acción ha sido rehecha.","Uploaded!":"¡Subido!","Image has been added to the gallery.":"La imagen ha sido añadida a la galería.","Uploaded image":"Imagen subida","gallery-action-btn download-btn":"botón-de-acción-de-galería descarga","gallery-action-btn delete-btn":"botón-de-acción-de-galería eliminar","Deleted!":"¡Eliminado!","Image has been removed from the gallery.":"La imagen ha sido eliminada de la galería.","You":"Tú","Posted!":"¡Publicado!","Your message has been shared in the discussion.":"Tu mensaje ha sido compartido en el debate.","post-action like-btn":"botón-de-acción-de-publicación me gusta","post-action comment-btn":"botón-de-acción-de-publicación comentar","Add a comment:":"Añadir un comentario:","Commented!":"¡Comentado!","Your comment has been added.":"Tu comentario ha sido añadido.","File has been removed.":"El archivo ha sido eliminado.","Added!":"¡Añadido!","Task has been added to your list.":"La tarea ha sido añadida a tu lista.","Enter":"Entrar","Completed!":"¡Completado!","Reopened!":"Reabierto!","Task status has been updated.":"El estado de la tarea ha sido actualizado.","Task has been removed from your list.":"La tarea ha sido eliminada de tu lista.","All your work has been saved locally.":"Todo tu trabajo ha sido guardado localmente.","Copied!":"¡Copiado!","Share link has been copied to clipboard.":"El enlace de compartir ha sido copiado al portapapeles.","Unable to copy link. Please try again.":"No se pudo copiar el enlace. Por favor, intenta de nuevo.","Settings Applied":"Configuraciones aplicadas","Shared Content Loaded":"Contenido compartido cargado","All shared content has been imported.":"Todo el contenido compartido ha sido importado.","__title__":"Asistente de Colaboración Comunitaria","完全免费":"Completamente gratuito","提意见":"Enviar sugerencias","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Herramienta online gratuita: Asistente de Colaboración Comunitaria. Sin registro, sin pago — gratis para siempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Error al cargar los datos compartidos:","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Todos":"Todos","Normal":"Normal",".png":".png","DOMContentLoaded":"DOMContentLoaded","KB":"KB","MB":"MB","Error":"Error","Unable to load shared content.":"No se puede cargar el contenido compartido."},"ja":{"Community Collaboration Assistant":"コミュニティ協力アシスタント","Quick collaboration, real-time editing":"迅速な協力、リアルタイム編集","Documents":"ドキュメント","Images":"画像","Discussion":"ディスカッション","Files":"ファイル","Todos":"タスク","Document Editor":"ドキュメントエディタ","Bold":"太字","Italic":"イタリック","Underline":"下線","Heading":"見出し","List":"リスト","Link":"リンク","Save":"保存","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"コミュニティ協力アシスタントへようこそ！ここでタイピングを始めて、ドキュメントを作成できます。","Image Gallery":"画像ギャラリー","Drag \u0026 drop images here or click to browse":"ここに画像をドラッグ＆ドロップまたはクリックしてブラウズ","Post":"投稿","Shared Files":"共有ファイル","Drag \u0026 drop files here or click to browse":"ここにファイルをドラッグ＆ドロップまたはクリックしてブラウズ","Todo List":"タスクリスト","Add":"追加","Save All":"すべて保存","Undo":"元に戻す","Redo":"やり直す","Share":"共有","Settings":"設定","Welcome!":"ようこそ！","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"新しいドキュメントを作成したり、画像をアップロードすることから始めましょう。下のツールバーを使用して、保存、元に戻す、または共有を行います。","Font Size":"フォントサイズ","Small":"小","Medium":"中","Large":"大","Line Height":"行高","Compact":"コンパクト","Normal":"通常","Spacious":"広々","Theme":"テーマ","Dark":"ダーク","Light":"ライト","Download":"ダウンロード","Delete":"削除","Likes":"いいね","💬 Comment":"💬 コメント","Start typing your document...":"ドキュメントをタイピングを始めてください...","Share your thoughts...":"あなたの考えを共有してください...","Add a new task...":"新しいタスクを追加してください...","No Selection":"選択なし","Please select some text to make it bold.":"太字にするためには、テキストを選択してください。","Please select some text to make it italic.":"イタリックにするためには、テキストを選択してください。","Please select some text to underline it.":"下線を付けるためには、テキストを選択してください。","Please select some text to make it a heading.":"見出しにするためには、テキストを選択してください。","Please select some text to create a list.":"リストを作成するためには、テキストを選択してください。","Enter URL:":"URLを入力してください：","Please select some text to make it a link.":"リンクにするためには、テキストを選択してください。","Saved!":"保存しました！","Your document has been saved locally.":"ローカルにドキュメントが保存されました。","Undone":"取り消されました。","Action has been undone.":"アクションが取り消されました。","Redone":"リドーンされました。","Action has been redone.":"アクションがリドーンされました。","Uploaded!":"アップロードされました！","Image has been added to the gallery.":"画像がギャラリーに追加されました。","Uploaded image":"アップロードされた画像","gallery-action-btn download-btn":"ギャラリーアクションボタン ダウンロードボタン","gallery-action-btn delete-btn":"ギャラリーアクションボタン 削除ボタン","Deleted!":"削除されました！","Image has been removed from the gallery.":"画像がギャラリーから削除されました。","You":"あなた","Posted!":"投稿されました！","Your message has been shared in the discussion.":"あなたのメッセージがディスカッションで共有されました。","post-action like-btn":"投稿アクション いいねボタン","post-action comment-btn":"投稿アクション コメントボタン","Add a comment:":"コメントを追加：","Commented!":"コメントされました！","Your comment has been added.":"あなたのコメントが追加されました。","File has been removed.":"ファイルが削除されました。","Added!":"追加されました！","Task has been added to your list.":"タスクがあなたのリストに追加されました。","Enter":"入力","Completed!":"完了されました！","Reopened!":"再開されました！","Task status has been updated.":"タスクのステータスが更新されました。","Task has been removed from your list.":"タスクがあなたのリストから削除されました。","All your work has been saved locally.":"すべてのあなたの作業がローカルに保存されました。","Copied!":"コピーされました！","Share link has been copied to clipboard.":"共有リンクがクリップボードにコピーされました。","Error":"エラー","Unable to copy link. Please try again.":"リンクをコピーできませんでした。もう一度試してください。","Settings Applied":"設定が適用されました。","Shared Content Loaded":"共有コンテンツが読み込まれました。","All shared content has been imported.":"すべての共有コンテンツがインポートされました。","__title__":"コミュニティ協力アシスタント","完全免费":"完全無料","提意见":"意見をいただく","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"無料オンラインツール：コミュニティコラボレーションアシスタント。登録不要、支払い不要ー永久に無料です。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"共有データの読み込みエラー:","Unable to load shared content.":"共有コンテンツの読み込みができません。","PingFang SC":"ピンファンSC","Microsoft YaHei":"マイクロソフトヤヘイ",".png":".png","DOMContentLoaded":"DOMContentLoaded","KB":"KB","MB":"MB"},"ko":{"Community Collaboration Assistant":"커뮤니티 협업 어시스턴트","Quick collaboration, real-time editing":"빠른 협업, 실시간 편집","Documents":"문서","Images":"이미지","Discussion":"토론","Files":"파일","Todos":"할일","Document Editor":"문서 편집기","Bold":"볼드","Italic":"이탈릭","Underline":"밑줄","Heading":"제목","List":"리스트","Link":"링크","Save":"저장","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"커뮤니티 협업 어시스턴트를 환영합니다! 여기서 타이핑을 시작하여 문서를 만들 수 있습니다.","Image Gallery":"이미지 갤러리","Drag \u0026 drop images here or click to browse":"여기에 이미지를 드래그 앤 드롭하거나 클릭하여 탐색하세요","Post":"게시","Shared Files":"공유 파일","Drag \u0026 drop files here or click to browse":"여기에 파일을 드래그 앤 드롭하거나 클릭하여 탐색하세요","Todo List":"할일 목록","Add":"추가","Save All":"모두 저장","Undo":"되돌리기","Redo":"다시하기","Share":"공유","Settings":"설정","Welcome!":"환영합니다!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"새 문서를 만들거나 이미지를 업로드하여 시작하세요. 아래 툴바를 사용하여 저장, 되돌리기, 또는 작업을 공유하세요.","Font Size":"폰트 크기","Small":"작은","Medium":"중간","Large":"큰","Line Height":"줄 높이","Compact":"촉박한","Normal":"보통","Spacious":" 넓은","Theme":"테마","Dark":"어둡은","Light":"밝은","Download":"다운로드","Delete":"삭제","Likes":"좋아요","💬 Comment":"💬 댓글","Start typing your document...":"문서를 타이핑 시작하세요...","Share your thoughts...":"당신의 생각을 공유하세요...","Add a new task...":"새 작업을 추가하세요...","No Selection":"선택이 없습니다","Please select some text to make it bold.":"볼드로 만들기 위해 텍스트를 선택하세요.","Please select some text to make it italic.":"이탈릭으로 만들기 위해 텍스트를 선택하세요.","Please select some text to underline it.":"밑줄을 만들기 위해 텍스트를 선택하세요.","Please select some text to make it a heading.":"제목으로 만들기 위해 텍스트를 선택하세요.","Please select some text to create a list.":"리스트로 만들기 위해 텍스트를 선택하세요.","Enter URL:":"URL을 입력하세요:","Please select some text to make it a link.":"링크로 만들기 위해 텍스트를 선택하세요.","Saved!":"저장되었습니다!","Your document has been saved locally.":"당신의 문서가 로컬로 저장되었습니다.","Undone":"취소됨","Action has been undone.":"작업이 취소되었습니다.","Redone":"다시 수행됨","Action has been redone.":"작업이 다시 수행되었습니다.","Uploaded!":"업로드됨!","Image has been added to the gallery.":"이미지가 갤러리에 추가되었습니다.","Uploaded image":"업로드된 이미지","gallery-action-btn download-btn":"갤러리 액션 버튼 다운로드 버튼","gallery-action-btn delete-btn":"갤러리 액션 버튼 삭제 버튼","Deleted!":"삭제됨!","Image has been removed from the gallery.":"이미지가 갤러리에서 제거되었습니다.","You":"당신","Posted!":"게시됨!","Your message has been shared in the discussion.":"당신의 메시지가 토론에 공유되었습니다.","post-action like-btn":"게시물 액션 좋아요 버튼","post-action comment-btn":"게시물 액션 댓글 버튼","Add a comment:":"댓글 추가:","Commented!":"댓글됨!","Your comment has been added.":"당신의 댓글이 추가되었습니다.","File has been removed.":"파일이 제거되었습니다.","Added!":"추가됨!","Task has been added to your list.":"작업이 당신의 목록에 추가되었습니다.","Enter":"입력","Completed!":"완료됨!","Reopened!":"재개됨!","Task status has been updated.":"작업 상태가 업데이트되었습니다.","Task has been removed from your list.":"작업이 당신의 목록에서 제거되었습니다.","All your work has been saved locally.":"당신의 모든 작업이 로컬로 저장되었습니다.","Copied!":"복사됨!","Share link has been copied to clipboard.":"공유 링크가 클립보드에 복사되었습니다.","Error":"에러","Unable to copy link. Please try again.":"링크를 복사할 수 없습니다. 다시 시도해 주세요.","Settings Applied":"설정 적용됨","Shared Content Loaded":"공유된 콘텐츠 로드됨","All shared content has been imported.":"모든 공유된 콘텐츠가 가져오られました.","__title__":"커뮤니티 협업 어시스턴트","完全免费":"전혀 무료","提意见":"의견 제시","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"무료 온라인 도구: 커뮤니티 협업 도우미. 가입이나 결제 없음 — 영원히 무료","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"共享 데이터 로드 오류:","PingFang SC":"평방 SC","Microsoft YaHei":"미크로소프트 야헤이","Unable to load shared content.":"共享内容를 불러올 수 없습니다.",".png":".png","DOMContentLoaded":"DOMContentLoaded","KB":"KB","MB":"MB"},"fr":{"Community Collaboration Assistant":"Assistant de Collaboration Communautaire","Quick collaboration, real-time editing":"Collaboration rapide, édition en temps réel","Files":"Fichiers","Todos":"Tâches à faire","Document Editor":"Éditeur de Document","Bold":"Gras","Italic":"Italique","Underline":"Souligné","Heading":"En-tête","List":"Liste","Link":"Lien","Save":"Enregistrer","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Bienvenue à l'Assistant de Collaboration Communautaire ! Vous pouvez commencer à taper ici pour créer votre document.","Image Gallery":"Galerie d'Images","Drag \u0026 drop images here or click to browse":"Glissez-déposez des images ici ou cliquez pour parcourir","Post":"Publier","Shared Files":"Fichiers Partagés","Drag \u0026 drop files here or click to browse":"Glissez-déposez des fichiers ici ou cliquez pour parcourir","Todo List":"Liste des Tâches","Add":"Ajouter","Save All":"Enregistrer tout","Undo":"Annuler","Redo":"Rétablir","Share":"Partager","Settings":"Paramètres","Welcome!":"Bienvenue !","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Commencez par créer un nouveau document ou par télécharger des images. Utilisez la barre d'outils en bas pour enregistrer, annuler ou partager votre travail.","Font Size":"Taille de la police","Small":"Petite","Medium":"Moyenne","Large":"Grande","Line Height":"Hauteur de ligne","Compact":"Compacte","Normal":"Normale","Spacious":"Espace","Theme":"Thème","Dark":"Sombre","Light":"Lumineux","Download":"Télécharger","Delete":"Supprimer","Likes":"J'aime","💬 Comment":"💬 Commentaire","Start typing your document...":"Commencez à taper votre document...","Share your thoughts...":"Partagez vos idées...","Add a new task...":"Ajoutez une nouvelle tâche...","No Selection":"Aucune sélection","Please select some text to make it bold.":"Veuillez sélectionner du texte pour le rendre en gras.","Please select some text to make it italic.":"Veuillez sélectionner du texte pour le rendre en italique.","Please select some text to underline it.":"Veuillez sélectionner du texte pour le souligner.","Please select some text to make it a heading.":"Veuillez sélectionner du texte pour le rendre un en-tête.","Please select some text to create a list.":"Veuillez sélectionner du texte pour créer une liste.","Enter URL:":"Entrez l'URL :","Please select some text to make it a link.":"Veuillez sélectionner du texte pour le rendre un lien.","Saved!":"Enregistré !","Your document has been saved locally.":"Votre document a été sauvegardé localement.","Undone":"Annulé","Action has been undone.":"L'action a été annulée.","Redone":"Refait","Action has been redone.":"L'action a été refaite.","Uploaded!":"Téléversé !","Image has been added to the gallery.":"L'image a été ajoutée à la galerie.","Uploaded image":"Image téléversée","gallery-action-btn download-btn":"bouton-action-galerie télécharger","gallery-action-btn delete-btn":"bouton-action-galerie supprimer","Deleted!":"Supprimé !","Image has been removed from the gallery.":"L'image a été supprimée de la galerie.","You":"Vous","Posted!":"Publiée !","Your message has been shared in the discussion.":"Votre message a été partagé dans la discussion.","post-action like-btn":"bouton-action-message j'aime","post-action comment-btn":"bouton-action-message commentaire","Add a comment:":"Ajouter un commentaire :","Commented!":"Commenté !","Your comment has been added.":"Votre commentaire a été ajouté.","File has been removed.":"Le fichier a été supprimé.","Added!":"Ajouté !","Task has been added to your list.":"La tâche a été ajoutée à votre liste.","Enter":"Entrer","Completed!":"Terminé !","Reopened!":"Réouvert !","Task status has been updated.":"Le statut de la tâche a été mis à jour.","Task has been removed from your list.":"La tâche a été supprimée de votre liste.","All your work has been saved locally.":"Tous vos travaux ont été sauvegardés localement.","Copied!":"Copié !","Share link has been copied to clipboard.":"Le lien de partage a été copié dans le presse-papiers.","Error":"Erreur","Unable to copy link. Please try again.":"Impossible de copier le lien. Veuillez réessayer.","Settings Applied":"Paramètres appliqués","Shared Content Loaded":"Contenu partagé chargé","All shared content has been imported.":"Tous les contenus partagés ont été importés.","__title__":"Assistant de Collaboration Communautaire","完全免费":"Gratuit entirely","提意见":"Soumettre des suggestions","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Outil en ligne gratuit : Assistant de Collaboration Communautaire. Pas d'inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Erreur lors du chargement des données partagées :","Unable to load shared content.":"Impossible de charger le contenu partagé.","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Documents":"Documents","Images":"Images","Discussion":"Discussion",".png":".png","DOMContentLoaded":"DOMContentLoaded","KB":"KB","MB":"MB"},"de":{"Quick collaboration, real-time editing":"Schnelle Zusammenarbeit, Echtzeitbearbeitung","Documents":"Dokumente","Images":"Bilder","Discussion":"Diskussion","Files":"Dateien","Todos":"To-dos","Document Editor":"Dokumenteditor","Bold":"Fett","Italic":"Kursiv","Underline":"Unterstrichen","Heading":"Überschrift","List":"Liste","Save":"Speichern","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Willkommen beim Community Collaboration Assistant! Sie können hier beginnen zu tippen, um Ihr Dokument zu erstellen.","Image Gallery":"Bildergalerie","Drag \u0026 drop images here or click to browse":"Ziehen Sie Bilder hierher oder klicken Sie, um zu durchsuchen","Post":"Beitrag","Shared Files":"Gefürhte Dateien","Drag \u0026 drop files here or click to browse":"Ziehen Sie Dateien hierher oder klicken Sie, um zu durchsuchen","Todo List":"To-Do-Liste","Add":"Hinzufügen","Save All":"Alles speichern","Undo":"Rückgängig","Redo":"Wiederholen","Share":"Teilen","Settings":"Einstellungen","Welcome!":"Willkommen!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Beginnen Sie mit der Erstellung eines neuen Dokuments oder dem Hochladen von Bildern. Verwenden Sie die Werkzeugleiste unten, um Ihre Arbeit zu speichern, rückgängig zu setzen oder zu teilen.","Font Size":"Schriftgröße","Small":"Klein","Medium":"Mittel","Large":"Groß","Line Height":"Zeilenhöhe","Compact":"Kompakt","Spacious":"Raumvoll","Theme":"Thema","Dark":"Dunkel","Light":"Licht","Download":"Herunterladen","Delete":"Löschen","Likes":"Gefällt mir","💬 Comment":"💬 Kommentar","Start typing your document...":"Beginnen Sie mit dem Tippen Ihres Dokuments...","Share your thoughts...":"Teilen Sie Ihre Gedanken...","Add a new task...":"Fügen Sie eine neue Aufgabe hinzu...","No Selection":"Keine Auswahl","Please select some text to make it bold.":"Bitte wählen Sie einige Text aus, um ihn fett zu machen.","Please select some text to make it italic.":"Bitte wählen Sie einige Text aus, um ihn kursiv zu machen.","Please select some text to underline it.":"Bitte wählen Sie einige Text aus, um ihn unterstrichen zu machen.","Please select some text to make it a heading.":"Bitte wählen Sie einige Text aus, um ihn zu einer Überschrift zu machen.","Please select some text to create a list.":"Bitte wählen Sie einige Text aus, um eine Liste zu erstellen.","Enter URL:":"Geben Sie die URL ein:","Please select some text to make it a link.":"Bitte wählen Sie einige Text aus, um ihn zu einem Link zu machen.","Saved!":"Gespeichert!","Your document has been saved locally.":"Ihr Dokument wurde lokal gespeichert.","Undone":"Rückgängig gemacht","Action has been undone.":"Die Aktion wurde rückgängig gemacht.","Redone":"Wiederhergestellt","Action has been redone.":"Die Aktion wurde wiederhergestellt.","Uploaded!":"Hochgeladen!","Image has been added to the gallery.":"Das Bild wurde zur Galerie hinzugefügt.","Uploaded image":"Hochgeladenes Bild","Deleted!":"Gelöscht!","Image has been removed from the gallery.":"Das Bild wurde aus der Galerie entfernt.","You":"Du","Posted!":"Gepostet!","Your message has been shared in the discussion.":"Deine Nachricht wurde in der Diskussion geteilt.","Add a comment:":"Kommentar hinzufügen:","Commented!":"Gekommentet!","Your comment has been added.":"Dein Kommentar wurde hinzugefügt.","File has been removed.":"Die Datei wurde entfernt.","Added!":"Hinzugefügt!","Task has been added to your list.":"Die Aufgabe wurde zu Ihrer Liste hinzugefügt.","Enter":"Eingeben","Completed!":"Erledigt!","Reopened!":"Wieder geöffnet!","Task status has been updated.":"Der Status der Aufgabe wurde aktualisiert.","Task has been removed from your list.":"Die Aufgabe wurde von Ihrer Liste entfernt.","All your work has been saved locally.":"All deine Arbeit wurde lokal gespeichert.","Copied!":"Kopiert!","Share link has been copied to clipboard.":"Der Teillink wurde in die Zwischenablage kopiert.","Error":"Fehler","Unable to copy link. Please try again.":"Verbindungskopieren nicht möglich. Bitte versuchen Sie es erneut.","Settings Applied":"Einstellungen angewendet","Shared Content Loaded":"Gekündigtes Inhalt geladen","All shared content has been imported.":"Alle geteilten Inhalte wurden importiert.","__title__":"Community Collaboration Assistant","完全免费":"Komplett kostenlos","提意见":"Feedback geben","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Kostenloses Online-Tool: Gemeinschafts-Zusammenarbeitshelfer. Keine Registrierung, keine Zahlung – für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Error loading shared data:":"Fehler beim Laden gemeinsamer Daten:","Community Collaboration Assistant":"Gemeinschafts-Kollaborations-Assistent","Link":"Verknüpfung","Normal":"Normal",".png":".png","DOMContentLoaded":"DOM hinzugefügt","gallery-action-btn download-btn":"Galerie-Aktionsschaltfläche Download","gallery-action-btn delete-btn":"Galerie-Aktionsschaltfläche Löschen","post-action like-btn":"Beitrag-Aktionsschaltfläche Gefällt mir","post-action comment-btn":"Beitrag-Aktionsschaltfläche Kommentar","KB":"KB","MB":"MB","Unable to load shared content.":"Fehler beim Laden gemeinsam genutzten Inhalts."},"ru":{"Quick collaboration, real-time editing":"Быстрая коллаборация, редактирование в реальном времени","Documents":"Документы","Images":"Изображения","Discussion":"Обсуждение","Files":"Файлы","Todos":" Todos","Document Editor":"Редактор документа","Bold":"Жирный","Italic":"Курсив","Underline":"Подчеркнутый","Heading":"Заголовок","List":"Список","Link":"Ссылка","Save":"Сохранить","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Добро пожаловать в помощника коллаборации сообщества! Вы можете начать набирать текст здесь, чтобы создать документ.","Image Gallery":"Галерея изображений","Drag \u0026 drop images here or click to browse":"Перетащите изображения сюда или нажмите, чтобы просмотреть","Post":"Пост","Shared Files":"Общие файлы","Drag \u0026 drop files here or click to browse":"Перетащите файлы сюда или нажмите, чтобы просмотреть","Todo List":"Список задач","Add":"Добавить","Save All":"Сохранить все","Undo":"Отменить","Redo":"Повторить","Share":"Поделиться","Settings":"Настройки","Welcome!":"Добро пожаловать!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Начните с создания нового документа или загрузки изображений. Используйте панель инструментов в нижней части, чтобы сохранить, отменить или поделиться своей работой.","Font Size":"Размер шрифта","Small":"Маленький","Medium":"Средний","Large":"Большой","Line Height":"Высота строки","Compact":"Компактный","Normal":"Нормальный","Spacious":"Просторный","Theme":"Тема","Dark":"Тёмный","Light":"Светлый","Download":"Загрузить","Delete":"Удалить","Likes":"Лайки","💬 Comment":"💬 Комментарий","Start typing your document...":"Начните набирать текст вашего документа...","Share your thoughts...":"Поделитесь своими мыслями...","Add a new task...":"Добавьте новую задачу...","No Selection":"Нет выбора","Please select some text to make it bold.":"Пожалуйста, выберите текст, чтобы сделать его жирным.","Please select some text to make it italic.":"Пожалуйста, выберите текст, чтобы сделать его курсивом.","Please select some text to underline it.":"Пожалуйста, выберите текст, чтобы подчеркнуть его.","Please select some text to make it a heading.":"Пожалуйста, выберите текст, чтобы сделать его заголовком.","Please select some text to create a list.":"Пожалуйста, выберите текст, чтобы создать список.","Enter URL:":"Введите URL:","Please select some text to make it a link.":"Пожалуйста, выберите текст, чтобы сделать его ссылкой.","Saved!":"Сохранено!","Your document has been saved locally.":"Ваш документ был сохранен локально.","Undone":"Отменено","Action has been undone.":"Действие было отменено.","Redone":"Восстановлено","Action has been redone.":"Действие было восстановлено.","Uploaded!":"Загружено!","Image has been added to the gallery.":"Изображение добавлено в галерею.","Uploaded image":"Загруженное изображение","gallery-action-btn download-btn":"кнопка действия галереи загрузка","gallery-action-btn delete-btn":"кнопка действия галереи удаление","Deleted!":"Удалено!","Image has been removed from the gallery.":"Изображение было удалено из галереи.","You":"Вы","Posted!":"Опубликовано!","Your message has been shared in the discussion.":"Ваше сообщение было опубликовано в обсуждении.","post-action like-btn":"кнопка действия публикации лайк","post-action comment-btn":"кнопка действия публикации комментарий","Add a comment:":"Добавить комментарий:","Commented!":"Комментировано!","Your comment has been added.":"Ваш комментарий был добавлен.","KB":"КБ","MB":"МБ","File has been removed.":"Файл был удален.","Added!":"Добавлено!","Task has been added to your list.":"Задача была добавлена в ваш список.","Enter":"Войти","Completed!":"Завершено!","Reopened!":"Перезаведено!","Task status has been updated.":"Статус задачи был обновлен.","Task has been removed from your list.":"Задача была удалена из вашего списка.","All your work has been saved locally.":"Все ваши работы были сохранены локально.","Copied!":"Скопировано!","Share link has been copied to clipboard.":"Ссылка на compartir была скопирована в буфер обмена.","Error":"Ошибка","Unable to copy link. Please try again.":"Не удалось скопировать ссылку. Пожалуйста, попробуйте еще раз.","Settings Applied":"Настройки применены","Shared Content Loaded":"Содержание, совместно используемое, загружено","All shared content has been imported.":"Все совместно используемое содержимое было импортировано.","__title__":"Community Collaboration Assistant","完全免费":"полностью бесплатный","提意见":"предложить отзыв","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"бесплатный онлайн инструмент: Ассистент сотрудничества сообщества. Без регистрации, без оплаты — навсегда бесплатный.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Ошибка загрузки общих данных:","PingFang SC":"Пингфан SC","Microsoft YaHei":"Майкрософт ЯХей","Unable to load shared content.":"Не удалось загрузить общее содержимое.","Community Collaboration Assistant":"Сообщество и ассистент коллаборации",".png":".png","DOMContentLoaded":"DOMContentLoaded"},"pt":{"Community Collaboration Assistant":"Assistente de Colaboração Comunitária","Quick collaboration, real-time editing":"Colaboração rápida, edição em tempo real","Documents":"Documentos","Images":"Imagens","Discussion":"Discussão","Files":"Arquivos","Todos":"Tarefas","Document Editor":"Editor de Documentos","Bold":"Negrito","Italic":"Itálico","Underline":"Sublinhado","Heading":"Título","List":"Lista","Save":"Salvar","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Bem-vindo ao Assistente de Colaboração Comunitária! Você pode começar a digitar aqui para criar seu documento.","Image Gallery":"Galeria de Imagens","Drag \u0026 drop images here or click to browse":"Arraste e solte imagens aqui ou clique para navegar","Post":"Publicar","Shared Files":"Arquivos Compartilhados","Drag \u0026 drop files here or click to browse":"Arraste e solte arquivos aqui ou clique para navegar","Todo List":"Lista de Tarefas","Add":"Adicionar","Save All":"Salvar Tudo","Undo":"Desfazer","Redo":"Refazer","Share":"Compartilhar","Settings":"Configurações","Welcome!":"Bem-vindo!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Comece criando um novo documento ou carregando imagens. Use a barra de ferramentas na parte inferior para salvar, desfazer ou compartilhar seu trabalho.","Font Size":"Tamanho da Fonte","Small":"Pequeno","Medium":"Médio","Large":"Grande","Line Height":"Altura da Linha","Compact":"Compacto","Spacious":"Espaçado","Theme":"Tema","Dark":"Escuro","Light":"Claro","Download":"Baixar","Delete":"Excluir","Likes":"Curtidas","💬 Comment":"💬 Comentário","Start typing your document...":"Comece a digitar seu documento...","Share your thoughts...":"Compartilhe seus pensamentos...","Add a new task...":"Adicionar uma nova tarefa...","No Selection":"Nenhuma Seleção","Please select some text to make it bold.":"Por favor, selecione algum texto para torná-lo negrito.","Please select some text to make it italic.":"Por favor, selecione algum texto para torná-lo itálico.","Please select some text to underline it.":"Por favor, selecione algum texto para sublinhá-lo.","Please select some text to make it a heading.":"Por favor, selecione algum texto para torná-lo um título.","Please select some text to create a list.":"Por favor, selecione algum texto para criar uma lista.","Enter URL:":"Insira a URL:","Please select some text to make it a link.":"Por favor, selecione algum texto para torná-lo um link.","Saved!":"Salvo!","Your document has been saved locally.":"Seu documento foi salvo localmente.","Undone":"Desfazer","Action has been undone.":"A ação foi desfeita.","Redone":"Refazer","Action has been redone.":"A ação foi refeita.","Uploaded!":"Carregado!","Image has been added to the gallery.":"A imagem foi adicionada à galeria.","Uploaded image":"Imagem carregada","Deleted!":"Excluído!","Image has been removed from the gallery.":"A imagem foi removida da galeria.","You":"Você","Posted!":"Publicado!","Your message has been shared in the discussion.":"Sua mensagem foi compartilhada na discussão.","Add a comment:":"Adicionar um comentário:","Commented!":"Comentado!","Your comment has been added.":"Seu comentário foi adicionado.","File has been removed.":"O arquivo foi removido.","Added!":"Adicionado!","Task has been added to your list.":"A tarefa foi adicionada à sua lista.","Enter":"Entrar","Completed!":"Concluído!","Reopened!":"Reaberto!","Task status has been updated.":"O status da tarefa foi atualizado.","Task has been removed from your list.":"A tarefa foi removida da sua lista.","All your work has been saved locally.":"Todo seu trabalho foi salvo localmente.","Copied!":"Copiado!","Share link has been copied to clipboard.":"O link de compartilhamento foi copiado para a área de transferência.","Error":"Erro","Unable to copy link. Please try again.":"Não foi possível copiar o link. Por favor, tente novamente.","Settings Applied":"Configurações Aplicadas","Shared Content Loaded":"Conteúdo Compartilhado Carregado","All shared content has been imported.":"Todo o conteúdo compartilhado foi importado.","__title__":"Assistente de Colaboração Comunitária","Link":"Link","Normal":"Normal",".png":".png","DOMContentLoaded":"DOMContentLoaded","gallery-action-btn download-btn":"botão de ação de galeria download","gallery-action-btn delete-btn":"botão de ação de galeria deletar","post-action like-btn":"botão de ação de post gostar","post-action comment-btn":"botão de ação de post comentar","KB":"KB","MB":"MB","完全免费":"Grátis completo","提意见":"Enviar sugestão","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Ferramenta online gratuita: Assistente de Colaboração Comunitária. Sem registro, sem pagamento — gratuito para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Erro ao carregar dados compartilhados:","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Unable to load shared content.":"Não foi possível carregar o conteúdo compartilhado."},"ar":{"Community Collaboration Assistant":"مساعد التعاون المجتمعي","Quick collaboration, real-time editing":"تعاون سريع، تحرير في الوقت الحقيقي","Documents":"المستندات","Images":"الصور","Discussion":"مناقشة","Files":"الملفات","Todos":"المهام","Document Editor":"محرر المستند","Bold":"عريض","Italic":"مائل","Underline":"مرفوع","Heading":"العنوان","List":"القائمة","Link":"الرابط","Save":"حفظ","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"مرحبًا بكم في مساعد التعاون المجتمعي! يمكنك البدء في الكتابة هنا لإنشاء مستندك.","Image Gallery":"مكتبة الصور","Drag \u0026 drop images here or click to browse":"سحب وإفلات الصور هنا أو انقر للتصفح","Post":"المنشور","Shared Files":"الملفات المشتركة","Drag \u0026 drop files here or click to browse":"سحب وإفلات الملفات هنا أو انقر للتصفح","Todo List":"قائمة المهام","Add":"إضافة","Save All":"حفظ الكل","Undo":"تراجع","Redo":"إعادة","Share":"مشاركة","Settings":"الإعدادات","Welcome!":"مرحبًا!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"ابدأ بإنشاء مستند جديد أو تحميل صور. استخدم شريط الأدوات في الأسفل لحفظ، التراجع أو مشاركة عملك.","Font Size":"حجم الخط","Small":"صغير","Medium":"متوسط","Large":"كبير","Line Height":"ارتفاع السطر","Compact":"مدمج","Normal":"عادي","Spacious":"واسع","Theme":"النمط","Dark":"داكن","Light":"فاتح","Download":"تحميل","Delete":"حذف","Likes":"المعجبون","💬 Comment":"تعليق","Start typing your document...":"ابدأ في كتابة مستندك...","Share your thoughts...":"شارك أفكارك...","Add a new task...":"إضافة مهمة جديدة...","No Selection":"لا يوجد اختيار","Please select some text to make it bold.":"يرجى اختيار نص لجعله عريض.","Please select some text to make it italic.":"يرجى اختيار نص لجعله مائل.","Please select some text to underline it.":"يرجى اختيار نص لجعله مرفوع.","Please select some text to make it a heading.":"يرجى اختيار نص لجعله عنوان.","Please select some text to create a list.":"يرجى اختيار نص لإنشاء قائمة.","Enter URL:":"ادخل عنوان الموقع:","Please select some text to make it a link.":"يرجى اختيار نص لجعله رابط.","Saved!":"تم الحفظ!","Your document has been saved locally.":"مستندك تم حفظه محليًا.","Undone":"تم إلغاء.","Action has been undone.":"تم إلغاء العملية.","Redone":"تم إعادة تنفيذ.","Action has been redone.":"تم إعادة تنفيذ العملية.","Uploaded!":"تم التحميل!","Image has been added to the gallery.":"تم إضافة الصورة إلى المعرض.","Uploaded image":"صورة تم تحميلها","gallery-action-btn download-btn":"الزر الفعلي لمشاركة التحميل","gallery-action-btn delete-btn":"الزر الفعلي للحذف","Deleted!":"تم الحذف!","Image has been removed from the gallery.":"تم إزالة الصورة من المعرض.","You":"أنت","Posted!":"تم نشر.","Your message has been shared in the discussion.":"تم مشاركة رسالتك في النقاش.","post-action like-btn":"الزر الفعلي للإعجاب","post-action comment-btn":"الزر الفعلي للتعليق","Add a comment:":"أضف تعليقًا:","Commented!":"تم التعليق.","Your comment has been added.":"تم إضافة تعليقك.","KB":"كيلوبايت","MB":"ميجابايت","File has been removed.":"تم إزالة الملف.","Added!":"تم إضافة.","Task has been added to your list.":"تم إضافة المهمة إلى قائمتك.","Enter":"ادخل","Completed!":"تم إكمال.","Reopened!":"تم إعادة فتح.","Task status has been updated.":"تم تحديث حالة المهمة.","Task has been removed from your list.":"تم إزالة المهمة من قائمتك.","All your work has been saved locally.":"تم حفظ جميع أعمالك محليًا.","Copied!":"تم النسخ.","Share link has been copied to clipboard.":"تم نسخ رابط المشاركة إلى لوحة المفاتيح.","Error":"خطأ","Unable to copy link. Please try again.":"فشل نسخ الرابط. يرجى المحاولة مجددًا.","Settings Applied":"تم تطبيق الإعدادات","Shared Content Loaded":"تم تحميل المحتوى المشارك","All shared content has been imported.":"تم استيراد جميع المحتويات المشاركة.","__title__":"مساعد التعاون المجتمعي",".png":".png","DOMContentLoaded":"DOMContentLoaded","完全免费":"مجاني بالكامل","提意见":"قدم اقتراح","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: مساعد التعاون المجتمعي. بدون تسجيل، بدون دفع — مجاني إلى الأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"خطأ في تحميل البيانات المشتركة:","Unable to load shared content.":"لم يتم تحميل المحتوى المشترك.","PingFang SC":"بنج فانج إس سي","Microsoft YaHei":"مايكروسوفت ياهي"},"hi":{"Community Collaboration Assistant":"कम्युनिटी सहयोग सहायक","Quick collaboration, real-time editing":"त्वरित सहयोग, वास्तविक समय संपादन","Documents":"दस्तावेज","Images":"छवियाँ","Discussion":"चर्चा","Files":"फ़ाइलें","Todos":"टोडो","Document Editor":"दस्तावेज संपादक","Bold":"ठोस","Italic":"सीधा","Underline":"अनुभाग","Heading":"शीर्षक","List":"सूची","Link":"लिंक","Save":"सहेजें","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"कम्युनिटी सहयोग सहायक का स्वागत करें! यहाँ टाइपिंग शुरू करके अपना दस्तावेज बना सकते हैं.","Image Gallery":"छवि गैलरी","Drag \u0026 drop images here or click to browse":"यहाँ छवियाँ खींचें ड्रॉप करें या ब्राउज़ करने के लिए क्लिक करें","Post":"पोस्ट","Shared Files":"साझा फ़ाइलें","Drag \u0026 drop files here or click to browse":"यहाँ फ़ाइलें खींचें ड्रॉप करें या ब्राउज़ करने के लिए क्लिक करें","Todo List":"टोडो सूची","Add":"जोड़ें","Save All":"सभी सहेजें","Undo":"वापस ले जाएं","Redo":"फिर से करें","Share":"साझा करें","Settings":"सेटिंग्स","Welcome!":"स्वागत!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"नया दस्तावेज बनाने या छवियाँ अपलोड करने से शुरू करें. अपना काम सहेजने, वापस लेने या साझा करने के लिए नीचे की टूलबार का उपयोग करें.","Font Size":"फ़ॉन्ट आकार","Small":"छोटा","Medium":"मध्यम","Large":"बड़ा","Line Height":"लाइन ऊंचाई","Compact":"संकुचित","Normal":"सामान्य","Spacious":"खुला","Theme":"थीम","Dark":"गहरा","Light":"सफ़ेद","Download":"डाउनलोड","Delete":"मिटाएं","Likes":"सराहनाएँ","💬 Comment":"💬 टिप्पणी","Start typing your document...":"अपना दस्तावेज टाइप करना शुरू करें...","Share your thoughts...":"अपने विचार साझा करें...","Add a new task...":"नया कार्य जोड़ें...","No Selection":"कोई चयन नहीं","Please select some text to make it bold.":"ठोस बनाने के लिए कुछ पाठ चुनें。","Please select some text to make it italic.":"सीधा बनाने के लिए कुछ पाठ चुनें。","Please select some text to underline it.":"अनुभाग बनाने के लिए कुछ पाठ चुनें。","Please select some text to make it a heading.":"शीर्षक बनाने के लिए कुछ पाठ चुनें。","Please select some text to create a list.":"सूची बनाने के लिए कुछ पाठ चुनें。","Enter URL:":"URL दर्ज करें:","Please select some text to make it a link.":"लिंक बनाने के लिए कुछ पाठ चुनें。","Saved!":"सहेजा गया!","Your document has been saved locally.":"आपका दस्तावेज स्थानीय रूप से सहेजा गया है.","Undone":"अनुचित किया गया","Action has been undone.":"कार्य अनुचित किया गया है.","Redone":"पुनर्लिखित","Action has been redone.":"कार्य पुनर्लिखित किया गया है.","Uploaded!":"अपलोड किया गया!","Image has been added to the gallery.":"छवि गैलरी में जोड़ी गई है.","Uploaded image":"अपलोड की गई छवि","Deleted!":"मिटाया गया!","Image has been removed from the gallery.":"छवि गैलरी से मिटाई गई है.","You":"तुम","Posted!":"पोस्ट किया गया!","Your message has been shared in the discussion.":"तुम्हारा संदेश चर्चा में साझा किया गया है.","Add a comment:":"टिप्पणी जोड़ें:","Commented!":"टिप्पणी की गई!","Your comment has been added.":"तुम्हारी टिप्पणी जोड़ी गई है.","KB":"कीबी","MB":"मेगाबाइट","File has been removed.":"फ़ाइल मिटाई गई है.","Added!":"जोड़ा गया!","Task has been added to your list.":"कार्य सूची में जोड़ा गया है.","Enter":"इनपुट करें","Completed!":"समाप्त!","Reopened!":"पुनः खोला गया!","Task status has been updated.":"कार्य की स्थिति अद्यतन की गई है.","Task has been removed from your list.":"कार्य सूची से मिटाया गया है.","All your work has been saved locally.":"तुम्हारा सभी कार्य स्थानीय रूप से सहेजा गया है.","Copied!":"कॉपी किया गया!","Share link has been copied to clipboard.":"साझा करने वाला लिंक क्लिपबोर्ड पर कॉपी किया गया है.","Error":"एरर","Unable to copy link. Please try again.":"लिंक कॉपी करने में असमर्थ. कृपया फिर से प्रयास करें.","Settings Applied":"सेटिंग्स लागू किया गया","Shared Content Loaded":"साझा सामग्री लोड की गई","All shared content has been imported.":"सभी साझा सामग्री आयात की गई है.","__title__":"कम्युनिटी सहयोग सहायक","DOMContentLoaded":"…","gallery-action-btn download-btn":"…","gallery-action-btn delete-btn":"…","post-action like-btn":"…","post-action comment-btn":"…","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"फ्री ऑनलाइन टूल: कम्युनिटी कोलाबोरेशन असिस्टेंट. कोई साइनअप नहीं, कोई भुगतान नहीं — हमेशा फ्री.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"शेयर्ड डेटा लोड करने में त्रुटि:","Unable to load shared content.":"शेयर्ड कंटेंट लोड नहीं कर सका.","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"id":{"Community Collaboration Assistant":"Asisten Kemitraan Komunitas","Quick collaboration, real-time editing":"Kemitraan cepat, editing real-time","Documents":"Dokumen","Images":"Gambar","Discussion":"Diskusi","Files":" Berkas","Document Editor":"Penyunting Dokumen","Bold":"Tebal","Italic":"Ektara","Underline":"Garis bawah","Heading":"Judul","List":"Daftar","Link":"Tautan","Save":"Simpan","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Selamat datang di Asisten Kemitraan Komunitas! Anda dapat mulai mengetik di sini untuk membuat dokumen Anda.","Image Gallery":"Galeri Gambar","Drag \u0026 drop images here or click to browse":"Seret dan lepas gambar di sini atau klik untuk menggulir","Post":"Pos","Shared Files":"Berkas Dibagikan","Drag \u0026 drop files here or click to browse":"Seret dan lepas berkas di sini atau klik untuk menggulir","Todo List":"Daftar Todo","Add":"Tambah","Save All":"Simpan Semua","Undo":"Batalkan","Redo":"Ulangi","Share":"Bagikan","Settings":"Pengaturan","Welcome!":"Selamat datang!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Mulai dengan membuat dokumen baru atau mengunggah gambar. Gunakan toolbar di bawah untuk menyimpan, batalkan, atau bagikan kerja Anda.","Font Size":"Ukuran Font","Small":"Kecil","Medium":"Sedang","Large":"Besar","Line Height":"Ketinggian Baris","Compact":"Kompak","Spacious":"Luas","Theme":"Tema","Dark":"Gelap","Light":"Terang","Download":"Unduh","Delete":"Hapus","Likes":"Suka","💬 Comment":"💬 Komentar","Start typing your document...":"Mulai mengetik dokumen Anda...","Share your thoughts...":"Bagikan pikiran Anda...","Add a new task...":"Tambahkan tugas baru...","No Selection":"Tidak Ada Pilihan","Please select some text to make it bold.":"Silakan pilih beberapa teks untuk membuatnya tebal.","Please select some text to make it italic.":"Silakan pilih beberapa teks untuk membuatnya ektara.","Please select some text to underline it.":"Silakan pilih beberapa teks untuk menambah garis bawah.","Please select some text to make it a heading.":"Silakan pilih beberapa teks untuk membuatnya judul.","Please select some text to create a list.":"Silakan pilih beberapa teks untuk membuat daftar.","Enter URL:":"Masukkan URL:","Please select some text to make it a link.":"Silakan pilih beberapa teks untuk membuatnya tautan.","Saved!":"Disimpan!","Your document has been saved locally.":"Dokument Anda telah disimpan secara lokal.","Undone":"Dibatalkan","Action has been undone.":"Tindakan telah dibatalkan.","Redone":"Dikerjakan kembali","Action has been redone.":"Tindakan telah dikerjakan kembali.","Uploaded!":"Terunggah!","Image has been added to the gallery.":"Gambar telah ditambahkan ke galleri.","Uploaded image":"Gambar yang diunggah","Deleted!":"Dihapus!","Image has been removed from the gallery.":"Gambar telah dihapus dari galleri.","You":"Anda","Posted!":"Diposting!","Your message has been shared in the discussion.":"Pesan Anda telah dibagikan dalam diskusi.","Add a comment:":"Tambahkan komentar:","Commented!":"Komentar telah ditambahkan.","Your comment has been added.":"Komentar Anda telah ditambahkan.","File has been removed.":" Berkas telah dihapus.","Added!":"Ditambahkan!","Task has been added to your list.":"Tugas telah ditambahkan ke daftar Anda.","Enter":"Masukkan","Completed!":"Selesai!","Reopened!":"Dibuka kembali!","Task status has been updated.":"Status tugas telah diperbarui.","Task has been removed from your list.":"Tugas telah dihapus dari daftar Anda.","All your work has been saved locally.":"Semua kerja Anda telah disimpan secara lokal.","Copied!":"Dipotong!","Share link has been copied to clipboard.":"Tautan berbagi telah disalin ke papan klip.","Error":"Kesalahan","Unable to copy link. Please try again.":"Tidak dapat menyalin tautan. Silakan coba lagi.","Settings Applied":"Pengaturan Diterapkan","Shared Content Loaded":"Konten Berbagi Telah Dikirim","All shared content has been imported.":"Semua konten berbagi telah diimpor.","__title__":"Asisten Kemitraan Komunitas","Todos":"Todos","Normal":"Normal",".png":".png","DOMContentLoaded":"DOMContentLoaded","gallery-action-btn download-btn":"gallery-action-btn download-btn","gallery-action-btn delete-btn":"gallery-action-btn delete-btn","post-action like-btn":"post-action like-btn","post-action comment-btn":"post-action comment-btn","KB":"KB","MB":"MB","完全免费":"Lengkap gratis","提意见":"Berikan saran","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Alat online gratis: Asisten Kemitraan Komunitas. Tanpa pendaftaran, tanpa pembayaran — gratis selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Error loading shared data:":"Galat saat memuat data berbagi:","Unable to load shared content.":"Tidak dapat memuat konten berbagi."},"vi":{"Community Collaboration Assistant":"Trợ lý Hợp tác Cộng đồng","Quick collaboration, real-time editing":"Hợp tác nhanh, chỉnh sửa thời gian thực","Documents":"Tài liệu","Images":"Hình ảnh","Discussion":"Thảo luận","Files":"Tệp","Todos":"Công việc cần làm","Document Editor":"Biên tập viên tài liệu","Bold":"In đậm","Italic":"Nghiêng","Underline":"Gạch dưới","Heading":"Tiêu đề","List":"Danh sách","Link":"Liên kết","Save":"Lưu","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"Chào mừng bạn đến với Trợ lý Hợp tác Cộng đồng! Bạn có thể bắt đầu gõ ở đây để tạo tài liệu của mình.","Image Gallery":"Thư viện hình ảnh","Drag \u0026 drop images here or click to browse":"Kéo và thả hình ảnh vào đây hoặc nhấp để duyệt","Post":"Đăng","Shared Files":"Tệp chia sẻ","Drag \u0026 drop files here or click to browse":"Kéo và thả tệp vào đây hoặc nhấp để duyệt","Todo List":"Danh sách công việc cần làm","Add":"Thêm","Save All":"Lưu tất cả","Undo":"Quay lại","Redo":"Làm lại","Share":"Chia sẻ","Settings":"Cài đặt","Welcome!":"Chào mừng!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"Bắt đầu bằng cách tạo tài liệu mới hoặc tải lên hình ảnh. Sử dụng thanh công cụ ở dưới cùng để lưu, quay lại hoặc chia sẻ công việc của bạn.","Font Size":"Kích thước font","Small":"Nhỏ","Medium":"Trung bình","Large":"Lớn","Line Height":"Khoảng cách dòng","Compact":"Gọn gàng","Normal":"Bình thường","Spacious":"Rộng rãi","Theme":"Chủ đề","Dark":"Đen","Light":"Sáng","Download":"Tải xuống","Delete":"Xóa","Likes":"Thích","💬 Comment":"💬 Bình luận","Start typing your document...":"Bắt đầu gõ tài liệu của bạn...","Share your thoughts...":"Chia sẻ suy nghĩ của bạn...","Add a new task...":"Thêm công việc mới...","No Selection":"Không có lựa chọn","Please select some text to make it bold.":"Vui lòng chọn một đoạn văn bản để in đậm.","Please select some text to make it italic.":"Vui lòng chọn một đoạn văn bản để nghiêng.","Please select some text to underline it.":"Vui lòng chọn một đoạn văn bản để gạch dưới.","Please select some text to make it a heading.":"Vui lòng chọn một đoạn văn bản để làm tiêu đề.","Please select some text to create a list.":"Vui lòng chọn một đoạn văn bản để tạo danh sách.","Enter URL:":"Nhập URL:","Please select some text to make it a link.":"Vui lòng chọn một đoạn văn bản để làm liên kết.","Saved!":"Đã lưu!","Your document has been saved locally.":"Tài liệu của bạn đã được lưu cục bộ.","Undone":"Hủy bỏ.","Action has been undone.":"Hành động đã được hủy bỏ.","Redone":"Đã hoàn thành lại.","Action has been redone.":"Hành động đã được hoàn thành lại.","Uploaded!":"Tải lên thành công!","Image has been added to the gallery.":"Hình ảnh đã được thêm vào thư viện hình ảnh.","Uploaded image":"Hình ảnh đã tải lên","gallery-action-btn download-btn":"nút-thao-tác-thư-vien-hinh-anh tải-về","gallery-action-btn delete-btn":"nút-thao-tác-thư-vien-hinh-anh xóa","Deleted!":"Đã xóa!","Image has been removed from the gallery.":"Hình ảnh đã bị xóa khỏi thư viện hình ảnh.","You":"Bạn","Posted!":"Đã đăng!","Your message has been shared in the discussion.":"Tin nhắn của bạn đã được chia sẻ trong cuộc thảo luận.","post-action like-btn":"nút-thao-tác-bài đăng thích","post-action comment-btn":"nút-thao-tác-bài đăng bình luận","Add a comment:":"Thêm bình luận:","Commented!":"Đã bình luận!","Your comment has been added.":"Bình luận của bạn đã được thêm.","File has been removed.":"Tệp đã bị xóa.","Added!":"Đã thêm!","Task has been added to your list.":"Nhiệm vụ đã được thêm vào danh sách của bạn.","Enter":"Nhập","Completed!":"Hoàn thành!","Reopened!":"Đã mở lại!","Task status has been updated.":"Trạng thái nhiệm vụ đã được cập nhật.","Task has been removed from your list.":"Nhiệm vụ đã bị xóa khỏi danh sách của bạn.","All your work has been saved locally.":"Tất cả công việc của bạn đã được lưu cục bộ.","Copied!":"Đã sao chép!","Share link has been copied to clipboard.":"Liên kết chia sẻ đã được sao chép vào bảng nháp.","Error":"Lỗi","Unable to copy link. Please try again.":"Không thể sao chép liên kết. Vui lòng thử lại.","Settings Applied":"Cài đặt đã được áp dụng","Shared Content Loaded":"Nội dung chia sẻ đã được tải","All shared content has been imported.":"Tất cả nội dung chia sẻ đã được导入.","__title__":"Trợ lý Hợp tác Cộng đồng",".png":".png","DOMContentLoaded":"DOMContentLoaded","KB":"KB","MB":"MB","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: Trợ lý Hợp tác Cộng đồng. Không đăng ký, không thanh toán — miễn phí vĩnh viễn.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"Lỗi tải dữ liệu chung:","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Unable to load shared content.":"Không thể tải nội dung chung."},"th":{"Quick collaboration, real-time editing":"ร่วมงานรวดเร็ว แก้ไขเวลาจริง","Documents":"เอกสาร","Images":"รูปภาพ","Discussion":"การหารือ","Files":"ไฟล์","Todos":"รายการที่ต้องทำ","Document Editor":"บรรณาธิการเอกสาร","Bold":"粗体","Italic":"kursiv","Underline":"ฺลินิ่ง","Heading":"หัวข้อ","List":"รายการ","Link":"ลิงก์","Save":"บันทึก","Welcome to the Community Collaboration Assistant! You can start typing here to create your document.":"ยินดีต้อนรับสู่ Community Collaboration Assistant! คุณสามารถพิมพ์ต่อไปนี้เพื่อสร้างเอกสารของคุณ","Image Gallery":"แกลลอรี่รูปภาพ","Drag \u0026 drop images here or click to browse":"ลากและปล่อยรูปภาพที่นี่ หรือคลิกเพื่อเลือก","Post":"โพสต์","Shared Files":"ไฟล์ที่แบ่งปัน","Drag \u0026 drop files here or click to browse":"ลากและปล่อยไฟล์ที่นี่ หรือคลิกเพื่อเลือก","Todo List":"รายการที่ต้องทำ","Add":"เพิ่ม","Save All":"บันทึกทั้งหมด","Undo":"ยกเลิก","Redo":"ทำใหม่","Share":"แบ่งปัน","Settings":"ตั้งค่า","Welcome!":"ยินดีต้อนรับ!","Start by creating a new document or uploading images. Use the toolbar at the bottom to save, undo, or share your work.":"เริ่มด้วยการสร้างเอกสารใหม่ หรืออัพโหลดรูปภาพ ใช้โซ่งงานที่ด้านล่างเพื่อบันทึก ยกเลิก หรือแบ่งปันงานของคุณ","Font Size":"ขนาดตัวอักษร","Small":"เล็ก","Medium":"ขาว","Large":"ใหญ่","Line Height":"ความสูงบรรทัด","Compact":"บริบทบ่งชี้","Normal":"ปกติ","Spacious":"โล่ง","Theme":"โทน","Dark":"มืด","Light":"สว่าง","Download":"ดาวน์โหลด","Delete":"ลบ","Likes":"ชอบ","💬 Comment":"💬 ข้อคิดเห็น","Start typing your document...":"เริ่มพิมพ์เอกสารของคุณ...","Share your thoughts...":"แบ่งปันความคิดของคุณ...","Add a new task...":"เพิ่มงานใหม่...","No Selection":"ไม่มีการเลือก","Please select some text to make it bold.":"กรุณาเลือกข้อความเพื่อทำให้เป็นรูปแบบหนา","Please select some text to make it italic.":"กรุณาเลือกข้อความเพื่อทำให้เป็นรูปแบบkursiv","Please select some text to underline it.":"กรุณาเลือกข้อความเพื่อทำให้เป็นฺลินิ่ง","Please select some text to make it a heading.":"กรุณาเลือกข้อความเพื่อทำให้เป็นหัวข้อ","Please select some text to create a list.":"กรุณาเลือกข้อความเพื่อทำให้เป็นรายการ","Enter URL:":"ใส่ URL:","Please select some text to make it a link.":"กรุณาเลือกข้อความเพื่อทำให้เป็นลิงก์","Saved!":"บันทึกแล้ว!","Your document has been saved locally.":"ขอบคุณที่บันทึกเอกสารของคุณที่ท้องถิ่น","Undone":"ยกเลิก","Action has been undone.":"การกระทำถูกยกเลิก","Redone":"ทำใหม่","Action has been redone.":"การกระทำถูกทำใหม่","Uploaded!":"ได้ที่นำขึ้นแล้ว!","Image has been added to the gallery.":"รูปภาพถูกเพิ่มไปยังแกลลอรี่","Uploaded image":"รูปภาพที่นำขึ้น","Deleted!":"ถูกลบ!","Image has been removed from the gallery.":"รูปภาพถูกลบออกจากแกลลอรี่","You":"คุณ","Posted!":"ได้โพสต์!","Your message has been shared in the discussion.":"ข้อความของคุณได้ถูกแชร์ในการหารือ","Add a comment:":"เพิ่มความคิดเห็น:","Commented!":"ได้แสดงความคิดเห็น!","Your comment has been added.":"ความคิดเห็นของคุณถูกเพิ่ม","File has been removed.":"ไฟล์ถูกลบ","Added!":"ได้เพิ่ม!","Task has been added to your list.":"งานที่ต้องทำถูกเพิ่มลงในรายการของคุณ","Enter":"เข้าสู่","Completed!":"เสร็จ!","Reopened!":"เปิดอีกครั้ง!","Task status has been updated.":"สถานะงานได้ถูกปรับปรุง","Task has been removed from your list.":"งานที่ต้องทำถูกลบออกจากรายการของคุณ","All your work has been saved locally.":"งานทั้งหมดของคุณได้ถูกบันทึกที่ท้องถิ่น","Copied!":"ได้คัดลอก!","Share link has been copied to clipboard.":"ลิงก์แชร์ได้ถูกคัดลอกไปยังคลิปบอร์ด","Error":"ข้อผิดพลาด","Unable to copy link. Please try again.":"ไม่สามารถคัดลอกลิงก์ได้. กรุณาลองอีกครั้ง","Settings Applied":"การปรับแต่งได้ถูกใช้งาน","Shared Content Loaded":"เนื้อหาแชร์ได้ถูกโหลด","All shared content has been imported.":"เนื้อหาแชร์ทั้งหมดได้ถูกนำเข้า","__title__":"Community Collaboration Assistant","Community Collaboration Assistant":"…",".png":"…","DOMContentLoaded":"…","gallery-action-btn download-btn":"…","gallery-action-btn delete-btn":"…","post-action like-btn":"…","post-action comment-btn":"…","KB":"…","MB":"…","完全免费":"ที่ใช้ได้ทั้งหมดฟรี","提意见":"แจ้งความคิดเห็น","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"เครื่องมือฟรีออนไลน์: ผู้ช่วยร่วมมือชุมชน. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย — ฟรีตลอดไป","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","image/*":"image/*","image/":"image/","Error loading shared data:":"…","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Unable to load shared content.":"…"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

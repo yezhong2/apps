@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevHub - Developer Resources Toolkit</title>
+    <meta name="description" content="Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.">
+    <meta property="og:title" content="DevHub - Developer Resources Toolkit">
+    <meta property="og:description" content="Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-05_210813_开发者资源集.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --accent: #4f83cc;
+            --accent-hover: #6a97db;
+            --border: #2a2a3e;
+            --code-bg: #1e1e2e;
+            --code-border: #3a3a4e;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        /* Sections */
+        section {
+            padding: 4rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        /* Forms and Inputs */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Buttons */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--code-bg);
+        }
+        
+        /* Code Display */
+        .code-display {
+            background-color: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .code-line {
+            display: block;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+        
+        .code-keyword {
+            color: #ff79c6;
+        }
+        
+        .code-string {
+            color: #f1fa8c;
+        }
+        
+        .code-comment {
+            color: #6272a4;
+        }
+        
+        .code-function {
+            color: #50fa7b;
+        }
+        
+        .code-variable {
+            color: #f8f8f2;
+        }
+        
+        /* Result Display */
+        .result-display {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            min-height: 100px;
+        }
+        
+        .success-message {
+            color: var(--success);
+        }
+        
+        .error-message {
+            color: var(--error);
+        }
+        
+        .warning-message {
+            color: var(--warning);
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background-color: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        
+        .file-upload:hover .file-upload-label {
+            background-color: var(--code-bg);
+        }
+        
+        /* API Tester */
+        .api-method {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .method-select {
+            width: 120px;
+        }
+        
+        .api-url {
+            flex: 1;
+        }
+        
+        .api-params {
+            margin-top: 1rem;
+        }
+        
+        .param-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .param-input {
+            flex: 1;
+        }
+        
+        .param-value {
+            flex: 2;
+        }
+        
+        /* Algorithm Display */
+        .algorithm-display {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .algorithm-explanation, .algorithm-implementation {
+            flex: 1;
+        }
+        
+        .algorithm-explanation h3, .algorithm-implementation h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        /* Drag and Drop Styles */
+        .file-upload.dragover {
+            background-color: rgba(79, 131, 204, 0.1);
+            border: 2px dashed var(--accent);
+        }
+        
+        /* Welcome Banner */
+        .welcome-banner {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .welcome-banner h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Use Cases */
+        .use-cases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .use-case {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        
+        .use-case h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        
+        .use-case p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        /* Tutorial Section */
+        .tutorial-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid var(--border);
+        }
+        
+        .tutorial-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .tutorial-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+        
+        .tutorial-link:hover {
+            color: var(--accent-hover);
+        }
+        
+        .tutorial-icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .feature-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1rem;
+            fill: var(--accent);
+        }
+        
+        .feature-card h4 {
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">DevHub</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#code-tools">Code Tools</a></li>
+                <li><a href="#api-tools">API Tools</a></li>
+                <li><a href="#algorithm-tools">Algorithm Tools</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home">
+        <div class="container">
+            <h1 class="section-title">Developer Resources Toolkit</h1>
+            <p class="section-description">
+                DevHub provides a comprehensive set of tools for developers to enhance their productivity. 
+                From code formatting and debugging to API testing and algorithm implementation, 
+                we've got everything you need in one place.
+            </p>
+            
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <h3>Welcome to DevHub</h3>
+                <p>Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.</p>
+            </div>
+            
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24">
+                        <path d="M14.6,16.6L19.2,12L14.6,7.4L16,6L22,12L16,18L14.6,16.6M9.4,16.6L4.8,12L9.4,7.4L8,6L2,12L8,18L9.4,16.6Z"/>
+                    </svg>
+                    <h4>Code Highlighting</h4>
+                    <p>Visualize your code with syntax highlighting for better readability and error spotting.</p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24">
+                        <path d="M19,3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M19,19H5V5H19V19M13,17V15H17V13H15V9H17V7H13V9H11V7H7V9H9V13H7V15H11V17H13Z"/>
+                    </svg>
+                    <h4>Debug Environment</h4>
+                    <p>Run and test your code directly in your browser with our interactive debugging tool.</p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    <h4>Code Review</h4>
+                    <p>Analyze your code for potential issues and get suggestions for improvement.</p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M12,19A1,1 0 0,0 13,18V14L16,17L17.3,15.7L14,12.4L10.6,15.7L12,17L15,14V18A1,1 0 0,0 16,19Z"/>
+                    </svg>
+                    <h4>API Testing</h4>
+                    <p>Test your REST APIs with various methods and analyze responses in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <svg class="feature-icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    <h4>Algorithm Helper</h4>
+                    <p>Get explanations and implementations for common algorithms and data structures.</p>
+                </div>
+            </div>
+            
+            <!-- Tutorial Section -->
+            <div class="tutorial-section">
+                <h3>Getting Started with DevHub</h3>
+                <p>Learn how to make the most of our developer tools with our tutorials and guides:</p>
+                <a href="#" class="tutorial-link">
+                    <svg class="tutorial-icon" viewBox="0 0 24 24">
+                        <path d="M10,15V17H8V15H10M16,11V13H8V11H16M14,7V9H8V7H14M22,2V22L18,18H2V2H22M20,4H4V16H18.2L20,17.8V4Z"/>
+                    </svg>
+                    Code Highlighting Tutorial
+                </a>
+                <a href="#" class="tutorial-link">
+                    <svg class="tutorial-icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    API Testing Guide
+                </a>
+                <a href="#" class="tutorial-link">
+                    <svg class="tutorial-icon" viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20M12,19A1,1 0 0,0 13,18V14L16,17L17.3,15.7L14,12.4L10.6,15.7L12,17L15,14V18A1,1 0 0,0 16,19Z"/>
+                    </svg>
+                    Algorithm Implementation Tips
+                </a>
+            </div>
+            
+            <div class="tabs">
+                <button class="tab active" data-tab="code-highlight">Code Highlighter</button>
+                <button class="tab" data-tab="debug-environment">Debug Environment</button>
+                <button class="tab" data-tab="code-review">Code Review</button>
+            </div>
+            
+            <div id="code-highlight" class="tab-content active">
+                <div class="input-group">
+                    <label for="code-input">Enter your code snippet:</label>
+                    <textarea id="code-input" placeholder="// Paste your code here..."></textarea>
+                </div>
+                <button class="btn" onclick="highlightCode()">Highlight Code</button>
+                <div id="code-highlight-result" class="code-display" style="display: none;"></div>
+            </div>
+            
+            <div id="debug-environment" class="tab-content">
+                <div class="input-group">
+                    <label for="problem-description">Describe the problem:</label>
+                    <textarea id="problem-description" placeholder="Describe the issue you're facing..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="debug-code">Your code:</label>
+                    <textarea id="debug-code" placeholder="// Paste your code here..."></textarea>
+                </div>
+                <button class="btn" onclick="runCode()">Run Code</button>
+                <div id="debug-result" class="result-display"></div>
+            </div>
+            
+            <div id="code-review" class="tab-content">
+                <div class="input-group">
+                    <label>Upload code file:</label>
+                    <div class="file-upload">
+                        <input type="file" id="file-upload" accept=".js,.ts,.py,.java" onchange="handleFileUpload(event)">
+                        <label for="file-upload" class="file-upload-label">
+                            Choose file or drag here
+                        </label>
+                    </div>
+                </div>
+                <button class="btn" onclick="reviewCode()">Review Code</button>
+                <div id="code-review-result" class="result-display"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Tools Section -->
+    <section id="api-tools">
+        <div class="container">
+            <h2 class="section-title">API Testing Tool</h2>
+            <p class="section-description">
+                Test your API endpoints with our comprehensive testing tool. 
+                Send requests and analyze responses in real-time.
+            </p>
+            
+            <div class="api-method">
+                <select id="api-method" class="method-select">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <input type="text" id="api-url" class="api-url" placeholder="Enter API endpoint URL">
+            </div>
+            
+            <div class="input-group">
+                <label>Request Headers (JSON format):</label>
+                <textarea id="api-headers" placeholder='{"Content-Type": "application/json"}'></textarea>
+            </div>
+            
+            <div class="input-group">
+                <label>Request Body:</label>
+                <textarea id="api-body" placeholder='{"key": "value"}'></textarea>
+            </div>
+            
+            <button class="btn" onclick="testAPI()">Test API</button>
+            <div id="api-result" class="result-display"></div>
+        </div>
+    </section>
+
+    <!-- Algorithm Tools Section -->
+    <section id="algorithm-tools">
+        <div class="container">
+            <h2 class="section-title">Algorithm Helper</h2>
+            <p class="section-description">
+                Get algorithm explanations and implementation examples for common programming problems.
+            </p>
+            
+            <div class="input-group">
+                <label for="algorithm-input">Describe your algorithm problem:</label>
+                <textarea id="algorithm-input" placeholder="e.g., How to implement binary search?"></textarea>
+            </div>
+            
+            <button class="btn" onclick="getAlgorithm()">Get Algorithm Solution</button>
+            
+            <div id="algorithm-result" class="algorithm-display" style="display: none;">
+                <div class="algorithm-explanation">
+                    <h3>Explanation</h3>
+                    <div id="algorithm-explanation-content"></div>
+                </div>
+                <div class="algorithm-implementation">
+                    <h3>Implementation</h3>
+                    <div id="algorithm-implementation-content" class="code-display"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2 class="section-title">About DevHub</h2>
+            <p class="section-description">
+                DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. 
+                Our tools help with code formatting, debugging, API testing, and algorithm implementation, 
+                all in one convenient platform.
+            </p>
+            <p>
+                Our mission is to empower developers with the tools they need to write better code faster. 
+                Whether you're a beginner or an experienced developer, DevHub has something for you.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        // Tab switching functionality
+        function switchTab(evt, tabName) {
+            var i, tabcontent, tabs;
+            
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            tabs = document.getElementsByClassName("tab");
+            for (i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+        
+        // Initialize tooltips and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add smooth scrolling for navigation links
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('a[href^="#"]')) {
+                    e.preventDefault();
+                    const target = document.querySelector(e.target.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                }
+            });
+            
+            // Initialize tab switching with event delegation
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.tab')) {
+                    const tabName = e.target.getAttribute('data-tab');
+                    if (tabName) {
+                        switchTab(e, tabName);
+                    }
+                }
+            });
+            
+            // Add file drop functionality
+            const fileUpload = document.querySelector('.file-upload');
+            
+            fileUpload.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+            
+            fileUpload.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+            
+            fileUpload.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    document.getElementById('file-upload').files = files;
+                    handleFileUpload({ target: { files: files } });
+                }
+            });
+        });
+        
+        // Code highlighting functionality
+        function highlightCode() {
+            const codeInput = document.getElementById('code-input').value;
+            const resultDiv = document.getElementById('code-highlight-result');
+            
+            if (!codeInput.trim()) {
+                resultDiv.innerHTML = '<p class="error-message">Please enter some code to highlight.</p>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            
+            // Simple syntax highlighting
+            let highlightedCode = codeInput
+                .replace(/\b(function|const|let|var|if|else|for|while|return|class|import|export|from|as)\b/g, '<span class="code-keyword">$1</span>')
+                .replace(/('.*?'|".*?")/g, '<span class="code-string">$1</span>')
+                .replace(/(\/\/.*$)/gm, '<span class="code-comment">$1</span>')
+                .replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/g, '<span class="code-function">$1</span>(')
+                .replace(/\b([a-zA-Z_][a-zA-Z0-9_]*)\s*=/g, '<span class="code-variable">$1</span> =');
+            
+            resultDiv.innerHTML = `<pre class="code-line">${highlightedCode}</pre>`;
+            resultDiv.style.display = 'block';
+        }
+        
+        // Code debugging functionality
+        function runCode() {
+            const problemDescription = document.getElementById('problem-description').value;
+            const debugCode = document.getElementById('debug-code').value;
+            const resultDiv = document.getElementById('debug-result');
+            
+            if (!debugCode.trim()) {
+                resultDiv.innerHTML = '<p class="error-message">Please enter some code to run.</p>';
+                return;
+            }
+            
+            try {
+                // Create a function from the user's code
+                const userFunction = new Function(debugCode);
+                
+                // Try to execute the function
+                const result = userFunction();
+                
+                resultDiv.innerHTML = `
+                    <h3>Execution Result:</h3>
+                    <p class="success-message">Code executed successfully!</p>
+                    <p>Result: ${result !== undefined ? result : 'No return value'}</p>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>Error:</h3>
+                    <p class="error-message">${error.name}: ${error.message}</p>
+                    <p class="warning-message">Line ${error.lineNumber || 'Unknown'}</p>
+                `;
+            }
+        }
+        
+        // File upload and code review
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const fileContent = e.target.result;
+                document.getElementById('file-upload').dataset.content = fileContent;
+                document.getElementById('file-upload').dataset.filename = file.name;
+            };
+            reader.readAsText(file);
+        }
+        
+        function reviewCode() {
+            const fileInput = document.getElementById('file-upload');
+            const resultDiv = document.getElementById('code-review-result');
+            
+            if (!fileInput.dataset.content) {
+                resultDiv.innerHTML = '<p class="error-message">Please upload a code file first.</p>';
+                return;
+            }
+            
+            const content = fileInput.dataset.content;
+            const filename = fileInput.dataset.filename;
+            const extension = filename.split('.').pop().toLowerCase();
+            
+            // Basic code analysis
+            const lines = content.split('\n');
+            const totalLines = lines.length;
+            const commentLines = lines.filter(line => line.trim().startsWith('//') || line.trim().startsWith('#')).length;
+            const emptyLines = lines.filter(line => line.trim() === '').length;
+            
+            // Find potential issues
+            const issues = [];
+            
+            // Check for missing semicolons in JS/TS
+            if (['js', 'ts'].includes(extension)) {
+                const linesWithoutSemicolon = lines.filter((line, index) => {
+                    return !line.trim().endsWith(';') && 
+                           !line.trim().endsWith('{') && 
+                           !line.trim().endsWith('}') && 
+                           !line.trim().match(/^\s*\/\//) &&
+                           !line.trim().match(/^\s*#/);
+                });
+                
+                if (linesWithoutSemicolon.length > 0) {
+                    issues.push({
+                        type: 'warning',
+                        message: `${linesWithoutSemicolon.length} lines may be missing semicolons`
+                    });
+                }
+            }
+            
+            // Check for console.log in production code
+            if (content.includes('console.log')) {
+                issues.push({
+                    type: 'warning',
+                    message: 'console.log statements found - consider removing in production'
+                });
+            }
+            
+            // Format the review result
+            let reviewHTML = `
+                <h3>Code Review for ${filename}</h3>
+                <p><strong>Total lines:</strong> ${totalLines}</p>
+                <p><strong>Comment lines:</strong> ${commentLines}</p>
+                <p><strong>Empty lines:</strong> ${emptyLines}</p>
+                <p><strong>Code coverage:</strong> ${Math.round((totalLines - commentLines - emptyLines) / totalLines * 100)}%</p>
+            `;
+            
+            if (issues.length > 0) {
+                reviewHTML += '<h3>Potential Issues:</h3><ul>';
+                issues.forEach(issue => {
+                    reviewHTML += `<li class="${issue.type}-message">${issue.message}</li>`;
+                });
+                reviewHTML += '</ul>';
+            } else {
+                reviewHTML += '<p class="success-message">No major issues detected in the code.</p>';
+            }
+            
+            reviewHTML += '<h3>Code Preview:</h3>';
+            reviewHTML += `<div class="code-display"><pre class="code-line">${content}</pre></div>`;
+            
+            resultDiv.innerHTML = reviewHTML;
+        }
+        
+        // API testing functionality
+        function testAPI() {
+            const method = document.getElementById('api-method').value;
+            const url = document.getElementById('api-url').value;
+            const headersText = document.getElementById('api-headers').value;
+            const body = document.getElementById('api-body').value;
+            const resultDiv = document.getElementById('api-result');
+            
+            if (!url.trim()) {
+                resultDiv.innerHTML = '<p class="error-message">Please enter an API URL.</p>';
+                return;
+            }
+            
+            try {
+                // Parse headers
+                let headers = {};
+                if (headersText.trim()) {
+                    headers = JSON.parse(headersText);
+                }
+                
+                // Create request options
+                const requestOptions = {
+                    method: method,
+                    headers: headers,
+                };
+                
+                // Add body for methods that typically require it
+                if (['POST', 'PUT', 'PATCH'].includes(method) && body.trim()) {
+                    requestOptions.body = body;
+                }
+                
+                // Send the request
+                resultDiv.innerHTML = '<p class="success-message">Sending request...</p>';
+                
+                fetch(url, requestOptions)
+                    .then(response => {
+                        return response.json().then(data => ({
+                            status: response.status,
+                            statusText: response.statusText,
+                            headers: Object.fromEntries(response.headers.entries()),
+                            data: data,
+                            responseTime: Date.now()
+                        }));
+                    })
+                    .then(result => {
+                        resultDiv.innerHTML = `
+                            <h3>API Response:</h3>
+                            <p><strong>Status:</strong> ${result.status} ${result.statusText}</p>
+                            <p><strong>Response Time:</strong> ${result.responseTime}ms</p>
+                            <h4>Headers:</h4>
+                            <pre>${JSON.stringify(result.headers, null, 2)}</pre>
+                            <h4>Body:</h4>
+                            <pre>${JSON.stringify(result.data, null, 2)}</pre>
+                        `;
+                    })
+                    .catch(error => {
+                        resultDiv.innerHTML = `
+                            <h3>Error:</h3>
+                            <p class="error-message">${error.message}</p>
+                        `;
+                    });
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <h3>Error:</h3>
+                    <p class="error-message">Invalid JSON in headers or body: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Algorithm helper functionality
+        function getAlgorithm() {
+            const problemInput = document.getElementById('algorithm-input').value;
+            const resultDiv = document.getElementById('algorithm-result');
+            
+            if (!problemInput.trim()) {
+                resultDiv.innerHTML = '<p class="error-message">Please describe your algorithm problem.</p>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            
+            // Real algorithm implementation based on user input
+            let algorithm = {
+                explanation: '',
+                implementation: ''
+            };
+            
+            // Process user input to determine algorithm type
+            const input = problemInput.toLowerCase();
+            
+            if (input.includes('binary') && input.includes('search')) {
+                algorithm = {
+                    explanation: `Binary search is an efficient algorithm for finding an item from a sorted list of items. It works by repeatedly dividing in half the portion of the list that could contain the item, until you've narrowed down the possible locations to just one.`,
+                    implementation: `function binarySearch(arr, target) {
+    let left = 0;
+    let right = arr.length - 1;
+    
+    while (left <= right) {
+        const mid = Math.floor((left + right) / 2);
+        
+        if (arr[mid] === target) {
+            return mid;
+        } else if (arr[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
+    }
+    
+    return -1; // Target not found
+}`
+                };
+            } else if (input.includes('sort') || input.includes('sorting')) {
+                algorithm = {
+                    explanation: `Sorting algorithms arrange elements in a particular order. Common sorting algorithms include Bubble Sort, Insertion Sort, Selection Sort, Merge Sort, and Quick Sort. Each has different time and space complexities.`,
+                    implementation: `function quickSort(arr) {
+    if (arr.length <= 1) return arr;
+    
+    const pivot = arr[Math.floor(arr.length / 2)];
+    const left = arr.filter(x => x < pivot);
+    const middle = arr.filter(x => x === pivot);
+    const right = arr.filter(x => x > pivot);
+    
+    return [...quickSort(left), ...middle, ...quickSort(right)];
+}`
+                };
+            } else if (input.includes('graph') && (input.includes('traversal') || input.includes('search'))) {
+                algorithm = {
+                    explanation: `Graph traversal algorithms visit all the nodes in a graph. Depth-First Search (DFS) and Breadth-First Search (BFS) are the most common graph traversal algorithms.`,
+                    implementation: `function bfs(graph, start) {
+    const queue = [start];
+    const visited = new Set([start]);
+    const result = [];
+    
+    while (queue.length > 0) {
+        const node = queue.shift();
+        result.push(node);
+        
+        for (const neighbor of graph[node]) {
+            if (!visited.has(neighbor)) {
+                visited.add(neighbor);
+                queue.push(neighbor);
+            }
+        }
+    }
+    
+    return result;
+}`
+                };
+            } else if (input.includes('linked') && input.includes('list')) {
+                algorithm = {
+                    explanation: `Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.`,
+                    implementation: `class ListNode {
+    constructor(val, next = null) {
+        this.val = val;
+        this.next = next;
+    }
+}
+
+class LinkedList {
+    constructor() {
+        this.head = null;
+    }
+    
+    add(val) {
+        const newNode = new ListNode(val);
+        if (!this.head) {
+            this.head = newNode;
+            return;
+        }
+        
+        let current = this.head;
+        while (current.next) {
+            current = current.next;
+        }
+        current.next = newNode;
+    }
+    
+    remove(val) {
+        if (!this.head) return;
+        
+        if (this.head.val === val) {
+            this.head = this.head.next;
+            return;
+        }
+        
+        let current = this.head;
+        while (current.next) {
+            if (current.next.val === val) {
+                current.next = current.next.next;
+                return;
+            }
+            current = current.next;
+        }
+    }
+}`
+                };
+            } else if (input.includes('tree') && input.includes('traversal')) {
+                algorithm = {
+                    explanation: `Tree traversal is the process of visiting each node in a tree exactly once. Common traversal methods include In-order, Pre-order, and Post-order traversals for binary trees.`,
+                    implementation: `class TreeNode {
+    constructor(val, left = null, right = null) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+
+function inOrderTraversal(root) {
+    const result = [];
+    
+    function traverse(node) {
+        if (node) {
+            traverse(node.left);
+            result.push(node.val);
+            traverse(node.right);
+        }
+    }
+    
+    traverse(root);
+    return result;
+}
+
+function preOrderTraversal(root) {
+    const result = [];
+    
+    function traverse(node) {
+        if (node) {
+            result.push(node.val);
+            traverse(node.left);
+            traverse(node.right);
+        }
+    }
+    
+    traverse(root);
+    return result;
+}`
+                };
+            } else {
+                // Default algorithm for general queries
+                algorithm = {
+                    explanation: `When solving algorithm problems, follow these steps: 1) Understand the problem clearly, 2) Identify the inputs and outputs, 3) Consider edge cases, 4) Develop a step-by-step approach, 5) Implement and test your solution.`,
+                    implementation: `function solveAlgorithmProblem(input, output) {
+    // Step 1: Understand the problem
+    // Step 2: Identify inputs and outputs
+    // Step 3: Consider edge cases
+    // Step 4: Develop algorithm
+    // Step 5: Implement and test
+    
+    // Example: Sum of array elements
+    let sum = 0;
+    for (let i = 0; i < input.length; i++) {
+        sum += input[i];
+    }
+    
+    return sum;
+}`
+                };
+            }
+            
+            // Display the algorithm
+            document.getElementById('algorithm-explanation-content').innerHTML = algorithm.explanation;
+            document.getElementById('algorithm-implementation-content').innerHTML = `<pre class="code-line">${algorithm.implementation}</pre>`;
+            resultDiv.style.display = 'flex';
+        }
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"DevHub - Developer Resources Toolkit":"DevHub - Developer Resources Toolkit","DevHub":"DevHub","Home":"Home","Code Tools":"Code Tools","API Tools":"API Tools","Algorithm Tools":"Algorithm Tools","About":"About","Developer Resources Toolkit":"Developer Resources Toolkit","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.","Welcome to DevHub":"Welcome to DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.","Code Highlighting":"Code Highlighting","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualize your code with syntax highlighting for better readability and error spotting.","Debug Environment":"Debug Environment","Run and test your code directly in your browser with our interactive debugging tool.":"Run and test your code directly in your browser with our interactive debugging tool.","Code Review":"Code Review","Analyze your code for potential issues and get suggestions for improvement.":"Analyze your code for potential issues and get suggestions for improvement.","API Testing":"API Testing","Test your REST APIs with various methods and analyze responses in real-time.":"Test your REST APIs with various methods and analyze responses in real-time.","Algorithm Helper":"Algorithm Helper","Get explanations and implementations for common algorithms and data structures.":"Get explanations and implementations for common algorithms and data structures.","Getting Started with DevHub":"Getting Started with DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Learn how to make the most of our developer tools with our tutorials and guides:","Code Highlighting Tutorial":"Code Highlighting Tutorial","API Testing Guide":"API Testing Guide","Algorithm Implementation Tips":"Algorithm Implementation Tips","Code Highlighter":"Code Highlighter","Enter your code snippet:":"Enter your code snippet:","Highlight Code":"Highlight Code","Describe the problem:":"Describe the problem:","Your code:":"Your code:","Run Code":"Run Code","Upload code file:":"Upload code file:","Choose file or drag here":"Choose file or drag here","Review Code":"Review Code","API Testing Tool":"API Testing Tool","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","Request Headers (JSON format):":"Request Headers (JSON format):","Request Body:":"Request Body:","Test API":"Test API","Get algorithm explanations and implementation examples for common programming problems.":"Get algorithm explanations and implementation examples for common programming problems.","Describe your algorithm problem:":"Describe your algorithm problem:","Get Algorithm Solution":"Get Algorithm Solution","Explanation":"Explanation","Implementation":"Implementation","About DevHub":"About DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.","Execution Result:":"Execution Result:","Code executed successfully!":"Code executed successfully!","Error:":"Error:","lines may be missing semicolons":"lines may be missing semicolons","Total lines:":"Total lines:","Comment lines:":"Comment lines:","Empty lines:":"Empty lines:","Code coverage:":"Code coverage:","API Response:":"API Response:","Status:":"Status:","Response Time:":"Response Time:","Headers:":"Headers:","Body:":"Body:","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","// Paste your code here...":"// Paste your code here...","Describe the issue you're facing...":"Describe the issue you're facing...","Enter API endpoint URL":"Enter API endpoint URL","e.g., How to implement binary search?":"e.g., How to implement binary search?","DOMContentLoaded":"DOMContentLoaded","No return value":"No return value","Unknown":"Unknown","console.log statements found - consider removing in production":"console.log statements found - consider removing in production","PATCH":"PATCH","__title__":"DevHub - Developer Resources Toolkit","Please enter some code to highlight.":"Please enter some code to highlight.","') .replace(/('.*?'|\".*?\")/g, '":"') .replace(/('.*?'|\".*?\")/g, '","') .replace(/(\\/\\/.*$)/gm, '":"') .replace(/(\\/\\/.*$)/gm, '","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":"') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '","Please enter some code to run.":"Please enter some code to run.","Please upload a code file first.":"Please upload a code file first.","Potential Issues:":"Potential Issues:","No major issues detected in the code.":"No major issues detected in the code.","Code Preview:":"Code Preview:","Please enter an API URL.":"Please enter an API URL.","Sending request...":"Sending request...","Please describe your algorithm problem.":"Please describe your algorithm problem.","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","Courier New":"Courier New","LA_COLLECT":"LA_COLLECT","tab active":"tab active","highlightCode()":"highlightCode()","Describe the issue you":"Describe the issue you","runCode()":"runCode()","handleFileUpload(event)":"handleFileUpload(event)","reviewCode()":"reviewCode()","Content-Type":"Content-Type","application/json":"application/json","testAPI()":"testAPI()","getAlgorithm()":"getAlgorithm()","ve narrowed down the possible locations to just one.":"ve narrowed down the possible locations to just one.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"DevHub - Developer Resources Toolkit":"DevHub - 开发者资源工具包","Home":"首页","Code Tools":"代码工具","API Tools":"API 工具","Algorithm Tools":"算法工具","About":"关于","Developer Resources Toolkit":"开发者资源工具包","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub 为开发者提供了一套全面的工具，以提升他们的生产力。从代码格式化和调试到API测试和算法实现，我们在这里为您提供了所有所需的一切。","Welcome to DevHub":"欢迎使用DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"您的全方位编码挑战解决方案。无论您是在调试、测试API还是实现算法，我们的工具都旨在帮助您更高效地工作。","Code Highlighting":"代码高亮","Visualize your code with syntax highlighting for better readability and error spotting.":"使用语法高亮来可视化您的代码，以增强可读性和错误定位。","Debug Environment":"调试环境","Run and test your code directly in your browser with our interactive debugging tool.":"使用我们的交互式调试工具，直接在您的浏览器中运行和测试您的代码。","Code Review":"代码审查","Analyze your code for potential issues and get suggestions for improvement.":"分析您的代码以查找潜在问题并获得改进建议。","API Testing":"API 测试","Test your REST APIs with various methods and analyze responses in real-time.":"使用各种方法测试您的REST API，并实时分析响应。","Algorithm Helper":"算法助手","Get explanations and implementations for common algorithms and data structures.":"获取常见算法和数据结构的解释和实现。","Getting Started with DevHub":"开始使用DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"通过我们的教程和指南了解如何充分利用我们的开发者工具：","Code Highlighting Tutorial":"代码高亮教程","API Testing Guide":"API 测试指南","Algorithm Implementation Tips":"算法实现技巧","Code Highlighter":"代码高亮器","Enter your code snippet:":"输入您的代码片段：","Highlight Code":"高亮代码","Describe the problem:":"描述问题：","Your code:":"您的代码：","Run Code":"运行代码","Upload code file:":"上传代码文件：","Choose file or drag here":"选择文件或拖拽至此","Review Code":"代码审查","API Testing Tool":"API 测试工具","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"使用我们的全面测试工具测试您的API端点。发送请求并实时分析响应。","Request Headers (JSON format):":"请求头（JSON格式）：","Request Body:":"请求体：","Test API":"测试API","Get algorithm explanations and implementation examples for common programming problems.":"获取常见编程问题的算法解释和实现示例。","Describe your algorithm problem:":"描述您的算法问题：","Get Algorithm Solution":"获取算法解决方案","Explanation":"解释","Implementation":"实现","About DevHub":"关于DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub 是一个综合性的开发者工具包，旨在简化您的编码工作流程。我们的工具帮助进行代码格式化、调试、API 测试和算法实现，全部在一个便捷的平台中。","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"我们的使命是赋予开发者他们编写更好代码所需的工具，使他们能够更快地编写代码。无论您是初学者还是有经验的开发者，DevHub 都有适合您的工具。","Execution Result:":"执行结果：","Code executed successfully!":"代码执行成功！","Error:":"错误：","lines may be missing semicolons":"可能缺少分号","Total lines:":"总行数：","Comment lines:":"注释行数：","Empty lines:":"空行：","Code coverage:":"代码覆盖率：","API Response:":"API 响应：","Status:":"状态：","Response Time:":"响应时间：","Headers:":"头部：","Body:":"正文：","// Paste your code here...":"// 将你的代码粘贴到这里...","Describe the issue you're facing...":"描述你遇到的问题...","Enter API endpoint URL":"输入API端点URL","e.g., How to implement binary search?":"例如，如何实现二分查找？","No return value":"无返回值","Unknown":"未知","console.log statements found - consider removing in production":"发现console.log语句 - 考虑在生产环境中移除","__title__":"DevHub - 开发者资源工具包","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"免费在线工具：DevHub - 开发者资源工具包。无需注册，无需支付 — 永久免费。","highlightCode()":"高亮代码()","Describe the issue you":"描述您的问题","runCode()":"运行代码()","handleFileUpload(event)":"处理文件上传(event)","reviewCode()":"审查代码()","Content-Type":"内容类型","testAPI()":"测试API()","getAlgorithm()":"获取算法()","ve narrowed down the possible locations to just one.":"已将可能的位置缩小到只有一个。","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"链表是线性数据结构，其中元素不是存储在连续的内存位置。每个元素都指向序列中的下一个元素。","Microsoft YaHei":"微软雅黑","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Please enter some code to highlight.":"请输入一些代码以突出显示。","Please enter some code to run.":"请输入一些代码来运行。","Please upload a code file first.":"请先上传一个代码文件。","Potential Issues:":"潜在问题：","No major issues detected in the code.":"代码中未发现重大问题。","Code Preview:":"代码预览：","Please enter an API URL.":"请输入一个API URL。","Sending request...":"正在发送请求...","Please describe your algorithm problem.":"请描述您的算法问题。","Courier New":"Courier New","tab active":"标签页活动","application/json":"application/json","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":"替换","') .replace(/(\\/\\/.*$)/gm, '":"…","') .replace(/('.*?'|\".*?\")/g, '":"…"},"es":{"DevHub - Developer Resources Toolkit":"DevHub - Herramienta de Recursos para Desarrolladores","Home":"Inicio","Code Tools":"Herramientas de Código","API Tools":"Herramientas de API","Algorithm Tools":"Herramientas de Algoritmos","About":"Acerca de","Developer Resources Toolkit":"Herramienta de Recursos para Desarrolladores","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub proporciona una serie completa de herramientas para desarrolladores para mejorar su productividad. Desde el formateo de código y depuración hasta la prueba de API y la implementación de algoritmos, tenemos todo lo que necesitas en un solo lugar.","Welcome to DevHub":"Bienvenido a DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Tu solución todo en uno para desafíos de codificación. Ya sea que estés depurando, probando APIs o implementando algoritmos, nuestras herramientas están aquí para ayudarte a trabajar de manera más eficiente.","Code Highlighting":"Resaltado de Código","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualiza tu código con resaltado de sintaxis para una mejor legibilidad y detección de errores.","Debug Environment":"Entorno de Depuración","Run and test your code directly in your browser with our interactive debugging tool.":"Ejecuta y prueba tu código directamente en tu navegador con nuestra herramienta de depuración interactiva.","Code Review":"Revisión de Código","Analyze your code for potential issues and get suggestions for improvement.":"Analiza tu código para posibles problemas y obtén sugerencias para mejorar.","API Testing":"Prueba de API","Test your REST APIs with various methods and analyze responses in real-time.":"Prueba tus APIs REST con varios métodos y analiza las respuestas en tiempo real.","Algorithm Helper":"Ayudante de Algoritmos","Get explanations and implementations for common algorithms and data structures.":"Obtén explicaciones e implementaciones para algoritmos y estructuras de datos comunes.","Getting Started with DevHub":"Comienza con DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Aprende cómo aprovechar al máximo nuestras herramientas para desarrolladores con nuestros tutoriales y guías:","Code Highlighting Tutorial":"Tutorial de Resaltado de Código","API Testing Guide":"Guía de Prueba de API","Algorithm Implementation Tips":"Consejos de Implementación de Algoritmos","Code Highlighter":"Resaltador de Código","Enter your code snippet:":"Ingresa tu fragmento de código:","Highlight Code":"Resaltar Código","Describe the problem:":"Describir el problema:","Your code:":"Tu código:","Run Code":"Ejecutar Código","Upload code file:":"Subir archivo de código:","Choose file or drag here":"Elije archivo o arrastra aquí","Review Code":"Revisar Código","API Testing Tool":"Herramienta de Prueba de API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Prueba tus puntos de terminación de API con nuestra herramienta de prueba completa. Envía solicitudes y analiza las respuestas en tiempo real.","Request Headers (JSON format):":"Encabezados de solicitud (formato JSON):","Request Body:":"Cuerpo de solicitud:","Test API":"Prueba de API","Get algorithm explanations and implementation examples for common programming problems.":"Obtén explicaciones de algoritmos e implementaciones de ejemplos para problemas comunes de programación.","Describe your algorithm problem:":"Describir tu problema de algoritmo:","Get Algorithm Solution":"Obtener Solución de Algoritmo","Explanation":"Explicación","Implementation":"Implementación","About DevHub":"Acerca de DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub es una herramienta integral para desarrolladores diseñada para simplificar tu flujo de trabajo de codificación. Nuestros herramientas ayudan con el formateo de código, depuración, prueba de API y la implementación de algoritmos, todo en una plataforma conveniente.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Nuestra misión es dar poder a los desarrolladores con las herramientas que necesitan para escribir mejor código más rápido. Ya seas un principiante o un desarrollador experimentado, DevHub tiene algo para ti.","Execution Result:":"Resultado de Ejecución:","Code executed successfully!":"¡Código ejecutado con éxito!","lines may be missing semicolons":"pueden faltar puntos y comas","Total lines:":" Líneas totales:","Comment lines:":" Líneas de comentario:","Empty lines:":" Líneas vacías:","Code coverage:":" Cubrimiento de código:","API Response:":"Respuesta de API:","Status:":"Estado:","Response Time:":"Tiempo de respuesta:","Headers:":"Encabezados:","Body:":"Cuerpo:","// Paste your code here...":"// Pegue su código aquí...","Describe the issue you're facing...":"Describa el problema que enfrenta...","Enter API endpoint URL":"Ingrese la URL del punto final de la API","e.g., How to implement binary search?":"por ejemplo, ¿cómo implementar una búsqueda binaria?","No return value":"Sin valor de retorno","Unknown":"Desconocido","console.log statements found - consider removing in production":"Se encontraron declaraciones console.log - considere eliminarlas en producción","__title__":"DevHub - Herramienta de Recursos para Desarrolladores","Please enter some code to highlight.":"Por favor, introduce algún código para resaltar.","Please enter some code to run.":"Por favor, introduce algún código para ejecutar.","Please upload a code file first.":"Por favor, sube un archivo de código primero.","完全免费":"Completamente gratuito","提意见":"Dar意见和建议","highlightCode()":"resaltarCódigo()","Describe the issue you":"Describa el problema que","runCode()":"ejecutarCódigo()","handleFileUpload(event)":"manejarCargaDeArchivo(event)","reviewCode()":"revisarCódigo()","testAPI()":"probearAPI()","getAlgorithm()":"obtenerAlgoritmo()","ve narrowed down the possible locations to just one.":"se ha reducido a una sola posible ubicación.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Las listas enlazadas son estructuras de datos lineales donde los elementos no se almacenan en ubicaciones de memoria contiguas. Cada elemento apunta al siguiente elemento en la secuencia.","tab active":"pestaña activa","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","Error:":"Error:","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Potential Issues:":"Potential Issues:","No major issues detected in the code.":"No se detectaron problemas mayores en el código.","Code Preview:":"Vista previa del código:","Please enter an API URL.":"Por favor, introduce una URL de API.","Sending request...":"Enviando solicitud...","Please describe your algorithm problem.":"Por favor, describe tu problema de algoritmo.","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Herramienta en línea gratuita: DevHub - Kit de Recursos para Desarrolladores. Sin registro, sin pago — gratis para siempre.","Courier New":"Courier New","Content-Type":"Content-Type","application/json":"application/json"},"ja":{"DevHub - Developer Resources Toolkit":"DevHub - デベロッパー リソース ツールキット","Home":"ホーム","Code Tools":"コードツール","API Tools":"APIツール","Algorithm Tools":"アルゴリズムツール","About":"について","Developer Resources Toolkit":"デベロッパー リソース ツールキット","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHubは、開発者の生産性を高めるために包括的なツールセットを提供します。コードのフォーマットやデバッグからAPIテストやアルゴリズムの実装まで、必要なすべてを一箇所で手に入れることができます。","Welcome to DevHub":"DevHubへようこそ","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"コーディングチャレンジのためのすべてを一括したソリューションです。デバッグ、APIテスト、またはアルゴリズムの実装に関わらず、私たちのツールはより効率的に作業するためのサポートを提供します。","Code Highlighting":"コードハイライト","Visualize your code with syntax highlighting for better readability and error spotting.":"シンタックスハイライトを使用して、コードを視覚化し、より読みやすく、エラーの特定を助けます。","Debug Environment":"デバッグ環境","Run and test your code directly in your browser with our interactive debugging tool.":"私たちのインタラクティブデバッグツールを使用して、ブラウザ内で直接コードを実行し、テストします。","Code Review":"コードレビュー","Analyze your code for potential issues and get suggestions for improvement.":"コードの潜在的な問題を分析し、改善のための提案を受けることができます。","API Testing":"APIテスト","Test your REST APIs with various methods and analyze responses in real-time.":"さまざまな方法でREST APIをテストし、リアルタイムで応答を分析します。","Algorithm Helper":"アルゴリズムヘルパー","Get explanations and implementations for common algorithms and data structures.":"一般的なアルゴリズムとデータ構造の説明と実装を取得します。","Getting Started with DevHub":"DevHubの使い始め方","Learn how to make the most of our developer tools with our tutorials and guides:":"私たちのチュートリアルやガイドを使用して、開発者ツールを最大限に活用する方法を学びます：","Code Highlighting Tutorial":"コードハイライトチュートリアル","API Testing Guide":"APIテストガイド","Algorithm Implementation Tips":"アルゴリズム実装のヒント","Code Highlighter":"コードハイライト","Enter your code snippet:":"コードスニペットを入力してください：","Highlight Code":"コードをハイライト：","Describe the problem:":"問題を説明してください：","Your code:":"あなたのコード：","Run Code":"コードを実行：","Upload code file:":"コードファイルをアップロード：","Choose file or drag here":"ファイルを選択またはここにドラッグしてください","Review Code":"コードをレビュー：","API Testing Tool":"APIテストツール","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"私たちの包括的なテストツールを使用してAPIエンドポイントをテストします。リクエストを送信し、リアルタイムで応答を分析します。","Request Headers (JSON format):":"リクエストヘッダー（JSON形式）：","Request Body:":"リクエストボディ：","Test API":"APIテスト","Get algorithm explanations and implementation examples for common programming problems.":"一般的なプログラミング問題のためのアルゴリズムの説明と実装例を取得します。","Describe your algorithm problem:":"あなたのアルゴリズム問題を説明してください：","Get Algorithm Solution":"アルゴリズムソリューションを取得","Explanation":"説明","Implementation":"実装","About DevHub":"DevHubについて","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHubは、コーディングワークフローの効率化を目的に設計された包括的な開発者ツールセットです。私たちのツールは、コードのフォーマット、デバッグ、APIテスト、およびアルゴリズムの実装を一つの便利なプラットフォームでサポートします。","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"私たちの使命は、開発者により良いコードをより速く書くためのツールを提供することです。初心者から経験豊富な開発者まで、DevHubには何かがあります。","Execution Result:":"実行結果：","Code executed successfully!":"コードが正常に実行されました！","Error:":"エラー：","lines may be missing semicolons":"セミコロンが欠けている可能性があります","Total lines:":"全行数：","Comment lines:":"コメント行：","Empty lines:":"空行：","Code coverage:":"コードカバレッジ：","API Response:":"API レスポンス：","Status:":"ステータス：","Response Time:":"レスポンスタイム：","Headers:":"ヘッダー：","Body:":"ボディ：","// Paste your code here...":"ここにコードを貼り付けて...","Describe the issue you're facing...":"あなたが直面している問題を説明してください...","Enter API endpoint URL":"API エンドポイント URL を入力してください","e.g., How to implement binary search?":"例えば、バイナリ検索を実装する方法は？","No return value":"戻り値なし","Unknown":"未知","console.log statements found - consider removing in production":"console.log ステートメントが見つかりました - 本番環境から削除を検討してください","__title__":"DevHub - デベロッパー リソース ツールキット","完全免费":"完全無料","提意见":"意見をいただく","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"無料オンラインツール：DevHub - デベロッパー資源ツールキット。登録不要、支払い不要 — 永久に無料で使用できます。","tab active":"タブアクティブ","highlightCode()":"コードをハイライトする()","Describe the issue you":"問題を説明してください","runCode()":"コードを実行する()","handleFileUpload(event)":"ファイルアップロードを処理する(event)","reviewCode()":"コードを確認する()","testAPI()":"APIをテストする()","getAlgorithm()":"アルゴリズムを取得する()","ve narrowed down the possible locations to just one.":"可能性のある場所を一つに絞り込んだ。","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"リンクリストは、要素が連続するメモリ位置に保存されていない線形データ構造です。各要素は、シーケンスの次の要素を指しています。","Microsoft YaHei":"マイクロソフト雅黑","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Please enter some code to highlight.":"コードのハイライトにテキストを入力してください。","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":",","Please enter an API URL.":"API URL を入力してください。","Sending request...":"リクエストを送信中...","Please describe your algorithm problem.":"あなたのアルゴリズムの問題を説明してください。","Courier New":"Courier New","Content-Type":"Content-Type","application/json":"application/json","Code Preview:":"コードを入力してください。","Potential Issues:":"予期せぬ問題が発生しました:","No major issues detected in the code.":"重大な問題は検出されていません。","Please enter some code to run.":"実行するコードを入力してください。","Please upload a code file first.":"まずはコードファイルをアップロードしてください。","') .replace(/(\\/\\/.*$)/gm, '":"…","') .replace(/('.*?'|\".*?\")/g, '":"…"},"ko":{"DevHub - Developer Resources Toolkit":"DevHub - 개발자 리소스 툴킷","Home":"홈","Code Tools":"코드 도구","API Tools":"API 도구","Algorithm Tools":"알고리즘 도구","About":"정보","Developer Resources Toolkit":"개발자 리소스 툴킷","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub는 개발자들이 생산성을 높이기 위해 필요한 모든 도구를 제공하는 종합적인 도구 키트입니다. 코드 포맷팅과 디버깅에서 API 테스트와 알고리즘 구현까지, 모든 것이 한 곳에 있습니다.","Welcome to DevHub":"DevHub를 환영합니다","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"코딩 도전에 대한 전용 솔루션입니다. 디버깅, API 테스트, 또는 알고리즘 구현을 할 때도, 도구들이 효율적으로 작업을 도와드립니다.","Code Highlighting":"코드 강조 표시","Visualize your code with syntax highlighting for better readability and error spotting.":"사yntax 강조 표시를 통해 코드를 시각화하여 더 나은 가독성과 오류 발견을 도와드립니다.","Debug Environment":"디버깅 환경","Run and test your code directly in your browser with our interactive debugging tool.":"우리의 상호작용 디버깅 도구를 통해 브라우저에서 직접 코드를 실행하고 테스트하세요.","Code Review":"코드 검토","Analyze your code for potential issues and get suggestions for improvement.":"코드에서 가능한 문제를 분석하고 개선을 위한 제안을 받으세요.","API Testing":"API 테스트","Test your REST APIs with various methods and analyze responses in real-time.":"다양한 메서드로 REST API를 테스트하고 실시간으로 응답을 분석하세요.","Algorithm Helper":"알고리즘 도구","Get explanations and implementations for common algorithms and data structures.":"일반적인 알고리즘과 데이터 구조에 대한 설명과 구현을 받으세요.","Getting Started with DevHub":"DevHub를 시작하는 방법","Learn how to make the most of our developer tools with our tutorials and guides:":"우리의 튜토리얼과 가이드를 통해 개발자 도구를 최대한 활용하는 방법을 배우세요:","Code Highlighting Tutorial":"코드 강조 표시 튜토리얼","API Testing Guide":"API 테스트 가이드","Algorithm Implementation Tips":"알고리즘 구현 팁","Code Highlighter":"코드 강조 표시기","Enter your code snippet:":"코드 스니펫을 입력하세요:","Highlight Code":"코드 강조 표시","Describe the problem:":"문제를 설명하세요:","Your code:":"귀하의 코드:","Run Code":"코드 실행","Upload code file:":"코드 파일 업로드:","Choose file or drag here":"파일 선택 또는 여기에 드래그하세요","Review Code":"코드 검토","API Testing Tool":"API 테스트 도구","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"우리의 종합적인 테스트 도구를 사용하여 API 엔드포인트를 테스트하세요. 요청을 보내고 실시간으로 응답을 분석하세요.","Request Headers (JSON format):":"요청 헤더 (JSON 형식):","Request Body:":"요청 본문:","Test API":"API 테스트","Get algorithm explanations and implementation examples for common programming problems.":"일반 프로그래밍 문제에 대한 알고리즘 설명과 구현 예제를 받으세요.","Describe your algorithm problem:":"귀하의 알고리즘 문제를 설명하세요:","Get Algorithm Solution":"알고리즘 솔루션 받기","Explanation":"설명","Implementation":"구현","About DevHub":"DevHub 소개","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub는 코드 작업 흐름을 원활하게 만들기 위해 설계된 종합적인 개발자 툴킷입니다. 코드 포맷팅, 디버깅, API 테스트, 그리고 알고리즘 구현 등 모든 것이 한 곳에 제공됩니다.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"우리의 임무는 개발자들이 더 빠르게 더 나은 코드를 작성할 수 있도록 도와주는 도구를 제공하는 것입니다. 초보자든 경험 많은 개발자든, DevHub는 여러분을 위한 것이 있습니다.","Execution Result:":"실행 결과:","Code executed successfully!":"코드가 성공적으로 실행되었습니다!","Error:":"오류:","lines may be missing semicolons":"문자열이 세미콜론이 누락될 수 있습니다","Total lines:":"총 라인수:","Comment lines:":"주석 라인:","Empty lines:":"비어 있는 라인:","Code coverage:":"코드 커버리지:","API Response:":"API 응답:","Status:":"상태:","Response Time:":"응답 시간:","Headers:":"헤더:","Body:":"바디:","// Paste your code here...":"// 여기에 코드를 붙여넣으세요...","Describe the issue you're facing...":"당신이 직면한 문제를 설명하세요...","Enter API endpoint URL":"API 엔드포인트 URL 입력","e.g., How to implement binary search?":"예를 들어, 이진 탐색을 어떻게 구현하나요?","No return value":"반환 값 없음","Unknown":"알 수 없음","console.log statements found - consider removing in production":"console.log 문장이 발견되었습니다 - 생산 환경에서 제거 고려","__title__":"DevHub - 개발자 리소스 툴킷","Please enter some code to highlight.":"코드를 강조하기 위해 코드를 입력하세요.","Please enter some code to run.":"실행할 코드를 입력하세요.","Please upload a code file first.":"코드 파일을 먼저 업로드하세요.","Potential Issues:":"가능한 문제:","No major issues detected in the code.":"코드에서 주요 문제가检测되지 않았습니다.","Code Preview:":"코드 미리보기:","Please enter an API URL.":"API URL을 입력하세요.","Sending request...":"요청을 전송 중...","Please describe your algorithm problem.":"알고리즘 문제를 설명하세요.","完全免费":"전면 무료","提意见":"의견 제안","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"무료 온라인 도구: DevHub - 개발자 자원 도구 모음. 회원가입 없음, 결제 없음 — 영원히 무료","tab active":"탭 활성","highlightCode()":"고lightCode()","Describe the issue you":"문제를 설명해 주세요","ve narrowed down the possible locations to just one.":"가능한 위치를 하나로 축소했습니다.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"링크드 리스트는 요소들이 연속적인 메모리 위치에 저장되지 않는 선형 데이터 구조입니다. 각 요소는 시퀀스의 다음 요소를 가리킵니다.","Microsoft YaHei":"マイクロ소フト ヤヘイ","handleFileUpload(event)":"파일 업로드 처리(event)","reviewCode()":"코드 검토()","Content-Type":"콘텐츠 타입","application/json":"응용 프로그램/json","testAPI()":"테스트 API()","getAlgorithm()":"알고리즘 가져오기()","PingFang SC":"평방 SC","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Courier New":"courier new","runCode()":"runCode()","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":"','","') .replace(/(\\/\\/.*$)/gm, '":"…","') .replace(/('.*?'|\".*?\")/g, '":"…"},"fr":{"DevHub - Developer Resources Toolkit":"DevHub - Kit de ressources pour développeurs","Home":"Accueil","Code Tools":"Outils de code","API Tools":"Outils API","Algorithm Tools":"Outils d'algorithmes","About":"À propos","Developer Resources Toolkit":"Kit de ressources pour développeurs","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub propose un ensemble complet d'outils pour les développeurs pour améliorer leur productivité. De la mise en forme du code et du débogage à l'essai des API et à la mise en œuvre des algorithmes, nous avons tout ce dont vous avez besoin en un seul endroit.","Welcome to DevHub":"Bienvenue sur DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Votre solution tout-en-un pour les défis de codage. Que vous soyez en train de déboguer, de tester des API ou de mettre en œuvre des algorithmes, nos outils sont là pour vous aider à travailler plus efficacement.","Code Highlighting":"Mise en surbrillance du code","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualisez votre code avec la mise en surbrillance syntaxique pour une meilleure lisibilité et pour repérer les erreurs.","Debug Environment":"Environnement de débogage","Run and test your code directly in your browser with our interactive debugging tool.":"Exécutez et testez votre code directement dans votre navigateur avec notre outil de débogage interactif.","Code Review":"Révision de code","Analyze your code for potential issues and get suggestions for improvement.":"Analysez votre code pour identifier des problèmes potentiels et obtenez des suggestions d'amélioration.","API Testing":"Test API","Test your REST APIs with various methods and analyze responses in real-time.":"Testez vos API REST avec différentes méthodes et analysez les réponses en temps réel.","Algorithm Helper":"Assistant d'algorithmes","Get explanations and implementations for common algorithms and data structures.":"Obtenez des explications et des implémentations pour des algorithmes et des structures de données courants.","Getting Started with DevHub":"Démarrer avec DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Apprenez comment tirer le meilleur parti de nos outils de développeurs avec nos tutoriels et guides :","Code Highlighting Tutorial":"Tutoriel de mise en surbrillance du code","API Testing Guide":"Guide de test API","Algorithm Implementation Tips":"Conseils pour l'implémentation d'algorithmes","Code Highlighter":"Metteur en surbrillance de code","Enter your code snippet:":"Entrez votre extrait de code :","Highlight Code":"Mettre en surbrillance le code","Describe the problem:":"Décrivez le problème :","Your code:":"Votre code :","Run Code":"Exécuter le code","Upload code file:":"Télécharger un fichier de code :","Choose file or drag here":"Choisissez un fichier ou glissez-déposez ici","Review Code":"Réviser le code","API Testing Tool":"Outil de test API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Testez vos points d'extrémité API avec notre outil de test complet. Envoyez des requêtes et analysez les réponses en temps réel.","Request Headers (JSON format):":"En-têtes de requête (format JSON) :","Request Body:":"Corps de la requête :","Test API":"Tester l'API","Get algorithm explanations and implementation examples for common programming problems.":"Obtenez des explications et des exemples d'implémentation pour des problèmes de programmation courants.","Describe your algorithm problem:":"Décrivez votre problème d'algorithmes :","Get Algorithm Solution":"Obtenir la solution de l'algorithmes","Explanation":"Explication","Implementation":"Implémentation","About DevHub":"À propos de DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub est un kit de développeur complet conçu pour rationaliser votre flux de travail de codage. Nos outils aident à la mise en forme du code, au débogage, au test des API et à la mise en œuvre des algorithmes, tout sur une plateforme pratique.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Notre mission est de donner aux développeurs les outils dont ils ont besoin pour écrire un code meilleur et plus rapidement. Que vous soyez un débutant ou un développeur expérimenté, DevHub a quelque chose pour vous.","Execution Result:":"Résultat de l'exécution :","Code executed successfully!":"Le code a été exécuté avec succès !","Error:":"Erreur :","lines may be missing semicolons":"Des lignes peuvent manquer de points-virgules","Total lines:":"Lignes totales :","Comment lines:":"Lignes de commentaires :","Empty lines:":"Lignes vides :","Code coverage:":"Couverture de code :","API Response:":"Réponse API:","Status:":"Statut:","Response Time:":"Temps de réponse:","Headers:":"En-têtes:","Body:":"Corps:","// Paste your code here...":"// Coller votre code ici...","Describe the issue you're facing...":"Décrivez le problème que vous rencontrez...","Enter API endpoint URL":"Entrez l'URL du point d'entrée de l'API","e.g., How to implement binary search?":"par exemple, Comment implémenter une recherche binaire ?","No return value":"Aucune valeur de retour","Unknown":"Inconnu","console.log statements found - consider removing in production":"Instructions console.log trouvées - envisagez de les supprimer en production","__title__":"DevHub - Kit de ressources pour développeurs","else if (arr[mid]":"sinon si (arr[mid]","if (arr.length":"si (arr.length","完全免费":"Completement gratuit","提意见":"Faire une suggestion","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Outil en ligne gratuit : DevHub - Ensemble d'outils pour développeurs. Pas d'inscription, pas de paiement — gratuit à vie.","tab active":"onglet actif","highlightCode()":"mise en évidence du code()","Describe the issue you":"Décrivez le problème que vous","runCode()":"exécuter le code()","handleFileUpload(event)":"gestion du téléversement de fichier(event)","reviewCode()":"examiner le code()","Content-Type":"Type de contenu","testAPI()":"tester l'API()","getAlgorithm()":"obtenir l'algorithme()","ve narrowed down the possible locations to just one.":"vous avez réduit les emplacements possibles à un seul.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Les listes liées sont des structures de données linéaires où les éléments ne sont pas stockés à des emplacements mémoire contigus. Chaque élément pointe vers l'élément suivant de la séquence.","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Please enter some code to highlight.":"Veuillez saisir du code à mettre en surbrillance.","Please enter some code to run.":"…","Please upload a code file first.":"…","Potential Issues:":"…","Code Preview:":"Aperçu du code:","Sending request...":"Envoi de la demande...","Courier New":"Courier New","application/json":"application/json","No major issues detected in the code.":"…","Please enter an API URL.":"…","Please describe your algorithm problem.":"…"},"de":{"DevHub - Developer Resources Toolkit":"DevHub - Entwickler-Ressourcen-Toolkit","Home":"Startseite","Code Tools":"Code-Tools","API Tools":"API-Tools","Algorithm Tools":"Algorithmentools","About":"Über","Developer Resources Toolkit":"Entwickler-Ressourcen-Toolkit","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub bietet eine umfassende Sammlung von Tools für Entwickler, um ihre Produktivität zu steigern. Vom Code-Formatieren und Debugging bis hin zum API-Testing und Algorithmus-Implementierung, wir haben alles, was Sie an einem Ort benötigen.","Welcome to DevHub":"Willkommen bei DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Ihre All-in-One-Lösung für Programmieraufgaben. Egal, ob Sie debuggen, APIs testen oder Algorithmen implementieren, unsere Tools sind hier, um Ihnen zu helfen, effizienter zu arbeiten.","Code Highlighting":"Code-Hervorhebung","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualisieren Sie Ihren Code mit Syntaxhervorhebung für eine bessere Lesbarkeit und Fehlererkennung.","Debug Environment":"Debug-Umgebung","Run and test your code directly in your browser with our interactive debugging tool.":"Führen und testen Sie Ihren Code direkt in Ihrem Browser mit unserem interaktiven Debugging-Tool aus.","Code Review":"Code-Review","Analyze your code for potential issues and get suggestions for improvement.":"Analysieren Sie Ihren Code auf potenzielle Probleme und erhalten Sie Vorschläge zur Verbesserung.","API Testing":"API-Testing","Test your REST APIs with various methods and analyze responses in real-time.":"Testen Sie Ihre REST-APIs mit verschiedenen Methoden und analysieren Sie Antworten in Echtzeit.","Algorithm Helper":"Algorithmushilfe","Get explanations and implementations for common algorithms and data structures.":"Erhalten Sie Erklärungen und Implementierungen für gängige Algorithmen und Datenstrukturen.","Getting Started with DevHub":"Erste Schritte mit DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Lernen Sie, wie Sie unsere Entwicklertools mit unseren Tutorials und Leitfäden optimal nutzen:","Code Highlighting Tutorial":"Code-Hervorhebung-Tutorial","API Testing Guide":"API-Testing-Leitfaden","Algorithm Implementation Tips":"Algorithmus-Implementierungstipps","Code Highlighter":"Code-Hervorheber","Enter your code snippet:":"Geben Sie Ihren Code-Ausschnitt ein:","Highlight Code":"Code hervorheben","Describe the problem:":"Beschreiben Sie das Problem:","Your code:":"Ihr Code:","Run Code":"Code ausführen","Upload code file:":"Code-Datei hochladen:","Choose file or drag here":"Wählen Sie eine Datei aus oder ziehen Sie sie hierher","Review Code":"Code überprüfen","API Testing Tool":"API-Testing-Tool","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Testen Sie Ihre API-Endpunkte mit unserem umfassenden Testtool. Senden Sie Anfragen und analysieren Sie Antworten in Echtzeit.","Request Headers (JSON format):":"Anfrage-Header (JSON-Format):","Request Body:":"Anfragekörper:","Test API":"API testen","Get algorithm explanations and implementation examples for common programming problems.":"Erhalten Sie Erklärungen und Implementierungsbeispiele für gängige Programmieraufgaben.","Describe your algorithm problem:":"Beschreiben Sie Ihr Algorithmusproblem:","Get Algorithm Solution":"Algorithmuslösung erhalten","Explanation":"Erklärung","Implementation":"Implementierung","About DevHub":"Über DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub ist ein umfassendes Entwickler-Toolkit, das darauf ausgelegt ist, Ihre Programmierarbeitsabläufe zu vereinfachen. Unsere Tools helfen bei Code-Formatierung, Debugging, API-Testing und Algorithmus-Implementierung, alles an einer bequemen Plattform.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Unser Ziel ist es, Entwicklern die Werkzeuge zu geben, die sie benötigen, um schneller besserer Code zu schreiben. Egal, ob Sie Anfänger oder erfahrener Entwickler sind, DevHub hat etwas für Sie.","Execution Result:":"Ausführungsresultat:","Code executed successfully!":"Code erfolgreich ausgeführt!","Error:":"Fehler:","lines may be missing semicolons":"Kann sein, dass Semikolons fehlen","Total lines:":"Gesamtzeilen:","Comment lines:":"Kommentarzeilen:","Empty lines:":"Leere Zeilen:","Code coverage:":"Code-Coverage:","API Response:":"API-Antwort:","Response Time:":"Antwortzeit:","Headers:":"Header:","Body:":"Körper:","else if (arr[mid]":"else if (arr[mid]:","// Paste your code here...":"// Ihren Code hier einfügen...","Describe the issue you're facing...":"Beschreiben Sie das Problem, das Sie erleben...","Enter API endpoint URL":"Geben Sie die API-Endpunktkennung ein","e.g., How to implement binary search?":"z.B., Wie implementiert man eine binäre Suche?","No return value":"Kein Rückgabewert","Unknown":"Unbekannt","console.log statements found - consider removing in production":"console.log-Ausdrücke gefunden - erwägen Sie deren Entfernung in der Produktion","__title__":"DevHub - Entwickler-Ressourcen-Toolkit","DOMContentLoaded":"DOM-Content-Load-Event","Please enter some code to highlight.":"Bitte geben Sie einige Codezeilen ein, um sie hervorzuheben.","Please enter some code to run.":"Bitte geben Sie einige Codezeilen ein, um sie auszuführen.","Please upload a code file first.":"Bitte laden Sie zunächst eine Code-Datei hoch.","Potential Issues:":"Mögliche Probleme:","No major issues detected in the code.":"Keine schwerwiegenden Probleme im Code erkannt.","Code Preview:":"Code-Vorschau:","Please enter an API URL.":"Bitte geben Sie eine API-URL ein.","Sending request...":"Anfrage wird gesendet...","Please describe your algorithm problem.":"Bitte beschreiben Sie Ihr Algorithmenproblem.","完全免费":"Komplett kostenlos","提意见":"Feedback geben","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Kostenloses Online-Tool: DevHub - Entwickler-Ressourcen-Set. Keine Registrierung, keine Zahlung — für immer kostenlos.","tab active":"Aktive Registerkarte","highlightCode()":"hervorhebenCode()","Describe the issue you":"Beschreiben Sie das Problem, das","runCode()":"Code ausführen()","handleFileUpload(event)":"Dateiupload verarbeiten(event)","reviewCode()":"Code überprüfen()","testAPI()":"API testen()","getAlgorithm()":"Algorithmus erhalten()","ve narrowed down the possible locations to just one.":"haben wir die möglichen Standorte auf nur einen reduziert.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Verknüpfte Listen sind lineare Datenstrukturen, bei denen Elemente nicht in zusammenhängenden Speicherpositionen gespeichert werden. Jedes Element verweist auf das nächste im Sequenz.","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","Status:":"Status:","if (arr.length":"wenn (arr.length","PATCH":"PATCH","Content-Type":"Inhaltstyp","application/json":"Anwendung/JSON","Courier New":"Courier New"},"ru":{"DevHub - Developer Resources Toolkit":"DevHub - Набор инструментов разработчика ресурсов","Home":"Домашняя страница","Code Tools":"Инструменты кодирования","API Tools":"Инструменты API","Algorithm Tools":"Инструменты алгоритмов","About":"О нас","Developer Resources Toolkit":"Набор инструментов разработчика ресурсов","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub предоставляет комплексный набор инструментов для разработчиков, которые помогут повысить их продуктивность. От форматирования кода и отладки до тестирования API и реализации алгоритмов, у нас есть все, что вам нужно, в одном месте.","Welcome to DevHub":"Добро пожаловать в DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Ваш универсальное решение для задач программирования. Независимо от того, отладка это, тестирование API или реализация алгоритмов, наши инструменты помогут вам работать более эффективно.","Code Highlighting":"Выделение кода","Visualize your code with syntax highlighting for better readability and error spotting.":"Визуализируйте свой код с помощью цветовой выделки синтаксиса для лучшего понимания и обнаружения ошибок.","Debug Environment":"Среда отладки","Run and test your code directly in your browser with our interactive debugging tool.":"Запускайте и тестируйте свой код напрямую в браузере с помощью нашего интерактивного средства отладки.","Code Review":"Обзор кода","Analyze your code for potential issues and get suggestions for improvement.":"Анализируйте свой код на наличие потенциальных проблем и получайте советы по улучшению.","API Testing":"Тестирование API","Test your REST APIs with various methods and analyze responses in real-time.":"Тестируйте свои REST API с различными методами и анализируйте ответы в реальном времени.","Algorithm Helper":"Помощник по алгоритмам","Get explanations and implementations for common algorithms and data structures.":"Получайте объяснения и реализации для общих алгоритмов и структур данных.","Getting Started with DevHub":"Начало работы с DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Узнайте, как максимально использовать наши инструменты разработчиков с нашими руководствами и обучающими материалами:","Code Highlighting Tutorial":"Обучение выделению кода","API Testing Guide":"Руководство по тестированию API","Algorithm Implementation Tips":"Советы по реализации алгоритмов","Code Highlighter":"Выделитель кода","Enter your code snippet:":"Введите фрагмент кода:","Highlight Code":"Выделить код","Describe the problem:":"Описание проблемы:","Your code:":"Ваш код:","Run Code":"Запуск кода","Upload code file:":"Загрузите файл кода:","Choose file or drag here":"Выберите файл или перетащите сюда","Review Code":"Обзор кода","API Testing Tool":"Инструмент тестирования API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Тестируйте endpoints вашего API с помощью нашего комплексного тестового инструмента. Отправляйте запросы и анализируйте ответы в реальном времени.","Request Headers (JSON format):":"Заголовки запроса (формат JSON):","Request Body:":"Тело запроса:","Test API":"Тестирование API","Get algorithm explanations and implementation examples for common programming problems.":"Получайте объяснения алгоритмов и примеры их реализации для общих проблем программирования.","Describe your algorithm problem:":"Опишите вашу проблему с алгоритмом:","Get Algorithm Solution":"Получите решение алгоритма","Explanation":"Объяснение","Implementation":"Реализация","About DevHub":"О DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub — это комплексный набор инструментов для разработчиков, разработанный для оптимизации вашего процесса программирования. Наши инструменты помогают с форматированием кода, отладкой, тестированием API и реализацией алгоритмов, все в одном удобном платформе.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Наша миссия — предоставлять разработчикам инструменты, необходимые им для написания кода лучше и быстрее. Независимо от того, являетесь ли вы начинающим или опытным разработчиком, DevHub предлагает что-то для вас.","Execution Result:":"Результат выполнения:","Code executed successfully!":"Код успешно выполнен!","Error:":"Ошибка:","lines may be missing semicolons":"в строках могут отсутствовать точные запятые","Total lines:":"Общее количество строк:","Comment lines:":"Строки комментариев:","Empty lines:":"Пустые строки:","Code coverage:":"Крытие кода:","API Response:":"Ответ API:","Status:":"Статус:","Response Time:":"Время ответа:","Headers:":"Заголовки:","Body:":"Тело:","// Paste your code here...":"// Вставьте ваш код здесь...","Describe the issue you're facing...":"Опишите проблему, с которой вы сталкиваетесь...","Enter API endpoint URL":"Ввведите URL точки входа API","e.g., How to implement binary search?":"например, как реализовать двоичный поиск?","No return value":"Нет значения возвращения","Unknown":"Неизвестно","console.log statements found - consider removing in production":"Найдены строки console.log - рассмотрите возможность их удаления в производственной среде","__title__":"DevHub - Набор инструментов разработчика ресурсов","Please enter some code to highlight.":"Пожалуйста, введите код для выделения.","Please enter some code to run.":"Пожалуйста, введите код для выполнения.","Please upload a code file first.":"Пожалуйста, сначала загрузите файл кода.","Potential Issues:":"Возможные проблемы:","No major issues detected in the code.":"В коде не обнаружены основные проблемы.","Code Preview:":"Предварительный просмотр кода:","Please enter an API URL.":"Пожалуйста, введите URL API.","Sending request...":"Отправка запроса...","Please describe your algorithm problem.":"Пожалуйста, опишите вашу проблему с алгоритмом.","完全免费":"полностью бесплатный","提意见":"предложить отзыв","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"бесплатный онлайн инструмент: DevHub - Набор ресурсов разработчика. Без регистрации, без оплаты — бесплатно навсегда.","tab active":"активная вкладка","highlightCode()":"зачеркнутьКод()","Describe the issue you":"опишитеПроблему вы","runCode()":"запускКода()","handleFileUpload(event)":"обработкаЗагрузкиФайла(event)","reviewCode()":"просмотрКода()","testAPI()":"тестированиеАPI()","getAlgorithm()":"получениеАлгоритма()","ve narrowed down the possible locations to just one.":"сужениеПотенциальныхМестОдним.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"СпискиСвязанныхЭлементов(СЕ)являютсяЛинейнымиСтруктурамиДанныхгдеЭлементыНеХранятсяВКонечныхПамятныхМестах.КаждыйЭлементУказываетНаСледующийЭлементВПоследовательности.","PingFang SC":"Пингфан SC","Microsoft YaHei":"Майкрософт ЯХэй","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Courier New":"Courier New","Content-Type":"Content-Type","application/json":"application/json","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":":"},"pt":{"DevHub - Developer Resources Toolkit":"DevHub - Ferramentas de Recursos para Desenvolvedores","Home":"Início","Code Tools":"Ferramentas de Código","API Tools":"Ferramentas de API","Algorithm Tools":"Ferramentas de Algoritmos","About":"Sobre","Developer Resources Toolkit":"Ferramentas de Recursos para Desenvolvedores","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"O DevHub oferece um conjunto abrangente de ferramentas para desenvolvedores melhorarem sua produtividade. Desde formatação de código e depuração até teste de API e implementação de algoritmos, temos tudo o que você precisa em um único lugar.","Welcome to DevHub":"Bem-vindo ao DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Sua solução completa para desafios de programação. Seja para depuração, teste de APIs ou implementação de algoritmos, nossas ferramentas estão aqui para ajudar você a trabalhar de forma mais eficiente.","Code Highlighting":"Destaque de Código","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualize seu código com destaque de sintaxe para melhor leitura e detecção de erros.","Debug Environment":"Ambiente de Depuração","Run and test your code directly in your browser with our interactive debugging tool.":"Execute e teste seu código diretamente no seu navegador com nossa ferramenta de depuração interativa.","Code Review":"Revisão de Código","Analyze your code for potential issues and get suggestions for improvement.":"Análise do seu código para possíveis problemas e sugestões de melhoria.","API Testing":"Teste de API","Test your REST APIs with various methods and analyze responses in real-time.":"Teste suas APIs REST com vários métodos e analise respostas em tempo real.","Algorithm Helper":"Assistente de Algoritmos","Get explanations and implementations for common algorithms and data structures.":"Obtenha explicações e implementações para algoritmos e estruturas de dados comuns.","Getting Started with DevHub":"Começando com o DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Aprenda como tirar o máximo proveito de nossas ferramentas de desenvolvedor com nossos tutoriais e guias:","Code Highlighting Tutorial":"Tutorial de Destaque de Código","API Testing Guide":"Guia de Teste de API","Algorithm Implementation Tips":"Dicas de Implementação de Algoritmos","Code Highlighter":"Destaque de Código","Enter your code snippet:":"Insira seu trecho de código:","Highlight Code":"Destaque de Código","Describe the problem:":"Descreva o problema:","Your code:":"Seu código:","Run Code":"Executar Código","Upload code file:":"Carregar arquivo de código:","Choose file or drag here":"Escolha um arquivo ou arraste aqui","Review Code":"Revisão de Código","API Testing Tool":"Ferramenta de Teste de API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Teste seus pontos de extremidade de API com nossa ferramenta de teste abrangente. Envie solicitações e analise respostas em tempo real.","Test API":"Testar API","Get algorithm explanations and implementation examples for common programming problems.":"Obtenha explicações e exemplos de implementação de algoritmos para problemas comuns de programação.","Describe your algorithm problem:":"Descreva seu problema de algoritmo:","Get Algorithm Solution":"Obter Solução de Algoritmo","Explanation":"Explicação","Implementation":"Implementação","About DevHub":"Sobre o DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"O DevHub é um conjunto abrangente de ferramentas para desenvolvedores projetado para simplificar seu fluxo de trabalho de programação. Nossas ferramentas ajudam com formatação de código, depuração, teste de API e implementação de algoritmos, tudo em uma plataforma conveniente.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Nossa missão é dar poder aos desenvolvedores com as ferramentas que precisam para escrever código melhor e mais rapidamente. Seja um iniciante ou um desenvolvedor experiente, o DevHub tem algo para você.","Execution Result:":"Resultado da Execução:","Code executed successfully!":"Código executado com sucesso!","Error:":"Erro:","lines may be missing semicolons":"linhas podem estar faltando ponto e vírgula","Total lines:":"Linhas Totais:","Comment lines:":"Linhas de Comentário:","Empty lines:":"Linhas Vazias:","Code coverage:":"Cobertura de Código:","API Response:":"Resposta da API:","Response Time:":"Tempo de Resposta:","Headers:":"Cabeçalhos:","Body:":"Corpo:","// Paste your code here...":"// Cole seu código aqui...","Describe the issue you're facing...":"Descreva o problema que você está enfrentando...","Enter API endpoint URL":"Insira a URL do endpoint da API","e.g., How to implement binary search?":"por exemplo, como implementar uma busca binária?","No return value":"Nenhum valor de retorno","Unknown":"Desconhecido","console.log statements found - consider removing in production":"encontradas declarações console.log - considere remover em produção","__title__":"DevHub - Ferramentas de Recursos para Desenvolvedores","Request Headers (JSON format):":"Cabeçalhos de Requisição (formato JSON):","Request Body:":"Corpo da Requisição:","Status:":"Status","完全免费":"Grátis completo","提意见":"Dar sugestões","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Ferramenta online gratuita: DevHub - Ferramenta de Recursos para Desenvolvedores. Sem inscrição, sem pagamento — gratuito para sempre.","tab active":"ativa","highlightCode()":"destacar Código()","Describe the issue you":"descreva o problema que você","runCode()":"executar Código()","handleFileUpload(event)":"manipular Envio de Arquivo(event)","reviewCode()":"revisar Código()","testAPI()":"testar API()","getAlgorithm()":"obter Algoritmo()","ve narrowed down the possible locations to just one.":"reduzimos as possíveis localizações para apenas uma.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Listas ligadas são estruturas de dados lineares onde os elementos não são armazenados em locais contíguos na memória. Cada elemento aponta para o próximo elemento na sequência.","Please enter some code to highlight.":"Por favor, insira algum código para destacar.","Please enter some code to run.":"Por favor, insira algum código para executar.","Please upload a code file first.":"Por favor, carregue primeiro um arquivo de código.","Potential Issues:":"Problemas Potenciais:","No major issues detected in the code.":"Nenhuma questão grave detectada no código.","Code Preview:":"Visualização do Código:","Please enter an API URL.":"Por favor, insira uma URL da API.","Sending request...":"Enviando solicitação...","Please describe your algorithm problem.":"Por favor, descreva seu problema de algoritmo.","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Courier New":"Courier New","Content-Type":"Content-Type","application/json":"application/json"},"ar":{"DevHub - Developer Resources Toolkit":"DevHub - أدوات أدوات المطور","Home":"الصفحة الرئيسية","Code Tools":"أدوات الكود","API Tools":"أدوات API","Algorithm Tools":"أدوات الخوارزميات","About":"عن","Developer Resources Toolkit":"مجموعة أدوات موارد المطور","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"يقدم DevHub مجموعة شاملة من الأدوات للمطورين لتحسين إنتاجيتهم. من صياغة الكود وإصلاح الأخطاء إلى اختبار API وتنفيذ الخوارزميات، لدينا كل شيء تحت سقف واحد.","Welcome to DevHub":"مرحبًا بك في DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"حلتك الشاملة لمشاكل البرمجة. سواء كنت تقوم بإصلاح الأخطاء، اختبار APIs، أو تنفيذ الخوارزميات، فإن أدواتنا هنا لمساعدتك على العمل بشكل أكثر كفاءة.","Code Highlighting":"تسليط الضوء على الكود","Visualize your code with syntax highlighting for better readability and error spotting.":"اعرض كودك باستخدام تسليط الضوء على النصوص البرمجية لتحسين قراءته وتحديد الأخطاء.","Debug Environment":"بيئة التتبع","Run and test your code directly in your browser with our interactive debugging tool.":"شغل واختبار كودك مباشرة في متصفحك باستخدام أداة التتبع التفاعلية الخاصة بنا.","Code Review":"مراجعة الكود","Analyze your code for potential issues and get suggestions for improvement.":"تحليل كودك للكشف عن المشاكل المحتملة وتلقي اقتراحات لتحسينه.","API Testing":"اختبار API","Test your REST APIs with various methods and analyze responses in real-time.":"اختبار APIs REST الخاصة بك بأكثر من طريقة وتحليل الاستجابات في الوقت الحقيقي.","Algorithm Helper":"مساعد الخوارزميات","Get explanations and implementations for common algorithms and data structures.":"الحصول على تفسيرات وتنفيذات للخوارزميات والهياكل البيانية الشائعة.","Getting Started with DevHub":"بدء استخدام DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"تعلم كيفية استغلال أدوات المطور الخاصة بنا بأفضل طريقة ممكنة من خلال دروسنا ومرشاداتنا:","Code Highlighting Tutorial":"دليل تسليط الضوء على الكود","API Testing Guide":"دليل اختبار API","Algorithm Implementation Tips":"نصائح تنفيذ الخوارزميات","Code Highlighter":"مؤشر الكود","Enter your code snippet:":"أدخل قطعة الكود الخاصة بك:","Highlight Code":"تسليط الضوء على الكود","Describe the problem:":"وصف المشكلة:","Your code:":"كودك:","Run Code":"شغل الكود","Upload code file:":"رفع ملف الكود:","Choose file or drag here":"اختر ملف أو قم بسحب هنا","Review Code":"مراجعة الكود","API Testing Tool":"أداة اختبار API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"اختبار نقاط النهاية الخاصة بك لـ API باستخدام أداة الاختبار الشاملة الخاصة بنا. أرسل الطلبات وتحليل الاستجابات في الوقت الحقيقي.","Request Headers (JSON format):":"عناوين الطلبات (تنسيق JSON):","Request Body:":"جسم الطلب:","Test API":"اختبار API","Get algorithm explanations and implementation examples for common programming problems.":"الحصول على تفسيرات وتنفيذات أمثلة للخوارزميات للمشاكل البرمجية الشائعة.","Describe your algorithm problem:":"وصف مشكلة خوارزميتك:","Get Algorithm Solution":"الحصول على حل خوارزمي","Explanation":"تفسير","Implementation":"تنفيذ","About DevHub":"عن DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"يعد DevHub مجموعة أدوات شاملة للمطورين مصممة لتحسين عملية برمجتك. تساعد أدواتنا في صياغة الكود، وإصلاح الأخطاء، اختبار API، وتنفيذ الخوارزميات، كل ذلك في منصة مريحة واحدة.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"مهمتنا هي تمكين المطورين بالأدوات التي يحتاجونها ل كتابة كود أفضل وأسرع. سواء كنت مبتدئًا أو مطورًا ذوي خبرة، لدى DevHub شيء لكل منكم.","Execution Result:":"نتيجة التنفيذ:","Code executed successfully!":"تم تنفيذ الكود بنجاح!","Error:":"خطأ:","lines may be missing semicolons":"قد تكون هناك نقاط سكاكين مفقودة","Total lines:":"عدد الأسطر:","Comment lines:":"أسطر التعليقات:","Empty lines:":"أسطر فارغة:","Code coverage:":"غطاء الكود:","API Response:":"رد الفحص API:","Status:":"الحالة:","Response Time:":"زمن الرد:","Headers:":"الرؤوس:","Body:":"الجسم:","if (arr.length":"if (طول arr)","// Paste your code here...":"// ألصق كودك هنا...","Describe the issue you're facing...":"وصف المشكلة التي تواجهها...","Enter API endpoint URL":"ادخل عنوان نهاية API","e.g., How to implement binary search?":"مثلاً، كيفية تنفيذ البحث الثنائي؟","No return value":"لا يوجد قيمة عائدة","Unknown":"غير معروف","console.log statements found - consider removing in production":"إيجاد تعليمات console.log - تأكد من إزالتها أثناء الإنتاج","__title__":"DevHub - أدوات أدوات المطور","完全免费":"مجاني تمامًا","提意见":"قدم اقتراح","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: DevHub - مجموعة أدوات الموارد المطور. بدون تسجيل، بدون دفع — مجاني إلى الأبد.","tab active":"اللسان النشط","highlightCode()":"تلوين الكود()","Describe the issue you":"وصف المشكلة التي","runCode()":"تشغيل الكود()","handleFileUpload(event)":"تعامل مع تحميل الملف(الحدث)","reviewCode()":"مراجعة الكود()","Content-Type":"نوع المحتوى","application/json":"طلب/تطبيق JSON","testAPI()":"اختبار واجهة البرمجة API()","getAlgorithm()":"الحصول على الخوارزمية()","ve narrowed down the possible locations to just one.":"لقد ضيقت نطاق الأماكن المحتملة إلى واحد فقط.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"قوائم المرتبة هي بنيات بيانات خطية حيث لا يتم تخزين العناصر في مواقع ذاكرة متصلة. كل عنصر يشير إلى العنصر التالي في السلسلة.","PingFang SC":"بينغ فانغ إس سي","Microsoft YaHei":"مايكروسوفت ياهي","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Please enter some code to highlight.":"يرجى إدخال بعض الكود لتحديد النص","Please enter some code to run.":"يرجى إدخال بعض الكود لتشغيله.","Please upload a code file first.":"يرجى تحميل ملف الكود أولاً.","Potential Issues:":"المشاكل المحتملة:","No major issues detected in the code.":"لم يتم اكتشاف أي مشاكل رئيسية في الكود.","Code Preview:":"مطالعة الكود:","Please enter an API URL.":"يرجى إدخال عنوان URL لـ API.","Sending request...":"إرسال الطلب...","Please describe your algorithm problem.":"يرجى وصف مشكلة خوارزميتك.","Courier New":"Courier New"},"hi":{"DevHub - Developer Resources Toolkit":"DevHub - डेवलपर रिसोर्सेस टूलकिट","Home":"होम","Code Tools":"कोड टूल्स","API Tools":"API टूल्स","Algorithm Tools":"एलगोरिथम टूल्स","About":"बारे में","Developer Resources Toolkit":"डेवलपर रिसोर्सेस टूलकिट","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub डेवलपर्स के लिए उनकी उत्पादकता बढ़ाने के लिए एक समग्र टूलकिट प्रदान करता है। कोड फॉर्मेटिंग और डिबगिंग से लेकर API टेस्टिंग तथा एलगोरिथम इम्प्लीकेशन तक, हमने एक ही स्थान पर आपके सभी आवश्यक चीजें दी हैं।","Welcome to DevHub":"DevHub का स्वागत करें","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"कोडिंग चुनौतियों के लिए आपका सब कुछ एकजुट उपाय। चाहे आप डिबगिंग कर रहे हों, API टेस्टिंग कर रहे हों या एलगोरिथम इम्प्लीकेशन कर रहे हों, हमारे टूल्स आपको अधिक प्रभावी ढंग से काम करने में मदद करेंगे।","Code Highlighting":"कोड हाइलाइटिंग","Visualize your code with syntax highlighting for better readability and error spotting.":"सिंटैक्स हाइलाइटिंग के साथ अपना कोड दृश्यीकरण करें ताकि उसे बेहतर पढ़ने और त्रुटियाँ खोजने में मदद मिले।","Debug Environment":"डिबगिंग इनवायरनमेंट","Run and test your code directly in your browser with our interactive debugging tool.":"हमारे इंटरएक्टिव डिबगिंग टूल के साथ आपका कोड सीधे आपके ब्राउज़र में चलाएं और टेस्ट करें।","Code Review":"कोड रिव्यू","Analyze your code for potential issues and get suggestions for improvement.":"अपने कोड के लिए संभावित मुद्दों का विश्लेषण करें और सुधार के लिए सुझाव प्राप्त करें।","API Testing":"API टेस्टिंग","Test your REST APIs with various methods and analyze responses in real-time.":"विभिन्न तरीकों से आपके REST APIs का टेस्ट करें और रिपोंसेस को वास्तविक समय में विश्लेषण करें।","Algorithm Helper":"एलगोरिथम हेल्पर","Get explanations and implementations for common algorithms and data structures.":"सामान्य एलगोरिथम और डाटा संरचनाओं के लिए स्पष्टीकरण और इम्प्लीकेशन प्राप्त करें।","Getting Started with DevHub":"DevHub के साथ शुरू करना","Learn how to make the most of our developer tools with our tutorials and guides:":"हमारे ट्यूटोरियल और गाइड्स के साथ हमारे डेवलपर टूल्स का अधिकतम लाभ उठाने के लिए कैसे सीखें:","Code Highlighting Tutorial":"कोड हाइलाइटिंग ट्यूटोरियल","API Testing Guide":"API टेस्टिंग गाइड","Algorithm Implementation Tips":"एलगोरिथम इम्प्लीकेशन टिप्स","Code Highlighter":"कोड हाइलाइटर","Enter your code snippet:":"अपना कोड स्निपट भरें:","Highlight Code":"कोड हाइलाइट करें","Describe the problem:":"समस्या का वर्णन करें:","Your code:":"आपका कोड:","Run Code":"कोड चलाएं","Upload code file:":"कोड फ़ाइल अपलोड करें:","Choose file or drag here":"फ़ाइल चुनें या यहाँ खींचें","Review Code":"कोड रिव्यू","API Testing Tool":"API टेस्टिंग टूल","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"हमारे समग्र टेस्टिंग टूल के साथ आपके API एंडप्वाइंट्स का टेस्ट करें। अनुरोध भेजें और रिपोंसेस को वास्तविक समय में विश्लेषण करें।","Test API":"API टेस्ट करें","Get algorithm explanations and implementation examples for common programming problems.":"सामान्य प्रोग्रामिंग समस्याओं के लिए एलगोरिथम स्पष्टीकरण और इम्प्लीकेशन उदाहरण प्राप्त करें।","Describe your algorithm problem:":"अपने एलगोरिथम समस्या का वर्णन करें:","Get Algorithm Solution":"एलगोरिथम समाधान प्राप्त करें","Explanation":"स्पष्टीकरण","Implementation":"इम्प्लीकेशन","About DevHub":"बारे में DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub एक समग्र डेवलपर टूलकिट है जो आपके कोडिंग वर्कफ्लोव को सरल बनाने के लिए डिजाइन किया गया है। हमारे टूल्स कोड फॉर्मेटिंग, डिबगिंग, API टेस्टिंग, और एलगोरिथम इम्प्लीकेशन में मदद करते हैं, सभी एक सुविधाजनक प्लेटफॉर्म में।","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"हमारा लक्ष्य डेवलपर्स को उन टूल्स से सशक्त करना है जिनकी आवश्यकता है, ताकि वे तेजी से बेहतर कोड लिख सकें। चाहे आप नए या अनुभवी डेवलपर हों, DevHub आपके लिए कुछ है।","Execution Result:":"अनुवर्तन परिणाम:","Code executed successfully!":"कोड सफलता से चलाया गया!","Error:":"त्रुटि:","lines may be missing semicolons":"सेमीकोलन लापता हो सकते हैं","Total lines:":"कुल पंक्तियाँ:","Comment lines:":"टिप्पणी पंक्तियाँ:","Empty lines:":"खाली पंक्तियाँ:","Code coverage:":"कोड कवरेज:","API Response:":"API प्रतिसाद:","Status:":"स्थिति:","Response Time:":"प्रतिक्रिया समय:","Headers:":"हेडर्स:","Body:":"बॉडी:","else if (arr[mid]":"अन्यथा यदि (arr[mid])","if (arr.length":"यदि (arr.length)","// Paste your code here...":"// अपना कोड यहाँ चिपकाएं...","Describe the issue you're facing...":"...आपकी समस्या का वर्णन करें...","Enter API endpoint URL":"API एंडपाइंट URL भरें","e.g., How to implement binary search?":"उदाहरणार्थ, बाइनरी सर्च कैसे कार्यान्वित करें?","No return value":"कोई वापसी मूल्य नहीं","Unknown":"अज्ञात","console.log statements found - consider removing in production":"console.log वाक्यांश मिले - उत्पादन में हटाने को विचार करें","__title__":"DevHub - डेवलपर रिसोर्सेस टूलकिट","DevHub":"डेवहब","Request Headers (JSON format):":"अनुरोध सर्तें (JSON फॉर्मेट में):","Request Body:":"अनुरोध शरीर:","DOMContentLoaded":"डॉक्यूमेंट कम्प्लीट ऑनलाइन","Please enter some code to highlight.":"कृपया प्रकाशित करने के लिए कुछ कोड भरें","Please enter some code to run.":"कृपया चलाने के लिए कुछ कोड भरें","Please upload a code file first.":"पहले कोड फ़ाइल अपलोड करें","Potential Issues:":"संभावित समस्याएँ:","No major issues detected in the code.":"कोड में कोई बड़ी समस्या नहीं पाई गई","Code Preview:":"कोड पूर्वदर्शन:","Please enter an API URL.":"कृपया API URL भरें","Sending request...":"अनुरोध भेजा जा रहा है...","Please describe your algorithm problem.":"कृपया अपनी एलगोरिथ्म समस्या वर्णित करें","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"मुफ्त ऑनलाइन टूल: DevHub - Developer Resources Toolkit. कोई रजिस्ट्रेशन नहीं, कोई भुगतान नहीं — हमेशा मुफ्त.","tab active":"टैब सक्रिय","highlightCode()":"…","Describe the issue you":"…","runCode()":"…","handleFileUpload(event)":"…","reviewCode()":"…","Content-Type":"…","application/json":"…","testAPI()":"…","getAlgorithm()":"…","ve narrowed down the possible locations to just one.":"…","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"…","PingFang SC":"…","Microsoft YaHei":"माइक्रोसॉफ्ट याहै","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Courier New":"…","') .replace(/\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s*\\(/g, '":"','","') .replace(/(\\/\\/.*$)/gm, '":"…","') .replace(/('.*?'|\".*?\")/g, '":"…"},"id":{"DevHub - Developer Resources Toolkit":"DevHub - Alat Sumber Daya Pengembang","Home":"Beranda","Code Tools":"Alat Kode","API Tools":"Alat API","Algorithm Tools":"Alat Algoritma","About":"Tentang","Developer Resources Toolkit":"Alat Sumber Daya Pengembang","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub menyediakan set alat yang khusus untuk para pengembang untuk meningkatkan produktivitas mereka. Dari pengaturan format kode dan debuging hingga pengujian API dan implementasi algoritma, kami memiliki segalanya di satu tempat.","Welcome to DevHub":"Selamat datang di DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Solusi yang berisi untuk tantangan pemrograman. Apakah Anda sedang debuging, menguji API, atau melaksanakan algoritma, alat kami disini untuk membantu Anda bekerja lebih efisien.","Code Highlighting":"Tampilkan kode Anda dengan penyorotan sintaks untuk kebacaan yang baik dan penemuan kesalahan.","Visualize your code with syntax highlighting for better readability and error spotting.":"Visualisasikan kode anda dengan penyorotan sintaks untuk kebacaan yang lebih baik dan penemuan kesalahan.","Debug Environment":"Jalankan dan uji kode Anda langsung di browser dengan alat debug interaktif kami.","Run and test your code directly in your browser with our interactive debugging tool.":"Jalankan dan uji kode anda langsung di browser dengan alat debug interaktif kami.","Code Review":"Analisis kode Anda untuk potensi masalah dan dapatkan saran untuk peningkatan.","Analyze your code for potential issues and get suggestions for improvement.":"Analisis kode anda untuk masalah potensial dan dapatkan saran untuk peningkatan.","API Testing":"Uji REST API Anda dengan berbagai metode dan analisis tanggapan secara real-time.","Test your REST APIs with various methods and analyze responses in real-time.":"Uji REST API anda dengan berbagai metode dan analisis tanggapan secara real-time.","Algorithm Helper":"Dapatkan penjelasan dan implementasi untuk algoritma dan struktur data yang umum.","Get explanations and implementations for common algorithms and data structures.":"Dapatkan penjelasan dan implementasi untuk algoritma dan struktur data yang umum.","Getting Started with DevHub":"Mulai dengan DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Belajar bagaimana untuk memanfaatkan alat pengembang kami dengan tutorial dan panduan kami:","Code Highlighting Tutorial":"Tutorial Penyorotan Kode","API Testing Guide":"Panduan Pengujian API","Algorithm Implementation Tips":"Tip Implementasi Algoritma","Code Highlighter":"Masukkan potongan kode Anda:","Enter your code snippet:":"Masukkan potongan kode anda:","Highlight Code":"Sorot Kode","Describe the problem:":"Deskripsikan masalah:","Your code:":"Kode Anda:","Run Code":"Jalankan Kode","Upload code file:":"Unggah berkas kode:","Choose file or drag here":"Pilih berkas atau seret disini","Review Code":"Tinjau Kode","API Testing Tool":"Alat Pengujian API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Uji titik akhir API Anda dengan alat pengujian yang khusus kami. Kirim permintaan dan analisis tanggapan secara real-time.","Request Headers (JSON format):":"Header Permintaan (format JSON):","Request Body:":"Body Permintaan:","Test API":"Uji API","Get algorithm explanations and implementation examples for common programming problems.":"Dapatkan penjelasan algoritma dan contoh implementasi untuk masalah pemrograman yang umum.","Describe your algorithm problem:":"Deskripsikan masalah algoritma Anda:","Get Algorithm Solution":"Dapatkan Solusi Algoritma","Explanation":"Penjelasan","Implementation":"Implementasi","About DevHub":"Tentang DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub adalah alat keseluruhan pengembang yang dirancang untuk mempermudah alur kerja pemrograman Anda. Alat kami membantu dengan pengaturan format kode, debuging, pengujian API, dan implementasi algoritma, semua di satu platform yang nyaman.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Misi kami adalah untuk memberikan kekuatan kepada para pengembang dengan alat yang mereka butuhkan untuk menulis kode yang lebih baik dan lebih cepat. Apakah Anda pemula atau pengembang yang berpengalaman, DevHub memiliki sesuatu untuk Anda.","Execution Result:":"Hasil Eksekusi:","Code executed successfully!":"Kode dieksekusi dengan sukses!","Error:":"Kesalahan:","lines may be missing semicolons":"baris mungkin kekurangan titik koma","Total lines:":"Jumlah baris:","Comment lines:":"Baris komentar:","Empty lines:":"Baris kosong:","Code coverage:":"Lapisan kode:","API Response:":"Respon API:","Response Time:":"Waktu Respon:","Headers:":"Kepala Header:","Body:":"Isi:","// Paste your code here...":"// Tulis kode Anda di sini...","Describe the issue you're facing...":"Deskripsikan masalah yang Andahadapi...","Enter API endpoint URL":"Masukkan URL endpoint API","e.g., How to implement binary search?":"contoh., Bagaimana cara melaksanakan pencarian biner?","No return value":"Tidak ada nilai kembalian","Unknown":"Tidak diketahui","console.log statements found - consider removing in production":"Ditemukan pernyataan console.log - pertimbangkan untuk menghapusnya di produksi","__title__":"DevHub - Alat Sumber Daya Pengembang","Please enter some code to highlight.":"Silakan masukkan beberapa kode untuk ditandai.","Please enter some code to run.":"Silakan masukkan beberapa kode untuk dijalankan.","Please upload a code file first.":"Silakan unggah berkas kode terlebih dahulu.","Potential Issues:":"Potensi Masalah:","No major issues detected in the code.":"Tidak ada masalah utama yang terdeteksi di kode.","Code Preview:":"Pratinjau Kode:","Please enter an API URL.":"Silakan masukkan URL API.","Sending request...":"Mengirim permintaan...","Please describe your algorithm problem.":"Silakan deskripsikan masalah algoritma Anda.","完全免费":"Lengkap gratis","提意见":"Ajukan saran","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Alat online gratis: DevHub - Toolkit Sumber Daya Developer. Tanpa pendaftaran, tanpa pembayaran — gratis selamanya.","tab active":"tab aktif","highlightCode()":"beraksesKode()","Describe the issue you":"Deskripsikan masalah Anda","runCode()":"jalankanKode()","handleFileUpload(event)":"handleUnggah Berkas(event)","reviewCode()":"ulasKode()","testAPI()":"tesAPI()","getAlgorithm()":"dapatkanAlgoritma()","ve narrowed down the possible locations to just one.":"telah mengurangi lokasi yang mungkin hanya satu","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Daftar yang terhubung adalah struktur data linear di mana elemen-elemen tidak disimpan di lokasi memori yang berurutan. Setiap elemen menunjuk ke elemen berikutnya dalam derajat","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","Status:":"Status:","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Courier New":"…","Content-Type":"…","application/json":"…"},"vi":{"DevHub - Developer Resources Toolkit":"DevHub - Công cụ tài nguyên phát triển","Home":"Trang chủ","Code Tools":"Công cụ mã nguồn","API Tools":"Công cụ API","Algorithm Tools":"Công cụ thuật toán","About":"Giới thiệu","Developer Resources Toolkit":"Công cụ tài nguyên phát triển","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub cung cấp một bộ công cụ toàn diện cho các nhà phát triển để nâng cao hiệu quả làm việc của họ. Từ định dạng mã nguồn và gỡ lỗi đến kiểm tra API và thực hiện thuật toán, chúng tôi có tất cả những gì bạn cần trong một nơi.","Welcome to DevHub":"Chào mừng bạn đến với DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"Giải pháp tất cả trong một cho các thách thức lập trình của bạn. Bất kể bạn đang gỡ lỗi, kiểm tra API hoặc thực hiện thuật toán, công cụ của chúng tôi sẽ giúp bạn làm việc hiệu quả hơn.","Code Highlighting":"Tô sáng mã nguồn","Visualize your code with syntax highlighting for better readability and error spotting.":"Xem mã nguồn của bạn với tô sáng cú pháp để dễ đọc hơn và phát hiện lỗi.","Debug Environment":"Môi trường gỡ lỗi","Run and test your code directly in your browser with our interactive debugging tool.":"Chạy và kiểm tra mã nguồn của bạn trực tiếp trong trình duyệt của bạn với công cụ gỡ lỗi tương tác của chúng tôi.","Code Review":"Phân tích mã nguồn","Analyze your code for potential issues and get suggestions for improvement.":"Phân tích mã nguồn của bạn để tìm các vấn đề tiềm ẩn và nhận được lời khuyên để cải thiện.","API Testing":"Kiểm tra API","Test your REST APIs with various methods and analyze responses in real-time.":"Kiểm tra các API REST của bạn bằng các phương pháp khác nhau và phân tích phản hồi trong thời gian thực.","Algorithm Helper":"Trợ lý thuật toán","Get explanations and implementations for common algorithms and data structures.":"Nhận các giải thích và thực hiện cho các thuật toán và cấu trúc dữ liệu phổ biến.","Getting Started with DevHub":"Bắt đầu với DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"Học cách tận dụng tối đa các công cụ phát triển của chúng tôi với các hướng dẫn và hướng dẫn của chúng tôi:","Code Highlighting Tutorial":"Hướng dẫn tô sáng mã nguồn","API Testing Guide":"Hướng dẫn kiểm tra API","Algorithm Implementation Tips":"Lời khuyên về việc thực hiện thuật toán","Code Highlighter":"Tô sáng mã nguồn","Enter your code snippet:":"Nhập đoạn mã của bạn:","Highlight Code":"Tô sáng mã nguồn","Describe the problem:":"Mô tả vấn đề của bạn:","Your code:":"Mã nguồn của bạn:","Run Code":"Chạy mã","Upload code file:":"Tải lên tệp mã nguồn:","Choose file or drag here":"Chọn tệp hoặc kéo thả vào đây","Review Code":"Phân tích mã","API Testing Tool":"Công cụ kiểm tra API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"Kiểm tra các điểm cuối API của bạn với công cụ kiểm tra toàn diện của chúng tôi. Gửi yêu cầu và phân tích phản hồi trong thời gian thực.","Request Headers (JSON format):":"Đầu đề yêu cầu (định dạng JSON):","Request Body:":"Thân yêu cầu:","Test API":"Kiểm tra API","Get algorithm explanations and implementation examples for common programming problems.":"Nhận các giải thích và ví dụ thực hiện thuật toán cho các vấn đề lập trình phổ biến.","Describe your algorithm problem:":"Mô tả vấn đề thuật toán của bạn:","Get Algorithm Solution":"Nhận giải pháp thuật toán","Explanation":"Giải thích","Implementation":"Thực hiện","About DevHub":"Giới thiệu DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub là bộ công cụ phát triển toàn diện được thiết kế để làm cho quy trình lập trình của bạn mượt mà hơn. Các công cụ của chúng tôi giúp với định dạng mã nguồn, gỡ lỗi, kiểm tra API và thực hiện thuật toán, tất cả trong một nền tảng tiện lợi.","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"Sứ mệnh của chúng tôi là cung cấp cho các nhà phát triển các công cụ họ cần để viết mã tốt hơn và nhanh hơn. Bất kể bạn là người mới bắt đầu hay nhà phát triển có kinh nghiệm, DevHub có điều gì đó cho bạn.","Execution Result:":"Kết quả thực thi:","Code executed successfully!":"Mã nguồn đã được thực thi thành công!","Error:":"Lỗi:","lines may be missing semicolons":"Các dòng có thể thiếu dấu chấm phẩy","Total lines:":"Tổng số dòng:","Comment lines:":"Dòng chú thích:","Empty lines:":"Dòng trống:","Code coverage:":"Báo cáo bao phủ mã:","API Response:":"Phản hồi API:","Status:":"Trạng thái:","Response Time:":"Thời gian phản hồi:","Headers:":"Đầu đề:","Body:":"Nội dung:","// Paste your code here...":"// Dán mã của bạn vào đây...","Describe the issue you're facing...":"Mô tả vấn đề bạn đang gặp...","Enter API endpoint URL":"Nhập URL điểm cuối API","e.g., How to implement binary search?":"Ví dụ, Cách thực hiện tìm kiếm hai phần?","No return value":"Không có giá trị trả về","Unknown":"Không xác định","console.log statements found - consider removing in production":"Tìm thấy các câu lệnh console.log - hãy cân nhắc gỡ bỏ trong quá trình sản xuất","__title__":"DevHub - Công cụ tài nguyên phát triển","Please enter some code to highlight.":"Vui lòng nhập đoạn mã để tô sáng.","Please enter some code to run.":"Vui lòng nhập đoạn mã để chạy.","Please upload a code file first.":"Vui lòng tải lên tệp mã trước.","Potential Issues:":"Vấn đề tiềm ẩn:","No major issues detected in the code.":"Không phát hiện vấn đề quan trọng trong mã.","Code Preview:":"Xem trước mã:","Please enter an API URL.":"Vui lòng nhập URL API.","Sending request...":"Đang gửi yêu cầu...","Please describe your algorithm problem.":"Vui lòng mô tả vấn đề thuật toán của bạn.","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: DevHub - Bộ công cụ Tài nguyên Phát triển. Không cần đăng ký, không cần thanh toán - miễn phí mãi mãi.","tab active":"tab hoạt động","highlightCode()":"nhấn để tô sáng mã()","Describe the issue you":"mô tả vấn đề bạn","runCode()":"chạy mã()","handleFileUpload(event)":"xử lý tải tệp(event)","reviewCode()":"đánh giá mã()","testAPI()":"thử API()","getAlgorithm()":"lấy thuật toán()","ve narrowed down the possible locations to just one.":"đã thu hẹp vị trí có thể đến chỉ một.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"Danh sách liên kết là cấu trúc dữ liệu tuyến tính mà các phần tử không được lưu trữ tại các địa chỉ bộ nhớ liên tục. Mỗi phần tử chỉ đến phần tử tiếp theo trong chuỗi.","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","Courier New":"Courier New","Content-Type":"Loại nội dung","application/json":"áp dụng/json"},"th":{"DevHub - Developer Resources Toolkit":"DevHub - มาตรฐานของทรัพยากรพัฒนาโปรแกรม","Home":"หน้าหลัก","Code Tools":"เครื่องมือระบบรหัส","API Tools":"เครื่องมือ API","Algorithm Tools":"เครื่องมือสำหรับอัลกอริทึม","About":"เกี่ยวกับ","Developer Resources Toolkit":"มาตรฐานของทรัพยากรพัฒนาโปรแกรม","DevHub provides a comprehensive set of tools for developers to enhance their productivity. From code formatting and debugging to API testing and algorithm implementation, we've got everything you need in one place.":"DevHub มีมาตรฐานของเครื่องมือที่ครอบคลุมสำหรับพัฒนาโปรแกรมเพื่อเพิ่มผลิตภาพของคุณ. จากการรู้จักแบบระบบรหัส และการตรวจปัญหา จนถึงการทดสอบ API และการปฏิบัติการอัลกอริทึม พวกเรามีทุกอย่างที่คุณจำเป็นในที่เดียว","Welcome to DevHub":"ยินดีต้อนรับสู่ DevHub","Your all-in-one solution for coding challenges. Whether you're debugging, testing APIs, or implementing algorithms, our tools are here to help you work more efficiently.":"แก้ปัญหาการเขียนโปรแกรมที่ครอบคลุมของคุณ. ไม่ว่าคุณจะกำลังตรวจปัญหา ทดสอบ API หรือปฏิบัติการอัลกอริทึม เครื่องมือของเราจะช่วยคุณทำงานได้อย่างมีประสิทธิภาพ","Code Highlighting":"การเน้นข้อความรหัส","Visualize your code with syntax highlighting for better readability and error spotting.":"แสดงรหัสของคุณด้วยการเน้นภาษาไว้เพื่อการอ่านง่ายยิ่งและตรวจหาข้อผิดพลาด","Debug Environment":"สภาพแวดล้อมการตรวจปัญหา","Run and test your code directly in your browser with our interactive debugging tool.":"ปฏิบัติการและทดสอบรหัสของคุณโดยตรงในเว็บเบราวเซอร์ด้วยเครื่องมือตรวจปัญหาที่มีปฏิกิริยาของเรา","Code Review":"การตรวจรหัส","Analyze your code for potential issues and get suggestions for improvement.":"วิเคราะห์รหัสของคุณเพื่อหาปัญหาที่อาจเกิดขึ้นและได้คำแนะนำสำหรับการปรับปรุง","API Testing":"การทดสอบ API","Test your REST APIs with various methods and analyze responses in real-time.":"ทดสอบ API REST ของคุณด้วยวิธีต่าง ๆ และวิเคราะห์คำตอบในระยะเวลาทันที","Algorithm Helper":"ช่วยเหลืออัลกอริทึม","Get explanations and implementations for common algorithms and data structures.":"ได้รับการอธิบายและการปฏิบัติการของอัลกอริทึมและโครงสร้างข้อมูลที่ตามกฎที่มักใช้","Getting Started with DevHub":"เริ่มต้นกับ DevHub","Learn how to make the most of our developer tools with our tutorials and guides:":"เรียนรู้วิธีที่จะใช้เครื่องมือพัฒนาโปรแกรมของเราได้ดีที่สุดด้วยตัวอย่างและคู่มือของเรา:","Code Highlighting Tutorial":"ตัวอย่างการเน้นข้อความรหัส","API Testing Guide":"คู่มือการทดสอบ API","Algorithm Implementation Tips":"คำแนะนำการปฏิบัติการอัลกอริทึม","Code Highlighter":"เครื่องมือเน้นข้อความรหัส","Enter your code snippet:":"ใส่ส่วนของรหัสของคุณ:","Highlight Code":"เน้นรหัส","Describe the problem:":"บรรยายปัญหา:","Your code:":"รหัสของคุณ:","Run Code":"ปฏิบัติการรหัส","Upload code file:":"อัพโหลดไฟล์รหัส:","Choose file or drag here":"เลือกไฟล์หรือลากไฟล์ที่นี่","Review Code":"ตรวจสอบรหัส","API Testing Tool":"เครื่องมือทดสอบ API","Test your API endpoints with our comprehensive testing tool. Send requests and analyze responses in real-time.":"ทดสอบจุดส่งของ API ของคุณด้วยเครื่องมือทดสอบที่ครอบคลุมของเรา. ส่งคำขอและวิเคราะห์คำตอบในระยะเวลาทันที","Request Headers (JSON format):":"หัวข้อคำขอ (รูปแบบ JSON):","Request Body:":"ร่างคำขอ:","Test API":"ทดสอบ API","Get algorithm explanations and implementation examples for common programming problems.":"ได้รับการอธิบายและตัวอย่างการปฏิบัติการอัลกอริทึมสำหรับปัญหาโปรแกรมที่ตามกฎที่มักใช้","Describe your algorithm problem:":"บรรยายปัญหาอัลกอริทึมของคุณ:","Get Algorithm Solution":"ได้รับแนวทางแก้ปัญหาอัลกอริทึม","Explanation":"การอธิบาย","Implementation":"การปฏิบัติการ","About DevHub":"เกี่ยวกับ DevHub","DevHub is a comprehensive developer toolkit designed to streamline your coding workflow. Our tools help with code formatting, debugging, API testing, and algorithm implementation, all in one convenient platform.":"DevHub คือมาตรฐานของเครื่องมือพัฒนาโปรแกรมที่ครอบคลุมที่ถูกออกแบบเพื่อทำให้กระบวนการเขียนรหัสของคุณละเอียดและรวดเร็ว. เครื่องมือของเราช่วยในการรู้จักแบบระบบรหัส ตรวจปัญหา ทดสอบ API และปฏิบัติการอัลกอริทึม ทั้งหมดในแผงงานที่สะดวก","Our mission is to empower developers with the tools they need to write better code faster. Whether you're a beginner or an experienced developer, DevHub has something for you.":"พฤติภาพงานของเราคือที่จะให้พลังให้แก่พัฒนาโปรแกรมด้วยเครื่องมือที่พวกเขาจำเป็นเพื่อเขียนรหัสที่ดีและเร็วขึ้น. ไม่ว่าคุณจะเป็นผู้เริ่มต้นหรือพัฒนาโปรแกรมที่มีประสบการณ์ DevHub มีบางอย่างสำหรับคุณ","Execution Result:":"ผลลัพธ์การปฏิบัติการ:","Code executed successfully!":"รหัสปฏิบัติการเสร็จสมบูรณ์!","Error:":"ข้อผิดพลาด:","lines may be missing semicolons":"บางบรรทัดอาจขาดสemicolon","Total lines:":"บรรทัดทั้งหมด:","Comment lines:":"บรรทัดหมายเหตุ","Empty lines:":"บรรทัดว่าง","Code coverage:":"ครอบคลุมรหัส:","API Response:":"API ตอบรับ:","Status:":"สถานะ:","// Paste your code here...":"// 貼ซ้ำรหัสของคุณที่นี่...","Describe the issue you're facing...":"อธิบายปัญหาที่คุณเผชิญ...","Enter API endpoint URL":"ใส่ URL จุดส่งของ API","e.g., How to implement binary search?":"ตัวอย่าง: ยังเข้ารหัสค้นหาแบบเซอร์ชิ่งแบบสองตัวเลขได้อย่างไร?","No return value":"ไม่มีค่ากลับ","Unknown":"ไม่ทราบ","console.log statements found - consider removing in production":"พบคำสั่ง console.log - คิดถึงการลบออกในการผลิต","__title__":"DevHub - มาตรฐานของทรัพยากรพัฒนาโปรแกรม","Please enter some code to highlight.":"กรุณาป้อนรหัสเพื่อเน้นย้ำ","Please enter some code to run.":"กรุณาป้อนรหัสเพื่อปฏิบัติ","Please upload a code file first.":"กรุณาอัพโหลดไฟล์รหัสก่อน","Potential Issues:":"ปัญหาที่อาจเกิดขึ้น","No major issues detected in the code.":"ไม่พบปัญหาใหญ่ในรหัส","Code Preview:":"การแสดงแบบประกาศรหัส","Please enter an API URL.":"กรุณาป้อน URL API","Sending request...":"กำลังส่งคำขอ...","Please describe your algorithm problem.":"กรุณาอธิบายปัญหาแนวทางคำนวณของคุณ","完全免费":"ที่ใช้งานฟรีทุกทาง","提意见":"แบ่งประกาศ","Free online tool: DevHub - Developer Resources Toolkit. No signup, no payment — free forever.":"เครื่องมือฟรีออนไลน์: DevHub - ชุดเครื่องมือสำหรับนักพัฒนา. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย — ฟรีตลอดชีวิต","highlightCode()":"高亮代碼()","Describe the issue you":"描述您遇到的问题","runCode()":"運行代碼()","handleFileUpload(event)":"處理文件上傳(event)","reviewCode()":"檢視代碼()","testAPI()":"測試API()","getAlgorithm()":"獲取算法()","ve narrowed down the possible locations to just one.":"เราได้คัดกรองจุดที่อาจเกิดข้อผิดพลาดเหลือเพียงจุดเดียว.","Linked lists are linear data structures where elements are not stored at contiguous memory locations. Each element points to the next element in the sequence.":"แนวยางเป็นโครงสร้างข้อมูลเชื่อมโยงที่องค์ประกอบไม่ถูกจัดเก็บในตำแหน่งหลักฐานที่ติดต่อกัน. องค์ประกอบแต่ละองค์จะไปไปต่อองค์ต่อไปในลำดับ.","Content-Type":"…","application/json":"…","PingFang SC":"…","Microsoft YaHei":"…","DevHub":"DevHub","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","Response Time:":"Response Time:","Headers:":"Headers:","Body:":"Body:","else if (arr[mid]":"else if (arr[mid]","if (arr.length":"if (arr.length","DOMContentLoaded":"DOMContentLoaded","PATCH":"PATCH","tab active":"…","Courier New":"…"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

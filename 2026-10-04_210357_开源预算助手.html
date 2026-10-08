@@ -1,0 +1,1588 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Budget Assistant</title>
+    <meta name="description" content="Free online tool: Open Budget Assistant. No signup, no payment — free forever.">
+    <meta property="og:title" content="Open Budget Assistant">
+    <meta property="og:description" content="Free online tool: Open Budget Assistant. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-04_210357_开源预算助手.html">
+    <meta name="theme-color" content="#333333">
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4CAF50;
+            --accent-hover: #5CBF60;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --border: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 20px;
+        }
+        
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover, nav a.active {
+            color: var(--accent);
+        }
+        
+        main {
+            padding: 30px 0;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .budget-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .budget-card {
+            background-color: var(--bg-tertiary);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .budget-card h3 {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .budget-card .amount {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .income {
+            color: var(--accent);
+        }
+        
+        .expense {
+            color: var(--danger);
+        }
+        
+        .balance {
+            color: var(--text-primary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .expense-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .expense-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .expense-item:last-child {
+            border-bottom: none;
+        }
+        
+        .expense-details {
+            flex-grow: 1;
+        }
+        
+        .expense-category {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .expense-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        .expense-amount {
+            font-weight: bold;
+            color: var(--danger);
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: var(--bg-secondary);
+            border-radius: 5px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            border-left: 4px solid var(--accent);
+        }
+        
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+        
+        .notification.error {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .settings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background-color: var(--bg-tertiary);
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-tertiary);
+            transition: 0.3s;
+            border-radius: 12px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--accent);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .empty-state p {
+            margin-bottom: 15px;
+        }
+        
+        .tutorial-section {
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tutorial-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .tutorial-steps {
+            margin-top: 15px;
+        }
+        
+        .tutorial-step {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .step-number {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex-grow: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 5px 10px;
+            }
+            
+            .budget-overview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Open Budget Assistant</div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+                        <li><a href="#" class="nav-link" data-section="budget">Budget Planning</a></li>
+                        <li><a href="#" class="nav-link" data-section="expenses">Expense Tracking</a></li>
+                        <li><a href="#" class="nav-link" data-section="visualization">Data Visualization</a></li>
+                        <li><a href="#" class="nav-link" data-section="settings">Settings</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="section active">
+                <h1>Budget Overview</h1>
+                
+                <div class="tutorial-section">
+                    <h2 class="tutorial-title">Getting Started Guide</h2>
+                    <p>Open Budget Assistant helps you track your income and expenses to manage your budget effectively.</p>
+                    <div class="tutorial-steps">
+                        <div class="tutorial-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">Set your monthly income in the Budget Planning section</div>
+                        </div>
+                        <div class="tutorial-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">Create expense categories with budget limits</div>
+                        </div>
+                        <div class="tutorial-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">Add your expenses as they occur</div>
+                        </div>
+                        <div class="tutorial-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">Monitor your spending with visual charts</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="budget-overview">
+                    <div class="budget-card">
+                        <h3>Total Income</h3>
+                        <div class="amount income" id="total-income">$0.00</div>
+                    </div>
+                    <div class="budget-card">
+                        <h3>Total Expenses</h3>
+                        <div class="amount expense" id="total-expenses">$0.00</div>
+                    </div>
+                    <div class="budget-card">
+                        <h3>Remaining Budget</h3>
+                        <div class="amount balance" id="remaining-budget">$0.00</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Recent Expenses</h2>
+                    <div class="expense-list" id="recent-expenses">
+                        <div class="empty-state">
+                            <p>No expenses recorded yet.</p>
+                            <button class="btn-secondary" id="add-first-expense">Add Your First Expense</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Income Forecast</h2>
+                    <div id="income-forecast">
+                        <p style="color: var(--text-secondary);">Set your income expectations to see forecasted budget.</p>
+                        <button class="btn-secondary" id="set-budget-now">Set Budget Now</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Budget Planning Section -->
+            <section id="budget" class="section">
+                <h1>Budget Planning</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Set Your Monthly Income</h2>
+                    <form id="income-form">
+                        <div class="form-group">
+                            <label for="monthly-income">Monthly Income ($)</label>
+                            <input type="number" id="monthly-income" placeholder="Enter your monthly income" min="0" step="0.01">
+                        </div>
+                        <button type="submit">Set Income</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Add Expense Categories</h2>
+                    <form id="expense-category-form">
+                        <div class="form-group">
+                            <label for="category-name">Category Name</label>
+                            <input type="text" id="category-name" placeholder="e.g., Groceries, Rent, Entertainment">
+                        </div>
+                        <div class="form-group">
+                            <label for="category-budget">Budget Amount ($)</label>
+                            <input type="number" id="category-budget" placeholder="Enter budget for this category" min="0" step="0.01">
+                        </div>
+                        <button type="submit">Add Category</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Your Budget Categories</h2>
+                    <div id="budget-categories">
+                        <div class="empty-state">
+                            <p>No budget categories set yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Expense Tracking Section -->
+            <section id="expenses" class="section">
+                <h1>Expense Tracking</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Add New Expense</h2>
+                    <form id="expense-form">
+                        <div class="form-group">
+                            <label for="expense-category">Category</label>
+                            <select id="expense-category">
+                                <option value="">Select a category</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-amount">Amount ($)</label>
+                            <input type="number" id="expense-amount" placeholder="Enter expense amount" min="0" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-description">Description</label>
+                            <input type="text" id="expense-description" placeholder="Brief description of the expense">
+                        </div>
+                        <button type="submit">Add Expense</button>
+                    </form>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">All Expenses</h2>
+                    <div class="expense-list" id="all-expenses">
+                        <div class="empty-state">
+                            <p>No expenses recorded yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Data Visualization Section -->
+            <section id="visualization" class="section">
+                <h1>Data Visualization</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Select Time Period</h2>
+                    <div class="tabs" id="period-tabs">
+                        <div class="tab active" data-period="week">Week</div>
+                        <div class="tab" data-period="month">Month</div>
+                        <div class="tab" data-period="year">Year</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Expense Breakdown</h2>
+                    <div class="chart-container">
+                        <canvas id="expense-chart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Income vs Expenses</h2>
+                    <div class="chart-container">
+                        <canvas id="income-expense-chart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Settings Section -->
+            <section id="settings" class="section">
+                <h1>Settings</h1>
+                
+                <div class="card">
+                    <h2 class="card-title">Notification Settings</h2>
+                    <div class="settings-item">
+                        <div>
+                            <h3>Budget Alerts</h3>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Get notified when approaching budget limits</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="budget-alerts" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <h3>Daily Expense Summary</h3>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Receive daily summary of your expenses</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="daily-summary">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Budget Threshold</h2>
+                    <div class="form-group">
+                        <label for="threshold-percentage">Alert me when I've spent <span id="threshold-value">80</span>% of my budget</label>
+                        <input type="range" id="threshold-percentage" min="50" max="100" value="80">
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title">Data Management</h2>
+                    <div class="settings-item">
+                        <div>
+                            <h3>Export Data</h3>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Download your budget and expense data</p>
+                        </div>
+                        <button id="export-data" class="btn-secondary">Export</button>
+                    </div>
+                    <div class="settings-item">
+                        <div>
+                            <h3>Clear All Data</h3>
+                            <p style="color: var(--text-secondary); font-size: 14px;">Remove all your budget and expense data</p>
+                        </div>
+                        <button id="clear-data" class="btn-danger">Clear Data</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <div id="notification" class="notification"></div>
+    
+    <script>
+        // Data storage
+        let budgetData = {
+            monthlyIncome: 0,
+            categories: [],
+            expenses: [],
+            settings: {
+                budgetAlerts: true,
+                dailySummary: false,
+                thresholdPercentage: 80
+            }
+        };
+        
+        // Load data from localStorage
+        function loadData() {
+            const savedData = localStorage.getItem('budgetData');
+            if (savedData) {
+                budgetData = JSON.parse(savedData);
+                updateUI();
+            }
+        }
+        
+        // Save data to localStorage
+        function saveData() {
+            localStorage.setItem('budgetData', JSON.stringify(budgetData));
+        }
+        
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Show section
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-section') === sectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Update UI with current data
+        function updateUI() {
+            // Update dashboard
+            document.getElementById('total-income').textContent = `$${budgetData.monthlyIncome.toFixed(2)}`;
+            
+            const totalExpenses = budgetData.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            document.getElementById('total-expenses').textContent = `$${totalExpenses.toFixed(2)}`;
+            
+            const remainingBudget = budgetData.monthlyIncome - totalExpenses;
+            document.getElementById('remaining-budget').textContent = `$${remainingBudget.toFixed(2)}`;
+            
+            // Update recent expenses
+            const recentExpenses = document.getElementById('recent-expenses');
+            const recentExpensesList = budgetData.expenses
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5);
+            
+            if (recentExpensesList.length === 0) {
+                recentExpenses.innerHTML = `
+                    <div class="empty-state">
+                        <p>No expenses recorded yet.</p>
+                        <button class="btn-secondary" id="add-first-expense">Add Your First Expense</button>
+                    </div>
+                `;
+            } else {
+                recentExpenses.innerHTML = recentExpensesList.map(expense => `
+                    <div class="expense-item">
+                        <div class="expense-details">
+                            <div>${expense.description}</div>
+                            <div class="expense-category">${getCategoryName(expense.categoryId)}</div>
+                            <div class="expense-date">${formatDate(expense.date)}</div>
+                        </div>
+                        <div class="expense-amount">$${expense.amount.toFixed(2)}</div>
+                    </div>
+                `).join('');
+            }
+            
+            // Update budget categories
+            const budgetCategories = document.getElementById('budget-categories');
+            if (budgetData.categories.length === 0) {
+                budgetCategories.innerHTML = `
+                    <div class="empty-state">
+                        <p>No budget categories set yet.</p>
+                    </div>
+                `;
+            } else {
+                budgetCategories.innerHTML = budgetData.categories.map(category => {
+                    const categoryExpenses = budgetData.expenses
+                        .filter(expense => expense.categoryId === category.id)
+                        .reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    const percentage = (categoryExpenses / category.budget) * 100;
+                    const isOverBudget = percentage > 100;
+                    
+                    return `
+                        <div class="expense-item">
+                            <div class="expense-details">
+                                <div>${category.name}</div>
+                                <div class="expense-category">$${categoryExpenses.toFixed(2)} of $${category.budget.toFixed(2)} (${percentage.toFixed(1)}%)</div>
+                            </div>
+                            <div class="expense-amount ${isOverBudget ? 'expense' : ''}">$${categoryExpenses.toFixed(2)}</div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            // Update expense category select
+            const expenseCategorySelect = document.getElementById('expense-category');
+            expenseCategorySelect.innerHTML = '<option value="">Select a category</option>' +
+                budgetData.categories.map(category => `<option value="${category.id}">${category.name}</option>`).join('');
+            
+            // Update all expenses
+            const allExpenses = document.getElementById('all-expenses');
+            if (budgetData.expenses.length === 0) {
+                allExpenses.innerHTML = `
+                    <div class="empty-state">
+                        <p>No expenses recorded yet.</p>
+                    </div>
+                `;
+            } else {
+                allExpenses.innerHTML = budgetData.expenses
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .map(expense => `
+                        <div class="expense-item">
+                            <div class="expense-details">
+                                <div>${expense.description}</div>
+                                <div class="expense-category">${getCategoryName(expense.categoryId)}</div>
+                                <div class="expense-date">${formatDate(expense.date)}</div>
+                            </div>
+                            <div class="expense-amount">$${expense.amount.toFixed(2)}</div>
+                        </div>
+                    `).join('');
+            }
+            
+            // Update settings
+            document.getElementById('budget-alerts').checked = budgetData.settings.budgetAlerts;
+            document.getElementById('daily-summary').checked = budgetData.settings.dailySummary;
+            document.getElementById('threshold-percentage').value = budgetData.settings.thresholdPercentage;
+            document.getElementById('threshold-value').textContent = budgetData.settings.thresholdPercentage;
+            
+            // Update charts
+            updateCharts();
+        }
+        
+        // Get category name by ID
+        function getCategoryName(categoryId) {
+            const category = budgetData.categories.find(cat => cat.id === categoryId);
+            return category ? category.name : 'Unknown Category';
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
+        
+        // Initialize app
+        loadData();
+        
+        // Navigation - using event delegation for all nav links
+        document.querySelector('nav').addEventListener('click', (e) => {
+            if (e.target.classList.contains('nav-link')) {
+                e.preventDefault();
+                const sectionId = e.target.getAttribute('data-section');
+                showSection(sectionId);
+            }
+        });
+        
+        // Add first expense button
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'add-first-expense') {
+                showSection('expenses');
+            }
+        });
+        
+        // Set budget now button
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'set-budget-now') {
+                showSection('budget');
+            }
+        });
+        
+        // Income form
+        document.getElementById('income-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const incomeInput = document.getElementById('monthly-income');
+            const income = parseFloat(incomeInput.value);
+            
+            if (income > 0) {
+                budgetData.monthlyIncome = income;
+                saveData();
+                updateUI();
+                showNotification('Monthly income updated successfully');
+                incomeInput.value = '';
+            } else {
+                showNotification('Please enter a valid income amount', 'error');
+            }
+        });
+        
+        // Expense category form
+        document.getElementById('expense-category-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('category-name');
+            const budgetInput = document.getElementById('category-budget');
+            
+            const name = nameInput.value.trim();
+            const budget = parseFloat(budgetInput.value);
+            
+            if (name && budget > 0) {
+                const newCategory = {
+                    id: Date.now().toString(),
+                    name: name,
+                    budget: budget
+                };
+                
+                budgetData.categories.push(newCategory);
+                saveData();
+                updateUI();
+                showNotification('Category added successfully');
+                nameInput.value = '';
+                budgetInput.value = '';
+            } else {
+                showNotification('Please enter valid category name and budget', 'error');
+            }
+        });
+        
+        // Expense form
+        document.getElementById('expense-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const categoryId = document.getElementById('expense-category').value;
+            const amountInput = document.getElementById('expense-amount');
+            const descriptionInput = document.getElementById('expense-description');
+            
+            const amount = parseFloat(amountInput.value);
+            const description = descriptionInput.value.trim();
+            
+            if (categoryId && amount > 0 && description) {
+                const newExpense = {
+                    id: Date.now().toString(),
+                    categoryId: categoryId,
+                    amount: amount,
+                    description: description,
+                    date: new Date().toISOString()
+                };
+                
+                budgetData.expenses.push(newExpense);
+                saveData();
+                updateUI();
+                showNotification('Expense added successfully');
+                amountInput.value = '';
+                descriptionInput.value = '';
+                document.getElementById('expense-category').value = '';
+                
+                // Check budget alerts
+                checkBudgetAlerts();
+            } else {
+                showNotification('Please fill all fields with valid data', 'error');
+            }
+        });
+        
+        // Check budget alerts
+        function checkBudgetAlerts() {
+            if (!budgetData.settings.budgetAlerts || budgetData.monthlyIncome === 0) return;
+            
+            const totalExpenses = budgetData.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const remainingPercentage = (totalExpenses / budgetData.monthlyIncome) * 100;
+            const threshold = budgetData.settings.thresholdPercentage;
+            
+            if (remainingPercentage >= threshold) {
+                showNotification(`You've reached ${threshold}% of your monthly budget!`, 'warning');
+            }
+            
+            // Check individual categories
+            budgetData.categories.forEach(category => {
+                const categoryExpenses = budgetData.expenses
+                    .filter(expense => expense.categoryId === category.id)
+                    .reduce((sum, expense) => sum + expense.amount, 0);
+                
+                const categoryPercentage = (categoryExpenses / category.budget) * 100;
+                
+                if (categoryPercentage >= threshold) {
+                    showNotification(`Your ${category.name} category has reached ${threshold}% of its budget!`, 'warning');
+                }
+            });
+        }
+        
+        // Tab handling for visualization - using event delegation
+        document.getElementById('period-tabs').addEventListener('click', (e) => {
+            if (e.target.classList.contains('tab')) {
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                e.target.classList.add('active');
+                updateCharts();
+            }
+        });
+        
+        // Threshold slider
+        document.getElementById('threshold-percentage').addEventListener('input', (e) => {
+            const value = e.target.value;
+            document.getElementById('threshold-value').textContent = value;
+            budgetData.settings.thresholdPercentage = parseInt(value);
+            saveData();
+        });
+        
+        // Toggle switches
+        document.getElementById('budget-alerts').addEventListener('change', (e) => {
+            budgetData.settings.budgetAlerts = e.target.checked;
+            saveData();
+            showNotification(`Budget alerts ${e.target.checked ? 'enabled' : 'disabled'}`);
+        });
+        
+        document.getElementById('daily-summary').addEventListener('change', (e) => {
+            budgetData.settings.dailySummary = e.target.checked;
+            saveData();
+            showNotification(`Daily summary ${e.target.checked ? 'enabled' : 'disabled'}`);
+        });
+        
+        // Export data
+        document.getElementById('export-data').addEventListener('click', () => {
+            const dataStr = JSON.stringify(budgetData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `budget-data-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            
+            showNotification('Data exported successfully');
+        });
+        
+        // Clear data
+        document.getElementById('clear-data').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all your budget and expense data? This action cannot be undone.')) {
+                localStorage.removeItem('budgetData');
+                budgetData = {
+                    monthlyIncome: 0,
+                    categories: [],
+                    expenses: [],
+                    settings: {
+                        budgetAlerts: true,
+                        dailySummary: false,
+                        thresholdPercentage: 80
+                    }
+                };
+                updateUI();
+                showNotification('All data cleared successfully');
+            }
+        });
+        
+        // Charts
+        function updateCharts() {
+            const activePeriod = document.querySelector('.tab.active').getAttribute('data-period');
+            
+            // Filter data by period
+            const now = new Date();
+            let filteredExpenses = budgetData.expenses;
+            
+            if (activePeriod === 'week') {
+                const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                filteredExpenses = budgetData.expenses.filter(expense => {
+                    const expenseDate = new Date(expense.date);
+                    return expenseDate >= weekAgo;
+                });
+            } else if (activePeriod === 'month') {
+                const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                filteredExpenses = budgetData.expenses.filter(expense => {
+                    const expenseDate = new Date(expense.date);
+                    return expenseDate >= monthAgo;
+                });
+            } else if (activePeriod === 'year') {
+                const yearAgo = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate());
+                filteredExpenses = budgetData.expenses.filter(expense => {
+                    const expenseDate = new Date(expense.date);
+                    return expenseDate >= yearAgo;
+                });
+            }
+            
+            // Expense breakdown chart
+            const categoryTotals = {};
+            budgetData.categories.forEach(category => {
+                categoryTotals[category.id] = 0;
+            });
+            
+            filteredExpenses.forEach(expense => {
+                if (categoryTotals.hasOwnProperty(expense.categoryId)) {
+                    categoryTotals[expense.categoryId] += expense.amount;
+                }
+            });
+            
+            drawExpenseChart(categoryTotals);
+            
+            // Income vs expenses chart
+            const incomeVsExpenses = [];
+            
+            if (activePeriod === 'week') {
+                for (let i = 6; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    const dayExpenses = filteredExpenses
+                        .filter(expense => {
+                            const expenseDate = new Date(expense.date);
+                            return expenseDate.toDateString() === date.toDateString();
+                        })
+                        .reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    incomeVsExpenses.push({
+                        day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+                        income: budgetData.monthlyIncome / 7, // Daily approximation
+                        expenses: dayExpenses
+                    });
+                }
+            } else if (activePeriod === 'month') {
+                const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const date = new Date(now.getFullYear(), now.getMonth(), i);
+                    const dayExpenses = filteredExpenses
+                        .filter(expense => {
+                            const expenseDate = new Date(expense.date);
+                            return expenseDate.toDateString() === date.toDateString();
+                        })
+                        .reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    incomeVsExpenses.push({
+                        day: i.toString(),
+                        income: budgetData.monthlyIncome / daysInMonth,
+                        expenses: dayExpenses
+                    });
+                }
+            } else if (activePeriod === 'year') {
+                for (let i = 0; i < 12; i++) {
+                    const monthExpenses = filteredExpenses
+                        .filter(expense => {
+                            const expenseDate = new Date(expense.date);
+                            return expenseDate.getMonth() === i;
+                        })
+                        .reduce((sum, expense) => sum + expense.amount, 0);
+                    
+                    incomeVsExpenses.push({
+                        day: new Date(now.getFullYear(), i, 1).toLocaleDateString('en-US', { month: 'short' }),
+                        income: budgetData.monthlyIncome,
+                        expenses: monthExpenses
+                    });
+                }
+            }
+            
+            drawIncomeExpenseChart(incomeVsExpenses);
+        }
+        
+        function drawExpenseChart(categoryTotals) {
+            const canvas = document.getElementById('expense-chart');
+            
+            // Check if canvas exists
+            if (!canvas) {
+                showNotification('Chart container not found', 'error');
+                return;
+            }
+            
+            try {
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size
+                const containerWidth = canvas.parentElement.offsetWidth;
+                const containerHeight = canvas.parentElement.offsetHeight;
+                
+                canvas.width = containerWidth;
+                canvas.height = containerHeight;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Prepare data
+                const categories = Object.keys(categoryTotals).map(id => {
+                    const category = budgetData.categories.find(cat => cat.id === id);
+                    return {
+                        name: category ? category.name : 'Unknown',
+                        value: categoryTotals[id]
+                    };
+                }).filter(item => item.value > 0);
+                
+                if (categories.length === 0) {
+                    ctx.font = '16px Arial';
+                    ctx.fillStyle = '#b0b0b0';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('No expense data to display', canvas.width / 2, canvas.height / 2);
+                    return;
+                }
+                
+                // Draw pie chart
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = Math.min(centerX, centerY) - 20;
+                
+                const total = categories.reduce((sum, item) => sum + item.value, 0);
+                let currentAngle = -Math.PI / 2;
+                
+                // Generate colors dynamically based on number of categories
+                const generateColor = (index, total) => {
+                    const hue = (index * 360) / total;
+                    return `hsl(${hue}, 70%, 60%)`;
+                };
+                
+                categories.forEach((category, index) => {
+                    const sliceAngle = (category.value / total) * 2 * Math.PI;
+                    
+                    // Draw slice
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                    ctx.closePath();
+                    ctx.fillStyle = generateColor(index, categories.length);
+                    ctx.fill();
+                    
+                    // Draw label
+                    const labelAngle = currentAngle + sliceAngle / 2;
+                    const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                    const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                    
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(category.name, labelX, labelY);
+                    
+                    currentAngle += sliceAngle;
+                });
+            } catch (error) {
+                showNotification('Error drawing expense chart: ' + error.message, 'error');
+            }
+        }
+        
+        function drawIncomeExpenseChart(incomeVsExpenses) {
+            const canvas = document.getElementById('income-expense-chart');
+            
+            // Check if canvas exists
+            if (!canvas) {
+                showNotification('Chart container not found', 'error');
+                return;
+            }
+            
+            try {
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size
+                const containerWidth = canvas.parentElement.offsetWidth;
+                const containerHeight = canvas.parentElement.offsetHeight;
+                
+                canvas.width = containerWidth;
+                canvas.height = containerHeight;
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                if (incomeVsExpenses.length === 0) {
+                    ctx.font = '16px Arial';
+                    ctx.fillStyle = '#b0b0b0';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('No data to display', canvas.width / 2, canvas.height / 2);
+                    return;
+                }
+                
+                // Prepare data
+                const maxValue = Math.max(
+                    ...incomeVsExpenses.map(item => Math.max(item.income, item.expenses)),
+                    budgetData.monthlyIncome
+                );
+                
+                const padding = 40;
+                const chartWidth = canvas.width - padding * 2;
+                const chartHeight = canvas.height - padding * 2;
+                const barWidth = chartWidth / (incomeVsExpenses.length * 2);
+                
+                // Draw axes
+                ctx.strokeStyle = '#666666';
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, canvas.height - padding);
+                ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                ctx.stroke();
+                
+                // Draw bars
+                incomeVsExpenses.forEach((item, index) => {
+                    const x = padding + index * barWidth * 2;
+                    
+                    // Income bar
+                    const incomeHeight = (item.income / maxValue) * chartHeight;
+                    ctx.fillStyle = '#4CAF50';
+                    ctx.fillRect(x, canvas.height - padding - incomeHeight, barWidth, incomeHeight);
+                    
+                    // Expense bar
+                    const expenseHeight = (item.expenses / maxValue) * chartHeight;
+                    ctx.fillStyle = '#F44336';
+                    ctx.fillRect(x + barWidth, canvas.height - padding - expenseHeight, barWidth, expenseHeight);
+                    
+                    // X-axis labels
+                    ctx.fillStyle = '#b0b0b0';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(item.day, x + barWidth, canvas.height - padding + 20);
+                });
+                
+                // Legend
+                ctx.fillStyle = '#4CAF50';
+                ctx.fillRect(canvas.width - 150, 20, 15, 15);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Arial';
+                ctx.textAlign = 'left';
+                ctx.fillText('Income', canvas.width - 130, 30);
+                
+                ctx.fillStyle = '#F44336';
+                ctx.fillRect(canvas.width - 150, 40, 15, 15);
+                ctx.fillStyle = '#ffffff';
+                ctx.fillText('Expenses', canvas.width - 130, 50);
+            } catch (error) {
+                showNotification('Error drawing income vs expenses chart: ' + error.message, 'error');
+            }
+        }
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Open Budget Assistant":"Open Budget Assistant","Dashboard":"Dashboard","Budget Planning":"Budget Planning","Expense Tracking":"Expense Tracking","Data Visualization":"Data Visualization","Settings":"Settings","Budget Overview":"Budget Overview","Getting Started Guide":"Getting Started Guide","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Open Budget Assistant helps you track your income and expenses to manage your budget effectively.","Set your monthly income in the Budget Planning section":"Set your monthly income in the Budget Planning section","Create expense categories with budget limits":"Create expense categories with budget limits","Add your expenses as they occur":"Add your expenses as they occur","Monitor your spending with visual charts":"Monitor your spending with visual charts","Total Income":"Total Income","Total Expenses":"Total Expenses","Remaining Budget":"Remaining Budget","Recent Expenses":"Recent Expenses","No expenses recorded yet.":"No expenses recorded yet.","Add Your First Expense":"Add Your First Expense","Income Forecast":"Income Forecast","Set your income expectations to see forecasted budget.":"Set your income expectations to see forecasted budget.","Set Budget Now":"Set Budget Now","Set Your Monthly Income":"Set Your Monthly Income","Monthly Income ($)":"Monthly Income ($)","Set Income":"Set Income","Add Expense Categories":"Add Expense Categories","Category Name":"Category Name","Budget Amount ($)":"Budget Amount ($)","Add Category":"Add Category","Your Budget Categories":"Your Budget Categories","No budget categories set yet.":"No budget categories set yet.","Add New Expense":"Add New Expense","Category":"Category","Select a category":"Select a category","Amount ($)":"Amount ($)","Description":"Description","Add Expense":"Add Expense","All Expenses":"All Expenses","Select Time Period":"Select Time Period","Week":"Week","Month":"Month","Year":"Year","Expense Breakdown":"Expense Breakdown","Income vs Expenses":"Income vs Expenses","Notification Settings":"Notification Settings","Budget Alerts":"Budget Alerts","Get notified when approaching budget limits":"Get notified when approaching budget limits","Daily Expense Summary":"Daily Expense Summary","Receive daily summary of your expenses":"Receive daily summary of your expenses","Budget Threshold":"Budget Threshold","Alert me when I've spent":"Alert me when I've spent","% of my budget":"% of my budget","Data Management":"Data Management","Export Data":"Export Data","Download your budget and expense data":"Download your budget and expense data","Export":"Export","Clear All Data":"Clear All Data","Remove all your budget and expense data":"Remove all your budget and expense data","Clear Data":"Clear Data","Enter your monthly income":"Enter your monthly income","e.g., Groceries, Rent, Entertainment":"e.g., Groceries, Rent, Entertainment","Enter budget for this category":"Enter budget for this category","Enter expense amount":"Enter expense amount","Brief description of the expense":"Brief description of the expense","Unknown Category":"Unknown Category","Monthly income updated successfully":"Monthly income updated successfully","Please enter a valid income amount":"Please enter a valid income amount","Category added successfully":"Category added successfully","Please enter valid category name and budget":"Please enter valid category name and budget","Expense added successfully":"Expense added successfully","Please fill all fields with valid data":"Please fill all fields with valid data","Data exported successfully":"Data exported successfully","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Are you sure you want to clear all your budget and expense data? This action cannot be undone.","All data cleared successfully":"All data cleared successfully","Chart container not found":"Chart container not found","Unknown":"Unknown","No expense data to display":"No expense data to display","Error drawing expense chart:":"Error drawing expense chart:","No data to display":"No data to display","Income":"Income","Expenses":"Expenses","Error drawing income vs expenses chart:":"Error drawing income vs expenses chart:","__title__":"Open Budget Assistant","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Free online tool: Open Budget Assistant. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","amount income":"amount income","amount expense":"amount expense","amount balance":"amount balance","tab active":"tab active","You":"You","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Open Budget Assistant":"开放预算助手","Dashboard":"仪表板","Budget Planning":"预算规划","Expense Tracking":"费用追踪","Data Visualization":"数据可视化","Settings":"设置","Budget Overview":"预算概览","Getting Started Guide":"入门指南","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"开放预算助手帮助您跟踪收入和支出，以有效管理您的预算。","Set your monthly income in the Budget Planning section":"在预算规划部分设置您的月收入","Create expense categories with budget limits":"创建带有预算限制的费用类别","Add your expenses as they occur":"费用发生时添加您的费用","Monitor your spending with visual charts":"通过可视化图表监控您的支出","Total Income":"总收入","Total Expenses":"总支出","Remaining Budget":"剩余预算","Recent Expenses":"最近费用","No expenses recorded yet.":"尚未记录任何费用。","Add Your First Expense":"添加您的第一笔费用","Income Forecast":"收入预测","Set your income expectations to see forecasted budget.":"设置您的收入预期以查看预测预算。","Set Budget Now":"立即设置预算","Set Your Monthly Income":"设置您的月收入","Monthly Income ($)":"月收入（$）","Set Income":"设置收入","Add Expense Categories":"添加费用类别","Category Name":"类别名称","Budget Amount ($)":"预算金额（$）","Add Category":"添加类别","Your Budget Categories":"您的预算类别","No budget categories set yet.":"尚未设置任何预算类别。","Add New Expense":"添加新费用","Category":"类别","Select a category":"选择一个类别","Amount ($)":"金额（$）","Description":"描述","Add Expense":"添加费用","All Expenses":"所有费用","Select Time Period":"选择时间范围","Week":"周","Month":"月","Year":"年","Expense Breakdown":"费用细分","Income vs Expenses":"收入与支出","Notification Settings":"通知设置","Budget Alerts":"预算警报","Get notified when approaching budget limits":"接近预算限制时获得通知","Daily Expense Summary":"每日费用摘要","Receive daily summary of your expenses":"接收您的每日费用摘要","Budget Threshold":"预算阈值","Alert me when I've spent":"当我花费时提醒我","% of my budget":"我的预算的百分比","Data Management":"数据管理","Export Data":"导出数据","Download your budget and expense data":"下载您的预算和费用数据","Export":"导出","Clear All Data":"清除所有数据","Remove all your budget and expense data":"删除您所有的预算和费用数据","Clear Data":"清除数据","Enter your monthly income":"输入您的月收入","e.g., Groceries, Rent, Entertainment":"例如，杂货，房租，娱乐","Enter budget for this category":"为此类别输入预算","Enter expense amount":"输入支出金额","Brief description of the expense":"支出的简要描述","Unknown Category":"未知类别","Monthly income updated successfully":"月收入更新成功","Please enter a valid income amount":"请输入有效的收入金额","Category added successfully":"类别添加成功","Please enter valid category name and budget":"请输入有效的类别名称和预算","Expense added successfully":"支出添加成功","Please fill all fields with valid data":"请用有效数据填写所有字段","Data exported successfully":"数据导出成功","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"您确定要清除所有预算和支出数据？此操作不可撤销。","All data cleared successfully":"所有数据清除成功","Chart container not found":"未找到图表容器","Unknown":"未知","No expense data to display":"没有可显示的支出数据","Error drawing expense chart:":"绘制支出图表时出错：","No data to display":"没有数据可显示","Income":"收入","Expenses":"支出","Error drawing income vs expenses chart:":"绘制收入与支出对比图表时出错：","__title__":"开放预算助手","完全免费":"完全免费","提意见":"提意见","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"免费在线工具：开放预算助理。无需注册，无需付费——永久免费。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","amount income":"amount income","amount expense":"支出金额","amount balance":"余额","tab active":"活动标签","You":"您","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"es":{"Open Budget Assistant":"Asistente de Presupuesto Abierto","Dashboard":"Tablero","Budget Planning":"Planificación de Presupuestos","Expense Tracking":"Seguimiento de Gastos","Data Visualization":"Visualización de Datos","Settings":"Ajustes","Budget Overview":"Visión General del Presupuesto","Getting Started Guide":"Guía de Inicio","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"El Asistente de Presupuesto Abierto le ayuda a rastrear sus ingresos y gastos para gestionar su presupuesto de manera efectiva.","Set your monthly income in the Budget Planning section":"Establezca su ingreso mensual en la sección de Planificación de Presupuestos","Create expense categories with budget limits":"Cree categorías de gastos con límites de presupuesto","Add your expenses as they occur":"Añada sus gastos según se produzcan","Monitor your spending with visual charts":"Monitoree sus gastos con gráficos visuales","Total Income":"Ingresos Totales","Total Expenses":"Gastos Totales","Remaining Budget":"Presupuesto Restante","Recent Expenses":"Gastos Recientes","No expenses recorded yet.":"Aún no se han registrado gastos.","Add Your First Expense":"Añadir Su Primer Gasto","Income Forecast":"Predicción de Ingresos","Set your income expectations to see forecasted budget.":"Establezca sus expectativas de ingresos para ver el presupuesto pronosticado.","Set Budget Now":"Establecer Presupuesto Ahora","Set Your Monthly Income":"Establecer Su Ingreso Mensual","Monthly Income ($)":"Ingresos Mensuales ($)","Set Income":"Establecer Ingresos","Add Expense Categories":"Añadir Categorías de Gastos","Category Name":"Nombre de la Categoría","Budget Amount ($)":"Monto del Presupuesto ($)","Add Category":"Añadir Categoría","Your Budget Categories":"Sus Categorías de Presupuesto","No budget categories set yet.":"Aún no se han establecido categorías de presupuesto.","Add New Expense":"Añadir Nuevo Gasto","Category":"Categoría","Select a category":"Seleccione una categoría","Amount ($)":"Monto ($)","Description":"Descripción","Add Expense":"Añadir Gasto","All Expenses":"Todos los Gastos","Select Time Period":"Seleccione un Período de Tiempo","Week":"Semana","Month":"Mes","Year":"Año","Expense Breakdown":"Desglose de Gastos","Income vs Expenses":"Ingresos vs Gastos","Notification Settings":"Configuración de Notificaciones","Budget Alerts":"Alertas de Presupuesto","Get notified when approaching budget limits":"Reciba notificaciones cuando se acercan los límites del presupuesto","Daily Expense Summary":"Resumen Diario de Gastos","Receive daily summary of your expenses":"Reciba un resumen diario de sus gastos","Budget Threshold":"Umbral de Presupuesto","Alert me when I've spent":"Alertarme cuando haya gastado","% of my budget":"% de mi presupuesto","Data Management":"Gestión de Datos","Export Data":"Exportar Datos","Download your budget and expense data":"Descargue sus datos de presupuesto y gastos","Export":"Exportar","Clear All Data":"Borrar Todos los Datos","Remove all your budget and expense data":"Eliminar todos sus datos de presupuesto y gastos","Clear Data":"Borrar Datos","Enter your monthly income":"Ingrese su ingreso mensual","e.g., Groceries, Rent, Entertainment":"por ejemplo., Alimentos, Alquiler, Entretenimiento","Enter budget for this category":"Ingrese el presupuesto para esta categoría","Enter expense amount":"Ingrese el monto del gasto","Brief description of the expense":"Descripción breve del gasto","Unknown Category":"Categoría desconocida","Monthly income updated successfully":"Ingresos mensuales actualizados con éxito","Please enter a valid income amount":"Por favor, ingrese una cantidad de ingreso válida","Category added successfully":"Categoría agregada con éxito","Please enter valid category name and budget":"Por favor, ingrese un nombre de categoría válido y el presupuesto","Expense added successfully":"Gasto agregado con éxito","Please fill all fields with valid data":"Por favor, llene todos los campos con datos válidos","Data exported successfully":"Datos exportados con éxito","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"¿Está seguro de que desea borrar todos sus datos de presupuesto y gastos? Esta acción no se puede deshacer.","All data cleared successfully":"Todos los datos borrados con éxito","Chart container not found":"No se encontró el contenedor del gráfico","Unknown":"Desconocido","No expense data to display":"No hay datos de gastos para mostrar","Error drawing expense chart:":"Error al dibujar el gráfico de gastos:","No data to display":"No hay datos para mostrar","Income":"Ingresos","Expenses":"Gastos","Error drawing income vs expenses chart:":"Error al dibujar el gráfico de ingresos vs gastos:","__title__":"Asistente de Presupuesto Abierto","完全免费":"Totalmente gratuito","提意见":"Dar tu opinión","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Herramienta gratuita en línea: Asistente de Presupuesto Abierto. Sin registro, sin pago — gratuito para siempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"sección activa","amount income":"importe de ingresos","amount expense":"cantidad de gastos","amount balance":"cantidad de saldo","tab active":"pestaña activa","You":"Tú","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ja":{"Open Budget Assistant":"オープン予算アシスタント","Dashboard":"ダッシュボード","Budget Planning":"予算計画","Expense Tracking":"支出追跡","Data Visualization":"データ可視化","Settings":"設定","Budget Overview":"予算概要","Getting Started Guide":"始め方ガイド","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"オープン予算アシスタントは、あなたの収入と支出を追跡し、予算を効果的に管理するのに役立ちます。","Set your monthly income in the Budget Planning section":"予算計画セクションで月次収入を設定してください","Create expense categories with budget limits":"予算制限付きの支出カテゴリを作成してください","Add your expenses as they occur":"発生した支出を追加してください","Monitor your spending with visual charts":"視覚チャートで支出を監視してください","Total Income":"総収入","Total Expenses":"総支出","Remaining Budget":"残高予算","Recent Expenses":"最近の支出","No expenses recorded yet.":"まだ支出が記録されていません。","Add Your First Expense":"最初の支出を追加","Income Forecast":"収入予測","Set your income expectations to see forecasted budget.":"予測予算を見るために収入の期待値を設定してください。","Set Budget Now":"今すぐ予算を設定","Set Your Monthly Income":"月次収入を設定","Monthly Income ($)":"月次収入（$）","Set Income":"収入を設定","Add Expense Categories":"支出カテゴリを追加","Category Name":"カテゴリ名","Budget Amount ($)":"予算金額（$）","Add Category":"カテゴリを追加","Your Budget Categories":"あなたの予算カテゴリ","No budget categories set yet.":"まだ予算カテゴリが設定されていません。","Add New Expense":"新しい支出を追加","Category":"カテゴリ","Select a category":"カテゴリを選択","Amount ($)":"金額 ($)","Description":"説明","Add Expense":"支出を追加","All Expenses":"全ての支出","Select Time Period":"期間を選択","Week":"週","Month":"月","Year":"年","Expense Breakdown":"支出内訳","Income vs Expenses":"収入対支出","Notification Settings":"通知設定","Budget Alerts":"予算警報","Get notified when approaching budget limits":"予算限度に近づいた際に通知を受け取る","Daily Expense Summary":"日次支出総括","Receive daily summary of your expenses":"支出の日次総括を受け取る","Budget Threshold":"支出をした際に警報を設定","Alert me when I've spent":"私が支出したときに通知してください","% of my budget":"予算の%","Data Management":"データ管理","Export Data":"データのエクスポート","Download your budget and expense data":"予算と支出データをダウンロード","Export":"エクスポート","Clear All Data":"全データをクリア","Remove all your budget and expense data":"全ての予算と支出データを削除","Clear Data":"データをクリア","Enter your monthly income":"月次収入を入力","Enter budget for this category":"このカテゴリの予算を入力してください","Enter expense amount":"支出金額を入力してください","Brief description of the expense":"支出の簡単な説明","Unknown Category":"未知のカテゴリ","Monthly income updated successfully":"月収が正常に更新されました","Please enter a valid income amount":"有効な収入金額を入力してください","Category added successfully":"カテゴリが正常に追加されました","Please enter valid category name and budget":"有効なカテゴリ名と予算を入力してください","Expense added successfully":"支出が正常に追加されました","Please fill all fields with valid data":"すべてのフィールドに有効なデータを入力してください","Data exported successfully":"データのエクスポートが正常に完了しました","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"すべての予算と支出データをクリアするのは本当にいいですか？この操作は元に戻せません。","All data cleared successfully":"すべてのデータが正常にクリアされました","Chart container not found":"チャートコンテナが見つかりません","Unknown":"未知","No expense data to display":"表示する支出データがありません","Error drawing expense chart:":"支出チャートの描画エラー：","No data to display":"表示するデータがありません","Income":"収入","Expenses":"支出","Error drawing income vs expenses chart:":"収入と支出のチャートの描画エラー：","__title__":"オープン予算アシスタント","完全免费":"完全無料","提意见":"意見をいただく","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"無料オンラインツール：オープン予算アシスタント。登録不要、支払い不要—永久に無料です。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"セクションアクティブ","amount income":"収入金額","amount expense":"支出額","amount balance":"残高","tab active":"アクティブタブ","You":"あなた","PingFang SC":"苹方","Microsoft YaHei":"微软雅黑","e.g., Groceries, Rent, Entertainment":"例：食料品、家賃、娯楽"},"ko":{"Open Budget Assistant":"오픈 예산 보조","Dashboard":"대시보드","Budget Planning":"예산 계획","Expense Tracking":"지출 추적","Data Visualization":"데이터 시각화","Settings":"설정","Budget Overview":"예산 개요","Getting Started Guide":"시작 가이드","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"오픈 예산 보조는 예산을 효과적으로 관리하도록 수입과 지출을 추적하는 데 도움을 줍니다.","Set your monthly income in the Budget Planning section":"예산 계획 섹션에서 월 수입을 설정하세요","Create expense categories with budget limits":"예산 제한을 가진 지출 카테고리를 만드세요","Add your expenses as they occur":"지출이 발생할 때마다 지출을 추가하세요","Monitor your spending with visual charts":"시각 차트로 지출을 모니터링하세요","Total Income":"총 수입","Total Expenses":"총 지출","Remaining Budget":"잔여 예산","Recent Expenses":"최근 지출","No expenses recorded yet.":"아직 지출이 기록되지 않았습니다.","Add Your First Expense":"첫 번째 지출 추가","Income Forecast":"수입 예측","Set your income expectations to see forecasted budget.":"수입 예상을 설정하여 예측된 예산을 볼 수 있습니다.","Set Budget Now":"지금 예산 설정","Set Your Monthly Income":"월 수입 설정","Monthly Income ($)":"월 수익 ($)","Set Income":"수입 설정","Add Expense Categories":"지출 카테고리 추가","Category Name":"카테고리 이름","Budget Amount ($)":"예산 금액 ($)","Add Category":"카테고리 추가","Your Budget Categories":"당신의 예산 카테고리","No budget categories set yet.":"아직 예산 카테고리가 설정되지 않았습니다.","Add New Expense":"새 지출 추가","Category":"카테고리","Select a category":"카테고리 선택","Amount ($)":"금액 ($)","Description":"설명","Add Expense":"지출 추가","All Expenses":"모든 지출","Select Time Period":"시간 기간 선택","Week":"주","Month":"월","Year":"년","Expense Breakdown":"지출 분석","Income vs Expenses":"수입 대 지출","Notification Settings":"알림 설정","Budget Alerts":"예산 알림","Get notified when approaching budget limits":"예산 제한에 접근할 때 알림을 받습니다.","Daily Expense Summary":"일일 지출 요약","Receive daily summary of your expenses":"당신의 지출의 일일 요약을 받습니다.","Budget Threshold":"예산 임계점","Alert me when I've spent":"지출을 했을 때 알림을 받습니다.","% of my budget":"예산의 %","Data Management":"데이터 관리","Export Data":"데이터 내보내기","Download your budget and expense data":"예산과 지출 데이터를 다운로드하세요","Export":"내보내기","Clear All Data":"모든 데이터 지우기","Remove all your budget and expense data":"모든 예산과 지출 데이터를 제거합니다.","Clear Data":"데이터 지우기","Enter your monthly income":"월 수입을 입력하세요","e.g., Groceries, Rent, Entertainment":"예를 들어, 식료품, 임대료, 엔터테인먼트","Enter budget for this category":"이 분류의 예산을 입력하세요","Enter expense amount":"지출 금액을 입력하세요","Brief description of the expense":"지출의 간단한 설명","Unknown Category":"알 수 없는 분류","Monthly income updated successfully":"월 수입이 성공적으로 업데이트되었습니다","Please enter a valid income amount":"유효한 수입 금액을 입력하세요","Category added successfully":"분류가 성공적으로 추가되었습니다","Please enter valid category name and budget":"유효한 분류 이름과 예산을 입력하세요","Expense added successfully":"지출이 성공적으로 추가되었습니다","Please fill all fields with valid data":"모든 필드를 유효한 데이터로 채워주세요","Data exported successfully":"데이터가 성공적으로 내보내졌습니다","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"모든 예산과 지출 데이터를 지우시겠습니까? 이 작업은 취소할 수 없습니다.","All data cleared successfully":"모든 데이터가 성공적으로 지워졌습니다","Chart container not found":"차트 컨테이너를 찾을 수 없습니다","Unknown":"알 수 없음","No expense data to display":"표시할 지출 데이터가 없습니다","Error drawing expense chart:":"지출 차트를 그리는 중 오류가 발생했습니다:","No data to display":"표시할 데이터가 없습니다","Income":"수입","Expenses":"지출","Error drawing income vs expenses chart:":"수입 대비 지출 차트를 그리는 중 오류가 발생했습니다:","__title__":"오픈 예산 보조","完全免费":"완전 무료","提意见":"의견 제출","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"무료 온라인 도구: 오픈 예산 보조 프로그램. 회원가입 없음, 결제 없음 — 영원히 무료","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"섹션 활성화","amount income":"수입 금액","amount expense":"지출 금액","amount balance":"잔액","tab active":"현재 탭","You":"당신","PingFang SC":"평방 SC","Microsoft YaHei":"미crosof트야헤이"},"fr":{"Open Budget Assistant":"Assistant de budget ouvert","Dashboard":"Tableau de bord","Budget Planning":"Planification du budget","Expense Tracking":"Suivi des dépenses","Data Visualization":"Visualisation des données","Settings":"Paramètres","Budget Overview":"Aperçu du budget","Getting Started Guide":"Guide pour commencer","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"L'Assistant de budget ouvert vous aide à suivre vos revenus et dépenses pour gérer efficacement votre budget.","Set your monthly income in the Budget Planning section":"Définissez votre revenu mensuel dans la section Planification du budget","Create expense categories with budget limits":"Créez des catégories de dépenses avec des limites budgétaires","Add your expenses as they occur":"Ajoutez vos dépenses au fur et à mesure qu'elles se produisent","Monitor your spending with visual charts":"Surveillez vos dépenses avec des graphiques visuels","Total Income":"Revenu total","Total Expenses":"Dépenses totales","Remaining Budget":"Budget restant","Recent Expenses":"Dépenses récentes","No expenses recorded yet.":"Aucune dépense enregistrée encore.","Add Your First Expense":"Ajoutez votre première dépense","Income Forecast":"Prévision des revenus","Set your income expectations to see forecasted budget.":"Définissez vos attentes de revenus pour voir le budget prévu.","Set Budget Now":"Définissez le budget maintenant","Set Your Monthly Income":"Définissez votre revenu mensuel","Monthly Income ($)":"Revenu mensuel ($)","Set Income":"Définir le revenu","Add Expense Categories":"Ajouter des catégories de dépenses","Category Name":"Nom de la catégorie","Budget Amount ($)":"Montant budgétaire ($)","Add Category":"Ajouter une catégorie","Your Budget Categories":"Vos catégories de budget","No budget categories set yet.":"Aucune catégorie de budget définie encore.","Add New Expense":"Ajouter une nouvelle dépense","Category":"Catégorie","Select a category":"Sélectionnez une catégorie","Amount ($)":"Montant ($)","Add Expense":"Ajouter une dépense","All Expenses":"Toutes les dépenses","Select Time Period":"Sélectionnez une période","Week":"Semaine","Month":"Mois","Year":"Année","Expense Breakdown":"Détail des dépenses","Income vs Expenses":"Revenus vs Dépenses","Notification Settings":"Paramètres de notification","Budget Alerts":"Alertes budgétaires","Get notified when approaching budget limits":"Recevez des notifications lorsque vous approchez des limites budgétaires","Daily Expense Summary":"Résumé quotidien des dépenses","Receive daily summary of your expenses":"Recevez un résumé quotidien de vos dépenses","Budget Threshold":"Seuil budgétaire","Alert me when I've spent":"Alertez-moi lorsque j'ai dépensé","% of my budget":"% de mon budget","Data Management":"Gestion des données","Export Data":"Exporter des données","Download your budget and expense data":"Téléchargez vos données de budget et de dépenses","Export":"Exporter","Clear All Data":"Effacer toutes les données","Remove all your budget and expense data":"Supprimer toutes vos données de budget et de dépenses","Clear Data":"Effacer les données","Enter your monthly income":"Entrez votre revenu mensuel","e.g., Groceries, Rent, Entertainment":"par exemple, Courses, Louer, Divertissement","Enter budget for this category":"Saisissez le budget pour cette catégorie","Enter expense amount":"Saisissez le montant de la dépense","Brief description of the expense":"Brève description de la dépense","Unknown Category":"Catégorie inconnue","Monthly income updated successfully":"Revenu mensuel mis à jour avec succès","Please enter a valid income amount":"Veuillez saisir un montant de revenu valide","Category added successfully":"Catégorie ajoutée avec succès","Please enter valid category name and budget":"Veuillez saisir un nom de catégorie et un budget valides","Expense added successfully":"Dépense ajoutée avec succès","Please fill all fields with valid data":"Veuillez remplir tous les champs avec des données valides","Data exported successfully":"Données exportées avec succès","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Êtes-vous sûr(e) de vouloir effacer toutes vos données de budget et de dépenses ? Cette action est irréversible.","All data cleared successfully":"Toutes les données ont été effacées avec succès","Chart container not found":"Conteneur de graphique introuvable","Unknown":"Inconnu","No expense data to display":"Aucune donnée de dépense à afficher","Error drawing expense chart:":"Erreur lors du dessin du graphique des dépenses :","No data to display":"Aucune donnée à afficher","Income":"Revenu","Expenses":"Dépenses","Error drawing income vs expenses chart:":"Erreur lors du dessin du graphique revenus vs dépenses :","__title__":"Assistant de budget ouvert","完全免费":"Gratuitement","提意见":"Faire des suggestions","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Outil en ligne gratuit : Assistant budgétaire ouvert. Pas de inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","amount income":"montant des revenus","amount expense":"montant des dépenses","amount balance":"montant du solde","tab active":"onglet actif","You":"Vous","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Description":"Description"},"de":{"Open Budget Assistant":"Offener Haushaltsassistent","Budget Planning":"Haushaltsplanung","Expense Tracking":"Kostentracking","Data Visualization":"Datenvisualisierung","Settings":"Einstellungen","Budget Overview":"Übersicht über den Haushalt","Getting Started Guide":"Einführungshandbuch","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Der Offene Haushaltsassistent hilft Ihnen, Ihre Einnahmen und Ausgaben zu verfolgen, um Ihren Haushalt effizient zu verwalten.","Set your monthly income in the Budget Planning section":"Setzen Sie Ihre monatliche Einnahme im Bereich Haushaltsplanung","Create expense categories with budget limits":"Erstellen Sie Ausgabenkategorien mit Budgetbegrenzungen","Add your expenses as they occur":"Fügen Sie Ihre Ausgaben hinzu, wenn sie auftreten","Monitor your spending with visual charts":"Überwachen Sie Ihre Ausgaben mit visuellen Diagrammen","Total Income":"Gesamteinnahmen","Total Expenses":"Gesamtausgaben","Remaining Budget":"Verbleibender Haushalt","Recent Expenses":"Kürzliche Ausgaben","No expenses recorded yet.":"Bisher keine Ausgaben erfasst.","Add Your First Expense":"Fügen Sie Ihre erste Ausgabe hinzu","Income Forecast":"Einnahmeprognose","Set your income expectations to see forecasted budget.":"Setzen Sie Ihre Einnahmeperspektiven, um den prognostizierten Haushalt zu sehen.","Set Budget Now":"Haushalt jetzt festlegen","Set Your Monthly Income":"Setzen Sie Ihre monatliche Einnahme","Monthly Income ($)":"Monatliches Einkommen ($)","Set Income":"Einnahme festlegen","Add Expense Categories":"Ausgabenkategorien hinzufügen","Category Name":"Kategoriename","Budget Amount ($)":"Budgetbetrag ($)","Add Category":"Kategorie hinzufügen","Your Budget Categories":"Ihre Haushaltskategorien","No budget categories set yet.":"Bisher keine Haushaltskategorien festgelegt.","Add New Expense":"Neue Ausgabe hinzufügen","Category":"Kategorie","Select a category":"Wählen Sie eine Kategorie","Amount ($)":"Betrag ($)","Description":"Beschreibung","Add Expense":"Ausgabe hinzufügen","All Expenses":"Alle Ausgaben","Select Time Period":"Zeitraum auswählen","Week":"Woche","Month":"Monat","Year":"Jahr","Expense Breakdown":"Kostenauflösung","Income vs Expenses":"Einnahmen vs Ausgaben","Notification Settings":"Benachrichtigungseinstellungen","Budget Alerts":"Haushaltsbenachrichtigungen","Get notified when approaching budget limits":"Erhalten Sie Benachrichtigungen, wenn Sie näher an den Haushaltslimiten kommen","Daily Expense Summary":"Täglicher Ausgabenübersicht","Receive daily summary of your expenses":"Erhalten Sie eine tägliche Zusammenfassung Ihrer Ausgaben","Budget Threshold":"HaushaltsSchwellenwert","Alert me when I've spent":"Benachrichtige mich, wenn ich ausgegeben habe","% of my budget":"% meines Budgets","Data Management":"Datenverwaltung","Export Data":"Daten exportieren","Download your budget and expense data":"Laden Sie Ihre Haushalts- und Ausgabendaten herunter","Export":"Exportieren","Clear All Data":"Alle Daten löschen","Remove all your budget and expense data":"Entfernen Sie alle Ihre Haushalts- und Ausgabendaten","Clear Data":"Daten löschen","Enter your monthly income":"Geben Sie Ihre monatliche Einnahme ein","e.g., Groceries, Rent, Entertainment":"z.B., Einkäufe, Miete, Unterhaltung","Enter budget for this category":"Geben Sie das Budget für diese Kategorie ein","Enter expense amount":"Geben Sie den Betrag der Ausgabe ein","Brief description of the expense":"Kurze Beschreibung der Ausgabe","Unknown Category":"Unbekannte Kategorie","Monthly income updated successfully":"Monatseinkommen erfolgreich aktualisiert","Please enter a valid income amount":"Bitte geben Sie einen gültigen Einkommensbetrag ein","Category added successfully":"Kategorie erfolgreich hinzugefügt","Please enter valid category name and budget":"Bitte geben Sie einen gültigen Kategorienamen und Budget ein","Expense added successfully":"Ausgabe erfolgreich hinzugefügt","Please fill all fields with valid data":"Bitte füllen Sie alle Felder mit gültigen Daten aus","Data exported successfully":"Daten erfolgreich exportiert","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Sind Sie sicher, dass Sie alle Ihre Budget- und Ausgabedaten löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.","All data cleared successfully":"Alle Daten erfolgreich gelöscht","Chart container not found":"Chart-Container nicht gefunden","Unknown":"Unbekannt","No expense data to display":"Keine Ausgabedaten zum Anzeigen","Error drawing expense chart:":"Fehler beim Zeichnen des Ausgaben-Diagramms:","No data to display":"Keine Daten zum Anzeigen","Income":"Einkommen","Expenses":"Ausgaben","Error drawing income vs expenses chart:":"Fehler beim Zeichnen des Diagramms Einkommen vs. Ausgaben:","__title__":"Offener Haushaltsassistent","完全免费":"Komplett kostenlos","提意见":"Feedback geben","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Kostenloses Online-Tool: Open Budget Assistant. Keine Registrierung, keine Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"Aktive Sektion","amount income":"Einkommensbetrag","amount expense":"Betrag Ausgabe","amount balance":"Betrag Saldo","tab active":"Register aktiv","You":"Du","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Dashboard":"Dashboard"},"ru":{"Open Budget Assistant":"Открытый помощник по бюджету","Dashboard":"Панель управления","Budget Planning":"Планирование бюджета","Expense Tracking":"Отслеживание расходов","Data Visualization":"Визуализация данных","Settings":"Настройки","Budget Overview":"Обзор бюджета","Getting Started Guide":"Руководство по началу работы","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Открытый помощник по бюджету помогает вам отслеживать ваши доходы и расходы для эффективного управления бюджетом.","Set your monthly income in the Budget Planning section":"Установите ваш ежемесячный доход в разделе Планирование бюджета","Create expense categories with budget limits":"Создайте категории расходов с ограничениями по бюджету","Add your expenses as they occur":"Добавляйте ваши расходы по мере их возникновения","Monitor your spending with visual charts":"Отслеживайте ваши расходы с помощью визуальных графиков","Total Income":"Общий доход","Total Expenses":"Общий расход","Remaining Budget":"Оставшийся бюджет","Recent Expenses":"Недавние расходы","No expenses recorded yet.":"Еще не было записано расходов.","Add Your First Expense":"Добавьте свою первую статью расходов","Income Forecast":"Прогноз доходов","Set your income expectations to see forecasted budget.":"Установите ваши ожидания по доходам, чтобы увидеть прогнозированный бюджет.","Set Budget Now":"Установите бюджет сейчас","Set Your Monthly Income":"Установите ваш ежемесячный доход","Monthly Income ($)":"Месячный доход ($)","Set Income":"Установить доход","Add Expense Categories":"Добавить категории расходов","Category Name":"Название категории","Budget Amount ($)":"Сумма бюджета ($)","Add Category":"Добавить категорию","Your Budget Categories":"Ваши категории бюджета","No budget categories set yet.":"Еще не было установлено категорий бюджета.","Add New Expense":"Добавить новую статью расходов","Category":"Категория","Select a category":"Выберите категорию","Amount ($)":"Сумма ($)","Description":"Описание","Add Expense":"Добавить расход","All Expenses":"Все расходы","Select Time Period":"Выберите период времени","Week":"Неделя","Month":"Месяц","Year":"Год","Expense Breakdown":"Разбивка расходов","Income vs Expenses":"Доход против расходов","Notification Settings":"Настройки уведомлений","Budget Alerts":"Бюджетные уведомления","Get notified when approaching budget limits":"Получайте уведомления при приближении к ограничениям бюджета","Daily Expense Summary":"Ежедневное резюме расходов","Receive daily summary of your expenses":"Получайте ежедневное резюме ваших расходов","Budget Threshold":"Порог бюджета","Alert me when I've spent":"Уведомляйте меня, когда я потратил","% of my budget":"% моего бюджета","Data Management":"Управление данными","Export Data":"Экспортировать данные","Download your budget and expense data":"Загрузите ваши данные о бюджете и расходах","Export":"Экспорт","Clear All Data":"Очистить все данные","Remove all your budget and expense data":"Удалить все ваши данные о бюджете и расходах","Clear Data":"Очистить данные","Enter your monthly income":"Введите ваш ежемесячный доход","e.g., Groceries, Rent, Entertainment":"например, Продукты питания, Аренда, Разrywка","Enter budget for this category":"Введіть бюджет для этой категории","Enter expense amount":"Введіть сумму расходов","Brief description of the expense":"Краткое описание расходов","Unknown Category":"Неизвестная категория","Monthly income updated successfully":"Месячный доход успешно обновлен","Please enter a valid income amount":"Пожалуйста, введите правильную сумму дохода","Category added successfully":"Категория успешно добавлена","Please enter valid category name and budget":"Пожалуйста, введите правильное имя категории и бюджет","Expense added successfully":"Расход успешно добавлен","Please fill all fields with valid data":"Пожалуйста, заполните все поля правильными данными","Data exported successfully":"Данные успешно экспортированы","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Вы уверены, что хотите очистить все ваши данные о бюджете и расходах? Это действие нельзя отменить.","All data cleared successfully":"Все данные успешно очищены","Chart container not found":"Не найден контейнер для графика","Unknown":"Неизвестно","No expense data to display":"Нет данных расходов для отображения","Error drawing expense chart:":"Ошибка при рисовании графика расходов:","No data to display":"Нет данных для отображения","Income":"Доход","Expenses":"Расходы","Error drawing income vs expenses chart:":"Ошибка при рисовании графика дохода против расходов:","__title__":"Открытый помощник по бюджету","完全免费":"полностью бесплатный","提意见":"пожаловаться","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"бесплатный онлайн инструмент: Открытый помощник по бюджету. Без регистрации, без оплаты — навсегда бесплатный.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"раздел активен","amount income":"сумма дохода","amount expense":"сумма расходов","amount balance":"сумма баланса","tab active":"активная вкладка","You":"Вы","PingFang SC":"Пингфан СС","Microsoft YaHei":"Майкрософт Яхей"},"pt":{"Open Budget Assistant":"Assistente de Orçamento Aberto","Dashboard":"Painel de Controle","Budget Planning":"Planejamento de Orçamento","Expense Tracking":"Rastreamento de Despesas","Data Visualization":"Visualização de Dados","Settings":"Configurações","Budget Overview":"Visão Geral do Orçamento","Getting Started Guide":"Guia de Início Rápido","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"O Assistente de Orçamento Aberto ajuda você a rastrear suas receitas e despesas para gerenciar seu orçamento eficazmente.","Set your monthly income in the Budget Planning section":"Defina sua receita mensal na seção de Planejamento de Orçamento","Create expense categories with budget limits":"Crie categorias de despesas com limites orçamentários","Add your expenses as they occur":"Adicione suas despesas conforme ocorrem","Monitor your spending with visual charts":"Monitore suas despesas com gráficos visuais","Total Income":"Receita Total","Total Expenses":"Despesas Totais","Remaining Budget":"Orçamento Restante","Recent Expenses":"Despesas Recentes","No expenses recorded yet.":"Nenhuma despesa registrada ainda.","Add Your First Expense":"Adicione Sua Primeira Despesa","Income Forecast":"Previsão de Receita","Set your income expectations to see forecasted budget.":"Defina suas expectativas de receita para ver o orçamento previsto.","Set Budget Now":"Defina Orçamento Agora","Set Your Monthly Income":"Defina Sua Receita Mensal","Monthly Income ($)":"Renda Mensal ($)","Set Income":"Defina Receita","Add Expense Categories":"Adicionar Categorias de Despesa","Category Name":"Nome da Categoria","Budget Amount ($)":"Montante Orçado ($)","Add Category":"Adicionar Categoria","Your Budget Categories":"Suas Categorias de Orçamento","No budget categories set yet.":"Nenhuma categoria de orçamento configurada ainda.","Add New Expense":"Adicionar Nova Despesa","Category":"Categoria","Select a category":"Selecione uma categoria","Amount ($)":"Montante ($)","Description":"Descrição","Add Expense":"Adicionar Despesa","All Expenses":"Todas as Despesas","Select Time Period":"Selecione um Período de Tempo","Week":"Semana","Month":"Mês","Year":"Ano","Expense Breakdown":"Desglose de Despesas","Income vs Expenses":"Receita vs Despesas","Notification Settings":"Configurações de Notificação","Budget Alerts":"Alertas de Orçamento","Get notified when approaching budget limits":"Receba notificações quando se aproximarem dos limites orçamentários","Daily Expense Summary":"Resumo Diário de Despesas","Receive daily summary of your expenses":"Receba um resumo diário de suas despesas","Budget Threshold":"Limite Orçamentário","Alert me when I've spent":"Alerte-me quando eu tiver gasto","% of my budget":"% do meu orçamento","Data Management":"Gestão de Dados","Export Data":"Exportar Dados","Download your budget and expense data":"Baixe seus dados de orçamento e despesas","Export":"Exportar","Clear All Data":"Limpar Todos os Dados","Remove all your budget and expense data":"Remover todos os seus dados de orçamento e despesas","Clear Data":"Limpar Dados","Enter your monthly income":"Entre sua receita mensal","e.g., Groceries, Rent, Entertainment":"por exemplo, Alimentos, Aluguel, Entretenimento","Enter budget for this category":"Insira o orçamento para esta categoria","Enter expense amount":"Insira o valor da despesa","Brief description of the expense":"Descrição breve da despesa","Unknown Category":"Categoria Desconhecida","Monthly income updated successfully":"Renda mensal atualizada com sucesso","Please enter a valid income amount":"Por favor, insira um valor de renda válido","Category added successfully":"Categoria adicionada com sucesso","Please enter valid category name and budget":"Por favor, insira um nome de categoria válido e um orçamento","Expense added successfully":"Despesa adicionada com sucesso","Please fill all fields with valid data":"Por favor, preencha todos os campos com dados válidos","Data exported successfully":"Dados exportados com sucesso","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Tem certeza de que deseja limpar todos os seus dados de orçamento e despesas? Esta ação não pode ser desfeita.","All data cleared successfully":"Todos os dados limpos com sucesso","Chart container not found":"Container de gráfico não encontrado","Unknown":"Desconhecido","No expense data to display":"Nenhum dado de despesa para exibir","Error drawing expense chart:":"Erro ao desenhar o gráfico de despesas:","No data to display":"Nenhum dado para exibir","Income":"Renda","Expenses":"Despesas","Error drawing income vs expenses chart:":"Erro ao desenhar o gráfico de renda vs despesas:","__title__":"Assistente de Orçamento Aberto","完全免费":"Grátis completo","提意见":"Dar意见","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Ferramenta online gratuita: Assistente de Orçamento Aberto. Sem registro, sem pagamento — gratuito para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"Seção ativa","amount income":"Quantia de receita","amount expense":"valor despesa","amount balance":"saldo","tab active":"aba ativa","You":"Você","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ar":{"Open Budget Assistant":"مساعد الميزانية المفتوحة","Dashboard":"لوحة التحكم","Budget Planning":"خطط الميزانية","Expense Tracking":"تتبع النفقات","Data Visualization":"توضيح البيانات","Settings":"إعدادات","Budget Overview":"نظرة عامة على الميزانية","Getting Started Guide":"دليل البدء","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"يساعدك مساعد الميزانية المفتوحة على تتبع إيراداتك ونفقاتك لإدارة ميزانيتك بشكل فعال.","Set your monthly income in the Budget Planning section":"حدد إيراداتك الشهرية في قسم خطط الميزانية","Create expense categories with budget limits":"أنشئ فئات النفقات مع حدود الميزانية","Add your expenses as they occur":"أضف نفقاتك عند حدوثها","Monitor your spending with visual charts":"راقب إنفاقك باستخدام الرسوم البيانية المرئية","Total Income":"إجمالي الإيرادات","Total Expenses":"إجمالي النفقات","Remaining Budget":"الباقي من الميزانية","Recent Expenses":"النفقات الأخيرة","No expenses recorded yet.":"لا يوجد سجلات للنفقات حتى الآن.","Add Your First Expense":"أضف نفقتك الأولى","Income Forecast":"توقعات الإيرادات","Set your income expectations to see forecasted budget.":"حدد توقعات إيراداتك لرؤية الميزانية المتوقعة.","Set Budget Now":"حدد الميزانية الآن","Set Your Monthly Income":"حدد إيراداتك الشهرية","Monthly Income ($)":"الدخل الشهري ($)","Set Income":"حدد الإيراد","Add Expense Categories":"أضف فئات النفقات","Category Name":"اسم الفئة","Budget Amount ($)":"مبلغ الميزانية ($)","Add Category":"أضف فئة","Your Budget Categories":"فئات ميزانيتك","No budget categories set yet.":"لم يتم تعيين فئات ميزانية بعد.","Add New Expense":"أضف نفقة جديدة","Category":"الفئة","Select a category":"اختر فئة","Amount ($)":"المبلغ ($)","Description":"الوصف","Add Expense":"أضف نفقة","All Expenses":"كل النفقات","Select Time Period":"اختر فترة الزمنية","Week":"الاسبوع","Month":"الشهر","Year":"السنة","Expense Breakdown":"تفكيك النفقات","Income vs Expenses":"الإيرادات مقابل النفقات","Notification Settings":"إعدادات الإشعارات","Budget Alerts":"إشعارات الميزانية","Get notified when approaching budget limits":"احصل على إشعارات عند اقتراب الحدود الميزانية","Daily Expense Summary":"ملخص النفقات اليومية","Receive daily summary of your expenses":"احصل على ملخص يومي لنفقاتك","Budget Threshold":"مستوى الميزانية","Alert me when I've spent":"أخبرني عندما أقوم بالإنفاق","% of my budget":"% من ميزانيتي","Data Management":"إدارة البيانات","Export Data":"إصدر البيانات","Download your budget and expense data":"انزع بيانات ميزانيتك ونفقاتك","Export":"إصدر","Clear All Data":"مسح جميع البيانات","Remove all your budget and expense data":"إزالة جميع بيانات ميزانيتك ونفقاتك","Clear Data":"مسح البيانات","Enter your monthly income":"ادخل إيراداتك الشهرية","e.g., Groceries, Rent, Entertainment":"مثلاً، مشتريات، إيجار، ترفيه","Enter budget for this category":"ادخل ميزانية هذا الفئة","Enter expense amount":"ادخل مبلغ المصروف","Brief description of the expense":"وصف مختصر للمصروف","Unknown Category":"فئة غير معروفة","Monthly income updated successfully":"تم تحديث الدخل الشهري بنجاح","Please enter a valid income amount":"يرجى إدخال مبلغ دخل صالح","Category added successfully":"تم إضافة الفئة بنجاح","Please enter valid category name and budget":"يرجى إدخال اسم الفئة وميزانيتها صالحين","Expense added successfully":"تم إضافة المصروف بنجاح","Please fill all fields with valid data":"يرجى ملء جميع الحقول ببيانات صالحة","Data exported successfully":"تم تصدير البيانات بنجاح","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"هل أنت متأكد من أنك تريد مسح جميع بيانات ميزانيتك ومصروفاتك؟ هذه العملية لا يمكن إلغاؤها.","All data cleared successfully":"تم مسح جميع البيانات بنجاح","Chart container not found":"لم يتم العثور على حاوية الرسم البياني","Unknown":"غير معروف","No expense data to display":"لا توجد بيانات المصروفات للعرض","Error drawing expense chart:":"خطأ في رسم رسم مصروفات:","No data to display":"لا توجد بيانات للعرض","Income":"الدخل","Expenses":"المصروفات","Error drawing income vs expenses chart:":"خطأ في رسم رسم الدخل مقابل المصروفات:","__title__":"مساعد الميزانية المفتوحة","完全免费":" مجاني بالكامل","提意见":"قدم اقتراح","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"أداة عبر الإنترنت مجانية: مساعد ميزانية مفتوح. بدون تسجيل، بدون دفع — مجاني إلى الأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"قسم نشط","amount income":"مبلغ الدخل","amount expense":"مبلغ النفقات","amount balance":"مبلغ الرصيد","tab active":"العلامة الفعالة","You":"أنت","PingFang SC":"بونج فانغ إس سي","Microsoft YaHei":"مايكروسوفت ياهي"},"hi":{"Open Budget Assistant":"ओपन बजट असिस्टेंट","Dashboard":"डैशबोर्ड","Budget Planning":"बजट प्लानिंग","Expense Tracking":"खर्च ट्रैकिंग","Data Visualization":"डेटा विजुअलाइजेशन","Settings":"सेटिंग्स","Budget Overview":"बजट ऑवरव्यू","Getting Started Guide":"शुरू करने का मार्गदर्शक","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"ओपन बजट असिस्टेंट आपको अपने आय और खर्चों को ट्रैक करने में मदद करता है ताकि आप अपने बजट को प्रभावी तरीके से प्रबंधित कर सकें。","Set your monthly income in the Budget Planning section":"बजट प्लानिंग शीट में अपनी मासिक आय को सेट करें","Create expense categories with budget limits":"बजट सीमाओं के साथ खर्च श्रेणियां बनाएं","Add your expenses as they occur":"जब भी आपके खर्च होते हैं उन्हें जोड़ें","Monitor your spending with visual charts":"विजुअल चार्ट्स के द्वारा आपके खर्च को निगरानी करें","Total Income":"कुल आय","Total Expenses":"कुल खर्च","Remaining Budget":"शेष बजट","Recent Expenses":"हालिया खर्च","No expenses recorded yet.":"अभी तक कोई खर्च रिकॉर्ड नहीं किया गया है。","Add Your First Expense":"पहला खर्च जोड़ें","Income Forecast":"आय पूर्वानुमान","Set your income expectations to see forecasted budget.":"अपनी आय की अपेक्षाएं सेट करें ताकि पूर्वानुमानित बजट देख सकें。","Set Budget Now":"अभी बजट सेट करें","Set Your Monthly Income":"अपनी मासिक आय सेट करें","Monthly Income ($)":"मासिक आय ($)","Set Income":"आय सेट करें","Add Expense Categories":"खर्च श्रेणियां जोड़ें","Category Name":"श्रेणी नाम","Budget Amount ($)":"बजट राशि ($)","Add Category":"श्रेणी जोड़ें","Your Budget Categories":"आपकी बजट श्रेणियां","No budget categories set yet.":"अभी तक कोई बजट श्रेणी सेट नहीं की गई है。","Add New Expense":"नया खर्च जोड़ें","Category":"श्रेणी","Select a category":"एक श्रेणी चुनें","Amount ($)":"राशि ($)","Description":"वर्णन","Add Expense":"खर्च जोड़ें","All Expenses":"सभी खर्च","Select Time Period":"समय अवधि चुनें","Week":"सप्ताह","Month":"महीना","Year":"वर्ष","Expense Breakdown":"खर्च विभाजन","Income vs Expenses":"आय के विरुद्ध खर्च","Notification Settings":"अधिसूचना सेटिंग्स","Budget Alerts":"बजट अलर्ट","Get notified when approaching budget limits":"जब बजट सीमाओं के आसपास पहुंचते हैं तो सूचित हों","Daily Expense Summary":"दैनिक खर्च समझौता","Receive daily summary of your expenses":"आपके खर्चों का दैनिक समझौता प्राप्त करें","Budget Threshold":"बजट थ्रेशोल्ड","Alert me when I've spent":"जब मैं खर्च करूं तो मुझे अलर्ट करें","% of my budget":"मेरे बजट का %","Data Management":"डेटा प्रबंधन","Export Data":"डेटा निर्यात करें","Download your budget and expense data":"आपके बजट और खर्च डेटा डाउनलोड करें","Export":"निर्यात","Clear All Data":"सभी डेटा साफ करें","Remove all your budget and expense data":"आपके सभी बजट और खर्च डेटा हटाएं","Clear Data":"डेटा साफ करें","Enter your monthly income":"अपनी मासिक आय दर्ज करें","e.g., Groceries, Rent, Entertainment":"उदाहरण के लिए, ग्रोसरीज, रेंट, एंटरटेनमेंट","Enter budget for this category":"इस श्रेणी के लिए बजट भरें","Enter expense amount":"खर्च राशि भरें","Brief description of the expense":"खर्च का छोटा वर्णन","Unknown Category":"अज्ञात श्रेणी","Monthly income updated successfully":"मासिक आय सफलतापूर्वक अद्यतन किया गया","Please enter a valid income amount":"कृपया एक वैध आय राशि भरें","Category added successfully":"श्रेणी सफलतापूर्वक जोड़ी गई","Please enter valid category name and budget":"कृपया वैध श्रेणी नाम और बजट भरें","Expense added successfully":"खर्च सफलतापूर्वक जोड़ा गया","Please fill all fields with valid data":"कृपया सभी फील्ड को वैध डाटा से भरें","Data exported successfully":"डाटा सफलतापूर्वक निर्यातित","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"क्या आप वाकई अपने सभी बजट और खर्च डाटा को मिटाना चाहते हैं? यह कार्रवाई वापस पूर्वक नहीं किया जा सकता.","All data cleared successfully":"सभी डाटा सफलतापूर्वक मिटा दिया गया","Chart container not found":"चार्ट कंटेनर नहीं मिला","Unknown":"अज्ञात","No expense data to display":"दिखाने के लिए कोई खर्च डाटा नहीं","Error drawing expense chart:":"खर्च चार्ट दूसरे करते समय त्रुटि:","No data to display":"दिखाने के लिए कोई डाटा नहीं","Income":"आय","Expenses":"खर्च","Error drawing income vs expenses chart:":"आय और खर्च के चार्ट दूसरे करते समय त्रुटि:","__title__":"ओपन बजट असिस्टेंट","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"मुफ्त ऑनलाइन टूल: ओपन बजट असिस्टेंट. कोई नामांकन नहीं, कोई भुगतान नहीं — हमेशा मुफ्त.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"सेक्शन सक्रिय","amount income":"आय राशि","amount expense":"अवधारणा व्यय","amount balance":"अवधारणा संतुलन","tab active":"सक्रिय टैब","You":"तुम","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"id":{"Open Budget Assistant":"Asisten Anggaran Buka","Dashboard":"Dasbor","Budget Planning":"Perencanaan Anggaran","Expense Tracking":"Pemantauan Pengeluaran","Data Visualization":"Visualisasi Data","Settings":"Pengaturan","Budget Overview":"Ringkasan Anggaran","Getting Started Guide":"Panduan Memulai","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Asisten Anggaran Buka membantu Anda mengelola keuangan pemasukan dan pengeluaran untuk mengelola anggaran dengan efektif.","Set your monthly income in the Budget Planning section":"Atur pemasukan bulanan Anda di bagian Perencanaan Anggaran","Create expense categories with budget limits":"Buat kategori pengeluaran dengan batas anggaran","Add your expenses as they occur":"Tambahkan pengeluaran Anda saatnya terjadi","Monitor your spending with visual charts":"Pantau pengeluaran Anda dengan grafik visual","Total Income":"Pemasukan Total","Total Expenses":"Pengeluaran Total","Remaining Budget":"Anggaran Tersisa","Recent Expenses":"Pengeluaran Terbaru","No expenses recorded yet.":"Belum ada pengeluaran yang direkam.","Add Your First Expense":"Tambahkan Pengeluaran Pertama Anda","Income Forecast":"Ramalan Pemasukan","Set your income expectations to see forecasted budget.":"Atur harapan pemasukan Anda untuk melihat anggaran yang di ramalkan.","Set Budget Now":"Atur Anggaran Sekarang","Set Your Monthly Income":"Atur Pemasukan Bulanan Anda","Monthly Income ($)":"Pendapatan Bulanan ($)","Set Income":"Atur Pemasukan","Add Expense Categories":"Tambah Kategori Pengeluaran","Category Name":"Nama Kategori","Budget Amount ($)":"Jumlah Anggaran ($)","Add Category":"Tambah Kategori","Your Budget Categories":"Kategori Anggaran Anda","No budget categories set yet.":"Belum ada kategori anggaran yang diatur.","Add New Expense":"Tambah Pengeluaran Baru","Category":"Kategori","Select a category":"Pilih kategori","Amount ($)":"Jumlah ($)","Description":"Deskripsi","Add Expense":"Tambah Pengeluaran","All Expenses":"Semua Pengeluaran","Select Time Period":"Pilih Periode Waktu","Week":"Minggu","Month":"Bulan","Year":"Tahun","Expense Breakdown":"Pemecahan Pengeluaran","Income vs Expenses":"Pemasukan vs Pengeluaran","Notification Settings":"Pengaturan Pemberitahuan","Budget Alerts":"Pemberitahuan Anggaran","Get notified when approaching budget limits":"Dapatkan pemberitahuan saat mendekati batas anggaran","Daily Expense Summary":"Ringkasan Pengeluaran Harian","Receive daily summary of your expenses":"Dapatkan ringkasan harian pengeluaran Anda","Budget Threshold":"Ambang Anggaran","Alert me when I've spent":"Beritahu saya saat saya telah menghabiskan","% of my budget":"Persen dari anggaran saya","Data Management":"Manajemen Data","Export Data":"Ekspor Data","Download your budget and expense data":"Unduh data anggaran dan pengeluaran Anda","Export":"Ekspor","Clear All Data":"Bersihkan Semua Data","Remove all your budget and expense data":"Hapus semua data anggaran dan pengeluaran Anda","Clear Data":"Bersihkan Data","Enter your monthly income":"Masukkan pemasukan bulanan Anda","e.g., Groceries, Rent, Entertainment":"contoh., Peralatan makanan, Sewa, Hiburan","Enter budget for this category":"Masukkan anggaran untuk kategori ini","Enter expense amount":"Masukkan jumlah biaya","Brief description of the expense":"Deskripsi singkat tentang biaya","Unknown Category":"Kategori Tidak Dikenal","Monthly income updated successfully":"Pengupdatean penghasilan bulanan sukses","Please enter a valid income amount":"Silakan masukkan jumlah penghasilan yang valid","Category added successfully":"Kategori ditambahkan sukses","Please enter valid category name and budget":"Silakan masukkan nama kategori dan anggaran yang valid","Expense added successfully":"Biaya ditambahkan sukses","Please fill all fields with valid data":"Silakanisi semua kolom dengan data yang valid","Data exported successfully":"Data diekspor sukses","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Apakah Anda yakin ingin menghapus semua data anggaran dan biaya? Tindakan ini tidak dapat dibatalkan.","All data cleared successfully":"Semua data telah dihapus sukses","Chart container not found":"Kontainer grafik tidak ditemukan","Unknown":"Tidak Dikenal","No expense data to display":"Tidak ada data biaya untuk ditampilkan","Error drawing expense chart:":"Kesalahan dalam menggambar grafik biaya:","No data to display":"Tidak ada data untuk ditampilkan","Income":"Penghasilan","Expenses":"Biaya","Error drawing income vs expenses chart:":"Kesalahan dalam menggambar grafik penghasilan vs biaya:","__title__":"Asisten Anggaran Buka","完全免费":"Bebas sepenuhnya","提意见":"Masukkan saran","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Alat online gratis: Asisten Anggaran Terbuka. Tidak ada pendaftaran, tidak ada pembayaran — bebas selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section aktif","amount income":"jumlah pemasukan","amount expense":"jumlah pengeluaran","amount balance":"jumlah saldo","tab active":"tab aktif","You":"Kamu","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"vi":{"Budget Planning":"Kế hoạch ngân sách","Expense Tracking":"Theo dõi chi tiêu","Data Visualization":"Xử lý dữ liệu","Settings":"Cài đặt","Budget Overview":"Tóm tắt ngân sách","Getting Started Guide":"Hướng dẫn bắt đầu","Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Open Budget Assistant giúp bạn theo dõi thu nhập và chi tiêu để quản lý ngân sách hiệu quả.","Set your monthly income in the Budget Planning section":"Đặt thu nhập hàng tháng trong phần Kế hoạch ngân sách","Create expense categories with budget limits":"Tạo các danh mục chi tiêu với giới hạn ngân sách","Add your expenses as they occur":"Thêm chi tiêu của bạn khi chúng xảy ra","Monitor your spending with visual charts":"Giám sát chi tiêu của bạn bằng các biểu đồ trực quan","Total Income":"Tổng thu nhập","Total Expenses":"Tổng chi tiêu","Remaining Budget":"Ngân sách còn lại","Recent Expenses":"Chi tiêu gần đây","No expenses recorded yet.":"Chưa có chi tiêu nào được ghi nhận.","Add Your First Expense":"Thêm chi tiêu đầu tiên của bạn","Income Forecast":"Dự báo thu nhập","Set your income expectations to see forecasted budget.":"Đặt kỳ vọng thu nhập của bạn để xem ngân sách dự báo.","Set Budget Now":"Đặt ngân sách ngay lập tức","Set Your Monthly Income":"Đặt thu nhập hàng tháng của bạn","Monthly Income ($)":"Doanh thu hàng tháng ($)","Set Income":"Đặt thu nhập","Add Expense Categories":"Thêm danh mục chi tiêu","Category Name":"Tên danh mục","Budget Amount ($)":"Số tiền ngân sách ($)","Add Category":"Thêm danh mục","Your Budget Categories":"Các danh mục ngân sách của bạn","No budget categories set yet.":"Chưa thiết lập danh mục ngân sách nào.","Add New Expense":"Thêm chi tiêu mới","Category":"Danh mục","Select a category":"Chọn danh mục","Amount ($)":"Số tiền ($)","Description":"Mô tả","Add Expense":"Thêm chi tiêu","All Expenses":"Tất cả chi tiêu","Select Time Period":"Chọn khoảng thời gian","Week":"Tuần","Month":"Tháng","Year":"Năm","Expense Breakdown":"Phân tích chi tiêu","Income vs Expenses":"Thu nhập so với chi tiêu","Notification Settings":"Cài đặt thông báo","Budget Alerts":"Cảnh báo ngân sách","Get notified when approaching budget limits":"Nhận thông báo khi gần đạt giới hạn ngân sách","Daily Expense Summary":"Tóm tắt chi tiêu hàng ngày","Receive daily summary of your expenses":"Nhận tóm tắt chi tiêu hàng ngày của bạn","Budget Threshold":"Ngưỡng ngân sách","Alert me when I've spent":"Cảnh báo tôi khi đã tiêu","% of my budget":"% ngân sách của tôi","Data Management":"Quản lý dữ liệu","Export Data":"Xuất dữ liệu","Download your budget and expense data":"Tải xuống ngân sách và dữ liệu chi tiêu của bạn","Export":"Xuất","Clear All Data":"Xóa tất cả dữ liệu","Remove all your budget and expense data":"Xóa tất cả ngân sách và dữ liệu chi tiêu của bạn","Clear Data":"Xóa dữ liệu","Enter your monthly income":"Nhập thu nhập hàng tháng của bạn","e.g., Groceries, Rent, Entertainment":"ví dụ: Hàng tạp hóa, Thuê nhà, Giải trí","Enter budget for this category":"Nhập ngân sách cho danh mục này","Enter expense amount":"Nhập số tiền chi tiêu","Brief description of the expense":"Mô tả ngắn gọn về chi tiêu","Unknown Category":"Danh mục không xác định","Monthly income updated successfully":"Cập nhật thu nhập hàng tháng thành công","Please enter a valid income amount":"Vui lòng nhập số tiền thu nhập hợp lệ","Category added successfully":"Danh mục đã được thêm thành công","Please enter valid category name and budget":"Vui lòng nhập tên danh mục và ngân sách hợp lệ","Expense added successfully":"Chi tiêu đã được thêm thành công","Please fill all fields with valid data":"Vui lòng điền đầy đủ tất cả các trường với dữ liệu hợp lệ","Data exported successfully":"Dữ liệu đã xuất thành công","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"Bạn có chắc chắn muốn xóa tất cả ngân sách và dữ liệu chi tiêu của mình? Hành động này không thể hoàn tác.","All data cleared successfully":"Tất cả dữ liệu đã được xóa thành công","Chart container not found":"Không tìm thấy khung biểu đồ","Unknown":"Không xác định","No expense data to display":"Không có dữ liệu chi tiêu để hiển thị","Error drawing expense chart:":"Lỗi khi vẽ biểu đồ chi tiêu:","No data to display":"Không có dữ liệu để hiển thị","Income":"Thu nhập","Expenses":"Chi tiêu","Error drawing income vs expenses chart:":"Lỗi khi vẽ biểu đồ so sánh thu nhập và chi tiêu:","__title__":"Open Budget Assistant","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","UTF-8":"UTF-8","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: Open Budget Assistant. Không đăng ký, không thanh toán — miễn phí vĩnh viễn.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"Phần tử hoạt động","amount income":"Số tiền thu nhập","amount expense":"số tiền chi","amount balance":"số dư","tab active":"thẻ hoạt động","You":"Bạn","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Open Budget Assistant":"Trợ lý Mở ngân sách","Dashboard":"Bảng điều khiển"},"th":{"Open Budget Assistant helps you track your income and expenses to manage your budget effectively.":"Open Budget Assistant ช่วยคุณติดตามรายได้และค่าใช้จ่ายเพื่อจัดการงบประมาณได้อย่างมีประสิทธิภาพ","Set your monthly income in the Budget Planning section":"ตั้งรายได้ประจำเดือนในส่วน Budget Planning","Create expense categories with budget limits":"สร้างประเภทค่าใช้จ่ายด้วยจำนวนเงินที่กำหนด","Add your expenses as they occur":"เพิ่มค่าใช้จ่ายของคุณเมื่อมีเกิดขึ้น","Monitor your spending with visual charts":"ตรวจสอบการใช้จ่ายของคุณด้วยกราฟที่มีภาพ","Total Income":"รายได้ทั้งหมด","Total Expenses":"ค่าใช้จ่ายทั้งหมด","Remaining Budget":"งบประมาณที่เหลือ","Recent Expenses":"ค่าใช้จ่ายล่าสุด","No expenses recorded yet.":"ยังไม่มีการบันทึกค่าใช้จ่าย","Add Your First Expense":"เพิ่มค่าใช้จ่ายครั้งแรก","Income Forecast":"การทำนายรายได้","Set your income expectations to see forecasted budget.":"ตั้งความหวังรายได้ของคุณเพื่อดูงบประมาณที่ทำนายไว้","Set Budget Now":"ตั้งงบประมาณเดี๋ยวนี้","Set Your Monthly Income":"ตั้งรายได้ประจำเดือนของคุณ","Monthly Income ($)":"รายได้รายเดือน ($)","Set Income":"ตั้งรายได้","Add Expense Categories":"เพิ่มประเภทค่าใช้จ่าย","Category Name":"ชื่อประเภท","Budget Amount ($)":"จำนวนงบประมาณ ($)","Add Category":"เพิ่มประเภท","Your Budget Categories":"ประเภทงบประมาณของคุณ","No budget categories set yet.":"ยังไม่ได้ตั้งประเภทงบประมาณ","Add New Expense":"เพิ่มค่าใช้จ่ายใหม่","Category":"ประเภท","Select a category":"เลือกประเภท","Amount ($)":"จำนวน ($)","Description":"รายละเอียด","Add Expense":"เพิ่มค่าใช้จ่าย","All Expenses":"ทั้งหมดค่าใช้จ่าย","Select Time Period":"เลือกช่วงเวลา","Week":"สัปดาห์","Month":"เดือน","Year":"ปี","Expense Breakdown":"รายการค่าใช้จ่าย","Income vs Expenses":"รายได้ ต่อ ค่าใช้จ่าย","Notification Settings":"การตั้งค่าการแจ้งเตือน","Budget Alerts":"แจ้งเตือนงบประมาณ","Get notified when approaching budget limits":"ได้รับการแจ้งเตือนเมื่อเข้าชมจำนวนเงินที่กำหนด","Daily Expense Summary":"สรุปค่าใช้จ่ายประจำวัน","Receive daily summary of your expenses":"รับสรุปค่าใช้จ่ายประจำวันของคุณ","Budget Threshold":"ขีดจำกัดงบประมาณ","Alert me when I've spent":"แจ้งเตือนฉันเมื่อฉันใช้จ่าย","% of my budget":"% ของงบประมาณของฉัน","Data Management":"การจัดการข้อมูล","Export Data":"ส่งออกข้อมูล","Download your budget and expense data":"ดาวน์โหลดงบประมาณและข้อมูลค่าใช้จ่ายของคุณ","Export":"ส่งออก","Clear All Data":"ล้างข้อมูลทั้งหมด","Remove all your budget and expense data":"ลบข้อมูลงบประมาณและค่าใช้จ่ายทั้งหมดของคุณ","Clear Data":"ล้างข้อมูล","Enter your monthly income":"ใส่รายได้ประจำเดือนของคุณ","e.g., Groceries, Rent, Entertainment":"e.g., อุปกรณ์บริโภค, ค่าเช่า, การสนุกสนาน","Enter budget for this category":"ใส่งบประมาณสำหรับประเภทนี้","Enter expense amount":"ใส่จำนวนค่าใช้จ่าย","Brief description of the expense":"คำอธิบายสั้นๆ ของค่าใช้จ่าย","Unknown Category":"ประเภทที่ไม่ทราบ","Monthly income updated successfully":"การปรับปรุงรายได้รายเดือนสำเร็จ","Please enter a valid income amount":"กรุณาใส่จำนวนรายได้ที่ถูกต้อง","Category added successfully":"ประเภทถูกเพิ่มสำเร็จ","Please enter valid category name and budget":"กรุณาใส่ชื่อประเภทและงบประมาณที่ถูกต้อง","Expense added successfully":"ค่าใช้จ่ายถูกเพิ่มสำเร็จ","Please fill all fields with valid data":"กรุณากรอกข้อมูลทั้งหมดด้วยข้อมูลที่ถูกต้อง","Data exported successfully":"ข้อมูลส่งออกสำเร็จ","Are you sure you want to clear all your budget and expense data? This action cannot be undone.":"คุณแน่ใจหรือไม่ว่าต้องการล้างทั้งหมดข้อมูลงบประมาณและค่าใช้จ่าย? การกระทำนี้ไม่สามารถยกเลิกได้.","All data cleared successfully":"ข้อมูลทั้งหมดถูกล้างสำเร็จ","Chart container not found":"ไม่พบตัวจัดเก็บกราฟ","Unknown":"ไม่ทราบ","No expense data to display":"ไม่มีข้อมูลค่าใช้จ่ายที่จะแสดง","Error drawing expense chart:":"ข้อผิดพลาดในการวาดกราฟค่าใช้จ่าย:","No data to display":"ไม่มีข้อมูลที่จะแสดง","Income":"รายได้","Expenses":"ค่าใช้จ่าย","Error drawing income vs expenses chart:":"ข้อผิดพลาดในการวาดกราฟรายได้ ต่อ ค่าใช้จ่าย:","__title__":"Open Budget Assistant","完全免费":"...","提意见":"...","UTF-8":"...","Free online tool: Open Budget Assistant. No signup, no payment — free forever.":"...","og:title":"...","og:description":"...","og:type":"...","og:url":"...","Segoe UI":"...","LA_COLLECT":"...","section active":"...","amount income":"...","amount expense":"จำนวนค่าใช้จ่าย","amount balance":"จำนวนเงินเค้น","tab active":"แท็บใช้งาน","You":"คุณ","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Open Budget Assistant":"เปิดแอปพลิเคชันเจ้าหน้าที่งบประมาณ","Dashboard":"หน้าแสดงรายงาน","Budget Planning":"แผนงบประมาณ","Expense Tracking":"ติดตามค่าใช้จ่าย","Data Visualization":"การแสดงทางกราฟ","Settings":"ตั้งค่า","Budget Overview":"ภาพรวมงบประมาณ","Getting Started Guide":"มือวางแนะเริ่มต้น"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free VR Game Budget Tracker</title>
+    <meta name="description" content="Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.">
+    <meta property="og:title" content="Free VR Game Budget Tracker">
+    <meta property="og:description" content="Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-04_220242_VR游戏预算追踪器.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+            --accent: #6200ee;
+            --accent-hover: #7c4dff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
+        .free-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--accent);
+        }
+
+        .section {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--bg-tertiary);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            transition: width 0.3s;
+        }
+
+        .transaction-list {
+            margin-top: 20px;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+        }
+
+        .income {
+            color: var(--success);
+        }
+
+        .expense {
+            color: var(--danger);
+        }
+
+        .report-section {
+            margin-top: 20px;
+        }
+
+        .chart-container {
+            height: 300px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 250px;
+            gap: 10px;
+            padding: 0 10px;
+        }
+
+        .bar {
+            flex: 1;
+            background-color: var(--accent);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-primary);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 12px 24px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            display: block;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, 20px); }
+            to { opacity: 1; transform: translate(-50%, 0); }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translate(-50%, 0); }
+            to { opacity: 0; transform: translate(-50%, 20px); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background-color: var(--bg-tertiary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .highlight-box {
+            background-color: var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .highlight-text {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .storage-warning {
+            background-color: var(--warning);
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .welcome-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeOut 1s forwards 2s;
+        }
+
+        .welcome-content {
+            text-align: center;
+            color: white;
+        }
+
+        .welcome-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .bar-chart {
+                height: 200px;
+            }
+        }
+    </style>
+    <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script>
+</head>
+<body>
+    <!-- Welcome Animation -->
+    <div class="welcome-animation" id="welcome-animation">
+        <div class="welcome-content">
+            <div class="welcome-icon">🎮</div>
+            <h2>Welcome to VR Game Budget Tracker</h2>
+            <p>Your complete solution for managing VR game development finances</p>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>VR Game Budget Tracker <span class="free-badge">Free</span></h1>
+                <nav class="nav" id="main-nav">
+                    <div class="nav-item active" data-section="overview">Overview</div>
+                    <div class="nav-item" data-section="budget-breakdown">Budget Breakdown</div>
+                    <div class="nav-item" data-section="cost-monitoring">Cost Monitoring</div>
+                    <div class="nav-item" data-section="income-management">Income Management</div>
+                    <div class="nav-item" data-section="reports">Reports</div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Storage Warning -->
+        <div class="storage-warning" id="storage-warning">
+            Your data is approaching storage capacity. Please export or delete some data to continue using the app.
+        </div>
+
+        <!-- Overview Section -->
+        <section id="overview" class="section active">
+            <div class="highlight-box">
+                <p class="highlight-text">No registration required, completely free to use forever</p>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Budget Overview</h2>
+                </div>
+                <div class="form-group">
+                    <label for="total-budget">Total Budget ($)</label>
+                    <input type="number" id="total-budget" placeholder="Enter your total budget">
+                </div>
+                <button id="set-budget-btn">Set Budget</button>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-value" id="total-budget-display">$0</div>
+                    <div class="summary-label">Total Budget</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="total-expenses-display">$0</div>
+                    <div class="summary-label">Total Expenses</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="total-income-display">$0</div>
+                    <div class="summary-label">Total Income</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-value" id="remaining-budget-display">$0</div>
+                    <div class="summary-label">Remaining Budget</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Transactions</h3>
+                </div>
+                <div id="recent-transactions">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">No transactions yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Breakdown Section -->
+        <section id="budget-breakdown" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Budget Breakdown by Development Stage</h2>
+                </div>
+                <div class="form-group">
+                    <label for="development-stage">Development Stage</label>
+                    <select id="development-stage">
+                        <option value="">Select a stage</option>
+                        <option value="pre-production">Pre-production</option>
+                        <option value="production">Production</option>
+                        <option value="post-production">Post-production</option>
+                        <option value="marketing">Marketing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="stage-percentage">Stage Budget Percentage (%)</label>
+                    <input type="number" id="stage-percentage" min="0" max="100" placeholder="Enter percentage (0-100)">
+                </div>
+                <button id="calculate-stage-budget-btn">Calculate Stage Budget</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Stage Budget Distribution</h3>
+                </div>
+                <div class="chart-container">
+                    <div class="bar-chart" id="stage-budget-chart">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Stage Budget Details</h3>
+                </div>
+                <div id="stage-budget-details">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">Select a development stage to see details</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cost Monitoring Section -->
+        <section id="cost-monitoring" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Add Expense</h2>
+                </div>
+                <div class="form-group">
+                    <label for="expense-category">Category</label>
+                    <select id="expense-category">
+                        <option value="">Select a category</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="software">Software</option>
+                        <option value="personnel">Personnel</option>
+                        <option value="marketing">Marketing</option>
+                        <option value="testing">Testing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="expense-description">Description</label>
+                    <input type="text" id="expense-description" placeholder="Brief description of the expense">
+                </div>
+                <div class="form-group">
+                    <label for="expense-amount">Amount ($)</label>
+                    <input type="number" id="expense-amount" placeholder="Enter amount">
+                </div>
+                <button id="add-expense-btn">Add Expense</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Cost by Category</h3>
+                </div>
+                <div class="chart-container">
+                    <div class="bar-chart" id="cost-category-chart">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Expense History</h3>
+                </div>
+                <div id="expense-list">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">No expenses recorded yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Income Management Section -->
+        <section id="income-management" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Add Income Source</h2>
+                </div>
+                <div class="form-group">
+                    <label for="income-source">Income Source</label>
+                    <select id="income-source">
+                        <option value="">Select a source</option>
+                        <option value="sales">Game Sales</option>
+                        <option value="investments">Investments</option>
+                        <option value="funding">Funding</option>
+                        <option value="sponsorship">Sponsorship</option>
+                        <option value="licensing">Licensing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="income-description">Description</label>
+                    <input type="text" id="income-description" placeholder="Brief description of the income">
+                </div>
+                <div class="form-group">
+                    <label for="income-amount">Amount ($)</label>
+                    <input type="number" id="income-amount" placeholder="Enter amount">
+                </div>
+                <button id="add-income-btn">Add Income</button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Income by Source</h3>
+                </div>
+                <div class="chart-container">
+                    <div class="bar-chart" id="income-source-chart">
+                        <!-- Chart will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Income History</h3>
+                </div>
+                <div id="income-list">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">No income recorded yet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports Section -->
+        <section id="reports" class="section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Generate Budget Report</h2>
+                </div>
+                <div class="form-group">
+                    <label for="report-period">Time Period</label>
+                    <select id="report-period">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </div>
+                <button id="generate-report-btn">Generate Report</button>
+            </div>
+
+            <div class="card report-section">
+                <div class="card-header">
+                    <h3 class="card-title">Budget Summary</h3>
+                </div>
+                <div id="budget-summary">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">Generate a report to see summary</p>
+                </div>
+            </div>
+
+            <div class="card report-section">
+                <div class="card-header">
+                    <h3 class="card-title">Expense Analysis</h3>
+                </div>
+                <div id="expense-analysis">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">Generate a report to see analysis</p>
+                </div>
+            </div>
+
+            <div class="card report-section">
+                <div class="card-header">
+                    <h3 class="card-title">Income Forecast</h3>
+                </div>
+                <div id="income-forecast">
+                    <p style="color: var(--text-secondary); text-align: center; padding: 20px;">Generate a report to see forecast</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Data storage
+        let budgetData = {
+            totalBudget: 0,
+            expenses: [],
+            income: [],
+            stageBudgets: {
+                'pre-production': 0,
+                'production': 0,
+                'post-production': 0,
+                'marketing': 0
+            },
+            categoryBudgets: {
+                'hardware': 0,
+                'software': 0,
+                'personnel': 0,
+                'marketing': 0,
+                'testing': 0
+            }
+        };
+
+        // Load data from localStorage
+        function loadData() {
+            try {
+                const savedData = localStorage.getItem('vrBudgetTrackerData');
+                if (savedData) {
+                    budgetData = JSON.parse(savedData);
+                    updateUI();
+                }
+            } catch (e) {
+                showToast('Failed to load data. Starting with fresh data.');
+                budgetData = {
+                    totalBudget: 0,
+                    expenses: [],
+                    income: [],
+                    stageBudgets: {
+                        'pre-production': 0,
+                        'production': 0,
+                        'post-production': 0,
+                        'marketing': 0
+                    },
+                    categoryBudgets: {
+                        'hardware': 0,
+                        'software': 0,
+                        'personnel': 0,
+                        'marketing': 0,
+                        'testing': 0
+                    }
+                };
+            }
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            try {
+                // Check if we're approaching localStorage limit
+                const dataStr = JSON.stringify(budgetData);
+                const sizeInBytes = new Blob([dataStr]).size;
+                const localStorageLimit = 5 * 1024 * 1024; // 5MB limit for most browsers
+                
+                if (sizeInBytes > localStorageLimit * 0.9) {
+                    // Show warning if we're using more than 90% of storage
+                    document.getElementById('storage-warning').style.display = 'block';
+                } else {
+                    document.getElementById('storage-warning').style.display = 'none';
+                }
+                
+                localStorage.setItem('vrBudgetTrackerData', dataStr);
+            } catch (e) {
+                showToast('Failed to save data. Storage might be full. Please delete some data.');
+            }
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Navigation using individual event listeners
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const targetSection = this.getAttribute('data-section');
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(nav => {
+                    nav.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Update active section
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(targetSection).classList.add('active');
+            });
+        });
+
+        // Set total budget
+        document.getElementById('set-budget-btn').addEventListener('click', function() {
+            const totalBudgetInput = document.getElementById('total-budget');
+            const totalBudget = parseFloat(totalBudgetInput.value);
+            
+            if (isNaN(totalBudget) || totalBudget <= 0) {
+                showToast('Please enter a valid budget amount');
+                return;
+            }
+            
+            budgetData.totalBudget = totalBudget;
+            saveData();
+            updateUI();
+            showToast('Budget set successfully');
+        });
+
+        // Calculate stage budget
+        document.getElementById('calculate-stage-budget-btn').addEventListener('click', function() {
+            const stageSelect = document.getElementById('development-stage');
+            const selectedStage = stageSelect.value;
+            const percentageInput = document.getElementById('stage-percentage');
+            const stagePercentage = parseFloat(percentageInput.value) / 100;
+            
+            if (!selectedStage) {
+                showToast('Please select a development stage');
+                return;
+            }
+            
+            if (isNaN(stagePercentage) || stagePercentage < 0 || stagePercentage > 1) {
+                showToast('Please enter a valid percentage (0-100)');
+                return;
+            }
+            
+            // Update the stage budget percentage
+            budgetData.stageBudgets[selectedStage] = stagePercentage;
+            
+            // Calculate the actual budget amount
+            const stageBudget = budgetData.totalBudget * stagePercentage;
+            
+            // Update stage budget details
+            const stageDetailsHtml = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">${selectedStage.charAt(0).toUpperCase() + selectedStage.slice(1).replace('-', ' ')}</div>
+                        <div class="stat-label">Development Stage</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${(stagePercentage * 100).toFixed(0)}%</div>
+                        <div class="stat-label">Percentage of Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${stageBudget.toFixed(2)}</div>
+                        <div class="stat-label">Allocated Budget</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(stagePercentage * 100)}%"></div>
+                </div>
+            `;
+            
+            document.getElementById('stage-budget-details').innerHTML = stageDetailsHtml;
+            
+            // Update stage budget chart
+            updateStageBudgetChart();
+            showToast('Stage budget calculated successfully');
+        });
+
+        // Add expense
+        document.getElementById('add-expense-btn').addEventListener('click', function() {
+            const category = document.getElementById('expense-category').value;
+            const description = document.getElementById('expense-description').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            
+            if (!category) {
+                showToast('Please select a category');
+                return;
+            }
+            
+            if (!description) {
+                showToast('Please enter a description');
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                showToast('Please enter a valid amount');
+                return;
+            }
+            
+            const expense = {
+                id: Date.now(),
+                category,
+                description,
+                amount,
+                date: new Date().toISOString()
+            };
+            
+            budgetData.expenses.push(expense);
+            saveData();
+            updateUI();
+            
+            // Reset form
+            document.getElementById('expense-category').value = '';
+            document.getElementById('expense-description').value = '';
+            document.getElementById('expense-amount').value = '';
+            
+            showToast('Expense added successfully');
+        });
+
+        // Add income
+        document.getElementById('add-income-btn').addEventListener('click', function() {
+            const source = document.getElementById('income-source').value;
+            const description = document.getElementById('income-description').value;
+            const amount = parseFloat(document.getElementById('income-amount').value);
+            
+            if (!source) {
+                showToast('Please select a source');
+                return;
+            }
+            
+            if (!description) {
+                showToast('Please enter a description');
+                return;
+            }
+            
+            if (isNaN(amount) || amount <= 0) {
+                showToast('Please enter a valid amount');
+                return;
+            }
+            
+            const income = {
+                id: Date.now(),
+                source,
+                description,
+                amount,
+                date: new Date().toISOString()
+            };
+            
+            budgetData.income.push(income);
+            saveData();
+            updateUI();
+            
+            // Reset form
+            document.getElementById('income-source').value = '';
+            document.getElementById('income-description').value = '';
+            document.getElementById('income-amount').value = '';
+            
+            showToast('Income added successfully');
+        });
+
+        // Generate report
+        document.getElementById('generate-report-btn').addEventListener('click', function() {
+            const period = document.getElementById('report-period').value;
+            
+            // Calculate totals
+            const totalExpenses = budgetData.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            const totalIncome = budgetData.income.reduce((sum, income) => sum + income.amount, 0);
+            const remainingBudget = budgetData.totalBudget - totalExpenses + totalIncome;
+            
+            // Calculate expense by category
+            const expensesByCategory = {};
+            budgetData.expenses.forEach(expense => {
+                if (!expensesByCategory[expense.category]) {
+                    expensesByCategory[expense.category] = 0;
+                }
+                expensesByCategory[expense.category] += expense.amount;
+            });
+            
+            // Calculate income by source
+            const incomeBySource = {};
+            budgetData.income.forEach(income => {
+                if (!incomeBySource[income.source]) {
+                    incomeBySource[income.source] = 0;
+                }
+                incomeBySource[income.source] += income.amount;
+            });
+            
+            // Update budget summary
+            const budgetSummaryHtml = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">$${budgetData.totalBudget.toFixed(2)}</div>
+                        <div class="stat-label">Total Budget</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${totalExpenses.toFixed(2)}</div>
+                        <div class="stat-label">Total Expenses</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">$${totalIncome.toFixed(2)}</div>
+                        <div class="stat-label">Total Income</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value ${remainingBudget < 0 ? 'expense' : 'income'}">$${remainingBudget.toFixed(2)}</div>
+                        <div class="stat-label">Remaining Budget</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('budget-summary').innerHTML = budgetSummaryHtml;
+            
+            // Update expense analysis
+            let expenseAnalysisHtml = '<h4>Expenses by Category</h4>';
+            for (const category in expensesByCategory) {
+                const percentage = totalExpenses > 0 ? (expensesByCategory[category] / totalExpenses * 100).toFixed(1) : 0;
+                expenseAnalysisHtml += `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                        </div>
+                        <div class="transaction-amount expense">$${expensesByCategory[category].toFixed(2)} (${percentage}%)</div>
+                    </div>
+                `;
+            }
+            document.getElementById('expense-analysis').innerHTML = expenseAnalysisHtml;
+            
+            // Update income forecast
+            let incomeForecastHtml = '<h4>Income by Source</h4>';
+            for (const source in incomeBySource) {
+                const percentage = totalIncome > 0 ? (incomeBySource[source] / totalIncome * 100).toFixed(1) : 0;
+                incomeForecastHtml += `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>${source.charAt(0).toUpperCase() + source.slice(1)}</div>
+                        </div>
+                        <div class="transaction-amount income">$${incomeBySource[source].toFixed(2)} (${percentage}%)</div>
+                    </div>
+                `;
+            }
+            document.getElementById('income-forecast').innerHTML = incomeForecastHtml;
+            
+            // Update charts
+            updateCostCategoryChart();
+            updateIncomeSourceChart();
+            
+            showToast('Report generated successfully');
+        });
+
+        // Update UI
+        function updateUI() {
+            // Update overview
+            document.getElementById('total-budget-display').textContent = `$${budgetData.totalBudget.toFixed(2)}`;
+            
+            const totalExpenses = budgetData.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+            document.getElementById('total-expenses-display').textContent = `$${totalExpenses.toFixed(2)}`;
+            
+            const totalIncome = budgetData.income.reduce((sum, income) => sum + income.amount, 0);
+            document.getElementById('total-income-display').textContent = `$${totalIncome.toFixed(2)}`;
+            
+            const remainingBudget = budgetData.totalBudget - totalExpenses + totalIncome;
+            document.getElementById('remaining-budget-display').textContent = `$${remainingBudget.toFixed(2)}`;
+            document.getElementById('remaining-budget-display').className = `summary-value ${remainingBudget < 0 ? 'expense' : ''}`;
+            
+            // Update recent transactions
+            updateRecentTransactions();
+            
+            // Update expense list
+            updateExpenseList();
+            
+            // Update income list
+            updateIncomeList();
+            
+            // Update charts
+            updateStageBudgetChart();
+            updateCostCategoryChart();
+            updateIncomeSourceChart();
+        }
+
+        // Update recent transactions
+        function updateRecentTransactions() {
+            const allTransactions = [
+                ...budgetData.expenses.map(e => ({...e, type: 'expense'})),
+                ...budgetData.income.map(i => ({...i, type: 'income'}))
+            ].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 5);
+            
+            if (allTransactions.length === 0) {
+                document.getElementById('recent-transactions').innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No transactions yet</p>';
+                return;
+            }
+            
+            let html = '';
+            allTransactions.forEach(transaction => {
+                const date = new Date(transaction.date).toLocaleDateString();
+                html += `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>${transaction.description}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${date}</div>
+                        </div>
+                        <div class="transaction-amount ${transaction.type}">$${transaction.amount.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('recent-transactions').innerHTML = html;
+        }
+
+        // Update expense list
+        function updateExpenseList() {
+            if (budgetData.expenses.length === 0) {
+                document.getElementById('expense-list').innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No expenses recorded yet</p>';
+                return;
+            }
+            
+            let html = '';
+            budgetData.expenses.forEach(expense => {
+                const date = new Date(expense.date).toLocaleDateString();
+                html += `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>${expense.description}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${date} • ${expense.category}</div>
+                        </div>
+                        <div class="transaction-amount expense">$${expense.amount.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('expense-list').innerHTML = html;
+        }
+
+        // Update income list
+        function updateIncomeList() {
+            if (budgetData.income.length === 0) {
+                document.getElementById('income-list').innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No income recorded yet</p>';
+                return;
+            }
+            
+            let html = '';
+            budgetData.income.forEach(income => {
+                const date = new Date(income.date).toLocaleDateString();
+                html += `
+                    <div class="transaction-item">
+                        <div class="transaction-info">
+                            <div>${income.description}</div>
+                            <div style="font-size: 12px; color: var(--text-secondary);">${date} • ${income.source}</div>
+                        </div>
+                        <div class="transaction-amount income">$${income.amount.toFixed(2)}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('income-list').innerHTML = html;
+        }
+
+        // Update stage budget chart
+        function updateStageBudgetChart() {
+            const chartContainer = document.getElementById('stage-budget-chart');
+            
+            if (!chartContainer) {
+                showToast('Chart container not found');
+                return;
+            }
+            
+            let html = '';
+            
+            // Calculate total percentage allocated
+            let totalPercentage = 0;
+            for (const stage in budgetData.stageBudgets) {
+                totalPercentage += budgetData.stageBudgets[stage];
+            }
+            
+            for (const stage in budgetData.stageBudgets) {
+                const percentage = budgetData.stageBudgets[stage];
+                const height = percentage > 0 ? Math.min(percentage * 200, 250) : 0;
+                html += `
+                    <div class="bar" style="height: ${height}px;">
+                        <div class="bar-value">${percentage > 0 ? (percentage * 100).toFixed(0) + '%' : ''}</div>
+                        <div class="bar-label">${stage.replace('-', ' ')}</div>
+                    </div>
+                `;
+            }
+            
+            chartContainer.innerHTML = html;
+        }
+
+        // Update cost category chart
+        function updateCostCategoryChart() {
+            const chartContainer = document.getElementById('cost-category-chart');
+            
+            if (!chartContainer) {
+                showToast('Chart container not found');
+                return;
+            }
+            
+            let html = '';
+            
+            // Calculate total expenses by category
+            const expensesByCategory = {};
+            budgetData.expenses.forEach(expense => {
+                if (!expensesByCategory[expense.category]) {
+                    expensesByCategory[expense.category] = 0;
+                }
+                expensesByCategory[expense.category] += expense.amount;
+            });
+            
+            const totalExpenses = Object.values(expensesByCategory).reduce((sum, amount) => sum + amount, 0);
+            
+            // Check if there are any expenses
+            if (totalExpenses === 0) {
+                chartContainer.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No expenses recorded yet</p>';
+                return;
+            }
+            
+            for (const category in expensesByCategory) {
+                const amount = expensesByCategory[category];
+                const height = totalExpenses > 0 ? Math.min((amount / totalExpenses) * 250, 250) : 0;
+                html += `
+                    <div class="bar" style="height: ${height}px;">
+                        <div class="bar-value">$${amount.toFixed(0)}</div>
+                        <div class="bar-label">${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                    </div>
+                `;
+            }
+            
+            chartContainer.innerHTML = html;
+        }
+
+        // Update income source chart
+        function updateIncomeSourceChart() {
+            const chartContainer = document.getElementById('income-source-chart');
+            
+            if (!chartContainer) {
+                showToast('Chart container not found');
+                return;
+            }
+            
+            let html = '';
+            
+            // Calculate total income by source
+            const incomeBySource = {};
+            budgetData.income.forEach(income => {
+                if (!incomeBySource[income.source]) {
+                    incomeBySource[income.source] = 0;
+                }
+                incomeBySource[income.source] += income.amount;
+            });
+            
+            const totalIncome = Object.values(incomeBySource).reduce((sum, amount) => sum + amount, 0);
+            
+            // Check if there are any incomes
+            if (totalIncome === 0) {
+                chartContainer.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 20px;">No income recorded yet</p>';
+                return;
+            }
+            
+            for (const source in incomeBySource) {
+                const amount = incomeBySource[source];
+                const height = totalIncome > 0 ? Math.min((amount / totalIncome) * 250, 250) : 0;
+                html += `
+                    <div class="bar" style="height: ${height}px;">
+                        <div class="bar-value">$${amount.toFixed(0)}</div>
+                        <div class="bar-label">${source.charAt(0).toUpperCase() + source.slice(1)}</div>
+                    </div>
+                `;
+            }
+            
+            chartContainer.innerHTML = html;
+        }
+
+        // Initialize app
+        loadData();
+        updateUI();
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Free VR Game Budget Tracker":"Free VR Game Budget Tracker","Welcome to VR Game Budget Tracker":"Welcome to VR Game Budget Tracker","Your complete solution for managing VR game development finances":"Your complete solution for managing VR game development finances","VR Game Budget Tracker":"VR Game Budget Tracker","Free":"Free","Overview":"Overview","Budget Breakdown":"Budget Breakdown","Cost Monitoring":"Cost Monitoring","Income Management":"Income Management","Reports":"Reports","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Your data is approaching storage capacity. Please export or delete some data to continue using the app.","No registration required, completely free to use forever":"No registration required, completely free to use forever","Budget Overview":"Budget Overview","Total Budget ($)":"Total Budget ($)","Set Budget":"Set Budget","Total Budget":"Total Budget","Total Expenses":"Total Expenses","Total Income":"Total Income","Remaining Budget":"Remaining Budget","Recent Transactions":"Recent Transactions","No transactions yet":"No transactions yet","Budget Breakdown by Development Stage":"Budget Breakdown by Development Stage","Development Stage":"Development Stage","Select a stage":"Select a stage","Pre-production":"Pre-production","Production":"Production","Post-production":"Post-production","Marketing":"Marketing","Stage Budget Percentage (%)":"Stage Budget Percentage (%)","Calculate Stage Budget":"Calculate Stage Budget","Stage Budget Distribution":"Stage Budget Distribution","Stage Budget Details":"Stage Budget Details","Select a development stage to see details":"Select a development stage to see details","Add Expense":"Add Expense","Category":"Category","Select a category":"Select a category","Hardware":"Hardware","Software":"Software","Personnel":"Personnel","Testing":"Testing","Other":"Other","Description":"Description","Amount ($)":"Amount ($)","Cost by Category":"Cost by Category","Expense History":"Expense History","No expenses recorded yet":"No expenses recorded yet","Add Income Source":"Add Income Source","Income Source":"Income Source","Select a source":"Select a source","Game Sales":"Game Sales","Investments":"Investments","Funding":"Funding","Sponsorship":"Sponsorship","Licensing":"Licensing","Add Income":"Add Income","Income by Source":"Income by Source","Income History":"Income History","No income recorded yet":"No income recorded yet","Generate Budget Report":"Generate Budget Report","Time Period":"Time Period","Daily":"Daily","Weekly":"Weekly","Monthly":"Monthly","Quarterly":"Quarterly","Yearly":"Yearly","Generate Report":"Generate Report","Budget Summary":"Budget Summary","Generate a report to see summary":"Generate a report to see summary","Expense Analysis":"Expense Analysis","Generate a report to see analysis":"Generate a report to see analysis","Income Forecast":"Income Forecast","Generate a report to see forecast":"Generate a report to see forecast","Percentage of Total":"Percentage of Total","Allocated Budget":"Allocated Budget","remainingBudget":"remainingBudget","Enter your total budget":"Enter your total budget","Enter percentage (0-100)":"Enter percentage (0-100)","Brief description of the expense":"Brief description of the expense","Enter amount":"Enter amount","Brief description of the income":"Brief description of the income","Failed to load data. Starting with fresh data.":"Failed to load data. Starting with fresh data.","Failed to save data. Storage might be full. Please delete some data.":"Failed to save data. Storage might be full. Please delete some data.","Please enter a valid budget amount":"Please enter a valid budget amount","Budget set successfully":"Budget set successfully","Please select a development stage":"Please select a development stage","Stage budget calculated successfully":"Stage budget calculated successfully","Please select a category":"Please select a category","Please enter a description":"Please enter a description","Please enter a valid amount":"Please enter a valid amount","Expense added successfully":"Expense added successfully","Please select a source":"Please select a source","Income added successfully":"Income added successfully","transaction-amount expense":"transaction-amount expense","transaction-amount income":"transaction-amount income","Report generated successfully":"Report generated successfully","Chart container not found":"Chart container not found","__title__":"Free VR Game Budget Tracker","Expenses by Category":"Expenses by Category","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Please enter a valid percentage (0-100)":"Please enter a valid percentage (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Free VR Game Budget Tracker":"免费VR游戏预算跟踪器","Welcome to VR Game Budget Tracker":"欢迎来到VR游戏预算跟踪器","Your complete solution for managing VR game development finances":"您管理VR游戏开发财务的完整解决方案","VR Game Budget Tracker":"VR游戏预算跟踪器","Free":"免费","Overview":"概览","Budget Breakdown":"预算分解","Cost Monitoring":"成本监控","Income Management":"收入管理","Reports":"报告","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"您的数据接近存储容量。请导出或删除一些数据以继续使用应用程序。","No registration required, completely free to use forever":"无需注册，永久免费使用","Budget Overview":"预算概览","Total Budget ($)":"总预算（美元）","Set Budget":"设置预算","Total Budget":"总预算","Total Expenses":"总支出","Total Income":"总收入","Remaining Budget":"剩余预算","Recent Transactions":"最近交易","No transactions yet":"尚未有交易","Budget Breakdown by Development Stage":"按开发阶段分解的预算","Development Stage":"开发阶段","Select a stage":"选择一个阶段","Pre-production":"预生产","Production":"生产","Post-production":"后期制作","Marketing":"营销","Stage Budget Percentage (%)":"阶段预算百分比（%）","Calculate Stage Budget":"计算阶段预算","Stage Budget Distribution":"阶段预算分配","Stage Budget Details":"阶段预算详情","Select a development stage to see details":"选择一个开发阶段以查看详情","Add Expense":"添加支出","Category":"类别","Select a category":"选择一个类别","Hardware":"硬件","Software":"软件","Personnel":"人员","Testing":"测试","Other":"其他","Description":"描述","Amount ($)":"金额（美元）","Cost by Category":"按类别计算的成本","Expense History":"支出历史","No expenses recorded yet":"尚未记录支出","Add Income Source":"添加收入来源","Income Source":"收入来源","Select a source":"选择一个来源","Game Sales":"游戏销售","Investments":"投资","Funding":"资金","Sponsorship":"赞助","Licensing":"许可","Add Income":"添加收入","Income by Source":"按来源的收入","Income History":"收入历史","No income recorded yet":"尚未记录收入","Generate Budget Report":"生成预算报告","Time Period":"时间周期","Daily":"每日","Weekly":"每周","Monthly":"每月","Quarterly":"每季度","Yearly":"每年","Generate Report":"生成报告","Budget Summary":"预算概要","Generate a report to see summary":"生成报告查看概要","Expense Analysis":"费用分析","Generate a report to see analysis":"生成报告查看分析","Income Forecast":"收入预测","Generate a report to see forecast":"生成报告查看预测","Percentage of Total":"总百分比","Allocated Budget":"分配预算","remainingBudget":"剩余预算","Enter your total budget":"输入您的总预算","Enter percentage (0-100)":"输入百分比（0-100）","Brief description of the expense":"费用简要描述","Enter amount":"输入金额","Brief description of the income":"收入简要描述","Failed to load data. Starting with fresh data.":"数据加载失败。从新数据开始。","Failed to save data. Storage might be full. Please delete some data.":"数据保存失败。存储可能已满。请删除一些数据。","Please enter a valid budget amount":"请输入有效的预算金额","Budget set successfully":"预算设置成功","Please select a development stage":"请选择一个开发阶段","Stage budget calculated successfully":"阶段预算计算成功","Please select a category":"请选择一个类别","Please enter a description":"请输入描述","Please enter a valid amount":"请输入有效的金额","Expense added successfully":"费用添加成功","Please select a source":"请选择一个来源","Income added successfully":"收入添加成功","transaction-amount expense":"交易金额 - 费用","transaction-amount income":"交易金额 - 收入","Report generated successfully":"报告生成成功","Chart container not found":"找不到图表容器","__title__":"免费VR游戏预算跟踪器","Expenses by Category":"按类别查看费用","完全免费":"完全免费","提意见":"提出意见","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"免费在线工具：VR游戏预算追踪器。无需注册，无需付费 — 永久免费。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"当前区域","Please enter a valid percentage (0-100)":"请输入有效的百分比（0-100）","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"es":{"Free VR Game Budget Tracker":"Libre juego de realidad virtual rastreador de presupuesto","Welcome to VR Game Budget Tracker":"Bienvenido al rastreador de presupuesto de juegos de realidad virtual","Your complete solution for managing VR game development finances":"Tu solución completa para gestionar las finanzas del desarrollo de juegos de realidad virtual","VR Game Budget Tracker":"Rastreador de presupuesto de juegos de realidad virtual","Free":"Gratis","Overview":"Resumen","Budget Breakdown":"Desglose del presupuesto","Cost Monitoring":"Monitoreo de costos","Income Management":"Gestión de ingresos","Reports":"Informes","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Sus datos están alcanzando la capacidad de almacenamiento. Por favor, exporte o elimine algunos datos para continuar utilizando la aplicación.","No registration required, completely free to use forever":"No se requiere registro, completamente gratuito para usar para siempre","Budget Overview":"Resumen del presupuesto","Total Budget ($)":"Presupuesto Total ($)","Set Budget":"Establecer presupuesto","Total Budget":"Presupuesto total","Total Expenses":"Gastos totales","Total Income":"Ingresos totales","Remaining Budget":"Presupuesto restante","Recent Transactions":"Transacciones recientes","No transactions yet":"Aún sin transacciones","Budget Breakdown by Development Stage":"Desglose del presupuesto por etapa de desarrollo","Development Stage":"Etapa de desarrollo","Select a stage":"Seleccione una etapa","Pre-production":"Preproducción","Production":"Producción","Post-production":"Posproducción","Stage Budget Percentage (%)":"Porcentaje de presupuesto de etapa (%)","Calculate Stage Budget":"Calcular presupuesto de etapa","Stage Budget Distribution":"Distribución del presupuesto de etapa","Stage Budget Details":"Detalles del presupuesto de etapa","Select a development stage to see details":"Seleccione una etapa de desarrollo para ver detalles","Add Expense":"Agregar gasto","Category":"Categoría","Select a category":"Seleccione una categoría","Personnel":"Personal","Testing":"Pruebas","Other":"Otro","Description":"Descripción","Amount ($)":"Monto ($)","Cost by Category":"Costo por categoría","Expense History":"Historial de gastos","No expenses recorded yet":"Aún sin gastos registrados","Add Income Source":"Agregar fuente de ingresos","Income Source":"Fuente de ingresos","Select a source":"Seleccione una fuente","Game Sales":"Ventas de juegos","Investments":"Inversiones","Funding":"Financiamiento","Sponsorship":"Patrocinio","Licensing":"Licenciamiento","Add Income":"Agregar ingreso","Income by Source":"Ingresos por fuente","Income History":"Historial de ingresos","No income recorded yet":"Aún sin ingresos registrados","Generate Budget Report":"Generar informe de presupuesto","Time Period":"Período de tiempo","Daily":"Diario","Weekly":"Semanal","Monthly":"Mensual","Quarterly":"Trimestral","Yearly":"Anual","Generate Report":"Generar informe","Budget Summary":"Resumen del presupuesto","Generate a report to see summary":"Generar un informe para ver el resumen","Expense Analysis":"Análisis de gastos","Generate a report to see analysis":"Generar un informe para ver el análisis","Income Forecast":"Previsión de ingresos","Generate a report to see forecast":"Generar un informe para ver la previsión","Percentage of Total":"Porcentaje del total","Allocated Budget":"Presupuesto asignado","remainingBudget":"Presupuesto restante","Enter your total budget":"Ingrese su presupuesto total","Enter percentage (0-100)":"Ingrese el porcentaje (0-100)","Brief description of the expense":"Descripción breve del gasto","Enter amount":"Ingrese la cantidad","Brief description of the income":"Descripción breve de los ingresos","Failed to load data. Starting with fresh data.":"Error al cargar los datos. Comenzando con datos nuevos.","Failed to save data. Storage might be full. Please delete some data.":"Error al guardar los datos. Puede que el almacenamiento esté lleno. Por favor, elimine algunos datos.","Please enter a valid budget amount":"Por favor, ingrese una cantidad de presupuesto válida","Budget set successfully":"Presupuesto configurado con éxito","Please select a development stage":"Por favor, seleccione una etapa de desarrollo","Stage budget calculated successfully":"Presupuesto de etapa calculado con éxito","Please select a category":"Por favor, seleccione una categoría","Please enter a description":"Por favor, ingrese una descripción","Please enter a valid amount":"Por favor, ingrese una cantidad válida","Expense added successfully":"Gasto agregado con éxito","Please select a source":"Por favor, seleccione una fuente","Income added successfully":"Ingreso agregado con éxito","transaction-amount expense":"monto de transacción gasto","transaction-amount income":"monto de transacción ingreso","Report generated successfully":"Informe generado con éxito","Chart container not found":"No se encontró el contenedor de gráfico","__title__":"Libre juego de realidad virtual rastreador de presupuesto","Marketing":"Marketing","Hardware":"Hardware","Software":"Software","Expenses by Category":"Gastos por categoría","完全免费":"Totalmente gratuito","提意见":"Dar意见和建议","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Herramienta gratuita en línea: Seguimiento del presupuesto de juegos VR. Sin registro, sin pago — gratis para siempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"sección activa","Please enter a valid percentage (0-100)":"Por favor, introduzca un porcentaje válido (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ja":{"Free VR Game Budget Tracker":"無料VRゲーム予算トラッカー","Welcome to VR Game Budget Tracker":"VRゲーム予算トラッカーへようこそ","Your complete solution for managing VR game development finances":"VRゲーム開発の財務管理のための完全なソリューション","VR Game Budget Tracker":"VRゲーム予算トラッカー","Free":"無料","Overview":"概要","Budget Breakdown":"予算内訳","Cost Monitoring":"コスト監視","Income Management":"収入管理","Reports":"レポート","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"データのストレージ容量に近づいています。アプリの使用を続けるには、データをエクスポートまたは削除してください。","No registration required, completely free to use forever":"登録は必要ありません。永遠に無料で使用できます","Budget Overview":"予算概要","Total Budget ($)":"総予算（ドル）","Set Budget":"予算設定","Total Budget":"合計予算","Total Expenses":"合計支出","Total Income":"合計収入","Remaining Budget":"残高予算","Recent Transactions":"最近の取引","No transactions yet":"取引はまだありません","Budget Breakdown by Development Stage":"開発段階別予算内訳","Development Stage":"開発段階","Select a stage":"ステージを選択","Pre-production":"プレプロダクション","Production":"プロダクション","Post-production":"ポストプロダクション","Marketing":"マーケティング","Stage Budget Percentage (%)":"ステージ予算パーセンテージ (%)","Calculate Stage Budget":"ステージ予算計算","Stage Budget Distribution":"ステージ予算配分","Stage Budget Details":"ステージ予算詳細","Select a development stage to see details":"詳細を見るために開発ステージを選択","Add Expense":"支出を追加","Category":"カテゴリー","Select a category":"カテゴリーを選択","Hardware":"ハードウェア","Software":"ソフトウェア","Personnel":"人件費","Testing":"テスト","Other":"その他","Description":"説明","Amount ($)":"金額（ドル）","Cost by Category":"カテゴリー別コスト","Expense History":"支出履歴","No expenses recorded yet":"支出はまだ記録されていません","Add Income Source":"収入源を追加","Income Source":"収入源","Select a source":"源を選択","Game Sales":"ゲーム販売","Investments":"投資","Funding":"資金調達","Sponsorship":"スポンサーシップ","Licensing":"ライセンス","Add Income":"収入を追加","Income by Source":"源別収入","Income History":"収入履歴","No income recorded yet":"収入はまだ記録されていません","Generate Budget Report":"予算レポート生成","Time Period":"期間","Daily":"日次","Weekly":"週次","Monthly":"月次","Quarterly":"四半期","Yearly":"年次","Generate Report":"報告書生成","Budget Summary":"予算要約","Generate a report to see summary":"要約を確認するための報告書を生成","Expense Analysis":"支出分析","Generate a report to see analysis":"分析を確認するための報告書を生成","Income Forecast":"収入予測","Generate a report to see forecast":"予測を確認するための報告書を生成","Percentage of Total":"合計に対するパーセンテージ","Allocated Budget":"割り当て予算","remainingBudget":"残存予算","Enter your total budget":"全体予算を入力してください","Enter percentage (0-100)":"パーセンテージ（0-100）を入力してください","Brief description of the expense":"支出の簡単な説明","Enter amount":"金額を入力してください","Brief description of the income":"収入の簡単な説明","Failed to load data. Starting with fresh data.":"データの読み込みに失敗しました。新しいデータから始めます。","Failed to save data. Storage might be full. Please delete some data.":"データの保存に失敗しました。ストレージがフルである可能性があります。データをいくつか削除してください。","Please enter a valid budget amount":"有効な予算金額を入力してください","Budget set successfully":"予算設定が成功しました","Please select a development stage":"開発段階を選択してください","Stage budget calculated successfully":"段階予算が成功して計算されました","Please select a category":"カテゴリーを選択してください","Please enter a description":"説明を入力してください","Please enter a valid amount":"有効な金額を入力してください","Expense added successfully":"支出が成功して追加されました","Please select a source":"ソースを選択してください","Income added successfully":"収入が成功して追加されました","transaction-amount expense":"取引金額支出","transaction-amount income":"取引金額収入","Report generated successfully":"報告書が成功して生成されました","Chart container not found":"チャートコンテナが見つかりません","__title__":"無料VRゲーム予算トラッカー","Expenses by Category":"カテゴリ別の支出","完全免费":"完全無料","提意见":"意見を提出する","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"無料オンラインツール：VRゲーム予算トラッカ。登録不要、支払い不要—永遠に無料です。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"セクションアクティブ","Please enter a valid percentage (0-100)":"有効なパーセンテージを入力してください（0-100）","PingFang SC":"ピンファンSC","Microsoft YaHei":"マイクロソフト ヤヘイ"},"ko":{"Free VR Game Budget Tracker":"자유 VR 게임 예산 트래커","Welcome to VR Game Budget Tracker":"VR 게임 예산 트래커에 오신 것을 환영합니다","Your complete solution for managing VR game development finances":"VR 게임 개발 예산 관리를 위한 완벽한 솔루션","VR Game Budget Tracker":"VR 게임 예산 트래커","Free":"무료","Overview":"개요","Budget Breakdown":"예산 분해","Cost Monitoring":"비용 모니터링","Income Management":"수익 관리","Reports":"보고서","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"데이터 저장 공간이 가까워지고 있습니다. 앱 사용을 계속하기 위해 데이터를 내보내거나 일부 데이터를 삭제해 주세요.","No registration required, completely free to use forever":"등록이 필요 없으며 영구적으로 무료로 사용할 수 있습니다","Budget Overview":"예산 개요","Total Budget ($)":"총 예산 ($)","Set Budget":"예산 설정","Total Budget":"총 예산","Total Expenses":"총 지출","Total Income":"총 수익","Remaining Budget":"잔액 예산","Recent Transactions":"최근 거래","No transactions yet":"아직 거래가 없습니다","Budget Breakdown by Development Stage":"개발 단계별 예산 분해","Development Stage":"개발 단계","Select a stage":"단계 선택","Pre-production":"프리프로덕션","Production":"프로덕션","Post-production":"포스트프로덕션","Marketing":"마케팅","Stage Budget Percentage (%)":"단계 예산 비율 (%)","Calculate Stage Budget":"단계 예산 계산","Stage Budget Distribution":"스테이지 예산 배분","Stage Budget Details":"스테이지 예산 상세","Select a development stage to see details":"상세 정보를 보려면 개발 단계를 선택하세요","Add Expense":"지출 추가","Category":"카테고리","Select a category":"카테고리 선택","Hardware":"하드웨어","Software":"소프트웨어","Personnel":"인력","Testing":"테스트","Other":"기타","Description":"설명","Amount ($)":"금액 ($)","Cost by Category":"카테고리별 비용","Expense History":"지출 기록","No expenses recorded yet":"아직 지출이 기록되지 않았습니다","Add Income Source":"수익 원천 추가","Income Source":"수익 원천","Select a source":"원천 선택","Game Sales":"게임 판매","Investments":"투자","Funding":"자금","Sponsorship":"스폰서십","Licensing":"라이선싱","Add Income":"수익 추가","Income by Source":"원천별 수익","Income History":"수익 기록","No income recorded yet":"아직 수익이 기록되지 않았습니다","Generate Budget Report":"예산 보고서 생성","Time Period":"시간 기간","Daily":"일간","Weekly":"주간","Monthly":"월간","Quarterly":"분기간","Yearly":"연간","Generate Report":"보고서 생성","Budget Summary":"예산 요약","Generate a report to see summary":"요약을 보기 위해 보고서 생성","Expense Analysis":"지출 분석","Generate a report to see analysis":"분석을 보기 위해 보고서 생성","Income Forecast":"수익 예측","Generate a report to see forecast":"예측을 보기 위해 보고서 생성","Percentage of Total":"총액 비율","Allocated Budget":"할당 예산","remainingBudget":"잔액 예산","Enter your total budget":"총 예산을 입력하세요","Enter percentage (0-100)":"비율(0-100)을 입력하세요","Brief description of the expense":"지출의 간단 설명","Enter amount":"금액을 입력하세요","Brief description of the income":"수익의 간단 설명","Failed to load data. Starting with fresh data.":"데이터 로드에 실패했습니다. 새로운 데이터로 시작합니다.","Failed to save data. Storage might be full. Please delete some data.":"데이터 저장에 실패했습니다. 저장 공간이 가득 차 lehet. 일부 데이터를 지우세요.","Please enter a valid budget amount":"유효한 예산 금액을 입력하세요","Budget set successfully":"예산 설정 성공","Please select a development stage":"개발 단계를 선택하세요","Stage budget calculated successfully":"단계 예산 계산 성공","Please select a category":"카테고리를 선택하세요","Please enter a description":"설명을 입력하세요","Please enter a valid amount":"유효한 금액을 입력하세요","Expense added successfully":"지출 추가 성공","Please select a source":"출처를 선택하세요","Income added successfully":"수익 추가 성공","transaction-amount expense":"거래 금액 지출","transaction-amount income":"거래 금액 수익","Report generated successfully":"보고서 생성 성공","Chart container not found":"차트 컨테이너를 찾을 수 없습니다","__title__":"자유 VR 게임 예산 트래커","Expenses by Category":"카테고리별 지출","完全免费":"전적으로 무료","提意见":"의견 제시","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"무료 온라인 도구: VR 게임 예산 추적기. 회원가입 없음, 결제 없음 — 영원히 무료","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"섹션 활성","Please enter a valid percentage (0-100)":"유효한 백분율을 입력하세요(0-100) ","PingFang SC":"밍팡 SC ","Microsoft YaHei":"マイ크로소프트야허이"},"fr":{"Welcome to VR Game Budget Tracker":"Bienvenue dans VR Game Budget Tracker","Your complete solution for managing VR game development finances":"Votre solution complète pour la gestion des finances du développement de jeux VR","Free":"Gratuit","Overview":"Aperçu","Budget Breakdown":"Détail du budget","Cost Monitoring":"Surveillance des coûts","Income Management":"Gestion des revenus","Reports":"Rapports","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Vos données approchent de la capacité de stockage. Veuillez exporter ou supprimer certaines données pour continuer à utiliser l'application.","No registration required, completely free to use forever":"Aucune inscription requise, complètement gratuit à utiliser à jamais","Budget Overview":"Aperçu du budget","Total Budget ($)":"Budget total ($)","Set Budget":"Définir le budget","Total Budget":"Budget total","Total Expenses":"Dépenses totales","Total Income":"Revenus totaux","Remaining Budget":"Budget restant","Recent Transactions":"Transactions récentes","No transactions yet":"Aucune transaction encore","Budget Breakdown by Development Stage":"Détail du budget par étape de développement","Development Stage":"Étape de développement","Select a stage":"Sélectionnez une étape","Pre-production":"Pré-production","Stage Budget Percentage (%)":"Pourcentage du budget de l'étape (%)","Calculate Stage Budget":"Calculer le budget de l'étape","Stage Budget Distribution":"Distribution du budget de l'étape","Stage Budget Details":"Détails du budget de l'étape","Select a development stage to see details":"Sélectionnez une étape de développement pour voir les détails","Add Expense":"Ajouter une dépense","Category":"Catégorie","Select a category":"Sélectionnez une catégorie","Hardware":"Matériel","Software":"Logiciel","Testing":"Tests","Other":"Autre","Amount ($)":"Montant ($)","Cost by Category":"Coût par catégorie","Expense History":"Historique des dépenses","No expenses recorded yet":"Aucune dépense enregistrée encore","Add Income Source":"Ajouter une source de revenus","Income Source":"Source de revenus","Select a source":"Sélectionnez une source","Game Sales":"Ventes de jeu","Investments":"Investissements","Funding":"Financement","Sponsorship":"Parrainage","Licensing":"Licenciement","Add Income":"Ajouter un revenu","Income by Source":"Revenu par source","Income History":"Historique des revenus","No income recorded yet":"Aucun revenu enregistré encore","Generate Budget Report":"Générer un rapport de budget","Time Period":"Période","Daily":"Quotidien","Weekly":" Hebdomadaire","Monthly":" Mensuel","Quarterly":" Trimestriel","Yearly":" Annuel","Generate Report":"Générer un rapport","Budget Summary":"Résumé du budget","Generate a report to see summary":"Générer un rapport pour voir le résumé","Expense Analysis":"Analyse des dépenses","Generate a report to see analysis":"Générer un rapport pour voir l'analyse","Income Forecast":"Prévision des revenus","Generate a report to see forecast":"Générer un rapport pour voir la prévision","Percentage of Total":"Pourcentage du total","Allocated Budget":"Budget alloué","remainingBudget":"Budget restant","Enter your total budget":"Saisissez votre budget total","Enter percentage (0-100)":"Saisissez un pourcentage (0-100)","Brief description of the expense":"Brève description des dépenses","Enter amount":"Saisissez le montant","Brief description of the income":"Brève description des revenus","Failed to load data. Starting with fresh data.":"Échec du chargement des données. Début avec des données fraîches.","Failed to save data. Storage might be full. Please delete some data.":"Échec de l'enregistrement des données. L'espace de stockage pourrait être plein. Veuillez supprimer quelques données.","Please enter a valid budget amount":"Veuillez saisir un montant de budget valide","Budget set successfully":"Budget réglé avec succès","Please select a development stage":"Veuillez sélectionner une étape de développement","Stage budget calculated successfully":"Budget de l'étape calculé avec succès","Please select a category":"Veuillez sélectionner une catégorie","Please enter a description":"Veuillez saisir une description","Please enter a valid amount":"Veuillez saisir un montant valide","Expense added successfully":"Dépense ajoutée avec succès","Please select a source":"Veuillez sélectionner une source","Income added successfully":"Revenu ajouté avec succès","transaction-amount expense":"Montant de la transaction dépense","transaction-amount income":"Montant de la transaction revenu","Report generated successfully":"Rapport généré avec succès","Chart container not found":"Conteneur de graphique introuvable","__title__":"Free VR Game Budget Tracker","Free VR Game Budget Tracker":"Suivi de budget gratuit de jeu VR","VR Game Budget Tracker":"Suivi de budget de jeu VR","Production":"Production","Post-production":"Post-production","Marketing":"Marketing","Personnel":"Personnel","Description":"Description","Expenses by Category":"Dépenses par catégorie","完全免费":"Complètement gratuit","提意见":"Faire une suggestion","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Outil en ligne gratuit : Suivi du budget des jeux VR. Pas d'inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Please enter a valid percentage (0-100)":"Veuillez saisir un pourcentage valide (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"de":{"Free VR Game Budget Tracker":"Kostenverfolgung für kostenlose VR-Spiele","Welcome to VR Game Budget Tracker":"Willkommen bei der Kostenverfolgung für VR-Spiele","Your complete solution for managing VR game development finances":"Ihre umfassende Lösung zur Verwaltung der Finanzen der VR-Spielentwicklung","VR Game Budget Tracker":"Kostenverfolgung für VR-Spiele","Free":"Kostenlos","Overview":"Übersicht","Budget Breakdown":"Kostenverteilung","Cost Monitoring":"Kostenkontrolle","Income Management":"Einkommensverwaltung","Reports":"Berichte","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Ihre Daten nähern sich der Speicherkapazität. Bitte exportieren oder löschen Sie einige Daten, um die App fortzuführen.","No registration required, completely free to use forever":"Keine Registrierung erforderlich, komplett kostenlos nutzbar","Budget Overview":"Kostenübersicht","Total Budget ($)":"Gesamtbudget ($)","Set Budget":"Budget festlegen","Total Budget":"Gesamtbudget","Total Expenses":"GesamtAusgaben","Total Income":"GesamtEinkommen","Remaining Budget":"Verbleibendes Budget","Recent Transactions":"Kürzliche Transaktionen","No transactions yet":"Bisher keine Transaktionen","Budget Breakdown by Development Stage":"Kostenverteilung nach Entwicklungsstufe","Development Stage":"Entwicklungsstufe","Select a stage":"Wählen Sie eine Stufe","Pre-production":"Vorstudie","Production":"Produktion","Post-production":"Nachproduktion","Stage Budget Percentage (%)":"Budgetprozentsatz (%)","Calculate Stage Budget":"Budget der Stufe berechnen","Stage Budget Distribution":"Budgetverteilung der Stufe","Stage Budget Details":"Details des Budgets der Stufe","Select a development stage to see details":"Wählen Sie eine Entwicklungsstufe, um Details anzuzeigen","Add Expense":"Ausgabe hinzufügen","Category":"Kategorie","Select a category":"Wählen Sie eine Kategorie","Personnel":"Personal","Testing":"Testen","Other":"Andere","Description":"Beschreibung","Amount ($)":"Betrag ($)","Cost by Category":"Kosten nach Kategorie","Expense History":"Ausgabenhistorie","No expenses recorded yet":"Bisher keine Ausgaben erfasst","Add Income Source":"Einkommensquelle hinzufügen","Income Source":"Einkommensquelle","Select a source":"Wählen Sie eine Quelle","Game Sales":"Spielverkäufe","Investments":"Investitionen","Funding":"Finanzierung","Sponsorship":"Sponsoring","Licensing":"Lizenzierung","Add Income":"Einkommen hinzufügen","Income by Source":"Einkommen nach Quelle","Income History":"Einkommenshistorie","No income recorded yet":"Bisher kein Einkommen erfasst","Generate Budget Report":"Budgetbericht generieren","Time Period":"Zeitraum","Daily":"Täglich","Weekly":"Wöchentlich","Monthly":"Monatlich","Quarterly":"Vierteljährlich","Yearly":"Jährlich","Generate Report":"Bericht generieren","Budget Summary":"Haushaltsübersicht","Generate a report to see summary":"Generieren Sie einen Bericht, um die Zusammenfassung zu sehen","Expense Analysis":"Kostenanalyse","Generate a report to see analysis":"Generieren Sie einen Bericht, um die Analyse zu sehen","Income Forecast":"Einkommensprognose","Generate a report to see forecast":"Generieren Sie einen Bericht, um die Prognose zu sehen","Percentage of Total":"Prozentsatz des Gesamtbetrags","Allocated Budget":"Zugewiesener Haushalt","remainingBudget":"Verbleibender Haushalt","Enter your total budget":"Geben Sie Ihren Gesamthaushalt ein","Enter percentage (0-100)":"Geben Sie den Prozentsatz (0-100) ein","Brief description of the expense":"Kurzbeschreibung der Ausgaben","Enter amount":"Geben Sie den Betrag ein","Brief description of the income":"Kurzbeschreibung des Einkommens","Failed to load data. Starting with fresh data.":"Daten laden fehlgeschlagen. Mit frischen Daten beginnen.","Failed to save data. Storage might be full. Please delete some data.":"Daten speichern fehlgeschlagen. Der Speicher könnte voll sein. Bitte löschen Sie einige Daten.","Please enter a valid budget amount":"Bitte geben Sie einen gültigen Haushaltsbetrag ein","Budget set successfully":"Haushalt erfolgreich eingestellt","Please select a development stage":"Bitte wählen Sie eine Entwicklungsstufe aus","Stage budget calculated successfully":"Haushalt für die Stufe erfolgreich berechnet","Please select a category":"Bitte wählen Sie eine Kategorie aus","Please enter a description":"Bitte geben Sie eine Beschreibung ein","Please enter a valid amount":"Bitte geben Sie einen gültigen Betrag ein","Expense added successfully":"Ausgaben erfolgreich hinzugefügt","Please select a source":"Bitte wählen Sie eine Quelle aus","Income added successfully":"Einkommen erfolgreich hinzugefügt","transaction-amount expense":"Transaktionsbetrag Ausgaben","transaction-amount income":"Transaktionsbetrag Einkommen","Report generated successfully":"Bericht erfolgreich generiert","Chart container not found":"Diagrammkontainer nicht gefunden","__title__":"Kostenverfolgung für kostenlose VR-Spiele","Marketing":"Marketing","Hardware":"Hardware","Software":"Software","Expenses by Category":"Kosten nach Kategorie","完全免费":"komplett kostenlos","提意见":"Feedback geben","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Kostenlose Online-Tool: VR-Spiel-Budget-Tracker. Keine Registrierung, kein Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"Abschnitt aktiv","Please enter a valid percentage (0-100)":"Bitte geben Sie einen gültigen Prozentsatz (0-100) ein","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ru":{"Welcome to VR Game Budget Tracker":"Добро пожаловать в VR Game Budget Tracker","Your complete solution for managing VR game development finances":"Ваше полное решение для управления финансами разработки VR-игр","Free":"Бесплатно","Overview":"Обзор","Budget Breakdown":"Разбивка бюджета","Cost Monitoring":"Мониторинг затрат","Income Management":"Управление доходами","Reports":"Отчеты","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Ваши данные приближаются к максимальной емкости хранения. Пожалуйста, экспортируйте или удалите некоторые данные, чтобы продолжить использование приложения.","No registration required, completely free to use forever":"Регистрация не требуется, бесплатное использование навсегда","Budget Overview":"Обзор бюджета","Total Budget ($)":"Общий бюджет ($)","Set Budget":"Установить бюджет","Total Budget":"Общий бюджет","Total Expenses":"Общие затраты","Total Income":"Общий доход","Remaining Budget":"Оставшийся бюджет","Recent Transactions":"Недавние транзакции","No transactions yet":"Транзакции еще не были","Budget Breakdown by Development Stage":"Разбивка бюджета по этапам разработки","Development Stage":"Этап разработки","Select a stage":"Выберите этап","Pre-production":"Предпродакшн","Production":"Производство","Post-production":"Постпродакшн","Marketing":"Маркетинг","Stage Budget Percentage (%)":"Процент бюджета этапа (%)","Calculate Stage Budget":"Рассчитать бюджет этапа","Stage Budget Distribution":"Распределение бюджета этапа","Stage Budget Details":"Подробности бюджета этапа","Select a development stage to see details":"Выберите этап разработки, чтобы увидеть детали","Add Expense":"Добавить затраты","Category":"Категория","Select a category":"Выберите категорию","Hardware":"Оборудование","Software":"Программное обеспечение","Personnel":"Персонал","Testing":"Тестирование","Other":"Другое","Description":"Описание","Amount ($)":"Сумма ($)","Cost by Category":"Затраты по категориям","Expense History":"История затрат","No expenses recorded yet":"Затраты еще не были зарегистрированы","Add Income Source":"Добавить источник дохода","Income Source":"Источник дохода","Select a source":"Выберите источник","Game Sales":"Продажи игр","Investments":"Инвестиции","Funding":"Финансирование","Sponsorship":"Спонсорство","Licensing":"Лицензирование","Add Income":"Добавить доход","Income by Source":"Доход по источнику","Income History":"История доходов","No income recorded yet":"Доходы еще не были зарегистрированы","Generate Budget Report":"Создать отчет о бюджете","Time Period":"Период времени","Daily":"Ежедневно","Weekly":"Еженедельно","Monthly":"Ежемесячно","Quarterly":"Квартально","Yearly":"Годовое","Generate Report":"Создать отчет","Budget Summary":"Обзор бюджета","Generate a report to see summary":"Создайте отчет, чтобы увидеть резюме","Expense Analysis":"Анализ расходов","Generate a report to see analysis":"Создайте отчет, чтобы увидеть анализ","Income Forecast":"Прогноз доходов","Generate a report to see forecast":"Создайте отчет, чтобы увидеть прогноз","Percentage of Total":"Процент от общей суммы","Allocated Budget":"Заделанный бюджет","remainingBudget":"Оставшийся бюджет","Enter your total budget":"Введите ваш общий бюджет","Enter percentage (0-100)":"Введите процент (0-100)","Brief description of the expense":"Краткое описание расходов","Enter amount":"Введите сумму","Brief description of the income":"Краткое описание доходов","Failed to load data. Starting with fresh data.":"Не удалось загрузить данные. Начнем с новыми данными.","Failed to save data. Storage might be full. Please delete some data.":"Не удалось сохранить данные. Место хранения может быть заполнено. Пожалуйста, удалите некоторые данные.","Please enter a valid budget amount":"Пожалуйста, введите действительную сумму бюджета","Budget set successfully":"Бюджет успешно установлен","Please select a development stage":"Пожалуйста, выберите этап разработки","Stage budget calculated successfully":"Бюджет этапа успешно рассчитан","Please select a category":"Пожалуйста, выберите категорию","Please enter a description":"Пожалуйста, введите описание","Please enter a valid amount":"Пожалуйста, введите действительную сумму","Expense added successfully":"Расход успешно добавлен","Please select a source":"Пожалуйста, выберите источник","Income added successfully":"Доход успешно добавлен","transaction-amount expense":"Сумма расходов","transaction-amount income":"Сумма доходов","Report generated successfully":"Отчет успешно создан","Chart container not found":"Не найден контейнер для графика","__title__":"Free VR Game Budget Tracker","Free VR Game Budget Tracker":"Бюджетный трекер для бесплатной VR-игры","VR Game Budget Tracker":"Бюджетный трекер для VR-игры","Expenses by Category":"Расходы по категориям","完全免费":"полностью бесплатен","提意见":"предложить отзыв","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Бесплатный онлайн инструмент: отслеживатель бюджета VR-игр. Без регистрации, без оплаты — навсегда бесплатно.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Please enter a valid percentage (0-100)":"Введите действительный процент (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"pt":{"Welcome to VR Game Budget Tracker":"Bem-vindo ao VR Game Budget Tracker","Your complete solution for managing VR game development finances":"Sua solução completa para gerenciar finanças de desenvolvimento de jogos VR","Free":"Grátis","Overview":"Visão Geral","Budget Breakdown":"Desglose do Orçamento","Cost Monitoring":"Monitoramento de Custos","Income Management":"Gestão de Receitas","Reports":"Relatórios","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Seus dados estão se aproximando da capacidade de armazenamento. Por favor, exporte ou exclua alguns dados para continuar usando o aplicativo.","No registration required, completely free to use forever":"Nenhuma inscrição necessária, completamente gratuito para usar para sempre","Budget Overview":"Visão Geral do Orçamento","Total Budget ($)":"Orçamento Total ($)","Set Budget":"Definir Orçamento","Total Budget":"Orçamento Total","Total Expenses":"Despesas Totais","Total Income":"Receita Total","Remaining Budget":"Orçamento Restante","Recent Transactions":"Transações Recentes","No transactions yet":"Nenhuma transação ainda","Budget Breakdown by Development Stage":"Desglose do Orçamento por Estágio de Desenvolvimento","Development Stage":"Estágio de Desenvolvimento","Select a stage":"Selecione um estágio","Pre-production":"Pré-produção","Production":"Produção","Post-production":"Pós-produção","Stage Budget Percentage (%)":"Percentual do Orçamento do Estágio (%)","Calculate Stage Budget":"Calcular Orçamento do Estágio","Stage Budget Distribution":"Distribuição do Orçamento do Estágio","Stage Budget Details":"Detalhes do Orçamento do Estágio","Select a development stage to see details":"Selecione um estágio de desenvolvimento para ver detalhes","Add Expense":"Adicionar Despesa","Category":"Categoria","Select a category":"Selecione uma categoria","Personnel":"Pessoal","Testing":"Teste","Other":"Outro","Description":"Descrição","Amount ($)":"Montante ($)","Cost by Category":"Custo por Categoria","Expense History":"Histórico de Despesas","No expenses recorded yet":"Nenhuma despesa registrada ainda","Add Income Source":"Adicionar Fonte de Receita","Income Source":"Fonte de Receita","Select a source":"Selecione uma fonte","Game Sales":"Vendas de Jogos","Investments":"Investimentos","Funding":"Financiamento","Sponsorship":"Patrocínio","Licensing":"Licenciamento","Add Income":"Adicionar Receita","Income by Source":"Receita por Fonte","Income History":"Histórico de Receitas","No income recorded yet":"Nenhuma receita registrada ainda","Generate Budget Report":"Gerar Relatório de Orçamento","Time Period":"Período de Tempo","Daily":"Diário","Weekly":"Semanal","Monthly":"Mensal","Quarterly":"Trimestral","Yearly":"Anual","Generate Report":"Gerar Relatório","Budget Summary":"Resumo do Orçamento","Generate a report to see summary":"Gerar um relatório para ver o resumo","Expense Analysis":"Análise de Despesas","Generate a report to see analysis":"Gerar um relatório para ver a análise","Income Forecast":"Previsão de Receitas","Generate a report to see forecast":"Gerar um relatório para ver a previsão","Percentage of Total":"Percentual do Total","Allocated Budget":"Orçamento Alocado","remainingBudget":"Orçamento Restante","Enter your total budget":"Insira o seu orçamento total","Enter percentage (0-100)":"Insira a porcentagem (0-100)","Brief description of the expense":"Breve descrição da despesa","Enter amount":"Insira o valor","Brief description of the income":"Breve descrição da receita","Failed to load data. Starting with fresh data.":"Falha ao carregar dados. Iniciando com dados novos.","Failed to save data. Storage might be full. Please delete some data.":"Falha ao salvar dados. O armazenamento pode estar cheio. Por favor, exclua alguns dados.","Please enter a valid budget amount":"Por favor, insira um valor de orçamento válido","Budget set successfully":"Orçamento configurado com sucesso","Please select a development stage":"Por favor, selecione uma fase de desenvolvimento","Stage budget calculated successfully":"Orçamento da fase calculado com sucesso","Please select a category":"Por favor, selecione uma categoria","Please enter a description":"Por favor, insira uma descrição","Please enter a valid amount":"Por favor, insira um valor válido","Expense added successfully":"Despesa adicionada com sucesso","Please select a source":"Por favor, selecione uma fonte","Income added successfully":"Receita adicionada com sucesso","transaction-amount expense":"valor da transação despesa","transaction-amount income":"valor da transação receita","Report generated successfully":"Relatório gerado com sucesso","Chart container not found":"Container de gráfico não encontrado","__title__":"Free VR Game Budget Tracker","Free VR Game Budget Tracker":"Rastreador de Orçamento de Jogos VR Grátis","VR Game Budget Tracker":"Rastreador de Orçamento de Jogos VR","Marketing":"Marketing","Hardware":"Hardware","Software":"Software","Expenses by Category":"Despesas por Categoria","完全免费":"Grátis completo","提意见":"Dar sugestões","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Ferramenta online grátis: Rastreador de Orçamento de Jogos VR. Sem cadastro, sem pagamento — grátis para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"seção ativa","Please enter a valid percentage (0-100)":"Por favor, insira uma porcentagem válida (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ar":{"Free VR Game Budget Tracker":"متبع ميزانية لعبة الواقع الافتراضي المجانية","Welcome to VR Game Budget Tracker":"مرحبًا بك في متبع ميزانية لعبة الواقع الافتراضي","Your complete solution for managing VR game development finances":"حل شامل لإدارة ميزانية تطوير ألعاب الواقع الافتراضي","VR Game Budget Tracker":"متبع ميزانية لعبة الواقع الافتراضي","Free":"مجاني","Overview":"النظرة العامة","Budget Breakdown":"تفكيك الميزانية","Cost Monitoring":"مراقبة التكاليف","Income Management":"إدارة الدخل","Reports":"التقارير","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"تقترب بياناتك من قدرة التخزين. يرجى تصدير أو حذف بعض البيانات لاستمرار استخدام التطبيق.","No registration required, completely free to use forever":"لا تحتاج إلى تسجيل، مجاني تمامًا للإستخدام الدائم","Budget Overview":"نظرة عامة على الميزانية","Total Budget ($)":"الميزانية الكلية ($)","Set Budget":"ضبط الميزانية","Total Budget":"الميزانية الإجمالية","Total Expenses":"تكاليف إجمالية","Total Income":"دخل إجمالي","Remaining Budget":"الميزانية المتبقية","Recent Transactions":"المعاملات الأخيرة","No transactions yet":"لا توجد معاملات حتى الآن","Budget Breakdown by Development Stage":"تفكيك الميزانية حسب مرحلة التطوير","Development Stage":"مرحلة التطوير","Select a stage":"اختر مرحلة","Pre-production":"الإنتاج المسبق","Production":"الإنتاج","Post-production":"الإنتاج بعد الإطلاق","Marketing":"التسويق","Stage Budget Percentage (%)":"نسبة ميزانية المرحلة (%)","Calculate Stage Budget":"حساب ميزانية المرحلة","Stage Budget Distribution":"توزيع ميزانية المرحلة","Stage Budget Details":"تفاصيل ميزانية المرحلة","Select a development stage to see details":"اختر مرحلة التطوير لرؤية التفاصيل","Add Expense":"إضافة تكلفة","Category":"فئة","Select a category":"اختر فئة","Hardware":"المعدات","Software":"البرمجيات","Personnel":"الموظفون","Testing":"الاختبار","Other":"آخر","Description":"الوصف","Amount ($)":"المبلغ ($)","Cost by Category":"تكلفة حسب الفئة","Expense History":"تاريخ التكاليف","No expenses recorded yet":"لا توجد تكاليف مسجلة حتى الآن","Add Income Source":"إضافة مصدر الدخل","Income Source":"مصدر الدخل","Select a source":"اختر مصدر","Game Sales":"مبيعات اللعبة","Investments":"الاستثمارات","Funding":"تمويل","Sponsorship":"الرعاية","Licensing":"الترخيص","Add Income":"إضافة دخل","Income by Source":"دخل حسب المصدر","Income History":"تاريخ الدخل","No income recorded yet":"لا توجد دخل مسجل حتى الآن","Generate Budget Report":"توليد تقرير الميزانية","Time Period":"فترة الزمن","Daily":"اليومي","Weekly":"الاسبوعي","Monthly":"الشهرية","Quarterly":"الربعية","Yearly":"السنوية","Generate Report":"إنشاء تقرير","Budget Summary":"ملخص الميزانية","Generate a report to see summary":"إنشاء تقرير لرؤية الملخص","Expense Analysis":"تحليل المصاريف","Generate a report to see analysis":"إنشاء تقرير لرؤية التحليل","Income Forecast":"توقعات الإيرادات","Generate a report to see forecast":"إنشاء تقرير لرؤية التوقعات","Percentage of Total":"نسبة المجموع الكلي","Allocated Budget":"الميزانية المخصصة","remainingBudget":"الباقي من الميزانية","Enter your total budget":"ادخل الميزانية الكلية","Enter percentage (0-100)":"ادخل النسبة (0-100)","Brief description of the expense":"وصف مختصر للمصاريف","Enter amount":"ادخل المبلغ","Brief description of the income":"وصف مختصر للإيرادات","Failed to load data. Starting with fresh data.":"فشل في تحميل البيانات. البدء ببيانات جديدة.","Failed to save data. Storage might be full. Please delete some data.":"فشل في حفظ البيانات. قد يكون التخزين ممتلئًا. يرجى حذف بعض البيانات.","Please enter a valid budget amount":"يرجى إدخال مبلغ الميزانية صالح","Budget set successfully":"تم تعيين الميزانية بنجاح","Please select a development stage":"يرجى اختيار مرحلة التطوير","Stage budget calculated successfully":"تم حساب ميزانية المرحلة بنجاح","Please select a category":"يرجى اختيار الفئة","Please enter a description":"يرجى إدخال الوصف","Please enter a valid amount":"يرجى إدخال مبلغ صالح","Expense added successfully":"تم إضافة المصاريف بنجاح","Please select a source":"يرجى اختيار المصدر","Income added successfully":"تم إضافة الإيرادات بنجاح","transaction-amount expense":"مبلغ الصفقة للمصاريف","transaction-amount income":"مبلغ الصفقة للإيرادات","Report generated successfully":"تم إنشاء التقرير بنجاح","Chart container not found":"لم يتم العثور على حاوية الرسم البياني","__title__":"متبع ميزانية لعبة الواقع الافتراضي المجانية","Expenses by Category":"مصاريف حسب الفئة","完全免费":"مجاني تمامًا","提意见":"قدم اقتراحًا","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: متتبع ميزانية لعبة الواقع الافتراضي. بدون تسجيل، بدون دفع — مجاني إلى الأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"قسم نشط","Please enter a valid percentage (0-100)":"يرجى إدخال نسبة صحيحة (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"hi":{"Free VR Game Budget Tracker":"फ्री वीआर गेम बजट ट्रैकर","Welcome to VR Game Budget Tracker":"वीआर गेम बजट ट्रैकर को स्वागत करें","Your complete solution for managing VR game development finances":"वीआर गेम डेवलपमेंट वित्तीय मामलों के लिए आपका पूर्ण समाधान","VR Game Budget Tracker":"वीआर गेम बजट ट्रैकर","Free":"फ्री","Overview":"सारांश","Budget Breakdown":"बजट विभाजन","Cost Monitoring":"लागत निगरानी","Income Management":"आय प्रबंधन","Reports":"रिपोर्ट","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"आपका डाटा स्टोरेज क्षमता के आसपास है। कृपया कुछ डाटा निर्यात करें या मिटाएं ताकि अनुप्रयोग का उपयोग जारी रखा जा सके。","No registration required, completely free to use forever":"कोई पंजीकरण आवश्यक नहीं है, सदैव फ्री रूप से उपयोग करने के लिए","Budget Overview":"बजट सारांश","Total Budget ($)":"कुल बजट ($)","Set Budget":"बजट सेट करें","Total Budget":"कुल बजट","Total Expenses":"कुल लागत","Total Income":"कुल आय","Remaining Budget":"शेष बजट","Recent Transactions":"हालिया लेनदेन","No transactions yet":"अभी तक कोई लेनदेन नहीं","Budget Breakdown by Development Stage":"डेवलपमेंट चरण के अनुसार बजट विभाजन","Development Stage":"डेवलपमेंट चरण","Select a stage":"एक चरण चुनें","Pre-production":"प्री-प्रोडक्शन","Production":"प्रोडक्शन","Post-production":"पोस्ट-प्रोडक्शन","Marketing":"मार्केटिंग","Stage Budget Percentage (%)":"चरण बजट प्रतिशत (%)","Calculate Stage Budget":"चरण बजट गणित","Stage Budget Distribution":"चरण बजट वितरण","Stage Budget Details":"चरण बजट विवरण","Select a development stage to see details":"विवरण देखने के लिए एक डेवलपमेंट चरण चुनें","Add Expense":"लागत जोड़ें","Category":"श्रेणी","Select a category":"एक श्रेणी चुनें","Hardware":"हार्डवेयर","Software":"सॉफ्टवेयर","Personnel":"कर्मचारी","Testing":"टेस्टिंग","Other":"अन्य","Description":"विवरण","Amount ($)":"अधिकार ($)","Cost by Category":"श्रेणी द्वारा लागत","Expense History":"लागत इतिहास","No expenses recorded yet":"अभी तक कोई लागत रिकॉर्ड नहीं","Add Income Source":"आय स्रोत जोड़ें","Income Source":"आय स्रोत","Select a source":"एक स्रोत चुनें","Game Sales":"गेम बिक्री","Investments":"निवेश","Funding":"फंडिंग","Sponsorship":"स्पोंसरशिप","Licensing":"लाइसेंसिंग","Add Income":"आय जोड़ें","Income by Source":"स्रोत द्वारा आय","Income History":"आय इतिहास","No income recorded yet":"अभी तक कोई आय रिकॉर्ड नहीं","Generate Budget Report":"बजट रिपोर्ट जनरेट करें","Time Period":"समय अवधि","Daily":"दैनिक","Weekly":"साप्ताहिक","Monthly":"मासिक","Quarterly":"तिमाही","Yearly":"वार्षिक","Generate Report":"रिपोर्ट बनाएँ","Budget Summary":"बजट समीक्षा","Generate a report to see summary":"समीक्षा देखने के लिए रिपोर्ट बनाएँ","Expense Analysis":"खर्च विश्लेषण","Generate a report to see analysis":"विश्लेषण देखने के लिए रिपोर्ट बनाएँ","Income Forecast":"आय पूर्वानुमान","Generate a report to see forecast":"पूर्वानुमान देखने के लिए रिपोर्ट बनाएँ","Percentage of Total":"कुल का प्रतिशत","Allocated Budget":"आवंटित बजट","remainingBudget":"शेष बजट","Enter your total budget":"आपका कुल बजट भरें","Enter percentage (0-100)":"प्रतिशत (0-100) भरें","Brief description of the expense":"खर्च का छोटा वर्णन","Enter amount":"अद्यतन राशि भरें","Brief description of the income":"आय का छोटा वर्णन","Failed to load data. Starting with fresh data.":"डाटा लोड नहीं हुआ. नई डाटा से शुरू करना.","Failed to save data. Storage might be full. Please delete some data.":"डाटा सहेजने में असफल. स्टोरेज भरा हो सकता है. कुछ डाटा मिटाएँ。","Please enter a valid budget amount":"कृपया एक वैध बजट राशि भरें","Budget set successfully":"बजट सफलता से सेट किया गया","Please select a development stage":"कृपया एक विकास चरण चुनें","Stage budget calculated successfully":"चरण बजट सफलता से गणितीय रूप से योजित","Please select a category":"कृपया एक श्रेणी चुनें","Please enter a description":"कृपया एक वर्णन भरें","Please enter a valid amount":"कृपया एक वैध राशि भरें","Expense added successfully":"खर्च सफलता से जोड़ा गया","Please select a source":"कृपया एक स्रोत चुनें","Income added successfully":"आय सफलता से जोड़ी गई","transaction-amount expense":"लेन-देन राशि खर्च","transaction-amount income":"लेन-देन राशि आय","Report generated successfully":"रिपोर्ट सफलता से बनाई गई","Chart container not found":"चार्ट कंटेनर नहीं मिला","__title__":"फ्री वीआर गेम बजट ट्रैकर","Expenses by Category":"श्रेणी द्वारा खर्च","完全免费":"संपूर्ण रूप से मुफ्त","提意见":"अपराध देखें","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"मुफ्त ऑनलाइन टूल: VR गेम बजट ट्रैकर. नो साइनअप, नो पेमेंट — सदैव मुफ्त.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"सेक्शन सक्रिय","Please enter a valid percentage (0-100)":"कृपया वैध प्रतिशत भरें (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"id":{"Free VR Game Budget Tracker":"Pemantau Anggaran Game VR Gratis","Welcome to VR Game Budget Tracker":"Selamat Datang di Pemantau Anggaran Game VR","Your complete solution for managing VR game development finances":"Layanan lengkap Anda untuk mengelola keuangan pengembangan game VR","VR Game Budget Tracker":"Pemantau Anggaran Game VR","Free":"Gratis","Overview":"Ringkasan","Budget Breakdown":"Pembentukan Anggaran","Cost Monitoring":"Pemantauan Biaya","Income Management":"Manajemen Pendapatan","Reports":"Laporan","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Data Anda mendekati kapasitas penyimpanan. Harap ekspor atau hapus beberapa data untuk melanjutkan penggunaan aplikasi.","No registration required, completely free to use forever":"Tidak memerlukan pendaftaran, sepenuhnya gratis untuk digunakan selamanya","Budget Overview":"Ringkasan Anggaran","Total Budget ($)":"Total Anggaran ($)","Set Budget":"Atur Anggaran","Total Budget":"Total Anggaran","Total Expenses":"Total Biaya","Total Income":"Total Pendapatan","Remaining Budget":"Sisa Anggaran","Recent Transactions":"Transaksi Terbaru","No transactions yet":"Belum ada transaksi","Budget Breakdown by Development Stage":"Pembentukan Anggaran Menurut Tahapan Pengembangan","Development Stage":"Tahapan Pengembangan","Select a stage":"Pilih tahapan","Pre-production":"Pra-produser","Production":"Produksi","Post-production":"Post-produser","Marketing":"Pemasaran","Stage Budget Percentage (%)":"Persentase Anggaran Tahapan (%)","Calculate Stage Budget":"Hitung Anggaran Tahapan","Stage Budget Distribution":"Distribusi Anggaran Tahapan","Stage Budget Details":"Detil Anggaran Tahapan","Select a development stage to see details":"Pilih tahapan pengembangan untuk melihat detil","Add Expense":"Tambah Biaya","Category":"Kategori","Select a category":"Pilih kategori","Hardware":"Perangkat keras","Software":"Perangkat lunak","Personnel":"Karyawan","Testing":"Pengujian","Other":"Lainnya","Description":"Deskripsi","Amount ($)":"Jumlah ($)","Cost by Category":"Biaya Menurut Kategori","Expense History":"Riwayat Biaya","No expenses recorded yet":"Belum ada catatan biaya","Add Income Source":"Tambah Sumber Pendapatan","Income Source":"Sumber Pendapatan","Select a source":"Pilih sumber","Game Sales":"Penjualan Game","Investments":"Investasi","Funding":"Pembiayaan","Licensing":"Pemindaian","Add Income":"Tambah Pendapatan","Income by Source":"Pendapatan Menurut Sumber","Income History":"Riwayat Pendapatan","No income recorded yet":"Belum ada catatan pendapatan","Generate Budget Report":"Buat Laporan Anggaran","Time Period":"Periode Waktu","Daily":"Harian","Weekly":"Mingguan","Monthly":"Bulanan","Quarterly":"Kuartal","Yearly":"Tahunan","Generate Report":"Buat Laporan","Budget Summary":"Ringkasan Anggaran","Generate a report to see summary":"Buat laporan untuk melihat ringkasan","Expense Analysis":"Analisis Biaya","Generate a report to see analysis":"Buat laporan untuk melihat analisis","Income Forecast":"Ramalan Pendapatan","Generate a report to see forecast":"Buat laporan untuk melihat ramalan","Percentage of Total":"Persentase Total","Allocated Budget":"Anggaran yang Disetujui","remainingBudget":"Anggaran yang Tersisa","Enter your total budget":"Masukkan anggaran total anda","Enter percentage (0-100)":"Masukkan persentase (0-100)","Brief description of the expense":"Deskripsi singkat biaya","Enter amount":"Masukkan jumlah","Brief description of the income":"Deskripsi singkat pendapatan","Failed to load data. Starting with fresh data.":"Gagal memuat data. Mulai dengan data baru.","Failed to save data. Storage might be full. Please delete some data.":"Gagal menyimpan data. Penyimpanan mungkin penuh. Harap hapus beberapa data.","Please enter a valid budget amount":"Harap masukkan jumlah anggaran yang valid","Budget set successfully":"Anggaran disetel dengan sukses","Please select a development stage":"Harap pilih tahap pengembangan","Stage budget calculated successfully":"Anggaran tahap dihitung dengan sukses","Please select a category":"Harap pilih kategori","Please enter a description":"Harap masukkan deskripsi","Please enter a valid amount":"Harap masukkan jumlah yang valid","Expense added successfully":"Biaya ditambahkan dengan sukses","Please select a source":"Harap pilih sumber","Income added successfully":"Pendapatan ditambahkan dengan sukses","transaction-amount expense":"jumlah transaksi biaya","transaction-amount income":"jumlah transaksi pendapatan","Report generated successfully":"Laporan dihasilkan dengan sukses","Chart container not found":"Tidak ditemukan wadah grafik","__title__":"Pemantau Anggaran Game VR Gratis","Sponsorship":"Pembiayaan","Expenses by Category":"Pengeluaran menurut Kategori","完全免费":"Sama sekali gratis","提意见":"Beri masukan","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Alat online gratis: Penambahan Anggaran Permainan VR. Tidak ada pendaftaran, tanpa pembayaran — gratis selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Please enter a valid percentage (0-100)":"Silakan masukkan persentase yang valid (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"vi":{"Free VR Game Budget Tracker":"Trình theo dõi ngân sách trò chơi VR miễn phí","Welcome to VR Game Budget Tracker":"Chào mừng bạn đến với Trình theo dõi ngân sách trò chơi VR","Your complete solution for managing VR game development finances":"Giải pháp hoàn chỉnh của bạn để quản lý tài chính phát triển trò chơi VR","VR Game Budget Tracker":"Trình theo dõi ngân sách trò chơi VR","Free":"Miễn phí","Overview":"Tóm tắt","Budget Breakdown":"Phân tích ngân sách","Cost Monitoring":"Theo dõi chi phí","Income Management":"Quản lý thu nhập","Reports":"Báo cáo","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"Dữ liệu của bạn đang gần đạt đến dung lượng lưu trữ. Vui lòng xuất hoặc xóa một số dữ liệu để tiếp tục sử dụng ứng dụng.","No registration required, completely free to use forever":"Không yêu cầu đăng ký, hoàn toàn miễn phí để sử dụng mãi mãi","Budget Overview":"Tóm tắt ngân sách","Total Budget ($)":"Ngân sách tổng cộng ($)","Set Budget":"Đặt ngân sách","Total Budget":"Ngân sách tổng cộng","Total Expenses":"Chi phí tổng cộng","Total Income":"Thu nhập tổng cộng","Remaining Budget":"Ngân sách còn lại","Recent Transactions":"Giao dịch gần đây","No transactions yet":"Chưa có giao dịch nào","Budget Breakdown by Development Stage":"Phân tích ngân sách theo giai đoạn phát triển","Development Stage":"Giai đoạn phát triển","Select a stage":"Chọn một giai đoạn","Pre-production":"Trước sản xuất","Production":"Sản xuất","Post-production":"Sau sản xuất","Stage Budget Percentage (%)":"Phần trăm ngân sách giai đoạn (%)","Calculate Stage Budget":"Tính toán ngân sách giai đoạn","Stage Budget Distribution":"Phân phối ngân sách giai đoạn","Stage Budget Details":"Chi tiết ngân sách giai đoạn","Select a development stage to see details":"Chọn một giai đoạn phát triển để xem chi tiết","Add Expense":"Thêm chi phí","Category":"Danh mục","Select a category":"Chọn một danh mục","Personnel":"Nhân viên","Testing":"Kiểm thử","Other":"Khác","Description":"Mô tả","Amount ($)":"Số tiền ($)","Cost by Category":"Chi phí theo danh mục","Expense History":"Lịch sử chi phí","No expenses recorded yet":"Chưa có chi phí nào được ghi lại","Add Income Source":"Thêm nguồn thu nhập","Income Source":"Nguồn thu nhập","Select a source":"Chọn một nguồn","Game Sales":"Bán game","Investments":"Đầu tư","Funding":"Vốn","Sponsorship":"Hỗ trợ tài chính","Licensing":"Phát hành","Add Income":"Thêm thu nhập","Income by Source":"Thu nhập theo nguồn","Income History":"Lịch sử thu nhập","No income recorded yet":"Chưa có thu nhập nào được ghi lại","Generate Budget Report":"Tạo báo cáo ngân sách","Time Period":"Khoảng thời gian","Daily":"Hàng ngày","Weekly":"Hàng tuần","Monthly":"Hàng tháng","Quarterly":"Hàng quý","Yearly":"Hàng năm","Generate Report":"Tạo báo cáo","Budget Summary":"Tóm tắt ngân sách","Generate a report to see summary":"Tạo báo cáo để xem tóm tắt","Expense Analysis":"Phân tích chi phí","Generate a report to see analysis":"Tạo báo cáo để xem phân tích","Income Forecast":"Dự báo thu nhập","Generate a report to see forecast":"Tạo báo cáo để xem dự báo","Percentage of Total":"Phần trăm của tổng số","Allocated Budget":"Ngân sách đã phân bổ","remainingBudget":"Ngân sách còn lại","Enter your total budget":"Nhập tổng ngân sách của bạn","Enter percentage (0-100)":"Nhập phần trăm (0-100)","Brief description of the expense":"Mô tả ngắn gọn về chi phí","Enter amount":"Nhập số tiền","Brief description of the income":"Mô tả ngắn gọn về thu nhập","Failed to load data. Starting with fresh data.":"Không thể tải dữ liệu. Bắt đầu với dữ liệu mới.","Failed to save data. Storage might be full. Please delete some data.":"Không thể lưu dữ liệu. Lưu trữ có thể đã đầy. Vui lòng xóa một số dữ liệu.","Please enter a valid budget amount":"Vui lòng nhập một số tiền ngân sách hợp lệ","Budget set successfully":"Đã thiết lập ngân sách thành công","Please select a development stage":"Vui lòng chọn giai đoạn phát triển","Stage budget calculated successfully":"Ngân sách giai đoạn đã tính toán thành công","Please select a category":"Vui lòng chọn danh mục","Please enter a description":"Vui lòng nhập mô tả","Please enter a valid amount":"Vui lòng nhập số tiền hợp lệ","Expense added successfully":"Chi phí đã thêm thành công","Please select a source":"Vui lòng chọn nguồn","Income added successfully":"Thu nhập đã thêm thành công","transaction-amount expense":"Số tiền giao dịch chi phí","transaction-amount income":"Số tiền giao dịch thu nhập","Report generated successfully":"Báo cáo đã được tạo thành công","Chart container not found":"Không tìm thấy khay biểu đồ","__title__":"Trình theo dõi ngân sách trò chơi VR miễn phí","Marketing":"Marketing","Hardware":"Hardware","Software":"Software","Expenses by Category":"Chi phí theo danh mục","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: VR Game Budget Tracker. Không đăng ký, không thanh toán — miễn phí vĩnh viễn.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Please enter a valid percentage (0-100)":"Vui lòng nhập phần trăm hợp lệ (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"th":{"Total Budget ($)":"งบประมาณทั้งหมด ($)","Amount ($)":"จำนวน ($)","Daily":"วันนี้","Weekly":"สัปดาห์","Monthly":"เดือน","Quarterly":"ไตรมาส","Yearly":"ปี","Generate Report":"สร้างรายงาน","Budget Summary":"สรุปงบประมาณ","Generate a report to see summary":"สร้างรายงานเพื่อดูสรุป","Expense Analysis":"วิเคราะห์ค่าใช้จ่าย","Generate a report to see analysis":"สร้างรายงานเพื่อดูวิเคราะห์","Income Forecast":"การทำนายรายได้","Generate a report to see forecast":"สร้างรายงานเพื่อดูการทำนาย","Percentage of Total":"เปอร์เซ็นต์ส่วนแบ่งของรวม","Allocated Budget":"งบประมาณที่แยกไป","remainingBudget":"งบประมาณที่เหลือ","Enter your total budget":"ใส่งบประมาณรวมของคุณ","Enter percentage (0-100)":"ใส่เปอร์เซ็นต์ (0-100)","Brief description of the expense":"คำอธิบายสั้นของค่าใช้จ่าย","Enter amount":"ใส่จำนวน","Brief description of the income":"คำอธิบายสั้นของรายได้","Failed to load data. Starting with fresh data.":"ไม่สามารถโหลดข้อมูลได้. จะเริ่มต้นด้วยข้อมูลใหม่","Failed to save data. Storage might be full. Please delete some data.":"ไม่สามารถบันทึกข้อมูลได้. คงเป็นไปได้ว่าความจุเก็บข้อมูลหมด. กรุณาลบข้อมูลบางส่วน","Please enter a valid budget amount":"กรุณาใส่จำนวนงบประมาณที่ถูกต้อง","Budget set successfully":"ตั้งงบประมาณสำเร็จ","Please select a development stage":"กรุณาเลือกขั้นตอนการพัฒนา","Stage budget calculated successfully":"คำนวณงบประมาณขั้นตอนสำเร็จ","Please select a category":"กรุณาเลือกหมวดหมู่","Please enter a description":"กรุณาใส่คำอธิบาย","Please enter a valid amount":"กรุณาใส่จำนวนที่ถูกต้อง","Expense added successfully":"เพิ่มค่าใช้จ่ายสำเร็จ","Please select a source":"กรุณาเลือกต้นกำเนิด","Income added successfully":"เพิ่มรายได้สำเร็จ","transaction-amount expense":"จำนวนของค่าใช้จ่าย","transaction-amount income":"จำนวนของรายได้","Report generated successfully":"สร้างรายงานสำเร็จ","Chart container not found":"ไม่พบตัวจัดเก็บแผนภาพ","__title__":"Free VR Game Budget Tracker","Free VR Game Budget Tracker":"Free VR การติดตามงบประมาณเกม VR","Welcome to VR Game Budget Tracker":"ยินดีต้อนรับสู่ VR การติดตามงบประมาณเกม VR","Your complete solution for managing VR game development finances":"แก้ไขงบประมาณทั้งหมดของคุณสำหรับการจัดการงบประมาณการพัฒนาเกม VR","VR Game Budget Tracker":"VR การติดตามงบประมาณเกม VR","Free":"Free","Overview":"ภาพรวม","Budget Breakdown":"รายละเอียดงบประมาณ","Cost Monitoring":"ติดตามค่าใช้จ่าย","Income Management":"การจัดการรายได้","Reports":"รายงาน","Your data is approaching storage capacity. Please export or delete some data to continue using the app.":"ข้อมูลของคุณกำลังขยายตัวใกล้กับความจุเก็บข้อมูล กรุณาส่งออกหรือลบข้อมูลบางส่วนเพื่อที่จะยังคงใช้แอปได้ต่อ","No registration required, completely free to use forever":"ไม่ต้องลงทะเบียน ใช้ได้ทุกวันโดยไม่เสียค่าใช้จ่าย","Budget Overview":"สรุปงบประมาณ","Set Budget":"ตั้งงบประมาณ","Total Budget":"งบประมาณทั้งหมด","Total Expenses":"ค่าใช้จ่ายทั้งหมด","Total Income":"รายได้ทั้งหมด","Remaining Budget":"งบประมาณที่เหลือ","Recent Transactions":"รายการธุรกรรมล่าสุด","No transactions yet":"ยังไม่มีรายการธุรกรรม","Budget Breakdown by Development Stage":"แยกงบประมาณตามขั้นตอนการพัฒนา","Development Stage":"ขั้นตอนการพัฒนา","Select a stage":"เลือกขั้นตอน","Pre-production":"ก่อนการผลิต","Production":"การผลิต","Post-production":"การจัดการหลังการผลิต","Marketing":"การตลาด","Stage Budget Percentage (%)":"เปอร์เซ็นต์งบประมาณขั้นตอน (%)","Calculate Stage Budget":"คำนวณงบประมาณขั้นตอน","Stage Budget Distribution":"การแบ่งสรรงบประมาณขั้นตอน","Stage Budget Details":"รายละเอียดงบประมาณขั้นตอน","Select a development stage to see details":"เลือกขั้นตอนการพัฒนาเพื่อดูรายละเอียด","Add Expense":"เพิ่มค่าใช้จ่าย","Category":"ประเภท","Select a category":"เลือกประเภท","Hardware":"ฮาร์ดแวร์","Software":"โปรแกรม","Personnel":"เจ้าหน้าที่","Testing":"การทดสอบ","Other":"อื่นๆ","Description":"รายละเอียด","Cost by Category":"ต้นทุนตามหมวด","Expense History":"ประวัติค่าใช้จ่าย","No expenses recorded yet":"ยังไม่มีค่าใช้จ่ายที่บันทึก","Add Income Source":"เพิ่มแหล่งรายได้","Income Source":"แหล่งรายได้","Select a source":"เลือกแหล่ง","Game Sales":"ขายเกม","Investments":"การลงทุน","Funding":"การจัดสรรทุน","Sponsorship":"การสนับสนุน","Licensing":"ใบอนุญาต","Add Income":"เพิ่มรายได้","Income by Source":"รายได้ตามแหล่ง","Income History":"ประวัติรายได้","No income recorded yet":"ยังไม่มีรายการรายได้","Generate Budget Report":"สร้างรายงานงบประมาณ","Time Period":"ระยะเวลา","Expenses by Category":"รายรับตามประเภท","完全免费":"ไม่มีค่าใช้จ่าย","提意见":"แบบประชาม","UTF-8":"UTF-8","Free online tool: VR Game Budget Tracker. No signup, no payment — free forever.":"เครื่องมือตรวจสอบงบประมาณเกม VR ออนไลน์ ฟรีทุกวัน ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"หมวดหมู่ที่ใช้อย่างเป็นจริง","Please enter a valid percentage (0-100)":"กรุณาใส่ร้อยละที่ถูกต้อง (0-100)","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

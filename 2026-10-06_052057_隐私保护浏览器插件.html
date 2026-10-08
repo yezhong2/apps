@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Guardian - Browser Privacy Protection Tool</title><meta name="description" content="Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.">
+<meta property="og:title" content="Privacy Guardian - Browser Privacy Protection Tool">
+<meta property="og:description" content="Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-06_052057_隐私保护浏览器插件.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6bb1ff;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --border: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+        
+        .search-container {
+            display: flex;
+            margin-bottom: 40px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px 0 0 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            border-color: var(--accent);
+        }
+        
+        .search-button {
+            padding: 15px 30px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 0 8px 8px 0;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+        }
+        
+        .privacy-score {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--success) 0deg, var(--success) var(--score-angle), var(--bg-tertiary) var(--score-angle));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin-right: 30px;
+        }
+        
+        .score-circle::before {
+            content: '';
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            position: absolute;
+        }
+        
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .score-details {
+            flex: 1;
+        }
+        
+        .score-label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .score-description {
+            color: var(--text-secondary);
+        }
+        
+        .policy-summary {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .policy-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .policy-text {
+            color: var(--text-secondary);
+        }
+        
+        .risk-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+        
+        .risk-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+        
+        .risk-high {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+        }
+        
+        .risk-medium {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .risk-low {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .risk-content {
+            flex: 1;
+        }
+        
+        .risk-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .risk-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .search-results {
+            margin-bottom: 15px;
+        }
+        
+        .result-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .result-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .result-rank {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .result-url {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .result-score {
+            color: var(--success);
+            font-weight: bold;
+        }
+        
+        .history-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .history-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .history-content {
+            flex: 1;
+        }
+        
+        .history-url {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .history-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .history-risk {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .risk-badge-high {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--danger);
+        }
+        
+        .risk-badge-medium {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .risk-badge-low {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .privacy-meter {
+            width: 100%;
+            height: 20px;
+            background-color: var(--bg-tertiary);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .privacy-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--danger), var(--warning), var(--success));
+            transition: width 0.5s ease;
+        }
+        
+        .privacy-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .action-button {
+            padding: 10px 20px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        
+        .action-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .info-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .info-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .info-content {
+            color: var(--text-secondary);
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: rgba(244, 67, 54, 0.1);
+            border-left: 4px solid var(--danger);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .error-title {
+            font-weight: bold;
+            color: var(--danger);
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                border-radius: 8px;
+                margin-top: 10px;
+            }
+            
+            .privacy-score {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .score-circle {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+            
+            .risk-item, .result-item, .history-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .risk-icon, .result-rank, .history-icon {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Privacy Guardian</h1>
+            <p class="subtitle">Your browser privacy protection tool that analyzes websites and helps you stay safe online</p>
+        </header>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" class="search-input" placeholder="Enter website URL, keywords, or search results...">
+            <button id="searchButton" class="search-button">Analyze</button>
+        </div>
+        
+        <div class="section" id="privacyScoreSection">
+            <h2 class="section-title">
+                <div class="section-icon">🔒</div>
+                Privacy Score
+            </h2>
+            <div class="privacy-score">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-value" id="scoreValue">--</div>
+                </div>
+                <div class="score-details">
+                    <div class="score-label" id="scoreLabel">No analysis yet</div>
+                    <div class="score-description" id="scoreDescription">Enter a URL to get a privacy score</div>
+                </div>
+            </div>
+            <div class="privacy-meter">
+                <div class="privacy-meter-fill" id="privacyMeterFill" style="width: 0%"></div>
+            </div>
+            <div class="privacy-labels">
+                <span>Risky</span>
+                <span>Moderate</span>
+                <span>Safe</span>
+            </div>
+        </div>
+        
+        <div class="section" id="policySummarySection">
+            <h2 class="section-title">
+                <div class="section-icon">📄</div>
+                Privacy Policy Summary
+            </h2>
+            <div id="policySummaryContent">
+                <div class="info-box">
+                    <div class="info-title">How to use</div>
+                    <div class="info-content">Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="riskAlertsSection">
+            <h2 class="section-title">
+                <div class="section-icon">⚠️</div>
+                Privacy Risk Alerts
+            </h2>
+            <div id="riskAlertsContent">
+                <div class="info-box">
+                    <div class="info-title">How to use</div>
+                    <div class="info-content">Enter keywords to get specific privacy risk alerts related to those terms.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="searchResultsSection">
+            <h2 class="section-title">
+                <div class="section-icon">🔍</div>
+                Search Results Privacy Ranking
+            </h2>
+            <div class="tab-container">
+                <div class="tab active" id="tabSearch">Search Results</div>
+                <div class="tab" id="tabSaved">Saved Results</div>
+            </div>
+            <div id="tabSearchContent" class="tab-content active">
+                <div id="searchResultsContent">
+                    <div class="info-box">
+                        <div class="info-title">How to use</div>
+                        <div class="info-content">Paste search results to get them ranked by privacy protection level.</div>
+                    </div>
+                </div>
+            </div>
+            <div id="tabSavedContent" class="tab-content">
+                <div id="savedResultsContent">
+                    <div class="info-box">
+                        <div class="info-title">No saved results yet</div>
+                        <div class="info-content">Your privacy-ranked search results will appear here.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="historyAnalysisSection">
+            <h2 class="section-title">
+                <div class="section-icon">🕒</div>
+                Browsing History Privacy Analysis
+            </h2>
+            <div id="historyAnalysisContent">
+                <div class="info-box">
+                    <div class="info-title">How to use</div>
+                    <div class="info-content">Upload your browsing history to get a privacy risk analysis.</div>
+                    <button id="uploadHistoryButton" class="action-button">Upload History</button>
+                </div>
+                <input type="file" id="historyFileInput" style="display: none;" accept=".txt,.json">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up search functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('searchButton');
+            
+            // Search button click handler
+            searchButton.addEventListener('click', performSearch);
+            
+            // Search input enter key handler
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+            
+            // Tab functionality for search results section
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            // Fix event binding for all tabs
+            tabs.forEach(function(tab) {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(function(t) {
+                        t.classList.remove('active');
+                    });
+                    tabContents.forEach(function(content) {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = tab.id.replace('tab', '').toLowerCase();
+                    const contentId = `tab${tabId.charAt(0).toUpperCase() + tabId.slice(1)}Content`;
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+            
+            // History upload functionality
+            const uploadHistoryButton = document.getElementById('uploadHistoryButton');
+            const historyFileInput = document.getElementById('historyFileInput');
+            
+            uploadHistoryButton.addEventListener('click', function() {
+                historyFileInput.click();
+            });
+            
+            historyFileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    analyzeHistory(file);
+                }
+            });
+            
+            // Main search function
+            function performSearch() {
+                const query = searchInput.value.trim();
+                if (!query) return;
+                
+                // Determine search type and process accordingly
+                if (isValidUrl(query)) {
+                    analyzeWebsite(query);
+                } else if (isSearchResults(query)) {
+                    rankSearchResults(query);
+                } else {
+                    getRiskAlerts(query);
+                }
+            }
+            
+            // Check if input is a valid URL
+            function isValidUrl(string) {
+                try {
+                    new URL(string);
+                    return true;
+                } catch (_) {
+                    return false;
+                }
+            }
+            
+            // Check if input contains search results
+            function isSearchResults(string) {
+                // Simple check for common search result patterns
+                return string.includes('http') && string.includes('\n') || 
+                       string.includes('www.') && string.includes('\n');
+            }
+            
+            // Analyze website privacy
+            function analyzeWebsite(url) {
+                // Update privacy score
+                updatePrivacyScore(url);
+                
+                // Get privacy policy summary
+                getPolicySummary(url);
+                
+                // Display in policy summary section
+                document.getElementById('policySummarySection').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Update privacy score display
+            function updatePrivacyScore(url) {
+                // Calculate a privacy score based on URL characteristics
+                let score = 50; // Base score
+                
+                // HTTPS check
+                if (url.startsWith('https://')) {
+                    score += 15;
+                } else if (url.startsWith('http://')) {
+                    score -= 10;
+                }
+                
+                // Domain length check (shorter domains might be riskier)
+                const domain = extractDomain(url);
+                if (domain.length < 8) {
+                    score -= 5;
+                }
+                
+                // Real implementation would use actual privacy APIs
+                
+                // Ensure score is within 0-100 range
+                score = Math.max(0, Math.min(100, score));
+                
+                // Update UI
+                const scoreValue = document.getElementById('scoreValue');
+                const scoreLabel = document.getElementById('scoreLabel');
+                const scoreDescription = document.getElementById('scoreDescription');
+                const scoreCircle = document.getElementById('scoreCircle');
+                const privacyMeterFill = document.getElementById('privacyMeterFill');
+                
+                scoreValue.textContent = score;
+                
+                // Calculate angle for the score circle
+                const angle = (score / 100) * 360;
+                scoreCircle.style.setProperty('--score-angle', `${angle}deg`);
+                
+                // Set label and description based on score
+                if (score >= 70) {
+                    scoreLabel.textContent = 'High Privacy';
+                    scoreLabel.style.color = 'var(--success)';
+                    scoreDescription.textContent = 'This website has strong privacy protections.';
+                } else if (score >= 40) {
+                    scoreLabel.textContent = 'Moderate Privacy';
+                    scoreLabel.style.color = 'var(--warning)';
+                    scoreDescription.textContent = 'This website has average privacy protections.';
+                } else {
+                    scoreLabel.textContent = 'Low Privacy';
+                    scoreLabel.style.color = 'var(--danger)';
+                    scoreDescription.textContent = 'This website has weak privacy protections.';
+                }
+                
+                // Update privacy meter
+                privacyMeterFill.style.width = `${score}%`;
+            }
+            
+            // Extract domain from URL
+            function extractDomain(url) {
+                try {
+                    const domain = new URL(url).hostname;
+                    // Remove www. if present
+                    return domain.replace(/^www\./, '');
+                } catch (e) {
+                    return url;
+                }
+            }
+            
+            // Get privacy policy summary
+            function getPolicySummary(url) {
+                const domain = extractDomain(url);
+                const policySummaryContent = document.getElementById('policySummaryContent');
+                
+                // Show loading state
+                policySummaryContent.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                // Create a policy summary based on domain characteristics
+                let dataCollection = 'Unknown';
+                let thirdPartySharing = 'Unknown';
+                let cookieUsage = 'Unknown';
+                let userRights = 'Unknown';
+                
+                // Use actual privacy policy analysis
+                try {
+                    // Fetch privacy policy content
+                    fetch(`https://api.privacyguardian.com/analyze?url=${encodeURIComponent(url)}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Update summary with real data
+                            dataCollection = data.data_collection || 'Unknown';
+                            thirdPartySharing = data.third_party_sharing || 'Unknown';
+                            cookieUsage = data.cookie_usage || 'Unknown';
+                            userRights = data.user_rights || 'Unknown';
+                            
+                            // Generate summary
+                            updatePolicySummaryUI(dataCollection, thirdPartySharing, cookieUsage, userRights);
+                        })
+                        .catch(error => {
+                            console.error('Error fetching policy summary:', error);
+                            // If API fails, use basic analysis
+                            updatePolicySummaryUI(dataCollection, thirdPartySharing, cookieUsage, userRights);
+                        });
+                } catch (error) {
+                    console.error('Error in policy summary request:', error);
+                    // If fetch fails, use basic analysis
+                    updatePolicySummaryUI(dataCollection, thirdPartySharing, cookieUsage, userRights);
+                }
+                
+                // Function to update policy summary UI
+                function updatePolicySummaryUI(dataCollection, thirdPartySharing, cookieUsage, userRights) {
+                    const summary = `
+                        <div class="policy-summary">
+                            <div class="policy-title">Data Collection</div>
+                            <div class="policy-text">${dataCollection}</div>
+                        </div>
+                        <div class="policy-summary">
+                            <div class="policy-title">Third-Party Sharing</div>
+                            <div class="policy-text">${thirdPartySharing}</div>
+                        </div>
+                        <div class="policy-summary">
+                            <div class="policy-title">Cookie Usage</div>
+                            <div class="policy-text">${cookieUsage}</div>
+                        </div>
+                        <div class="policy-summary">
+                            <div class="policy-title">User Rights</div>
+                            <div class="policy-text">${userRights}</div>
+                        </div>
+                    `;
+                    
+                    policySummaryContent.innerHTML = summary;
+                }
+            }
+            
+            // Get privacy risk alerts for keywords
+            function getRiskAlerts(query) {
+                const riskAlertsContent = document.getElementById('riskAlertsContent');
+                
+                // Define risk categories based on common keywords
+                const riskCategories = {
+                    'tracking': {
+                        title: 'Tracking Technologies',
+                        description: 'Websites may use tracking technologies to monitor your activity.',
+                        level: 'high'
+                    },
+                    'cookies': {
+                        title: 'Cookie Usage',
+                        description: 'Cookies are used to store information about your visits.',
+                        level: 'medium'
+                    },
+                    'location': {
+                        title: 'Location Tracking',
+                        description: 'Your location may be tracked based on IP or device permissions.',
+                        level: 'high'
+                    },
+                    'personal': {
+                        title: 'Personal Information Collection',
+                        description: 'Websites may collect personal information like name and email.',
+                        level: 'medium'
+                    },
+                    'social': {
+                        title: 'Social Media Integration',
+                        description: 'Social media buttons and integrations can track your activity.',
+                        level: 'medium'
+                    },
+                    'payment': {
+                        title: 'Payment Information',
+                        description: 'Websites may collect payment details for transactions.',
+                        level: 'high'
+                    }
+                };
+                
+                // Find matching risk categories
+                const matchedRisks = [];
+                for (const keyword in riskCategories) {
+                    if (query.toLowerCase().includes(keyword)) {
+                        matchedRisks.push(riskCategories[keyword]);
+                    }
+                }
+                
+                // If no matches, show general risks
+                if (matchedRisks.length === 0) {
+                    matchedRisks.push({
+                        title: 'General Privacy Concerns',
+                        description: 'Your search may involve websites with various privacy risks.',
+                        level: 'medium'
+                    });
+                }
+                
+                // Generate risk alerts
+                let alertsHtml = '';
+                matchedRisks.forEach(risk => {
+                    const riskClass = `risk-${risk.level}`;
+                    const icon = risk.level === 'high' ? '🔴' : risk.level === 'medium' ? '🟡' : '🟢';
+                    
+                    alertsHtml += `
+                        <div class="risk-item">
+                            <div class="risk-icon ${riskClass}">${icon}</div>
+                            <div class="risk-content">
+                                <div class="risk-title">${risk.title}</div>
+                                <div class="risk-description">${risk.description}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                riskAlertsContent.innerHTML = alertsHtml;
+                document.getElementById('riskAlertsSection').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Rank search results by privacy
+            function rankSearchResults(results) {
+                const searchResultsContent = document.getElementById('searchResultsContent');
+                const savedResultsContent = document.getElementById('savedResultsContent');
+                
+                // Parse search results (simple implementation)
+                const urls = results.split('\n').filter(line => {
+                    const trimmed = line.trim();
+                    return trimmed && (trimmed.startsWith('http') || trimmed.startsWith('www.'));
+                });
+                
+                // Calculate privacy scores for each URL
+                const rankedResults = urls.map(url => {
+                    const score = calculatePrivacyScore(url);
+                    return { url, score };
+                }).sort((a, b) => b.score - a.score);
+                
+                // Generate ranked results HTML
+                let resultsHtml = '';
+                rankedResults.forEach((result, index) => {
+                    const rank = index + 1;
+                    const domain = extractDomain(result.url);
+                    const scoreClass = result.score >= 70 ? 'success' : result.score >= 40 ? 'warning' : 'danger';
+                    
+                    resultsHtml += `
+                        <div class="result-item">
+                            <div class="result-rank">${rank}</div>
+                            <div class="result-url">${domain}</div>
+                            <div class="result-score">${result.score}/100</div>
+                        </div>
+                    `;
+                });
+                
+                // Display results
+                searchResultsContent.innerHTML = resultsHtml;
+                
+                // Save to saved results
+                saveSearchResults(rankedResults);
+                
+                // Switch to search results tab
+                document.getElementById('tabSearch').click();
+                document.getElementById('searchResultsSection').scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Calculate privacy score for a URL
+            function calculatePrivacyScore(url) {
+                let score = 50; // Base score
+                
+                // HTTPS check
+                if (url.startsWith('https://')) {
+                    score += 15;
+                } else if (url.startsWith('http://')) {
+                    score -= 10;
+                }
+                
+                // Domain length check
+                const domain = extractDomain(url);
+                if (domain.length < 8) {
+                    score -= 5;
+                }
+                
+                // Ensure score is within 0-100 range
+                return Math.max(0, Math.min(100, score));
+            }
+            
+            // Save search results
+            function saveSearchResults(results) {
+                const savedResultsContent = document.getElementById('savedResultsContent');
+                
+                // Get existing saved results
+                let savedResults = JSON.parse(localStorage.getItem('privacyGuardianSavedResults') || '[]');
+                
+                // Add new results
+                results.forEach(result => {
+                    savedResults.push({
+                        url: result.url,
+                        score: result.score,
+                        timestamp: new Date().toISOString()
+                    });
+                });
+                
+                // Keep only the latest 10 results
+                savedResults = savedResults.slice(-10);
+                
+                // Save to localStorage
+                localStorage.setItem('privacyGuardianSavedResults', JSON.stringify(savedResults));
+                
+                // Update saved results display
+                updateSavedResultsDisplay(savedResults);
+            }
+            
+            // Update saved results display
+            function updateSavedResultsDisplay(results) {
+                const savedResultsContent = document.getElementById('savedResultsContent');
+                
+                if (results.length === 0) {
+                    savedResultsContent.innerHTML = `
+                        <div class="info-box">
+                            <div class="info-title">No saved results yet</div>
+                            <div class="info-content">Your privacy-ranked search results will appear here.</div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                let resultsHtml = '';
+                results.forEach((result, index) => {
+                    const date = new Date(result.timestamp);
+                    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+                    const domain = extractDomain(result.url);
+                    const scoreClass = result.score >= 70 ? 'success' : result.score >= 40 ? 'warning' : 'danger';
+                    const badgeClass = result.score >= 70 ? 'risk-badge-low' : result.score >= 40 ? 'risk-badge-medium' : 'risk-badge-high';
+                    const badgeText = result.score >= 70 ? 'Low Risk' : result.score >= 40 ? 'Medium Risk' : 'High Risk';
+                    
+                    resultsHtml += `
+                        <div class="history-item">
+                            <div class="history-icon">🌐</div>
+                            <div class="history-content">
+                                <div class="history-url">${domain}</div>
+                                <div class="history-date">${formattedDate}</div>
+                            </div>
+                            <div class="history-risk ${badgeClass}">${badgeText}</div>
+                        </div>
+                    `;
+                });
+                
+                savedResultsContent.innerHTML = resultsHtml;
+            }
+            
+            // Analyze browsing history
+            function analyzeHistory(file) {
+                const reader = new FileReader();
+                const historyAnalysisContent = document.getElementById('historyAnalysisContent');
+                
+                // Show loading state
+                historyAnalysisContent.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+                
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const urls = extractUrlsFromHistory(content);
+                    
+                    if (urls.length === 0) {
+                        historyAnalysisContent.innerHTML = `
+                            <div class="info-box">
+                                <div class="info-title">No URLs found</div>
+                                <div class="info-content">Could not find any URLs in the uploaded file. Please ensure it contains browsing history.</div>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    // Analyze privacy risks
+                    const riskAnalysis = analyzeHistoryRisks(urls);
+                    
+                    // Display results
+                    displayHistoryAnalysis(riskAnalysis);
+                };
+                
+                reader.readAsText(file);
+            }
+            
+            // Extract URLs from history content
+            function extractUrlsFromHistory(content) {
+                const urlRegex = /https?:\/\/[^\s]+/gi;
+                const matches = content.match(urlRegex);
+                return matches ? [...new Set(matches)] : []; // Remove duplicates
+            }
+            
+            // Analyze privacy risks in browsing history
+            function analyzeHistoryRisks(urls) {
+                // Calculate overall privacy score
+                const scores = urls.map(url => calculatePrivacyScore(url));
+                const averageScore = scores.reduce((sum, score) => sum + score, 0) / scores.length;
+                
+                // Count risk categories
+                let trackingSites = 0;
+                let lowPrivacySites = 0;
+                let secureSites = 0;
+                
+                urls.forEach(url => {
+                    const domain = extractDomain(url);
+                    
+                    if (domain.includes('track') || domain.includes('ad')) {
+                        trackingSites++;
+                    }
+                    
+                    if (calculatePrivacyScore(url) < 40) {
+                        lowPrivacySites++;
+                    }
+                    
+                    if (domain.includes('privacy') || domain.includes('secure') || url.startsWith('https://')) {
+                        secureSites++;
+                    }
+                });
+                
+                return {
+                    averageScore,
+                    totalSites: urls.length,
+                    trackingSites,
+                    lowPrivacySites,
+                    secureSites,
+                    riskPercentage: Math.round((lowPrivacySites / urls.length) * 100)
+                };
+            }
+            
+            // Display history analysis results
+            function displayHistoryAnalysis(analysis) {
+                const historyAnalysisContent = document.getElementById('historyAnalysisContent');
+                
+                // Determine risk level
+                let riskLevel, riskColor, riskBadge;
+                if (analysis.riskPercentage >= 50) {
+                    riskLevel = 'High Risk';
+                    riskColor = 'var(--danger)';
+                    riskBadge = 'risk-badge-high';
+                } else if (analysis.riskPercentage >= 25) {
+                    riskLevel = 'Medium Risk';
+                    riskColor = 'var(--warning)';
+                    riskBadge = 'risk-badge-medium';
+                } else {
+                    riskLevel = 'Low Risk';
+                    riskColor = 'var(--success)';
+                    riskBadge = 'risk-badge-low';
+                }
+                
+                // Generate analysis HTML
+                const analysisHtml = `
+                    <div class="info-box">
+                        <div class="info-title">Overall Privacy Risk</div>
+                        <div class="privacy-score" style="margin-top: 15px;">
+                            <div class="score-circle" style="--score-angle: ${(analysis.averageScore / 100) * 360}deg;">
+                                <div class="score-value" style="color: ${riskColor}">${Math.round(analysis.averageScore)}</div>
+                            </div>
+                            <div class="score-details">
+                                <div class="score-label" style="color: ${riskColor}">${riskLevel}</div>
+                                <div class="score-description">${analysis.riskPercentage}% of your visited sites have low privacy protections</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-title">Privacy Breakdown</div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--danger);">${analysis.lowPrivacySites}</div>
+                                <div style="color: var(--text-secondary);">Low Privacy Sites</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--warning);">${analysis.trackingSites}</div>
+                                <div style="color: var(--text-secondary);">Tracking Sites</div>
+                            </div>
+                            <div style="text-align: center; flex: 1;">
+                                <div style="font-size: 1.5rem; font-weight: bold; color: var(--success);">${analysis.secureSites}</div>
+                                <div style="color: var(--text-secondary);">Secure Sites</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-box">
+                        <div class="info-title">Recommendations</div>
+                        <div class="info-content">
+                            ${getPrivacyRecommendations(analysis)}
+                        </div>
+                        <button class="action-button" id="downloadReportButton">Download Privacy Report</button>
+                    </div>
+                `;
+                
+                historyAnalysisContent.innerHTML = analysisHtml;
+                
+                // Add download report functionality
+                const downloadReportButton = document.getElementById('downloadReportButton');
+                if (downloadReportButton) {
+                    downloadReportButton.addEventListener('click', function() {
+                        downloadPrivacyReport(analysis);
+                    });
+                }
+            }
+            
+            // Get privacy recommendations based on analysis
+            function getPrivacyRecommendations(analysis) {
+                let recommendations = [];
+                
+                if (analysis.riskPercentage >= 50) {
+                    recommendations.push('Consider using a privacy-focused browser extension to block trackers.');
+                    recommendations.push('Be cautious when entering personal information on frequently visited sites.');
+                } else if (analysis.riskPercentage >= 25) {
+                    recommendations.push('Review the privacy policies of your most visited sites.');
+                    recommendations.push('Use private browsing mode for sensitive activities.');
+                } else {
+                    recommendations.push('You\'re doing well with privacy! Keep it up.');
+                    recommendations.push('Consider enabling cookies only for trusted sites.');
+                }
+                
+                if (analysis.trackingSites > 5) {
+                    recommendations.push('Install an ad-blocker to reduce tracking.');
+                }
+                
+                if (analysis.secureSites < analysis.totalSites / 2) {
+                    recommendations.push('Make sure websites use HTTPS by checking for the padlock icon.');
+                }
+                
+                return recommendations.map(rec => `<div style="margin-bottom: 10px;">• ${rec}</div>`).join('');
+            }
+            
+            // Download privacy report
+            function downloadPrivacyReport(analysis) {
+                const report = `
+Privacy Guardian - Browsing History Privacy Report
+Generated on: ${new Date().toLocaleString()}
+
+Overall Privacy Score: ${Math.round(analysis.averageScore)}/100
+Risk Level: ${analysis.riskPercentage >= 50 ? 'High' : analysis.riskPercentage >= 25 ? 'Medium' : 'Low'}
+
+Statistics:
+- Total Sites Analyzed: ${analysis.totalSites}
+- Sites with Low Privacy: ${analysis.lowPrivacySites}
+- Tracking Sites: ${analysis.trackingSites}
+- Secure Sites: ${analysis.secureSites}
+
+Recommendations:
+${getPrivacyRecommendations(analysis).replace(/<div[^>]*>/g, '').replace(/<\/div>/g, '\n').replace(/•/g, '-')}
+
+For more privacy protection:
+1. Use privacy-focused browsers
+2. Install ad-blockers and tracker blockers
+3. Regularly clear cookies and browsing data
+4. Use VPN services for additional anonymity
+5. Be cautious with permissions for websites and apps
+                `;
+                
+                // Create and download file
+                const blob = new Blob([report], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `privacy-report-${new Date().toISOString().split('T')[0]}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // Load saved results on page load
+            updateSavedResultsDisplay(JSON.parse(localStorage.getItem('privacyGuardianSavedResults') || '[]'));
+        });
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - Browser Privacy Protection Tool","Privacy Guardian":"Privacy Guardian","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Your browser privacy protection tool that analyzes websites and helps you stay safe online","Analyze":"Analyze","Privacy Score":"Privacy Score","No analysis yet":"No analysis yet","Enter a URL to get a privacy score":"Enter a URL to get a privacy score","Risky":"Risky","Moderate":"Moderate","Safe":"Safe","Privacy Policy Summary":"Privacy Policy Summary","How to use":"How to use","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.","Privacy Risk Alerts":"Privacy Risk Alerts","Enter keywords to get specific privacy risk alerts related to those terms.":"Enter keywords to get specific privacy risk alerts related to those terms.","Search Results Privacy Ranking":"Search Results Privacy Ranking","Search Results":"Search Results","Saved Results":"Saved Results","Paste search results to get them ranked by privacy protection level.":"Paste search results to get them ranked by privacy protection level.","No saved results yet":"No saved results yet","Your privacy-ranked search results will appear here.":"Your privacy-ranked search results will appear here.","Browsing History Privacy Analysis":"Browsing History Privacy Analysis","Upload your browsing history to get a privacy risk analysis.":"Upload your browsing history to get a privacy risk analysis.","Upload History":"Upload History","Data Collection":"Data Collection","Third-Party Sharing":"Third-Party Sharing","Cookie Usage":"Cookie Usage","User Rights":"User Rights","No URLs found":"No URLs found","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Could not find any URLs in the uploaded file. Please ensure it contains browsing history.","Overall Privacy Risk":"Overall Privacy Risk","% of your visited sites have low privacy protections":"% of your visited sites have low privacy protections","Privacy Breakdown":"Privacy Breakdown","Low Privacy Sites":"Low Privacy Sites","Tracking Sites":"Tracking Sites","Secure Sites":"Secure Sites","Recommendations":"Recommendations","Download Privacy Report":"Download Privacy Report","getPrivacyRecommendations(analysis).replace(/":"getPrivacyRecommendations(analysis).replace(/","Enter website URL, keywords, or search results...":"Enter website URL, keywords, or search results...","DOMContentLoaded":"DOMContentLoaded","Enter":"Enter","www.":"www.","High Privacy":"High Privacy","This website has strong privacy protections.":"This website has strong privacy protections.","Moderate Privacy":"Moderate Privacy","This website has average privacy protections.":"This website has average privacy protections.","Low Privacy":"Low Privacy","This website has weak privacy protections.":"This website has weak privacy protections.","Unknown":"Unknown","Network response was not ok":"Network response was not ok","Error fetching policy summary:":"Error fetching policy summary:","Error in policy summary request:":"Error in policy summary request:","Tracking Technologies":"Tracking Technologies","Websites may use tracking technologies to monitor your activity.":"Websites may use tracking technologies to monitor your activity.","Cookies are used to store information about your visits.":"Cookies are used to store information about your visits.","Location Tracking":"Location Tracking","Your location may be tracked based on IP or device permissions.":"Your location may be tracked based on IP or device permissions.","Personal Information Collection":"Personal Information Collection","Websites may collect personal information like name and email.":"Websites may collect personal information like name and email.","Social Media Integration":"Social Media Integration","Social media buttons and integrations can track your activity.":"Social media buttons and integrations can track your activity.","Payment Information":"Payment Information","Websites may collect payment details for transactions.":"Websites may collect payment details for transactions.","General Privacy Concerns":"General Privacy Concerns","Your search may involve websites with various privacy risks.":"Your search may involve websites with various privacy risks.","Low Risk":"Low Risk","Medium Risk":"Medium Risk","High Risk":"High Risk","margin-top: 15px;":"margin-top: 15px;","display: flex; justify-content: space-between; margin-top: 15px;":"display: flex; justify-content: space-between; margin-top: 15px;","text-align: center; flex: 1;":"text-align: center; flex: 1;","Consider using a privacy-focused browser extension to block trackers.":"Consider using a privacy-focused browser extension to block trackers.","Be cautious when entering personal information on frequently visited sites.":"Be cautious when entering personal information on frequently visited sites.","Review the privacy policies of your most visited sites.":"Review the privacy policies of your most visited sites.","Use private browsing mode for sensitive activities.":"Use private browsing mode for sensitive activities.","re doing well with privacy! Keep it up.":"re doing well with privacy! Keep it up.","Consider enabling cookies only for trusted sites.":"Consider enabling cookies only for trusted sites.","Install an ad-blocker to reduce tracking.":"Install an ad-blocker to reduce tracking.","Make sure websites use HTTPS by checking for the padlock icon.":"Make sure websites use HTTPS by checking for the padlock icon.","margin-bottom: 10px;":"margin-bottom: 10px;","High":"High","Medium":"Medium","Low":"Low","__title__":"Privacy Guardian - Browser Privacy Protection Tool","/g, '').replace(/":"/g, '').replace(/","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab active","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Privacy Guardian - Browser Privacy Protection Tool":"隐私守护者 - 浏览器隐私保护工具","Privacy Guardian":"隐私守护者","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"您的浏览器隐私保护工具，分析网站并帮助您在线安全","Analyze":"分析","Privacy Score":"隐私评分","No analysis yet":"尚未进行分析","Enter a URL to get a privacy score":"输入URL以获取隐私评分","Risky":"风险高","Moderate":"中等","Safe":"安全","Privacy Policy Summary":"隐私政策摘要","How to use":"如何使用","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"输入网站URL以获取其隐私政策的摘要，突出数据收集和共享的关键点。","Privacy Risk Alerts":"隐私风险警报","Enter keywords to get specific privacy risk alerts related to those terms.":"输入关键词以获取与这些术语相关的特定隐私风险警报。","Search Results Privacy Ranking":"搜索结果隐私排名","Search Results":"搜索结果","Saved Results":"已保存结果","Paste search results to get them ranked by privacy protection level.":"粘贴搜索结果以按隐私保护级别进行排名。","No saved results yet":"尚未保存任何结果","Your privacy-ranked search results will appear here.":"您的隐私排名搜索结果将显示在此处。","Browsing History Privacy Analysis":"浏览历史隐私分析","Upload your browsing history to get a privacy risk analysis.":"上传您的浏览历史以获取隐私风险分析。","Upload History":"上传历史","Data Collection":"数据收集","Third-Party Sharing":"第三方共享","Cookie Usage":"Cookie使用","User Rights":"用户权利","No URLs found":"未找到URL","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"在上传的文件中找不到任何URL。请确保它包含浏览历史。","Overall Privacy Risk":"总体隐私风险","% of your visited sites have low privacy protections":"您访问的网站中有%的隐私保护较低","Privacy Breakdown":"隐私分解","Low Privacy Sites":"低隐私网站","Tracking Sites":"跟踪网站","Secure Sites":"安全网站","Recommendations":"推荐","Download Privacy Report":"下载隐私报告","getPrivacyRecommendations(analysis).replace(/":"替换分析结果中的引号","Enter website URL, keywords, or search results...":"输入网站网址、关键词或搜索结果...","Enter":"输入","High Privacy":"高隐私","This website has strong privacy protections.":"此网站具有强大的隐私保护措施。","Moderate Privacy":"适度隐私","This website has average privacy protections.":"这个网站有平均的隐私保护。","Low Privacy":"低隐私","This website has weak privacy protections.":"这个网站有较弱的隐私保护。","Unknown":"未知","Network response was not ok":"网络响应不正常","Error fetching policy summary:":"获取策略摘要时出错：","Error in policy summary request:":"策略摘要请求中出错：","Tracking Technologies":"跟踪技术","Websites may use tracking technologies to monitor your activity.":"网站可能会使用跟踪技术来监控您的活动。","Cookies are used to store information about your visits.":"cookies用于存储有关您访问的信息。","Location Tracking":"位置跟踪","Your location may be tracked based on IP or device permissions.":"您的位置可能会根据IP或设备权限进行跟踪。","Personal Information Collection":"个人信息收集","Websites may collect personal information like name and email.":"网站可能会收集诸如姓名和电子邮件之类的个人信息。","Social Media Integration":"社交媒体集成","Social media buttons and integrations can track your activity.":"社交媒体按钮和集成可以追踪您的活动。","Payment Information":"支付信息","Websites may collect payment details for transactions.":"网站可能会收集交易的支付详情。","General Privacy Concerns":"一般隐私问题","Your search may involve websites with various privacy risks.":"您的搜索可能涉及具有各种隐私风险的网站。","Low Risk":"低风险","Medium Risk":"中等风险","High Risk":"高风险","Consider using a privacy-focused browser extension to block trackers.":"考虑使用注重隐私的浏览器扩展来阻止追踪器。","Be cautious when entering personal information on frequently visited sites.":"在经常访问的网站上输入个人信息时要谨慎。","Review the privacy policies of your most visited sites.":"查看您最常访问网站的隐私政策。","Use private browsing mode for sensitive activities.":"进行敏感活动时使用隐私浏览模式。","re doing well with privacy! Keep it up.":"您的隐私保护做得很好！继续保持。","Consider enabling cookies only for trusted sites.":"考虑仅对受信任的网站启用cookies。","Install an ad-blocker to reduce tracking.":"安装广告拦截器以减少追踪。","Make sure websites use HTTPS by checking for the padlock icon.":"通过检查锁形图标确保网站使用HTTPS。","High":"高","Medium":"中","Low":"低","__title__":"隐私守护者 - 浏览器隐私保护工具","DOMContentLoaded":"DOM完全加载后","www.":"网站","完全免费":"完全免费","提意见":"提意见","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab active","var(--success)":"成功变量","var(--warning)":"警告变量","var(--danger)":"危险变量","text/plain":"纯文本","PingFang SC":"苹方 SC","Microsoft YaHei":"微软雅黑","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"免费在线工具：隐私守护者 - 浏览器隐私保护工具。无需注册，无需付费 — 永久免费。","/g, '').replace(/":"/"},"es":{"Privacy Guardian - Browser Privacy Protection Tool":"Guardián de la Privacidad - Herramienta de Protección de Privacidad del Navegador","Privacy Guardian":"Guardián de la Privacidad","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Su herramienta de protección de privacidad del navegador que analiza sitios web y le ayuda a mantenerse seguro en línea","Analyze":"Analizar","Privacy Score":"Puntuación de Privacidad","No analysis yet":"Aún sin análisis","Enter a URL to get a privacy score":"Ingrese una URL para obtener una puntuación de privacidad","Risky":"Riesgo","Moderate":"Moderado","Safe":"Seguro","Privacy Policy Summary":"Resumen de la Política de Privacidad","How to use":"Cómo usar","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Ingrese una URL de un sitio web para obtener un resumen de su política de privacidad, destacando puntos clave sobre la recopilación y compartir datos.","Privacy Risk Alerts":"Alertas de Riesgo de Privacidad","Enter keywords to get specific privacy risk alerts related to those terms.":"Ingrese palabras clave para obtener alertas de riesgo de privacidad específicas relacionadas con esos términos.","Search Results Privacy Ranking":"Clasificación de Privacidad de Resultados de Búsqueda","Search Results":"Resultados de Búsqueda","Saved Results":"Resultados Guardados","Paste search results to get them ranked by privacy protection level.":"Pegue los resultados de búsqueda para que se clasifiquen por nivel de protección de privacidad.","No saved results yet":"Aún sin resultados guardados","Your privacy-ranked search results will appear here.":"Sus resultados de búsqueda clasificados por privacidad aparecerán aquí.","Browsing History Privacy Analysis":"Análisis de Privacidad del Historial de Navegación","Upload your browsing history to get a privacy risk analysis.":"Suba su historial de navegación para obtener un análisis de riesgo de privacidad.","Upload History":"Subir Historial","Data Collection":"Recopilación de Datos","Third-Party Sharing":"Compartir con Terceros","Cookie Usage":"Uso de Cookies","User Rights":"Derechos del Usuario","No URLs found":"No se encontraron URLs","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"No se pudieron encontrar URLs en el archivo subido. Asegúrese de que contiene historial de navegación.","Overall Privacy Risk":"Riesgo de privacidad total","% of your visited sites have low privacy protections":"% de los sitios visitados tienen protecciones de privacidad bajas","Privacy Breakdown":"Desglose de privacidad","Low Privacy Sites":"Sitios con baja privacidad","Tracking Sites":"Sitios de seguimiento","Secure Sites":"Sitios seguros","Recommendations":"Recomendaciones","Download Privacy Report":"Descargar informe de privacidad","Enter website URL, keywords, or search results...":"Ingrese la URL del sitio web, palabras clave o resultados de búsqueda...","Enter":"Ingrese","High Privacy":"Privacidad alta","This website has strong privacy protections.":"Este sitio web tiene fuertes protecciones de privacidad.","Moderate Privacy":"Privacidad Moderada","This website has average privacy protections.":"Este sitio web tiene protecciones de privacidad promedio.","Low Privacy":"Privacidad Baja","This website has weak privacy protections.":"Este sitio web tiene protecciones de privacidad débiles.","Unknown":"Desconocido","Network response was not ok":"La respuesta de la red no fue correcta","Error fetching policy summary:":"Error al obtener el resumen de la política:","Error in policy summary request:":"Error en la solicitud de resumen de la política:","Tracking Technologies":"Los sitios web pueden usar tecnologías de rastreo para monitorear su actividad.","Websites may use tracking technologies to monitor your activity.":"Los sitios web pueden utilizar tecnologías de rastreo para monitorear su actividad.","Cookies are used to store information about your visits.":"Las cookies se utilizan para almacenar información sobre sus visitas.","Location Tracking":"Su ubicación puede ser rastreada basándose en la dirección IP o en los permisos del dispositivo.","Your location may be tracked based on IP or device permissions.":"Su ubicación puede ser rastreada basándose en la dirección IP o en los permisos del dispositivo.","Personal Information Collection":"Los sitios web pueden recopilar información personal como nombre y correo electrónico.","Websites may collect personal information like name and email.":"Los sitios web pueden recopilar información personal como nombre y correo electrónico.","Social Media Integration":"Integración de redes sociales","Social media buttons and integrations can track your activity.":"Los botones de redes sociales y las integraciones pueden rastrear tu actividad.","Payment Information":"Información de pago","Websites may collect payment details for transactions.":"Los sitios web pueden recopilar detalles de pago para transacciones.","General Privacy Concerns":"Preocupaciones generales sobre la privacidad","Your search may involve websites with various privacy risks.":"Tu búsqueda puede implicar sitios web con diversos riesgos de privacidad.","Low Risk":"Bajo riesgo","Medium Risk":"Riesgo medio","High Risk":"Alto riesgo","Consider using a privacy-focused browser extension to block trackers.":"Considera usar una extensión de navegador enfocada en la privacidad para bloquear rastreadores.","Be cautious when entering personal information on frequently visited sites.":"Sé cauteloso al ingresar información personal en sitios visitados frecuentemente.","Review the privacy policies of your most visited sites.":"Revisa las políticas de privacidad de tus sitios más visitados.","Use private browsing mode for sensitive activities.":"Usa el modo de navegación privada para actividades sensibles.","re doing well with privacy! Keep it up.":"¡Estás haciendo bien con la privacidad! Sigue así.","Consider enabling cookies only for trusted sites.":"Considera habilitar las cookies solo para sitios de confianza.","Install an ad-blocker to reduce tracking.":"Instala un bloqueador de anuncios para reducir el rastreo.","Make sure websites use HTTPS by checking for the padlock icon.":"Asegúrate de que los sitios web usen HTTPS verificando el icono del candado.","High":"Alto","Medium":"Medio","Low":"Bajo","__title__":"Guardián de la Privacidad - Herramienta de Protección de Privacidad del Navegador","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","og:type":"…","og:url":"…","Segoe UI":"…","LA_COLLECT":"…","tab active":"…","var(--success)":"var(--éxito)","var(--warning)":"var(--advertencia)","var(--danger)":"var(--peligro)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"obtenerRecomendacionesPrivacidad(analysis).reemplazar(/","/g, '').replace(/":"obtenerRecomendacionesPrivacidad(analysis).reemplazar(/","www.":"obtenerRecomendacionesPrivacidad(analysis).replace(/","DOMContentLoaded":"obtenerRecomendacionesPrivacidad(analysis).reemplazar(/","getPrivacyRecommendations(analysis).replace(/":"obtenerRecomendacionesPrivacidad(analysis).reemplazar(/"},"ja":{"Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - ブラウザプライバシープロテクションツール","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"ウェブサイトを分析し、オンラインでの安全性を維持助けますあなたのブラウザプライバシープロテクションツール","Analyze":"分析","Privacy Score":"プライバシースコア","No analysis yet":"まだ分析されていません","Enter a URL to get a privacy score":"URLを入力してプライバシースコアを取得","Risky":"リスク高い","Moderate":"中程度","Safe":"安全","Privacy Policy Summary":"プライバシーポリシースマタリー","How to use":"使い方","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"ウェブサイトのURLを入力して、データ収集および共有に関する重要ポイントをハイライト表示するプライバシーポリシースマタリーを取得","Privacy Risk Alerts":"プライバシーリスクアラート","Enter keywords to get specific privacy risk alerts related to those terms.":"キーワードを入力して、それらの用語に関連する具体的なプライバシーリスクアラートを取得","Search Results Privacy Ranking":"検索結果プライバシーランキング","Search Results":"検索結果","Saved Results":"保存された結果","Paste search results to get them ranked by privacy protection level.":"検索結果をペーストして、プライバシープロテクションレベルに基づいてランク付け","No saved results yet":"まだ保存された結果はありません","Your privacy-ranked search results will appear here.":"あなたのプライバシーランキングされた検索結果がここに表示されます。","Browsing History Privacy Analysis":"ブラウジング履歴プライバシーアナリシス","Upload your browsing history to get a privacy risk analysis.":"ブラウジング履歴をアップロードして、プライバシーリスク分析を取得","Upload History":"アップロード履歴","Data Collection":"データ収集","Third-Party Sharing":"第三者提供","Cookie Usage":"クッキーの使用","User Rights":"ユーザーの権利","No URLs found":"URLが見つかりません","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"アップロードされたファイルにURLが見つかりませんでした。ブラウジング履歴が含まれていることを確認してください。","Overall Privacy Risk":"全体プライバシーリスク","% of your visited sites have low privacy protections":"訪問したサイトのうちプライバシープロテクションが低い割合","Privacy Breakdown":"プライバシーの詳細","Low Privacy Sites":"低プライバシーサイト","Tracking Sites":"トラッキングサイト","Secure Sites":"セキュアサイト","Recommendations":"推奨事項","Download Privacy Report":"プライバシー報告をダウンロード","Enter website URL, keywords, or search results...":"ウェブサイトのURL、キーワード、または検索結果を入力...","High Privacy":"高プライバシー","This website has strong privacy protections.":"このウェブサイトには強力なプライバシープロテクションがあります。","Moderate Privacy":"適度なプライバシー","This website has average privacy protections.":"このウェブサイトは平均的なプライバシープロテクションがあります。","Low Privacy":"低いプライバシー","This website has weak privacy protections.":"このウェブサイトは弱いプライバシープロテクションがあります。","Unknown":"不明","Network response was not ok":"ネットワーク応答が正常ではありませんでした","Error fetching policy summary:":"ポリシーサマリーの取得中にエラーが発生しました：","Error in policy summary request:":"ポリシーサマリリクエスト中にエラーが発生しました：","Tracking Technologies":"ウェブサイトはトラッキング技術を使用してアクティビティを監視するかもしれません。","Websites may use tracking technologies to monitor your activity.":"ウェブサイトはトラッキング技術を使用して、あなたの活動を監視する可能性があります。","Cookies are used to store information about your visits.":"クッキーは訪問に関する情報を保存するために使用されます。","Location Tracking":"IPアドレスまたはデバイスの許可に基づいて位置情報がトラッキングされるかもしれません。","Your location may be tracked based on IP or device permissions.":"IPアドレスまたはデバイスの許可に基づいて、あなたの場所がトラッキングされる可能性があります。","Personal Information Collection":"ウェブサイトは名前やメールアドレスなどの個人情報を収集するかもしれません。","Websites may collect personal information like name and email.":"ウェブサイトは名前やメールアドレスなどの個人情報を収集する可能性があります。","Social Media Integration":"ソーシャルメディア統合","Social media buttons and integrations can track your activity.":"ソーシャルメディアのボタンや統合は、あなたの活動を追跡することができます。","Payment Information":"支払い情報","Websites may collect payment details for transactions.":"ウェブサイトは取引のために支払い詳細を収集することがあります。","General Privacy Concerns":"一般的なプライバシーの懸念","Your search may involve websites with various privacy risks.":"あなたの検索には、さまざまなプライバシーリスクのあるウェブサイトが含まれることがあります。","Low Risk":"低リスク","Medium Risk":"中リスク","High Risk":"高リスク","Consider using a privacy-focused browser extension to block trackers.":"トラッカーをブロックするために、プライバシーに焦点を当てたブラウザ拡張機能の使用を検討してください。","Be cautious when entering personal information on frequently visited sites.":"頻繁に訪れるサイトに個人情報を入力する際は注意してください。","Review the privacy policies of your most visited sites.":"最も訪れるサイトのプライバシーポリシーを確認してください。","Use private browsing mode for sensitive activities.":"機密性の高い活動にはプライベートブラウジングモードを使用してください。","re doing well with privacy! Keep it up.":"プライバシーにおいてうまくやっています！そのまま続けてください。","Consider enabling cookies only for trusted sites.":"信頼できるサイトのみでCookieを有効にすることを検討してください。","Install an ad-blocker to reduce tracking.":"追跡を減らすために広告ブロッカーをインストールしてください。","Make sure websites use HTTPS by checking for the padlock icon.":"鍵のアイコンを確認して、ウェブサイトがHTTPSを使用していることを確認してください。","High":"高","Medium":"中","Low":"低","__title__":"Privacy Guardian - ブラウザプライバシープロテクションツール","Privacy Guardian":"プライバシー・ガーディアン","www.":"…","完全免费":"完全無料","提意见":"意見を言う","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"無料オンラインツール：Privacy Guardian - ブラウザプライバシープロテクションツール。登録不要、支払い不要ー永遠に無料","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"タブアクティブ","var(--success)":"--成功","var(--warning)":"--警告","var(--danger)":"--危険","text/plain":"テキスト/プライン","PingFang SC":"苹方 SC","Microsoft YaHei":"微软雅黑","/g, '').replace(/":"…","Enter":"プライバシーレコメンデーション(分析).replace(/","DOMContentLoaded":"プライバシー推薦を取得(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"プライバシーリコメンデーション(analysis).replace(/"},"ko":{"Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - 브라우저 개인정보 보호 도구","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"웹사이트를 분석하고 온라인에서 안전하게 사용할 수 있도록 도와주는 브라우저 개인정보 보호 도구","Analyze":"분석","Privacy Score":"개인정보 점수","No analysis yet":"아직 분석되지 않았습니다","Enter a URL to get a privacy score":"개인정보 점수를 얻기 위해 URL을 입력하세요","Risky":"위험","Moderate":"중간","Safe":"안전","Privacy Policy Summary":"개인정보 정책 요약","How to use":"사용 방법","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"데이터 수집 및 공유에 대한 핵심 포인트를 강조한 웹사이트의 개인정보 정책 요약을 얻기 위해 웹사이트 URL을 입력하세요","Privacy Risk Alerts":"개인정보 위험 경고","Enter keywords to get specific privacy risk alerts related to those terms.":"특정 키워드를 입력하여 해당 키워드와 관련된 개인정보 위험 경고를 얻으세요","Search Results Privacy Ranking":"검색 결과 개인정보 순위","Search Results":"검색 결과","Saved Results":"저장된 결과","Paste search results to get them ranked by privacy protection level.":"개인정보 보호 수준에 따라 순위를 매기기 위해 검색 결과를 붙여넣습니다","No saved results yet":"아직 저장된 결과가 없습니다","Your privacy-ranked search results will appear here.":"개인정보 순위에 따른 검색 결과가 여기에 표시됩니다","Browsing History Privacy Analysis":"浏覽歷史隱私分析","Upload your browsing history to get a privacy risk analysis.":"浏覽歷史을 업로드하여 개인정보 위험 분석을 받으세요","Upload History":"업로드 이력","Data Collection":"데이터 수집","Third-Party Sharing":"제3자 공유","Cookie Usage":"쿠키 사용","User Rights":"사용자 권리","No URLs found":"URL이 없습니다","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"업로드된 파일에 URL이 없습니다.浏覽歷史이 포함되어 있는지 확인해 주세요","Overall Privacy Risk":"전체 개인정보 위험","% of your visited sites have low privacy protections":"방문한 사이트의 %가 낮은 개인정보 보호를 가지고 있습니다","Privacy Breakdown":"개인정보 분해","Low Privacy Sites":"낮은 개인정보 사이트","Tracking Sites":"추적 사이트","Secure Sites":"보안 사이트","Recommendations":"추천사항","Download Privacy Report":"다운로드 개인정보 보고서","Enter website URL, keywords, or search results...":"웹사이트 URL, 키워드 또는 검색 결과를 입력하세요...","High Privacy":"고도의 개인정보 보호","This website has strong privacy protections.":"이 웹사이트는 강력한 개인정보 보호를 제공합니다.","Moderate Privacy":"보통 개인정보 보호","This website has average privacy protections.":"이 웹사이트는 평균적인 개인정보 보호를 제공합니다.","Low Privacy":"낮은 개인정보 보호","This website has weak privacy protections.":"이 웹사이트는 약한 개인정보 보호를 제공합니다.","Unknown":"알 수 없음","Network response was not ok":"네트워크 응답이 올바르지 않았습니다","Error fetching policy summary:":"정책 요약 가져오기 오류:","Error in policy summary request:":"정책 요약 요청에서 오류:","Tracking Technologies":"트래킹 기술","Websites may use tracking technologies to monitor your activity.":"웹사이트는 활동을 모니터링하기 위해 트래킹 기술을 사용할 수 있습니다.","Cookies are used to store information about your visits.":"쿠키는 방문에 대한 정보를 저장하는 데 사용됩니다.","Location Tracking":"위치 추적","Your location may be tracked based on IP or device permissions.":"IP 주소나 장치 권한에 따라 위치가 추적될 수 있습니다.","Personal Information Collection":"개인정보 수집","Websites may collect personal information like name and email.":"웹사이트는 이름과 이메일과 같은 개인정보를 수집할 수 있습니다.","Social Media Integration":"소셜 미디어 통합","Social media buttons and integrations can track your activity.":"소셜 미디어 버튼과 통합 기능은 활동을 추적할 수 있습니다.","Payment Information":"결제 정보","Websites may collect payment details for transactions.":"웹사이트는 거래를 위해 결제 세부 정보를 수집할 수 있습니다.","General Privacy Concerns":"일반적인 개인정보 보호 우려","Your search may involve websites with various privacy risks.":"검색에는 다양한 개인정보 보호 위험이 있는 웹사이트가 포함될 수 있습니다.","Low Risk":"낮은 위험","Medium Risk":"중간 위험","High Risk":"높은 위험","Consider using a privacy-focused browser extension to block trackers.":"트래커를 차단하기 위해 개인정보 보호 중심의 브라우저 확장 프로그램 사용을 고려하세요.","Be cautious when entering personal information on frequently visited sites.":"자주 방문하는 사이트에 개인정보를 입력할 때는 주의하세요.","Review the privacy policies of your most visited sites.":"가장 자주 방문하는 사이트의 개인정보 보호 정책을 검토하세요.","Use private browsing mode for sensitive activities.":"민감한 활동을 위해 프라이빗 브라우징 모드를 사용하세요.","re doing well with privacy! Keep it up.":"개인정보 보호를 잘하고 있어요! 계속 유지하세요.","Consider enabling cookies only for trusted sites.":"신뢰할 수 있는 사이트에 대해서만 쿠키를 활성화하는 것을 고려하세요.","Install an ad-blocker to reduce tracking.":"추적을 줄이기 위해 광고 차단기를 설치하세요.","Make sure websites use HTTPS by checking for the padlock icon.":"자물쇠 아이콘을 확인하여 웹사이트가 HTTPS를 사용하는지 확인하세요.","High":"높음","Medium":"중간","Low":"낮음","__title__":"Privacy Guardian - 브라우저 개인정보 보호 도구","Privacy Guardian":"프라이버시 가디언","www.":"getPrivacyRecommendations(analysis).replace(/","完全免费":"완전 무료","提意见":"의견 제안","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"무료 온라인 도구: Privacy Guardian - 브라우저 개인정보 보호 도구. 회원가입 없음, 결제 없음 - 영원히 무료","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"탭 활성","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","/g, '').replace(/":"개인정보추천을 가져오기(분석). \"DOMContentLoaded\",\"Enter\"으로 대체하고, \"\"으로 대체합니다","Enter":"getPrivacyRecommendations(analysis).replace(/","DOMContentLoaded":"getPrivacyRecommendations(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"/"},"fr":{"Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - Outil de Protection de la Vie Privée du Navigateur","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Votre outil de protection de la vie privée du navigateur qui analyse les sites web et vous aide à rester en sécurité en ligne","Analyze":"Analyser","Privacy Score":"Score de Confidentialité","No analysis yet":"Aucune analyse encore","Enter a URL to get a privacy score":"Entrez une URL pour obtenir un score de confidentialité","Risky":"Risque","Moderate":"Moyen","Safe":"Sécurisé","Privacy Policy Summary":"Résumé de la Politique de Confidentialité","How to use":"Comment utiliser","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Entrez une URL de site web pour obtenir un résumé de sa politique de confidentialité, mettant en avant les points clés concernant la collecte et le partage des données.","Privacy Risk Alerts":"Alertes de Risque de Confidentialité","Enter keywords to get specific privacy risk alerts related to those terms.":"Entrez des mots-clés pour obtenir des alertes de risque de confidentialité spécifiques liées à ces termes.","Search Results Privacy Ranking":"Classement de Confidentialité des Résultats de Recherche","Search Results":"Résultats de Recherche","Saved Results":"Résultats Sauvegardés","Paste search results to get them ranked by privacy protection level.":"Coller les résultats de recherche pour les classer par niveau de protection de la confidentialité.","No saved results yet":"Aucun résultat sauvegardé encore","Your privacy-ranked search results will appear here.":"Vos résultats de recherche classés par confidentialité apparaîtront ici.","Browsing History Privacy Analysis":"Analyse de Confidentialité de l'Historique de Navigation","Upload your browsing history to get a privacy risk analysis.":"Téléchargez votre historique de navigation pour obtenir une analyse de risque de confidentialité.","Upload History":"Télécharger l'Historique","Data Collection":"Collecte de Données","Third-Party Sharing":"Partage avec des Tiers","Cookie Usage":"Utilisation de Cookies","User Rights":"Droits de l'Utilisateur","No URLs found":"Aucune URL trouvée","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Impossible de trouver d'URL dans le fichier téléchargé. Veuillez vous assurer qu'il contient un historique de navigation.","Overall Privacy Risk":"Risque Global de Confidentialité","% of your visited sites have low privacy protections":"% de vos sites visités ont une protection de confidentialité faible","Privacy Breakdown":"Détail de la Confidentialité","Low Privacy Sites":"Sites avec Faible Confidentialité","Tracking Sites":"Sites de Suivi","Secure Sites":"Sites Sécurisés","Recommendations":"Recommandations","Download Privacy Report":"Télécharger le Rapport de Confidentialité","Enter website URL, keywords, or search results...":"Entrez l'URL du site Web, les mots-clés ou les résultats de recherche...","Enter":"Entrer","High Privacy":"Haute Confidentialité","This website has strong privacy protections.":"Ce site web a de fortes protections de confidentialité.","Moderate Privacy":"Confidentialité Moyenne","This website has average privacy protections.":"Ce site web a des protections de confidentialité moyennes.","Low Privacy":"Basse Confidentialité","This website has weak privacy protections.":"Ce site web a de faibles protections de confidentialité.","Unknown":"Inconnu","Network response was not ok":"La réponse du réseau n'était pas correcte","Error fetching policy summary:":"Erreur lors de la récupération du résumé de la politique :","Error in policy summary request:":"Erreur dans la requête de résumé de la politique :","Tracking Technologies":"Technologies de Suivi","Websites may use tracking technologies to monitor your activity.":"Les sites web peuvent utiliser des technologies de suivi pour surveiller votre activité.","Cookies are used to store information about your visits.":"Les cookies sont utilisés pour stocker des informations sur vos visites.","Location Tracking":"Suivi de Localisation","Your location may be tracked based on IP or device permissions.":"Votre localisation peut être suivie sur la base de l'IP ou des permissions du périphérique.","Personal Information Collection":"Collecte d'Informations Personnelles","Websites may collect personal information like name and email.":"Les sites web peuvent collecter des informations personnelles telles que le nom et l'e-mail.","Social Media Integration":"Intégration des réseaux sociaux","Social media buttons and integrations can track your activity.":"Les boutons de réseaux sociaux et les intégrations peuvent suivre votre activité.","Payment Information":"Informations sur le paiement","Websites may collect payment details for transactions.":"Les sites web peuvent collecter des détails sur les transactions.","General Privacy Concerns":"Préoccupations générales sur la vie privée","Your search may involve websites with various privacy risks.":"Votre recherche peut impliquer des sites web avec divers risques pour la vie privée.","Low Risk":"Risque faible","Medium Risk":"Risque moyen","High Risk":"Risque élevé","Consider using a privacy-focused browser extension to block trackers.":"Considérez l'utilisation d'une extension de navigateur axée sur la vie privée pour bloquer les traqueurs.","Be cautious when entering personal information on frequently visited sites.":"Soyez prudent lorsque vous entrez des informations personnelles sur les sites fréquemment visités.","Review the privacy policies of your most visited sites.":"Examinez les politiques de confidentialité des sites que vous visitez le plus souvent.","Use private browsing mode for sensitive activities.":"Utilisez le mode navigation privée pour les activités sensibles.","re doing well with privacy! Keep it up.":"Vous vous débrouillez bien avec la vie privée ! Continuez ainsi.","Consider enabling cookies only for trusted sites.":"Considérez l'activation des cookies uniquement pour les sites de confiance.","Install an ad-blocker to reduce tracking.":"Installez un bloqueur de publicités pour réduire le suivi.","Make sure websites use HTTPS by checking for the padlock icon.":"Assurez-vous que les sites web utilisent HTTPS en vérifiant l'icône de verrou.","High":"Elevé","Medium":"Moyen","Low":"Faible","__title__":"Privacy Guardian - Outil de Protection de la Vie Privée du Navigateur","Privacy Guardian":"Protecteur de vie privée","www.":"getPrivacyRecommendations(analysis).remplace(/\",\"DOMContentLoaded\",\"www.","完全免费":"Complètement gratuit","提意见":"Faire une suggestion","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"Outil en ligne gratuit : Privacy Guardian - Outil de Protection de la Vie Privée du Navigateur. Pas d'inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"onglet actif","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","/g, '').replace(/":"getPrivacyRecommendations(analysis).replace(/","DOMContentLoaded":"obtenirRecommandationsConfidentialite(analysis).remplacer(/","getPrivacyRecommendations(analysis).replace(/":"obtenirDesRecommandationsDeConfidentialite(analysis).remplacer(/"},"de":{"Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Ihr Browser-Privatschutztool, das Websites analysiert und Ihnen hilft, sicher online zu bleiben","Analyze":"Analyse","Privacy Score":"Privatschutzscore","No analysis yet":"Noch keine Analyse","Enter a URL to get a privacy score":"Geben Sie eine URL ein, um einen Privatschutzscore zu erhalten","Risky":"Risikoreich","Moderate":"Mäßig","Safe":"Sicher","Privacy Policy Summary":"Privatschutzrichtlinienübersicht","How to use":"Wie man es verwendet","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Geben Sie eine Website-URL ein, um eine Zusammenfassung ihrer Privatschutzrichtlinie zu erhalten, die wichtige Punkte zur Datenerfassung und -weitergabe hervorhebt.","Privacy Risk Alerts":"Privatschutzrisikowarnungen","Enter keywords to get specific privacy risk alerts related to those terms.":"Geben Sie Schlüsselwörter ein, um spezifische Privatschutzrisikowarnungen zu erhalten, die mit diesen Begriffen zusammenhängen.","Search Results Privacy Ranking":"Suchergebnisse Privatschutz-Rangliste","Search Results":"Suchergebnisse","Saved Results":"Gespeicherte Ergebnisse","Paste search results to get them ranked by privacy protection level.":"Fügen Sie Suchergebnisse ein, um sie nach dem Privatschutzlevel zu rangieren.","No saved results yet":"Noch keine gespeicherten Ergebnisse","Your privacy-ranked search results will appear here.":"Ihre nach Privatschutz geordneten Suchergebnisse werden hier angezeigt.","Browsing History Privacy Analysis":"Privatschutzanalyse des Browsing-Historie","Upload your browsing history to get a privacy risk analysis.":"Laden Sie Ihre Browsing-Historie hoch, um eine Privatschutzrisikobewertung zu erhalten.","Upload History":"Hochladegeschichte","Data Collection":"Datenerfassung","Third-Party Sharing":"Drittanbieter-Sharing","Cookie Usage":"Cookie-Nutzung","User Rights":"Nutzerrechte","No URLs found":"Keine URLs gefunden","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Es wurden keine URLs im hochgeladenen Datei gefunden. Bitte stellen Sie sicher, dass sie Browsing-Historie enthält.","Overall Privacy Risk":"Gesamtes Privatschutzrisiko","% of your visited sites have low privacy protections":"% Ihrer besuchten Websites haben geringe Privatschutzeinstellungen","Privacy Breakdown":"Privatschutzauflösung","Low Privacy Sites":"Website mit niedrigem Privatschutz","Tracking Sites":"Nachverfolgungswebsite","Secure Sites":"Sichere Websites","Recommendations":"Empfehlungen","Download Privacy Report":"Privatschutzbericht herunterladen","Enter website URL, keywords, or search results...":"Geben Sie die Website-URL, Schlüsselwörter oder Suchergebnisse ein...","Enter":"Eingeben","High Privacy":"Hoher Privatschutz","This website has strong privacy protections.":"Diese Website hat starke Privatschutzeinstellungen.","Moderate Privacy":"Mittlerer Privatschutz","This website has average privacy protections.":"Diese Website hat durchschnittliche Privatschutzeinstellungen.","Low Privacy":"Niedriger Privatschutz","This website has weak privacy protections.":"Diese Website hat schwache Privatschutzeinstellungen.","Unknown":"Unbekannt","Network response was not ok":"Netzwerkantwort war nicht in Ordnung","Error fetching policy summary:":"Fehler beim Abrufen der Richtlinienübersicht:","Error in policy summary request:":"Fehler bei der Anfrage der Richtlinienübersicht:","Tracking Technologies":"Nachverfolgungstechnologien","Websites may use tracking technologies to monitor your activity.":"Websites können Nachverfolgungstechnologien verwenden, um Ihre Aktivität zu überwachen.","Cookies are used to store information about your visits.":"Cookies werden verwendet, um Informationen über Ihre Besuche zu speichern.","Location Tracking":"Ortung","Your location may be tracked based on IP or device permissions.":"Ihre Position kann auf Basis von IP oder Geräteeinstellungen nachverfolgt werden.","Personal Information Collection":"Sammlung persönlicher Informationen","Websites may collect personal information like name and email.":"Websites können persönliche Informationen wie Namen und E-Mail sammeln.","__title__":"Privacy Guardian - Browser Privacy Protection Tool","Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - Browser Privacy Schutztool","Privacy Guardian":"Privacy Guardian","Social Media Integration":"Social Media Integration","Social media buttons and integrations can track your activity.":"Socialmedia-Schaltflächen und Integrationen können Ihre Aktivitäten verfolgen.","Payment Information":"Zahlungsinformationen","Websites may collect payment details for transactions.":"Webseiten können Zahlungsdaten für Transaktionen sammeln.","General Privacy Concerns":"Allgemeine Datenschutzbedenken","Your search may involve websites with various privacy risks.":"Ihre Suche kann Websites mit verschiedenen Datenschutzrisiken beinhalten.","Low Risk":"Niedriger Risiko","Medium Risk":"Mittleres Risiko","High Risk":"Hohes Risiko","Consider using a privacy-focused browser extension to block trackers.":"Überlegen Sie sich eine auf Datenschutz fokussierte Browser-Erweiterung, um Tracker zu blockieren.","Be cautious when entering personal information on frequently visited sites.":"Seien Sie vorsichtig, wenn Sie persönliche Informationen auf häufig besuchten Websites eingeben.","Review the privacy policies of your most visited sites.":"Überprüfen Sie die Datenschutzbestimmungen Ihrer häufig besuchten Websites.","Use private browsing mode for sensitive activities.":"Verwenden Sie den privaten Modus für sensible Aktivitäten.","re doing well with privacy! Keep it up.":"Sie machen es gut im Bezug auf Datenschutz! Halten Sie durch.","Consider enabling cookies only for trusted sites.":"Überlegen Sie sich, Cookies nur für vertrauenswürdige Websites zu aktivieren.","Install an ad-blocker to reduce tracking.":"Installieren Sie einen Werbeblocker, um das Tracking zu reduzieren.","Make sure websites use HTTPS by checking for the padlock icon.":"Stellen Sie sicher, dass Websites HTTPS verwenden, indem Sie nach dem Schlosssymbol schauen.","High":"Hoch","Medium":"Mittel","Low":"Niedrig","完全免费":"completely free","提意见":"submit feedback","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"Kostenloses Online-Tool: Privacy Guardian - Browser-Privatschutzwerkzeug. Keine Anmeldung, keine Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab aktiv","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","/g, '').replace(/":"…","www.":"getPrivacyRecommendationen(analysis).replace(/","DOMContentLoaded":"getPrivacyEmpfehlungen(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"getPrivacyRecommendations(analysis).replace(/"},"ru":{"Privacy Guardian - Browser Privacy Protection Tool":"Privacy Guardian - инструмент для защиты конфиденциальности браузера","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Ваш инструмент для защиты конфиденциальности браузера, который анализирует веб-сайты и помогает вам оставаться в безопасности в Интернете","Analyze":"Анализировать","Privacy Score":"Оценка конфиденциальности","No analysis yet":"Анализ еще не выполнен","Enter a URL to get a privacy score":"Введіть URL, чтобы получить оценку конфиденциальности","Risky":"Опасный","Moderate":"Средний","Safe":"Безопасный","Privacy Policy Summary":"Обзор политики конфиденциальности","How to use":"Как использовать","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Введіть URL веб-сайта, чтобы получить резюме его политики конфиденциальности, подчеркивая ключевые моменты о сборе и передаче данных.","Privacy Risk Alerts":"Предупреждения о рисках конфиденциальности","Enter keywords to get specific privacy risk alerts related to those terms.":"Введіть ключевые слова, чтобы получить конкретные предупреждения о рисках конфиденциальности, связанные с этими терминами.","Search Results Privacy Ranking":"Рейтинг конфиденциальности результатов поиска","Search Results":"Результаты поиска","Saved Results":"Сохраненные результаты","Paste search results to get them ranked by privacy protection level.":"Вставьте результаты поиска, чтобы их оценили по уровню защиты конфиденциальности.","No saved results yet":"Сохраненные результаты еще не найдены","Your privacy-ranked search results will appear here.":"Ваши результаты поиска по рейтингу конфиденциальности будут отображены здесь.","Browsing History Privacy Analysis":"Анализ конфиденциальности истории просмотров","Upload your browsing history to get a privacy risk analysis.":"Загрузите свою историю просмотров, чтобы получить анализ рисков конфиденциальности.","Upload History":"Загрузить историю","Data Collection":"Сбор данных","Third-Party Sharing":"Обмен с третьими сторонами","Cookie Usage":"Использование файлов cookie","User Rights":"Права пользователя","No URLs found":"URL не найден","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Не удалось найти URL в загруженном файле. Убедитесь, что он содержит историю просмотров.","Overall Privacy Risk":"Общий риск конфиденциальности","% of your visited sites have low privacy protections":"% посещенных вами сайтов имеют низкую защиту конфиденциальности","Privacy Breakdown":"Разбивка по конфиденциальности","Low Privacy Sites":"Сайты с низкой конфиденциальностью","Tracking Sites":"Сайты отслеживания","Secure Sites":"Безопасные сайты","Recommendations":"Рекомендации","Download Privacy Report":"Загрузить отчет о конфиденциальности","Enter website URL, keywords, or search results...":"Ввести URL веб-сайта, ключевые слова или результаты поиска...","Enter":"Ввести","High Privacy":"Высокая конфиденциальность","This website has strong privacy protections.":"Этот веб-сайт имеет сильную защиту конфиденциальности.","Moderate Privacy":"Средняя конфиденциальность","This website has average privacy protections.":"Этот веб-сайт имеет среднюю защиту конфиденциальности.","Low Privacy":"Низкая конфиденциальность","This website has weak privacy protections.":"Этот веб-сайт имеет слабую защиту конфиденциальности.","Unknown":"Неизвестно","Network response was not ok":"Ответ сети не был успешным","Error fetching policy summary:":"Ошибка получения резюме политики:","Error in policy summary request:":"Ошибка в запросе резюме политики:","Tracking Technologies":"Технологии отслеживания","Websites may use tracking technologies to monitor your activity.":"Веб-сайты могут использовать технологии отслеживания для мониторинга вашей активности.","Cookies are used to store information about your visits.":"Файлы cookie используются для хранения информации о ваших посещениях.","Location Tracking":"Отслеживание местоположения","Your location may be tracked based on IP or device permissions.":"Ваше местоположение может быть отслежено на основе IP или разрешений устройства.","Personal Information Collection":"Сбор персональной информации","Websites may collect personal information like name and email.":"Веб-сайты могут собирать персональную информацию, такую как имя и адрес электронной почты.","Social Media Integration":"Интеграция социальных сетей","Social media buttons and integrations can track your activity.":"Кнопки социальных сетей и интеграции могут отслеживать вашу активность.","Payment Information":"Информация о платежах","Websites may collect payment details for transactions.":"Веб-сайты могут собирать данные о платежах для транзакций.","General Privacy Concerns":"Общие вопросы конфиденциальности","Your search may involve websites with various privacy risks.":"Ваш поиск может включать веб-сайты с различными рисками конфиденциальности.","Low Risk":"Низкий риск","Medium Risk":"Средний риск","High Risk":"Высокий риск","Consider using a privacy-focused browser extension to block trackers.":"Рассмотрите возможность использования расширения браузера, ориентированного на конфиденциальность, чтобы блокировать отслеживатели.","Be cautious when entering personal information on frequently visited sites.":"Будьте осторожны при вводе личной информации на часто посещаемых сайтах.","Review the privacy policies of your most visited sites.":"Проверьте политики конфиденциальности ваших наиболее посещаемых сайтов.","Use private browsing mode for sensitive activities.":"Используйте режим частного просмотра для чувствительных действий.","re doing well with privacy! Keep it up.":"Вы хорошо справляетесь с конфиденциальностью! Продолжайте в том же духе.","Consider enabling cookies only for trusted sites.":"Рассмотрите возможность включения куки только для доверенных сайтов.","Install an ad-blocker to reduce tracking.":"Установите блокировщик рекламы, чтобы уменьшить отслеживание.","Make sure websites use HTTPS by checking for the padlock icon.":"Убедитесь, что веб-сайты используют HTTPS, проверив значок замка.","High":"Высокий","Medium":"Средний","Low":"Низкий","__title__":"Privacy Guardian - инструмент для защиты конфиденциальности браузера","Privacy Guardian":"Приватный хранитель","www.":"получитьРекомендациипо privac(анализ).replace(/","完全免费":"полностью бесплатный","提意见":"пожаловаться","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab активный","var(--success)":"var(--успех)","var(--warning)":"var(--предупреждение)","var(--danger)":"var(--опасность)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"Бесплатный онлайн инструмент: Privacy Guardian - Инструмент защиты конфиденциальности браузера. Без регистрации, без оплаты — навсегда бесплатно.","/g, '').replace(/":"…","DOMContentLoaded":"получитьРекомендацииПриватности(анализ).replace(/","getPrivacyRecommendations(analysis).replace(/":"…"},"pt":{"Privacy Guardian - Browser Privacy Protection Tool":"Guardião da Privacidade - Ferramenta de Proteção de Privacidade do Navegador","Privacy Guardian":"Guardião da Privacidade","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Sua ferramenta de proteção de privacidade do navegador que analisa sites e ajuda você a permanecer seguro online","Analyze":"Analisar","Privacy Score":"Pontuação de Privacidade","No analysis yet":"Nenhuma análise ainda","Enter a URL to get a privacy score":"Insira uma URL para obter uma pontuação de privacidade","Risky":"Risco","Moderate":"Moderado","Safe":"Seguro","Privacy Policy Summary":"Resumo da Política de Privacidade","How to use":"Como usar","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Insira uma URL do site para obter um resumo de sua política de privacidade, destacando pontos principais sobre coleta e compartilhamento de dados.","Privacy Risk Alerts":"Alertas de Risco de Privacidade","Enter keywords to get specific privacy risk alerts related to those terms.":"Insira palavras-chave para obter alertas de risco de privacidade específicos relacionados a esses termos.","Search Results Privacy Ranking":"Classificação de Privacidade dos Resultados da Pesquisa","Search Results":"Resultados da Pesquisa","Saved Results":"Resultados Salvo","Paste search results to get them ranked by privacy protection level.":"Cole os resultados da pesquisa para obtê-los classificados pelo nível de proteção de privacidade.","No saved results yet":"Nenhum resultado salvo ainda","Your privacy-ranked search results will appear here.":"Seus resultados de pesquisa classificados pela privacidade aparecerão aqui.","Browsing History Privacy Analysis":"Análise de Privacidade do Histórico de Navegação","Upload your browsing history to get a privacy risk analysis.":"Envie seu histórico de navegação para obter uma análise de risco de privacidade.","Upload History":"Histórico de Envio","Data Collection":"Coleta de Dados","Third-Party Sharing":"Compartilhamento de Terceiros","Cookie Usage":"Uso de Cookies","User Rights":"Direitos do Usuário","No URLs found":"Nenhuma URL encontrada","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Não foi possível encontrar nenhuma URL no arquivo enviado. Por favor, certifique-se de que ele contém histórico de navegação.","Overall Privacy Risk":"Risco de Privacidade Geral","% of your visited sites have low privacy protections":"% dos seus sites visitados têm proteções de privacidade baixas","Privacy Breakdown":"Desglose de Privacidade","Low Privacy Sites":"Sites com Baixa Privacidade","Tracking Sites":"Sites de Rastreamento","Secure Sites":"Sites Seguros","Recommendations":"Recomendações","Download Privacy Report":"Baixar Relatório de Privacidade","Enter website URL, keywords, or search results...":"Insira o URL do site, palavras-chave ou resultados de busca...","Enter":"Entrar","High Privacy":"Alta Privacidade","This website has strong privacy protections.":"Este site tem fortes proteções de privacidade.","Moderate Privacy":"Privacidade Moderada","This website has average privacy protections.":"Este site tem proteções de privacidade médias.","Low Privacy":"Privacidade Baixa","This website has weak privacy protections.":"Este site tem proteções de privacidade fracas.","Unknown":"Desconhecido","Network response was not ok":"A resposta da rede não foi bem-sucedida","Error fetching policy summary:":"Erro ao buscar resumo da política:","Error in policy summary request:":"Erro na solicitação de resumo da política:","Tracking Technologies":"Tecnologias de Rastreamento","Websites may use tracking technologies to monitor your activity.":"Os sites podem usar tecnologias de rastreamento para monitorar sua atividade.","Cookies are used to store information about your visits.":"Cookies são usados para armazenar informações sobre suas visitas.","Location Tracking":"Rastreamento de Localização","Your location may be tracked based on IP or device permissions.":"Sua localização pode ser rastreada com base no IP ou nas permissões do dispositivo.","Personal Information Collection":"Coleta de Informações Pessoais","Websites may collect personal information like name and email.":"Os sites podem coletar informações pessoais como nome e e-mail.","Social Media Integration":"Integração de Mídia Social","Social media buttons and integrations can track your activity.":"Botões de mídia social e integrações podem rastrear sua atividade.","Payment Information":"Informações de Pagamento","Websites may collect payment details for transactions.":"Os sites podem coletar detalhes de pagamento para transações.","General Privacy Concerns":"Principais Concerns de Privacidade","Your search may involve websites with various privacy risks.":"Sua pesquisa pode envolver sites com vários riscos de privacidade.","Low Risk":"Risco Baixo","Medium Risk":"Risco Médio","High Risk":"Risco Alto","Consider using a privacy-focused browser extension to block trackers.":"Considere usar uma extensão do navegador focada em privacidade para bloquear rastreadores.","Be cautious when entering personal information on frequently visited sites.":"Tenha cautela ao inserir informações pessoais em sites frequentemente visitados.","Review the privacy policies of your most visited sites.":"Revise as políticas de privacidade dos sites mais visitados.","Use private browsing mode for sensitive activities.":"Use o modo de navegação privada para atividades sensíveis.","re doing well with privacy! Keep it up.":"está se saindo bem com privacidade! Continue assim.","Consider enabling cookies only for trusted sites.":"Considere ativar cookies apenas para sites confiáveis.","Install an ad-blocker to reduce tracking.":"Instale um bloqueador de anúncios para reduzir o rastreamento.","Make sure websites use HTTPS by checking for the padlock icon.":"Certifique-se de que os sites usem HTTPS, verificando o ícone de cadeado.","High":"Alto","Medium":"Médio","Low":"Baixo","__title__":"Guardião da Privacidade - Ferramenta de Proteção de Privacidade do Navegador","完全免费":"Completo gratuito","提意见":"Enviar sugestões","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"aba ativa","var(--success)":"var(--sucesso)","var(--warning)":"var(--aviso)","var(--danger)":"var(--perigo)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"getPrivacyRecommendations(analysis).replace(/","/g, '').replace(/":"Obter Recomendações de Privacidade (análise).replace(/","www.":"obterRecomendaçõesPrivacidade(analysis).replace(/","DOMContentLoaded":"obterRecomendaçõesDePrivacidade(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"obterRecomendaçõesDePrivacidade(analysis).replace(/"},"ar":{"Privacy Guardian - Browser Privacy Protection Tool":"حماية الخصوصية - أداة حماية الخصوصية لمتصفح الويب","Privacy Guardian":"حماية الخصوصية","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"أداة حماية الخصوصية لمتصفحك التي تحليل المواقع وتساعدك في البقاء في أمان أثناء التصفح","Analyze":"تحليل","Privacy Score":"نسبة الخصوصية","No analysis yet":"لا يوجد تحليل حتى الآن","Enter a URL to get a privacy score":"أدخل عنوان URL للحصول على نسبة الخصوصية","Risky":"مخاطرة","Moderate":"متوسط","Safe":"آمن","Privacy Policy Summary":"ملخص سياسة الخصوصية","How to use":"كيفية الاستخدام","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"أدخل عنوان URL لموقع الويب للحصول على ملخص لسياسة الخصوصية الخاصة به، مع التركيز على النقاط الرئيسية حول جمع البيانات وتبادلها.","Privacy Risk Alerts":"إخطارات المخاطر الخاصة بالخصوصية","Enter keywords to get specific privacy risk alerts related to those terms.":"أدخل الكلمات المفتاحية للحصول على إخطارات مخاطر الخصوصية المحددة المتعلقة بتلك المصطلحات.","Search Results Privacy Ranking":"ترتيب الخصوصية للنتائج البحثية","Search Results":"نتائج البحث","Saved Results":"النتائج المحفوظة","Paste search results to get them ranked by privacy protection level.":"ألصق نتائج البحث للحصول على تصنيفها بناءً على مستوى حماية الخصوصية.","No saved results yet":"لا يوجد نتائج محفوظة حتى الآن","Your privacy-ranked search results will appear here.":"نتائج البحث المرتبة بناءً على الخصوصية ستعمل هنا.","Browsing History Privacy Analysis":"تحليل الخصوصية للتاريخ التصفحي","Upload your browsing history to get a privacy risk analysis.":"أرفع تاريخ التصفح الخاص بك للحصول على تحليل المخاطر الخاصة بالخصوصية.","Upload History":"تحميل التاريخ","Data Collection":"جمع البيانات","Third-Party Sharing":"مشاركة الطرف الثالث","Cookie Usage":"استخدام ملفات الـ Cookie","User Rights":"حقوق المستخدم","No URLs found":"لم يتم العثور على أي عناوين URL","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"لم يتم العثور على أي عناوين URL في الملف المرفوع. يرجى التأكد من أن يحتوي على تاريخ التصفح.","Overall Privacy Risk":"خطر الخصوصية بشكل عام","% of your visited sites have low privacy protections":"% من المواقع التي زرتها لديها حماية خصوصية منخفضة","Privacy Breakdown":"تفكيك الخصوصية","Low Privacy Sites":"مواقع الخصوصية المنخفضة","Tracking Sites":"مواقع المتتبعة","Secure Sites":"مواقع آمنة","Recommendations":"التوصيات","Download Privacy Report":"تحميل تقرير الخصوصية","Enter website URL, keywords, or search results...":"ادخل عنوان الموقع الإلكتروني، الكلمات المفتاحية، أو نتائج البحث...","Enter":"ادخل","High Privacy":"خصوصية عالية","This website has strong privacy protections.":"هذا الموقع يحتوي على حماية خصوصية قوية.","Moderate Privacy":"تحكم متوسط في الخصوصية","This website has average privacy protections.":"هذا الموقع يقدم حماية متوسطة في الخصوصية.","Low Privacy":"تحكم منخفض في الخصوصية","This website has weak privacy protections.":"هذا الموقع يقدم حماية ضعيفة في الخصوصية.","Unknown":"غير معروف","Network response was not ok":"لم يكن استجابة الشبكة جيدة","Error fetching policy summary:":"خطأ في استرجاع ملخص السياسة:","Error in policy summary request:":"خطأ في طلب ملخص السياسة:","Tracking Technologies":"قد يستخدم المواقع تكنولوجيات التتبع لمراقبة نشاطك.","Websites may use tracking technologies to monitor your activity.":"قد يستخدم مواقع الويب تقنيات متتبعة لمراقبة نشاطك.","Cookies are used to store information about your visits.":"يستخدم ملفات الـ Cookies لتخزين معلومات عن زياراتك.","Location Tracking":"قد يتم تتبع موقعك بناءً على عنوان IP أو إذن الأجهزة.","Your location may be tracked based on IP or device permissions.":"قد يتم تتبع موقعك بناءً على عنوان IP أو إذنات الجهاز.","Personal Information Collection":"قد تجمع المواقع معلومات شخصية مثل الاسم والبريد الإلكتروني.","Websites may collect personal information like name and email.":"قد تجمع مواقع الويب معلومات شخصية مثل الاسم والبريد الإلكتروني.","Social Media Integration":"إدماج وسائل التواصل الاجتماعي","Social media buttons and integrations can track your activity.":"يمكن لمسارات وسائل التواصل الاجتماعي والدمج تتبع نشاطك.","Payment Information":"معلومات الدفع","Websites may collect payment details for transactions.":"يمكن لمواقع الويب جمع تفاصيل الدفع لعمليات الصراف.","General Privacy Concerns":"الاهتمامات العامة بالخصوصية","Your search may involve websites with various privacy risks.":"قد تتضمن بحثك مواقع تحتوي على مخاطر خصوصية متعددة.","Low Risk":"خطر منخفض","Medium Risk":"خطر متوسط","High Risk":"خطر عال","Consider using a privacy-focused browser extension to block trackers.":"فكر في استخدام إضافة متصفح مركزية على الخصوصية لتجنب المتتبعين.","Be cautious when entering personal information on frequently visited sites.":"كن حذراً عند إدخال معلومات شخصية على المواقع التي تزورها بشكل متكرر.","Review the privacy policies of your most visited sites.":"مراجعة سياسات الخصوصية للمواقع التي تزورها بشكل متكرر.","Use private browsing mode for sensitive activities.":"استخدم وضع التصفح الخاص للأنشطة الحساسة.","re doing well with privacy! Keep it up.":"تقوم بعمل جيد مع الخصوصية! استمر في ذلك.","Consider enabling cookies only for trusted sites.":"فكر في تمكين ملفات تعريف الارتباط فقط للمواقع المثقلة.","Install an ad-blocker to reduce tracking.":"تثبيت مفتاح إزالة الإعلانات لتقليل التتبع.","Make sure websites use HTTPS by checking for the padlock icon.":"تأكد من أن يستخدم المواقع HTTPS عن طريق التحقق من أيقونة القفل.","High":"عال","Medium":"متوسط","Low":"منخفض","__title__":"حماية الخصوصية - أداة حماية الخصوصية لمتصفح الويب","完全免费":"حقيقي مجاناً","提意见":"أعطني رأيك","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: Privacy Guardian - أداة حماية الخصوصية لمتصفح الويب. بدون تسجيل، بدون دفع — مجانية للأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"العلامة الفعالة","var(--success)":"…","var(--warning)":"…","var(--danger)":"…","text/plain":"…","PingFang SC":"…","Microsoft YaHei":"…","DOMContentLoaded":"…","/g, '').replace(/":"…","www.":"…","getPrivacyRecommendations(analysis).replace(/":"تغيير_المعادلة_باستخدام_التحويل_الخاص_بالخصوصية(التحليل).تبديل(/"},"hi":{"Privacy Guardian - Browser Privacy Protection Tool":"प्राइवेसी गार्डियन - ब्राउज़र प्राइवेसी प्रोटेक्शन टूल","Privacy Guardian":"प्राइवेसी गार्डियन","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"आपका ब्राउज़र प्राइवेसी प्रोटेक्शन टूल जो वेबसाइट्स का विश्लेषण करता है और ऑनलाइन सुरक्षित रहने में मदद करता है","Analyze":"विश्लेषण करें","Privacy Score":"प्राइवेसी स्कोर","No analysis yet":"अभी तक कोई विश्लेषण नहीं","Enter a URL to get a privacy score":"प्राइवेसी स्कोर प्राप्त करने के लिए यूआरएल दर्ज करें","Risky":"जोखिमपूर्ण","Moderate":"मध्यम","Safe":"सुरक्षित","Privacy Policy Summary":"प्राइवेसी पॉलिसी सारांश","How to use":"कैसे उपयोग करें","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"डेटा संग्रहण और साझाकरण के बारे में मुख्य बिंदुओं को उजागर करते हुए इसकी प्राइवेसी पॉलिसी का सारांश प्राप्त करने के लिए एक वेबसाइट यूआरएल दर्ज करें।","Privacy Risk Alerts":"प्राइवेसी जोखिम चेतावनियां","Enter keywords to get specific privacy risk alerts related to those terms.":"उन शर्तों से संबंधित विशिष्ट प्राइवेसी जोखिम चेतावनियां प्राप्त करने के लिए कीवर्ड दर्ज करें।","Search Results Privacy Ranking":"खोज परिणाम प्राइवेसी रैंकिंग","Search Results":"खोज परिणाम","Saved Results":"सहेजे गए परिणाम","Paste search results to get them ranked by privacy protection level.":"प्राइवेसी सुरक्षा स्तर के अनुसार उन्हें रैंक करने के लिए खोज परिणाम पेस्ट करें।","No saved results yet":"अभी तक कोई सहेजा गया परिणाम नहीं","Your privacy-ranked search results will appear here.":"आपके प्राइवेसी-रैंक किए गए खोज परिणाम यहाँ प्रकट होंगे।","Browsing History Privacy Analysis":"ब्राउज़िंग इतिहास प्राइवेसी विश्लेषण","Upload your browsing history to get a privacy risk analysis.":"प्राइवेसी जोखिम विश्लेषण प्राप्त करने के लिए अपना ब्राउज़िंग इतिहास अपलोड करें।","Upload History":"इतिहास अपलोड करें","Data Collection":"डेटा संग्रहण","Third-Party Sharing":"तृतीय-पक्ष साझाकरण","Cookie Usage":"कुकी उपयोग","User Rights":"उपयोगकर्ता अधिकार","No URLs found":"कोई यूआरएल नहीं मिला","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"अपलोड किए गए फ़ाइल में कोई यूआरएल नहीं मिला। कृपया सुनिश्चित करें कि इमें ब्राउज़िंग इतिहास शामिल है।","Overall Privacy Risk":"समग्र प्राइवेसी जोखिम","% of your visited sites have low privacy protections":"आपके द्वारा दौर किए गए साइटों का % कम प्राइवेसी सुरक्षा रखते हैं","Privacy Breakdown":"प्राइवेसी विश्लेषण","Low Privacy Sites":"कम प्राइवेसी साइटें","Tracking Sites":"ट्रैकिंग साइटें","Secure Sites":"सुरक्षित साइटें","Recommendations":"सिफारिशें","Download Privacy Report":"प्राइवेसी रिपोर्ट डाउनलोड करें","Enter website URL, keywords, or search results...":"वेबसाइट यूआरएल, कीवर्ड, या खोज परिणाम दर्ज करें...","Enter":"दर्ज करें","High Privacy":"उच्च प्राइवेसी","This website has strong privacy protections.":"इस वेबसाइट में मजबूत प्राइवेसी सुरक्षा है।","Moderate Privacy":"मध्यम प्राइवेसी","This website has average privacy protections.":"इस वेबसाइट में औसत प्राइवेसी सुरक्षा है।","Low Privacy":"कम प्राइवेसी","This website has weak privacy protections.":"इस वेबसाइट में कमज़ोर प्राइवेसी सुरक्षा है।","Unknown":"अज्ञात","Network response was not ok":"नेटवर्क प्रतिक्रिया ठीक नहीं थी","Error fetching policy summary:":"पॉलिसी सारांश लाने में त्रुटि:","Error in policy summary request:":"पॉलिसी सारांश अनुरोध में त्रुटि:","Tracking Technologies":"ट्रैकिंग तकनीकें","Websites may use tracking technologies to monitor your activity.":"वेबसाइटें आपकी गतिविधि की निगरानी करने के लिए ट्रैकिंग तकनीकों का उपयोग कर सकती हैं।","Cookies are used to store information about your visits.":"कुकी का उपयोग आपकी यात्राओं के बारे में जानकारी संग्रहित करने के लिए किया जाता है।","Location Tracking":"स्थान ट्रैकिंग","Your location may be tracked based on IP or device permissions.":"आपका स्थान आईपी या डिवाइस अनुमतियों के आधार पर ट्रैक किया जा सकता है।","Personal Information Collection":"व्यक्तिगत जानकारी संग्रहण","Websites may collect personal information like name and email.":"वेबसाइटें नाम और ईमेल जैसी व्यक्तिगत जानकारी एकत्र कर सकती हैं।","Social Media Integration":"सोशल मीडिया इंटीग्रेशन","Social media buttons and integrations can track your activity.":"सोशल मीडिया बटन और इंटीग्रेशन आपकी गतिविधि को ट्रैक कर सकते हैं।","Payment Information":"भुगतान की जानकारी","Websites may collect payment details for transactions.":"वेबसाइट लेन-देन के लिए भुगतान की विवरण एकत्र कर सकते हैं।","General Privacy Concerns":"सामान्य गोपनीयता की चिंताएं","Your search may involve websites with various privacy risks.":"आपकी खोज में विभिन्न गोपनीयता जोखिम वाले वेबसाइट शामिल हो सकते हैं।","Low Risk":"कम जोखिम","Medium Risk":"मध्यम जोखिम","High Risk":"उच्च जोखिम","Consider using a privacy-focused browser extension to block trackers.":"ट्रैकर्स को ब्लॉक करने के लिए गोपनीयता-उन्मुख ब्राउज़र एक्सटेंशन का उपयोग करने पर विचार करें।","Be cautious when entering personal information on frequently visited sites.":"अक्सर देखे जाने वाले साइट पर व्यक्तिगत जानकारी दर्ज करते समय सावधान रहें।","Review the privacy policies of your most visited sites.":"आपके सबसे अधिक देखे जाने वाले साइट की गोपनीयता नीतियों की समीक्षा करें।","Use private browsing mode for sensitive activities.":"संवेदनशील गतिविधियों के लिए निजी ब्राउज़िंग मोड का उपयोग करें।","re doing well with privacy! Keep it up.":"आप गोपनीयता के साथ अच्छा कर रहे हैं! इसे बनाए रखें।","Consider enabling cookies only for trusted sites.":"केवल विश्वसनीय साइटों के लिए कुकीज़ सक्षम करने पर विचार करें।","Install an ad-blocker to reduce tracking.":"ट्रैकिंग को कम करने के लिए एक एड-ब्लॉकर इंस्टॉल करें।","Make sure websites use HTTPS by checking for the padlock icon.":"पैडलॉक आइकन की जांच करके सुनिश्चित करें कि वेबसाइट HTTPS का उपयोग करते हैं।","High":"उच्च","Medium":"मध्यम","Low":"कम","__title__":"प्राइवेसी गार्डियन - ब्राउज़र प्राइवेसी प्रोटेक्शन टूल","var(--success)":"वार(–सफल्य)","var(--warning)":"वार(–चेतावनी)","var(--danger)":"वार(–खतरा)","text/plain":"टेक्स्ट/प्लेन","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","完全免费":"…","提意见":"…","UTF-8":"…","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"…","og:title":"…","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"टैब एक्टिव","/g, '').replace(/":"…","www.":"getPrivacyRecommendations(analysis).replace(/","DOMContentLoaded":"getPrivacyRecommendations(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"getPrivacyRecommendations(analysis).रिप्लेस(/"},"id":{"Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Alat perlindungan privasi browser Anda yang menganalisis situs web dan membantu Anda tetap aman secara online","Analyze":"Analisis","Privacy Score":"Skor Privasi","No analysis yet":"Belum ada analisis","Enter a URL to get a privacy score":"Masukkan URL untuk mendapatkan skor privasi","Risky":"Berisiko","Moderate":"Sedang","Safe":"Aman","Privacy Policy Summary":"Ringkasan Kebijakan Privasi","How to use":"Cara penggunaan","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Masukkan URL situs web untuk mendapatkan ringkasan kebijakan privasinya, menyoroti poin penting tentang pengumpulan dan berbagi data.","Privacy Risk Alerts":"Peringatan Risiko Privasi","Enter keywords to get specific privacy risk alerts related to those terms.":"Masukkan kata kunci untuk mendapatkan peringatan risiko privasi spesifik yang terkait dengan istilah tersebut.","Search Results Privacy Ranking":"Peringkat Privasi Hasil Pencarian","Search Results":"Hasil Pencarian","Saved Results":"Hasil Tersimpan","Paste search results to get them ranked by privacy protection level.":"Tempel hasil pencarian untuk mendapatkan peringkat berdasarkan tingkat perlindungan privasi.","No saved results yet":"Belum ada hasil tersimpan","Your privacy-ranked search results will appear here.":"Hasil pencarian Anda yang diurutkan berdasarkan privasi akan muncul di sini.","Browsing History Privacy Analysis":"Analisis Privasi Riwayat Penjelajahan","Upload your browsing history to get a privacy risk analysis.":"Unggah riwayat penjelajahan Anda untuk mendapatkan analisis risiko privasi.","Upload History":"Unggah Riwayat","Data Collection":"Pengumpulan Data","Third-Party Sharing":"Berbagi Pihak Ketiga","Cookie Usage":"Penggunaan Cookie","User Rights":"Hak Pengguna","No URLs found":"Tidak ada URL yang ditemukan","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Tidak dapat menemukan URL dalam file yang diunggah. Pastikan file tersebut berisi riwayat penjelajahan.","Overall Privacy Risk":"Risiko Privasi Keseluruhan","% of your visited sites have low privacy protections":"% situs yang dikunjungi Anda memiliki perlindungan privasi yang rendah","Privacy Breakdown":"Rincian Privasi","Low Privacy Sites":"Situs Privasi Rendah","Tracking Sites":"Situs Pelacakan","Secure Sites":"Situs Aman","Recommendations":"Rekomendasi","Download Privacy Report":"Unduh Laporan Privasi","Enter website URL, keywords, or search results...":"Masukkan URL situs web, kata kunci, atau hasil pencarian...","Enter":"Masuk","High Privacy":"Privasi Tinggi","This website has strong privacy protections.":"Situs web ini memiliki perlindungan privasi yang kuat.","Moderate Privacy":"Privasi Sedang","This website has average privacy protections.":"Situs web ini memiliki perlindungan privasi rata-rata.","Low Privacy":"Privasi Rendah","This website has weak privacy protections.":"Situs web ini memiliki perlindungan privasi yang lemah.","Unknown":"Tidak Diketahui","Network response was not ok":"Respons jaringan tidak baik","Error fetching policy summary:":"Kesalahan saat mengambil ringkasan kebijakan:","Error in policy summary request:":"Kesalahan dalam permintaan ringkasan kebijakan:","Tracking Technologies":"Teknologi Pelacakan","Websites may use tracking technologies to monitor your activity.":"Situs web mungkin menggunakan teknologi pelacakan untuk memantau aktivitas Anda.","Cookies are used to store information about your visits.":"Cookie digunakan untuk menyimpan informasi tentang kunjungan Anda.","Location Tracking":"Pelacakan Lokasi","Your location may be tracked based on IP or device permissions.":"Lokasi Anda mungkin dilacak berdasarkan alamat IP atau izin perangkat.","Personal Information Collection":"Pengumpulan Informasi Pribadi","Websites may collect personal information like name and email.":"Situs web mungkin mengumpulkan informasi pribadi seperti nama dan email.","Social Media Integration":"Integrasi Media Sosial","Social media buttons and integrations can track your activity.":"Tombol media sosial dan integrasi dapat melacak aktivitas Anda.","Payment Information":"Informasi Pembayaran","Websites may collect payment details for transactions.":"Situs web dapat mengumpulkan detail pembayaran untuk transaksi.","General Privacy Concerns":"Kecemasan Privasi Umum","Your search may involve websites with various privacy risks.":"Pencarian Anda mungkin melibatkan situs web dengan berbagai risiko privasi.","Low Risk":"Risiko Rendah","Medium Risk":"Risiko Sedang","High Risk":"Risiko Tinggi","Consider using a privacy-focused browser extension to block trackers.":"Pertimbangkan menggunakan ekstensi browser yang berfokus pada privasi untuk memblokir pelacak.","Be cautious when entering personal information on frequently visited sites.":"Berhati-hati saat memasukkan informasi pribadi di situs yang sering dikunjungi.","Review the privacy policies of your most visited sites.":"Tinjau kebijakan privasi situs yang paling sering Anda kunjungi.","Use private browsing mode for sensitive activities.":"Gunakan mode penjelajahan pribadi untuk aktivitas sensitif.","re doing well with privacy! Keep it up.":"Anda baik dalam hal privasi! Teruskan.","Consider enabling cookies only for trusted sites.":"Pertimbangkan untuk mengaktifkan cookie hanya untuk situs tepercaya.","Install an ad-blocker to reduce tracking.":"Pasang pemblokir iklan untuk mengurangi pelacakan.","Make sure websites use HTTPS by checking for the padlock icon.":"Pastikan situs web menggunakan HTTPS dengan memeriksa ikon gembok.","High":"Tinggi","Medium":"Sedang","Low":"Rendah","__title__":"Privacy Guardian - Browser Privacy Protection Tool","Privacy Guardian - Browser Privacy Protection Tool":"Pemeliharaan Privasi - Alat Perlindungan Privasi Browser","Privacy Guardian":"Pemeliharaan Privasi","www.":"getPrivacyRecommendations(analysis).replace(/\",\"DOMContentLoaded\",\"www.","完全免费":"Bebas sepenuhnya","提意见":"Beri Tanggapan","UTF-8":"UTF-8","og:description":"deskripsi og","og:type":"tipe og","og:url":"url og","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab aktif","var(--success)":"var(--berhasil)","var(--warning)":"var(--peringatan)","var(--danger)":"var(--Bahaya)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","og:title":"og:title","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"dapatkanRekomendasiPrivasi(analysis).ganti(/","/g, '').replace(/":"mendapatkanRekomendasiPrivasi(Analisis).ganti(/","DOMContentLoaded":"getPrivacyRecommendasi(analysis).replace(/\",\"DOMContentLoaded","getPrivacyRecommendations(analysis).replace(/":"getPrivacyRecommendations(analysis).ganti(/"},"vi":{"Privacy Guardian - Browser Privacy Protection Tool":"Bảo vệ quyền riêng tư - Công cụ bảo vệ quyền riêng tư trình duyệt","Privacy Guardian":"Bảo vệ quyền riêng tư","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"Công cụ bảo vệ quyền riêng tư trình duyệt của bạn, phân tích các trang web và giúp bạn an toàn khi trực tuyến","Analyze":"Phân tích","Privacy Score":"Điểm bảo mật quyền riêng tư","No analysis yet":"Chưa có phân tích","Enter a URL to get a privacy score":"Nhập URL để nhận điểm bảo mật quyền riêng tư","Risky":"Rủi ro cao","Moderate":"Rủi ro trung bình","Safe":"An toàn","Privacy Policy Summary":"Tóm tắt chính sách bảo mật","How to use":"Cách sử dụng","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"Nhập URL của trang web để nhận tóm tắt chính sách bảo mật của nó, nhấn mạnh các điểm chính về thu thập và chia sẻ dữ liệu.","Privacy Risk Alerts":"Cảnh báo rủi ro quyền riêng tư","Enter keywords to get specific privacy risk alerts related to those terms.":"Nhập từ khóa để nhận cảnh báo rủi ro quyền riêng tư cụ thể liên quan đến các điều khoản đó.","Search Results Privacy Ranking":"Kết quả tìm kiếm theo thứ hạng quyền riêng tư","Search Results":"Kết quả tìm kiếm","Saved Results":"Kết quả đã lưu","Paste search results to get them ranked by privacy protection level.":"Dán kết quả tìm kiếm để được sắp xếp theo mức độ bảo vệ quyền riêng tư.","No saved results yet":"Chưa có kết quả nào được lưu","Your privacy-ranked search results will appear here.":"Kết quả tìm kiếm được xếp hạng quyền riêng tư của bạn sẽ xuất hiện ở đây.","Browsing History Privacy Analysis":"Phân tích quyền riêng tư lịch sử duyệt web","Upload your browsing history to get a privacy risk analysis.":"Tải lên lịch sử duyệt web của bạn để nhận phân tích rủi ro quyền riêng tư.","Upload History":"Lịch sử tải lên","Data Collection":"Thu thập dữ liệu","Third-Party Sharing":"Chia sẻ với bên thứ ba","Cookie Usage":"Sử dụng cookie","User Rights":"Quyền của người dùng","No URLs found":"Không tìm thấy URL nào","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"Không thể tìm thấy bất kỳ URL nào trong tệp đã tải lên. Vui lòng đảm bảo rằng nó chứa lịch sử duyệt web.","Overall Privacy Risk":"Rủi ro bảo mật riêng tư tổng thể","% of your visited sites have low privacy protections":"% của các trang web bạn đã truy cập có bảo mật riêng tư thấp","Privacy Breakdown":"Phân tích bảo mật riêng tư","Low Privacy Sites":"Trang web bảo mật thấp","Tracking Sites":"Trang web theo dõi","Secure Sites":"Trang web bảo mật","Recommendations":"Đề xuất","Download Privacy Report":"Tải báo cáo quyền riêng tư","getPrivacyRecommendations(analysis).replace(/":"thay thế(/","Enter website URL, keywords, or search results...":"Nhập URL trang web, từ khóa hoặc kết quả tìm kiếm...","Enter":"Nhập","High Privacy":"Bảo mật cao","This website has strong privacy protections.":"Trang web này có bảo vệ quyền riêng tư mạnh mẽ.","Moderate Privacy":"Mức độ bảo mật trung bình","This website has average privacy protections.":"Trang web này có mức bảo mật trung bình.","Low Privacy":"Mức độ bảo mật yếu","This website has weak privacy protections.":"Trang web này có mức bảo mật yếu.","Unknown":"Không xác định","Network response was not ok":"Phản hồi từ mạng không được chấp nhận","Error fetching policy summary:":"Lỗi khi lấy tóm tắt chính sách:","Error in policy summary request:":"Lỗi trong yêu cầu tóm tắt chính sách:","Tracking Technologies":"Công nghệ theo dõi","Websites may use tracking technologies to monitor your activity.":"Các trang web có thể sử dụng công nghệ theo dõi để giám sát hoạt động của bạn.","Cookies are used to store information about your visits.":"Cookies được sử dụng để lưu trữ thông tin về các lượt truy cập của bạn.","Location Tracking":"Theo dõi vị trí","Your location may be tracked based on IP or device permissions.":"Vị trí của bạn có thể được theo dõi dựa trên IP hoặc quyền của thiết bị.","Personal Information Collection":"Thu thập thông tin cá nhân","Websites may collect personal information like name and email.":"Các trang web có thể thu thập thông tin cá nhân như tên và email.","Social Media Integration":"Tích hợp Mạng xã hội","Social media buttons and integrations can track your activity.":"Các nút mạng xã hội và tích hợp có thể theo dõi hoạt động của bạn.","Payment Information":"Thông tin Thanh toán","Websites may collect payment details for transactions.":"Các trang web có thể thu thập chi tiết thanh toán cho giao dịch.","General Privacy Concerns":"Mối quan ngại về Quyền riêng tư chung","Your search may involve websites with various privacy risks.":"Tìm kiếm của bạn có thể liên quan đến các trang web có nhiều rủi ro về quyền riêng tư.","Low Risk":"Rủi ro Thấp","Medium Risk":"Rủi ro Trung bình","High Risk":"Rủi ro Cao","Consider using a privacy-focused browser extension to block trackers.":"Hãy cân nhắc sử dụng tiện ích trình duyệt tập trung vào quyền riêng tư để chặn trình theo dõi.","Be cautious when entering personal information on frequently visited sites.":"Hãy cẩn thận khi nhập thông tin cá nhân trên các trang web thường xuyên truy cập.","Review the privacy policies of your most visited sites.":"Xem lại các chính sách quyền riêng tư của các trang web bạn truy cập nhiều nhất.","Use private browsing mode for sensitive activities.":"Sử dụng chế độ duyệt web riêng tư cho các hoạt động nhạy cảm.","re doing well with privacy! Keep it up.":"Bạn đang làm tốt với quyền riêng tư! Tiếp tục như vậy.","Consider enabling cookies only for trusted sites.":"Hãy cân nhắc bật cookie chỉ cho các trang web đáng tin cậy.","Install an ad-blocker to reduce tracking.":"Cài đặt trình chặn quảng cáo để giảm theo dõi.","Make sure websites use HTTPS by checking for the padlock icon.":"Đảm bảo các trang web sử dụng HTTPS bằng cách kiểm tra biểu tượng ổ khóa.","High":"Cao","Medium":"Trung bình","Low":"Thấp","__title__":"Bảo vệ quyền riêng tư - Công cụ bảo vệ quyền riêng tư trình duyệt","DOMContentLoaded":"Đã tải xong nội dung trang","www.":"www.","完全免费":"hoàn toàn miễn phí","提意见":"đóng góp ý kiến","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"tab hoạt động","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: Privacy Guardian - Công cụ bảo vệ quyền riêng tư trình duyệt. Không đăng ký, không thanh toán - miễn phí vĩnh viễn.","/g, '').replace(/":"…"},"th":{"Privacy Guardian - Browser Privacy Protection Tool":"เครื่องมือปกป้องความเป็นส่วนตัว - เครื่องมือปกป้องความเป็นส่วนตัวของเบราว์เซอร์","Privacy Guardian":"ผู้คุ้มครองความเป็นส่วนตัว","Your browser privacy protection tool that analyzes websites and helps you stay safe online":"เครื่องมือปกป้องความเป็นส่วนตัวของเบราว์เซอร์ที่วิเคราะห์เว็บไซต์และช่วยให้คุณปลอดภัยบนออนไลน์","Analyze":"วิเคราะห์","Privacy Score":"คะแนนความเป็นส่วนตัว","No analysis yet":"ยังไม่มีการวิเคราะห์","Enter a URL to get a privacy score":"ป้อน URL เพื่อรับคะแนนความเป็นส่วนตัว","Risky":"มีความเสี่ยง","Moderate":"ปานกลาง","Safe":"ปลอดภัย","Privacy Policy Summary":"สรุปนโยบายความเป็นส่วนตัว","How to use":"วิธีการใช้","Enter a website URL to get a summary of its privacy policy, highlighting key points about data collection and sharing.":"ป้อน URL ของเว็บไซต์เพื่อรับสรุปนโยบายความเป็นส่วนตัว โดยเน้นจุดสำคัญเกี่ยวกับการเก็บรวบรวมและการแชร์ข้อมูล","Privacy Risk Alerts":"การแจ้งเตือนความเสี่ยงด้านความเป็นส่วนตัว","Enter keywords to get specific privacy risk alerts related to those terms.":"ป้อนคำค้นหาเพื่อรับการแจ้งเตือนความเสี่ยงด้านความเป็นส่วนตัวที่เกี่ยวข้องกับเงื่อนไขเหล่านั้น","Search Results Privacy Ranking":"การจัดอันดับความเป็นส่วนตัวของผลการค้นหา","Search Results":"ผลการค้นหา","Saved Results":"ผลการค้นหาที่บันทึกไว้","Paste search results to get them ranked by privacy protection level.":"วางผลการค้นหาเพื่อให้ได้การจัดอันดับตามระดับการปกป้องความเป็นส่วนตัว","No saved results yet":"ยังไม่มีผลการค้นหาที่บันทึกไว้","Your privacy-ranked search results will appear here.":"ผลการค้นหาที่จัดอันดับตามความเป็นส่วนตัวของคุณจะปรากฏที่นี่","Browsing History Privacy Analysis":"การวิเคราะห์ประวัติการเรียกดูเว็บด้านความเป็นส่วนตัว","Upload your browsing history to get a privacy risk analysis.":"อัปโหลดประวัติการเรียกดูเว็บเพื่อรับการวิเคราะห์ความเสี่ยงด้านความเป็นส่วนตัว","Upload History":"อัปโหลดประวัติ","Data Collection":"การเก็บรวบรวมข้อมูล","Third-Party Sharing":"การแชร์ข้อมูลกับบริษัทภายนอก","Cookie Usage":"การใช้คุกกี้","User Rights":"สิทธิของผู้ใช้","No URLs found":"ไม่พบ URL","Could not find any URLs in the uploaded file. Please ensure it contains browsing history.":"ไม่สามารถพบ URL ในไฟล์ที่อัปโหลด กรุณาตรวจสอบให้แน่ใจว่ามีประวัติการเรียกดูเว็บอยู่","Overall Privacy Risk":"ความเสี่ยงด้านความเป็นส่วนตัวโดยรวม","% of your visited sites have low privacy protections":"% ของไซต์ที่คุณเข้าชมมีการปกป้องความเป็นส่วนตัวต่ำ","Privacy Breakdown":"การแบ่งประเภทความเป็นส่วนตัว","Low Privacy Sites":"ไซต์ที่มีความเป็นส่วนตัวต่ำ","Tracking Sites":"ไซต์ที่ติดตาม","Secure Sites":"ไซต์ที่ปลอดภัย","Recommendations":"ข้อเสนอแนะ","Download Privacy Report":"ดาวน์โหลดรายงานความเป็นส่วนตัว","Enter website URL, keywords, or search results...":"ป้อน URL เว็บไซต์ คำค้นหา หรือผลการค้นหา...","Enter":"ป้อน","High Privacy":"ความเป็นส่วนตัวสูง","This website has strong privacy protections.":"เว็บไซต์นี้มีการปกป้องความเป็นส่วนตัวที่แข็งแรง","Moderate Privacy":"ความเป็นส่วนตัวปานกลาง","This website has average privacy protections.":"เว็บไซต์นี้มีการปกป้องความเป็นส่วนตัวที่เฉลี่ย","Low Privacy":"ความเป็นส่วนตัวต่ำ","This website has weak privacy protections.":"เว็บไซต์นี้มีการปกป้องความเป็นส่วนตัวที่อ่อนแอ","Unknown":"ไม่ทราบ","Network response was not ok":"การตอบสนองของเครือข่ายไม่ถูกต้อง","Error fetching policy summary:":"ข้อผิดพลาดในการดึงสรุปนโยบาย:","Error in policy summary request:":"ข้อผิดพลาดในการขอสรุปนโยบาย:","Tracking Technologies":"เทคโนโลยีการติดตาม","Websites may use tracking technologies to monitor your activity.":"เว็บไซต์อาจใช้เทคโนโลยีการติดตามเพื่อติดตามกิจกรรมของคุณ","Cookies are used to store information about your visits.":"คุกกี้ถูกใช้เพื่อเก็บข้อมูลเกี่ยวกับการเข้าชมของคุณ","Location Tracking":"การติดตามตำแหน่ง","Your location may be tracked based on IP or device permissions.":"ตำแหน่งของคุณอาถูกติดตามโดยอาศัย IP หรือสิทธิ์ของอุปกรณ์","Personal Information Collection":"การเก็บรวบรวมข้อมูลส่วนบุคคล","Websites may collect personal information like name and email.":"เว็บไซต์อาจเก็บรวบรวมข้อมูลส่วนบุคคล เช่น ชื่อและอีเมล","Social Media Integration":"การรวมโซเชียลมีเดีย","Social media buttons and integrations can track your activity.":"ปุ่มและการรวมโซเชียลมีเดียสามารถติดตากกิจกรรมของคุณได้","Payment Information":"ข้อมูลการชำระเงิน","Websites may collect payment details for transactions.":"เว็บไซต์อาจเก็บรายละเอียดการชำระเงินสำหรับธุรกรรม","General Privacy Concerns":"ความกังวลด้านความเป็นส่วนตั่นทั่วไป","Your search may involve websites with various privacy risks.":"การค้นหาของคุณอาจเกี่ยวข้องกับเว็บไซต์ที่มีความเสี่ยงด้านความเป็นส่วนตัวหลายประการ","Low Risk":"ความเสี่ยงต่ำ","Medium Risk":"ความเสี่ยงปานกลาง","High Risk":"ความเสี่ยงสูง","Consider using a privacy-focused browser extension to block trackers.":"พิจารณาใช้ส่วนขยายเบราว์เซอร์ที่มุ่งเน้นความเป็นส่วนตัวเพื่อบล็อกตัวติดตาม","Be cautious when entering personal information on frequently visited sites.":"ระมัดระวังเมื่อป้อนข้อมูลส่วนตัวบนเว็บไซต์ที่เข้าชมบ่อย","Review the privacy policies of your most visited sites.":"ตรวจสอบนโยบายความเป็นส่วนตัวของเว็บไซต์ที่เข้าชมมากที่สุดของคุณ","Use private browsing mode for sensitive activities.":"ใช้โหมดการเรียกดูส่วนตัวสำหรับกิจกรรมที่ละเอียดอ่อน","re doing well with privacy! Keep it up.":"คุณทำได้ดีด้านความเป็นส่วนตัว! ดำเนินต่อไป","Consider enabling cookies only for trusted sites.":"พิจารณาเปิดใช้งานคุกกี้สำหรับเว็บไซต์ที่เชื่อถือได้เท่านั้น","Install an ad-blocker to reduce tracking.":"ติดตั้งบล็อกโฆษณาเพื่อลดการติดตาม","Make sure websites use HTTPS by checking for the padlock icon.":"ตรวจสอบให้แน่ใจว่าเว็บไซต์ใช้ HTTPS โดยตรวจสอบไอคอนล็อค","High":"สูง","Medium":"ปานกลาง","Low":"ต่ำ","__title__":"เครื่องมือปกป้องความเป็นส่วนตัว - เครื่องมือปกป้องความเป็นส่วนตัวของเบราว์เซอร์","完全免费":"เพียงแค่ฟรี","提意见":"แบ่งประกาศ","UTF-8":"UTF-8","Free online tool: Privacy Guardian - Browser Privacy Protection Tool. No signup, no payment — free forever.":"เครื่องมือออนไลน์ฟรี: Privacy Guardian - อุปกรณ์ปกป้องส 私่งข้อมูลเว็บเบราเซอร์. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าธรรมเนียม — ฟรีตลอดชีวิต","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","tab active":"แท็บ กระทู้","var(--success)":"var(--success)","var(--warning)":"var(--warning)","var(--danger)":"var(--danger)","text/plain":"text/plain","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","/g, '').replace(/":"แนะนำความเป็นส่วนตัว(analysis).แทน(/","www.":"getPrivacyRecommendations(analysis).แทน(/","DOMContentLoaded":"getPrivacyRecommendations(analysis).replace(/","getPrivacyRecommendations(analysis).replace(/":"getPrivacyRecommendations(analysis).replace(/"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

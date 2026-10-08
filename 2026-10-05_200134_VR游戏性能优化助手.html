@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR Game Performance Optimizer</title>
+    <meta name="description" content="Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.">
+    <meta property="og:title" content="VR Game Performance Optimizer">
+    <meta property="og:description" content="Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-05_200134_VR游戏性能优化助手.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f1e;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --accent: #4fbdba;
+            --accent-hover: #7ec8e3;
+            --error: #e74c3c;
+            --success: #2ecc71;
+            --border: #2d3561;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .product-description {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-full {
+            width: 100%;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        
+        .temp-chart {
+            height: 200px;
+            margin-top: 20px;
+            position: relative;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .temp-line {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to right, var(--success), var(--error));
+        }
+        
+        .temp-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .temp-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        
+        .optimization-tips {
+            margin-top: 15px;
+        }
+        
+        .tip {
+            background-color: var(--bg-secondary);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .config-item:last-child {
+            border-bottom: none;
+        }
+        
+        .memory-chart {
+            height: 200px;
+            margin-top: 20px;
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+        }
+        
+        .memory-bar {
+            flex: 1;
+            background-color: var(--accent);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 5px;
+        }
+        
+        .memory-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+        
+        .memory-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+        
+        .memory-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .disclaimer {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            border-left: 4px solid var(--error);
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VR Game Performance Optimizer</h1>
+            <p class="subtitle">Analyze and optimize your VR gaming experience with performance insights</p>
+        </header>
+        
+        <div class="product-description">
+            <p>Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.</p>
+        </div>
+        
+        <!-- VR Game Performance Monitoring -->
+        <section class="card">
+            <h2 class="card-title">VR Game Performance Monitoring</h2>
+            <div class="input-group">
+                <label for="gameName">Enter VR Game Name</label>
+                <input type="text" id="gameName" placeholder="e.g., Beat Saber, Half-Life: Alyx">
+            </div>
+            <button id="monitorBtn" class="btn-full">Monitor Performance</button>
+            
+            <div id="performanceResult" class="result-container hidden">
+                <h3>Performance Metrics</h3>
+                <div class="performance-metrics">
+                    <div class="metric">
+                        <div class="metric-value" id="fpsValue">60</div>
+                        <div class="metric-label">FPS</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="cpuValue">45</div>
+                        <div class="metric-label">CPU Usage (%)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="gpuValue">60</div>
+                        <div class="metric-label">GPU Usage (%)</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value" id="tempValue">65</div>
+                        <div class="metric-label">Temperature (°C)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Hardware Temperature Detection -->
+        <section class="card">
+            <h2 class="card-title">Hardware Temperature Detection</h2>
+            <div class="input-group">
+                <label for="hardwareType">Hardware Type</label>
+                <select id="hardwareType">
+                    <option value="cpu">CPU</option>
+                    <option value="gpu">GPU</option>
+                    <option value="vr-headset">VR Headset</option>
+                    <option value="storage">Storage</option>
+                </select>
+            </div>
+            <button id="tempBtn" class="btn-full">Check Temperature</button>
+            
+            <div id="tempResult" class="result-container hidden">
+                <h3>Temperature Monitoring</h3>
+                <div class="temp-chart">
+                    <div class="temp-line"></div>
+                    <div id="tempPoints"></div>
+                </div>
+                <div class="temp-labels">
+                    <span>0 min</span>
+                    <span>5 min</span>
+                    <span>10 min</span>
+                    <span>15 min</span>
+                    <span>20 min</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Frame Rate Optimization -->
+        <section class="card">
+            <h2 class="card-title">Frame Rate Optimization</h2>
+            <div class="input-group">
+                <label for="fpsIssue">Describe Your Frame Rate Problem</label>
+                <textarea id="fpsIssue" rows="4" placeholder="e.g., My game drops below 20fps in intense scenes"></textarea>
+            </div>
+            <button id="optimizeBtn" class="btn-full">Get Optimization Tips</button>
+            
+            <div id="optimizeResult" class="result-container hidden">
+                <h3>Optimization Recommendations</h3>
+                <div class="optimization-tips" id="optimizationTips">
+                    <!-- Tips will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Game Configuration Recommendations -->
+        <section class="card">
+            <h2 class="card-title">Game Configuration Recommendations</h2>
+            <div class="input-group">
+                <label for="currentConfig">Current Hardware Configuration</label>
+                <textarea id="currentConfig" rows="4" placeholder="e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB"></textarea>
+            </div>
+            <button id="configBtn" class="btn-full">Get Recommended Configuration</button>
+            
+            <div id="configResult" class="result-container hidden">
+                <h3>Recommended Configuration</h3>
+                <div id="recommendedConfig">
+                    <!-- Configuration will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Memory Usage Analysis -->
+        <section class="card">
+            <h2 class="card-title">Memory Usage Analysis</h2>
+            <div class="input-group">
+                <label for="memoryUsage">Current Memory Usage (GB)</label>
+                <input type="number" id="memoryUsage" min="0" max="32" step="0.1" placeholder="e.g., 8.5">
+            </div>
+            <button id="memoryBtn" class="btn-full">Analyze Memory Usage</button>
+            
+            <div id="memoryResult" class="result-container hidden">
+                <h3>Memory Usage Analysis</h3>
+                <div class="memory-chart" id="memoryChart">
+                    <!-- Memory bars will be dynamically added here -->
+                </div>
+                <div class="memory-summary" id="memorySummary">
+                    <!-- Memory summary will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // VR Game Performance Monitoring
+        document.getElementById('monitorBtn').addEventListener('click', function() {
+            const gameName = document.getElementById('gameName').value.trim();
+            if (!gameName) {
+                alert('Please enter a VR game name');
+                return;
+            }
+            
+            // Calculate performance metrics based on game name length
+            const nameLength = gameName.length;
+            const baseFps = Math.max(30, 90 - Math.floor(nameLength / 3));
+            const baseCpu = Math.min(95, 20 + Math.floor(nameLength / 2));
+            const baseGpu = Math.min(95, 25 + Math.floor(nameLength / 2));
+            const baseTemp = Math.min(85, 45 + Math.floor(nameLength / 4));
+            
+            // Add some variation based on specific games
+            let fpsVariation = 0;
+            let cpuVariation = 0;
+            let gpuVariation = 0;
+            let tempVariation = 0;
+            
+            if (gameName.toLowerCase().includes('beat saber')) {
+                fpsVariation = 15;
+                cpuVariation = -10;
+                gpuVariation = 5;
+            } else if (gameName.toLowerCase().includes('half-life')) {
+                fpsVariation = -10;
+                cpuVariation = 15;
+                gpuVariation = 20;
+                tempVariation = 5;
+            } else if (gameName.toLowerCase().includes('vrchat')) {
+                fpsVariation = -20;
+                cpuVariation = 25;
+                gpuVariation = 15;
+                tempVariation = 10;
+            }
+            
+            // Calculate final values
+            const fps = Math.max(20, Math.min(120, baseFps + fpsVariation));
+            const cpu = Math.max(20, Math.min(100, baseCpu + cpuVariation));
+            const gpu = Math.max(20, Math.min(100, baseGpu + gpuVariation));
+            const temp = Math.max(40, Math.min(95, baseTemp + tempVariation));
+            
+            // Update UI
+            document.getElementById('fpsValue').textContent = Math.round(fps);
+            document.getElementById('cpuValue').textContent = Math.round(cpu);
+            document.getElementById('gpuValue').textContent = Math.round(gpu);
+            document.getElementById('tempValue').textContent = Math.round(temp);
+            
+            document.getElementById('performanceResult').classList.remove('hidden');
+        });
+        
+        // Hardware Temperature Detection
+        document.getElementById('tempBtn').addEventListener('click', function() {
+            const hardwareType = document.getElementById('hardwareType').value;
+            const tempPoints = document.getElementById('tempPoints');
+            
+            // Clear previous points
+            tempPoints.innerHTML = '';
+            
+            // Generate temperature data based on hardware type
+            let baseTemp, variation;
+            
+            switch(hardwareType) {
+                case 'cpu':
+                    baseTemp = 65;
+                    variation = 15;
+                    break;
+                case 'gpu':
+                    baseTemp = 70;
+                    variation = 20;
+                    break;
+                case 'vr-headset':
+                    baseTemp = 35;
+                    variation = 8;
+                    break;
+                case 'storage':
+                    baseTemp = 40;
+                    variation = 10;
+                    break;
+                default:
+                    baseTemp = 50;
+                    variation = 15;
+            }
+            
+            // Create temperature points over time
+            const timePoints = [0, 5, 10, 15, 20];
+            timePoints.forEach((time, index) => {
+                const temp = baseTemp + Math.sin(index * 0.5) * variation;
+                const height = (temp / 100) * 100; // Normalize to chart height
+                
+                const point = document.createElement('div');
+                point.className = 'temp-point';
+                point.style.left = `${(index / (timePoints.length - 1)) * 100}%`;
+                point.style.bottom = `${height}%`;
+                tempPoints.appendChild(point);
+            });
+            
+            document.getElementById('tempResult').classList.remove('hidden');
+        });
+        
+        // Frame Rate Optimization
+        document.getElementById('optimizeBtn').addEventListener('click', function() {
+            const fpsIssue = document.getElementById('fpsIssue').value.trim();
+            if (!fpsIssue) {
+                alert('Please describe your frame rate problem');
+                return;
+            }
+            
+            const tipsContainer = document.getElementById('optimizationTips');
+            tipsContainer.innerHTML = '';
+            
+            // Analyze the issue and provide relevant tips
+            const tips = [];
+            
+            if (fpsIssue.toLowerCase().includes('drop') || fpsIssue.toLowerCase().includes('low')) {
+                tips.push({
+                    title: 'Reduce Render Resolution',
+                    description: 'Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.'
+                });
+                
+                tips.push({
+                    title: 'Disable Anti-Aliasing',
+                    description: 'Turn off or reduce anti-aliasing settings. This can significantly improve performance.'
+                });
+                
+                tips.push({
+                    title: 'Lower Texture Quality',
+                    description: 'Reduce texture quality settings to decrease VRAM usage.'
+                });
+            }
+            
+            if (fpsIssue.toLowerCase().includes('stutter') || fpsIssue.toLowerCase().includes('lag')) {
+                tips.push({
+                    title: 'Enable Motion Smoothing',
+                    description: 'Use motion smoothing to interpolate frames and reduce perceived lag.'
+                });
+                
+                tips.push({
+                    title: 'Reduce Motion Prediction',
+                    description: 'Lower motion prediction settings to reduce CPU overhead.'
+                });
+                
+                tips.push({
+                    title: 'Disable V-Sync',
+                    description: 'Turn off vertical sync if it\'s causing input lag, but be aware of screen tearing.'
+                });
+            }
+            
+            if (fpsIssue.toLowerCase().includes('heat') || fpsIssue.toLowerCase().includes('thermal')) {
+                tips.push({
+                    title: 'Improve Cooling',
+                    description: 'Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.'
+                });
+                
+                tips.push({
+                    title: 'Reduce Power Limit',
+                    description: 'Lower GPU power limit to reduce heat generation and thermal throttling.'
+                });
+                
+                tips.push({
+                    title: 'Use Performance Mode',
+                    description: 'Switch to a performance profile in your graphics control panel.'
+                });
+            }
+            
+            // Add general tips
+            tips.push({
+                title: 'Update Drivers',
+                description: 'Ensure your graphics and VR drivers are up to date.'
+            });
+            
+            tips.push({
+                title: 'Close Background Applications',
+                description: 'Close unnecessary applications to free up system resources.'
+            });
+            
+            // Render tips
+            tips.forEach(tip => {
+                const tipElement = document.createElement('div');
+                tipElement.className = 'tip';
+                tipElement.innerHTML = `<strong>${tip.title}</strong><br>${tip.description}`;
+                tipsContainer.appendChild(tipElement);
+            });
+            
+            document.getElementById('optimizeResult').classList.remove('hidden');
+        });
+        
+        // Game Configuration Recommendations
+        document.getElementById('configBtn').addEventListener('click', function() {
+            const currentConfig = document.getElementById('currentConfig').value.trim();
+            if (!currentConfig) {
+                alert('Please enter your current hardware configuration');
+                return;
+            }
+            
+            const configContainer = document.getElementById('recommendedConfig');
+            configContainer.innerHTML = '';
+            
+            // Parse current config and generate recommendations
+            const recommendations = [];
+            
+            // Check for CPU
+            if (currentConfig.toLowerCase().includes('i3') || currentConfig.toLowerCase().includes('ryzen 3')) {
+                recommendations.push({
+                    component: 'CPU',
+                    current: 'Entry-level',
+                    recommended: 'Mid-range (Intel i5 / Ryzen 5)',
+                    reason: 'Better single-core performance for VR applications'
+                });
+            } else if (currentConfig.toLowerCase().includes('i5') || currentConfig.toLowerCase().includes('ryzen 5')) {
+                recommendations.push({
+                    component: 'CPU',
+                    current: 'Mid-range',
+                    recommended: 'High-end (Intel i7 / Ryzen 7)',
+                    reason: 'Improved multi-threading for complex VR scenes'
+                });
+            }
+            
+            // Check for GPU
+            if (currentConfig.toLowerCase().includes('gtx') || currentConfig.toLowerCase().includes('rx 5')) {
+                recommendations.push({
+                    component: 'GPU',
+                    current: 'Mainstream',
+                    recommended: 'High-end (RTX 3060 / RX 6700 XT or better)',
+                    reason: 'Better ray tracing performance and higher frame rates'
+                });
+            } else if (currentConfig.toLowerCase().includes('rtx 30') || currentConfig.toLowerCase().includes('rx 6')) {
+                recommendations.push({
+                    component: 'GPU',
+                    current: 'High-end',
+                    recommended: 'Flagship (RTX 3080 / RX 6800 XT or better)',
+                    reason: 'Maximum performance for high-resolution VR'
+                });
+            }
+            
+            // Check for RAM
+            const ramMatch = currentConfig.match(/(\d+)\s*gb/i);
+            if (ramMatch) {
+                const ram = parseInt(ramMatch[1]);
+                if (ram < 16) {
+                    recommendations.push({
+                        component: 'RAM',
+                        current: `${ram}GB`,
+                        recommended: '16GB',
+                        reason: 'Minimum requirement for smooth VR experience'
+                    });
+                } else if (ram < 32) {
+                    recommendations.push({
+                        component: 'RAM',
+                        current: `${ram}GB`,
+                        recommended: '32GB',
+                        reason: 'Better multitasking and future-proofing'
+                    });
+                }
+            }
+            
+            // Check for storage
+            if (currentConfig.toLowerCase().includes('hdd') || !currentConfig.toLowerCase().includes('ssd')) {
+                recommendations.push({
+                    component: 'Storage',
+                    current: 'HDD',
+                    recommended: 'NVMe SSD',
+                    reason: 'Faster load times for VR games and applications'
+                });
+            }
+            
+            // Add VR headset recommendation if not present
+            if (!currentConfig.toLowerCase().includes('oculus') && 
+                !currentConfig.toLowerCase().includes('valve') && 
+                !currentConfig.toLowerCase().includes('htc') && 
+                !currentConfig.toLowerCase().includes('ps')) {
+                recommendations.push({
+                    component: 'VR Headset',
+                    current: 'None',
+                    recommended: 'Oculus Quest 2 / HTC Vive',
+                    reason: 'Dedicated VR hardware for optimal experience'
+                });
+            }
+            
+            // Render recommendations
+            if (recommendations.length === 0) {
+                configContainer.innerHTML = '<p>Your current configuration is well-suited for VR gaming.</p>';
+            } else {
+                recommendations.forEach(rec => {
+                    const item = document.createElement('div');
+                    item.className = 'config-item';
+                    item.innerHTML = `
+                        <div>
+                            <strong>${rec.component}</strong>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                                Current: ${rec.current}
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="color: var(--accent);">${rec.recommended}</div>
+                            <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                                ${rec.reason}
+                            </div>
+                        </div>
+                    `;
+                    configContainer.appendChild(item);
+                });
+            }
+            
+            document.getElementById('configResult').classList.remove('hidden');
+        });
+        
+        // Memory Usage Analysis
+        document.getElementById('memoryBtn').addEventListener('click', function() {
+            const memoryUsage = parseFloat(document.getElementById('memoryUsage').value);
+            if (isNaN(memoryUsage) || memoryUsage <= 0) {
+                alert('Please enter a valid memory usage value');
+                return;
+            }
+            
+            const memoryChart = document.getElementById('memoryChart');
+            const memorySummary = document.getElementById('memorySummary');
+            
+            // Clear previous content
+            memoryChart.innerHTML = '';
+            memorySummary.innerHTML = '';
+            
+            // Calculate memory breakdown
+            const system = Math.min(memoryUsage * 0.3, 4);
+            const applications = Math.min(memoryUsage * 0.4, 8);
+            const game = Math.min(memoryUsage * 0.5, 12);
+            const other = memoryUsage - system - applications - game;
+            
+            // Create memory bars
+            const memoryData = [
+                { label: 'System', value: system, color: '#e74c3c' },
+                { label: 'Applications', value: applications, color: '#f39c12' },
+                { label: 'Game', value: game, color: '#3498db' },
+                { label: 'Other', value: other, color: '#2ecc71' }
+            ];
+            
+            memoryData.forEach(item => {
+                const bar = document.createElement('div');
+                bar.className = 'memory-bar';
+                bar.style.height = `${(item.value / memoryUsage) * 100}%`;
+                bar.style.backgroundColor = item.color;
+                
+                const value = document.createElement('div');
+                value.className = 'memory-value';
+                value.textContent = `${item.value.toFixed(1)}GB`;
+                
+                const label = document.createElement('div');
+                label.className = 'memory-label';
+                label.textContent = item.label;
+                
+                bar.appendChild(value);
+                bar.appendChild(label);
+                memoryChart.appendChild(bar);
+            });
+            
+            // Generate memory summary
+            let efficiency = 'Good';
+            let recommendation = '';
+            
+            if (memoryUsage < 8) {
+                efficiency = 'Excellent';
+                recommendation = 'Your system has plenty of headroom for VR gaming.';
+            } else if (memoryUsage < 16) {
+                efficiency = 'Good';
+                recommendation = 'Your system is well-balanced for VR gaming.';
+            } else if (memoryUsage < 24) {
+                efficiency = 'Acceptable';
+                recommendation = 'Consider closing background applications to free up memory.';
+            } else {
+                efficiency = 'Poor';
+                recommendation = 'Upgrade your RAM to at least 32GB for optimal VR performance.';
+            }
+            
+            memorySummary.innerHTML = `
+                <h4>Memory Efficiency: <span style="color: ${efficiency === 'Excellent' ? '#2ecc71' : efficiency === 'Good' ? '#3498db' : efficiency === 'Acceptable' ? '#f39c12' : '#e74c3c'}">${efficiency}</span></h4>
+                <p>${recommendation}</p>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-secondary);">
+                    Total memory usage: ${memoryUsage.toFixed(1)}GB | 
+                    Available: ${Math.max(0, 32 - memoryUsage).toFixed(1)}GB
+                </p>
+            `;
+            
+            document.getElementById('memoryResult').classList.remove('hidden');
+        });
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"VR Game Performance Optimizer":"VR Game Performance Optimizer","Analyze and optimize your VR gaming experience with performance insights":"Analyze and optimize your VR gaming experience with performance insights","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.","VR Game Performance Monitoring":"VR Game Performance Monitoring","Enter VR Game Name":"Enter VR Game Name","Monitor Performance":"Monitor Performance","Performance Metrics":"Performance Metrics","FPS":"FPS","CPU Usage (%)":"CPU Usage (%)","GPU Usage (%)":"GPU Usage (%)","Temperature (°C)":"Temperature (°C)","Hardware Temperature Detection":"Hardware Temperature Detection","Hardware Type":"Hardware Type","CPU":"CPU","GPU":"GPU","VR Headset":"VR Headset","Storage":"Storage","Check Temperature":"Check Temperature","Temperature Monitoring":"Temperature Monitoring","0 min":"0 min","5 min":"5 min","10 min":"10 min","15 min":"15 min","20 min":"20 min","Frame Rate Optimization":"Frame Rate Optimization","Describe Your Frame Rate Problem":"Describe Your Frame Rate Problem","Get Optimization Tips":"Get Optimization Tips","Optimization Recommendations":"Optimization Recommendations","Game Configuration Recommendations":"Game Configuration Recommendations","Current Hardware Configuration":"Current Hardware Configuration","Get Recommended Configuration":"Get Recommended Configuration","Recommended Configuration":"Recommended Configuration","Memory Usage Analysis":"Memory Usage Analysis","Current Memory Usage (GB)":"Current Memory Usage (GB)","Analyze Memory Usage":"Analyze Memory Usage","GB":"GB","Memory Efficiency:":"Memory Efficiency:","e.g., Beat Saber, Half-Life: Alyx":"e.g., Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"e.g., My game drops below 20fps in intense scenes","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"e.g., 8.5","Please enter a VR game name":"Please enter a VR game name","beat saber":"beat saber","Please describe your frame rate problem":"Please describe your frame rate problem","Reduce Render Resolution":"Reduce Render Resolution","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.","Disable Anti-Aliasing":"Disable Anti-Aliasing","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Turn off or reduce anti-aliasing settings. This can significantly improve performance.","Lower Texture Quality":"Lower Texture Quality","Reduce texture quality settings to decrease VRAM usage.":"Reduce texture quality settings to decrease VRAM usage.","Enable Motion Smoothing":"Enable Motion Smoothing","Use motion smoothing to interpolate frames and reduce perceived lag.":"Use motion smoothing to interpolate frames and reduce perceived lag.","Reduce Motion Prediction":"Reduce Motion Prediction","Lower motion prediction settings to reduce CPU overhead.":"Lower motion prediction settings to reduce CPU overhead.","Disable V-Sync":"Disable V-Sync","s causing input lag, but be aware of screen tearing.":"s causing input lag, but be aware of screen tearing.","Improve Cooling":"Improve Cooling","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.","Reduce Power Limit":"Reduce Power Limit","Lower GPU power limit to reduce heat generation and thermal throttling.":"Lower GPU power limit to reduce heat generation and thermal throttling.","Use Performance Mode":"Use Performance Mode","Switch to a performance profile in your graphics control panel.":"Switch to a performance profile in your graphics control panel.","Update Drivers":"Update Drivers","Ensure your graphics and VR drivers are up to date.":"Ensure your graphics and VR drivers are up to date.","Close Background Applications":"Close Background Applications","Close unnecessary applications to free up system resources.":"Close unnecessary applications to free up system resources.","Please enter your current hardware configuration":"Please enter your current hardware configuration","ryzen 3":"ryzen 3","Entry-level":"Entry-level","Better single-core performance for VR applications":"Better single-core performance for VR applications","ryzen 5":"ryzen 5","Mid-range":"Mid-range","Improved multi-threading for complex VR scenes":"Improved multi-threading for complex VR scenes","rx 5":"rx 5","Mainstream":"Mainstream","Better ray tracing performance and higher frame rates":"Better ray tracing performance and higher frame rates","rtx 30":"rtx 30","rx 6":"rx 6","High-end":"High-end","Maximum performance for high-resolution VR":"Maximum performance for high-resolution VR","RAM":"RAM","Minimum requirement for smooth VR experience":"Minimum requirement for smooth VR experience","Better multitasking and future-proofing":"Better multitasking and future-proofing","HDD":"HDD","NVMe SSD":"NVMe SSD","Faster load times for VR games and applications":"Faster load times for VR games and applications","None":"None","__title__":"VR Game Performance Optimizer","Your current configuration is well-suited for VR gaming.":"Your current configuration is well-suited for VR gaming.","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","Mid-range (Intel i5 / Ryzen 5)":"Mid-range (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"High-end (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"High-end (RTX 3060 / RX 6700 XT or better)","Flagship (RTX 3080 / RX 6800 XT or better)":"Flagship (RTX 3080 / RX 6800 XT or better)","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive","Dedicated VR hardware for optimal experience":"Dedicated VR hardware for optimal experience","Please enter a valid memory usage value":"Please enter a valid memory usage value","System":"System","Applications":"Applications","Game":"Game","Other":"Other","Good":"Good","Excellent":"Excellent","Your system has plenty of headroom for VR gaming.":"Your system has plenty of headroom for VR gaming.","Your system is well-balanced for VR gaming.":"Your system is well-balanced for VR gaming.","Acceptable":"Acceptable","Consider closing background applications to free up memory.":"Consider closing background applications to free up memory.","Poor":"Poor","Upgrade your RAM to at least 32GB for optimal VR performance.":"Upgrade your RAM to at least 32GB for optimal VR performance.","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"VR Game Performance Optimizer":"VR游戏性能优化器","Analyze and optimize your VR gaming experience with performance insights":"通过性能洞察分析并优化您的VR游戏体验","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"为您的VR游戏获取详细性能分析和优化建议。监控硬件指标，识别瓶颈，并通过可操作的建议提升您的VR体验。","VR Game Performance Monitoring":"VR游戏性能监控","Enter VR Game Name":"输入VR游戏名称","Monitor Performance":"监控性能","Performance Metrics":"性能指标","FPS":"帧率","CPU Usage (%)":"CPU使用率(%)","GPU Usage (%)":"GPU使用率(%)","Temperature (°C)":"温度(°C)","Hardware Temperature Detection":"硬件温度检测","Hardware Type":"硬件类型","VR Headset":"VR头戴设备","Storage":"存储","Check Temperature":"检查温度","Temperature Monitoring":"温度监控","0 min":"0分钟","5 min":"5分钟","10 min":"10分钟","15 min":"15分钟","20 min":"20分钟","Frame Rate Optimization":"帧率优化","Describe Your Frame Rate Problem":"描述您的帧率问题","Get Optimization Tips":"获取优化技巧","Optimization Recommendations":"优化建议","Game Configuration Recommendations":"游戏配置建议","Current Hardware Configuration":"当前硬件配置","Get Recommended Configuration":"获取推荐配置","Recommended Configuration":"推荐配置","Memory Usage Analysis":"内存使用分析","Current Memory Usage (GB)":"当前内存使用(GB)","Analyze Memory Usage":"分析内存使用","Memory Efficiency:":"内存效率：","e.g., Beat Saber, Half-Life: Alyx":"例如，Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"例如，我的游戏在激烈场景中帧率低于20fps","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"例如，CPU：i7-9700K，GPU：RTX 2070，RAM：16GB","e.g., 8.5":"例如，8.5","Please enter a VR game name":"请输入VR游戏名称","Please describe your frame rate problem":"请描述您的帧率问题","Reduce Render Resolution":"降低渲染分辨率","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"降低游戏中的分辨率以减少GPU负载。首先尝试将显示分辨率的75%。","Disable Anti-Aliasing":"禁用抗锯齿","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"关闭或降低抗锯齿设置。这可以显著提高性能。","Lower Texture Quality":"降低纹理质量","Reduce texture quality settings to decrease VRAM usage.":"降低纹理质量设置以减少VRAM使用。","Enable Motion Smoothing":"启用动态模糊","Use motion smoothing to interpolate frames and reduce perceived lag.":"使用动态模糊来插值帧并减少感知到的延迟。","Reduce Motion Prediction":"降低运动预测","Lower motion prediction settings to reduce CPU overhead.":"降低运动预测设置以减少CPU开销。","Disable V-Sync":"禁用V-Sync","s causing input lag, but be aware of screen tearing.":"这会导致输入延迟，但请注意屏幕撕裂。","Improve Cooling":"改善散热","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"确保您的电脑有足够的散热。考虑清理风扇和通风口的灰尘。","Reduce Power Limit":"降低功率限制","Lower GPU power limit to reduce heat generation and thermal throttling.":"降低GPU功率限制以减少热量产生和热限制。","Use Performance Mode":"使用性能模式","Switch to a performance profile in your graphics control panel.":"在您的图形控制面板中切换到性能配置文件。","Update Drivers":"更新驱动程序","Ensure your graphics and VR drivers are up to date.":"确保您的图形和VR驱动程序是最新的。","Close Background Applications":"关闭后台应用程序","Close unnecessary applications to free up system resources.":"关闭不必要的应用程序以释放系统资源。","Please enter your current hardware configuration":"请输入您的当前硬件配置","ryzen 3":"锐龙3","Entry-level":"入门级","Better single-core performance for VR applications":"为VR应用程序提供更好的单核性能","ryzen 5":"锐龙5","Mid-range":"中端","Improved multi-threading for complex VR scenes":"为复杂VR场景改进的多线程性能","rx 5":"RX 5","Mainstream":"主流","Better ray tracing performance and higher frame rates":"更好的光线追踪性能和更高的帧率","rtx 30":"RTX 30","rx 6":"RX 6","High-end":"高端","Maximum performance for high-resolution VR":"为高分辨率VR提供最大性能","Minimum requirement for smooth VR experience":"流畅VR体验的最低要求","Better multitasking and future-proofing":"更好的多任务处理和未来兼容性","Faster load times for VR games and applications":"VR游戏和应用程序的加载时间更快","None":"无","__title__":"VR游戏性能优化器","beat saber":"节奏大师","Your current configuration is well-suited for VR gaming.":"您的当前配置非常适合VR游戏。","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"免费在线工具分析并优化您的VR游戏性能。无需注册 - 只需输入您的游戏详情即可获得可操作见解。","Mid-range (Intel i5 / Ryzen 5)":"中端（Intel i5 / Ryzen 5）","High-end (Intel i7 / Ryzen 7)":"高端（Intel i7 / Ryzen 7）","High-end (RTX 3060 / RX 6700 XT or better)":"高端（RTX 3060 / RX 6700 XT 或更高）","Flagship (RTX 3080 / RX 6800 XT or better)":"旗舰（RTX 3080 / RX 6800 XT 或更高）","Dedicated VR hardware for optimal experience":"专用VR硬件，以获得最佳体验","Please enter a valid memory usage value":"请输入有效的内存使用值","System":"系统","Applications":"应用","Game":"游戏","Other":"其他","Good":"好","Excellent":"优秀","Your system has plenty of headroom for VR gaming.":"您的系统有足够的余量进行VR游戏。","Your system is well-balanced for VR gaming.":"您的系统平衡得很好，适合VR游戏。","Acceptable":"可接受","Consider closing background applications to free up memory.":"考虑关闭后台应用程序以释放内存。","Poor":"较差","Upgrade your RAM to at least 32GB for optimal VR performance.":"将您的RAM升级至至少32GB以获得最佳VR性能。","CPU":"CPU","GPU":"GPU","GB":"GB","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"es":{"VR Game Performance Optimizer":"Optimizador de Rendimiento de Juegos de RV","Analyze and optimize your VR gaming experience with performance insights":"Analiza y optimiza tu experiencia de juego de RV con información de rendimiento","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Obtén análisis detallados y recomendaciones de optimización para tus juegos de RV. Monitorea métricas de hardware, identifica cuellos de botella y mejora tu experiencia de RV con información aplicable.","VR Game Performance Monitoring":"Monitoreo de Rendimiento de Juegos de RV","Enter VR Game Name":"Introduce el Nombre del Juego de RV","Monitor Performance":"Monitorear Rendimiento","Performance Metrics":"Métricas de Rendimiento","CPU Usage (%)":"Uso de CPU (%)","GPU Usage (%)":"Uso de GPU (%)","Temperature (°C)":"Temperatura (°C)","Hardware Temperature Detection":"Detección de Temperatura de Hardware","Hardware Type":"Tipo de Hardware","VR Headset":"Gafas de RV","Storage":"Almacenamiento","Check Temperature":"Revisar Temperatura","Temperature Monitoring":"Monitoreo de Temperatura","Frame Rate Optimization":"Optimización de Tasa de Cuadros","Describe Your Frame Rate Problem":"Describir tu Problema de Tasa de Cuadros","Get Optimization Tips":"Obtener Consejos de Optimización","Optimization Recommendations":"Recomendaciones de Optimización","Game Configuration Recommendations":"Recomendaciones de Configuración del Juego","Current Hardware Configuration":"Configuración de Hardware Actual","Get Recommended Configuration":"Obtener Configuración Recomendada","Recommended Configuration":"Configuración Recomendada","Memory Usage Analysis":"Análisis de Uso de Memoria","Current Memory Usage (GB)":"Uso de Memoria Actual (GB)","Analyze Memory Usage":"Analizar Uso de Memoria","Memory Efficiency:":"Eficiencia de Memoria:","e.g., Beat Saber, Half-Life: Alyx":"por ejemplo, Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"por ejemplo, mi juego cae por debajo de 20fps en escenas intensas","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"por ejemplo, CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"por ejemplo, 8.5","Please enter a VR game name":"Por favor, introduce un nombre de juego de RV","Please describe your frame rate problem":"Por favor, describe tu problema de tasa de cuadros","Reduce Render Resolution":"Reducir la Resolución de Renderizado","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Disminuye la resolución del juego para reducir la carga de trabajo de la GPU. Intenta primero con el 75% de tu resolución de visualización.","Disable Anti-Aliasing":"Deshabilitar el Desenfoque Antialiasing","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Desactiva o reduce la configuración de desenfoque antialiasing. Esto puede mejorar significativamente el rendimiento.","Lower Texture Quality":"Reducir la Calidad de Textura","Reduce texture quality settings to decrease VRAM usage.":"Reduce la configuración de calidad de textura para disminuir el uso de VRAM.","Enable Motion Smoothing":"Habilitar Suavizado de Movimiento","Use motion smoothing to interpolate frames and reduce perceived lag.":"Usa el suavizado de movimiento para interpolar cuadros y reducir el retraso percibido.","Reduce Motion Prediction":"Reducir la Predicción de Movimiento","Lower motion prediction settings to reduce CPU overhead.":"Disminuye la configuración de predicción de movimiento para reducir el uso de CPU.","Disable V-Sync":"Deshabilitar V-Sync","s causing input lag, but be aware of screen tearing.":"causando retraso de entrada, pero ten en cuenta el desgarro de pantalla.","Improve Cooling":"Mejorar la Refrigeración","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Asegúrate de que tu PC tenga una refrigeración adecuada. Considera limpiar el polvo de los ventiladores y las ventilaciones.","Reduce Power Limit":"Reducir el Límite de Potencia","Lower GPU power limit to reduce heat generation and thermal throttling.":"Disminuye el límite de potencia de la GPU para reducir la generación de calor y el ralentizado térmico.","Use Performance Mode":"Usar el modo de rendimiento","Switch to a performance profile in your graphics control panel.":"Cambiar a un perfil de rendimiento en su panel de control de gráficos.","Update Drivers":"Actualizar los controladores","Ensure your graphics and VR drivers are up to date.":"Asegúrese de que sus controladores de gráficos y VR estén actualizados.","Close Background Applications":"Cerrar aplicaciones en segundo plano","Close unnecessary applications to free up system resources.":"Cerrar aplicaciones innecesarias para liberar recursos del sistema.","Please enter your current hardware configuration":"Por favor, introduzca su configuración de hardware actual","Entry-level":"De entrada","Better single-core performance for VR applications":"Mejor rendimiento de núcleo único para aplicaciones de VR","Mid-range":"De gama media","Improved multi-threading for complex VR scenes":"Mejora de la multi-hilos para escenas de VR complejas","Mainstream":"De corriente principal","Better ray tracing performance and higher frame rates":"Mejor rendimiento de trazado de rayos y tasas de cuadros más altas","High-end":"De alta gama","Maximum performance for high-resolution VR":"Rendimiento máximo para VR de alta resolución","Minimum requirement for smooth VR experience":"Requisito mínimo para una experiencia de VR fluida","Better multitasking and future-proofing":"Mejor multitarea y preparación para el futuro","Faster load times for VR games and applications":"Cargas más rápidas para juegos y aplicaciones de VR","None":"Ninguno","__title__":"Optimizador de Rendimiento de Juegos de RV","Your current configuration is well-suited for VR gaming.":"Tu configuración actual es ideal para el juego de realidad virtual.","完全免费":"Totalmente gratuito","提意见":"Dar tu opinión","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Herramienta gratuita en línea para analizar y optimizar el rendimiento de tu juego de realidad virtual. No se requiere registro - simplemente ingresa los detalles de tu juego y obtén información de acción.","Mid-range (Intel i5 / Ryzen 5)":"Mediana gama (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"Alto rendimiento (Intel i7 / Ryzen 7)","Dedicated VR hardware for optimal experience":"Hardware VR dedicado para la mejor experiencia","Please enter a valid memory usage value":"Por favor, introduzca un valor de uso de memoria válido","System":"Sistema","Applications":"Aplicaciones","Game":"Juego","Other":"Otro","Good":"Bueno","Excellent":"Excelente","Your system has plenty of headroom for VR gaming.":"Su sistema tiene suficiente capacidad para el juego de realidad virtual.","Your system is well-balanced for VR gaming.":"Su sistema está bien equilibrado para el juego de realidad virtual.","Acceptable":"Aceptable","Consider closing background applications to free up memory.":"Considere cerrar aplicaciones en segundo plano para liberar memoria.","Poor":"Pobre","Upgrade your RAM to at least 32GB for optimal VR performance.":"Actualice su RAM a al menos 32GB para un rendimiento óptimo de RV.","High-end (RTX 3060 / RX 6700 XT or better)":"Alto rendimiento (RTX 3060 / RX 6700 XT o superior)","Flagship (RTX 3080 / RX 6800 XT or better)":"Modelo insignia (RTX 3080 / RX 6800 XT o superior)","FPS":"FPS","CPU":"CPU","GPU":"GPU","0 min":"0 min","5 min":"5 min","10 min":"10 min","15 min":"15 min","20 min":"20 min","GB":"GB","beat saber":"beat saber","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"ja":{"VR Game Performance Optimizer":"VRゲームパフォーマンス最適化","Analyze and optimize your VR gaming experience with performance insights":"パフォーマンスの洞察でVRゲーム体験を分析し最適化","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"VRゲームの詳細なパフォーマンス分析と最適化推奨を行い、ハードウェアメトリクスを監視し、ボトルネックを特定し、実行可能な洞察でVR体験を向上させ。","VR Game Performance Monitoring":"VRゲームパフォーマンス監視","Enter VR Game Name":"VRゲーム名を入力","Monitor Performance":"パフォーマンスを監視","Performance Metrics":"パフォーマンスメトリクス","CPU Usage (%)":"CPU使用率 (%)","GPU Usage (%)":"GPU使用率 (%)","Temperature (°C)":"温度 (°C)","Hardware Temperature Detection":"ハードウェア温度検知","Hardware Type":"ハードウェアタイプ","VR Headset":"VRヘッドセット","Storage":"ストレージ","Check Temperature":"温度を確認","Temperature Monitoring":"温度監視","0 min":"0分","5 min":"5分","10 min":"10分","15 min":"15分","20 min":"20分","Frame Rate Optimization":"フレームレート最適化","Describe Your Frame Rate Problem":"フレームレートの問題を説明","Get Optimization Tips":"最適化のヒントを取得","Optimization Recommendations":"最適化推奨","Game Configuration Recommendations":"ゲーム設定推奨","Current Hardware Configuration":"現在のハードウェア設定","Get Recommended Configuration":"推奨設定を取得","Recommended Configuration":"推奨設定","Memory Usage Analysis":"メモリ使用分析","Current Memory Usage (GB)":"現在のメモリ使用量 (GB)","Analyze Memory Usage":"メモリ使用を分析","Memory Efficiency:":"メモリ効率:","e.g., Beat Saber, Half-Life: Alyx":"例：Beat Saber、Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"例：私のゲームは強力なシーンで20fps以下に落ちる","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"例：CPU：i7-9700K、GPU：RTX 2070、RAM：16GB","e.g., 8.5":"例：8.5","Please enter a VR game name":"VRゲーム名を入力してください","Please describe your frame rate problem":"フレームレートの問題を説明してください","Reduce Render Resolution":"レンダリング解像度を低減","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"ゲーム内解像度を低減してGPUの負荷を減らします。まずはディスプレイ解像度の75%を試してください。","Disable Anti-Aliasing":"アンチエイリアスを無効に","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"アンチエイリアスをオフにしたり、設定を低減します。これによりパフォーマンスが大幅に向上します。","Lower Texture Quality":"テクスチャの品質を低減","Reduce texture quality settings to decrease VRAM usage.":"テクスチャの品質設定を低減してVRAMの使用量を減らします。","Enable Motion Smoothing":"モーションスムージングを有効に","Use motion smoothing to interpolate frames and reduce perceived lag.":"モーションスムージングを使用してフレームを補間し、認識される遅延を減らします。","Reduce Motion Prediction":"モーション予測を低減","Lower motion prediction settings to reduce CPU overhead.":"モーション予測の設定を低減してCPUの負荷を減らします。","Disable V-Sync":"V-Syncを無効に","s causing input lag, but be aware of screen tearing.":"入力遅延を引き起こしますが、スクリーンティearingに注意してください。","Improve Cooling":"冷却を改善","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"PCが十分な冷却を行っていることを確認してください。ファンやベンチからの埃を拭くことを検討してください。","Reduce Power Limit":"パワーライムを低減","Lower GPU power limit to reduce heat generation and thermal throttling.":"GPUのパワーライムを低減して熱生成とテールロッティングを減らします。","Use Performance Mode":"パフォーマンスモードを使用する","Switch to a performance profile in your graphics control panel.":"グラフィックコントロールパネルでパフォーマンスプロファイルに切り替える","Update Drivers":"グラフィックおよびVRドライバーを最新のものに更新する","Ensure your graphics and VR drivers are up to date.":"グラフィックおよびVRドライバーが最新であることを確認する","Close Background Applications":"不要なアプリケーションを閉じてシステムリソースを解放する","Please enter your current hardware configuration":"現在のハードウェア構成を入力してください","Entry-level":"エントリーレベル","Better single-core performance for VR applications":"VRアプリケーションのためのシングルコアパフォーマンスが向上","Mid-range":"ミッドレンジ","Improved multi-threading for complex VR scenes":"複雑なVRシーンのためのマルチスレッドが向上","Mainstream":"主流","Better ray tracing performance and higher frame rates":"レイトレース性能が向上し、フレームレートが高くなる","High-end":"ハイエンド","Maximum performance for high-resolution VR":"高解像度VRのための最高性能","RAM":"スムーズなVR体験のための最低要件","Better multitasking and future-proofing":"より良いマルチタスクと将来の対応","Faster load times for VR games and applications":"VRゲームやアプリケーションの読み込み時間が短くなる","None":"なし","__title__":"VRゲームパフォーマンス最適化","Close unnecessary applications to free up system resources.":"不要要らないアプリケーションを閉じてシステムリソースを解放してください。","Minimum requirement for smooth VR experience":"スムーズなVR体験に必要な最低要件","Your current configuration is well-suited for VR gaming.":"現在の設定はVRゲームに適しています。","提意见":"意見を寄せてください","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"VRゲームのパフォーマンスを分析し最適化する無料オンラインツール。登録は必要ありません - ゲームの詳細を入力して、実行可能なインサイトを取得してください。","Mid-range (Intel i5 / Ryzen 5)":"中間クラス（Intel i5 / Ryzen 5）","High-end (Intel i7 / Ryzen 7)":"ハイエンド (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"ハイエンド (RTX 3060 / RX 6700 XT またはそれ以上)","Flagship (RTX 3080 / RX 6800 XT or better)":"旗艦モデル (RTX 3080 / RX 6800 XT またはそれ以上)","Dedicated VR hardware for optimal experience":"最適な体験のための専用VRハードウェア","Please enter a valid memory usage value":"有効なメモリ使用値を入力してください","System":"システム","Applications":"アプリケーション","Game":"ゲーム","Other":"その他","Good":"良い","Excellent":"素晴らしい","Your system has plenty of headroom for VR gaming.":"あなたのシステムにはVRゲームに十分な余裕があります。","Your system is well-balanced for VR gaming.":"あなたのシステムはVRゲームに適しています。","Acceptable":"可","Consider closing background applications to free up memory.":"バックグラウンドアプリケーションを閉じることでメモリを解放してください。","Poor":"不良","Upgrade your RAM to at least 32GB for optimal VR performance.":"VRの最適なパフォーマンスを達成するためには、RAMを少なくとも32GBにアップグレードしてください。","PingFang SC":"苹方 SC","Microsoft YaHei":"微软雅黑","完全免费":"完全無料","beat saber":"ビートサバー","ryzen 3":"リージェン3","ryzen 5":"リージェン5","rx 5":"RX 5","rtx 30":"RTX 30","rx 6":"RX 6","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"ko":{"VR Game Performance Optimizer":"VR 게임 성능 최적화","Analyze and optimize your VR gaming experience with performance insights":"성능 통찰을 통해 VR 게임 경험을 분석 및 최적화하세요","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"VR 게임의 상세한 성능 분석 및 최적화 권장 사항을 받아보세요. 하드웨어 지표를 모니터링하고, 버퍼넷을 식별하고, 실질적인 통찰을 통해 VR 경험을 개선하세요","VR Game Performance Monitoring":"VR 게임 성능 모니터링","Enter VR Game Name":"VR 게임 이름을 입력하세요","Monitor Performance":"성능 모니터링","Performance Metrics":"성능 지표","CPU Usage (%)":"CPU 사용률 (%)","GPU Usage (%)":"GPU 사용률 (%)","Temperature (°C)":"온도 (°C)","Hardware Temperature Detection":"하드웨어 온도检测","Hardware Type":"하드웨어 유형","VR Headset":"VR 헤드셋","Storage":"스토리지","Check Temperature":"온도 확인","Temperature Monitoring":"온도 모니터링","0 min":"0분","5 min":"5분","10 min":"10분","15 min":"15분","20 min":"20분","Frame Rate Optimization":"프레임률 최적화","Describe Your Frame Rate Problem":"프레임률 문제를 설명하세요","Get Optimization Tips":"최적화 팁을 받아보세요","Optimization Recommendations":"최적화 권장 사항","Game Configuration Recommendations":"게임 구성 권장 사항","Current Hardware Configuration":"현재 하드웨어 구성","Get Recommended Configuration":"권장 구성을 받아보세요","Recommended Configuration":"권장 구성","Memory Usage Analysis":"메모리 사용 분석","Current Memory Usage (GB)":"현재 메모리 사용 (GB)","Analyze Memory Usage":"메모리 사용 분석","Memory Efficiency:":"메모리 효율:","e.g., Beat Saber, Half-Life: Alyx":"예: Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"예: 내 게임이 강력한 장면에서 20fps 아래로 떨어집니다","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"예: CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"예: 8.5","Please enter a VR game name":"VR 게임 이름을 입력하세요","Please describe your frame rate problem":"프레임률 문제를 설명하세요","Reduce Render Resolution":"렌더링 해상도를 낮춰 GPU 부하를 줄이세요. 먼저 디스플레이 해상도의 75%를 시도하세요.","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"게임의 해상도를 낮춰 GPU 부담을 줄이세요. 먼저 디스플레이 해상도의 75%를 시도해 보세요.","Disable Anti-Aliasing":"안티알리아스를 끄거나 줄이세요. 이는 성능을 크게 개선할 수 있습니다.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"안티알리아스 설정을 끄거나 낮추세요. 이는 성능을 크게 개선할 수 있습니다.","Lower Texture Quality":"텍스처 품질 설정을 낮춰 VRAM 사용량을 줄이세요.","Reduce texture quality settings to decrease VRAM usage.":"텍스처 품질 설정을 낮춰 VRAM 사용량을 줄이세요.","Enable Motion Smoothing":"모션 스무딩을 사용하여 프레임을 인터폴레이션하고 느낄 수 있는 렒지를 줄입니다.","Use motion smoothing to interpolate frames and reduce perceived lag.":"모션 스미징을 사용하여 프레임을 인터폴레이션하고 느낄 수 있는 렒지를 줄이세요.","Reduce Motion Prediction":"모션 예측 설정을 낮춰 CPU 부하를 줄입니다.","Lower motion prediction settings to reduce CPU overhead.":"모션 예측 설정을 낮춰 CPU 부담을 줄이세요.","Disable V-Sync":"V-Sync를 끄면 입력 렒지가 발생하지만, 스크린 티어링에 주의하세요.","s causing input lag, but be aware of screen tearing.":"입력 지연을 유발하지만 스크린 티어링에 유의하세요.","Improve Cooling":"PC가 충분한 쿨링을 받도록 하세요. 팬과 공기구에서 먼지를 청소하는 것을 고려하세요.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"PC가 충분한 쿨링을 받고 있는지 확인하세요. 팬과 공기구에서 먼지를 청소하는 것을 고려하세요.","Reduce Power Limit":"GPU 전력 제한을 낮춰 열 발생과 열 관제를 줄입니다.","Lower GPU power limit to reduce heat generation and thermal throttling.":"GPU 전력 제한을 낮춰 열 발생과 테르미널 튜닝을 줄이세요.","Use Performance Mode":"사용성능 모드 사용","Switch to a performance profile in your graphics control panel.":"그래픽 제어 패널에서 성능 프로필로 전환하세요.","Update Drivers":"그래픽 및 VR 드라이버를 최신 상태로 유지하세요.","Ensure your graphics and VR drivers are up to date.":"그래픽 및 VR 드라이버가 최신 상태인지 확인하세요.","Close Background Applications":"불필요한 애플리케이션을 닫아 시스템 리소스를 해방하세요.","Close unnecessary applications to free up system resources.":"unnecessary applications를 닫아 시스템 리소스를 해방하세요.","Please enter your current hardware configuration":"현재 하드웨어 구성을 입력하세요","Entry-level":"초보자 모델","Better single-core performance for VR applications":"VR 애플리케이션에서의 단일 코어 성능 향상","Mid-range":"중간급","Improved multi-threading for complex VR scenes":" 복잡한 VR 시나리오에서의 멀티 쓰레드 향상","Mainstream":"주류","Better ray tracing performance and higher frame rates":"레이 트레이싱 성능 향상 및 높은 프레임 레이트","High-end":"고급","Maximum performance for high-resolution VR":"고해상도 VR에서의 최대 성능","Minimum requirement for smooth VR experience":"평滑한 VR 경험을 위한 최소 요구 사항","Better multitasking and future-proofing":"좋은 멀티태스킹 및 미래에 대한 보장","Faster load times for VR games and applications":"VR 게임 및 애플리케이션의 더 빠른 로드 시간","None":"없음","__title__":"VR 게임 성능 최적화","beat saber":"비트 saber","Your current configuration is well-suited for VR gaming.":"당신의 현재 설정은 VR 게이밍에 적합합니다.","完全免费":"완전 무료","提意见":"의견 제안","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"VR 게이밍 성능을 분석하고 최적화하는 무료 온라인 도구. 회원가입이 필요 없습니다 - 게임 상세 정보를 입력하고 실행 가능한 통찰을 얻으세요.","Mid-range (Intel i5 / Ryzen 5)":"중간 성능 (Intel i5 / Ryzen 5)","Your system has plenty of headroom for VR gaming.":"극한 VR 게임에 충분한 시스템 공간이 있습니다.","Your system is well-balanced for VR gaming.":"극한 VR 게임에 최적화된 시스템입니다.","Acceptable":"수용 가능","Consider closing background applications to free up memory.":"메모리를 확보하기 위해 배경 애플리케이션을 닫는 것을 고려하세요.","Poor":"불량","Upgrade your RAM to at least 32GB for optimal VR performance.":"최적의 VR 성능을 위해 RAM을 최소 32GB으로 업그레이드하세요.","PingFang SC":"평방 SC","Microsoft YaHei":"マイ크로소프트 양혼이","Please enter a valid memory usage value":"올바른 메모리 사용량 값을 입력하세요","System":"시스템","Applications":"애플리케이션","Game":"게임","Other":"기타","Good":"좋은","Excellent":"최상의","High-end (Intel i7 / Ryzen 7)":"고급 (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"고급 (RTX 3060 / RX 6700 XT 이상)","Flagship (RTX 3080 / RX 6800 XT or better)":"flagship (RTX 3080 / RX 6800 XT 이상)","Dedicated VR hardware for optimal experience":"최적의 경험을 위한 전용 VR 하드웨어","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"올쿠스 퀘스트 2 / 하이티브 비브"},"fr":{"VR Game Performance Optimizer":"Optimiseur de Performance de Jeu VR","Analyze and optimize your VR gaming experience with performance insights":"Analysez et optimisez votre expérience de jeu VR avec des insights de performance","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Obtenez une analyse détaillée des performances et des recommandations d'optimisation pour vos jeux VR. Surveillez les métriques matérielles, identifiez les goulets d'étranglement et améliorez votre expérience VR avec des insights pratiques.","VR Game Performance Monitoring":"Surveillance de Performance de Jeu VR","Enter VR Game Name":"Entrez le Nom du Jeu VR","Monitor Performance":"Surveiller les Performances","Performance Metrics":"Métriques de Performance","CPU Usage (%)":"Utilisation du CPU (%)","GPU Usage (%)":"Utilisation du GPU (%)","Temperature (°C)":"Température (°C)","Hardware Temperature Detection":"Détecteur de Température Matériel","Hardware Type":"Type de Matériel","VR Headset":"Casque VR","Storage":"Stockage","Check Temperature":"Vérifier la Température","Temperature Monitoring":"Surveillance de Température","Frame Rate Optimization":"Optimisation du Taux d'Images","Describe Your Frame Rate Problem":"Décrivez Votre Problème de Taux d'Images","Get Optimization Tips":"Obtenez des Conseils d'Optimisation","Optimization Recommendations":"Recommandations d'Optimisation","Game Configuration Recommendations":"Recommandations de Configuration de Jeu","Current Hardware Configuration":"Configuration Matériel Actuelle","Get Recommended Configuration":"Obtenez la Configuration Recommandée","Recommended Configuration":"Configuration Recommandée","Memory Usage Analysis":"Analyse de l'Utilisation de la Mémoire","Current Memory Usage (GB)":"Utilisation Actuelle de la Mémoire (GB)","Analyze Memory Usage":"Analyser l'Utilisation de la Mémoire","Memory Efficiency:":"Efficiency de la Mémoire :","e.g., Beat Saber, Half-Life: Alyx":"p.ex., Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"p.ex., Mon jeu tombe en dessous de 20fps dans des scènes intenses","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"p.ex., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"p.ex., 8.5","Please enter a VR game name":"Veuillez entrer un nom de jeu VR","Please describe your frame rate problem":"Veuillez décrire votre problème de taux d'images","Reduce Render Resolution":"Réduisez la Résolution de Rendu","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Réduisez la résolution de votre jeu pour réduire la charge du GPU. Essayez d'abord 75% de la résolution de votre écran.","Disable Anti-Aliasing":"Désactivez l'Antialiasing","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Désactivez ou réduisez les réglages d'antialiasing. Cela peut améliorer considérablement les performances.","Lower Texture Quality":"Réduisez la Qualité des Textures","Reduce texture quality settings to decrease VRAM usage.":"Réduisez les réglages de qualité des textures pour diminuer l'utilisation de la VRAM.","Enable Motion Smoothing":"Activez l'Équilibrage des Mouvements","Use motion smoothing to interpolate frames and reduce perceived lag.":"Utilisez l'équilibrage des mouvements pour interpoler les images et réduire le lag perçu.","Reduce Motion Prediction":"Réduisez la Prédiction des Mouvements","Lower motion prediction settings to reduce CPU overhead.":"Réduisez les réglages de prédiction des mouvements pour réduire la charge CPU.","Disable V-Sync":"Désactivez le V-Sync","s causing input lag, but be aware of screen tearing.":"causant un lag d'entrée, mais soyez conscient du décalage d'écran.","Improve Cooling":"Améliorez la Refroidissement","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Assurez-vous que votre PC dispose d'un refroidissement adéquat. Considérez nettoyer la poussière des ventilateurs et des orifices.","Reduce Power Limit":"Réduisez la Limite de Puissance","Lower GPU power limit to reduce heat generation and thermal throttling.":"Réduisez la limite de puissance du GPU pour réduire la génération de chaleur et le ralentissement thermique.","Use Performance Mode":"Utilisez le mode performance","Switch to a performance profile in your graphics control panel.":"Passer à un profil performance dans votre panneau de contrôle graphique.","Update Drivers":"Mettre à jour les pilotes","Ensure your graphics and VR drivers are up to date.":"Assurez-vous que vos pilotes graphiques et VR sont à jour.","Close Background Applications":"Fermez les applications en arrière-plan","Close unnecessary applications to free up system resources.":"Fermez les applications inutiles pour libérer des ressources système.","Please enter your current hardware configuration":"Veuillez saisir votre configuration matérielle actuelle","Entry-level":"Entrée de gamme","Better single-core performance for VR applications":"Meilleure performance single-core pour les applications VR","Mid-range":"Moyenne gamme","Improved multi-threading for complex VR scenes":"Amélioration de la multithreading pour des scènes VR complexes","Mainstream":"Courant","Better ray tracing performance and higher frame rates":"Meilleure performance de traçage de rayons et taux de frames plus élevés","High-end":"Haute gamme","Maximum performance for high-resolution VR":"Performance maximale pour une VR haute résolution","Minimum requirement for smooth VR experience":"Requis minimum pour une expérience VR fluide","Better multitasking and future-proofing":"Meilleure multitâche et protection contre l'obsolescence","Faster load times for VR games and applications":"Temps de chargement plus rapides pour les jeux et applications VR","None":"Aucun","__title__":"Optimiseur de Performance de Jeu VR","Your current configuration is well-suited for VR gaming.":"Votre configuration actuelle est bien adaptée au jeu VR.","完全免费":"Complètement gratuit","提意见":"Faire des suggestions","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Outil en ligne gratuit pour analyser et optimiser les performances de votre jeu VR. Aucune inscription nécessaire - entrez simplement les détails de votre jeu et obtenez des informations pratiques.","High-end (Intel i7 / Ryzen 7)":"Haute performance (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"Haute performance (RTX 3060 / RX 6700 XT ou supérieur)","Flagship (RTX 3080 / RX 6800 XT or better)":"Modèle phare (RTX 3080 / RX 6800 XT ou supérieur)","Dedicated VR hardware for optimal experience":"Matériel VR dédié pour une expérience optimale","Please enter a valid memory usage value":"Veuillez saisir une valeur de consommation de mémoire valide","System":"Système","Game":"Jeux","Other":"Autres","Good":"Bon","Your system has plenty of headroom for VR gaming.":"Votre système a largement de place pour les jeux VR.","Your system is well-balanced for VR gaming.":"Votre système est bien équilibré pour les jeux VR.","Consider closing background applications to free up memory.":"Considérez fermer les applications en arrière-plan pour libérer de la mémoire.","Poor":"Mauvais","Upgrade your RAM to at least 32GB for optimal VR performance.":"Mettez à jour votre RAM à au moins 32 Go pour une performance optimale VR.","Mid-range (Intel i5 / Ryzen 5)":"Version milieu de gamme (Intel i5 / Ryzen 5)","FPS":"FPS","CPU":"CPU","GPU":"GPU","0 min":"0 min","5 min":"5 min","10 min":"10 min","15 min":"15 min","20 min":"20 min","GB":"GB","beat saber":"beat saber","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive","Applications":"Applications","Excellent":"Excellent","Acceptable":"Acceptable"},"de":{"Analyze and optimize your VR gaming experience with performance insights":"Analysieren und optimieren Sie Ihre VR-Spielerfahrung mit Leistungsinformationen","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Erhalten Sie detaillierte Leistungsanalysen und Optimierungsempfehlungen für Ihre VR-Spiele. Überwachen Sie Hardwaremetriken, identifizieren Sie Engpässe und verbessern Sie Ihre VR-Erfahrung mit praktischen Informationen.","Enter VR Game Name":"Geben Sie den Namen des VR-Spiels ein","Monitor Performance":"Leistung überwachen","Performance Metrics":"Leistungsmetriken","CPU Usage (%)":"CPU-Auslastung (%)","GPU Usage (%)":"GPU-Auslastung (%)","Temperature (°C)":"Temperatur (°C)","Hardware Temperature Detection":"Hardwaretemperaturmessung","Hardware Type":"Hardwaretyp","VR Headset":"VR-Headset","Storage":"Speicher","Check Temperature":"Temperatur überprüfen","Temperature Monitoring":"Temperaturüberwachung","Frame Rate Optimization":"Bildwiederholrate Optimierung","Describe Your Frame Rate Problem":"Beschreiben Sie Ihr Bildwiederholratenproblem","Get Optimization Tips":"Optimierungstipps erhalten","Optimization Recommendations":"Optimierungsempfehlungen","Game Configuration Recommendations":"Spielekonfigurationsempfehlungen","Current Hardware Configuration":"Aktuelle Hardwarekonfiguration","Get Recommended Configuration":"Empfohlene Konfiguration erhalten","Recommended Configuration":"Empfohlene Konfiguration","Memory Usage Analysis":"Speicherverbrauchsanalyse","Current Memory Usage (GB)":"Aktueller Speicherverbrauch (GB)","Analyze Memory Usage":"Speicherverbrauch analysieren","Memory Efficiency:":"Speichereffizienz:","e.g., Beat Saber, Half-Life: Alyx":"z.B. Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"z.B. Meines Spiels fällt in intensiven Szenen unter 20fps","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"z.B. CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"z.B. 8.5","Please enter a VR game name":"Bitte geben Sie einen VR-Spielnamen ein","Please describe your frame rate problem":"Bitte beschreiben Sie Ihr Bildwiederholratenproblem","Reduce Render Resolution":"Verringern Sie die Renderauflösung, um die GPU-Auslastung zu reduzieren. Probieren Sie zunächst 75% Ihrer Anzeigeauf lösung.","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Reduzieren Sie die Bildschirmauflösung in Ihrem Spiel, um die GPU-Ausladung zu verringern. Probieren Sie zunächst 75% Ihrer Anzeigeauflösung aus.","Disable Anti-Aliasing":"Deaktivieren oder verringern Sie die Anti-Aliasing-Einstellungen. Dies kann die Leistung erheblich verbessern.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Schalten Sie die Anti-Aliasing-Einstellungen aus oder reduzieren Sie sie. Dies kann die Leistung erheblich verbessern.","Lower Texture Quality":"Verringern Sie die Texturqualitätseinstellungen, um den VRAM-Verbrauch zu reduzieren.","Reduce texture quality settings to decrease VRAM usage.":"Verringern Sie die Qualitätseinstellungen für Texturen, um den VRAM-Verbrauch zu reduzieren.","Enable Motion Smoothing":"Aktivieren Sie die Bewegungsvergleichung, um Frames zu interpolieren und das wahrgenommene Ruckeln zu reduzieren.","Use motion smoothing to interpolate frames and reduce perceived lag.":"Verwenden Sie die Bewegungsverfeinerung, um Frames zu interpolieren und die wahrgenommene Latenz zu reduzieren.","Reduce Motion Prediction":"Verringern Sie die Bewegungsvorhersageeinstellungen, um die CPU-Auslastung zu reduzieren.","Lower motion prediction settings to reduce CPU overhead.":"Verringern Sie die Einstellungen für die Bewegungsvorhersage, um den CPU-Overhead zu reduzieren.","Disable V-Sync":"Deaktivieren Sie V-Sync, um Eingabeverzögerungen zu verursachen, aber beachten Sie das Bildzerreißen.","s causing input lag, but be aware of screen tearing.":"s verursacht Eingabeverzögerung, aber sein Sie sich der Bildzerreiung bewusst.","Improve Cooling":"Stellen Sie sicher, dass Ihr PC ausreichend Kühlung hat. Überlegen Sie sich, Staub von Lüftern und Lüftungsschlitzen zu entfernen.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Stellen Sie sicher, dass Ihr PC ausreichend gekühlt ist. Überlegen Sie sich, Staub von Lüftern und Lüftungsschlitzen zu entfernen.","Reduce Power Limit":"Verringern Sie die GPU-Leistungsgrenze, um die Wärmeerzeugung und den thermischen Lastausgleich zu reduzieren.","Lower GPU power limit to reduce heat generation and thermal throttling.":"Verringern Sie die Leistungsgrenze der GPU, um die Wärmeerzeugung und den thermischen Lastausgleich zu reduzieren.","Use Performance Mode":"Verwenden Sie den Leistungsmodus","Switch to a performance profile in your graphics control panel.":"Wechseln Sie zu einem Leistungsbildschirmprofil in Ihrem Grafikkontrollfeld.","Update Drivers":"Treiber aktualisieren","Ensure your graphics and VR drivers are up to date.":"Stellen Sie sicher, dass Ihre Grafik- und VR-Treiber auf dem neuesten Stand sind.","Close Background Applications":"Schließen Sie unnötige Anwendungen, um Systemressourcen freizugeben.","Close unnecessary applications to free up system resources.":"Schließen Sie unnötige Anwendungen, um Systemressourcen freizugeben.","Please enter your current hardware configuration":"Bitte geben Sie Ihre aktuelle Hardwarekonfiguration ein","Entry-level":"Einstiegsebene","Better single-core performance for VR applications":"Bessere Single-Core-Leistung für VR-Anwendungen","Mid-range":"Mittelklasse","Improved multi-threading for complex VR scenes":"Verbesserte Mehrkern-Unterstützung für komplexe VR-Szenen","Better ray tracing performance and higher frame rates":"Bessere Ray-Tracing-Leistung und höhere Bildwiederholraten","High-end":"Highend","Maximum performance for high-resolution VR":"Maximale Leistung für hochauflösende VR","Minimum requirement for smooth VR experience":"Mindestanforderung für eine reibungslose VR-Erfahrung","Better multitasking and future-proofing":"Bessere Multitasking-Fähigkeiten und Zukunftssicherheit","Faster load times for VR games and applications":"Schnellere Ladezeiten für VR-Spiele und Anwendungen","None":"Keine","__title__":"VR Game Performance Optimizer","VR Game Performance Optimizer":"VR-Spielleistungs-Optimierer","VR Game Performance Monitoring":"VR-Spielleistungsüberwachung","beat saber":"Beat Saber","ryzen 3":"Ryzen 3","ryzen 5":"Ryzen 5","rx 5":"RX 5","rtx 30":"RTX 30","rx 6":"RX 6","Your current configuration is well-suited for VR gaming.":"Ihre aktuelle Konfiguration ist gut geeignet für VR-Spiele.","完全免费":"Komplett kostenlos","提意见":"Feedback geben","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Kostenloses Online-Tool zur Analyse und Optimierung Ihrer VR-Spielleistung. Keine Registrierung erforderlich - geben Sie einfach Ihre Spieldetails ein und erhalten Sie praxisnahe Einblicke.","Mid-range (Intel i5 / Ryzen 5)":"Mittelklasse (Intel i5 / Ryzen 5)","High-end (RTX 3060 / RX 6700 XT or better)":"High-end (RTX 3060 / RX 6700 XT oder besser)","Flagship (RTX 3080 / RX 6800 XT or better)":"Topmodell (RTX 3080 / RX 6800 XT oder besser)","Dedicated VR hardware for optimal experience":"Spezialisierte VR-Hardware für optimale Erfahrung","Please enter a valid memory usage value":"Bitte geben Sie einen gültigen Speicherverbrauchsvalue ein","Applications":"Anwendungen","Game":"Spiel","Other":"Andere","Good":"Gut","Excellent":"Ausgezeichnet","Your system has plenty of headroom for VR gaming.":"Ihr System hat ausreichend Reserven für VR-Spiele.","Your system is well-balanced for VR gaming.":"Ihr System ist gut abgestimmt für VR-Spiele.","Acceptable":"Akzeptabel","Consider closing background applications to free up memory.":"Überlegen Sie, im Hintergrund laufende Anwendungen zu schließen, um Speicherplatz freizugeben.","Poor":"Schlecht","Upgrade your RAM to at least 32GB for optimal VR performance.":"Erhöhen Sie Ihren Arbeitsspeicher auf mindestens 32GB für optimale VR-Leistung.","FPS":"FPS","CPU":"CPU","GPU":"GPU","0 min":"0 min","5 min":"5 min","10 min":"10 min","15 min":"15 min","20 min":"20 min","GB":"GB","Mainstream":"Mainstream","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","High-end (Intel i7 / Ryzen 7)":"High-end (Intel i7 / Ryzen 7)","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive","System":"System"},"ru":{"VR Game Performance Optimizer":"Оптимизатор производительности VR-игр","Analyze and optimize your VR gaming experience with performance insights":"Анализируйте и оптимизируйте ваше VR-игровое expérience с помощью данных производительности","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Получите детальный анализ производительности и рекомендации по оптимизации для ваших VR-игр. Мониторируйте метрики оборудования, определяйте узкие места и улучшайте ваше VR-игровое experiencia с помощью практических рекомендаций.","VR Game Performance Monitoring":"Мониторинг производительности VR-игр","Enter VR Game Name":"Введите имя VR-игры","Monitor Performance":"Мониторинг производительности","Performance Metrics":"Метрики производительности","CPU Usage (%)":"Использование CPU (%)","GPU Usage (%)":"Использование GPU (%)","Temperature (°C)":"Температура (°C)","Hardware Temperature Detection":"Обнаружение температуры оборудования","Hardware Type":"Тип оборудования","VR Headset":"VR-шлем","Storage":"Хранение","Check Temperature":"Проверьте температуру","Temperature Monitoring":"Мониторинг температуры","0 min":"0 мин","5 min":"5 мин","10 min":"10 мин","15 min":"15 мин","20 min":"20 мин","Frame Rate Optimization":"Оптимизация частоты кадров","Describe Your Frame Rate Problem":"Опишите вашу проблему с частотой кадров","Get Optimization Tips":"Получите советы по оптимизации","Optimization Recommendations":"Рекомендации по оптимизации","Game Configuration Recommendations":"Рекомендации по конфигурации игры","Current Hardware Configuration":"Текущая конфигурация оборудования","Get Recommended Configuration":"Получите рекомендованную конфигурацию","Recommended Configuration":"Рекомендованная конфигурация","Memory Usage Analysis":"Анализ использования памяти","Current Memory Usage (GB)":"Текущее использование памяти (GB)","Analyze Memory Usage":"Анализ использования памяти","Memory Efficiency:":"Эффективность памяти:","e.g., Beat Saber, Half-Life: Alyx":"например, Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"например, моя игра падает ниже 20fps в напряженных сценах","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"например, CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"например, 8.5","Please enter a VR game name":"Пожалуйста, введите имя VR-игры","Please describe your frame rate problem":"Пожалуйста, опишите вашу проблему с частотой кадров","Reduce Render Resolution":"Снизьте разрешение рендеринга, чтобы уменьшить нагрузку на GPU. Сначала попробуйте 75% вашего разрешения экрана.","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Снизьте разрешение в игре, чтобы уменьшить нагрузку на видеокарту. Сначала попробуйте 75% разрешения экрана.","Disable Anti-Aliasing":"Отключите или уменьшите настройки сглаживания. Это может значительно улучшить производительность.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Отключите или уменьшите настройки сглаживания. Это может значительно улучшить производительность.","Lower Texture Quality":"Снизьте настройки качества текстур, чтобы уменьшить использование VRAM.","Reduce texture quality settings to decrease VRAM usage.":"Уменьшите настройки качества текстур, чтобы уменьшить использование VRAM.","Enable Motion Smoothing":"Включите сглаживание движения, чтобы интерполировать кадры и уменьшить ощущение задержки.","Use motion smoothing to interpolate frames and reduce perceived lag.":"Используйте сглаживание движения для интерполяции кадров и уменьшения ощущаемой задержки.","Reduce Motion Prediction":"Снизьте настройки предсказания движения, чтобы уменьшить нагрузку на CPU.","Lower motion prediction settings to reduce CPU overhead.":"Снизьте настройки предсказания движения, чтобы уменьшить нагрузку на процессор.","Disable V-Sync":"Отключите V-Sync, что может вызывать задержку ввода, но будьте внимательны к разрывам экрана.","s causing input lag, but be aware of screen tearing.":"Это может вызывать задержку ввода, но будьте внимательны к разрывам экрана.","Improve Cooling":"Убедитесь, что ваш ПК имеет достаточное охлаждение. Рассмотрите возможность очистки пыли с вентиляторов и воздуховодов.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Убедитесь, что ваш ПК имеет достаточное охлаждение. Рассмотрите возможность удаления пыли с вентиляторов и воздухозаборников.","Reduce Power Limit":"Снизьте ограничение мощности GPU, чтобы уменьшить образование тепла и тепловую разгоночку.","Lower GPU power limit to reduce heat generation and thermal throttling.":"Снизьте ограничение мощности видеокарты, чтобы уменьшить образование тепла и тепловую ограничение производительности.","Use Performance Mode":"Использование режима производительности","Switch to a performance profile in your graphics control panel.":"Переключитесь на профиль производительности в панели управления графикой.","Update Drivers":"Обновление драйверов","Ensure your graphics and VR drivers are up to date.":"Убедитесь, что ваши драйверы для графики и VR актуальны.","Close Background Applications":"Закройте不必要的 приложения для освобождения системных ресурсов.","Close unnecessary applications to free up system resources.":"Закройте不必要的 приложения для высвобождения системных ресурсов.","Please enter your current hardware configuration":"Пожалуйста, введите текущую конфигурацию вашего оборудования","Entry-level":"Начальный уровень","Better single-core performance for VR applications":"Лучшая производительность одного ядра для приложений VR","Mid-range":"Средний уровень","Improved multi-threading for complex VR scenes":"Улучшенная многопоточность для сложных сцен VR","Mainstream":"Основной поток","Better ray tracing performance and higher frame rates":"Лучшая производительность трассировки лучей и более высокие кадровые частоты","High-end":"Высокий уровень","Maximum performance for high-resolution VR":"Максимальная производительность для высокоразрешенческого VR","RAM":"Оперативная память","Minimum requirement for smooth VR experience":"Минимальные требования для плавного опыта VR","Better multitasking and future-proofing":"Лучшая многозадачность и будущая защита","HDD":"Жесткий диск","Faster load times for VR games and applications":"Более быстрая загрузка игр и приложений VR","None":"Нет","__title__":"Оптимизатор производительности VR-игр","GB":"ГБ","beat saber":"Beat Saber","ryzen 3":"Ryzen 3","ryzen 5":"Ryzen 5","rx 5":"RX 5","rtx 30":"RTX 30","rx 6":"RX 6","Your current configuration is well-suited for VR gaming.":"Ваш текущий конфигурация хорошо подходит для виртуальной реальности.","完全免费":"Полностью бесплатно","提意见":"Оставить отзыв","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Бесплатный онлайн-инструмент для анализа и оптимизации производительности вашей игры в виртуальной реальности. Регистрация не требуется - просто введите данные о вашей игре и получите практические советы.","Mid-range (Intel i5 / Ryzen 5)":"Средний уровень (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"Высокий класс (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"Высокий класс (RTX 3060 / RX 6700 XT или лучше) ","Flagship (RTX 3080 / RX 6800 XT or better)":"Линейка флагманов (RTX 3080 / RX 6800 XT или лучше) ","Dedicated VR hardware for optimal experience":"Специализированное VR оборудование для оптимального опыта","Please enter a valid memory usage value":"Пожалуйста, введите корректное значение использования памяти","System":"Система","Applications":"Приложения","Game":"Игра","Other":"Другое","Good":"Хорошо","Excellent":"Отлично","Your system has plenty of headroom for VR gaming.":"Ваше система имеет достаточный запас производительности для VR-игр.","Your system is well-balanced for VR gaming.":"Ваша система хорошо сбалансирована для VR-игр.","Acceptable":"Допустимо","Consider closing background applications to free up memory.":"Рассмотрите возможность закрытия фоновых приложений для освобождения памяти.","Poor":"Плохо","Upgrade your RAM to at least 32GB for optimal VR performance.":"Обновите ОЗУ до 32 ГБ для оптимальной производительности VR.","PingFang SC":"Пингфан СС","Microsoft YaHei":"Майкрософт Яхей","FPS":"FPS","CPU":"CPU","GPU":"GPU","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"pt":{"VR Game Performance Optimizer":"Otimizador de Desempenho de Jogos VR","Analyze and optimize your VR gaming experience with performance insights":"Análise e otimização da sua experiência de jogo VR com insights de desempenho","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Obtenha análise detalhada e recomendações de otimização de desempenho para seus jogos VR. Monitore métricas de hardware, identifique gargalos e melhore sua experiência VR com insights práticos.","VR Game Performance Monitoring":"Monitoramento de Desempenho de Jogos VR","Enter VR Game Name":"Insira o Nome do Jogo VR","Monitor Performance":"Monitorar Desempenho","Performance Metrics":"Métricas de Desempenho","CPU Usage (%)":"Uso da CPU (%)","GPU Usage (%)":"Uso da GPU (%)","Temperature (°C)":"Temperatura (°C)","Hardware Temperature Detection":"Detecção de Temperatura de Hardware","Hardware Type":"Tipo de Hardware","VR Headset":"Headset VR","Storage":"Armazenamento","Check Temperature":"Verificar Temperatura","Temperature Monitoring":"Monitoramento de Temperatura","Frame Rate Optimization":"Otimização de Taxa de Quadros","Describe Your Frame Rate Problem":"Descreva Seu Problema de Taxa de Quadros","Get Optimization Tips":"Obtenha Dicas de Otimização","Optimization Recommendations":"Recomendações de Otimização","Game Configuration Recommendations":"Recomendações de Configuração do Jogo","Current Hardware Configuration":"Configuração de Hardware Atual","Get Recommended Configuration":"Obter Configuração Recomendada","Recommended Configuration":"Configuração Recomendada","Memory Usage Analysis":"Análise de Uso da Memória","Current Memory Usage (GB)":"Uso de Memória Atual (GB)","Analyze Memory Usage":"Analisar Uso da Memória","Memory Efficiency:":"Eficácia da Memória:","e.g., Beat Saber, Half-Life: Alyx":"por exemplo, Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"por exemplo, meu jogo cai abaixo de 20fps em cenas intensas","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"por exemplo, CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"por exemplo, 8.5","Please enter a VR game name":"Por favor, insira o nome do jogo VR","Please describe your frame rate problem":"Por favor, descreva seu problema de taxa de quadros","Reduce Render Resolution":"Reduza a Resolução de Renderização","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Reduza a resolução do jogo para diminuir a carga do GPU. Experimente primeiro com 75% da resolução da sua tela.","Disable Anti-Aliasing":"Desative ou reduza as configurações de suavização de arestas. Isso pode melhorar significativamente o desempenho.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Desligue ou reduza as configurações de suavização de anti-aliasing. Isso pode melhorar significativamente o desempenho.","Lower Texture Quality":"Reduza as configurações de qualidade do textura para diminuir o uso da VRAM.","Reduce texture quality settings to decrease VRAM usage.":"Reduza as configurações de qualidade de textura para diminuir o uso da VRAM.","Enable Motion Smoothing":"Ative a suavização de movimento para interpolar frames e reduzir o atraso percebido.","Use motion smoothing to interpolate frames and reduce perceived lag.":"Use a suavização de movimento para interpolar quadros e reduzir o atraso percebido.","Reduce Motion Prediction":"Reduza as configurações de predição de movimento para diminuir a sobrecarga da CPU.","Lower motion prediction settings to reduce CPU overhead.":"Abaixe as configurações de predição de movimento para reduzir o overhead da CPU.","Disable V-Sync":"Desative o V-Sync, o que pode causar atraso na entrada, mas esteja atento ao desgaste da tela.","s causing input lag, but be aware of screen tearing.":"causando atraso na entrada, mas esteja atento ao desgaste da tela.","Improve Cooling":"Certifique-se de que seu PC tenha resfriamento adequado. Considere limpar a poeira dos ventiladores e das saídas de ar.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Certifique-se de que seu PC tenha refrigeração adequada. Considere limpar a poeira dos ventiladores e das saídas de ar.","Reduce Power Limit":"Reduza o limite de potência da GPU para diminuir a geração de calor e o throttling térmico.","Lower GPU power limit to reduce heat generation and thermal throttling.":"Abaixe o limite de potência da GPU para reduzir a geração de calor e o controle de temperatura.","Switch to a performance profile in your graphics control panel.":"Mude para um perfil de desempenho no painel de controle de gráficos.","Update Drivers":"Atualize os drivers","Ensure your graphics and VR drivers are up to date.":"Certifique-se de que seus drivers de gráficos e VR estão atualizados.","Close Background Applications":"Feche aplicativos de plano de fundo desnecessários para liberar recursos do sistema.","Close unnecessary applications to free up system resources.":"Feche aplicativos desnecessários para liberar recursos do sistema.","Please enter your current hardware configuration":"Por favor, insira sua configuração de hardware atual","Entry-level":"Nível de entrada","Better single-core performance for VR applications":"Melhor desempenho de núcleo único para aplicativos de VR","Improved multi-threading for complex VR scenes":"Melhoria na multithreading para cenas de VR complexas","Better ray tracing performance and higher frame rates":"Melhor desempenho de rastreamento de raios e taxas de quadros mais altas","Maximum performance for high-resolution VR":"Máxima performance para VR de alta resolução","Minimum requirement for smooth VR experience":"Requisito mínimo para uma experiência de VR suave","Better multitasking and future-proofing":"Melhor multitarefa e preparação para o futuro","Faster load times for VR games and applications":"Tempos de carregamento mais rápidos para jogos e aplicativos de VR","None":"Nenhum","__title__":"Otimizador de Desempenho de Jogos VR","Your current configuration is well-suited for VR gaming.":"Sua configuração atual é bem adequada para jogos de VR.","完全免费":"Completamente gratuito","提意见":"Dar sugestões","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Ferramenta online gratuita para analisar e otimizar o desempenho do seu jogo de VR. Não é necessário registro - basta inserir os detalhes do seu jogo e obtenha insights práticos.","High-end (Intel i7 / Ryzen 7)":"Alto Padrão (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"Alto Padrão (RTX 3060 / RX 6700 XT ou melhor)","Flagship (RTX 3080 / RX 6800 XT or better)":"Top de Linha (RTX 3080 / RX 6800 XT ou melhor)","Dedicated VR hardware for optimal experience":"Hardware VR dedicado para experiência ótima","Please enter a valid memory usage value":"Por favor, insira um valor de uso de memória válido","System":"Sistema","Applications":"Aplicações","Game":"Jogo","Other":"Outro","Good":"Bom","Excellent":"Excelente","Your system has plenty of headroom for VR gaming.":"Seu sistema tem muito espaço para jogos de VR.","Your system is well-balanced for VR gaming.":"Seu sistema está bem equilibrado para jogos de VR.","Acceptable":"Aceitável","Consider closing background applications to free up memory.":"Considere fechar aplicativos em segundo plano para liberar memória.","Poor":"Pobre","Upgrade your RAM to at least 32GB for optimal VR performance.":"Atualize sua RAM para pelo menos 32GB para o melhor desempenho de VR.","FPS":"FPS","CPU":"CPU","GPU":"GPU","0 min":"0 min","5 min":"5 min","10 min":"10 min","15 min":"15 min","20 min":"20 min","GB":"GB","beat saber":"beat saber","Use Performance Mode":"Use Performance Mode","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","Mid-range":"Mid-range","rx 5":"rx 5","Mainstream":"Mainstream","rtx 30":"rtx 30","rx 6":"rx 6","High-end":"High-end","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Mid-range (Intel i5 / Ryzen 5)":"Mid-range (Intel i5 / Ryzen 5)","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"ar":{"VR Game Performance Optimizer":"مُحسّن أداء ألعاب الواقع الافتراضي","Analyze and optimize your VR gaming experience with performance insights":"تحليل وتحسين تجربتك في الألعاب الافتراضية باستخدام تقارير الأداء","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"احصل على تحليل تفصيلي وتوصيات لتحسين أداء ألعابك الافتراضية. مراقبة معايير الأجهزة، تحديد العوائق، وتحسين تجربتك الافتراضية باستخدام تقارير قابلة للتنفيذ.","VR Game Performance Monitoring":"مراقبة أداء ألعاب الواقع الافتراضي","Enter VR Game Name":"أدخل اسم لعبة الواقع الافتراضي","Monitor Performance":"مراقبة الأداء","Performance Metrics":"مقاييس الأداء","CPU Usage (%)":"استخدام المعالج (%)","GPU Usage (%)":"استخدام المعالج الرسومي (%)","Temperature (°C)":"درجة الحرارة (°C)","Hardware Temperature Detection":"كشف درجة حرارة الأجهزة","Hardware Type":"نوع الأجهزة","CPU":"المعالج","GPU":"المعالج الرسومي","VR Headset":"الخوذة الافتراضية","Storage":"التخزين","Check Temperature":"تحقق من درجة الحرارة","Temperature Monitoring":"مراقبة درجة الحرارة","0 min":"0 دقيقة","5 min":"5 دقائق","10 min":"10 دقائق","15 min":"15 دقيقة","20 min":"20 دقيقة","Frame Rate Optimization":"تحسين معدل الإطارات","Describe Your Frame Rate Problem":"وصف مشكلة معدل الإطارات الخاصة بك","Get Optimization Tips":"احصل على نصائح التحسين","Optimization Recommendations":"توصيات التحسين","Game Configuration Recommendations":"توصيات تكوين اللعبة","Current Hardware Configuration":"تكوين الأجهزة الحالي","Get Recommended Configuration":"احصل على التكوين الموصى به","Recommended Configuration":"التكوين الموصى به","Memory Usage Analysis":"تحليل استخدام الذاكرة","Current Memory Usage (GB)":"استخدام الذاكرة الحالي (GB)","Analyze Memory Usage":"تحليل استخدام الذاكرة","Memory Efficiency:":"كفاءة الذاكرة:","e.g., Beat Saber, Half-Life: Alyx":"مثلاً، Beat Saber، Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"مثلاً، لعبتي تنخفض تحت 20fps في المشاهد العالية الكثافة","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"مثلاً، المعالج: i7-9700K، المعالج الرسومي: RTX 2070، الذاكرة: 16GB","e.g., 8.5":"مثلاً، 8.5","Please enter a VR game name":"الرجاء إدخال اسم لعبة الواقع الافتراضي","Please describe your frame rate problem":"الرجاء وصف مشكلة معدل الإطارات الخاصة بك","Reduce Render Resolution":"انقاص دقة الرسوم لتقليل عمل المعالج الرسومي. جرب أولاً 75% من دقة عرض الشاشة.","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"انقاص دقة اللعبة لتقليل عمل المعالج الرسومي. جرب أولاً 75% من دقة عرض الشاشة.","Disable Anti-Aliasing":"أطفئ أو قلل إعدادات التراجيدين. يمكن أن يتحسن الأداء بشكل كبير.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"أطفئ أو قلل إعدادات التراجيدين. يمكن أن يتحسن الأداء بشكل كبير.","Lower Texture Quality":"انقاص جودة النصوص لتقليل استخدام الذاكرة الرسومية.","Reduce texture quality settings to decrease VRAM usage.":"انقاص إعدادات جودة النصوص لتقليل استخدام الذاكرة الرسومية.","Enable Motion Smoothing":"فعّل ت平滑 الحركة لترقية الإطارات وتقليل التأخير الشعوري.","Use motion smoothing to interpolate frames and reduce perceived lag.":"استخدم ت平滑 الحركة لترقية الإطارات وتقليل التأخير الشعوري.","Reduce Motion Prediction":"انقاص إعدادات التنبؤ بالحركة لتقليل العبء على المعالج.","Lower motion prediction settings to reduce CPU overhead.":"انقاص إعدادات التنبؤ بالحركة لتقليل العبء على المعالج.","Disable V-Sync":"أطفئ V-Sync يسبب تأخير الإدخال، ولكن كن على علم بالتمزق الشاشي.","s causing input lag, but be aware of screen tearing.":"يسبب تأخير الإدخال، ولكن كن على علم بالتمزق الشاشي.","Improve Cooling":"تحسين التبريد. تأكد من أن جهاز الكمبيوتر الخاص بك يحتوي على تبريد كافٍ. فكر في تنظيف الغبار من المروحة والشقوق.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"تأكد من أن جهاز الكمبيوتر الخاص بك يحتوي على تبريد كافٍ. فكر في تنظيف الغبار من المروحة والشقوق.","Reduce Power Limit":"انقاص حد الطاقة لتقليل توليد الحرارة وتقليل التثبيط الحراري.","Lower GPU power limit to reduce heat generation and thermal throttling.":"انقاص حد طاقة المعالج الرسومي لتقليل توليد الحرارة وتقليل التثبيط الحراري.","Use Performance Mode":"استخدام نمط الأداء","Switch to a performance profile in your graphics control panel.":"انتقل إلى ملف الأداء في لوحة تحكم رسومك","Update Drivers":"تحديث الديرivers","Ensure your graphics and VR drivers are up to date.":"تأكد من أن ديفايلرس رسومك و VR محدثة","Close Background Applications":"إغلاق التطبيقات غير الضرورية في الخلفية","Close unnecessary applications to free up system resources.":"إغلاق التطبيقات غير الضرورية لتخليص موارد النظام","Please enter your current hardware configuration":"من فضلك أدخل تكوين الأجهزة الحالي","Entry-level":"مستوى الدخول","Better single-core performance for VR applications":"أداء أفضل للمعالجات المركزية الواحدة لتطبيقات VR","Mid-range":"النطاق المتوسط","Improved multi-threading for complex VR scenes":"تحسين متعدد السلاسل للحلقات VR المعقدة","Mainstream":"النمط السائد","Better ray tracing performance and higher frame rates":"أداء تحليل الأشعة أفضل وأعلى معدلات الإطارات","High-end":"النهاية العليا","Maximum performance for high-resolution VR":"أداء أقصى ل VR عالي الدقة","Minimum requirement for smooth VR experience":"الحاجة الدنيا للحصول على تجربة VR سلسة","Better multitasking and future-proofing":"تحسين أداء متعدد المهام وتأمين المستقبل","Faster load times for VR games and applications":"وقت تحميل أسرع للألعاب والتطبيقات VR","None":"لا شيء","__title__":"مُحسّن أداء ألعاب الواقع الافتراضي","FPS":"بساطة","GB":"جيجا بايت","beat saber":"بيت سيبر","ryzen 3":"ريزن 3","ryzen 5":"ريزن 5","rx 5":"إكس 5","rtx 30":"تي آر سي 30","rx 6":"إكس 6","RAM":"رام","HDD":"هارد درايف","NVMe SSD":"إس إس دي نفي ماي إي","Your current configuration is well-suited for VR gaming.":"تكوينك الحالي مثالي للعبة الألعاب الواقع الافتراضي.","完全免费":"مجاني بالكامل","提意见":"أدخل تعليقك","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"أداة مجانية عبر الإنترنت لتحليل وتحسين أداء لعبة الألعاب الواقع الافتراضي. لا تحتاج إلى تسجيل - فقط أدخل تفاصيل لعبتك واحصل على معلومات قابلة للتنفيذ.","Mid-range (Intel i5 / Ryzen 5)":"النطاق المتوسط (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"متميز (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"متميز (RTX 3060 / RX 6700 XT أو أفضل)","Flagship (RTX 3080 / RX 6800 XT or better)":"أفضل نموذج (RTX 3080 / RX 6800 XT أو أفضل)","Dedicated VR hardware for optimal experience":"معدات الواقع الافتراضي المخصصة للحصول على تجربة مثالية","Please enter a valid memory usage value":"الرجاء إدخال قيمة استخدام الذاكرة صحيحة","System":"النظام","Applications":"التطبيقات","Game":"اللعبة","Other":"أخرى","Good":"جيد","Excellent":"ممتاز","Your system has plenty of headroom for VR gaming.":"نظامك لديه مساحة كافية للعب الألعاب الافتراضية","Your system is well-balanced for VR gaming.":"نظامك متوازن بشكل جيد للعب الألعاب الافتراضية","Acceptable":"مقبول","Consider closing background applications to free up memory.":"أفكر في إغلاق التطبيقات الخلفية لإفراغ الذاكرة","Poor":"سيء","Upgrade your RAM to at least 32GB for optimal VR performance.":"رفع ذاكرة الوصول العشوائي إلى 32GB على الأقل للحصول على أداء افتراضي ممتاز","PingFang SC":"بونغ فانغ إس سي","Microsoft YaHei":"مايكروسوفت ياهي","Oculus Quest 2 / HTC Vive":"أوكلوس كويست 2 / فيف"},"hi":{"VR Game Performance Optimizer":"वीआर गेम परफॉर्मेंस ऑप्टिमाइजर","Analyze and optimize your VR gaming experience with performance insights":"परफॉर्मेंस आईंसाइट्स के साथ अपने वीआर गेमिंग अनुभव का विश्लेषण और ऑप्टिमाइज़ेशन करें","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"अपने वीआर गेम के लिए विस्तृत परफॉर्मेंस विश्लेषण और ऑप्टिमाइज़ेशन सिफारिशें प्राप्त करें। हार्डवेयर मेट्रिक्स निगरानी करें, बॉटल्नेक्स पहचानें, और कार्यात्मक आकांक्षाओं के साथ अपने वीआर अनुभव को बेहतर करें","VR Game Performance Monitoring":"वीआर गेम परफॉर्मेंस मॉनीटरिंग","Enter VR Game Name":"वीआर गेम नाम भरें","Monitor Performance":"परफॉर्मेंस निगरानी करें","Performance Metrics":"परफॉर्मेंस मेट्रिक्स","CPU Usage (%)":"CPU उपयोग (%)","GPU Usage (%)":"GPU उपयोग (%)","Temperature (°C)":"तापमान (°C)","Hardware Temperature Detection":"हार्डवेयर तापमान निर्णयन","Hardware Type":"हार्डवेयर क़िस्म","VR Headset":"वीआर हेडसेट","Storage":"स्टोरेज","Check Temperature":"तापमान जांच करें","Temperature Monitoring":"तापमान निगरानी","0 min":"0 मिनट","5 min":"5 मिनट","10 min":"10 मिनट","15 min":"15 मिनट","20 min":"20 मिनट","Frame Rate Optimization":"फ्रेम रेट ऑप्टिमाइज़ेशन","Describe Your Frame Rate Problem":"अपने फ्रेम रेट समस्या का वर्णन करें","Get Optimization Tips":"ऑप्टिमाइज़ेशन टिप्स प्राप्त करें","Optimization Recommendations":"ऑप्टिमाइज़ेशन सिफारिशें","Game Configuration Recommendations":"गेम कॉन्फ़िगरेशन सिफारिशें","Current Hardware Configuration":"वर्तमान हार्डवेयर कॉन्फ़िगरेशन","Get Recommended Configuration":"सिफारिशित कॉन्फ़िगरेशन प्राप्त करें","Recommended Configuration":"सिफारिशित कॉन्फ़िगरेशन","Memory Usage Analysis":"मेमोरी उपयोग विश्लेषण","Current Memory Usage (GB)":"वर्तमान मेमोरी उपयोग (GB)","Analyze Memory Usage":"मेमोरी उपयोग विश्लेषण करें","Memory Efficiency:":"मेमोरी दक्षता:","e.g., Beat Saber, Half-Life: Alyx":"उदाहरण के लिए, बीट सैबर, हाफ-लाइफ: अलिक्स","e.g., My game drops below 20fps in intense scenes":"उदाहरण के लिए, मेरा गेम तीव्र सीनों में 20fps से नीचे आता है","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"उदाहरण के लिए, CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"उदाहरण के लिए, 8.5","Please enter a VR game name":"कृपया वीआर गेम नाम भरें","beat saber":"बीट सैबर","Please describe your frame rate problem":"कृपया अपने फ्रेम रेट समस्या का वर्णन करें","Reduce Render Resolution":"रेंडर रेज़ोल्यूशन को कम करें","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"अपने गेम में रेज़ोल्यूशन को कम करके GPU कार्यभार को कम करें। पहले अपने प्रदर्शनी रेज़ोल्यूशन का 75% प्रयास करें","Disable Anti-Aliasing":"एंटी-एलाइसिंग निष्क्रिय करें","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"अधिकारिता बंद करें या एंटी-एलाइसिंग सेटिंग्स को कम करें। यह परफॉर्मेंस को काफी बेहतर कर सकता है","Lower Texture Quality":"टैक्सचर की गुणवत्ता को कम करें","Reduce texture quality settings to decrease VRAM usage.":"टैक्सचर की गुणवत्ता सेटिंग्स को कम करके VRAM उपयोग को कम करें","Enable Motion Smoothing":"मोशन स्मोथिंग सक्षम करें","Use motion smoothing to interpolate frames and reduce perceived lag.":"मोशन स्मोथिंग का उपयोग करके फ्रेम्स को इंटरपोलेट करें और अनुभवित लैग को कम करें","Reduce Motion Prediction":"मोशन पूर्वानुमान को कम करें","Lower motion prediction settings to reduce CPU overhead.":"मोशन पूर्वानुमान सेटिंग्स को कम करके CPU ओवरहेड को कम करें","Disable V-Sync":"V-Sync निष्क्रिय करें","s causing input lag, but be aware of screen tearing.":"इनपुट लैग का कारण बनता है, लेकिन स्क्रीन टीयरिंग को ध्यान में रखें","Improve Cooling":"सरांचना बेहतर करें","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"यह सुनिश्चित करें कि आपके PC में पर्याप्त सरांचना है। फ़ैन्स और वेंट्स से धूल निकालने को विचार करें","Reduce Power Limit":"पावर लिमिट को कम करें","Lower GPU power limit to reduce heat generation and thermal throttling.":"GPU पावर लिमिट को कम करके ताप उत्पादन और थर्मल थ्रॉटलिंग को कम करें","Use Performance Mode":"परफॉर्मेंस मोड का उपयोग करें","Switch to a performance profile in your graphics control panel.":"आपके ग्राफिक कंट्रोल पैनल में एक परफॉर्मेंस प्रोफाइल के लिए स्विच करें.","Update Drivers":"ड्राइवर्स अपडेट करें","Ensure your graphics and VR drivers are up to date.":"आपके ग्राफिक्स और VR ड्राइवर्स को अद्यतन सुनिश्चित करें.","Close Background Applications":"पृष्ठभूमि अनुप्रयोगों को बंद करें","Close unnecessary applications to free up system resources.":"अनावश्यक अनुप्रयोगों को बंद करके सिस्टम संसाधनों को मुक्त करें.","Please enter your current hardware configuration":"कृपया आपके वर्तमान हार्डवेयर कॉन्फ़िगरेशन को भरें","ryzen 3":"राइज़न 3","Entry-level":"एंट्री-लेवल","Better single-core performance for VR applications":"वीआर अनुप्रयोगों के लिए बेहतर सिंगल-कोर परफॉर्मेंस","ryzen 5":"राइज़न 5","Mid-range":"मिड-रेंज","Improved multi-threading for complex VR scenes":"जटिल वीआर सीनों के लिए बेहतर मल्टी-थ्रेडिंग","rx 5":"रेक्स 5","Mainstream":"मेन-स्ट्रीम","Better ray tracing performance and higher frame rates":"बेहतर रे ट्रेसिंग परफॉर्मेंस और उच्च फ्रेम रेट","rtx 30":"रीटी 30","rx 6":"रेक्स 6","High-end":"हाई-एंड","Maximum performance for high-resolution VR":"उच्च-रेजोल्यूशन वीआर के लिए अधिकतम परफॉर्मेंस","RAM":"रैम","Minimum requirement for smooth VR experience":"सामान्य वीआर अनुभव के लिए न्यूनतम आवश्यकता","Better multitasking and future-proofing":"बेहतर मल्टी-टास्किंग और भविष्य-सुरक्षा","HDD":"एचडीडी","NVMe SSD":"एनवीएमई एसएसडी","Faster load times for VR games and applications":"वीआर गेम्स और अनुप्रयोगों के लिए तीव्र लोड समय","None":"कोई नहीं","__title__":"वीआर गेम परफॉर्मेंस ऑप्टिमाइजर","Your current configuration is well-suited for VR gaming.":"आपकी वर्तमान कॉन्फ़िगरेशन वीआर गेमिंग के लिए अच्छी तरह से समानता प्राप्त कर रही है。","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"वीआर गेमिंग प्रदर्शन का विश्लेषण और सुधार करने के लिए मुफ्त ऑनलाइन टूल - निष्पन्न नहीं होना आवश्यक - अपने गेम विवरण भरें और अधिकृत अंकीकार अंतर्दृष्टि प्राप्त करें。","og:title":"og:शीर्षक","Mid-range (Intel i5 / Ryzen 5)":"मध्यम रेंज (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"हाइ-एण्ड (इंटेल i7 / Ryzen 7) ","High-end (RTX 3060 / RX 6700 XT or better)":"हाइ-एण्ड (RTX 3060 / RX 6700 XT या बेहतर) ","Flagship (RTX 3080 / RX 6800 XT or better)":"फ्लैगशिप (RTX 3080 / RX 6800 XT या बेहतर) ","Oculus Quest 2 / HTC Vive":"ऑक्यूलस क्वेस्ट 2 / एचटीसी वाइव","Dedicated VR hardware for optimal experience":"अधिकतम अनुभव के लिए समर्पित VR हार्डवेयर","Please enter a valid memory usage value":"कृपया एक वैध स्मृति उपयोग मान दर्ज करें","System":"सिस्टम","Applications":"अनुप्रयोग","Game":"गेम","Other":"अन्य","Good":"अच्छा","Excellent":"बेहतरीन","Acceptable":"स्वीकार्य","Poor":"खराब","PingFang SC":"पिंगफांग सीसी","Microsoft YaHei":"माइक्रोसॉफ्ट याहेई","Your system has plenty of headroom for VR gaming.":"आपकी प्रणाली के पास वीआर गेमिंग के लिए पर्याप्त स्पेस है.","Your system is well-balanced for VR gaming.":"आपकी प्रणाली वीआर गेमिंग के लिए अच्छी तरह से संतुलित है.","Consider closing background applications to free up memory.":"स्मृति खाली करने के लिए पृष्ठभूमि अनुप्रयोगों को बंद करने का विचार करें.","Upgrade your RAM to at least 32GB for optimal VR performance.":"अच्छी वीआर प्रदर्शन के लिए आपके RAM को कम से कम 32GB तक अपग्रेड करें.","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB"},"id":{"VR Game Performance Optimizer":"Optimisasi Performa Game VR","Analyze and optimize your VR gaming experience with performance insights":"Analisis dan optimalkan pengalaman bermain game VR Anda dengan wawasan performa","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Dapatkan analisis dan rekomendasi optimisasi detil untuk game VR Anda. Monitor metrik perangkat keras, indentifikasi jembatan, dan tingkatkan pengalaman VR Anda dengan wawasan yang dapat diterapkan.","VR Game Performance Monitoring":"Pemantauan Performa Game VR","Enter VR Game Name":"Masukkan Nama Game VR","Monitor Performance":"Pemantauan Performa","Performance Metrics":"Metrik Performa","CPU Usage (%)":"Penggunaan CPU (%)","GPU Usage (%)":"Penggunaan GPU (%)","Temperature (°C)":"Temperatur (°C)","Hardware Temperature Detection":"Deteksi Suhu Perangkat Keras","Hardware Type":"Tipe Perangkat Keras","VR Headset":"Kepala VR","Storage":"Penyimpanan","Check Temperature":"Periksa Suhu","Temperature Monitoring":"Pemantauan Suhu","0 min":"0 menit","5 min":"5 menit","10 min":"10 menit","15 min":"15 menit","20 min":"20 menit","Frame Rate Optimization":"Optimisasi Laju Gambar","Describe Your Frame Rate Problem":"Deskripsikan Masalah Laju Gambar Anda","Get Optimization Tips":"Dapatkan Tips Optimisasi","Optimization Recommendations":"Rekomendasi Optimisasi","Game Configuration Recommendations":"Rekomendasi Konfigurasi Game","Current Hardware Configuration":"Konfigurasi Perangkat Keras Saat Ini","Get Recommended Configuration":"Dapatkan Konfigurasi yang Disarankan","Recommended Configuration":"Konfigurasi yang Disarankan","Memory Usage Analysis":"Analisis Penggunaan Memori","Current Memory Usage (GB)":"Penggunaan Memori Saat Ini (GB)","Analyze Memory Usage":"Analisis Penggunaan Memori","Memory Efficiency:":"Efisiensi Memori:","e.g., Beat Saber, Half-Life: Alyx":"contoh, Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"contoh, game saya jatuh di bawah 20fps di pertunjukan yang intens","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"contoh, CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"contoh, 8.5","Please enter a VR game name":"Silakan masukkan nama game VR","Please describe your frame rate problem":"Silakan deskripsikan masalah laju gambar Anda","Reduce Render Resolution":"Tingkatkan Resolusi Render","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Tingkatkan resolusi game untuk mengurangi beban GPU. Coba 75% resolusi layar pertama kali.","Disable Anti-Aliasing":"Nonaktifkan Anti-Aliasing","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Nonaktifkan atau tingkatkan pengaturan anti-aliasing. Ini dapat meningkatkan performa secara signifikan.","Lower Texture Quality":"Tingkatkan Kualitas Tekstur","Reduce texture quality settings to decrease VRAM usage.":"Tingkatkan pengaturan kualitas tekstur untuk mengurangi penggunaan VRAM.","Enable Motion Smoothing":"Aktifkan Penyamatan Gerakan","Use motion smoothing to interpolate frames and reduce perceived lag.":"Gunakan penyamatan gerakan untuk interpolasi bingkai dan mengurangi gangguan yang terlihat.","Reduce Motion Prediction":"Kurangi Ramalan Gerakan","Lower motion prediction settings to reduce CPU overhead.":"Kurangi pengaturan ramalan gerakan untuk mengurangi beban CPU.","Disable V-Sync":"Nonaktifkan V-Sync","s causing input lag, but be aware of screen tearing.":"yang menyebabkan gangguan masukan, tetapi waspada terhadap tearing layar.","Improve Cooling":"Tingkatkan Pengembangan Udara","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Jaminikan PC Anda memiliki pengembangan udara yang cukup. Berikan perhatian untuk membersihkan debu dari fan dan sumbu udara.","Reduce Power Limit":"Kurangi Batasan Daya","Lower GPU power limit to reduce heat generation and thermal throttling.":"Kurangi batasan daya GPU untuk mengurangi generasi panas dan throttling termal.","Use Performance Mode":"Gunakan Mode Performa","Switch to a performance profile in your graphics control panel.":"Pindah ke profil performa di panel kontrol grafis Anda.","Update Drivers":"Perbarui Driver","Ensure your graphics and VR drivers are up to date.":"Pastikan driver grafis dan VR Anda terupdate.","Close Background Applications":"Tutup Aplikasi Latar Belakang","Close unnecessary applications to free up system resources.":"Tutup aplikasi yang tidak perlu untuk mengosongkan sumber daya sistem.","Please enter your current hardware configuration":"Silakan masukkan konfigurasi hardware saat ini","Entry-level":"Level Masuk","Better single-core performance for VR applications":"Performansi single-core yang lebih baik untuk aplikasi VR","Mid-range":"Tingkat Menengah","Improved multi-threading for complex VR scenes":"Peningkatan multi-threading untuk scene VR kompleks","Better ray tracing performance and higher frame rates":"Performansi tracing sinar yang lebih baik dan tingkat frame yang lebih tinggi","High-end":"Tingkat Tinggi","Maximum performance for high-resolution VR":"Performa maksimal untuk VR resolusi tinggi","Minimum requirement for smooth VR experience":"Kebutuhan minimum untuk pengalaman VR yang lancar","Better multitasking and future-proofing":"Multitasking yang lebih baik dan mempertahankan masa mendatang","Faster load times for VR games and applications":"Waktu pengambilan yang lebih cepat untuk permainan dan aplikasi VR","None":"Tidak Ada","__title__":"Optimisasi Performa Game VR","Your current configuration is well-suited for VR gaming.":"Konfigurasi saat ini kalian sangat cocok untuk bermain VR.","完全免费":"Lengkapnya gratis","提意见":"Berikan saran","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Alat online gratis untuk menganalisis dan optimalkan kinerja permainan VR kalian. Tidak perlu mendaftar - cukup masukkan detil permainan kalian dan dapatkan pemahaman yang dapat diaplikasikan","Acceptable":"Diterima","Poor":"Buruk","Dedicated VR hardware for optimal experience":"Perangkat VR khusus untuk pengalaman optimal","Please enter a valid memory usage value":"Silakan masukkan nilai penggunaan memori yang valid","System":"Sistem","Applications":"Aplikasi","Game":"Permainan","Other":"Lainnya","Good":"Baik","Excellent":"Sangat Baik","Your system has plenty of headroom for VR gaming.":"Sistem Anda memiliki ruang yang cukup untuk permainan VR.","Your system is well-balanced for VR gaming.":"Sistem Anda sudah seimbang untuk permainan VR.","Consider closing background applications to free up memory.":"Berikan pertimbangan untuk menutup aplikasi latar untuk membebaskan memori.","Upgrade your RAM to at least 32GB for optimal VR performance.":"Tingkatkan RAM Anda setidaknya menjadi 32GB untuk kinerja VR optimal.","High-end (RTX 3060 / RX 6700 XT or better)":"High-end (RTX 3060 / RX 6700 XT atau yang lebih baik)","Flagship (RTX 3080 / RX 6800 XT or better)":"Flagship (RTX 3080 / RX 6800 XT atau yang lebih baik)","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB","beat saber":"beat saber","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","Mainstream":"Mainstream","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Mid-range (Intel i5 / Ryzen 5)":"Mid-range (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"High-end (Intel i7 / Ryzen 7)","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"},"vi":{"VR Game Performance Optimizer":"Chương trình tối ưu hóa hiệu suất trò chơi VR","Analyze and optimize your VR gaming experience with performance insights":"Phân tích và tối ưu hóa trải nghiệm chơi trò chơi VR của bạn với những thông tin về hiệu suất","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"Nhận phân tích chi tiết và các đề xuất tối ưu hóa cho các trò chơi VR của bạn. Theo dõi các chỉ số phần cứng, xác định các điểm nghẽn và cải thiện trải nghiệm VR của bạn với những thông tin cụ thể.","VR Game Performance Monitoring":"Giám sát hiệu suất trò chơi VR","Enter VR Game Name":"Nhập tên trò chơi VR","Monitor Performance":"Giám sát hiệu suất","Performance Metrics":"Chỉ số hiệu suất","CPU Usage (%)":"Tỷ lệ sử dụng CPU (%)","GPU Usage (%)":"Tỷ lệ sử dụng GPU (%)","Temperature (°C)":"Nhiệt độ (°C)","Hardware Temperature Detection":"Phát hiện nhiệt độ phần cứng","Hardware Type":"Loại phần cứng","VR Headset":"Mũ VR","Storage":"Lưu trữ","Check Temperature":"Kiểm tra nhiệt độ","Temperature Monitoring":"Giám sát nhiệt độ","0 min":"0 phút","5 min":"5 phút","10 min":"10 phút","15 min":"15 phút","20 min":"20 phút","Frame Rate Optimization":"Tối ưu hóa tốc độ khung hình","Describe Your Frame Rate Problem":"Miêu tả vấn đề tốc độ khung hình của bạn","Get Optimization Tips":"Nhận lời khuyên tối ưu hóa","Optimization Recommendations":"Đề xuất tối ưu hóa","Game Configuration Recommendations":"Đề xuất cấu hình trò chơi","Current Hardware Configuration":"Cấu hình phần cứng hiện tại","Get Recommended Configuration":"Nhận cấu hình đề xuất","Recommended Configuration":"Cấu hình đề xuất","Memory Usage Analysis":"Phân tích sử dụng bộ nhớ","Current Memory Usage (GB)":"Sử dụng bộ nhớ hiện tại (GB)","Analyze Memory Usage":"Phân tích sử dụng bộ nhớ","Memory Efficiency:":"Hiệu suất bộ nhớ:","e.g., Beat Saber, Half-Life: Alyx":"V.d., Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"V.d., Trò chơi của tôi giảm xuống dưới 20fps trong các cảnh căng thẳng","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"V.d., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"V.d., 8.5","Please enter a VR game name":"Vui lòng nhập tên trò chơi VR","Please describe your frame rate problem":"Vui lòng miêu tả vấn đề tốc độ khung hình của bạn","Reduce Render Resolution":"Giảm độ phân giải render để giảm công việc của GPU. Hãy thử 75% độ phân giải hiển thị của bạn trước.","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"Giảm độ phân giải trong trò chơi để giảm công việc của GPU. Hãy thử 75% độ phân giải hiển thị đầu tiên.","Disable Anti-Aliasing":"Tắt hoặc giảm các cài đặt làm mịn góc cạnh. Điều này có thể cải thiện hiệu suất đáng kể.","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"Tắt hoặc giảm cài đặt làm mờ cạnh. Điều này có thể cải thiện hiệu suất đáng kể.","Lower Texture Quality":"Giảm chất lượng teksture để giảm sử dụng VRAM.","Reduce texture quality settings to decrease VRAM usage.":"Giảm cài đặt chất lượng teksture để giảm sử dụng VRAM.","Enable Motion Smoothing":"Sử dụng làm mịn chuyển động để interpolate khung hình và giảm độ trễ cảm nhận.","Use motion smoothing to interpolate frames and reduce perceived lag.":"Sử dụng làm mịn chuyển động để interpolate khung hình và giảm độ trễ cảm nhận.","Reduce Motion Prediction":"Giảm các cài đặt dự đoán chuyển động để giảm gánh nặng CPU.","Lower motion prediction settings to reduce CPU overhead.":"Giảm cài đặt dự đoán chuyển động để giảm gánh nặng CPU.","Disable V-Sync":"Tắt V-Sync gây ra độ trễ đầu vào, nhưng hãy chú ý đến hiện tượng撕裂 màn hình.","s causing input lag, but be aware of screen tearing.":"gây ra độ trễ đầu vào, nhưng hãy chú ý đến hiện tượng rời màn hình.","Improve Cooling":"Đảm bảo rằng PC của bạn có đủ làm mát. Hãy suy nghĩ đến việc làm sạch bụi từ quạt và lỗ thông gió.","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"Đảm bảo rằng PC của bạn có làm mát thích hợp. Hãy suy nghĩ đến việc làm sạch bụi từ quạt và lỗ thông gió.","Reduce Power Limit":"Giảm giới hạn điện năng của GPU để giảm sự tạo nhiệt và giới hạn nhiệt độ.","Lower GPU power limit to reduce heat generation and thermal throttling.":"Giảm giới hạn công suất GPU để giảm sự tạo ra nhiệt và giới hạn nhiệt.","Use Performance Mode":"Sử dụng chế độ Hiệu suất","Switch to a performance profile in your graphics control panel.":"Chuyển sang hồ sơ hiệu suất trong bảng điều khiển đồ họa của bạn.","Update Drivers":"Cập nhật trình điều khiển","Ensure your graphics and VR drivers are up to date.":"Đảm bảo rằng trình điều khiển đồ họa và VR của bạn luôn được cập nhật.","Close Background Applications":"Đóng các ứng dụng nền không cần thiết để giải phóng tài nguyên hệ thống.","Close unnecessary applications to free up system resources.":"Đóng các ứng dụng không cần thiết để giải phóng tài nguyên hệ thống.","Please enter your current hardware configuration":"Vui lòng nhập cấu hình phần cứng hiện tại của bạn","Entry-level":"Cấp độ cơ bản","Better single-core performance for VR applications":"Tăng cường hiệu suất đơn lõi cho các ứng dụng VR","Mid-range":"Trung cấp","Improved multi-threading for complex VR scenes":"Tăng cường đa luồng cho các cảnh VR phức tạp","Mainstream":"Chính thống","Better ray tracing performance and higher frame rates":"Tăng cường hiệu suất vẽ tia và tốc độ khung hình cao hơn","High-end":"Cao cấp","Maximum performance for high-resolution VR":"Hiệu suất tối đa cho VR có độ phân giải cao","Minimum requirement for smooth VR experience":"Yêu cầu tối thiểu để trải nghiệm VR mượt mà","Better multitasking and future-proofing":"Tăng cường khả năng đa tác vụ và tương lai hóa","Faster load times for VR games and applications":"Thời gian tải nhanh hơn cho các trò chơi và ứng dụng VR","None":"Không có","__title__":"Chương trình tối ưu hóa hiệu suất trò chơi VR","Your current configuration is well-suited for VR gaming.":"Cấu hình hiện tại của bạn rất phù hợp cho chơi game VR.","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"Công cụ trực tuyến miễn phí để phân tích và tối ưu hóa hiệu suất chơi game VR của bạn. Không cần đăng ký - chỉ cần nhập chi tiết về trò chơi của bạn và nhận được những thông tin cụ thể có thể thực hiện.","Mid-range (Intel i5 / Ryzen 5)":"Trung cấp (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"Cao cấp (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"Cao cấp (RTX 3060 / RX 6700 XT hoặc tốt hơn)","Flagship (RTX 3080 / RX 6800 XT or better)":"Đỉnh cao (RTX 3080 / RX 6800 XT hoặc tốt hơn)","Dedicated VR hardware for optimal experience":"Hệ thống phần cứng VR chuyên dụng để đạt được trải nghiệm tối ưu","Please enter a valid memory usage value":"Vui lòng nhập giá trị sử dụng bộ nhớ hợp lệ","System":"Hệ thống","Applications":"Ứng dụng","Other":"Khác","Good":"Tốt","Excellent":"Tuyệt vời","Your system has plenty of headroom for VR gaming.":"Hệ thống của bạn có nhiều không gian để chơi VR.","Your system is well-balanced for VR gaming.":"Hệ thống của bạn được cân bằng tốt để chơi VR.","Acceptable":"Đủ tiêu chuẩn","Consider closing background applications to free up memory.":"Xin cân nhắc đóng các ứng dụng nền để giải phóng bộ nhớ.","Poor":"Yếu","Upgrade your RAM to at least 32GB for optimal VR performance.":"Cập nhật RAM lên ít nhất 32GB để đạt hiệu suất VR tối ưu.","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB","beat saber":"beat saber","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive","Game":"Game"},"th":{"VR Game Performance Optimizer":"VR การปรับเสถียรภาพเกม","Analyze and optimize your VR gaming experience with performance insights":"วิเคราะห์และปรับเสถียรภาพประสบการณ์เล่นเกม VR ด้วยข้อมูลที่เห็นได้ชัด","Get detailed performance analysis and optimization recommendations for your VR games. Monitor hardware metrics, identify bottlenecks, and improve your VR experience with actionable insights.":"รับการวิเคราะห์ประสบการณ์และข้อแนะนำปรับเสถียรภาพละเอียด สำหรับเกม VR ของคุณ ตรวจสอบตัวเครื่องและตัววัดฮาร์ดแวร์ พิจารณาปัญหาที่ชะงัก และปรับปรุงประสบการณ์ VR ของคุณด้วยข้อมูลที่สามารถใช้ได้","VR Game Performance Monitoring":"ตรวจสอบประสบการณ์การปรับเสถียรภาพเกม VR","Enter VR Game Name":"ใส่ชื่อเกม VR","Monitor Performance":"ตรวจสอบประสบการณ์","Performance Metrics":"ตัววัดประสบการณ์","CPU Usage (%)":"การใช้ CPU (%)","GPU Usage (%)":"การใช้ GPU (%)","Temperature (°C)":"อุณหภูมิ (°C)","Hardware Temperature Detection":"ตรวจสอบอุณหภูมิฮาร์ดแวร์","Hardware Type":"ประเภทฮาร์ดแวร์","VR Headset":"หน้ากาก VR","Storage":"การเก็บข้อมูล","Check Temperature":"ตรวจสอบอุณหภูมิ","Temperature Monitoring":"ตรวจสอบอุณหภูมิ","0 min":"0 นาที","5 min":"5 นาที","10 min":"10 นาที","15 min":"15 นาที","20 min":"20 นาที","Frame Rate Optimization":"ปรับเสถียรภาพอัตราความเร็วต่อตรง","Describe Your Frame Rate Problem":"บรรยายปัญหาอัตราความเร็วต่อตรงของคุณ","Get Optimization Tips":"รับคำแนะนำปรับเสถียรภาพ","Optimization Recommendations":"ข้อแนะนำปรับเสถียรภาพ","Game Configuration Recommendations":"ข้อแนะนำการปรับแต่งเกม","Current Hardware Configuration":"การปรับแต่งฮาร์ดแวร์ปัจจุบัน","Get Recommended Configuration":"รับการปรับแต่งที่แนะนำ","Recommended Configuration":"การปรับแต่งที่แนะนำ","Memory Usage Analysis":"การวิเคราะห์การใช้ความจำ","Current Memory Usage (GB)":"การใช้ความจำปัจจุบัน (GB)","Analyze Memory Usage":"วิเคราะห์การใช้ความจำ","Memory Efficiency:":"ประสิทธิภาพการใช้ความจำ:","e.g., Beat Saber, Half-Life: Alyx":"ตัวอย่าง: Beat Saber, Half-Life: Alyx","e.g., My game drops below 20fps in intense scenes":"ตัวอย่าง: ฉันเกมของฉันตกต่ำกว่า 20fps ในภาพที่มีความรุนแรง","e.g., CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB":"ตัวอย่าง: CPU: i7-9700K, GPU: RTX 2070, RAM: 16GB","e.g., 8.5":"ตัวอย่าง: 8.5","Please enter a VR game name":"กรุณาใส่ชื่อเกม VR","Please describe your frame rate problem":"กรุณาบรรยายปัญหาอัตราความเร็วต่อตรงของคุณ","Reduce Render Resolution":"ลดอัตราความเร็วการวาดเพื่อลดปริมาณงานของ GPU แรนเดอร์","Lower your in-game resolution to reduce GPU workload. Try 75% of your display resolution first.":"ลดอัตราความเร็วการแสดงในเกมของคุณเพื่อลดปริมาณงานของ GPU แรนเดอร์ ลองด้วย 75% ของอัตราความเร็วการแสดงของคุณก่อน","Disable Anti-Aliasing":"ปิดหรือลดการปรับแต่ง Anti-Aliasing","Turn off or reduce anti-aliasing settings. This can significantly improve performance.":"ปิดหรือลดการปรับแต่ง Anti-Aliasing นี้อาจช่วยปรับปรุงประสบการณ์","Lower Texture Quality":"ลดคุณภาพของตัวแบบรูปภาพเพื่อลดการใช้ VRAM","Reduce texture quality settings to decrease VRAM usage.":"ลดค่าคุณภาพของขอบแบบภาพเพื่อลดการใช้ VRAM.","Enable Motion Smoothing":"เปิดการปรับเสถียรภาพการเคลื่อนไหว","Use motion smoothing to interpolate frames and reduce perceived lag.":"ใช้การปรับเสถียรภาพการเคลื่อนไหวเพื่อประมาณความเร็วต่อตรงและลดการรอคอยที่รู้สึก","Reduce Motion Prediction":"ลดการประมาณความเคลื่อนไหว","Lower motion prediction settings to reduce CPU overhead.":"ลดการปรับแต่งการประมาณความเคลื่อนไหวเพื่อลดปริมาณงานของ CPU","Disable V-Sync":"ปิด V-Sync","s causing input lag, but be aware of screen tearing.":"ทำให้เกิดการล่าช้าในการเข้าข้อมูล แต่ต้องระวังการแบ่งหน้าจอ","Improve Cooling":"ปรับปรุงการทำเย็น","Ensure your PC has adequate cooling. Consider cleaning dust from fans and vents.":"ให้ความแน่ใจว่าคอมพิวเตอร์ของคุณมีการทำเย็นเพียงพอ คิดถึงการทำความสะอาดฝุ่นจากเฟนและท่อ","Reduce Power Limit":"ลดขีดจำกัดกระแสไฟฟ้า","Lower GPU power limit to reduce heat generation and thermal throttling.":"ลดขีดจำกัดกระแสไฟฟ้าของ GPU เพื่อลดการสร้างความร้อนและการลดความเร็วเมื่อร้อนเกิน","Use Performance Mode":"ใช้โหมดการเล่น","Switch to a performance profile in your graphics control panel.":"เปลี่ยนไปยังโหมดการเล่นในตัวควบคุมกราฟิกของคุณ","Update Drivers":"ปรับปรุงไดรเวอร์","Ensure your graphics and VR drivers are up to date.":"ให้แน่ใจว่าไดรเวอร์กราฟิกและไดรเวอร์ VR ของคุณเป็นรุ่นล่าสุด","Close Background Applications":"ปิดโปรแกรมที่ทำงานอยู่แบบอัตโนมัติเพื่อปล่อยทรัพยากรระบบ","Close unnecessary applications to free up system resources.":"ปิดโปรแกรมที่ไม่จำเป็นเพื่อปล่อยทรัพยากรระบบ","Please enter your current hardware configuration":"กรุณาใส่ความกำหนดฮาร์ดแวร์ของคุณในขณะนี้","Entry-level":"ระดับพื้นฐาน","Better single-core performance for VR applications":"การทำงานที่ดีของหลักประกอบเดียวสำหรับโปรแกรม VR","Mid-range":"ระดับกลาง","Improved multi-threading for complex VR scenes":"การปรับปรุงการเชื่อมโยงเส้นทางหลายเส้นสำหรับภาพวาด VR ที่ซับซ้อน","Mainstream":"ระดับปกติ","Better ray tracing performance and higher frame rates":"การตามร่องแสงที่ดีขึ้นและอัตราความเร็วพ레มที่สูงขึ้น","High-end":"ระดับสูง","Maximum performance for high-resolution VR":"การทำงานที่ดีที่สุดสำหรับ VR ในระดับสูง","Minimum requirement for smooth VR experience":"ความจำเรียกขั้นต่ำสำหรับประสบการณ์ VR ที่สะดวก","Better multitasking and future-proofing":"การทำงานหลายงานได้ดีขึ้นและเคลื่อนไหวได้ดีต่อไป","Faster load times for VR games and applications":"เวลาในการโหลดเร็วขึ้นสำหรับเกม VR และโปรแกรม","__title__":"VR การปรับเสถียรภาพเกม","None":"ไม่มี","Your current configuration is well-suited for VR gaming.":"คุณข้อมูลการตั้งค่าปัจจุบันของคุณเหมาะแย่งกับการเล่นเกม VR","完全免费":"ทั้งหมดฟรี","提意见":"แสดงความคิดเห็น","Free online tool to analyze and optimize your VR gaming performance. No signup required - just enter your game details and get actionable insights.":"เครื่องมือฟรีที่สามารถวิเคราะห์และปรับปรุงการเล่นเกม VR ของคุณได้. ไม่ต้องลงทะเบียน - แค่ใส่รายละเอียดเกมของคุณแล้วก็จะได้รับข้อมูลที่สามารถปฏิบัติได้","Mid-range (Intel i5 / Ryzen 5)":"ระดับปานกลาง (Intel i5 / Ryzen 5)","High-end (Intel i7 / Ryzen 7)":"แนวหน้า (Intel i7 / Ryzen 7)","High-end (RTX 3060 / RX 6700 XT or better)":"แนวหน้า (RTX 3060 / RX 6700 XT หรือดีกว่า)","Flagship (RTX 3080 / RX 6800 XT or better)":"ตัวแทนหลัก (RTX 3080 / RX 6800 XT หรือดีกว่า)","Dedicated VR hardware for optimal experience":"อุปกรณ์ VR ที่เป็นเดี่ยวยาวเพื่อประสบการณ์ที่ดีที่สุด","Please enter a valid memory usage value":"กรุณาใส่ค่าการใช้หน่วยความจำที่ถูกต้อง","System":"ระบบ","Applications":"โปรแกรม","Game":"เกม","Other":"อื่น ๆ","Good":"ดี","Excellent":"ยอดเยี่ยม","Your system has plenty of headroom for VR gaming.":"ระบบของคุณมีหัวออกมากเพื่อเล่นเกม VR","Your system is well-balanced for VR gaming.":"ระบบของคุณมีความสมดุลแบบที่ดีสำหรับเล่นเกม VR","Acceptable":"ควรพึงพอใจ","Consider closing background applications to free up memory.":"จินตนาการปิดแอปพลิเคชันที่มีการทำงานอยู่เพื่อปลดความจุหน่วยจำ","Poor":"ย่อม","Upgrade your RAM to at least 32GB for optimal VR performance.":"ปรับปรุงหน่วยจำที่เท่ากับหรือมากกว่า 32GB สำหรับการทำงานเกม VR ที่ดีที่สุด","FPS":"FPS","CPU":"CPU","GPU":"GPU","GB":"GB","beat saber":"beat saber","ryzen 3":"ryzen 3","ryzen 5":"ryzen 5","rx 5":"rx 5","rtx 30":"rtx 30","rx 6":"rx 6","RAM":"RAM","HDD":"HDD","NVMe SSD":"NVMe SSD","Oculus Quest 2 / HTC Vive":"Oculus Quest 2 / HTC Vive"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

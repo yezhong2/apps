@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeSentry</title>
+<meta name="description" content="代码安全检测工具，实时分析代码漏洞，提供修复建议。">
+<meta property="og:title" content="CodeSentry">
+<meta property="og:description" content="代码安全检测工具，实时分析代码漏洞，提供修复建议。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-9-29_0210_CodeSentry.html">
+<meta name="theme-color" content="#333333">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  header {
+    background-color: #444;
+    padding: 10px 0;
+    text-align: center;
+  }
+  nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    margin-bottom: 15px;
+    background-color: #444;
+    border-radius: 8px;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  nav a:hover {
+    background-color: #555;
+  }
+  nav a.active {
+    background-color: #00a884;
+  }
+  .hero-section {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .hero-section h1 {
+    margin-top: 0;
+    color: #00a884;
+  }
+  .quick-start {
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .code-input {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    width: calc(100% - 20px);
+    border: 2px solid #00a884;
+    border-radius: 4px;
+    min-height: 150px;
+    resize: vertical;
+    font-family: monospace;
+  }
+  .code-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.3);
+  }
+  .result, .warnings, .logs {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    width: calc(100% - 20px);
+  }
+  .btn {
+    background-color: #00a884;
+    color: #0f1115;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  .btn:hover {
+    background-color: #008d6f;
+  }
+  .btn.saved {
+    position: relative;
+  }
+  .btn.saved::after {
+    content: "✓";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .feature-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .feature-list li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00a884;
+  }
+  .page {
+    display: none;
+  }
+  .page.active {
+    display: block;
+  }
+  .code-history {
+    margin: 20px 0;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .code-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .code-item:hover {
+    background-color: #3a3a3a;
+  }
+  .code-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .code-item-date {
+    font-size: 12px;
+    color: #aaa;
+  }
+  .settings-section {
+    margin: 20px 0;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .settings-section h3 {
+    margin-top: 0;
+  }
+  .settings-section label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  .settings-section select,
+  .settings-section input[type="checkbox"] {
+    margin: 5px 0;
+  }
+  .settings-message {
+    margin-top: 10px;
+    color: #00a884;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 4px;
+    display: none;
+  }
+  .settings-message.show {
+    display: block;
+  }
+  .security-details {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 4px;
+  }
+  .cta-button {
+    background-color: #00a884;
+    color: #0f1115;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 24px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+  .cta-button:hover {
+    background-color: #008d6f;
+  }
+  .code-example {
+    background-color: #444;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+    font-family: monospace;
+    font-size: 14px;
+  }
+  .code-example-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  .code-example-content {
+    color: #00a884;
+  }
+  .lang-selector {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+  .lang-selector select {
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #00a884;
+    padding: 5px 10px;
+    border-radius: 4px;
+  }
+  .code-review-log {
+    margin: 20px 0;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .log-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 4px;
+    border-left: 4px solid #00a884;
+  }
+  .log-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .log-item-date {
+    font-size: 12px;
+    color: #aaa;
+  }
+  .log-item-content {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .log-item-summary {
+    color: #00a884;
+    font-weight: bold;
+  }
+  .code-highlight {
+    background-color: #3a3a3a;
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+  .vulnerability-badge {
+    display: inline-block;
+    background-color: #ff4d4d;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+  .medium-badge {
+    background-color: #ffa64d;
+  }
+  .low-badge {
+    background-color: #4d4dff;
+  }
+  .safe-badge {
+    background-color: #4dff4d;
+  }
+</style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+<header>
+  <nav>
+    <a href="#" data-page="home" class="nav-link active">首页</a>
+    <a href="#" data-page="my-code" class="nav-link">我的</a>
+    <a href="#" data-page="security" class="nav-link">安全报告</a>
+  </nav>
+  <div class="lang-selector">
+    <select id="lang-select">
+      <option value="zh-CN">中文</option>
+      <option value="en">English</option>
+      <option value="ko">한국어</option>
+      <option value="fr">Français</option>
+      <option value="ru">Русский</option>
+    </select>
+  </div>
+</header>
+<div class="container">
+  <!-- 首页 -->
+  <div id="home" class="page active">
+    <div class="hero-section">
+      <h1>CodeSentry</h1>
+      <p>代码安全检测工具</p>
+      <p>实时分析代码漏洞，提供修复建议</p>
+      <button class="cta-button" id="useNowBtn">立即使用</button>
+    </div>
+    
+    <div class="quick-start">
+      <h3>快速上手指南</h3>
+      <ol class="feature-list">
+        <li>在下方代码输入框中粘贴您的代码</li>
+        <li>点击"分析代码"按钮</li>
+        <li>查看安全检测结果和修复建议</li>
+        <li>根据提示优化您的代码</li>
+      </ol>
+      
+      <div class="code-example">
+        <div class="code-example-title">示例代码:</div>
+        <div class="code-example-content">const userInput = req.query.name;<br>const query = "SELECT * FROM users WHERE name = '" + userInput + "'";</div>
+      </div>
+    </div>
+    
+    <textarea class="code-input" placeholder="请输入代码进行检测..." id="codeInput"></textarea>
+    <button class="btn" id="analyzeBtn">分析代码</button>
+    
+    <div class="result" id="result">安全检测结果将显示在这里</div>
+    <div class="warnings" id="warnings">漏洞预警及修复建议将显示在这里</div>
+    <div class="logs" id="logs">代码审查日志列表将显示在这里</div>
+  </div>
+
+  <!-- 我的代码页面 -->
+  <div id="my-code" class="page">
+    <div class="hero-section">
+      <h1>我的</h1>
+      <p>查看历史代码分析记录和代码审查日志</p>
+    </div>
+    
+    <div class="code-history">
+      <h3>历史代码分析</h3>
+      <div id="codeHistoryList">
+        <!-- 历史记录将通过JS动态加载 -->
+      </div>
+    </div>
+    
+    <div class="code-review-log">
+      <h3>代码审查日志</h3>
+      <div id="codeReviewLogList">
+        <!-- 代码审查日志将通过JS动态加载 -->
+      </div>
+    </div>
+    
+    <div class="result" id="historyResult">选择上方代码查看详细分析结果</div>
+  </div>
+
+  <!-- 安全报告页面 -->
+  <div id="security" class="page">
+    <div class="hero-section">
+      <h1>安全报告</h1>
+      <p>代码安全分析报告</p>
+    </div>
+    
+    <div class="result" id="securityReport">
+      <h3>安全评分</h3>
+      <div id="securityScore">计算中...</div>
+      <div style="background-color: #444; height: 20px; border-radius: 10px; margin: 10px 0;">
+        <div id="securityBar" style="background-color: #00a884; height: 100%; border-radius: 10px; width: 0%;"></div>
+      </div>
+      
+      <h3>安全统计</h3>
+      <ul class="feature-list">
+        <li>已检查代码: <span id="checkedCount">0</span>次</li>
+        <li>发现漏洞: <span id="vulnerabilitiesCount">0</span>个</li>
+        <li>已修复: <span id="fixedCount">0</span>个</li>
+        <li><span style="color: #ff4d4d;">高危漏洞</span>: <span id="highRiskCount">0</span>个</li>
+      </ul>
+      
+      <h3>常见安全问题</h3>
+      <ul class="feature-list">
+        <li>SQL注入 (发现<span id="sqlCount">0</span>次)</li>
+        <li>XSS攻击 (发现<span id="xssCount">0</span>次)</li>
+        <li>弱密码 (发现<span id="passwordCount">0</span>次)</li>
+        <li>未验证输入 (发现<span id="inputCount">0</span>次)</li>
+      </ul>
+      
+      <div class="security-details" id="securityDetails">
+        <h4>详细安全分析</h4>
+        <p>选择历史记录查看详细安全分析报告</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// 多语言支持
+const translations = {
+  "zh-CN": {
+    "首页": "首页",
+    "我的": "我的",
+    "安全报告": "安全报告",
+    "立即使用": "立即使用",
+    "代码安全检测工具": "代码安全检测工具",
+    "实时分析代码漏洞，提供修复建议": "实时分析代码漏洞，提供修复建议",
+    "快速上手指南": "快速上手指南",
+    "在下方代码输入框中粘贴您的代码": "在下方代码输入框中粘贴您的代码",
+    "点击\"分析代码\"按钮": "点击\"分析代码\"按钮",
+    "查看安全检测结果和修复建议": "查看安全检测结果和修复建议",
+    "根据提示优化您的代码": "根据提示优化您的代码",
+    "示例代码:": "示例代码:",
+    "请输入代码进行检测...": "请输入代码进行检测...",
+    "分析代码": "分析代码",
+    "安全检测结果将显示在这里": "安全检测结果将显示在这里",
+    "漏洞预警及修复建议将显示在这里": "漏洞预警及修复建议将显示在这里",
+    "代码审查日志列表将显示在这里": "代码审查日志列表将显示在这里",
+    "查看历史代码分析记录": "查看历史代码分析记录",
+    "历史代码分析": "历史代码分析",
+    "选择上方代码查看详细分析结果": "选择上方代码查看详细分析结果",
+    "代码安全分析报告": "代码安全分析报告",
+    "安全评分": "安全评分",
+    "计算中...": "计算中...",
+    "安全统计": "安全统计",
+    "已检查代码": "已检查代码",
+    "次": "次",
+    "发现漏洞": "发现漏洞",
+    "个": "个",
+    "已修复": "已修复",
+    "高危漏洞": "高危漏洞",
+    "常见安全问题": "常见安全问题",
+    "SQL注入": "SQL注入",
+    "发现": "发现",
+    "次": "次",
+    "XSS攻击": "XSS攻击",
+    "弱密码": "弱密码",
+    "未验证输入": "未验证输入",
+    "详细安全分析": "详细安全分析",
+    "选择历史记录查看详细安全分析报告": "选择历史记录查看详细安全分析报告",
+    "暂无历史记录": "暂无历史记录",
+    "无": "无",
+    "中文": "中文",
+    "English": "English",
+    "한국어": "한국어",
+    "Français": "Français",
+    "Русский": "Русский",
+    "查看历史代码分析记录和代码审查日志": "查看历史代码分析记录和代码审查日志",
+    "代码审查日志": "代码审查日志",
+    "高危": "高危"
+  },
+  "en": {
+    "首页": "Home",
+    "我的": "My",
+    "安全报告": "Security Report",
+    "立即使用": "Get Started",
+    "代码安全检测工具": "Code Security Scanner",
+    "实时分析代码漏洞，提供修复建议": "Real-time analysis of code vulnerabilities with fix suggestions",
+    "快速上手指南": "Quick Start Guide",
+    "在下方代码输入框中粘贴您的代码": "Paste your code in the input box below",
+    "点击\"分析代码\"按钮": "Click the \"Analyze Code\" button",
+    "查看安全检测结果和修复建议": "View security results and fix suggestions",
+    "根据提示优化您的代码": "Optimize your code based on suggestions",
+    "示例代码:": "Example Code:",
+    "请输入代码进行检测...": "Enter code to analyze...",
+    "分析代码": "Analyze Code",
+    "安全检测结果将显示在这里": "Security analysis results will appear here",
+    "漏洞预警及修复建议将显示在这里": "Vulnerability warnings and fix suggestions will appear here",
+    "代码审查日志列表将显示在这里": "Code review logs will appear here",
+    "查看历史代码分析记录": "View historical code analysis records",
+    "历史代码分析": "Code Analysis History",
+    "选择上方代码查看详细分析结果": "Select a code above to view detailed analysis results",
+    "代码安全分析报告": "Code Security Analysis Report",
+    "安全评分": "Security Score",
+    "计算中...": "Calculating...",
+    "安全统计": "Security Statistics",
+    "已检查代码": "Code Scanned",
+    "次": "times",
+    "发现漏洞": "Vulnerabilities Found",
+    "个": "items",
+    "已修复": "Fixed",
+    "高危漏洞": "High Risk",
+    "常见安全问题": "Common Security Issues",
+    "SQL注入": "SQL Injection",
+    "发现": "Found",
+    "次": "times",
+    "XSS攻击": "XSS Attack",
+    "弱密码": "Weak Password",
+    "未验证输入": "Unvalidated Input",
+    "详细安全分析": "Detailed Security Analysis",
+    "选择历史记录查看详细安全分析报告": "Select a history record to view detailed security analysis report",
+    "暂无历史记录": "No history records",
+    "无": "None",
+    "中文": "中文",
+    "English": "English",
+    "한국어": "한국어",
+    "Français": "Français",
+    "Русский": "Русский",
+    "查看历史代码分析记录和代码审查日志": "View historical code analysis records and review logs",
+    "代码审查日志": "Code Review Logs",
+    "高危": "High Risk"
+  },
+  "ko": {
+    "首页": "홈",
+    "我的": "나의",
+    "安全报告": "보고서",
+    "立即使用": "시작하기",
+    "代码安全检测工具": "코드 보안 검사 도구",
+    "实时分析代码漏洞，提供修复建议": "코드 취약점 실시간 분석 및 수정 제안",
+    "快速上手指南": "빠른 시작 가이드",
+    "在下方代码输入框中粘贴您的代码": "아래 코드 입력란에 코드를 붙여넣으세요",
+    "点击\"分析代码\"按钮": "\"코드 분석\" 버튼을 클릭하세요",
+    "查看安全检测结果和修复建议": "보안 분석 결과 및 수정 제안을 확인하세요",
+    "根据提示优化您的代码": "제안에 따라 코드를 최적화하세요",
+    "示例代码:": "예제 코드:",
+    "请输入代码进行检测...": "분석할 코드를 입력하세요...",
+    "分析代码": "코드 분석",
+    "安全检测结果将显示在这里": "보안 분석 결과가 여기에 표시됩니다",
+    "漏洞预警及修复建议将显示在这里": "취약점 경고 및 수정 제안이 여기에 표시됩니다",
+    "代码审查日志列表将显示在这里": "코드 검토 로그가 여기에 표시됩니다",
+    "查看历史代码分析记录": "기존 코드 분석 기록 보기",
+    "历史代码分析": "코드 분석 기록",
+    "选择上方代码查看详细分析结果": "위의 코드를 선택하여 상세 분석 결과를 보세요",
+    "代码安全分析报告": "코드 보안 분석 보고서",
+    "安全评分": "보안 점수",
+    "计算中...": "계산 중...",
+    "安全统计": "보안 통계",
+    "已检查代码": "검사된 코드",
+    "次": "회",
+    "发现漏洞": "발견된 취약점",
+    "个": "개",
+    "已修复": "수정됨",
+    "高危漏洞": "위험 높은 취약점",
+    "常见安全问题": "일반적인 보안 문제",
+    "SQL注入": "SQL 인젝션",
+    "发现": "발견",
+    "次": "회",
+    "XSS攻击": "XSS 공격",
+    "弱密码": "약한 비밀번호",
+    "未验证输入": "검증되지 않은 입력",
+    "详细安全分析": "상세 보안 분석",
+    "选择历史记录查看详细安全分析报告": "기록을 선택하여 상세 보안 분석 보고서를 보세요",
+    "暂无历史记录": "기록이 없습니다",
+    "无": "없음",
+    "中文": "中文",
+    "English": "English",
+    "한국어": "한국어",
+    "Français": "Français",
+    "Русский": "Русский",
+    "查看历史代码分析记录和代码审查日志": "기존 코드 분석 기록 및 검토 로그 보기",
+    "代码审查日志": "코드 검토 로그",
+    "高危": "고위험"
+  },
+  "fr": {
+    "首页": "Accueil",
+    "我的": "Mon",
+    "安全报告": "Rapport de Sécurité",
+    "立即使用": "Commencer",
+    "代码安全检测工具": "Outil de Détection de Sécurité du Code",
+    "实时分析代码漏洞，提供修复建议": "Analyse en temps réel des vulnérabilités du code avec suggestions de correction",
+    "快速上手指南": "Guide de Démarrage Rapide",
+    "在下方代码输入框中粘贴您的代码": "Collez votre code dans la zone de saisie ci-dessous",
+    "点击\"分析代码\"按钮": "Cliquez sur le bouton \"Analyser le Code\"",
+    "查看安全检测结果和修复建议": "Afficher les résultats de sécurité et les suggestions de correction",
+    "根据提示优化您的代码": "Optimisez votre code en fonction des suggestions",
+    "示例代码:": "Exemple de Code:",
+    "请输入代码进行检测...": "Entrez le code à analyser...",
+    "分析代码": "Analyser le Code",
+    "安全检测结果将显示在这里": "Les résultats de l'analyse de sécurité s'afficheront ici",
+    "漏洞预警及修复建议将显示在这里": "Les alertes de vulnérabilités et les suggestions de correction s'afficheront ici",
+    "代码审查日志列表将显示在这里": "Les journaux de révision du code s'afficheront ici",
+    "查看历史代码分析记录": "Afficher les enregistrements d'analyse de code historiques",
+    "历史代码分析": "Historique d'Analyse du Code",
+    "选择上方代码查看详细分析结果": "Sélectionnez un code ci-dessus pour afficher les résultats d'analyse détaillés",
+    "代码安全分析报告": "Rapport d'Analyse de Sécurité du Code",
+    "安全评分": "Score de Sécurité",
+    "计算中...": "Calcul en cours...",
+    "安全统计": "Statistiques de Sécurité",
+    "已检查代码": "Code Analyser",
+    "次": "fois",
+    "发现漏洞": "Vulnérabilités Décelées",
+    "个": "éléments",
+    "已修复": "Corrigé",
+    "高危漏洞": "Risque Élevé",
+    "常见安全问题": "Problèmes de Sécurité Courants",
+    "SQL注入": "Injection SQL",
+    "发现": "Découvert",
+    "次": "fois",
+    "XSS攻击": "Attaque XSS",
+    "弱密码": "Mot de Passe Faible",
+    "未验证输入": "Entrée Non Validée",
+    "详细安全分析": "Analyse de Sécurité Détaillée",
+    "选择历史记录查看详细安全分析报告": "Sélectionnez un enregistrement historique pour afficher le rapport d'analyse de sécurité détaillé",
+    "暂无历史记录": "Aucun enregistrement historique",
+    "无": "Aucun",
+    "中文": "中文",
+    "English": "English",
+    "한국어": "한국어",
+    "Français": "Français",
+    "Русский": "Русский",
+    "查看历史代码分析记录和代码审查日志": "Afficher les enregistrements d'analyse de code historiques et les journaux de révision",
+    "代码审查日志": "Journaux de Révision du Code",
+    "高危": "Risque Élevé"
+  },
+  "ru": {
+    "首页": "Главная",
+    "我的": "Мой",
+    "安全报告": "Отчёт о Безопасности",
+    "立即使用": "Начать Использовать",
+    "代码安全检测工具": "Инструмент Обнаружения Безопасности Кода",
+    "实时分析代码漏洞，提供修复建议": "Анализ уязвимостей кода в реальном времени с предложениями по исправлению",
+    "快速上手指南": "Быстрый Старт",
+    "在下方代码输入框中粘贴您的代码": "Вставьте ваш код в поле ввода ниже",
+    "点击\"分析代码\"按钮": "Нажмите кнопку \"Анализировать Код\"",
+    "查看安全检测结果和修复建议": "Просмотрите результаты анализа безопасности и предложения по исправлению",
+    "根据提示优化您的代码": "Оптимизируйте ваш код на основе предложений",
+    "示例代码:": "Пример Кода:",
+    "请输入代码进行检测...": "Введите код для анализа...",
+    "分析代码": "Анализировать Код",
+    "安全检测结果将显示在这里": "Результаты анализа безопасности будут отображаться здесь",
+    "漏洞预警及修复建议将显示在这里": "Предупреждения об уязвимостях и предложения по исправлению будут отображаться здесь",
+    "代码审查日志列表将显示在这里": "Список журналов проверки кода будет отображаться здесь",
+    "查看历史代码分析记录": "Просмотр записей истории анализа кода",
+    "历史代码分析": "История Анализа Кода",
+    "选择上方代码查看详细分析结果": "Выберите код выше для просмотра подробных результатов анализа",
+    "代码安全分析报告": "Отчёт Анализа Безопасности Кода",
+    "安全评分": "Оценка Безопасности",
+    "计算中...": "Вычисление...",
+    "安全统计": "Статистика Безопасности",
+    "已检查代码": "Проверено Кода",
+    "次": "раз",
+    "发现漏洞": "Обнаружено Уязвимостей",
+    "个": "шт",
+    "已修复": "Исправлено",
+    "高危漏洞": "Высокий Риск",
+    "常见安全问题": "Распространённые Проблемы Безопасности",
+    "SQL注入": "SQL-инъекция",
+    "发现": "Обнаружено",
+    "次": "раз",
+    "XSS攻击": "XSS-атака",
+    "弱密码": "Слабый Пароль",
+    "未验证输入": "Непроверенный Ввод",
+    "详细安全分析": "Подробный Анализ Безопасности",
+    "选择历史记录查看详细安全分析报告": "Выберите запись истории для просмотра подробного отчёта анализа безопасности",
+    "暂无历史记录": "Нет записей истории",
+    "无": "Нет",
+    "中文": "中文",
+    "English": "English",
+    "한국어": "한국어",
+    "Français": "Français",
+    "Русский": "Русский",
+    "查看历史代码分析记录和代码审查日志": "Просмотр записей истории анализа кода и журналов проверки",
+    "代码审查日志": "Журналы Проверки Кода",
+    "高危": "Высокий Риск"
+  }
+};
+
+// 页面切换功能
+document.addEventListener('DOMContentLoaded', function() {
+  // 使用事件委托处理导航点击
+  document.querySelector('header').addEventListener('click', function(e) {
+    if (e.target.classList.contains('nav-link')) {
+      e.preventDefault();
+      const pageId = e.target.dataset.page;
+      showPage(pageId);
+    }
+  });
+  
+  // 分析代码按钮点击事件
+  document.getElementById('analyzeBtn').addEventListener('click', analyzeCode);
+  
+  // 立即使用按钮点击事件
+  document.getElementById('useNowBtn').addEventListener('click', function() {
+    document.getElementById('codeInput').focus();
+  });
+  
+  // 从历史记录加载代码
+  document.getElementById('codeHistoryList').addEventListener('click', function(e) {
+    if (e.target.closest('.code-item')) {
+      const codeItem = e.target.closest('.code-item');
+      const code = codeItem.dataset.code;
+      const timestamp = codeItem.dataset.timestamp;
+      const analysisId = codeItem.dataset.id;
+      loadCodeFromHistory(timestamp, code, analysisId);
+    }
+  });
+  
+  // 语言选择器变化事件
+  document.getElementById('lang-select').addEventListener('change', function() {
+    const selectedLang = this.value;
+    localStorage.setItem('codeSentryLang', selectedLang);
+    applyTranslations(selectedLang);
+  });
+  
+  // 加载保存的设置
+  loadSettings();
+  
+  // 加载安全统计数据
+  loadSecurityStats();
+  
+  // 加载历史记录
+  loadHistory();
+  
+  // 加载代码审查日志
+  loadCodeReviewLogs();
+  
+  // 加载保存的语言设置
+  const savedLang = localStorage.getItem('codeSentryLang') || 'zh-CN';
+  document.getElementById('lang-select').value = savedLang;
+  applyTranslations(savedLang);
+});
+
+// 应用翻译
+function applyTranslations(lang) {
+  const elements = document.querySelectorAll('[data-translate]');
+  elements.forEach(element => {
+    const key = element.dataset.translate;
+    if (translations[lang] && translations[lang][key]) {
+      element.textContent = translations[lang][key];
+    }
+  });
+  
+  // 更新placeholder
+  document.querySelectorAll('[data-placeholder]').forEach(element => {
+    const key = element.dataset.placeholder;
+    if (translations[lang] && translations[lang][key]) {
+      element.placeholder = translations[lang][key];
+    }
+  });
+}
+
+// 页面切换功能
+function showPage(pageId) {
+  // 隐藏所有页面
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => {
+    page.classList.remove('active');
+  });
+  
+  // 更新导航栏活动状态
+  const navLinks = document.querySelectorAll('.nav-link');
+  navLinks.forEach(link => {
+    if (link.dataset.page === pageId) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
+  
+  // 显示当前页面
+  document.getElementById(pageId).classList.add('active');
+  
+  // 如果切换到安全报告页面，更新统计数据
+  if (pageId === 'security') {
+    loadSecurityStats();
+  }
+}
+
+// 代码分析功能
+function analyzeCode() {
+  const codeInput = document.getElementById('codeInput').value;
+  const result = document.getElementById('result');
+  const warnings = document.getElementById('warnings');
+  const logs = document.getElementById('logs');
+  
+  if (!codeInput.trim()) {
+    result.textContent = "请输入代码进行检测";
+    return;
+  }
+  
+  // 开始分析
+  result.textContent = "正在分析代码...";
+  warnings.innerHTML = "";
+  logs.innerHTML = "";
+  
+  // 保存到历史记录
+  const now = new Date();
+  const timestamp = now.getFullYear() + '-' + 
+                   String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                   String(now.getDate()).padStart(2, '0') + ' ' + 
+                   String(now.getHours()).padStart(2, '0') + ':' + 
+                   String(now.getMinutes()).padStart(2, '0') + ':' + 
+                   String(now.getSeconds()).padStart(2, '0');
+  
+  // 执行实际分析
+  const analysisId = Date.now();
+  const analysisResult = performCodeAnalysis(codeInput);
+  
+  // 保存分析结果
+  saveAnalysisResult(analysisId, codeInput, timestamp, analysisResult);
+  
+  // 更新安全统计数据
+  updateSecurityStats(analysisResult.vulnerabilities.length);
+  
+  // 计算安全评分
+  const securityScore = calculateSecurityScore(analysisResult.vulnerabilities);
+  
+  // 显示分析结果
+  result.innerHTML = `
+    <h3>分析完成</h3>
+    <p>检测到 <strong>${analysisResult.vulnerabilities.length}</strong> 个潜在安全问题</p>
+    <p>安全评分: <strong>${securityScore}/100</strong></p>
+  `;
+  
+  // 显示漏洞
+  warnings.innerHTML = '<h4>安全警告:</h4>';
+  const warningList = document.createElement('ul');
+  
+  analysisResult.vulnerabilities.forEach(vuln => {
+    const li = document.createElement('li');
+    const severityClass = vuln.severity === 'high' ? 'vulnerability-badge' : 
+                         vuln.severity === 'medium' ? 'vulnerability-badge medium-badge' : 
+                         vuln.severity === 'low' ? 'vulnerability-badge low-badge' : '';
+    
+    li.innerHTML = `
+      <strong>${vuln.type}:</strong> ${vuln.description}<br>
+      <small>位置: ${vuln.line}行</small>
+      <span class="${severityClass}">${vuln.severity === 'high' ? '高危' : vuln.severity === 'medium' ? '中危' : vuln.severity === 'low' ? '低危' : '信息'}</span>
+    `;
+    warningList.appendChild(li);
+  });
+  
+  warnings.appendChild(warningList);
+  
+  // 显示修复建议
+  const suggestionList = document.createElement('ul');
+  analysisResult.vulnerabilities.forEach(vuln => {
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${vuln.type}修复建议:</strong> ${vuln.fix}`;
+    suggestionList.appendChild(li);
+  });
+  
+  warnings.innerHTML += '<h4>修复建议:</h4>';
+  warnings.appendChild(suggestionList);
+  
+  // 显示日志
+  logs.innerHTML = '<h4>审查日志:</h4>';
+  const logList = document.createElement('ul');
+  
+  logList.innerHTML = `
+    <li>[${timestamp}] 开始代码扫描</li>
+    <li>[${timestamp}] 执行安全规则检查</li>
+    <li>[${timestamp}] 检测到潜在安全漏洞</li>
+    <li>[${timestamp}] 生成安全报告</li>
+    <li>[${timestamp}] 分析完成</li>
+  `;
+  
+  logs.appendChild(logList);
+  
+  // 保存代码审查日志
+  saveCodeReviewLog(analysisId, codeInput, timestamp, analysisResult);
+}
+
+// 计算安全评分
+function calculateSecurityScore(vulnerabilities) {
+  let score = 100;
+  
+  vulnerabilities.forEach(vuln => {
+    // 根据漏洞类型和严重程度减分
+    switch(vuln.type) {
+      case 'SQL注入':
+        score -= vuln.severity === 'high' ? 20 : vuln.severity === 'medium' ? 15 : 10;
+        break;
+      case 'XSS攻击':
+        score -= vuln.severity === 'high' ? 18 : vuln.severity === 'medium' ? 13 : 8;
+        break;
+      case '弱密码':
+        score -= vuln.severity === 'high' ? 15 : vuln.severity === 'medium' ? 12 : 7;
+        break;
+      case '未验证输入':
+        score -= vuln.severity === 'high' ? 12 : vuln.severity === 'medium' ? 9 : 5;
+        break;
+      default:
+        score -= vuln.severity === 'high' ? 10 : vuln.severity === 'medium' ? 7 : 3;
+    }
+  });
+  
+  // 确保分数在0-100之间
+  return Math.max(0, Math.min(100, score));
+}
+
+// 更新安全统计数据
+function updateSecurityStats(vulnerabilitiesCount) {
+  let stats = JSON.parse(localStorage.getItem('securityStats') || '{}');
+  
+  // 更新统计数据
+  stats.checkedCount = (stats.checkedCount || 0) + 1;
+  stats.vulnerabilitiesCount = (stats.vulnerabilitiesCount || 0) + vulnerabilitiesCount;
+  
+  // 更新各类漏洞计数
+  const savedAnalyses = JSON.parse(localStorage.getItem('analysisResults') || '[]');
+  savedAnalyses.forEach(analysis => {
+    analysis.vulnerabilities.forEach(vuln => {
+      switch(vuln.type) {
+        case 'SQL注入':
+          stats.sqlCount = (stats.sqlCount || 0) + 1;
+          break;
+        case 'XSS攻击':
+          stats.xssCount = (stats.xssCount || 0) + 1;
+          break;
+        case '弱密码':
+          stats.passwordCount = (stats.passwordCount || 0) + 1;
+          break;
+        case '未验证输入':
+          stats.inputCount = (stats.inputCount || 0) + 1;
+          break;
+      }
+    });
+  });
+  
+  // 更新高危漏洞数量
+  stats.highRiskCount = (stats.highRiskCount || 0) + 
+    savedAnalyses.reduce((count, analysis) => {
+      return count + analysis.vulnerabilities.filter(v => v.severity === 'high').length;
+    }, 0);
+  
+  // 保存统计数据
+  localStorage.setItem('securityStats', JSON.stringify(stats));
+  
+  // 更新显示
+  loadSecurityStats();
+}
+
+// 加载安全统计数据
+function loadSecurityStats() {
+  const stats = JSON.parse(localStorage.getItem('securityStats') || '{}');
+  
+  document.getElementById('checkedCount').textContent = stats.checkedCount || 0;
+  document.getElementById('vulnerabilitiesCount').textContent = stats.vulnerabilitiesCount || 0;
+  
+  // 从修复记录中获取已修复数量
+  const fixedVulnerabilities = JSON.parse(localStorage.getItem('fixedVulnerabilities') || '[]');
+  const fixedCount = fixedVulnerabilities.length;
+  document.getElementById('fixedCount').textContent = fixedCount;
+  
+  document.getElementById('highRiskCount').textContent = stats.highRiskCount || 0;
+  document.getElementById('sqlCount').textContent = stats.sqlCount || 0;
+  document.getElementById('xssCount').textContent = stats.xssCount || 0;
+  document.getElementById('passwordCount').textContent = stats.passwordCount || 0;
+  document.getElementById('inputCount').textContent = stats.inputCount || 0;
+  
+  // 计算平均安全评分
+  const checkedCount = stats.checkedCount || 0;
+  if (checkedCount > 0) {
+    // 基于实际漏洞数量计算平均分数
+    const avgScore = 100 - Math.floor((stats.vulnerabilitiesCount / checkedCount) * 10);
+    document.getElementById('securityScore').textContent = `${avgScore}/100`;
+    document.getElementById('securityBar').style.width = `${avgScore}%`;
+  } else {
+    document.getElementById('securityScore').textContent = '100/100';
+    document.getElementById('securityBar').style.width = '100%';
+  }
+}
+
+// 实际的代码分析逻辑
+function performCodeAnalysis(code) {
+  const vulnerabilities = [];
+  const lines = code.split('\n');
+  
+  // 获取检测设置
+  const settings = JSON.parse(localStorage.getItem('codeSentrySettings') || '{}');
+  const checkSQL = settings.checkSQL !== false;
+  const checkXSS = settings.checkXSS !== false;
+  const checkPassword = settings.checkPassword !== false;
+  
+  // 检查SQL注入
+  if (checkSQL) {
+    const sqlPatterns = [
+      /SELECT\s+.*\s+FROM\s+.*WHERE\s+.*=['"]?[^'"]*['"]?$/,
+      /INSERT\s+INTO\s+.*VALUES\s*\([^)]*\)/,
+      /UPDATE\s+.*SET\s+.*=['"]?[^'"]*['"]?$/,
+      /DELETE\s+FROM\s+.*WHERE\s+.*=['"]?[^'"]*['"]?$/
+    ];
+    
+    lines.forEach((line, index) => {
+      sqlPatterns.forEach(pattern => {
+        if (pattern.test(line)) {
+          // 判断严重程度
+          const severity = line.includes('+') || line.includes('&') ? 'high' : 'medium';
+          vulnerabilities.push({
+            type: 'SQL注入',
+            description: '可能存在SQL注入风险',
+            line: index + 1,
+            fix: '使用参数化查询或预编译语句代替直接拼接SQL',
+            severity: severity
+          });
+        }
+      });
+    });
+  }
+  
+  // 检查XSS
+  if (checkXSS) {
+    const xssPatterns = [
+      /innerHTML\s*=\s*['"`][^'"`]*['"`]/,
+      /document\.write\s*\(/,
+      /eval\s*\(/,
+      /setTimeout\s*\(\s*['"`][^'"`]*['"`]/,
+      /setInterval\s*\(\s*['"`][^'"`]*['"`]/
+    ];
+    
+    lines.forEach((line, index) => {
+      xssPatterns.forEach(pattern => {
+        if (pattern.test(line)) {
+          // 判断严重程度
+          const severity = line.includes('<script') || line.includes('eval') ? 'high' : 'medium';
+          vulnerabilities.push({
+            type: 'XSS攻击',
+            description: '可能存在XSS攻击风险',
+            line: index + 1,
+            fix: '使用textContent代替innerHTML，避免直接执行用户输入的代码',
+            severity: severity
+          });
+        }
+      });
+    });
+  }
+  
+  // 检查弱密码
+  if (checkPassword) {
+    const passwordPatterns = [
+      /password\s*=\s*['"`][^'"`]{0,5}['"`]/i,
+      /pwd\s*=\s*['"`][^'"`]{0,5}['"`]/i
+    ];
+    
+    lines.forEach((line, index) => {
+      passwordPatterns.forEach(pattern => {
+        if (pattern.test(line)) {
+          // 判断严重程度
+          const severity = line.length < 10 ? 'high' : 'medium';
+          vulnerabilities.push({
+            type: '弱密码',
+            description: '可能使用了弱密码',
+            line: index + 1,
+            fix: '使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符',
+            severity: severity
+          });
+        }
+      });
+    });
+  }
+  
+  // 检查未验证输入
+  const inputPatterns = [
+    /request\.getParameter\s*\(/,
+    /req\.getParameter\s*\(/,
+    /input\s*\(\s*['"`][^'"`]*['"`]\s*\)/
+  ];
+  
+  lines.forEach((line, index) => {
+    inputPatterns.forEach(pattern => {
+      if (pattern.test(line)) {
+        // 判断严重程度
+        const severity = line.includes('script') || line.includes('<') ? 'high' : 'medium';
+        vulnerabilities.push({
+          type: '未验证输入',
+          description: '用户输入未经验证',
+          line: index + 1,
+          fix: '添加输入验证和过滤，对特殊字符进行转义',
+          severity: severity
+        });
+      }
+    });
+  });
+  
+  // 如果没有发现漏洞，添加一条无漏洞信息
+  if (vulnerabilities.length === 0) {
+    vulnerabilities.push({
+      type: '安全',
+      description: '未发现明显安全问题',
+      line: '-',
+      fix: '继续保持良好的安全编码实践',
+      severity: 'info'
+    });
+  }
+  
+  return {
+    vulnerabilities: vulnerabilities,
+    timestamp: new Date().toISOString(),
+    code: code
+  };
+}
+
+// 保存分析结果
+function saveAnalysisResult(id, code, timestamp, result) {
+  let analyses = JSON.parse(localStorage.getItem('analysisResults') || '[]');
+  
+  analyses.unshift({
+    id: id,
+    code: code,
+    timestamp: timestamp,
+    vulnerabilities: result.vulnerabilities
+  });
+  
+  // 只保留最近10条记录
+  if (analyses.length > 10) {
+    analyses = analyses.slice(0, 10);
+  }
+  
+  localStorage.setItem('analysisResults', JSON.stringify(analyses));
+  loadHistory();
+}
+
+// 保存代码审查日志
+function saveCodeReviewLog(id, code, timestamp, result) {
+  let logs = JSON.parse(localStorage.getItem('codeReviewLogs') || '[]');
+  
+  // 生成日志摘要
+  const summary = generateLogSummary(result.vulnerabilities);
+  
+  logs.unshift({
+    id: id,
+    timestamp: timestamp,
+    summary: summary,
+    vulnerabilityCount: result.vulnerabilities.length,
+    highRiskCount: result.vulnerabilities.filter(v => v.severity === 'high').length,
+    codePreview: code.length > 100 ? code.substring(0, 100) + '...' : code
+  });
+  
+  // 只保留最近20条日志
+  if (logs.length > 20) {
+    logs = logs.slice(0, 20);
+  }
+  
+  localStorage.setItem('codeReviewLogs', JSON.stringify(logs));
+  loadCodeReviewLogs();
+}
+
+// 生成日志摘要
+function generateLogSummary(vulnerabilities) {
+  if (vulnerabilities.length === 0) {
+    return '未发现安全问题';
+  }
+  
+  const typeCounts = {};
+  let highRiskCount = 0;
+  
+  vulnerabilities.forEach(vuln => {
+    if (!typeCounts[vuln.type]) {
+      typeCounts[vuln.type] = 0;
+    }
+    typeCounts[vuln.type]++;
+    
+    if (vuln.severity === 'high') {
+      highRiskCount++;
+    }
+  });
+  
+  const summaryParts = [];
+  
+  if (highRiskCount > 0) {
+    summaryParts.push(`${highRiskCount}个高危漏洞`);
+  }
+  
+  const types = Object.keys(typeCounts);
+  if (types.length > 0) {
+    summaryParts.push(`${types.length}种类型漏洞`);
+  }
+  
+  return summaryParts.join('，');
+}
+
+// 加载历史记录
+function loadHistory() {
+  const historyList = document.getElementById('codeHistoryList');
+  const analyses = JSON.parse(localStorage.getItem('analysisResults') || '[]');
+  
+  historyList.innerHTML = '';
+  
+  if (analyses.length === 0) {
+    historyList.innerHTML = '<p>暂无历史记录</p>';
+    return;
+  }
+  
+  analyses.forEach(analysis => {
+    const codeItem = document.createElement('div');
+    codeItem.className = 'code-item';
+    codeItem.dataset.code = analysis.code;
+    codeItem.dataset.timestamp = analysis.timestamp;
+    codeItem.dataset.id = analysis.id;
+    
+    // 截取代码前50个字符显示
+    const codePreview = analysis.code.length > 50 ? 
+      analysis.code.substring(0, 50) + '...' : 
+      analysis.code;
+    
+    // 计算高危漏洞数量
+    const highRiskCount = analysis.vulnerabilities.filter(v => v.severity === 'high').length;
+    
+    codeItem.innerHTML = `
+      <div class="code-item-header">
+        <span>${codePreview}</span>
+        <span class="code-item-date">${analysis.timestamp}</span>
+      </div>
+      <div>检测到${analysis.vulnerabilities.length}个潜在问题${highRiskCount > 0 ? `<span class="vulnerability-badge">${highRiskCount}个高危</span>` : ''}</div>
+    `;
+    
+    historyList.appendChild(codeItem);
+  });
+}
+
+// 加载代码审查日志
+function loadCodeReviewLogs() {
+  const logList = document.getElementById('codeReviewLogList');
+  const logs = JSON.parse(localStorage.getItem('codeReviewLogs') || '[]');
+  
+  logList.innerHTML = '';
+  
+  if (logs.length === 0) {
+    logList.innerHTML = '<p>暂无代码审查日志</p>';
+    return;
+  }
+  
+  logs.forEach(log => {
+    const logItem = document.createElement('div');
+    logItem.className = 'log-item';
+    
+    const severityClass = log.highRiskCount > 0 ? 'vulnerability-badge' : 'safe-badge';
+    const severityText = log.highRiskCount > 0 ? `${log.highRiskCount}个高危` : '安全';
+    
+    logItem.innerHTML = `
+      <div class="log-item-header">
+        <span class="log-item-summary">${log.summary}</span>
+        <span class="code-item-date">${log.timestamp}</span>
+      </div>
+      <div class="log-item-content">
+        <div class="${severityClass}">${severityText}</div>
+        <div>代码预览: <span class="code-highlight">${log.codePreview}</span></div>
+      </div>
+    `;
+    
+    logList.appendChild(logItem);
+  });
+}
+
+// 从历史记录加载代码
+function loadCodeFromHistory(timestamp, code, analysisId) {
+  document.getElementById('codeInput').value = code;
+  showPage('home');
+  analyzeCode();
+  
+  // 加载详细分析结果
+  setTimeout(() => {
+    const analyses = JSON.parse(localStorage.getItem('analysisResults') || '[]');
+    const analysis = analyses.find(a => a.id == analysisId);
+    
+    if (analysis) {
+      const securityDetails = document.getElementById('securityDetails');
+      securityDetails.innerHTML = `
+        <h4>详细安全分析 - ${timestamp}</h4>
+        <ul class="feature-list">
+          ${analysis.vulnerabilities.map(vuln => {
+            const severityClass = vuln.severity === 'high' ? 'vulnerability-badge' : 
+                                 vuln.severity === 'medium' ? 'vulnerability-badge medium-badge' : 
+                                 vuln.severity === 'low' ? 'vulnerability-badge low-badge' : 'safe-badge';
+            
+            const severityText = vuln.severity === 'high' ? '高危' : 
+                                vuln.severity === 'medium' ? '中危' : 
+                                vuln.severity === 'low' ? '低危' : '信息';
+            
+            return `
+              <li>
+                <strong>${vuln.type}</strong> ${severityText}: ${vuln.description}<br>
+                <small>位置: ${vuln.line}行</small><br>
+                <small>修复建议: ${vuln.fix}</small>
+              </li>
+            `;
+          }).join('')}
+        </ul>
+      `;
+    }
+  }, 1000);
+}
+
+// 添加修复漏洞功能
+function markAsFixed(vulnerabilityId) {
+  let fixedVulnerabilities = JSON.parse(localStorage.getItem('fixedVulnerabilities') || '[]');
+  
+  // 检查是否已经修复过
+  if (!fixedVulnerabilities.includes(vulnerabilityId)) {
+    fixedVulnerabilities.push(vulnerabilityId);
+    localStorage.setItem('fixedVulnerabilities', JSON.stringify(fixedVulnerabilities));
+    
+    // 更新安全统计数据
+    loadSecurityStats();
+    
+    // 显示修复成功提示
+    const notification = document.createElement('div');
+    notification.style.position = 'fixed';
+    notification.style.top = '20px';
+    notification.style.right = '20px';
+    notification.style.backgroundColor = '#00a884';
+    notification.style.color = '#0f1115';
+    notification.style.padding = '10px 20px';
+    notification.style.borderRadius = '4px';
+    notification.style.zIndex = '1000';
+    notification.textContent = '漏洞已标记为已修复';
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+}
+</script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"CodeSentry":"CodeSentry","首页":"Home","我的":"My","安全报告":"Security Report","中文":"Chinese","English":"English","Français":"French","代码安全检测工具":"Code Security Detection Tool","实时分析代码漏洞，提供修复建议":"Real-time analysis of code vulnerabilities, providing repair suggestions","立即使用":"Use Now","快速上手指南":"Quick Start Guide","在下方代码输入框中粘贴您的代码":"Paste your code in the code input box below","查看安全检测结果和修复建议":"View security test results and repair suggestions","根据提示优化您的代码":"Optimize your code according to the prompts","示例代码:":"Example Code:","分析代码":"Analyze Code","安全检测结果将显示在这里":"Security test results will be displayed here","漏洞预警及修复建议将显示在这里":"Vulnerability alerts and repair suggestions will be displayed here","代码审查日志列表将显示在这里":"Code review log list will be displayed here","查看历史代码分析记录和代码审查日志":"View historical code analysis records and code review logs","历史代码分析":"Historical Code Analysis","代码审查日志":"Code Review Log","选择上方代码查看详细分析结果":"Select the code above to view detailed analysis results","代码安全分析报告":"Code Security Analysis Report","安全评分":"Security Score","计算中...":"Calculating...","安全统计":"Security Statistics","已检查代码:":"Checked Code:","发现漏洞:":"Found Vulnerabilities:","已修复:":"Fixed:","高危漏洞":"High-risk Vulnerabilities","常见安全问题":"Common Security Issues","SQL注入 (发现":"SQL Injection (Found","次)":"times)","XSS攻击 (发现":"XSS Attack (Found","弱密码 (发现":"Weak Password (Found","未验证输入 (发现":"Unverified Input (Found","详细安全分析":"Detailed Security Analysis","选择历史记录查看详细安全分析报告":"Select historical records to view detailed security analysis reports","分析完成":"Analysis Completed","检测到":"Detected","个潜在安全问题":"potential security issues","安全评分:":"Security Score:","修复建议:":"Repair Suggestions:","开始代码扫描":"Start Code Scan","执行安全规则检查":"Execute Security Rule Check","检测到潜在安全漏洞":"Detected Potential Security Vulnerabilities","生成安全报告":"Generate Security Report","种类型漏洞":"Types of Vulnerabilities","个高危":"High-risk","代码预览:":"Code Preview:","请输入代码进行检测...":"Please enter code for detection...","按钮":"Button","查看历史代码分析记录":"View Historical Code Analysis Records","已检查代码":"Checked Code","发现漏洞":"Found Vulnerabilities","已修复":"Fixed","SQL注入":"SQL Injection","发现":"Found","XSS攻击":"XSS Attack","弱密码":"Weak Password","未验证输入":"Unverified Input","暂无历史记录":"No Historical Records Available","高危":"High Risk","Home":"Home","My":"My","Security Report":"Security Report","Get Started":"Get Started","Code Security Scanner":"Code Security Scanner","Real-time analysis of code vulnerabilities with fix suggestions":"Real-time analysis of code vulnerabilities with fix suggestions","Quick Start Guide":"Quick Start Guide","Paste your code in the input box below":"Paste your code in the input box below","View security results and fix suggestions":"View security results and fix suggestions","] 开始代码扫描":"] 开始代码扫描","] 执行安全规则检查":"] 执行安全规则检查","] 检测到潜在安全漏洞":"] 检测到潜在安全漏洞","] 生成安全报告":"] 生成安全报告","] 分析完成":"] 分析完成","__title__":"CodeSentry","한국어":"Korean","点击\"分析代码\"按钮":"Click the 'Analyze Code' button","安全警告:":"Security Warning:","审查日志:":"Audit Log:","暂无代码审查日志":"No code audit log available","完全免费":"Completely Free","提意见":"Suggest an improvement","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"Code security detection tool, analyzes code vulnerabilities in real-time and provides repair suggestions.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"page active","Optimize your code based on suggestions":"Optimize your code based on suggestions","Example Code:":"Example Code:","Enter code to analyze...":"Enter code to analyze...","Analyze Code":"Analyze Code","Security analysis results will appear here":"Security analysis results will appear here","Vulnerability warnings and fix suggestions will appear here":"Vulnerability warnings and fix suggestions will appear here","Code review logs will appear here":"Code review logs will appear here","View historical code analysis records":"View historical code analysis records","Code Analysis History":"Code Analysis History","Select a code above to view detailed analysis results":"Select a code above to view detailed analysis results","Code Security Analysis Report":"Code Security Analysis Report","Security Score":"Security Score","Calculating...":"Calculating...","Security Statistics":"Security Statistics","Code Scanned":"Code Scanned","Vulnerabilities Found":"Vulnerabilities Found","Fixed":"Fixed","High Risk":"High Risk","Common Security Issues":"Common Security Issues","SQL Injection":"SQL Injection","Found":"Found","XSS Attack":"XSS Attack","Weak Password":"Weak Password","Unvalidated Input":"Unvalidated Input","Detailed Security Analysis":"Detailed Security Analysis","Select a history record to view detailed security analysis report":"Select a history record to view detailed security analysis report","No history records":"No history records","None":"None","View historical code analysis records and review logs":"View historical code analysis records and review logs","Code Review Logs":"Code Review Logs","SQL 인젝션":"SQL Injection","XSS 공격":"XSS Attack","Accueil":"Accueil","Mon":"Mon","Rapport de Sécurité":"Rapport de Sécurité","Commencer":"Commencer","Outil de Détection de Sécurité du Code":"Outil de Détection de Sécurité du Code","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Analyse en temps réel des vulnérabilités du code avec suggestions de correction","Guide de Démarrage Rapide":"Guide de Démarrage Rapide","Collez votre code dans la zone de saisie ci-dessous":"Collez votre code dans la zone de saisie ci-dessous","Afficher les résultats de sécurité et les suggestions de correction":"Afficher les résultats de sécurité et les suggestions de correction","Optimisez votre code en fonction des suggestions":"Optimisez votre code en fonction des suggestions","Exemple de Code:":"Exemple de Code:","Entrez le code à analyser...":"Entrez le code à analyser...","Analyser le Code":"Analyser le Code","Les résultats de l":"Les résultats de l","afficheront ici":"afficheront ici","Les alertes de vulnérabilités et les suggestions de correction s":"Les alertes de vulnérabilités et les suggestions de correction s","Les journaux de révision du code s":"Les journaux de révision du code s","Afficher les enregistrements d":"Afficher les enregistrements d","Historique d":"Historique d","Sélectionnez un code ci-dessus pour afficher les résultats d":"Sélectionnez un code ci-dessus pour afficher les résultats d","Rapport d":"Rapport d","Score de Sécurité":"Score de Sécurité","Calcul en cours...":"Calcul en cours...","Statistiques de Sécurité":"Statistiques de Sécurité","Code Analyser":"Code Analyser","Vulnérabilités Décelées":"Vulnérabilités Décelées","Corrigé":"Corrigé","Risque Élevé":"Risque Élevé","Problèmes de Sécurité Courants":"Problèmes de Sécurité Courants","Injection SQL":"Injection SQL","Découvert":"Découvert","Attaque XSS":"Attaque XSS","Mot de Passe Faible":"Mot de Passe Faible","Entrée Non Validée":"Entrée Non Validée","Analyse de Sécurité Détaillée":"Analyse de Sécurité Détaillée","Sélectionnez un enregistrement historique pour afficher le rapport d":"Sélectionnez un enregistrement historique pour afficher le rapport d","Aucun enregistrement historique":"Aucun enregistrement historique","Aucun":"Aucun","Journaux de Révision du Code":"Journaux de Révision du Code","SQL-инъекция":"SQL-инъекция","XSS-атака":"XSS-атака","DOMContentLoaded":"DOMContentLoaded","请输入代码进行检测":"Please enter code for detection","正在分析代码...":"Analyzing code...","可能存在SQL注入风险":"May contain SQL injection risk","使用参数化查询或预编译语句代替直接拼接SQL":"使用参数化查询或预编译语句代替直接拼接SQL","可能存在XSS攻击风险":"May contain XSS attack risk","使用textContent代替innerHTML，避免直接执行用户输入的代码":"使用textContent代替innerHTML，避免直接执行用户输入的代码","可能使用了弱密码":"May have used a weak password","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Use a strong password policy, at least 8 characters long, including uppercase and lowercase letters, numbers, and special characters","用户输入未经验证":"User input not verified","添加输入验证和过滤，对特殊字符进行转义":"Add input validation and filtering, escaping special characters","未发现明显安全问题":"No apparent security issues found","继续保持良好的安全编码实践":"Continue to maintain good security coding practices","未发现安全问题":"No security issues found","漏洞已标记为已修复":"Vulnerability marked as fixed","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Home":"首页","My":"我的","Security Report":"安全报告","Get Started":"开始使用","Code Security Scanner":"代码安全扫描器","Real-time analysis of code vulnerabilities with fix suggestions":"实时分析代码漏洞并提供修复建议","Quick Start Guide":"快速入门指南","Paste your code in the input box below":"将您的代码粘贴到下面的输入框中","View security results and fix suggestions":"查看安全结果和修复建议","__title__":"CodeSentry","한국어":"韩语","点击\"分析代码\"按钮":"点击“分析代码”按钮","安全警告:":"安全警告：","审查日志:":"审查日志：","暂无代码审查日志":"暂无代码审查日志","完全免费":"完全免费","提意见":"提意见","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"代码安全检测工具，实时分析代码漏洞，提供修复建议。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"页面活跃","Optimize your code based on suggestions":"根据建议优化您的代码","Example Code:":"示例代码：","Enter code to analyze...":"输入代码进行分析...","Analyze Code":"分析代码","Security analysis results will appear here":"安全分析结果将在此显示","Vulnerability warnings and fix suggestions will appear here":"漏洞警告和修复建议将在此显示","Code review logs will appear here":"代码审查日志将在此显示","View historical code analysis records":"查看历史代码分析记录","Code Analysis History":"代码分析历史","Select a code above to view detailed analysis results":"选择上面的代码以查看详细分析结果","Code Security Analysis Report":"代码安全分析报告","Security Score":"安全评分","Calculating...":"计算中...","Security Statistics":"安全统计数据","Code Scanned":"已扫描代码","Vulnerabilities Found":"发现漏洞","Fixed":"已修复","High Risk":"高风险","Common Security Issues":"常见安全问题","SQL Injection":"SQL注入","Found":"发现","XSS Attack":"跨站脚本攻击","Weak Password":"弱密码","Unvalidated Input":"未验证输入","Detailed Security Analysis":"详细安全分析","Select a history record to view detailed security analysis report":"选择历史记录查看详细安全分析报告","No history records":"无历史记录","None":"无","View historical code analysis records and review logs":"查看历史代码分析记录和审查日志","Code Review Logs":"代码审查日志","SQL 인젝션":"SQL注入","XSS 공격":"XSS攻击","Accueil":"首页","Mon":"周一","Rapport de Sécurité":"安全报告","Commencer":"开始","Outil de Détection de Sécurité du Code":"代码安全检测工具","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"实时分析代码漏洞并提供修复建议","Guide de Démarrage Rapide":"快速入门指南","Collez votre code dans la zone de saisie ci-dessous":"将代码粘贴到下面的输入区域","Afficher les résultats de sécurité et les suggestions de correction":"显示安全结果和修复建议","Optimisez votre code en fonction des suggestions":"根据建议优化您的代码","Entrez le code à analyser...":"输入要分析的代码...","Analyser le Code":"分析代码","Les résultats de l":"搜索结果","afficheront ici":"将显示在此处","Les alertes de vulnérabilités et les suggestions de correction s":"漏洞警报和建议","Les journaux de révision du code s":"代码审查日志","Afficher les enregistrements d":"显示记录","Historique d":"历史","Sélectionnez un code ci-dessus pour afficher les résultats d":"选择上面的代码以显示结果","Rapport d":"报告","Score de Sécurité":"安全评分","Calcul en cours...":"计算中...","Statistiques de Sécurité":"安全统计","Code Analyser":"代码分析","Vulnérabilités Décelées":"发现漏洞","Corrigé":"已修复","Risque Élevé":"高风险","Problèmes de Sécurité Courants":"常见安全问题","Injection SQL":"SQL注入","Découvert":"已发现","Attaque XSS":"跨站脚本攻击","Mot de Passe Faible":"弱密码","Entrée Non Validée":"未验证输入","Analyse de Sécurité Détaillée":"详细安全分析","Sélectionnez un enregistrement historique pour afficher le rapport d":"选择一个历史记录以显示报告","Aucun enregistrement historique":"无历史记录","Aucun":"无","Journaux de Révision du Code":"代码审查日志","SQL-инъекция":"SQL注入","XSS-атака":"XSS攻击","DOMContentLoaded":"DOM内容加载完毕","请输入代码进行检测":"请输入代码进行检测","正在分析代码...":"正在分析代码...","可能存在SQL注入风险":"可能存在SQL注入风险","使用参数化查询或预编译语句代替直接拼接SQL":"使用参数化查询或预编译语句代替直接拼接SQL","可能存在XSS攻击风险":"可能存在XSS攻击风险","使用textContent代替innerHTML，避免直接执行用户输入的代码":"使用textContent代替innerHTML，避免直接执行用户输入的代码","可能使用了弱密码":"可能使用了弱密码","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符","用户输入未经验证":"用户输入未经验证","添加输入验证和过滤，对特殊字符进行转义":"添加输入验证和过滤，对特殊字符进行转义","未发现明显安全问题":"未发现明显安全问题","继续保持良好的安全编码实践":"继续保持良好的安全编码实践","未发现安全问题":"未发现安全问题","漏洞已标记为已修复":"漏洞已标记为已修复","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"CodeSentry","English":"英语","Français":"法语"},"es":{"首页":"Inicio","我的":"Mi","安全报告":"Informe de seguridad","中文":"Chino","English":"Inglés","Français":"Francés","代码安全检测工具":"Herramienta de detección de seguridad de código","实时分析代码漏洞，提供修复建议":"Análisis en tiempo real de vulnerabilidades de código, proporcionando sugerencias de corrección","立即使用":"Usar ahora","快速上手指南":"Guía rápida para comenzar","在下方代码输入框中粘贴您的代码":"Pegue su código en el cuadro de entrada de código a continuación","查看安全检测结果和修复建议":"Ver resultados de seguridad y sugerencias de corrección","根据提示优化您的代码":"Optimice su código según las indicaciones","示例代码:":"Ejemplo de código:","分析代码":"Análisis de código","安全检测结果将显示在这里":"Los resultados de seguridad se mostrarán aquí","漏洞预警及修复建议将显示在这里":"Las alertas de vulnerabilidades y las sugerencias de corrección se mostrarán aquí","代码审查日志列表将显示在这里":"La lista de registros de revisión de código se mostrará aquí","查看历史代码分析记录和代码审查日志":"Ver registros históricos de análisis de código y registros de revisión de código","历史代码分析":"Análisis de código histórico","代码审查日志":"Registro de revisión de código","选择上方代码查看详细分析结果":"Seleccione el código superior para ver los resultados de análisis detallados","代码安全分析报告":"Informe de análisis de seguridad de código","安全评分":"Calificación de seguridad","计算中...":"Calculando...","安全统计":"Estadísticas de seguridad","已检查代码:":"Código revisado:","发现漏洞:":"Vulnerabilidades encontradas:","已修复:":"Reparado:","高危漏洞":"Vulnerabilidades de alto riesgo","常见安全问题":"Problemas de seguridad comunes","SQL注入 (发现":"Inyección SQL (encontrado","次)":"vez)","XSS攻击 (发现":"Ataque XSS (encontrado","弱密码 (发现":"Contraseña débil (encontrado","未验证输入 (发现":"Entrada no verificada (encontrado","详细安全分析":"Análisis de seguridad detallado","选择历史记录查看详细安全分析报告":"Seleccione el registro histórico para ver el informe de análisis de seguridad detallado","分析完成":"Análisis completado","检测到":"Detectado","个潜在安全问题":"potenciales problemas de seguridad","安全评分:":"Calificación de seguridad:","修复建议:":"Sugerencias de corrección:","] 开始代码扫描":"] Iniciar escaneo de código","] 执行安全规则检查":"] Ejecutar verificación de reglas de seguridad","] 检测到潜在安全漏洞":"] Detectado vulnerabilidades de seguridad potenciales","] 生成安全报告":"] Generar informe de seguridad","] 分析完成":"] Análisis completado","种类型漏洞":"tipos de vulnerabilidades","个高危":"vulnerabilidades de alto riesgo","代码预览:":"Vista previa de código:","请输入代码进行检测...":"Ingrese el código para realizar la detección...","按钮":"Botón","查看历史代码分析记录":"Ver registros históricos de análisis de código","已检查代码":"Código revisado","发现漏洞":"Vulnerabilidades encontradas","已修复":"Reparado","SQL注入":"Inyección SQL","发现":"descubrir","XSS攻击":"Ataque XSS","弱密码":"Contraseña débil","未验证输入":"Entrada no verificada","暂无历史记录":"Sin historial disponible","高危":"Alto riesgo","Home":"Inicio","My":"Mi","Security Report":"Informe de seguridad","Get Started":"Comienza","Code Security Scanner":"Escáner de seguridad de código","Real-time analysis of code vulnerabilities with fix suggestions":"Análisis en tiempo real de vulnerabilidades de código con sugerencias de corrección","Quick Start Guide":"Guía de inicio rápido","Paste your code in the input box below":"Pega tu código en la caja de entrada de abajo","View security results and fix suggestions":"Ver resultados de seguridad y sugerencias de corrección","__title__":"CodeSentry","한국어":"coreano","点击\"分析代码\"按钮":"haga clic en el botón \"analizar código\"","安全警告:":"aviso de seguridad:","审查日志:":"registro de revisión:","暂无代码审查日志":"sin registro de revisión de código","完全免费":"completamente gratuito","提意见":"hacer una sugerencia","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"herramienta de detección de seguridad de código, análisis en tiempo real de vulnerabilidades de código, proporcionando sugerencias de corrección.","og:title":"og:título","og:description":"og:descripción","og:type":"og:tipo","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"página activa","Optimize your code based on suggestions":"Optimiza tu código basado en sugerencias","Example Code:":"Ejemplo de código:","Enter code to analyze...":"Introduce el código a analizar...","Analyze Code":"Analizar Código","Security analysis results will appear here":"Los resultados del análisis de seguridad aparecerán aquí","Vulnerability warnings and fix suggestions will appear here":"Aparecerán aquí las advertencias de vulnerabilidades y sugerencias de corrección","Code review logs will appear here":"Aparecerán aquí los registros de revisión de código","View historical code analysis records":"Ver registros históricos de análisis de código","Code Analysis History":"Historial de Análisis de Código","Select a code above to view detailed analysis results":"Seleccione un código arriba para ver los resultados de análisis detallados","Code Security Analysis Report":"Informe de Análisis de Seguridad de Código","Security Score":"Puntuación de Seguridad","Calculating...":"Calculando...","Security Statistics":"Estadísticas de Seguridad","Code Scanned":"Código escaneado","Vulnerabilities Found":"Vulnerabilidades encontradas","Fixed":"Fijado","High Risk":"Alto riesgo","Common Security Issues":"Problemas de seguridad comunes","SQL Injection":"Inyección SQL","Found":"Encontrado","XSS Attack":"Ataque XSS","Weak Password":"Contraseña débil","Unvalidated Input":"Entrada no validada","Detailed Security Analysis":"Análisis detallado de seguridad","Select a history record to view detailed security analysis report":"Seleccione un registro de historial para ver el informe detallado de análisis de seguridad","No history records":"No hay registros de historial","None":"Ninguno","View historical code analysis records and review logs":"Ver registros de análisis histórico de código y revisar logs","Code Review Logs":"Registros de revisión de código","SQL 인젝션":"Inyección SQL","XSS 공격":"Ataque XSS","Accueil":"Accueil","Mon":"Mon","Rapport de Sécurité":"Informe de Seguridad","Commencer":"Comenzar","Outil de Détection de Sécurité du Code":"Herramienta de Detección de Seguridad del Código","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Análisis en tiempo real de vulnerabilidades del código con sugerencias de corrección","Guide de Démarrage Rapide":"Guía de Inicio Rápido","Collez votre code dans la zone de saisie ci-dessous":"Pegue su código en la zona de entrada inferior","Afficher les résultats de sécurité et les suggestions de correction":"Mostrar los resultados de seguridad y las sugerencias de corrección","Optimisez votre code en fonction des suggestions":"Optimice su código según las sugerencias","Exemple de Code:":"Ejemplo de Código:","Entrez le code à analyser...":"Ingrese el código a analizar...","Analyser le Code":"Analizar el Código","Les résultats de l":"Los resultados de l","afficheront ici":"se mostrarán aquí","Les alertes de vulnérabilités et les suggestions de correction s":"Las alertas de vulnerabilidades y las sugerencias de corrección se","Les journaux de révision du code s":"Los journals de revisión del código se","Afficher les enregistrements d":"Mostrar los registros de","Historique d":"Historial de","Sélectionnez un code ci-dessus pour afficher les résultats d":"Seleccione un código arriba para mostrar los resultados de","Rapport d":"Informe de","Score de Sécurité":"Puntuación de Seguridad","Calcul en cours...":"Cálculo en curso...","Statistiques de Sécurité":"Estadísticas de Seguridad","Code Analyser":"Analizar Código","Vulnérabilités Décelées":"Vulnerabilidades Detectadas","Corrigé":"Corregido","Risque Élevé":"Riesgo Alto","Problèmes de Sécurité Courants":"Problemas Comunes de Seguridad","Injection SQL":"Inyección SQL","Découvert":"Descubierto","Attaque XSS":"Ataque XSS","Mot de Passe Faible":"Contraseña Débilitada","Entrée Non Validée":"Entrada No Validada","Analyse de Sécurité Détaillée":"Análisis de Seguridad Detallado","Sélectionnez un enregistrement historique pour afficher le rapport d":"Seleccione un registro histórico para mostrar el informe de","Aucun enregistrement historique":"Ningún registro histórico","Aucun":"Sinónimo","Journaux de Révision du Code":"Diarios de Revisión de Código","SQL-инъекция":"Inyección SQL","XSS-атака":"Ataque XSS","DOMContentLoaded":"Carga DOM completa","请输入代码进行检测":"Ingrese código para la detección","正在分析代码...":"Analizando código...","可能存在SQL注入风险":"Puede existir el riesgo de inyección SQL","使用参数化查询或预编译语句代替直接拼接SQL":"Utilice consultas parametrizadas o instrucciones precompiladas en lugar de concatenar SQL directamente","可能存在XSS攻击风险":"Puede existir el riesgo de ataque XSS","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Utilice textContent en lugar de innerHTML para evitar la ejecución directa de código de entrada del usuario","可能使用了弱密码":"Puede haber utilizado una contraseña débil","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Usar una política de contraseñas fuertes que contenga al menos 8 caracteres, incluyendo mayúsculas, minúsculas, números y caracteres especiales","用户输入未经验证":"La entrada del usuario no ha sido verificada","添加输入验证和过滤，对特殊字符进行转义":"Agregar validación y filtrado de entrada, escapando caracteres especiales","未发现明显安全问题":"No se encontraron problemas de seguridad significativos","继续保持良好的安全编码实践":"Continuar manteniendo buenas prácticas de codificación de seguridad","未发现安全问题":"No se encontraron problemas de seguridad","漏洞已标记为已修复":"La vulnerabilidad ha sido marcada como reparada","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"CodeSentry","开始代码扫描":"Iniciar escaneo de código","执行安全规则检查":"Ejecutar verificación de reglas de seguridad","检测到潜在安全漏洞":"Detectado un posible problema de seguridad","生成安全报告":"Generar informe de seguridad"},"ja":{"首页":"ホーム","我的":"マイ","安全报告":"セキュリティレポート","中文":"中国語","English":"英語","Français":"フランス語","代码安全检测工具":"コードセキュリティチェックツール","实时分析代码漏洞，提供修复建议":"リアルタイムでコードの脆弱性を分析し、修正案を提案します","立即使用":"すぐに使用","快速上手指南":"簡単に使い始めるガイド","在下方代码输入框中粘贴您的代码":"以下のコード入力ボックスにコードを貼り付けます","查看安全检测结果和修复建议":"セキュリティ結果と修正案を確認","根据提示优化您的代码":"指示に従ってコードを最適化","示例代码:":"サンプルコード:","分析代码":"コードを分析","安全检测结果将显示在这里":"セキュリティ結果はここに表示されます","漏洞预警及修复建议将显示在这里":"脆弱性警告および修正案はここに表示されます","代码审查日志列表将显示在这里":"コードレビューログリストはここに表示されます","查看历史代码分析记录和代码审查日志":"歴史的なコード分析記録とコードレビューログを確認","历史代码分析":"歴史的なコード分析","代码审查日志":"コードレビューログ","选择上方代码查看详细分析结果":"上方的コードを選択して詳細な分析結果を確認","代码安全分析报告":"コードセキュリティ分析レポート","安全评分":"セキュリティ評価","计算中...":"計算中...","安全统计":"セキュリティ統計","已检查代码:":"チェック済みコード:","发现漏洞:":"発見した脆弱性:","已修复:":"修正済み:","高危漏洞":"高リスクの脆弱性","常见安全问题":"よくあるセキュリティ問題","SQL注入 (发现":"SQLインジェクション（発見）","XSS攻击 (发现":"XSS攻撃（発見）","弱密码 (发现":"弱いパスワード（発見）","未验证输入 (发现":"未検証の入力（発見）","详细安全分析":"詳細なセキュリティ分析","选择历史记录查看详细安全分析报告":"履歴記録を選択して詳細なセキュリティ分析レポートを表示","分析完成":"分析完了","检测到":"検出されました","个潜在安全问题":"個の潜在的なセキュリティ問題","安全评分:":"安全評価:","修复建议:":"修正案:","] 开始代码扫描":"] コードスキャンを開始","] 执行安全规则检查":"] セキュリティルールのチェックを実行","] 检测到潜在安全漏洞":"] 潜在的なセキュリティ脆弱性が検出されました","] 生成安全报告":"] セキュリティレポートの生成","] 分析完成":"] 分析完了","种类型漏洞":"種類の脆弱性","个高危":"個の高リスク","代码预览:":"コードプレビュー:","请输入代码进行检测...":"コードを入力して検出を行ってください...","按钮":"ボタン","查看历史代码分析记录":"履歴コード分析記録を表示","已检查代码":"チェック済みのコード","发现漏洞":"脆弱性が発見されました","已修复":"修正済み","SQL注入":"SQLインジェクション","发现":"発見","XSS攻击":"XSS攻撃","弱密码":"弱いパスワード","未验证输入":"未検証の入力","暂无历史记录":"現在の履歴はありません","高危":"高リスク","Home":"ホーム","My":"マイ","Security Report":"セキュリティレポート","Get Started":"始めましょう","Code Security Scanner":"コードセキュリティスキャナー","Real-time analysis of code vulnerabilities with fix suggestions":"修正案付きのコード脆弱性のリアルタイム分析","Quick Start Guide":"クイックスタートガイド","Paste your code in the input box below":"以下の入力ボックスにコードを貼り付けてください","View security results and fix suggestions":"セキュリティ結果と修正案を表示","__title__":"CodeSentry","한국어":"韓国語","点击\"分析代码\"按钮":"\"分析コード\"ボタンをクリックしてください","安全警告:":"安全警告:","审查日志:":"監査ログ:","暂无代码审查日志":"現在の代码監査ログはありません","完全免费":"完全無料","提意见":"意見を提出する","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"コードセキュリティチェックツール、リアルタイムでコードの脆弱性を分析し、修正提案を提供します。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"ページアクティブ","Optimize your code based on suggestions":"提案に基づいてコードを最適化","Example Code:":"例コード:","Enter code to analyze...":"分析するコードを入力...","Analyze Code":"コード分析","Security analysis results will appear here":"セキュリティ分析結果がここに表示されます","Vulnerability warnings and fix suggestions will appear here":"脆弱性警告および修正提案がここに表示されます","Code review logs will appear here":"コードレビューログがここに表示されます","View historical code analysis records":"過去のコード分析記録を表示","Code Analysis History":"コード分析履歴","Select a code above to view detailed analysis results":"上記のコードを選択して詳細な分析結果を表示","Code Security Analysis Report":"コードセキュリティ分析レポート","Security Score":"セキュリティスコア","Calculating...":"計算中...","Security Statistics":"セキュリティ統計","Code Scanned":"スキャンされたコード","Vulnerabilities Found":"発見された脆弱性","Fixed":"修正済み","High Risk":"高リスク","Common Security Issues":"一般的なセキュリティ問題","SQL Injection":"SQLインジェクション","Found":"発見","XSS Attack":"XSS攻撃","Weak Password":"脆弱なパスワード","Unvalidated Input":"確認されていない入力","Detailed Security Analysis":"詳細なセキュリティ分析","Select a history record to view detailed security analysis report":"詳細なセキュリティ分析レポートを表示するための履歴記録を選択してください","No history records":"履歴記録がありません","None":"なし","View historical code analysis records and review logs":"歴史的なコード分析記録とレビューログを表示する","Code Review Logs":"コードレビューログ","SQL 인젝션":"SQLインジェクション","XSS 공격":"XSS攻撃","Accueil":"アカンシ","Mon":"月曜","Rapport de Sécurité":"セキュリティレポート","Commencer":"開始","Outil de Détection de Sécurité du Code":"コードセキュリティ検出ツール","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"コードの脆弱性をリアルタイムで分析し、修正案を提案","Guide de Démarrage Rapide":"迅速スタートガイド","Collez votre code dans la zone de saisie ci-dessous":"下記の入力エリアにコードを貼り付けてください","Afficher les résultats de sécurité et les suggestions de correction":"セキュリティ結果と修正案を表示","Optimisez votre code en fonction des suggestions":"提案に基づいてコードを最適化","Entrez le code à analyser...":"分析するコードを入力してください","Analyser le Code":"コードを分析","Les résultats de l":"…","afficheront ici":"ここに表示されます","Les alertes de vulnérabilités et les suggestions de correction s":"脆弱性警報および修正提案が表示されます","Les journaux de révision du code s":"コードレビュージョンのログが表示されます","Afficher les enregistrements d":"記録を表示する","Historique d":"履歴","Sélectionnez un code ci-dessus pour afficher les résultats d":"上記のコードを選択して結果を表示","Rapport d":"レポート","Score de Sécurité":"セキュリティスコア","Calcul en cours...":"計算中...","Statistiques de Sécurité":"セキュリティ統計","Code Analyser":"コード解析","Vulnérabilités Décelées":"検出された脆弱性","Corrigé":"修正済み","Risque Élevé":"高いリスク","Problèmes de Sécurité Courants":"一般的なセキュリティ問題","Injection SQL":"SQLインジェクション","Découvert":"発見された","Attaque XSS":"XSS攻撃","Mot de Passe Faible":"脆弱なパスワード","Entrée Non Validée":"未検証の入力","Analyse de Sécurité Détaillée":"詳細なセキュリティ分析","Sélectionnez un enregistrement historique pour afficher le rapport d":"レポートを表示するための履歴記録を選択してください","Aucun enregistrement historique":"履歴記録がありません","Aucun":"なし","Journaux de Révision du Code":"コードレビューログ","SQL-инъекция":"SQLインジェクション","XSS-атака":"XSS攻撃","DOMContentLoaded":"DOMが完全に読み込まれました","请输入代码进行检测":"コードを入力して検出してください","正在分析代码...":"コードを分析中...","可能存在SQL注入风险":"SQLインジェクションのリスクが発生する可能性があります","使用参数化查询或预编译语句代替直接拼接SQL":"パラメータ化クエリやプレコンパイルクエリを使用してSQLの直接結合を避けましょう","可能存在XSS攻击风险":"XSS攻撃のリスクが発生する可能性があります","使用textContent代替innerHTML，避免直接执行用户输入的代码":"textContentを使用してinnerHTMLの代わりに、ユーザー入力の直接実行を避けましょう","可能使用了弱密码":"弱いパスワードが使用されている可能性があります","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"強力なパスワードポリシーを使用し、少なくとも8文字、大文字と小文字、数字、および特殊文字を含む必要があります","用户输入未经验证":"ユーザー入力が未検証","添加输入验证和过滤，对特殊字符进行转义":"入力検証とフィルタリングを追加し、特殊文字をエスケープします","未发现明显安全问题":"明らかなセキュリティ問題は見つかりませんでした","继续保持良好的安全编码实践":"良いセキュリティコーディングの実践を継続してください","未发现安全问题":"セキュリティ問題は見つかりませんでした","漏洞已标记为已修复":"脆弱性は修正済みとしてマークされました","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"コードセンチニー","开始代码扫描":"コードスキャンを開始","执行安全规则检查":"セキュリティルールのチェックを実行","检测到潜在安全漏洞":"潜在的なセキュリティ脆弱性が検出されました","生成安全报告":"セキュリティレポートの作成"},"ko":{"我的":"내","安全报告":"보안 보고서","中文":"중국어","English":"영어","Français":"프랑스어","代码安全检测工具":"코드 보안 검사 도구","实时分析代码漏洞，提供修复建议":"실시간으로 코드 루프를 분석하고, 수정 권장 사항을 제공합니다","立即使用":"즉시 사용","快速上手指南":"빠르게 시작하는 가이드","在下方代码输入框中粘贴您的代码":"아래 코드 입력 상자에 코드를 붙여넣으세요","查看安全检测结果和修复建议":"보안检测结果와 수정 권장 사항을 확인하세요","根据提示优化您的代码":"지시에 따라 코드를 최적화하세요","示例代码:":"예제 코드:","分析代码":"코드 분석","安全检测结果将显示在这里":"보안检测结果는 여기에 표시됩니다","漏洞预警及修复建议将显示在这里":"루프预警 및 수정 권장 사항은 여기에 표시됩니다","代码审查日志列表将显示在这里":"코드 검토 로그 목록은 여기에 표시됩니다","查看历史代码分析记录和代码审查日志":"역사적인 코드 분석 기록과 코드 검토 로그를 확인하세요","历史代码分析":"역사적인 코드 분석","代码审查日志":"코드 검토 로그","选择上方代码查看详细分析结果":"위의 코드를 선택하여 상세한 분석 결과를 확인하세요","代码安全分析报告":"코드 보안 분석 보고서","安全评分":"보안 점수","计算中...":"계산 중...","安全统计":"보안 통계","已检查代码:":"검사된 코드:","发现漏洞:":"발견된 루프:","已修复:":"수정된:","高危漏洞":"고위험 루프홀","常见安全问题":"일반적인 보안 문제","SQL注入 (发现":"SQL注入 (발견","次)":"차)","XSS攻击 (发现":"XSS 공격 (발견","弱密码 (发现":"약한 비밀번호 (발견","未验证输入 (发现":"미검증된 입력 (발견","详细安全分析":"상세 보안 분석","选择历史记录查看详细安全分析报告":"이력 기록 선택하여 상세 보안 분석 보고서 확인","分析完成":"분석 완료","检测到":"발견됨","个潜在安全问题":"개의 잠재적인 보안 문제","安全评分:":"안전 점수:","修复建议:":"수정 제안:","] 开始代码扫描":"] 코드 스캔 시작","] 执行安全规则检查":"] 보안 규칙 검사 실행","] 检测到潜在安全漏洞":"] 잠재적인 보안 루프홀 발견","] 生成安全报告":"] 보안 보고서 생성","] 分析完成":"] 분석 완료","种类型漏洞":"종류의 루프홀","个高危":"개의 고위험","代码预览:":"코드 미리보기:","请输入代码进行检测...":"코드를 입력하여 검사하세요...","按钮":"버튼","查看历史代码分析记录":"이력 코드 분석 기록 확인","已检查代码":"검사된 코드","发现漏洞":"루프홀 발견","已修复":"수정됨","发现":"발견","XSS攻击":"XSS 공격","弱密码":"약한 비밀번호","未验证输入":"인증되지 않은 입력","暂无历史记录":"역사 기록 없음","高危":"고위험","Home":"홈","My":"내","Security Report":"보안 보고서","Get Started":"시작하기","Code Security Scanner":"코드 보안 스캐너","Real-time analysis of code vulnerabilities with fix suggestions":"수정 제안과 함께 코드 취약점의 실시간 분석","Quick Start Guide":"빠른 시작 가이드","Paste your code in the input box below":"아래 입력 상자에 코드를 붙여넣으세요","View security results and fix suggestions":"보안 결과와 수정 제안을 확인하세요","__title__":"CodeSentry","한국어":"한국어","点击\"分析代码\"按钮":"\"분석 코드\" 버튼을 클릭하세요","安全警告:":"안전 경고:","审查日志:":"검토 로그:","暂无代码审查日志":"아직 코드 검토 로그가 없습니다","完全免费":"완전 무료","提意见":"의견 제출","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"코드 안전 검사 도구, 실시간으로 코드 루프를 분석하고, 수정 제안을 제공합니다。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":" 페이지 활성화","Optimize your code based on suggestions":"추천에 따라 코드 최적화","Example Code:":"예제 코드:","Enter code to analyze...":"분석할 코드를 입력하세요...","Analyze Code":"코드 분석","Security analysis results will appear here":"보안 분석 결과가 여기에 표시됩니다","Vulnerability warnings and fix suggestions will appear here":"취약점 경고 및 수정 제안이 여기에 표시됩니다","Code review logs will appear here":"코드 검토 로그가 여기에 표시됩니다","View historical code analysis records":"과거 코드 분석 기록 보기","Code Analysis History":"코드 분석 기록","Select a code above to view detailed analysis results":"위의 코드를 선택하여 상세한 분석 결과를 확인하세요","Code Security Analysis Report":"코드 보안 분석 보고서","Security Score":"보안 점수","Calculating...":"계산 중...","Security Statistics":"보안 통계","Code Scanned":"스캔된 코드","Vulnerabilities Found":"발견된 취약점","Fixed":"修补","High Risk":"고위험","Common Security Issues":"일반 보안 문제","SQL Injection":"SQL 注입","Found":"발견됨","XSS Attack":"XSS 공격","Weak Password":"약한 비밀번호","Unvalidated Input":" 검증되지 않은 입력","Detailed Security Analysis":"상세한 보안 분석","Select a history record to view detailed security analysis report":"상세한 보안 분석 보고서를 보려면 이력 기록을 선택하세요","No history records":"이력 기록 없음","None":"없음","View historical code analysis records and review logs":"과거 코드 분석 기록 및 리뷰 로그 보기","Code Review Logs":"코드 리뷰 로그","SQL 인젝션":"SQL 인젝션","Accueil":"accueil","Mon":"월","Rapport de Sécurité":"보안 보고서","Commencer":"시작하기","Outil de Détection de Sécurité du Code":"코드 보안 탐지 도구","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"코드 취약점 실시간 분석 및 수정 제안","Guide de Démarrage Rapide":"빠른 시작 가이드","Les résultats de l":"…","afficheront ici":"…","Les alertes de vulnérabilités et les suggestions de correction s":"…","Les journaux de révision du code s":"…","Afficher les enregistrements d":"…","Historique d":"…","Sélectionnez un code ci-dessus pour afficher les résultats d":"…","Rapport d":"…","Score de Sécurité":"…","Calcul en cours...":"…","Statistiques de Sécurité":"…","Code Analyser":"…","Vulnérabilités Décelées":"감지된 취약점","Corrigé":"corrigé","Risque Élevé":"높은 위험","Problèmes de Sécurité Courants":"일반적인 보안 문제","Injection SQL":"SQL Injection","Découvert":"발견됨","Attaque XSS":"XSS 공격","Mot de Passe Faible":"ضعيفة 암호","Entrée Non Validée":"未经验证的输入","Analyse de Sécurité Détaillée":"상세한 보안 분석","Sélectionnez un enregistrement historique pour afficher le rapport d":"과거 기록을 선택하여 보고서를 표시하려면","Aucun enregistrement historique":"과거 기록 없음","Aucun":"없음","Journaux de Révision du Code":"코드 리뷰 일지","SQL-инъекция":"SQL注入","XSS-атака":"XSS 공격","DOMContentLoaded":"DOM이 로드됨","请输入代码进行检测":"코드를 입력하여 검사하세요","正在分析代码...":"코드를 분석 중...","可能存在SQL注入风险":"SQL注入 위험 가능성","使用参数化查询或预编译语句代替直接拼接SQL":"파라미터화 쿼리나 предком파일링된 문장을 직접 SQL 결합 대신 사용하세요","可能存在XSS攻击风险":"XSS 공격 위험 가능성","使用textContent代替innerHTML，避免直接执行用户输入的代码":"textContent를 innerHTML 대신 사용하여 사용자 입력의 코드를 직접 실행하지 마세요","可能使用了弱密码":"약한 비밀번호를 사용한可能性 있습니다","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"강력한 비밀번호 전략 사용, 최소 8자리 포함, 대소문자, 숫자, 특수문자 포함","用户输入未经验证":"사용자 입력이 확인되지 않음","添加输入验证和过滤，对特殊字符进行转义":"입력��証 및 필터링 추가, 특수문자에 대한 응축","未发现明显安全问题":"명확한 보안문제 발견되지 않음","继续保持良好的安全编码实践":"좋은 보안编码 관행을 계속 유지하세요","未发现安全问题":"보안문제 발견되지 않음","漏洞已标记为已修复":"취약점이 수정됨으로 표시됨","PingFang SC":"苹方 SC","Microsoft YaHei":"微软雅黑","XSS 공격":"XSS 공격","Collez votre code dans la zone de saisie ci-dessous":"입력 필드에 코드를 입력하세요","Afficher les résultats de sécurité et les suggestions de correction":"보안 결과와 수정 제안을 표시","Optimisez votre code en fonction des suggestions":"제안에 따라 코드를 최적화하세요","Exemple de Code:":"코드 예제:","Entrez le code à analyser...":"분석할 코드를 입력하세요...","Analyser le Code":"코드 분석","CodeSentry":"CodeSentry","首页":"首页","开始代码扫描":"코드 스캔 시작","执行安全规则检查":"보안 규칙 검사 수행","检测到潜在安全漏洞":"예상 보안 공격 존재","生成安全报告":"보안 보고서 생성","SQL注入":"SQL注入"},"fr":{"首页":"Accueil","我的":"Mon","安全报告":"Rapport de sécurité","中文":"Chinois","English":"Anglais","代码安全检测工具":"Outil de détection de sécurité du code","实时分析代码漏洞，提供修复建议":"Analyse en temps réel des vulnérabilités du code, fournissant des recommandations de correction","立即使用":"Utiliser immédiatement","快速上手指南":"Guide de démarrage rapide","在下方代码输入框中粘贴您的代码":"Coller votre code dans la boîte de saisie de code ci-dessous","查看安全检测结果和修复建议":"Voir les résultats de la détection de sécurité et les recommandations de correction","根据提示优化您的代码":"Optimiser votre code selon les instructions","示例代码:":"Exemple de code :","分析代码":"Analyser le code","安全检测结果将显示在这里":"Les résultats de la détection de sécurité seront affichés ici","漏洞预警及修复建议将显示在这里":"Les avertissements de vulnérabilité et les recommandations de correction seront affichés ici","代码审查日志列表将显示在这里":"La liste des journaux de revue de code sera affichée ici","查看历史代码分析记录和代码审查日志":"Voir les enregistrements historiques d'analyse de code et les journaux de revue de code","历史代码分析":"Analyse historique du code","代码审查日志":"Journal de revue de code","选择上方代码查看详细分析结果":"Sélectionnez le code ci-dessus pour voir les résultats d'analyse détaillés","代码安全分析报告":"Rapport d'analyse de sécurité du code","安全评分":"Score de sécurité","计算中...":"Calcul en cours...","安全统计":"Statistiques de sécurité","已检查代码:":"Codes vérifiés :","发现漏洞:":"Vulnérabilités découvertes :","已修复:":"Corrigé :","高危漏洞":"Vulnérabilités à haut risque","常见安全问题":"Problèmes de sécurité courants","SQL注入 (发现":"Injection SQL (découvert","XSS攻击 (发现":"Attaque XSS (découvert","弱密码 (发现":"Mot de passe faible (découvert","未验证输入 (发现":"Entrée non vérifiée (découvert","详细安全分析":"Analyse de sécurité détaillée","选择历史记录查看详细安全分析报告":"Sélectionnez l'historique pour voir le rapport d'analyse de sécurité détaillée","分析完成":"Analyse terminée","检测到":"Détection de","个潜在安全问题":"problèmes de sécurité potentiels","安全评分:":"Score de sécurité :","修复建议:":"Recommandations de correction :","] 开始代码扫描":"] Commencer le scan de code","] 执行安全规则检查":"] Exécuter la vérification des règles de sécurité","] 检测到潜在安全漏洞":"] Détection de vulnérabilités de sécurité potentielles","] 生成安全报告":"] Générer le rapport de sécurité","] 分析完成":"] Analyse terminée","种类型漏洞":"types de vulnérabilités","个高危":"vulnérabilités à haut risque","代码预览:":"Aperçu du code :","请输入代码进行检测...":"Entrez le code pour le détecter...","按钮":"Bouton","查看历史代码分析记录":"Voir les enregistrements historiques d'analyse de code","已检查代码":"Codes vérifiés","发现漏洞":"Vulnérabilités découvertes","已修复":"Corrigé","SQL注入":"Injection SQL","发现":"découverte","XSS攻击":"Attaque XSS","弱密码":"Mot de passe faible","未验证输入":"Entrée non vérifiée","暂无历史记录":"Aucun historique disponible","高危":"Haut risque","Home":"Accueil","My":"Mon","Security Report":"Rapport de sécurité","Get Started":"Commencer","Code Security Scanner":"Scanner de sécurité du code","Real-time analysis of code vulnerabilities with fix suggestions":"Analyse en temps réel des vulnérabilités du code avec des suggestions de correction","Quick Start Guide":"Guide de démarrage rapide","Paste your code in the input box below":"Collez votre code dans la case de saisie ci-dessous","View security results and fix suggestions":"Voir les résultats de sécurité et les suggestions de correction","__title__":"CodeSentry","한국어":"Coréen","点击\"分析代码\"按钮":"Cliquez sur le bouton \"Analyser le code\"","暂无代码审查日志":"Aucun journal d'examen de code disponible","完全免费":"Complètement gratuit","提意见":"Faire une suggestion","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"Outil de détection de sécurité du code, analyse en temps réel des vulnérabilités du code, fournissant des conseils de correction.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"page active","Optimize your code based on suggestions":"Optimisez votre code sur la base de suggestions","Example Code:":"Exemple de code :","Enter code to analyze...":"Entrez le code à analyser...","Analyze Code":"Analyser le code","Security analysis results will appear here":"Les résultats de l'analyse de sécurité apparaîtront ici","Vulnerability warnings and fix suggestions will appear here":"Les avertissements de vulnérabilité et les suggestions de correction apparaîtront ici","Code review logs will appear here":"Les journaux de revue de code apparaîtront ici","View historical code analysis records":"Voir les records historiques d'analyse de code","Code Analysis History":"Histoire d'analyse de code","Select a code above to view detailed analysis results":"Sélectionnez un code ci-dessus pour afficher les résultats d'analyse détaillés","Code Security Analysis Report":"Rapport d'analyse de sécurité du code","Security Score":"Score de sécurité","Calculating...":"Calcul en cours...","Security Statistics":"Statistiques de sécurité","Code Scanned":"Code analysé","Vulnerabilities Found":"Vulnérabilités trouvées","Fixed":"Corrigé","High Risk":"Risque élevé","Common Security Issues":"Problèmes de sécurité courants","SQL Injection":"Injection SQL","Found":"Trouvé","XSS Attack":"Attaque XSS","Weak Password":"Mot de passe faible","Unvalidated Input":"Entrée non validée","Detailed Security Analysis":"Analyse détaillée de la sécurité","Select a history record to view detailed security analysis report":"Sélectionnez un enregistrement d'historique pour voir le rapport d'analyse détaillée de la sécurité","No history records":"Aucun enregistrement d'historique","None":"Aucun","View historical code analysis records and review logs":"Voir les enregistrements d'analyse historique du code et les journaux de revue","Code Review Logs":"Journaux de revue de code","SQL 인젝션":"Injection SQL","XSS 공격":"Attaque XSS","Accueil":"Accueil","Mon":"Mon","Rapport de Sécurité":"Rapport de Sécurité","Commencer":"Commencer","Outil de Détection de Sécurité du Code":"Outil de Détection de Sécurité du Code","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Analyse en temps réel des vulnérabilités du code avec suggestions de correction","Guide de Démarrage Rapide":"Guide de Démarrage Rapide","Collez votre code dans la zone de saisie ci-dessous":"Collez votre code dans la zone de saisie ci-dessous","Afficher les résultats de sécurité et les suggestions de correction":"Afficher les résultats de sécurité et les suggestions de correction","Optimisez votre code en fonction des suggestions":"Optimisez votre code en fonction des suggestions","Entrez le code à analyser...":"Entrez le code à analyser...","Analyser le Code":"Analyser le Code","Les résultats de l":"Les résultats de l","afficheront ici":"s'afficheront ici","Les alertes de vulnérabilités et les suggestions de correction s":"Les alertes de vulnérabilités et les suggestions de correction s","Les journaux de révision du code s":"Les journaux de révision du code s","Afficher les enregistrements d":"Afficher les enregistrements de","Historique d":"Historique","Sélectionnez un code ci-dessus pour afficher les résultats d":"Sélectionnez un code ci-dessus pour afficher les résultats","Rapport d":"Rapport","Score de Sécurité":"Score de Sécurité","Calcul en cours...":"Calcul en cours...","Statistiques de Sécurité":"Statistiques de Sécurité","Code Analyser":"Code Analyser","Vulnérabilités Décelées":"Vulnérabilités Décelées","Corrigé":"Corrigé","Risque Élevé":"Risque Élevé","Problèmes de Sécurité Courants":"Problèmes de Sécurité Courants","Injection SQL":"Injection SQL","Découvert":"Découvert","Attaque XSS":"Attaque XSS","Mot de Passe Faible":"Mot de Passe Faible","Entrée Non Validée":"Entrée Non Validée","Analyse de Sécurité Détaillée":"Analyse de Sécurité Détaillée","Sélectionnez un enregistrement historique pour afficher le rapport d":"Sélectionnez un enregistrement historique pour afficher le rapport d","Aucun enregistrement historique":"Aucun enregistrement historique","Aucun":"Aucun","Journaux de Révision du Code":"Journal de Révision du Code","SQL-инъекция":"Injection SQL","XSS-атака":"Attaque XSS","DOMContentLoaded":"DOMContentLoaded","请输入代码进行检测":"Entrez le code pour le détecter","正在分析代码...":"En analyse du code...","可能存在SQL注入风险":"Peut y avoir un risque d'injection SQL","使用参数化查询或预编译语句代替直接拼接SQL":"Utilisez des requêtes paramétrées ou des requêtes précompilées au lieu de concaténation directe de SQL","可能存在XSS攻击风险":"Peut y avoir un risque d'attaque XSS","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Utilisez textContent au lieu de innerHTML pour éviter l'exécution directe du code utilisateur","可能使用了弱密码":"Peut avoir utilisé un mot de passe faible","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Utilisez une stratégie de mot de passe fort, au moins 8 caractères, incluant des lettres majuscules et minuscules, des chiffres et des caractères spéciaux","用户输入未经验证":"L'entrée utilisateur n'a pas été vérifiée","添加输入验证和过滤，对特殊字符进行转义":"Ajoutez la validation et le filtrage des entrées, et échappez les caractères spéciaux","未发现明显安全问题":"Aucun problème de sécurité apparent n'a été découvert","继续保持良好的安全编码实践":"Continuez à maintenir de bonnes pratiques de codage en matière de sécurité","未发现安全问题":"Aucun problème de sécurité n'a été découvert","漏洞已标记为已修复":"La vulnérabilité a été marquée comme corrigée","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","安全警告:":"Avertissement de sécurité:","审查日志:":"Journal d'examen:","Exemple de Code:":"Exemple de Code:","CodeSentry":"CodeSentry","Français":"Français","开始代码扫描":"Commencer le balayage de code","执行安全规则检查":"Exécuter la vérification des règles de sécurité","检测到潜在安全漏洞":"Détection de vulnérabilités potentielles","生成安全报告":"Générer un rapport de sécurité"},"de":{"首页":"Startseite","我的":"Meine","安全报告":"Sicherheitsbericht","中文":"Chinesisch","English":"Englisch","Français":"Französisch","代码安全检测工具":"Code-Sicherheitsprüfwerkzeug","实时分析代码漏洞，提供修复建议":"In Echtzeit analysiert das Werkzeug Code-Lücken und bietet Reparaturvorschläge","立即使用":"Jetzt verwenden","快速上手指南":"Schnelle Einsteigeranleitung","在下方代码输入框中粘贴您的代码":"Fügen Sie Ihren Code in das untere Code-Eingabefeld ein","查看安全检测结果和修复建议":"Zeigen Sie die Sicherheitsergebnisse und Reparaturvorschläge an","根据提示优化您的代码":"Optimieren Sie Ihren Code gemäß der Anweisungen","示例代码:":"Beispielcode:","分析代码":"Code analysieren","安全检测结果将显示在这里":"Die Sicherheitsergebnisse werden hier angezeigt","漏洞预警及修复建议将显示在这里":"Warndinge und Reparaturvorschläge werden hier angezeigt","代码审查日志列表将显示在这里":"Die Liste der Code-Überwachungsprotokolle wird hier angezeigt","查看历史代码分析记录和代码审查日志":"Zeigen Sie die Historie der Code-Analyse und die Code-Überwachungsprotokolle an","历史代码分析":"Historische Code-Analyse","代码审查日志":"Code-Überwachungsprotokoll","选择上方代码查看详细分析结果":"Wählen Sie den obigen Code, um detaillierte Analyseergebnisse anzuzeigen","代码安全分析报告":"Code-Sicherheitsanalysebericht","安全评分":"Sicherheitsbewertung","计算中...":"Berechnung läuft...","安全统计":"Sicherheitsstatistik","已检查代码:":"Bereits geprüfter Code:","发现漏洞:":"Gefundene Lücken:","已修复:":"Behobene:","高危漏洞":"Hochgefährliche Lücken","常见安全问题":"Gängige Sicherheitsprobleme","SQL注入 (发现":"SQL-Injection (entdeckt","次)":"mal)","XSS攻击 (发现":"XSS-Angriff (entdeckt","弱密码 (发现":"Schwache Passwörter (entdeckt","未验证输入 (发现":"Ungeprüfte Eingaben (entdeckt","详细安全分析":"Detaillierte Sicherheitsanalyse","选择历史记录查看详细安全分析报告":"Wählen Sie die Historie, um detaillierte Sicherheitsanalyseberichte anzuzeigen","分析完成":"Analyse abgeschlossen","检测到":"Erkannt","个潜在安全问题":"potentielle Sicherheitsprobleme","安全评分:":"Sicherheitsbewertung:","修复建议:":"Reparaturvorschläge:","] 开始代码扫描":"] Code-Scan starten","] 执行安全规则检查":"] Sicherheitsregeln überprüfen","] 检测到潜在安全漏洞":"] Potenzielle Sicherheitslücken erkannt","] 生成安全报告":"] Sicherheitsbericht generieren","] 分析完成":"] Analyse abgeschlossen","种类型漏洞":"Art von Lücken","个高危":"Anzahl der hochgefährlichen","代码预览:":"Code-Vorschau:","请输入代码进行检测...":"Geben Sie Code ein, um zu überprüfen...","按钮":"Schaltfläche","查看历史代码分析记录":"Zeigen Sie die Historie der Code-Analyse an","已检查代码":"Geprüfter Code","发现漏洞":"Gefundene Lücken","已修复":"Behobene","SQL注入":"SQL-Injection","发现":"entdeckt","XSS攻击":"XSS-Angriff","弱密码":"schwache Passwörter","未验证输入":"ungeprüfter Eingang","暂无历史记录":"keine Historie vorhanden","高危":"hochgradig gefährlich","My":"Mein","Security Report":"Sicherheitsbericht","Get Started":"Erste Schritte unternehmen","Code Security Scanner":"Code-Sicherheits-Scanner","Real-time analysis of code vulnerabilities with fix suggestions":"Sofortige Analyse von Code-Schwachstellen mit Korrekturvorschlägen","Quick Start Guide":"Schnellstartanleitung","Paste your code in the input box below":"Fügen Sie Ihren Code in das Eingabefeld unten ein","View security results and fix suggestions":"Sicherheitsergebnisse und Korrekturvorschläge anzeigen","__title__":"CodeSentry","한국어":"Korean","点击\"分析代码\"按钮":"Klicken Sie auf die Schaltfläche \"Code analysieren\"","暂无代码审查日志":"Kein Code-Prüfungsprotokoll verfügbar","完全免费":"Komplett kostenlos","提意见":"Vorschläge einreichen","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"Code-Sicherheitsprüfungs-Tool, analysiert in Echtzeit Code-Lücken und bietet Reparaturvorschläge","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"Seite aktiv","Optimize your code based on suggestions":"Optimieren Sie Ihren Code basierend auf Vorschlägen","Example Code:":"Beispielcode:","Enter code to analyze...":"Geben Sie Code ein, um ihn zu analysieren...","Analyze Code":"Code analysieren","Security analysis results will appear here":"Sicherheitsanalyseergebnisse werden hier angezeigt","Vulnerability warnings and fix suggestions will appear here":"Schadenswarnungen und Reparaturvorschläge werden hier angezeigt","Code review logs will appear here":"Code-Überprüfungsprotokolle werden hier angezeigt","View historical code analysis records":"Historische Codeanalyseprotokolle anzeigen","Code Analysis History":"Codeanalysehistorie","Select a code above to view detailed analysis results":"Wählen Sie einen obigen Code, um detaillierte Analyseergebnisse anzuzeigen","Code Security Analysis Report":"Bericht über die Sicherheit der Code-Analyse","Security Score":"Sicherheitsbewertung","Calculating...":"Berechnen...","Security Statistics":"Sicherheitsstatistiken","Code Scanned":"Geprüfter Code","Vulnerabilities Found":"Gefundene Schwachstellen","Fixed":"Behoben","High Risk":"Hohes Risiko","Common Security Issues":"Gängige Sicherheitsprobleme","SQL Injection":"SQL-Injektion","Found":"Gefunden","XSS Attack":"XSS-Angriff","Weak Password":"schwaches Passwort","Unvalidated Input":"ungültige Eingabe","Detailed Security Analysis":"Detailierte Sicherheitsanalyse","Select a history record to view detailed security analysis report":"Wählen Sie einen Historieneintrag aus, um die detaillierte Sicherheitsanalyse zu betrachten","No history records":"Keine Historienaufzeichnungen","None":"Keine","View historical code analysis records and review logs":"Zeige Historiencodeanalyseprotokolle und Protokolle an","Code Review Logs":"Coderevisionsprotokolle","SQL 인젝션":"SQL-Injektion","XSS 공격":"XSS-Angriff","Accueil":"Accueil","Mon":"Montag","Rapport de Sécurité":"Sicherheitsbericht","Commencer":"Starten","Outil de Détection de Sécurité du Code":"Codesicherheitsdetektionswerkzeug","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Zeitnahe Analyse von Code-Schwachstellen mit Korrekturvorschlägen","Guide de Démarrage Rapide":"Schnellstartanleitung","Collez votre code dans la zone de saisie ci-dessous":"Fügen Sie Ihren Code in das untere Eingabefeld ein","Afficher les résultats de sécurité et les suggestions de correction":"Sicherheitsergebnisse und Korrekturvorschläge anzeigen","Optimisez votre code en fonction des suggestions":"Optimieren Sie Ihren Code gemäß den Vorschlägen","Exemple de Code:":"Beispielcode:","Entrez le code à analyser...":"Geben Sie den zu analysierenden Code ein...","Analyser le Code":"Code analysieren","Les résultats de l":"Die Ergebnisse von","afficheront ici":"werden hier angezeigt","Les alertes de vulnérabilités et les suggestions de correction s":"Die Warnungen über Schwachstellen und die Korrekturvorschläge","Les journaux de révision du code s":"Die Code-Überprüfungsprotokolle","Afficher les enregistrements d":"Zeige die Aufzeichnungen","Historique d":"Historie","Sélectionnez un code ci-dessus pour afficher les résultats d":"Wählen Sie einen Code oben aus, um die Ergebnisse anzuzeigen","Rapport d":"Bericht","Score de Sécurité":"Sicherheitsrating","Calcul en cours...":"Berechnung im Gange...","Statistiques de Sécurité":"Sicherheitsstatistiken","Code Analyser":"Code analysieren","Vulnérabilités Décelées":"Entdeckte Schwachstellen","Corrigé":"Behoben","Risque Élevé":"Hohes Risiko","Problèmes de Sécurité Courants":"Gängige Sicherheitsprobleme","Injection SQL":"SQL-Injektion","Découvert":"Entdeckt","Attaque XSS":"XSS-Attacke","Mot de Passe Faible":"Schwaches Passwort","Entrée Non Validée":"Nicht überprüfte Eingabe","Analyse de Sécurité Détaillée":"Detaillierte Sicherheitsanalyse","Sélectionnez un enregistrement historique pour afficher le rapport d":"Wählen Sie ein historisches Protokoll aus, um den Bericht anzuzeigen","Aucun enregistrement historique":"Kein historisches Protokoll vorhanden","Aucun":"Keine","Journaux de Révision du Code":"Code-Protokolle","SQL-инъекция":"SQL-Injektion","XSS-атака":"XSS-Attacke","DOMContentLoaded":"DOM-Content-Load-Event","请输入代码进行检测":"Bitte geben Sie den Code zum Scannen ein","正在分析代码...":"正在分析代码...","可能存在SQL注入风险":"Möglicherweise besteht ein Risiko einer SQL-Injektion","使用参数化查询或预编译语句代替直接拼接SQL":"Verwenden Sie parametrisierte Abfragen oder vorcompilierte Anweisungen anstelle der direkten SQL-Komponenten","可能存在XSS攻击风险":"Möglicherweise besteht ein Risiko einer XSS-Attacke","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Verwenden Sie textContent anstelle von innerHTML, um die direkte Ausführung von Benutzereingaben zu vermeiden","可能使用了弱密码":"Möglicherweise wurde ein schwaches Passwort verwendet","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Verwenden Sie eine starke Passwortstrategie, die mindestens 8 Zeichen enthält und Gross- und Kleinbuchstaben, Ziffern und Sonderzeichen beinhaltet","用户输入未经验证":"Benutzerinput nicht überprüft","添加输入验证和过滤，对特殊字符进行转义":"Fügen Sie Input-Validierung und Filterung hinzu und escapen Sie spezielle Zeichen","未发现明显安全问题":"Keine offensichtlichen Sicherheitsprobleme festgestellt","继续保持良好的安全编码实践":"Behalten Sie gute Sicherheitspraktiken im Code bei","未发现安全问题":"Keine Sicherheitsprobleme festgestellt","漏洞已标记为已修复":"Schwachstelle als behoben markiert","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","安全警告:":"Sicherheitswarnung:","审查日志:":"Überwachungsprotokoll:","CodeSentry":"CodeSentry","开始代码扫描":"Code-Scan starten","执行安全规则检查":"Sicherheitsregeln überprüfen","检测到潜在安全漏洞":"Möglicher Sicherheitslücke erkannt","生成安全报告":"Sicherheitsbericht erstellen","Home":"Home"},"ru":{"首页":"Главная","我的":"Мой","安全报告":"Отчет о безопасности","中文":"Китайский","English":"Английский","Français":"Французский","代码安全检测工具":"Инструмент для проверки безопасности кода","实时分析代码漏洞，提供修复建议":"Реальное время анализ уязвимостей кода, предоставление рекомендаций по исправлению","立即使用":"Используйте сейчас","快速上手指南":"Руководство по быстрому началу работы","在下方代码输入框中粘贴您的代码":"Вставьте ваш код в поле ввода кода下方","查看安全检测结果和修复建议":"Просмотрите результаты безопасности и рекомендации по исправлению","根据提示优化您的代码":"Оптимизируйте ваш код по указаниям","示例代码:":"Пример кода:","分析代码":"Анализ кода","安全检测结果将显示在这里":"Результаты безопасности будут отображены здесь","漏洞预警及修复建议将显示在这里":"Предупреждения о уязвимостях и рекомендации по исправлению будут отображены здесь","代码审查日志列表将显示在这里":"Список журналов кодового аудита будет отображен здесь","查看历史代码分析记录和代码审查日志":"Просмотрите историю анализа кода и журналы кодового аудита","历史代码分析":"История анализа кода","代码审查日志":"Журнал кодового аудита","选择上方代码查看详细分析结果":"Выберите код上方 для просмотра подробных результатов анализа","代码安全分析报告":"Отчет о безопасности кода","安全评分":"Оценка безопасности","计算中...":"Расчет...","安全统计":"Статистика безопасности","已检查代码:":"Проверено кода:","发现漏洞:":"Обнаружены уязвимости:","已修复:":"Исправлено:","高危漏洞":"Высокий уровень риска","常见安全问题":"Частые安全问题","SQL注入 (发现":"SQL-инъекция (обнаружено","次)":"раз)","XSS攻击 (发现":"XSS-атака (обнаружено","弱密码 (发现":"слабый пароль (обнаружено","未验证输入 (发现":"не проверенный ввод (обнаружено","详细安全分析":"Подробный анализ безопасности","选择历史记录查看详细安全分析报告":"Выберите историю, чтобы просмотреть подробный отчет о безопасности","分析完成":"Анализ завершен","检测到":"Обнаружено","个潜在安全问题":"потенциальных проблем безопасности","安全评分:":"Оценка безопасности:","修复建议:":"Рекомендации по исправлению:","] 开始代码扫描":"] Начать сканирование кода","] 执行安全规则检查":"] Выполнить проверку правил безопасности","] 检测到潜在安全漏洞":"] Обнаружены потенциальные уязвимости безопасности","] 生成安全报告":"] Создать отчет о безопасности","] 分析完成":"] Анализ завершен","种类型漏洞":"типов уязвимостей","个高危":"количество высокого риска","代码预览:":"Предварительный просмотр кода:","请输入代码进行检测...":"Введите код для проверки...","按钮":"Кнопка","查看历史代码分析记录":"Просмотрите историю анализа кода","已检查代码":"Проверено кода","发现漏洞":"Обнаружены уязвимости","已修复":"Исправлено","SQL注入":"SQL-инъекция","发现":"обнаружение","XSS攻击":"XSS-атака","弱密码":"слабый пароль","未验证输入":"не проверенный ввод","暂无历史记录":"текущие данные отсутствуют","高危":"высокий риск","Home":"Дом","My":"Мой","Security Report":"Отчет о безопасности","Get Started":"Начать","Code Security Scanner":"Сканер безопасности кода","Real-time analysis of code vulnerabilities with fix suggestions":"Реальное время анализа уязвимостей кода с предложениями по исправлению","Quick Start Guide":"Руководство по быстрому запуску","Paste your code in the input box below":"Вставьте ваш код в поле ввода ниже","View security results and fix suggestions":"Просмотр результатов безопасности и предложений по исправлению","__title__":"CodeSentry","한국어":"кorean","点击\"分析代码\"按钮":"нажмите кнопку \"анализировать код\"","暂无代码审查日志":"сегодняшний журнал проверки кода пуст","完全免费":"абсолютно бесплатно","提意见":"пожаловаться","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"инструмент для проверки безопасности кода, который в реальном времени анализирует уязвимости в коде и предлагает рекомендации по их исправлению.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"страница активна","Optimize your code based on suggestions":"Оптимизируйте код на основе предложений","Example Code:":"Пример кода:","Enter code to analyze...":"Введите код для анализа...","Analyze Code":"Анализ кода","Security analysis results will appear here":"Результаты анализа безопасности будут отображены здесь","Vulnerability warnings and fix suggestions will appear here":"Предупреждения о уязвимостях и предложения по исправлению будут отображены здесь","Code review logs will appear here":"Журналы проверки кода будут отображены здесь","View historical code analysis records":"Просмотр исторических записей анализа кода","Code Analysis History":"История анализа кода","Select a code above to view detailed analysis results":"Выберите код выше для просмотра детальных результатов анализа","Code Security Analysis Report":"Отчёт о безопасности кода","Security Score":"Оценка безопасности","Calculating...":"Вычисление...","Security Statistics":"Статистика безопасности","Code Scanned":"Сканированный код","Vulnerabilities Found":"Обнаружены уязвимости","Fixed":"Исправлено","High Risk":"Высокий риск","Common Security Issues":"Общие вопросы безопасности","SQL Injection":"SQL-инъекция","Found":"Обнаружено","XSS Attack":"XSS-атака","Weak Password":"Слабый пароль","Unvalidated Input":"Невалидный ввод","Detailed Security Analysis":"Подробный анализ безопасности","Select a history record to view detailed security analysis report":"Выберите запись истории для просмотра подробного отчета по анализу безопасности","No history records":"Нет записей истории","None":"Ничего","View historical code analysis records and review logs":"Просмотреть записи истории анализа кода и логи проверки","Code Review Logs":"Логи проверки кода","SQL 인젝션":"SQL-инъекция","XSS 공격":"XSS-атака","Accueil":"Актуальность","Mon":"Пн","Rapport de Sécurité":"Отчет о безопасности","Commencer":"Начать","Outil de Détection de Sécurité du Code":"Инструмент обнаружения безопасности кода","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Реальное время анализа уязвимостей кода с предложениями по исправлению","Guide de Démarrage Rapide":"Руководство по быстрому запуску","Collez votre code dans la zone de saisie ci-dessous":"Вставьте код в поле ввода ниже","Afficher les résultats de sécurité et les suggestions de correction":"Показать результаты безопасности и предложения по исправлению","Optimisez votre code en fonction des suggestions":"Оптимизируйте код на основе предложений","Entrez le code à analyser...":"Введіть код для аналізу...","Analyser le Code":"Анализировать код","Les résultats de l":"Результаты поиска","afficheront ici":"будут отображаться здесь","Les alertes de vulnérabilités et les suggestions de correction s":"警报和修正建议","Les journaux de révision du code s":"Журналы проверки кода","Afficher les enregistrements d":"Показать записи","Historique d":"История","Sélectionnez un code ci-dessus pour afficher les résultats d":"Выберите код выше для отображения результатов","Rapport d":"Отчет","Score de Sécurité":"Оценка безопасности","Calcul en cours...":"Вычисления в процессе...","Statistiques de Sécurité":"Статистика безопасности","Code Analyser":"Анализ кода","Vulnérabilités Décelées":"Обнаруженные уязвимости","Corrigé":"Исправлено","Risque Élevé":"Высокий риск","Problèmes de Sécurité Courants":"Обычные проблемы безопасности","Injection SQL":"SQL-инъекция","Découvert":"Обнаружено","Attaque XSS":"XSS-атака","Mot de Passe Faible":"Слабый пароль","Entrée Non Validée":"Невалидный вход","Analyse de Sécurité Détaillée":"Подробный анализ безопасности","Sélectionnez un enregistrement historique pour afficher le rapport d":"Выберите историческую запись для отображения отчета","Aucun enregistrement historique":"Нет исторических записей","Aucun":"Нет","Journaux de Révision du Code":"Журналы правок кода","SQL-инъекция":"SQL-инъекция","XSS-атака":"XSS-атака","DOMContentLoaded":"DOMContentLoaded","请输入代码进行检测":"Введите код для проверки","正在分析代码...":"Анализ кода...","可能存在SQL注入风险":"Возможна угроза SQL-инъекции","使用参数化查询或预编译语句代替直接拼接SQL":"Используйте параметризованные запросы или предкомпилированные выражения вместо прямого соединения SQL","可能存在XSS攻击风险":"Возможна угроза XSS-атаки","可能使用了弱密码":"Возможно, использован слабый пароль","用户输入未经验证":"Входящие данные пользователя не проверены","添加输入验证和过滤，对特殊字符进行转义":"Добавить проверку ввода и фильтрацию, чтобы экранировать специальные символы","未发现明显安全问题":"Не обнаружены明显的安全问题","继续保持良好的安全编码实践":"Продолжайте поддерживать的良好安全 кодирования практика","未发现安全问题":"Не обнаружены安全问题","漏洞已标记为已修复":"Уязвимость помечена как исправленная","PingFang SC":"Пингфан SC","Microsoft YaHei":"Майкрософт ЯХей","安全警告:":"Безопасность:","审查日志:":"Журнал проверок:","Exemple de Code:":"Пример кода:","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Использование textContent вместо innerHTML, чтобы избежать выполнения кода пользователя","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Использование стратегии сильных паролей, по крайней мере, 8 символов, включающих заглавные и строчные буквы, цифры и символы","CodeSentry":"CodeSentry","开始代码扫描":"Начать сканирование кода","执行安全规则检查":"Выполнить проверку правил безопасности","检测到潜在安全漏洞":"Обнаружены потенциальные уязвимости безопасности","生成安全报告":"Создать отчет о безопасности"},"pt":{"首页":"Início","我的":"Meu","安全报告":"Relatório de Segurança","中文":"Chinês","English":"Inglês","Français":"Francês","代码安全检测工具":"Ferramenta de Detecção de Segurança de Código","实时分析代码漏洞，提供修复建议":"Análise em tempo real de vulnerabilidades de código, fornecendo sugestões de correção","立即使用":"Usar agora","快速上手指南":"Guia Rápido para Início","在下方代码输入框中粘贴您的代码":"Cole seu código na caixa de entrada de código abaixo","查看安全检测结果和修复建议":"Ver resultados de segurança e sugestões de correção","根据提示优化您的代码":"Otimizar seu código conforme as instruções","示例代码:":"Código de exemplo:","分析代码":"Analisar código","安全检测结果将显示在这里":"Resultados de segurança serão exibidos aqui","漏洞预警及修复建议将显示在这里":"Alertas de vulnerabilidade e sugestões de correção serão exibidos aqui","代码审查日志列表将显示在这里":"Lista de logs de revisão de código será exibida aqui","查看历史代码分析记录和代码审查日志":"Ver registros de análise de código histórico e logs de revisão de código","历史代码分析":"Análise de código histórico","代码审查日志":"Log de revisão de código","选择上方代码查看详细分析结果":"Escolha o código acima para ver resultados de análise detalhados","代码安全分析报告":"Relatório de Análise de Segurança de Código","安全评分":"Classificação de Segurança","计算中...":"Calculando...","安全统计":"Estatísticas de Segurança","已检查代码:":"Código verificado:","发现漏洞:":"Vulnerabilidades encontradas:","已修复:":"Corrigido:","高危漏洞":"Vulnerabilidades de alto risco","常见安全问题":"Problemas de segurança comuns","SQL注入 (发现":"Injeção SQL (encontrado","次)":"vez)","XSS攻击 (发现":"Ataque XSS (encontrado","弱密码 (发现":"Senha fraca (encontrado","未验证输入 (发现":"Entrada não verificada (encontrado","详细安全分析":"Análise de segurança detalhada","选择历史记录查看详细安全分析报告":"Escolha o registro histórico para ver relatório de análise de segurança detalhado","分析完成":"Análise concluída","检测到":"Detected","个潜在安全问题":"potenciais problemas de segurança","安全评分:":"Classificação de segurança:","修复建议:":"Sugestões de correção:","] 开始代码扫描":"] Iniciar scan de código","] 执行安全规则检查":"] Executar verificação de regras de segurança","] 检测到潜在安全漏洞":"] Detectado vulnerabilidades de segurança潜力","] 生成安全报告":"] Gerar relatório de segurança","] 分析完成":"] Análise concluída","种类型漏洞":"types of vulnerabilities","个高危":"vulnerabilidades de alto risco","代码预览:":"Pré-visualização de código:","请输入代码进行检测...":"Por favor, insira o código para detectar...","按钮":"Botão","查看历史代码分析记录":"Ver registros de análise de código histórico","已检查代码":"Código verificado","发现漏洞":"Vulnerabilidades encontradas","已修复":"Corrigido","SQL注入":"Injeção SQL","发现":"descobrir","XSS攻击":"Ataque XSS","弱密码":"Senha fraca","未验证输入":"Entrada não verificada","暂无历史记录":"Nenhum histórico disponível","高危":"Alto risco","Home":"Início","My":"Meu","Security Report":"Relatório de Segurança","Get Started":"Comece agora","Code Security Scanner":"Scanner de Segurança de Código","Real-time analysis of code vulnerabilities with fix suggestions":"Análise em tempo real de vulnerabilidades de código com sugestões de correção","Quick Start Guide":"Guia de Início Rápido","Paste your code in the input box below":"Cole seu código na caixa de entrada abaixo","View security results and fix suggestions":"Verifique os resultados de segurança e as sugestões de correção","__title__":"CodeSentry","한국어":"coreano","点击\"分析代码\"按钮":"clique no botão \"analisar código\"","安全警告:":"aviso de segurança:","审查日志:":"registro de auditoria:","暂无代码审查日志":"não há registro de revisão de código","完全免费":"grátis completo","提意见":"fazer sugestões","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"ferramenta de detecção de segurança de código, análise em tempo real de vulnerabilidades de código, fornecendo sugestões de correção.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"página ativa","Optimize your code based on suggestions":"Otimizar seu código com base nas sugestões","Example Code:":"Exemplo de Código:","Enter code to analyze...":"Insira o código para análise...","Analyze Code":"Analisar Código","Security analysis results will appear here":"Os resultados da análise de segurança aparecerão aqui","Vulnerability warnings and fix suggestions will appear here":"Avisos de vulnerabilidade e sugestões de correção aparecerão aqui","Code review logs will appear here":"Os logs de revisão de código aparecerão aqui","View historical code analysis records":"Visualizar registros históricos de análise de código","Code Analysis History":"Histórico de Análise de Código","Select a code above to view detailed analysis results":"Selecione um código acima para visualizar os resultados de análise detalhada","Code Security Analysis Report":"Relatório de Análise de Segurança de Código","Security Score":" Pontuação de Segurança","Calculating...":"Calculando...","Security Statistics":"Estatísticas de Segurança","Code Scanned":"Código Escaneado","Vulnerabilities Found":"Vulnerabilidades Encontradas","Fixed":"Corrigido","High Risk":"Alto Risco","Common Security Issues":"Problemas de Segurança Comuns","SQL Injection":"Injeção SQL","Found":"Encontrado","XSS Attack":"Ataque XSS","Weak Password":"Senha Fraca","Unvalidated Input":"Entrada Não Validada","Detailed Security Analysis":"Análise Detalhada de Segurança","Select a history record to view detailed security analysis report":"Selecione um registro de histórico para visualizar o relatório de análise de segurança detalhada","No history records":"Nenhum registro de histórico","None":"Nenhum","View historical code analysis records and review logs":"Visualizar registros de análise histórica de código e revisões","Code Review Logs":"Registros de Revisão de Código","SQL 인젝션":"Injeção SQL","XSS 공격":"Ataque XSS","Accueil":"Accueil","Mon":"Segunda-feira","Rapport de Sécurité":"Relatório de Segurança","Commencer":"Iniciar","Outil de Détection de Sécurité du Code":"Ferramenta de Detecção de Segurança de Código","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Análise em tempo real de vulnerabilidades de código com sugestões de correção","Guide de Démarrage Rapide":"Guia de Início Rápido","Collez votre code dans la zone de saisie ci-dessous":"Cole seu código na área de digitação abaixo","Afficher les résultats de sécurité et les suggestions de correction":"Exibir resultados de segurança e sugestões de correção","Optimisez votre code en fonction des suggestions":"Otimizar seu código com base nas sugestões","Exemple de Code:":"Exemplo de Código:","Entrez le code à analyser...":"Entre o código a analisar...","Analyser le Code":"Analisar o Código","Les résultats de l":"Os resultados de l","afficheront ici":"serão exibidos aqui","Les alertes de vulnérabilités et les suggestions de correction s":"As alertas de vulnerabilidades e sugestões de correção s","Les journaux de révision du code s":"Os jornais de revisão do código s","Afficher les enregistrements d":"Exibir os registros d","Historique d":"Histórico d","Sélectionnez un code ci-dessus pour afficher les résultats d":"Selecione um código acima para exibir os resultados d","Rapport d":"Relatório d","Score de Sécurité":"Score de Segurança","Calcul en cours...":"Cálculo em curso...","Statistiques de Sécurité":"Estatísticas de Segurança","Code Analyser":"Analisar Código","Vulnérabilités Décelées":"Vulnerabilidades Detectadas","Corrigé":"Corrigido","Risque Élevé":"Risco Alto","Problèmes de Sécurité Courants":"Problemas de Segurança Comuns","Injection SQL":"Injeção SQL","Découvert":"Descoberto","Attaque XSS":"Ataque XSS","Mot de Passe Faible":"Senha Fraca","Entrée Non Validée":"Entrada Não Validada","Analyse de Sécurité Détaillée":"Análise de Segurança Detalhada","Sélectionnez un enregistrement historique pour afficher le rapport d":"Selecione um registro histórico para exibir o relatório de","Aucun enregistrement historique":"Nenhum registro histórico","Aucun":"Nenhum","Journaux de Révision du Code":"Jornais de Revisão do Código","SQL-инъекция":"Injeção SQL","XSS-атака":"Ataque XSS","DOMContentLoaded":"DOMContentLoaded","请输入代码进行检测":"Por favor, insira o código para detectar","正在分析代码...":"Analisando código...","可能存在SQL注入风险":"Pode haver risco de injeção SQL","使用参数化查询或预编译语句代替直接拼接SQL":"Use consultas parametrizadas ou comandos pré-compilados em vez de concatenar SQL diretamente","可能存在XSS攻击风险":"Pode haver risco de ataque XSS","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Use textContent em vez de innerHTML, para evitar a execução direta do código de entrada do usuário","可能使用了弱密码":"Pode ter sido usado uma senha fraca","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Use a strong password policy, at least 8 characters long, including uppercase and lowercase letters, numbers, and special characters","用户输入未经验证":"User input not verified","添加输入验证和过滤，对特殊字符进行转义":"Add input validation and filtering, escaping special characters","未发现明显安全问题":"No apparent security issues found","继续保持良好的安全编码实践":"Continue to maintain good security coding practices","未发现安全问题":"No security issues found","漏洞已标记为已修复":"Vulnerability marked as fixed","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"CodeSentry","开始代码扫描":"Iniciar varredura de código","执行安全规则检查":"Executar verificação de regras de segurança","检测到潜在安全漏洞":"Detected potential security vulnerabilities","生成安全报告":"Gerar relatório de segurança"},"ar":{"首页":"الصفحة الرئيسية","我的":"الصفحة الشخصية","安全报告":"تقرير الأمان","中文":"الصينية","English":"الإنجليزية","Français":"الفرنسية","代码安全检测工具":"أداة فحص الأمان في الكود","实时分析代码漏洞，提供修复建议":"تحليل ثابت ثغرات الكود وتقديم توصيات للإصلاح","立即使用":"استخدام فوري","快速上手指南":"دليل البدء السريع","在下方代码输入框中粘贴您的代码":"ألصق كودك في حقل إدخال الكود أدناه","查看安全检测结果和修复建议":"عرض نتائج الفحص الأمني والتوصيات للإصلاح","根据提示优化您的代码":"تحسين كودك بناءً على الإرشادات","示例代码:":"مثال على الكود:","分析代码":"تحليل الكود","安全检测结果将显示在这里":"سيتم عرض نتائج الفحص الأمني هنا","漏洞预警及修复建议将显示在这里":"سيتم عرض تحذيرات الثغرات والتوصيات للإصلاح هنا","代码审查日志列表将显示在这里":"سيتم عرض قائمة سجلات مراجعة الكود هنا","查看历史代码分析记录和代码审查日志":"عرض سجلات تحليل الكود التاريخي وسجلات مراجعة الكود","历史代码分析":"تحليل الكود التاريخي","代码审查日志":"سجل مراجعة الكود","选择上方代码查看详细分析结果":"اختر الكود أعلاه لعرض النتائج التفصيلية","代码安全分析报告":"تقرير تحليل الأمان في الكود","安全评分":"التقييم الأمني","计算中...":"جارٍ الحساب...","安全统计":"إحصاء الأمان","已检查代码:":"تم فحص الكود:","发现漏洞:":"تم اكتشاف ثغرات:","已修复:":"تم إصلاح:","高危漏洞":"الثغرات الخطيرة","常见安全问题":"المشاكل الأمنية الشائعة","SQL注入 (发现":"هجوم SQL (تم اكتشاف:","次)":"مرة)","XSS攻击 (发现":"هجوم XSS (تم اكتشاف:","弱密码 (发现":"كلمة مرور ضعيفة (تم اكتشاف:","未验证输入 (发现":"إدخال غير معتمد (تم اكتشاف:","详细安全分析":"تحليل أمني مفصل","选择历史记录查看详细安全分析报告":"اختر السجلات التاريخية لعرض تقرير التحليل الأمني التفصيلي","分析完成":"اكتمال التحليل","检测到":"تم اكتشاف","个潜在安全问题":"مشكلة أمنية محتملة","安全评分:":"التقييم الأمني:","修复建议:":"توصيات الإصلاح:","] 开始代码扫描":"] البدء في فحص الكود","] 执行安全规则检查":"] تنفيذ فحص قواعد الأمان","] 检测到潜在安全漏洞":"] تم اكتشاف ثغرات أمنية محتملة","] 生成安全报告":"] إنشاء تقرير الأمان","] 分析完成":"] اكتمال التحليل","种类型漏洞":"نوع من الثغرات","个高危":"عدد من الثغرات الخطيرة","代码预览:":"معاينة الكود:","请输入代码进行检测...":"الرجاء إدخال الكود للفحص...","按钮":"الزر","查看历史代码分析记录":"عرض سجلات تحليل الكود التاريخي","已检查代码":"تم فحص الكود","发现漏洞":"تم اكتشاف ثغرات","已修复":"تم إصلاح","SQL注入":"هجوم SQL","发现":"إكتشاف","XSS攻击":"هجوم XSS","弱密码":"كلمة المرور الضعيفة","未验证输入":"الإدخال غير الم��ن","暂无历史记录":"لا توجد سجلات تاريخية بعد","高危":"مخاطرة عالية","Home":"الرئيسية","My":"مجال","Security Report":"تقرير الأمان","Get Started":"ابدأ الآن","Code Security Scanner":"ماسح الأمان للكود","Real-time analysis of code vulnerabilities with fix suggestions":"تحليل وقتي للثغرات الأمنية في الكود مع اقتراحات للتصحيح","Quick Start Guide":"دليل البدء السريع","Paste your code in the input box below":"ألصق كودك في حقل الإدخال أدناه","View security results and fix suggestions":"اعرض نتائج الأمان وأقتراحات التصحيح","__title__":"CodeSentry","한국어":"كورية","点击\"分析代码\"按钮":"انقر على \"تحليل الشيفرة\"","暂无代码审查日志":"لا يوجد سجلات تدقيق للشيفرة","完全免费":"مجاني بالكامل","提意见":"قدم اقتراح","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"أداة فحص الأمان للشيفرة، تحليل ثابت للثغرات في الشيفرة، وتقديم توصيات للتصحيح.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"…","LA_COLLECT":"…","page active":"…","Optimize your code based on suggestions":"…","Example Code:":"…","Enter code to analyze...":"…","Analyze Code":"…","Security analysis results will appear here":"…","Vulnerability warnings and fix suggestions will appear here":"…","Code review logs will appear here":"…","View historical code analysis records":"…","Code Analysis History":"…","Select a code above to view detailed analysis results":"اختر رمز أعلاه لرؤية نتائج التحليل التفصيلية","Code Security Analysis Report":"تقرير تحليل أمان الرمز","Security Score":"نسبة الأمان","Calculating...":"جاري الحساب...","Security Statistics":"إحصاءات الأمان","Code Scanned":"الرمز الممسوح","Vulnerabilities Found":"إيجاد ثغرات أمان","Fixed":"مُعالج","High Risk":"مخاطر عالية","Common Security Issues":"قضايا أمان شائعة","SQL Injection":"حقن SQL","Found":"إيجاد","XSS Attack":"هجوم XSS","Weak Password":"كلمة مرور ضعيفة","Unvalidated Input":"إدخال غير معتمد","Detailed Security Analysis":"تحليل أمني مفصل","Select a history record to view detailed security analysis report":"اختر سجل التاريخ لعرض تقرير التحليل الأمني المفصل","No history records":"لا توجد سجلات تاريخية","None":"لا شيء","View historical code analysis records and review logs":"عرض سجلات تحليل الشيفرة التاريخية وتقييم السجلات","Code Review Logs":"سجلات مراجعة الشيفرة","SQL 인젝션":"هجوم SQL","XSS 공격":"هجوم XSS","Accueil":"الترحيب","Mon":"الإثنين","Rapport de Sécurité":"تقرير الأمان","Commencer":"بدء","Outil de Détection de Sécurité du Code":"أداة اكتشاف أمان الكود","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"تحليل الثغرات الأمنية في الكود في الوقت الحقيقي مع اقتراحات تصحيح","Guide de Démarrage Rapide":"دليل البدء السريع","Collez votre code dans la zone de saisie ci-dessous":"ألصق كودك في المربع أدناه","Afficher les résultats de sécurité et les suggestions de correction":"عرض نتائج الأمان والاقتراحات","Optimisez votre code en fonction des suggestions":"optimisez votre code en fonction des suggestions","Entrez le code à analyser...":"أدخل الكود الذي تريد تحليله...","Analyser le Code":"تحليل الكود","Les résultats de l":"النتائج هنا","afficheront ici":"سيظهر هنا","Les alertes de vulnérabilités et les suggestions de correction s":"الإخطارات حول الثغرات الأمنية والاقتراحات للتصحيح","Les journaux de révision du code s":"سجلات مراجعة الشيفرة","Afficher les enregistrements d":"عرض السجلات","Historique d":"تاريخ","Sélectionnez un code ci-dessus pour afficher les résultats d":"اختر شيفرة أعلاه لعرض النتائج","Rapport d":"تقرير","Score de Sécurité":"نقاط الأمان","Calcul en cours...":"حساب جار...","Statistiques de Sécurité":"إحصائيات الأمان","Code Analyser":"تحليل الشيفرة","Vulnérabilités Décelées":"ال vulnerabilités المكتشفة","Corrigé":"مُعالج","Risque Élevé":"الخطر المرتفع","Problèmes de Sécurité Courants":"المشاكل الأمنية الشائعة","Injection SQL":"حقن SQL","Découvert":"مكتشف","Attaque XSS":"هجوم XSS","Mot de Passe Faible":"كلمة المرور ضعيفة","Entrée Non Validée":"الإدخال غير الم��ن","Analyse de Sécurité Détaillée":"تحليل الأمان المفصل","Sélectionnez un enregistrement historique pour afficher le rapport d":"اختر سجل تاريخي لعرض التقرير","Aucun enregistrement historique":"لا يوجد سجلات تاريخية","Aucun":"لا شيء","Journaux de Révision du Code":"سجلات مراجعة الشيفرة","SQL-инъекция":"هجوم حقن SQL","XSS-атака":"هجوم XSS","DOMContentLoaded":"تم تحميل كل العناصر الديناميكية","请输入代码进行检测":"الرجاء إدخال الشيفرة للتحقق","正在分析代码...":"جارٍ تحليل الشيفرة...","可能存在SQL注入风险":"قد يكون هناك خطر التسرب SQL","使用参数化查询或预编译语句代替直接拼接SQL":"استخدام استعلامات المعاملات أو التعليمات البرمجية المسبقة للتحضير بدلاً من ربط SQL مباشرة","可能存在XSS攻击风险":"قد يكون هناك خطر هجوم XSS","可能使用了弱密码":"قد تم استخدام كلمة مرور ضعيفة","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"استخدام سياسة كلمات المرور القوية، يجب أن تحتوي على 8 حروف على الأقل، وتشمل الحروف الكبيرة والصغيرة والأرقام والرموز الخاصة","用户输入未经验证":"المستخدم يدخل معلومات غير مراجعة","添加输入验证和过滤，对特殊字符进行转义":"إضافة تأكيد الدخول والفرز، واستبدال الرموز الخاصة","未发现明显安全问题":"لم يتم العثور على أي مشاكل أمنية واضحة","继续保持良好的安全编码实践":"استمرار ممارسات الت编码 الأمنية الجيدة","未发现安全问题":"لم يتم العثور على أي مشاكل أمنية","漏洞已标记为已修复":"تم وضع العلامة على الثغرة بأنها مُصلاحة","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","安全警告:":"تنبيه الأمان:","审查日志:":"سجل التفتيش:","Exemple de Code:":"مثال على الكود:","使用textContent代替innerHTML，避免直接执行用户输入的代码":"استخدم textContent بدلاً من innerHTML، لتجنب تنفيذ كود إدخال المستخدم مباشرة.","CodeSentry":"كود سنتري","开始代码扫描":"ابدأ مسح الكود","执行安全规则检查":"تنفيذ فحص القواعد الأمنية","检测到潜在安全漏洞":"إكتشاف ثغرات أمنية محتملة","生成安全报告":"إنشاء تقرير الأمان"},"hi":{"首页":"होमपेज","我的":"मेरा","安全报告":"सुरक्षा रिपोर्ट","中文":"चीनी","English":"इंग्लिश","Français":"फ्रेंच","代码安全检测工具":"कोड सुरक्षा जांच टूल","实时分析代码漏洞，提供修复建议":"समय-समय पर कोड विकूप का विश्लेषण करें, सुधार सुझाव दें","立即使用":"तुरंत इस्तेमाल करें","快速上手指南":"तेजी से शुरू करने का मार्गदर्शन","在下方代码输入框中粘贴您的代码":"नीचे कोड इनपुट बॉक्स में आपका कोड चिपकाएं","查看安全检测结果和修复建议":"सुरक्षा परिणाम और सुधार सुझाव देखें","根据提示优化您的代码":"सूचनाओं के अनुसार आपका कोड सुधारें","示例代码:":"उदाहरण कोड: ","分析代码":"कोड का विश्लेषण करें","安全检测结果将显示在这里":"सुरक्षा परिणाम यहाँ दिखाया जाएगा","漏洞预警及修复建议将显示在这里":"विकूप चेतावनी और सुधार सुझाव यहाँ दिखाया जाएगा","代码审查日志列表将显示在这里":"कोड समीक्षा लॉग सूची यहाँ दिखाया जाएगी","查看历史代码分析记录和代码审查日志":"पुराने कोड विश्लेषण रिकॉर्ड और कोड समीक्षा लॉग देखें","历史代码分析":"पुराने कोड विश्लेषण","代码审查日志":"कोड समीक्षा लॉग","选择上方代码查看详细分析结果":"उपरी कोड को चुनकर विस्तृत विश्लेषण परिणाम देखें","代码安全分析报告":"कोड सुरक्षा विश्लेषण रिपोर्ट","安全评分":"सुरक्षा स्कोर","计算中...":"गणना चल रही है...","安全统计":"सुरक्षा सांख्यिकी","已检查代码:":"जांच किया गया कोड: ","发现漏洞:":"विकूप पाया: ","已修复:":"मरम्मत किया: ","高危漏洞":"उच्च-जोखिम विकूप","常见安全问题":"सामान्य सुरक्षा समस्या","SQL注入 (发现":"SQL इंजेक्शन (पाया ","次)":"बार","XSS攻击 (发现":"XSS हमला (पाया ","弱密码 (发现":"कमजोर पासवर्ड (पाया ","未验证输入 (发现":"अनवृत्ति इनपुट (पाया ","详细安全分析":"विस्तृत सुरक्षा विश्लेषण","选择历史记录查看详细安全分析报告":"पुराने रिकॉर्ड चुनकर विस्तृत सुरक्षा विश्लेषण रिपोर्ट देखें","分析完成":"विश्लेषण पूरा","检测到":"पाया गया","个潜在安全问题":"विकूप सुरक्षा समस्याएँ","安全评分:":"सुरक्षा स्कोर: ","修复建议:":"सुधार सुझाव: ","] 开始代码扫描":"] कोड स्कैन शुरू करें","] 执行安全规则检查":"] सुरक्षा नियम जांच करें","] 检测到潜在安全漏洞":"] अवैध सुरक्षा विकूप पाया","] 生成安全报告":"] सुरक्षा रिपोर्ट बनाएं","] 分析完成":"] विश्लेषण पूरा","种类型漏洞":"किस्म के विकूप","个高危":"उच्च-जोखिम","代码预览:":"कोड पूर्वावलोकन: ","请输入代码进行检测...":"कोड जांच करने के लिए प्रविष्ट करें...","按钮":"बटन","查看历史代码分析记录":"पुराने कोड विश्लेषण रिकॉर्ड देखें","已检查代码":"जांच किया गया कोड","发现漏洞":"विकूप पाया","已修复":"मरम्मत किया","SQL注入":"SQL इंजेक्शन","发现":"खोज","XSS攻击":"XSS हमला","弱密码":"कमजोर पासवर्ड","未验证输入":"पुष्टि न की गई इनपुट","暂无历史记录":"अभी इतिहास नहीं है","高危":"उच्च जोखिम","Home":"होम","My":"मे","Security Report":"सिक्युरिटी रिपोर्ट","Get Started":"शुरू करें","Code Security Scanner":"कोड सिक्युरिटी स्कैनर","Real-time analysis of code vulnerabilities with fix suggestions":"कोड की दोषों के रियल-टाइम विश्लेषण के साथ सुधार सुझाव","Quick Start Guide":"त्वरित शुरू करने का मार्गदर्शक","Paste your code in the input box below":"नीचे इनपुट बॉक्स में अपना कोड पेस्ट करें","View security results and fix suggestions":"सिक्युरिटी परिणाम और सुधार सुझाव देखें","__title__":"CodeSentry","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"पेज एक्टिव","Optimize your code based on suggestions":"सुझावों के आधार पर आपका कोड ऑप्टिमाइज करें","Example Code:":"एक्सेम्पल कोड:","Enter code to analyze...":"कोड को विश्लेषण करने के लिए दाखिल करें...","Analyze Code":"कोड का विश्लेषण करें","Security analysis results will appear here":"सुरक्षा विश्लेषण परिणाम यहाँ दिखाई देंगे","Vulnerability warnings and fix suggestions will appear here":"संकट चेतावनी और ठीक करने के सुझाव यहाँ दिखाई देंगे","Code review logs will appear here":"कोड समीक्षा लॉग यहाँ दिखाई देंगे","View historical code analysis records":"पुराने कोड विश्लेषण रिकॉर्ड देखें","Code Analysis History":"कोड विश्लेषण इतिहास","Select a code above to view detailed analysis results":"ऊपर वाले कोड को चुनें ताकि विस्तृत विश्लेषण परिणाम देखें","Code Security Analysis Report":"कोड सुरक्षा विश्लेषण रिपोर्ट","Security Score":"सुरक्षा स्कोर","Calculating...":"गणना हो रही है...","Security Statistics":"सुरक्षा सांख्यिकी","Code Scanned":"स्कैन किया गया कोड","Vulnerabilities Found":"दोष पाए गए","Fixed":"मिटाया गया","High Risk":"उच्च जोखिम","Common Security Issues":"सामान्य सुरक्षा मुद्दे","SQL Injection":"SQL इंजेक्शन","Found":"मिला","XSS Attack":"XSS एटैक","Weak Password":"कमजोर पासवर्ड","Unvalidated Input":"अनवैध इनपुट","Detailed Security Analysis":"विस्तृत सुरक्षा विश्लेषण","Select a history record to view detailed security analysis report":"विस्तृत सुरक्षा विश्लेषण रिपोर्ट देखने के लिए एक इतिहास रिकॉर्ड चुनें","No history records":"कोई इतिहास रिकॉर्ड नहीं","None":"कोई नहीं","View historical code analysis records and review logs":"पुराने कोड विश्लेषण रिकॉर्ड और रिव्यू लॉग देखें","Code Review Logs":"कोड रिव्यू लॉग","SQL 인젝션":"SQL इन्जेक्शन","XSS 공격":"XSS आक्रमण","Accueil":"अख्याक","Mon":"मॉन","Rapport de Sécurité":"सुरक्षा रिपोर्ट","Commencer":"शुरू करें","Outil de Détection de Sécurité du Code":"कोड सुरक्षा डिटेक्शन टूल","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"कोड की विकृतियों का वास्तविक समय वास्तविक परीक्षण साथ ठीक करने की सुझाव","Guide de Démarrage Rapide":"त्वरित शुरू करने का मानचित्र","Collez votre code dans la zone de saisie ci-dessous":"नीचे दिए गए टाइपिंग क्षेत्र में अपना कोड जोड़ें","Afficher les résultats de sécurité et les suggestions de correction":"सुरक्षा परिणाम और ठीक करने के सुझाव प्रदर्शित करें","Optimisez votre code en fonction des suggestions":"सुझावों के अनुसार अपना कोड अच्छे तरीके से सुधारें","Exemple de Code:":"कोड का उदाहरण:","Entrez le code à analyser...":"परीक्षण के लिए कोड भरें...","Analyser le Code":"कोड का परीक्षण करें","Les résultats de l":"…","afficheront ici":"…","Les alertes de vulnérabilités et les suggestions de correction s":"…","Les journaux de révision du code s":"…","Afficher les enregistrements d":"…","Historique d":"…","Sélectionnez un code ci-dessus pour afficher les résultats d":"…","Rapport d":"…","Score de Sécurité":"…","Calcul en cours...":"…","Statistiques de Sécurité":"…","Code Analyser":"…","Vulnérabilités Décelées":"देखा गया कमाज","Corrigé":"मिटाया गया","Risque Élevé":"उच्च जोखिम","Problèmes de Sécurité Courants":"सामान्य सुरक्षा समस्याएँ","Injection SQL":"SQL इंजेक्शन","Découvert":"देखा गया","Attaque XSS":"XSS हमला","Mot de Passe Faible":"कमजोर पासवर्ड","Entrée Non Validée":"अवैध इंपुट","Analyse de Sécurité Détaillée":"विस्तृत सुरक्षा विश्लेषण","Sélectionnez un enregistrement historique pour afficher le rapport d":"पुराना रिकॉर्ड चुनें ताकि रिपोर्ट दिखाया जाए","Aucun enregistrement historique":"कोई पुराना रिकॉर्ड नहीं है","Aucun":"आकस्मिक","Journaux de Révision du Code":"कोड रीविजन जर्नल","SQL-инъекция":"SQL इंजेक्शन","XSS-атака":"XSS हमला","DOMContentLoaded":"DOM लोड और संचालन पूरा हुआ","请输入代码进行检测":"कोड इनपुट करें और जांच करें","正在分析代码...":"कोड का विश्लेषण किया जा रहा है...","可能存在SQL注入风险":"SQL इंजेक्शन खतरा मौजूद है","使用参数化查询或预编译语句代替直接拼接SQL":"पैरामीटराइज्ड क्वेरी या प्री-कम्पाइलेड स्टेटमेंट का उपयोग करके SQL का सीधा संयोजन बदलें","可能存在XSS攻击风险":"XSS हमला खतरा मौजूद है","使用textContent代替innerHTML，避免直接执行用户输入的代码":"textContent का उपयोग.innerHTML के बदले में करें और उपयोगकर्ता के इनपुट को सीधे चलाने से बचें","可能使用了弱密码":"कमजोर पासवर्ड का उपयोग किया हो सकता है","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"एक शक्तिशाली पासवर्ड रणनीति उपयोग करें, कम से कम 8 अक्षर शामिल करें, बड़े और छोटे अक्षर, संख्या और विशेष चरित्र","用户输入未经验证":"उपयोगकर्ता का इनपुट अभी तक वेरिफाइड नहीं है","添加输入验证和过滤，对特殊字符进行转义":"इनपुट वेरिफाइडेशन और फिल्टरिंग जोड़ें, विशेष चरित्रों को एस्केप करें","未发现明显安全问题":"कोई स्पष्ट सुरक्षा समस्या नहीं पाई","继续保持良好的安全编码实践":"बहुत अच्छी सुरक्षा कोडिंग प्रथा जारी रखें","未发现安全问题":"कोई सुरक्षा समस्या नहीं पाई","漏洞已标记为已修复":"दोष को सुधारा गया और मार्क किया गया","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","한국어":"हानगुल","点击\"分析代码\"按钮":"\"एनालिसिस कोड\" बटन पर क्लिक करें","安全警告:":"सुरक्षा चेतावनी:","审查日志:":"समीक्षा लॉग:","暂无代码审查日志":"कोड समीक्षा लॉग अभी नहीं है","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"कोड सुरक्षा निरीक्षण औजार, वास्तविक समय में कोड की लुकचर का निरीक्षण करें, मरम्मत सुझाव प्रदान करें","og:title":"og:title","og:description":"og:description","og:type":"og:type","CodeSentry":"CodeSentry","开始代码扫描":"कोड स्कैन शुरू करें","执行安全规则检查":"सुरक्षा नियमों की जांच करें","检测到潜在安全漏洞":"संभावित सुरक्षा छेद देखा गया","生成安全报告":"सुरक्षा रिपोर्ट बनाएं"},"id":{"首页":"Beranda","我的":"Saya","安全报告":"Laporan Keamanan","中文":"Cina","English":"Inggris","Français":"Prancis","代码安全检测工具":"Alat Pemeriksaan Keamanan Kode","实时分析代码漏洞，提供修复建议":"Analisis real-time kebocoran kode, memberikan saran perbaikan","立即使用":"Gunakan segera","快速上手指南":"Panduan Pemula Cepat","在下方代码输入框中粘贴您的代码":"Lipat kode Anda ke kotak input kode di bawah","查看安全检测结果和修复建议":"Lihat hasil pemeriksaan keamanan dan saran perbaikan","根据提示优化您的代码":"Optimalisir kode Anda berdasarkan petunjuk","示例代码:":"Contoh kode:","分析代码":"Analisis kode","安全检测结果将显示在这里":"Hasil pemeriksaan keamanan akan ditampilkan di sini","漏洞预警及修复建议将显示在这里":"Peringatan kebocoran dan saran perbaikan akan ditampilkan di sini","代码审查日志列表将显示在这里":"Daftar log pemeriksaan kode akan ditampilkan di sini","查看历史代码分析记录和代码审查日志":"Lihat riwayat analisis kode dan log pemeriksaan kode","历史代码分析":"Analisis kode historis","代码审查日志":"Log pemeriksaan kode","选择上方代码查看详细分析结果":"Pilih kode di atas untuk melihat hasil analisis detil","代码安全分析报告":"Laporan analisis keamanan kode","安全评分":"Skor keamanan","计算中...":"Menghitung...","安全统计":"Statistik keamanan","已检查代码:":"Kode yang sudah dicek:","发现漏洞:":"Ditemukan kebocoran:","已修复:":"Telah diperbaiki:","高危漏洞":"Kebocoran tingkat tinggi","常见安全问题":"Masalah keamanan biasa","SQL注入 (发现":"SQL injection (ditemukan","次)":"Kali)","XSS攻击 (发现":"Penyerangan XSS (ditemukan","弱密码 (发现":"Sandi lemah (ditemukan","未验证输入 (发现":"Masukan yang belum diverifikasi (ditemukan","详细安全分析":"Analisis keamanan detil","选择历史记录查看详细安全分析报告":"Pilih riwayat untuk melihat laporan analisis keamanan detil","分析完成":"Analisis selesai","检测到":"Dideteksi","个潜在安全问题":"potensi masalah keamanan","安全评分:":"Skor keamanan:","修复建议:":"Saran perbaikan:","] 开始代码扫描":"] Mulai pemeriksaan kode","] 执行安全规则检查":"] Eksekusi pemeriksaan aturan keamanan","] 检测到潜在安全漏洞":"] Dideteksi kebocoran keamanan potensial","] 生成安全报告":"] Buat laporan keamanan","] 分析完成":"] Analisis selesai","种类型漏洞":"tipe kebocoran","个高危":"kebocoran tingkat tinggi","代码预览:":"Pratinjau kode:","请输入代码进行检测...":"Masukkan kode untuk pemeriksaan...","按钮":" Tombol","查看历史代码分析记录":"Lihat riwayat analisis kode","已检查代码":"Kode yang sudah dicek","发现漏洞":"Kebocoran ditemukan","已修复":"Telah diperbaiki","SQL注入":"SQL injection","发现":"Menemukan","XSS攻击":"Penyerangan XSS","弱密码":"Kata sandi lemah","未验证输入":"Input yang belum diverifikasi","暂无历史记录":"Tidak ada riwayat sebelumnya","高危":"Tingkat tinggi","Home":"Beranda","My":"Saya","Security Report":"Laporan Keamanan","Get Started":"Mulai","Code Security Scanner":"Pemindai Keamanan Kode","Real-time analysis of code vulnerabilities with fix suggestions":"Analisis real-time kelemahan kode dengan saran perbaikan","Quick Start Guide":"Panduan Mulai Cepat","Paste your code in the input box below":"Tempel kode Anda di kotak input di bawah ini","View security results and fix suggestions":"Lihat hasil keamanan dan saran perbaikan","__title__":"CodeSentry","한국어":"Korea","点击\"分析代码\"按钮":"Klik tombol \"Analisis Kode\"","安全警告:":"Peringatan Keamanan:","审查日志:":"Log Pemeriksaan:","暂无代码审查日志":"Tidak ada log pemeriksaan kode","完全免费":"Lengkapnya gratis","提意见":"Beri masukan","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"Alat deteksi keamanan kode, analisis secara real-time kekurangan kode, memberikan saran perbaikan.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"page active","Optimize your code based on suggestions":"Optimalisir kode anda berdasarkan saran","Example Code:":"Contoh Kode:","Enter code to analyze...":"Masukkan kode untuk di analisis...","Analyze Code":"Analisis Kode","Security analysis results will appear here":"Hasil analisis keamanan akan muncul disini","Vulnerability warnings and fix suggestions will appear here":"Peringatan kelebihan dan saran perbaikan akan muncul disini","Code review logs will appear here":"Log tinjau kode akan muncul disini","View historical code analysis records":"Lihat catatan analisis kode sejarah","Code Analysis History":"Sejarah Analisis Kode","Select a code above to view detailed analysis results":"Pilih kode di atas untuk melihat hasil analisis detil","Code Security Analysis Report":"Laporan Analisis Keamanan Kode","Security Score":"Skor Keamanan","Calculating...":"Menghitung...","Security Statistics":"Statistik Keamanan","Code Scanned":"Kode Direscan","Vulnerabilities Found":"Kemampuan Ditemukan","Fixed":"Diperbaiki","High Risk":"Risiko Tinggi","Common Security Issues":"Masalah Keamanan Biasa","SQL Injection":"Injeksi SQL","Found":"Ditemukan","XSS Attack":"Serangan XSS","Weak Password":"Kata Sandi Lemah","Unvalidated Input":"Masukan yang Tidak Diverifikasi","Detailed Security Analysis":"Pilih riwayat untuk melihat laporan analisis keamanan detil","Select a history record to view detailed security analysis report":"Pilih riwayat untuk melihat laporan analisis keamanan detil","No history records":"Tidak ada riwayat","None":"Tidak ada","View historical code analysis records and review logs":"Lihat riwayat analisis kode dan log peninjauan","Code Review Logs":"Log Peninjauan Kode","SQL 인젝션":"Injeksi SQL","XSS 공격":"Serangan XSS","Accueil":"Beranda","Mon":"Senin","Rapport de Sécurité":"Laporan Keamanan","Commencer":"Mulai","Outil de Détection de Sécurité du Code":"Alat Deteksi Keamanan Kode","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Analisis Real-Time Kebocoran Kode dengan Sugerensi Perbaikan","Guide de Démarrage Rapide":"Panduan Peluncuran Cepat","Collez votre code dans la zone de saisie ci-dessous":"Tempatkan kode anda di area input di bawah ini","Afficher les résultats de sécurité et les suggestions de correction":"Tampilkan hasil keamanan dan sugerensi perbaikan","Optimisez votre code en fonction des suggestions":"Optimalisir kode anda berdasarkan sugerensi","Entrez le code à analyser...":"Masukkan kode yang akan di analisis...","Analyser le Code":"Analisis Kode","Les résultats de l":"Hasilnya","afficheront ici":"akan ditampilkan di sini","Les alertes de vulnérabilités et les suggestions de correction s":"Peringatan kelebihan dan saran perbaikannya","Les journaux de révision du code s":"Jurnal revisi kode","Afficher les enregistrements d":"Tampilkan catatan","Historique d":"Riwayat","Sélectionnez un code ci-dessus pour afficher les résultats d":"Pilih kode di atas untuk menampilkan hasil","Rapport d":"Laporan","Score de Sécurité":"Skor Keamanan","Calcul en cours...":"Penghitungan berjalan...","Statistiques de Sécurité":"Statistik Keamanan","Code Analyser":"Analisis Kode","Vulnérabilités Décelées":"Kekurangan yang Ditemukan","Corrigé":"Diperbaiki","Risque Élevé":"Risiko Tinggi","Problèmes de Sécurité Courants":"Masalah Keamanan Umum","Injection SQL":"Injeksi SQL","Découvert":"Ditemukan","Attaque XSS":"Serangan XSS","Mot de Passe Faible":"Sandi Lemah","Entrée Non Validée":"Masukan yang Tidak Divalidasi","Analyse de Sécurité Détaillée":"Analisis Keamanan Detaill","Sélectionnez un enregistrement historique pour afficher le rapport d":"Pilih sebuah catatan historis untuk menampilkan laporan","Aucun enregistrement historique":"Tidak ada catatan historis","Aucun":"Tidak ada","Journaux de Révision du Code":"Jurnal Revisi Kode","SQL-инъекция":"Infeksi SQL","XSS-атака":"Serangan XSS","DOMContentLoaded":"Dalam Proses Mengisi DOM","请输入代码进行检测":"Masukkan kode untuk dievaluasi","正在分析代码...":"Menganalisis kode...","可能存在SQL注入风险":"Mungkin ada risiko infeksi SQL","使用参数化查询或预编译语句代替直接拼接SQL":"Gunakan query parameterisasi atau statement yang di-prerancang untuk menggantikan penggabungan langsung SQL","可能存在XSS攻击风险":"Mungkin ada risiko serangan XSS","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Gunakan textContent untuk menggantikan innerHTML, untuk menghindari eksekusi kode input pengguna secara langsung","可能使用了弱密码":"Mungkin digunakan sandi lemah","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Gunakan strategi sandi kuat, setidaknya berisi 8 karakter, termasuk huruf besar dan kecil, angka, dan karakter khusus","用户输入未经验证":"Input pengguna belum terverifikasi","添加输入验证和过滤，对特殊字符进行转义":"Tambahkan verifikasi input dan penyaringan, ekstrasi karakter khusus","未发现明显安全问题":"Tidak ditemukan keamanan yang menonjol","继续保持良好的安全编码实践":"Lanjutkan praktek pengodean keamanan yang baik","未发现安全问题":"Tidak ditemukan masalah keamanan","漏洞已标记为已修复":"Lembaran kelebihan sudah ditandai sebagai diperbaiki","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"CodeSentry","开始代码扫描":"Mulai Skanning Kode","执行安全规则检查":"Melakukan Pemeriksaan Aturan Keamanan","检测到潜在安全漏洞":"Mendeteksi Luka Keamanan Potensial","生成安全报告":"Buat Laporan Keamanan"},"vi":{"首页":"Trang chủ","我的":"Của tôi","安全报告":"Báo cáo an toàn","中文":"Tiếng Trung","English":"Tiếng Anh","Français":"Tiếng Pháp","代码安全检测工具":"Công cụ kiểm tra an toàn mã","实时分析代码漏洞，提供修复建议":"Phân tích漏洞 mã trong thời gian thực, cung cấp gợi ý sửa chữa","立即使用":"Sử dụng ngay lập tức","快速上手指南":"Hướng dẫn sử dụng nhanh","在下方代码输入框中粘贴您的代码":"Dán mã của bạn vào ô nhập mã bên dưới","查看安全检测结果和修复建议":"Xem kết quả kiểm tra an toàn và gợi ý sửa chữa","根据提示优化您的代码":"Tối ưu mã của bạn theo hướng dẫn","示例代码:":"Mã ví dụ:","分析代码":"Phân tích mã","安全检测结果将显示在这里":"Kết quả kiểm tra an toàn sẽ hiển thị ở đây","漏洞预警及修复建议将显示在这里":"Cảnh báo về lỗ hổng và gợi ý sửa chữa sẽ hiển thị ở đây","代码审查日志列表将显示在这里":"Danh sách nhật ký kiểm tra mã sẽ hiển thị ở đây","查看历史代码分析记录和代码审查日志":"Xem lịch sử ghi nhận phân tích mã và nhật ký kiểm tra mã","历史代码分析":"Phân tích mã lịch sử","代码审查日志":"Nhật ký kiểm tra mã","选择上方代码查看详细分析结果":"Chọn mã trên để xem kết quả phân tích chi tiết","代码安全分析报告":"Báo cáo phân tích an toàn mã","安全评分":"Điểm an toàn","计算中...":"Đang tính...","安全统计":"Thống kê an toàn","已检查代码:":"Đã kiểm tra mã:","发现漏洞:":"Tìm thấy lỗ hổng:","已修复:":"Đã sửa:","高危漏洞":"Lỗ hổng cao","常见安全问题":"Vấn đề an toàn phổ biến","SQL注入 (发现":"SQL Injection (tìm thấy","次)":"lần)","XSS攻击 (发现":"XSS Attack (tìm thấy","弱密码 (发现":"Mật khẩu yếu (tìm thấy","未验证输入 (发现":"Nhập liệu chưa được xác minh (tìm thấy","详细安全分析":"Phân tích an toàn chi tiết","选择历史记录查看详细安全分析报告":"Chọn lịch sử ghi nhận để xem báo cáo phân tích an toàn chi tiết","分析完成":"Phân tích hoàn thành","检测到":"Đã phát hiện","个潜在安全问题":"các vấn đề an toàn tiềm ẩn","安全评分:":"Điểm an toàn:","修复建议:":"Gợi ý sửa chữa:","] 开始代码扫描":"] Bắt đầu quét mã","] 执行安全规则检查":"] Thực hiện kiểm tra quy tắc an toàn","] 检测到潜在安全漏洞":"] Đã phát hiện lỗ hổng an toàn tiềm ẩn","] 生成安全报告":"] Tạo báo cáo an toàn","] 分析完成":"] Phân tích hoàn thành","种类型漏洞":"loại lỗ hổng","个高危":"các lỗ hổng cao","代码预览:":"Xem trước mã:","请输入代码进行检测...":"Vui lòng nhập mã để kiểm tra...","按钮":"Nút","查看历史代码分析记录":"Xem lịch sử ghi nhận phân tích mã","已检查代码":"Mã đã được kiểm tra","发现漏洞":"Phát hiện lỗ hổng","已修复":"Đã sửa","SQL注入":"SQL Injection","发现":"tìm thấy","XSS攻击":"Tấn công XSS","弱密码":"Mật khẩu yếu","未验证输入":"Nhập liệu chưa được xác thực","暂无历史记录":"Chưa có lịch sử","高危":"Cao nguy cơ","Home":"Trang chủ","My":"Của tôi","Security Report":"Báo cáo bảo mật","Get Started":"Bắt đầu","Code Security Scanner":"Máy quét bảo mật mã","Real-time analysis of code vulnerabilities with fix suggestions":"Phân tích thời gian thực các lỗ hổng mã với gợi ý sửa lỗi","Quick Start Guide":"Hướng dẫn bắt đầu nhanh","Paste your code in the input box below":"Dán mã của bạn vào hộp nhập dưới đây","View security results and fix suggestions":"Xem kết quả bảo mật và gợi ý sửa lỗi","__title__":"CodeSentry","한국어":"Tiếng Hàn","点击\"分析代码\"按钮":"Nhấn vào nút \"Phân tích mã\"","安全警告:":"Cảnh báo an toàn:","审查日志:":"Nhật ký kiểm tra:","暂无代码审查日志":"Chưa có nhật ký kiểm tra mã","完全免费":"Miễn phí hoàn toàn","提意见":"Đề xuất","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"Công cụ kiểm tra an toàn mã, phân tích lỗ hổng mã thực thời, cung cấp gợi ý sửa lỗi.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"trang hiện tại","Optimize your code based on suggestions":"Tối ưu mã dựa trên gợi ý","Example Code:":"Ví dụ mã:","Enter code to analyze...":"Nhập mã để phân tích...","Analyze Code":"Phân tích mã","Security analysis results will appear here":"Kết quả phân tích bảo mật sẽ xuất hiện ở đây","Vulnerability warnings and fix suggestions will appear here":"Cảnh báo về lỗ hổng và gợi ý sửa lỗi sẽ xuất hiện ở đây","Code review logs will appear here":"Ghi chép kiểm tra mã sẽ xuất hiện ở đây","View historical code analysis records":"Xem hồ sơ phân tích mã lịch sử","Code Analysis History":"Lịch sử phân tích mã","Select a code above to view detailed analysis results":"Chọn mã trên để xem kết quả phân tích chi tiết","Code Security Analysis Report":"Báo cáo phân tích bảo mật mã","Security Score":"Điểm bảo mật","Calculating...":"Đang tính toán...","Security Statistics":"Thống kê bảo mật","Code Scanned":"Mã đã quét","Vulnerabilities Found":"Khả năng xâm nhập được tìm thấy","Fixed":"Đã sửa","High Risk":"Rủi ro cao","Common Security Issues":"Vấn đề bảo mật phổ biến","SQL Injection":"Tiêm SQL","Found":"Tìm thấy","XSS Attack":"Tấn công XSS","Weak Password":"Mật khẩu yếu","Unvalidated Input":"Đầu vào không được xác minh","Detailed Security Analysis":"Phân tích bảo mật chi tiết","Select a history record to view detailed security analysis report":"Chọn một bản ghi lịch sử để xem báo cáo phân tích bảo mật chi tiết","No history records":"Không có bản ghi lịch sử","None":"Không có","View historical code analysis records and review logs":"Xem các bản ghi phân tích mã lịch sử và các bản ghi xem xét","Code Review Logs":"Bản ghi xem xét mã","SQL 인젝션":"SQL注入","XSS 공격":"Tấn công XSS","Accueil":"Chào mừng","Mon":"Tháng","Rapport de Sécurité":"Báo cáo bảo mật","Commencer":"Bắt đầu","Outil de Détection de Sécurité du Code":"Công cụ phát hiện bảo mật mã","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"Phân tích thời gian thực các lỗ hổng mã với đề xuất sửa chữa","Guide de Démarrage Rapide":"Hướng dẫn khởi động nhanh","Collez votre code dans la zone de saisie ci-dessous":"Dán mã của bạn vào vùng nhập dưới đây","Afficher les résultats de sécurité et les suggestions de correction":"Hiển thị kết quả bảo mật và đề xuất sửa chữa","Optimisez votre code en fonction des suggestions":"Tối ưu hóa mã của bạn dựa trên đề xuất","Entrez le code à analyser...":"Nhập mã cần phân tích...","Analyser le Code":"Phân tích mã","Les résultats de l":"Kết quả của l","afficheront ici":"sẽ hiển thị ở đây","Les alertes de vulnérabilités et les suggestions de correction s":"Cảnh báo về lỗ hổng và gợi ý sửa chữa","Les journaux de révision du code s":"Nhật ký kiểm tra mã","Afficher les enregistrements d":"Hiển thị các bản ghi","Historique d":"Lịch sử","Sélectionnez un code ci-dessus pour afficher les résultats d":"Chọn mã trên để hiển thị kết quả","Rapport d":"Báo cáo","Score de Sécurité":"Điểm bảo mật","Calcul en cours...":"Đang tính...","Statistiques de Sécurité":"Thống kê bảo mật","Code Analyser":"Phân tích mã","Vulnérabilités Décelées":"Khả năng bị phát hiện","Corrigé":"Đã sửa","Risque Élevé":"Rủi ro cao","Problèmes de Sécurité Courants":"Các vấn đề bảo mật phổ biến","Injection SQL":"Tiêm SQL","Découvert":"Đã phát hiện","Attaque XSS":"Tấn công XSS","Mot de Passe Faible":"Mật khẩu yếu","Entrée Non Validée":"Đầu vào không hợp lệ","Analyse de Sécurité Détaillée":"Phân tích bảo mật chi tiết","Sélectionnez un enregistrement historique pour afficher le rapport d":"Chọn một bản ghi lịch sử để hiển thị báo cáo của","Aucun enregistrement historique":"Không có bản ghi lịch sử","Aucun":"Không có","Journaux de Révision du Code":"Nhật ký Kiểm tra Mã","SQL-инъекция":"SQL Injection","XSS-атака":"XSS Attack","DOMContentLoaded":"DOMContentLoaded","请输入代码进行检测":"Vui lòng nhập mã để kiểm tra","正在分析代码...":"Đang phân tích mã...","可能存在SQL注入风险":"Có thể có rủi ro SQL Injection","使用参数化查询或预编译语句代替直接拼接SQL":"Sử dụng truy vấn tham số hóa hoặc câu lệnh tiền biên so với việc gán trực tiếp SQL","可能存在XSS攻击风险":"Có thể có rủi ro XSS Attack","使用textContent代替innerHTML，避免直接执行用户输入的代码":"Sử dụng textContent thay vì innerHTML, tránh việc thực thi trực tiếp mã đầu vào của người dùng","可能使用了弱密码":"Có thể đã sử dụng mật khẩu yếu","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"Sử dụng chính sách mật khẩu mạnh, ít nhất 8 ký tự, bao gồm chữ cái in hoa, chữ cái in thường, số và ký tự đặc biệt","用户输入未经验证":"Nhập liệu của người dùng chưa được xác thực","添加输入验证和过滤，对特殊字符进行转义":"Thêm xác thực và lọc đầu vào, chuyển đổi các ký tự đặc biệt","未发现明显安全问题":"Chưa phát hiện ra vấn đề an toàn rõ ràng","继续保持良好的安全编码实践":"Tiếp tục duy trì thực hành mã hóa an toàn tốt","未发现安全问题":"Chưa phát hiện ra vấn đề an toàn","漏洞已标记为已修复":"Lỗ hổng đã được đánh dấu là đã sửa","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","CodeSentry":"CodeSentry","开始代码扫描":"Bắt đầu quét mã","执行安全规则检查":"Thực hiện kiểm tra quy tắc bảo mật","检测到潜在安全漏洞":"Tiêu cựu lỗ hổng bảo mật tiềm ẩn","生成安全报告":"Tạo báo cáo bảo mật"},"th":{"首页":"หน้าแรก","我的":"ของฉัน","安全报告":"รายงานความปลอดภัย","中文":"จีน","English":"อังกฤษ","Français":"ฝรั่งเศส","代码安全检测工具":"เครื่องมือตรวจสอบความปลอดภัยของรหัส","实时分析代码漏洞，提供修复建议":"วิเคราะห์ทันทีของรหัสที่มีข้อบกพร่อง และให้คำแนะนำการซ่อมแซม","立即使用":"ใช้ทันที","快速上手指南":"คู่มือเริ่มต้นรวดเร็ว","在下方代码输入框中粘贴您的代码":"แปลงรหัสของคุณลงในช่องบันทึกรหัสด้านล่าง","查看安全检测结果和修复建议":"ดูผลลัพธ์ตรวจสอบความปลอดภัยและคำแนะนำการซ่อมแซม","根据提示优化您的代码":"ปรับปรุงรหัสของคุณตามคำแนะนำ","示例代码:":"ตัวอย่างรหัส:","分析代码":"วิเคราะห์รหัส","安全检测结果将显示在这里":"ผลลัพธ์ตรวจสอบความปลอดภัยจะแสดงที่นี่","漏洞预警及修复建议将显示在这里":"คำเตือนและคำแนะนำการซ่อมแซมของข้อบกพร่องจะแสดงที่นี่","代码审查日志列表将显示在这里":"รายการประวัติการตรวจสอบรหัสจะแสดงที่นี่","查看历史代码分析记录和代码审查日志":"ดูประวัติการวิเคราะห์รหัสและประวัติการตรวจสอบรหัส","历史代码分析":"วิเคราะห์รหัสประวัติ","代码审查日志":"ประวัติการตรวจสอบรหัส","选择上方代码查看详细分析结果":"เลือกรหัสด้านบนเพื่อดูผลลัพธ์วิเคราะห์ละเอียด","代码安全分析报告":"รายงานวิเคราะห์ความปลอดภัยรหัส","安全评分":"คะแนนความปลอดภัย","计算中...":"กำลังคำนวณ...","安全统计":"สถิติความปลอดภัย","已检查代码:":"รหัสที่ได้ตรวจสอบ:","发现漏洞:":"พบข้อบกพร่อง:","已修复:":"ได้ซ่อมแซม:","高危漏洞":"ความเสี่ยงสูงในรอยแก้ไข","常见安全问题":"ปัญหาความปลอดภัยที่เกิดขึ้นบ่อย","SQL注入 (发现":"SQL Injection (พบ","次)":"ครั้ง)","XSS攻击 (发现":"XSS Attack (พบ","弱密码 (发现":"รหัสผ่านที่อ่อน (พบ","未验证输入 (发现":"ข้อมูลที่ยังไม่ได้ตรวจสอบ (พบ","详细安全分析":"การวิเคราะห์ความปลอดภัยละเอียด","选择历史记录查看详细安全分析报告":"เลือกประวัติการทำงานเพื่อดูรายงานวิเคราะห์ความปลอดภัยละเอียด","分析完成":"วิเคราะห์เสร็จสมบูรณ์","检测到":"ตรวจพบ","个潜在安全问题":"ความเสี่ยงที่อาจเกิดขึ้น","安全评分:":"คะแนนความปลอดภัย:","修复建议:":"ข้อแนะนำการแก้ไข:","] 开始代码扫描":"] เริ่มการสแกนรหัส","] 执行安全规则检查":"] ปฏิบัติการตรวจสอบกฎระเบียบความปลอดภัย","] 检测到潜在安全漏洞":"] ตรวจพบรอยแก้ไขความปลอดภัยที่อาจเกิดขึ้น","] 生成安全报告":"] สร้างรายงานความปลอดภัย","] 分析完成":"] วิเคราะห์เสร็จสมบูรณ์","种类型漏洞":"ชนิดของรอยแก้ไข","个高危":"ความเสี่ยงสูง","代码预览:":"การแสดงแบบร่างรหัส:","请输入代码进行检测...":"กรุณาใส่รหัสเพื่อตรวจสอบ...","按钮":"ปุ่ม","查看历史代码分析记录":"ดูประวัติการวิเคราะห์รหัส","已检查代码":"รหัสที่ได้ตรวจสอบแล้ว","发现漏洞":"พบรอยแก้ไข","已修复":"ได้แก้ไขแล้ว","SQL注入":"SQL Injection","发现":"พบ","XSS攻击":"XSS โจมตี","弱密码":"รหัสผ่านที่อ่อน","未验证输入":"ข้อมูลที่ยังไม่ได้ตรวจสอบ","暂无历史记录":"ยังไม่มีประวัติ","高危":"อันตราย","Home":"หน้าหลัก","My":"ของฉัน","Security Report":"รายงานความปลอดภัย","Get Started":"เริ่มต้น","Code Security Scanner":"เครื่องตรวจความปลอดภัยของโค้ด","Real-time analysis of code vulnerabilities with fix suggestions":"การวิเคราะห์ความปลอดภัยของโค้ดทันที กับข้อเสนอแก้ไข","Quick Start Guide":"คู่มือเริ่มต้นรวดเร็ว","Paste your code in the input box below":"แปะโค้ดของคุณลงในช่องใส่ข้อมูลด้านล่าง","View security results and fix suggestions":"ดูผลลัพธ์ความปลอดภัยและข้อเสนอแก้ไข","__title__":"CodeSentry","한국어":"ภาษาเกาหลี","点击\"分析代码\"按钮":"กดที่ปุ่ม \"วิเคราะห์รหัส\"","暂无代码审查日志":"ยังไม่มีบันทึกการตรวจสอบรหัส","完全免费":"ไม่มีค่าใช้จ่าย","提意见":"แสดงความคิดเห็น","UTF-8":"UTF-8","代码安全检测工具，实时分析代码漏洞，提供修复建议。":"เครื่องมือตรวจสอบความปลอดภัยรหัสระบบ，ตรวจสอบรหัสว่ามีความรู้สึกดีและให้คำแนะนำการซ่อมแซม","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","page active":"หน้าเปิดใช้งาน","Optimize your code based on suggestions":"ปรับปรุงรหัสโดยขึ้นตามข้อเสนอ","Example Code:":"ตัวอย่างรหัส:","Enter code to analyze...":"ใส่รหัสเพื่อวิเคราะห์...","Analyze Code":"วิเคราะห์รหัส","Security analysis results will appear here":"ผลลัพธ์การวิเคราะห์ความปลอดภัยจะแสดงขึ้นที่นี่","Vulnerability warnings and fix suggestions will appear here":"คำเตือนความอันตรายและข้อเสนอแก้จะแสดงขึ้นที่นี่","Code review logs will appear here":"บันทึกการตรวจสอบรหัสจะแสดงขึ้นที่นี่","View historical code analysis records":"ดูบันทึกการวิเคราะห์รหัสประวัติ","Code Analysis History":"ประวัติการวิเคราะห์รหัส","Select a code above to view detailed analysis results":"เลือกรหัสด้านบนเพื่อดูข้อมูลวิเคราะห์ละเอียด","Code Security Analysis Report":"รายงานวิเคราะห์ความปลอดภัยรหัส","Security Score":"คะแนนความปลอดภัย","Calculating...":"กำลังคำนวณ...","Security Statistics":"สถิติความปลอดภัย","Code Scanned":"รหัสที่ถูกสแกน","Vulnerabilities Found":"ความอันตรายที่พบ","Fixed":"แก้ไข","High Risk":"ความเสี่ยงสูง","Common Security Issues":"ปัญหาความปลอดภัยที่เกิดขึ้นบ่อย","SQL Injection":"SQL Injection","Found":"พบ","XSS Attack":"XSS โจมตี","Weak Password":"รหัสผ่านอ่อน","Unvalidated Input":"ข้อมูลที่ยังไม่ได้ตรวจสอบ","Detailed Security Analysis":"การวิเคราะห์ความปลอดภัยละเอียด","Select a history record to view detailed security analysis report":"เลือกบันทึกประวัติเพื่อดูรายงานวิเคราะห์ความปลอดภัยละเอียด","No history records":"ไม่มีบันทึกประวัติ","None":"ไม่มีอะไร","View historical code analysis records and review logs":"ดูบันทึกวิเคราะห์รหัสประวัติและบันทึกการตรวจสอบ","Code Review Logs":"บันทึกการตรวจสอบรหัส","SQL 인젝션":"การหลอกแบบ SQL","XSS 공격":"โจมตี XSS","Accueil":"จากนี้","Mon":"วันจันทร์","Rapport de Sécurité":"รายงานความปลอดภัย","Commencer":"เริ่มต้น","Outil de Détection de Sécurité du Code":"เครื่องมือตรวจจับความปลอดภัยของรหัส","Analyse en temps réel des vulnérabilités du code avec suggestions de correction":"วิเคราะห์ความอันตรายของรหัสในเวลาทันที พร้อมแนะนำแก้ไข","Guide de Démarrage Rapide":"คู่มือเริ่มต้นรวดเร็ว","Collez votre code dans la zone de saisie ci-dessous":"วางรหัสของคุณในช่องบันทึกข้างล่าง","Afficher les résultats de sécurité et les suggestions de correction":"แสดงผลความปลอดภัยและแนะนำแก้ไข","Optimisez votre code en fonction des suggestions":"ปรับปรุงรหัสของคุณตามแนะนำ","Entrez le code à analyser...":"ใส่รหัสที่ต้องการวิเคราะห์...","Analyser le Code":"ตรวจสอบรหัส","Les résultats de l":"…","afficheront ici":"…","Les alertes de vulnérabilités et les suggestions de correction s":"…","Les journaux de révision du code s":"…","Afficher les enregistrements d":"…","Historique d":"…","Sélectionnez un code ci-dessus pour afficher les résultats d":"เลือกโค้ดด้านบนเพื่อแสดงผล","Rapport d":"รายงาน","Score de Sécurité":"คะแนนความปลอดภัย","Calcul en cours...":"กำลังคำนวณ...","Statistiques de Sécurité":"สถิติความปลอดภัย","Code Analyser":"ตรวจสอบโค้ด","Vulnérabilités Décelées":"ความอ่อนแอที่ระบุขึ้น","Corrigé":"แก้ไข","Risque Élevé":"ความเสี่ยงสูง","Problèmes de Sécurité Courants":"ปัญหาความปลอดภัยที่พบบ่อย","Injection SQL":"การฉีด SQL","Découvert":"พบ","Attaque XSS":"การโจมตี XSS","Mot de Passe Faible":"รหัสผ่านอ่อน","Entrée Non Validée":"การเข้าข้อมูลที่ไม่ถูกต้อง","Analyse de Sécurité Détaillée":"การวิเคราะห์ความปลอดภัยละเอียด","Sélectionnez un enregistrement historique pour afficher le rapport d":"เลือกบันทึกประวัติเพื่อแสดงรายงาน","Aucun enregistrement historique":"ไม่มีบันทึกประวัติ","Aucun":"ไม่มี","Journaux de Révision du Code":"บันทึกการปรับปรุงโค้ด","SQL-инъекция":"การฉบับซ้ำ SQL","XSS-атака":"การโจมตี XSS","DOMContentLoaded":"โดยแน่นอน","请输入代码进行检测":"กรุณาใส่โค้ดเพื่อตรวจสอบ","正在分析代码...":"กำลังตรวจสอบโค้ด...","可能存在SQL注入风险":"อาจมีความเสี่ยงการฉบับซ้ำ SQL","使用参数化查询或预编译语句代替直接拼接SQL":"ใช้การค้นหาที่ปรับเปลี่ยนโหมดหรือคำสั่งปรับปรุงล่วงหน้าเพื่อทดแทนการนำรวม SQL","可能存在XSS攻击风险":"อาจมีความเสี่ยงการโจมตี XSS","使用textContent代替innerHTML，避免直接执行用户输入的代码":"ใช้textContent แทนinnerHTML เพื่อหลีกเลี่ยงการปฏิบัติงานโค้ดที่นำเข้าโดยผู้ใช้","可能使用了弱密码":"อาจจะใช้รหัสผ่านที่อ่อน","使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符":"ใช้กำหนดกลุ่มรหัสผ่านที่แข็งแรง อย่างน้อย 8 ตัวอักษร รวมถึงตัวพิมพ์ใหญ่และตัวย่อ ตัวเลข และสัญลักษณ์","用户输入未经验证":"การควบคุมตรวจสอบการใส่ข้อมูลของผู้ใช้ยังไม่ได้รับการยืนยัน","添加输入验证和过滤，对特殊字符进行转义":"เพิ่มการตรวจสอบและกรองการใส่ข้อมูล และเปิดใช้สัญลักษณ์พิเศษให้เป็นอักขระที่ถูกหลุดทาง","未发现明显安全问题":"ไม่พบปัญหาความปลอดภัยที่เห็นได้ชัด","继续保持良好的安全编码实践":"คงท้งความประสงค์ดีในการเขียนรหัสโปรแกรมที่ปลอดภัย","未发现安全问题":"ไม่พบปัญหาความปลอดภัย","漏洞已标记为已修复":"รอยร้าวได้ถูกทำเครื่องหมายว่าได้รับการซ่อมแซม","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","安全警告:":"คำเตือนความปลอดภัย:","审查日志:":"บันทึกการตรวจสอบ:","Exemple de Code:":"ตัวอย่างรหัส:","CodeSentry":"CodeSentry","开始代码扫描":"เริ่มสแกนรหัส","执行安全规则检查":"ปฏิบัติการตรวจสอบกฎระเบียบความปลอดภัย","检测到潜在安全漏洞":"พบความเสี่ยงทางความปลอดภัยที่อาจเกิดขึ้น","生成安全报告":"สร้างรายงานความปลอดภัย"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script></body>
+</html>

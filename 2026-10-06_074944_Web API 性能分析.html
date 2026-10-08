@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web API Performance Analyzer</title>
+    <meta name="description" content="Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.">
+    <meta property="og:title" content="Web API Performance Analyzer">
+    <meta property="og:description" content="Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-06_074944_Web API 性能分析.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6bb0ff;
+            --success: #4caf50;
+            --error: #f44336;
+            --warning: #ff9800;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-tab {
+            padding: 8px 16px;
+            background-color: var(--bg-tertiary);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-tab:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        
+        .nav-tab.active {
+            background-color: var(--accent);
+        }
+        
+        main {
+            padding: 40px 0;
+        }
+        
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #444;
+        }
+        
+        .result-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 20px;
+        }
+        
+        .metric-card {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .metric-label {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .status-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--error);
+        }
+        
+        .status-warning {
+            background-color: rgba(255, 152, 0, 0.2);
+            color: var(--warning);
+        }
+        
+        .code-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 20px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+            position: relative;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background-color: var(--bg-secondary);
+            border: none;
+            border-radius: 4px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .error-list {
+            margin-top: 20px;
+        }
+        
+        .error-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .error-code {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        
+        .error-message {
+            margin-bottom: 8px;
+        }
+        
+        .error-solution {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        
+        .log-analysis {
+            margin-top: 20px;
+        }
+        
+        .log-result {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        
+        .highlight {
+            background-color: rgba(74, 158, 255, 0.2);
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            padding: 16px 24px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .history-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .history-item:hover {
+            background-color: #333;
+        }
+        
+        .history-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .history-url {
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+        
+        .history-method {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: var(--bg-secondary);
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        
+        .history-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .history-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: var(--success);
+        }
+        
+        .history-error {
+            background-color: rgba(244, 67, 54, 0.2);
+            color: var(--error);
+        }
+        
+        .history-response-time {
+            margin-left: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .clear-history-btn {
+            margin-top: 16px;
+            background-color: var(--error);
+        }
+        
+        .clear-history-btn:hover {
+            background-color: #e53935;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            .nav-tabs {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">API Performance Analyzer</div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-section="api-performance">API Performance</button>
+                    <button class="nav-tab" data-section="request-response">Request & Response</button>
+                    <button class="nav-tab" data-section="test-code">Test Code Generator</button>
+                    <button class="nav-tab" data-section="error-lookup">Error Lookup</button>
+                    <button class="nav-tab" data-section="log-analysis">Log Analysis</button>
+                    <button class="nav-tab" data-section="history">History</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- API Performance Analysis Section -->
+        <section id="api-performance" class="section active">
+            <h1 class="section-title">API Performance Analysis</h1>
+            <div class="card">
+                <div class="form-group">
+                    <label for="api-url">API URL</label>
+                    <input type="text" id="api-url" placeholder="https://httpbin.org/get">
+                </div>
+                <div class="form-group">
+                    <label for="api-method">HTTP Method</label>
+                    <select id="api-method">
+                        <option value="GET">GET</option>
+                        <option value="POST">POST</option>
+                        <option value="PUT">PUT</option>
+                        <option value="DELETE">DELETE</option>
+                        <option value="PATCH">PATCH</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="api-headers">Headers (JSON format)</label>
+                    <textarea id="api-headers" placeholder='{"Content-Type": "application/json", "Authorization": "Bearer token"}'></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="api-body">Request Body</label>
+                    <textarea id="api-body" placeholder='{"key": "value"}'></textarea>
+                </div>
+                <button class="btn" id="test-api-btn">Test API Performance</button>
+            </div>
+            
+            <div id="api-performance-results" class="card" style="display: none;">
+                <h2>Performance Metrics</h2>
+                <div class="metrics">
+                    <div class="metric-card">
+                        <div class="metric-value" id="response-time">-</div>
+                        <div class="metric-label">Response Time (ms)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="status-code">-</div>
+                        <div class="metric-label">Status Code</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="response-size">-</div>
+                        <div class="metric-label">Response Size (KB)</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="success-rate">-</div>
+                        <div class="metric-label">Success Rate</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Response Body</label>
+                    <div id="api-response-body" class="result-box"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Request & Response Section -->
+        <section id="request-response" class="section">
+            <h1 class="section-title">Request & Response Viewer</h1>
+            <div class="card">
+                <div class="form-group">
+                    <label for="request-url">Request URL</label>
+                    <input type="text" id="request-url" placeholder="https://httpbin.org/get">
+                </div>
+                <div class="form-group">
+                    <label for="request-params">Request Parameters (JSON format)</label>
+                    <textarea id="request-params" placeholder='{"param1": "value1", "param2": "value2"}'></textarea>
+                </div>
+                <button class="btn" id="send-request-btn">Send Request</button>
+            </div>
+            
+            <div id="request-response-results" class="card" style="display: none;">
+                <h2>Response Details</h2>
+                <div class="form-group">
+                    <label>Status</label>
+                    <div id="request-status"></div>
+                </div>
+                <div class="form-group">
+                    <label>Response Headers</label>
+                    <div id="request-headers" class="result-box"></div>
+                </div>
+                <div class="form-group">
+                    <label>Response Body</label>
+                    <div id="request-body" class="result-box"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Test Code Generator Section -->
+        <section id="test-code" class="section">
+            <h1 class="section-title">Test Code Generator</h1>
+            <div class="card">
+                <div class="form-group">
+                    <label for="request-example">Upload Request Example (JSON file)</label>
+                    <input type="file" id="request-example" accept=".json">
+                </div>
+                <div class="form-group">
+                    <label for="test-framework">Test Framework</label>
+                    <select id="test-framework">
+                        <option value="axios">Axios</option>
+                        <option value="fetch">Fetch API</option>
+                        <option value="jquery">jQuery AJAX</option>
+                        <option value="node">Node.js HTTP</option>
+                    </select>
+                </div>
+                <button class="btn" id="generate-code-btn">Generate Test Code</button>
+            </div>
+            
+            <div id="test-code-results" class="card" style="display: none;">
+                <h2>Generated Test Code</h2>
+                <div class="code-box">
+                    <button class="copy-btn" id="copy-code-btn">Copy Code</button>
+                    <pre id="generated-code"></pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Error Lookup Section -->
+        <section id="error-lookup" class="section">
+            <h1 class="section-title">Error Code Lookup</h1>
+            <div class="card">
+                <div class="form-group">
+                    <label for="error-code">HTTP Error Code</label>
+                    <input type="text" id="error-code" placeholder="404">
+                </div>
+                <button class="btn" id="lookup-error-btn">Lookup Error</button>
+            </div>
+            
+            <div id="error-lookup-results" class="card" style="display: none;">
+                <h2>Error Information</h2>
+                <div id="error-details"></div>
+            </div>
+        </section>
+
+        <!-- Log Analysis Section -->
+        <section id="log-analysis" class="section">
+            <h1 class="section-title">Log Error Analysis</h1>
+            <div class="card">
+                <div class="form-group">
+                    <label for="log-input">Log Fragment</label>
+                    <textarea id="log-input" placeholder="Paste your log fragment here..."></textarea>
+                </div>
+                <button class="btn" id="analyze-log-btn">Analyze Log</button>
+            </div>
+            
+            <div id="log-analysis-results" class="card" style="display: none;">
+                <h2>Analysis Results</h2>
+                <div id="log-details"></div>
+            </div>
+        </section>
+
+        <!-- History Section -->
+        <section id="history" class="section">
+            <h1 class="section-title">API Test History</h1>
+            <div class="card">
+                <div id="history-list"></div>
+                <button class="btn btn-secondary clear-history-btn" id="clear-history-btn">Clear History</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Navigation functionality
+        const navTabs = document.querySelectorAll('.nav-tab');
+        const sections = document.querySelectorAll('.section');
+        
+        navTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetSection = tab.getAttribute('data-section');
+                
+                // Update active tab
+                navTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Show target section
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetSection) {
+                        section.classList.add('active');
+                    }
+                });
+                
+                // If switching to history section, load history
+                if (targetSection === 'history') {
+                    loadHistory();
+                }
+            });
+        });
+        
+        // Toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        // History management
+        function saveToHistory(testData) {
+            let history = JSON.parse(localStorage.getItem('apiTestHistory') || '[]');
+            
+            const newRecord = {
+                id: Date.now(),
+                date: new Date().toISOString(),
+                url: testData.url,
+                method: testData.method,
+                status: testData.status,
+                responseTime: testData.responseTime,
+                responseSize: testData.responseSize,
+                success: testData.success
+            };
+            
+            history.unshift(newRecord);
+            
+            // Keep only the last 50 records
+            if (history.length > 50) {
+                history = history.slice(0, 50);
+            }
+            
+            localStorage.setItem('apiTestHistory', JSON.stringify(history));
+        }
+        
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('apiTestHistory') || '[]');
+            const historyList = document.getElementById('history-list');
+            
+            if (history.length === 0) {
+                historyList.innerHTML = '<p style="color: var(--text-secondary);">No test history available.</p>';
+                return;
+            }
+            
+            let html = '';
+            
+            history.forEach(item => {
+                const date = new Date(item.date);
+                const dateStr = date.toLocaleString();
+                
+                html += `
+                    <div class="history-item" data-id="${item.id}">
+                        <div class="history-date">${dateStr}</div>
+                        <div class="history-url">${item.url}</div>
+                        <div>
+                            <span class="history-method">${item.method}</span>
+                            <span class="history-status ${item.success ? 'history-success' : 'history-error'}">
+                                ${item.status} ${item.success ? 'Success' : 'Failed'}
+                            </span>
+                            <span class="history-response-time">${item.responseTime}ms</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            historyList.innerHTML = html;
+            
+            // Add click handlers to history items
+            document.querySelectorAll('.history-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = parseInt(item.getAttribute('data-id'));
+                    const history = JSON.parse(localStorage.getItem('apiTestHistory') || '[]');
+                    const record = history.find(h => h.id === id);
+                    
+                    if (record) {
+                        // Switch to API Performance section
+                        navTabs.forEach(t => t.classList.remove('active'));
+                        document.querySelector('[data-section="api-performance"]').classList.add('active');
+                        
+                        sections.forEach(section => {
+                            section.classList.remove('active');
+                        });
+                        document.getElementById('api-performance').classList.add('active');
+                        
+                        // Populate form with history data
+                        document.getElementById('api-url').value = record.url;
+                        document.getElementById('api-method').value = record.method;
+                        
+                        // Show toast notification
+                        showToast('Loaded test from history');
+                    }
+                });
+            });
+        }
+        
+        // Clear history
+        document.getElementById('clear-history-btn').addEventListener('click', () => {
+            if (confirm('Are you sure you want to clear all test history?')) {
+                localStorage.removeItem('apiTestHistory');
+                loadHistory();
+                showToast('History cleared');
+            }
+        });
+        
+        // API Performance Analysis
+        document.getElementById('test-api-btn').addEventListener('click', async () => {
+            const url = document.getElementById('api-url').value.trim();
+            const method = document.getElementById('api-method').value;
+            const headersText = document.getElementById('api-headers').value.trim();
+            const bodyText = document.getElementById('api-body').value.trim();
+            
+            if (!url) {
+                showToast('Please enter an API URL');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('api-performance-results');
+            resultsDiv.style.display = 'block';
+            
+            // Show loading state
+            document.getElementById('test-api-btn').innerHTML = 'Testing API<span class="loading"></span>';
+            document.getElementById('test-api-btn').disabled = true;
+            
+            try {
+                // Parse headers
+                let headers = {};
+                if (headersText) {
+                    headers = JSON.parse(headersText);
+                }
+                
+                // Parse body
+                let body = null;
+                if (bodyText && (method === 'POST' || method === 'PUT' || method === 'PATCH')) {
+                    body = bodyText;
+                }
+                
+                // Measure performance
+                const startTime = performance.now();
+                
+                const response = await fetch(url, {
+                    method: method,
+                    headers: headers,
+                    body: body,
+                    mode: 'cors'
+                });
+                
+                const endTime = performance.now();
+                const responseTime = Math.round(endTime - startTime);
+                
+                // Get response size
+                const responseText = await response.text();
+                const responseSize = (new Blob([responseText]).size / 1024).toFixed(2);
+                
+                // Update metrics
+                document.getElementById('response-time').textContent = responseTime;
+                document.getElementById('status-code').textContent = response.status;
+                document.getElementById('response-size').textContent = responseSize;
+                document.getElementById('success-rate').textContent = response.ok ? '100%' : '0%';
+                
+                // Format response body
+                let formattedResponse = responseText;
+                try {
+                    const json = JSON.parse(responseText);
+                    formattedResponse = JSON.stringify(json, null, 2);
+                } catch (e) {
+                    // Not JSON, keep as is
+                }
+                
+                document.getElementById('api-response-body').textContent = formattedResponse;
+                
+                // Add status badge
+                const statusBadge = document.createElement('span');
+                statusBadge.className = `status-badge ${response.ok ? 'status-success' : 'status-error'}`;
+                statusBadge.textContent = response.ok ? 'Success' : 'Failed';
+                document.getElementById('api-performance-results').insertBefore(statusBadge, document.querySelector('.metrics'));
+                
+                // Save to history
+                saveToHistory({
+                    url: url,
+                    method: method,
+                    status: response.status,
+                    responseTime: responseTime,
+                    responseSize: responseSize,
+                    success: response.ok
+                });
+                
+            } catch (error) {
+                document.getElementById('response-time').textContent = 'Error';
+                document.getElementById('status-code').textContent = 'N/A';
+                document.getElementById('response-size').textContent = '0';
+                document.getElementById('success-rate').textContent = '0%';
+                document.getElementById('api-response-body').textContent = error.message;
+                
+                // Add error badge
+                const statusBadge = document.createElement('span');
+                statusBadge.className = 'status-badge status-error';
+                statusBadge.textContent = 'Error';
+                document.getElementById('api-performance-results').insertBefore(statusBadge, document.querySelector('.metrics'));
+                
+                // Save to history
+                saveToHistory({
+                    url: url,
+                    method: method,
+                    status: 'Error',
+                    responseTime: 0,
+                    responseSize: 0,
+                    success: false
+                });
+                
+                showToast('API test failed: ' + error.message);
+            } finally {
+                // Reset button
+                document.getElementById('test-api-btn').innerHTML = 'Test API Performance';
+                document.getElementById('test-api-btn').disabled = false;
+            }
+        });
+        
+        // Request & Response Viewer
+        document.getElementById('send-request-btn').addEventListener('click', async () => {
+            const url = document.getElementById('request-url').value.trim();
+            const paramsText = document.getElementById('request-params').value.trim();
+            
+            if (!url) {
+                showToast('Please enter a request URL');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('request-response-results');
+            resultsDiv.style.display = 'block';
+            
+            // Show loading state
+            document.getElementById('send-request-btn').innerHTML = 'Sending Request<span class="loading"></span>';
+            document.getElementById('send-request-btn').disabled = true;
+            
+            try {
+                // Parse parameters
+                let params = {};
+                if (paramsText) {
+                    params = JSON.parse(paramsText);
+                }
+                
+                // Build URL with parameters
+                const urlObj = new URL(url);
+                Object.keys(params).forEach(key => {
+                    urlObj.searchParams.append(key, params[key]);
+                });
+                
+                // Send request
+                const startTime = performance.now();
+                const response = await fetch(urlObj.toString(), {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                const endTime = performance.now();
+                
+                // Get response
+                const responseText = await response.text();
+                
+                // Display results
+                document.getElementById('request-status').innerHTML = `
+                    <span class="status-badge ${response.ok ? 'status-success' : 'status-error'}">
+                        ${response.status} ${response.statusText}
+                    </span>
+                    <div style="margin-top: 8px;">
+                        Response Time: ${Math.round(endTime - startTime)}ms
+                    </div>
+                `;
+                
+                // Display headers
+                const headersObj = {};
+                response.headers.forEach((value, name) => {
+                    headersObj[name] = value;
+                });
+                document.getElementById('request-headers').textContent = JSON.stringify(headersObj, null, 2);
+                
+                // Format response body
+                let formattedResponse = responseText;
+                try {
+                    const json = JSON.parse(responseText);
+                    formattedResponse = JSON.stringify(json, null, 2);
+                } catch (e) {
+                    // Not JSON, keep as is
+                }
+                document.getElementById('request-body').textContent = formattedResponse;
+                
+            } catch (error) {
+                document.getElementById('request-status').innerHTML = `
+                    <span class="status-badge status-error">Error</span>
+                    <div style="margin-top: 8px;">
+                        ${error.message}
+                    </div>
+                `;
+                document.getElementById('request-headers').textContent = '{}';
+                document.getElementById('request-body').textContent = error.message;
+                
+                showToast('Request failed: ' + error.message);
+            } finally {
+                // Reset button
+                document.getElementById('send-request-btn').innerHTML = 'Send Request';
+                document.getElementById('send-request-btn').disabled = false;
+            }
+        });
+        
+        // Test Code Generator
+        document.getElementById('generate-code-btn').addEventListener('click', () => {
+            const fileInput = document.getElementById('request-example');
+            const framework = document.getElementById('test-framework').value;
+            
+            if (!fileInput.files.length) {
+                showToast('Please upload a request example file');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const requestExample = JSON.parse(e.target.result);
+                    let generatedCode = '';
+                    
+                    switch (framework) {
+                        case 'axios':
+                            generatedCode = generateAxiosCode(requestExample);
+                            break;
+                        case 'fetch':
+                            generatedCode = generateFetchCode(requestExample);
+                            break;
+                        case 'jquery':
+                            generatedCode = generateJqueryCode(requestExample);
+                            break;
+                        case 'node':
+                            generatedCode = generateNodeCode(requestExample);
+                            break;
+                    }
+                    
+                    document.getElementById('generated-code').textContent = generatedCode;
+                    document.getElementById('test-code-results').style.display = 'block';
+                    
+                } catch (error) {
+                    showToast('Error parsing JSON file: ' + error.message);
+                }
+            };
+            
+            reader.readAsText(file);
+        });
+        
+        function generateAxiosCode(requestExample) {
+            let code = `// Axios test code\n`;
+            code += `const axios = require('axios');\n\n`;
+            code += `async function testAPI() {\n`;
+            code += `  try {\n`;
+            code += `    const response = await axios({\n`;
+            
+            if (requestExample.url) {
+                code += `      url: '${requestExample.url}',\n`;
+            }
+            
+            if (requestExample.method) {
+                code += `      method: '${requestExample.method.toUpperCase()}',\n`;
+            }
+            
+            if (requestExample.headers) {
+                code += `      headers: ${JSON.stringify(requestExample.headers, null, 2)},\n`;
+            }
+            
+            if (requestExample.data) {
+                code += `      data: ${JSON.stringify(requestExample.data, null, 2)},\n`;
+            }
+            
+            code += `    });\n\n`;
+            code += `    console.log('Status:', response.status);\n`;
+            code += `    console.log('Headers:', response.headers);\n`;
+            code += `    console.log('Data:', response.data);\n`;
+            code += `  } catch (error) {\n`;
+            code += `    console.error('Error:', error.message);\n`;
+            code += `  }\n`;
+            code += `}\n\n`;
+            code += `testAPI();\n`;
+            
+            return code;
+        }
+        
+        function generateFetchCode(requestExample) {
+            let code = `// Fetch API test code\n\n`;
+            code += `async function testAPI() {\n`;
+            code += `  try {\n`;
+            code += `    const options = {\n`;
+            code += `      method: '${requestExample.method ? requestExample.method.toUpperCase() : 'GET'}',\n`;
+            
+            if (requestExample.headers) {
+                code += `      headers: ${JSON.stringify(requestExample.headers, null, 2)},\n`;
+            }
+            
+            if (requestExample.data) {
+                code += `      body: JSON.stringify(${JSON.stringify(requestExample.data, null, 2)}),\n`;
+            }
+            
+            code += `    };\n\n`;
+            code += `    const response = await fetch('${requestExample.url || 'https://httpbin.org/get'}', options);\n\n`;
+            code += `    const data = await response.json();\n\n`;
+            code += `    console.log('Status:', response.status);\n`;
+            code += `    console.log('Headers:', response.headers);\n`;
+            code += `    console.log('Data:', data);\n`;
+            code += `  } catch (error) {\n`;
+            code += `    console.error('Error:', error.message);\n`;
+            code += `  }\n`;
+            code += `}\n\n`;
+            code += `testAPI();\n`;
+            
+            return code;
+        }
+        
+        function generateJqueryCode(requestExample) {
+            let code = `// jQuery AJAX test code\n\n`;
+            code += `$.ajax({\n`;
+            code += `  url: '${requestExample.url || 'https://httpbin.org/get'}',\n`;
+            code += `  method: '${requestExample.method ? requestExample.method.toUpperCase() : 'GET'}',\n`;
+            
+            if (requestExample.headers) {
+                code += `  headers: ${JSON.stringify(requestExample.headers, null, 2)},\n`;
+            }
+            
+            if (requestExample.data) {
+                code += `  data: ${JSON.stringify(requestExample.data, null, 2)},\n`;
+            }
+            
+            code += `  success: function(response, status, xhr) {\n`;
+            code += `    console.log('Status:', xhr.status);\n`;
+            code += `    console.log('Headers:', xhr.getAllResponseHeaders());\n`;
+            code += `    console.log('Data:', response);\n`;
+            code += `  },\n`;
+            code += `  error: function(xhr, status, error) {\n`;
+            code += `    console.error('Error:', error);\n`;
+            code += `  }\n`;
+            code += `});\n`;
+            
+            return code;
+        }
+        
+        function generateNodeCode(requestExample) {
+            let code = `// Node.js HTTP test code\n\n`;
+            code += `const https = require('https');\n\n`;
+            code += `const options = {\n`;
+            code += `  hostname: '${new URL(requestExample.url || 'https://httpbin.org/get').hostname}',\n`;
+            code += `  port: ${new URL(requestExample.url || 'https://httpbin.org/get').port || (requestExample.url?.includes('https') ? 443 : 80)},\n`;
+            code += `  path: '${new URL(requestExample.url || 'https://httpbin.org/get').pathname}',\n`;
+            code += `  method: '${requestExample.method ? requestExample.method.toUpperCase() : 'GET'}',\n`;
+            
+            if (requestExample.headers) {
+                code += `  headers: ${JSON.stringify(requestExample.headers, null, 2)},\n`;
+            }
+            
+            code += `};\n\n`;
+            code += `const req = https.request(options, (res) => {\n`;
+            code += `  console.log('Status:', res.statusCode);\n`;
+            code += `  console.log('Headers:', res.headers);\n\n`;
+            code += `  res.on('data', (d) => {\n`;
+            code += `    process.stdout.write(d);\n`;
+            code += `  });\n`;
+            code += `});\n\n`;
+            code += `req.on('error', (error) => {\n`;
+            code += `  console.error('Error:', error);\n`;
+            code += `});\n\n`;
+            
+            if (requestExample.data) {
+                code += `req.write(JSON.stringify(${JSON.stringify(requestExample.data, null, 2)}));\n`;
+            }
+            
+            code += `req.end();\n`;
+            
+            return code;
+        }
+        
+        // Copy code functionality
+        document.getElementById('copy-code-btn').addEventListener('click', () => {
+            const codeElement = document.getElementById('generated-code');
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('Code copied to clipboard');
+        });
+        
+        // Error Lookup
+        document.getElementById('lookup-error-btn').addEventListener('click', () => {
+            const errorCode = document.getElementById('error-code').value.trim();
+            
+            if (!errorCode) {
+                showToast('Please enter an error code');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('error-lookup-results');
+            resultsDiv.style.display = 'block';
+            
+            // Error database
+            const errorDatabase = {
+                '400': {
+                    title: 'Bad Request',
+                    message: 'The server cannot or will not process the request due to something that is perceived to be a client error.',
+                    solutions: [
+                        'Check your request syntax',
+                        'Ensure all required parameters are provided',
+                        'Validate input data format'
+                    ]
+                },
+                '401': {
+                    title: 'Unauthorized',
+                    message: 'The client must authenticate itself to get the requested response.',
+                    solutions: [
+                        'Check your authentication credentials',
+                        'Ensure your token is valid and not expired',
+                        'Verify the authorization header format'
+                    ]
+                },
+                '403': {
+                    title: 'Forbidden',
+                    message: 'The client does not have access rights to the content.',
+                    solutions: [
+                        'Check your permissions for this resource',
+                        'Contact the API administrator if you believe this is an error',
+                        'Verify if you have the necessary API access level'
+                    ]
+                },
+                '404': {
+                    title: 'Not Found',
+                    message: 'The server cannot find the requested resource.',
+                    solutions: [
+                        'Check if the endpoint URL is correct',
+                        'Verify the resource exists',
+                        'Check for typos in the request path'
+                    ]
+                },
+                '500': {
+                    title: 'Internal Server Error',
+                    message: 'The server has encountered a situation it does not know how to handle.',
+                    solutions: [
+                        'Wait and try again later',
+                        'Check the service status page',
+                        'Contact the API provider if the issue persists'
+                    ]
+                },
+                '502': {
+                    title: 'Bad Gateway',
+                    message: 'The server, while acting as a gateway or proxy, received an invalid response from an upstream server.',
+                    solutions: [
+                        'Try again after some time',
+                        'Check if the upstream service is down',
+                        'Contact the API provider'
+                    ]
+                },
+                '503': {
+                    title: 'Service Unavailable',
+                    message: 'The server is not ready to handle the request.',
+                    solutions: [
+                        'Try again after some time',
+                        'Check the service status page',
+                        'Contact the API provider if the issue persists'
+                    ]
+                },
+                '504': {
+                    title: 'Gateway Timeout',
+                    message: 'The server did not receive a timely response from an upstream server.',
+                    solutions: [
+                        'Try again after some time',
+                        'Check if the upstream service is slow',
+                        'Contact the API provider'
+                    ]
+                }
+            };
+            
+            const errorInfo = errorDatabase[errorCode] || {
+                title: 'Unknown Error Code',
+                message: 'No information available for this error code.',
+                solutions: [
+                    'Check the API documentation',
+                    'Contact the API provider for more information'
+                ]
+            };
+            
+            let html = `<div class="error-item">`;
+            html += `<div class="error-code">${errorCode} - ${errorInfo.title}</div>`;
+            html += `<div class="error-message">${errorInfo.message}</div>`;
+            html += `<div class="error-solutions"><strong>Solutions:</strong><ul>`;
+            
+            errorInfo.solutions.forEach(solution => {
+                html += `<li>${solution}</li>`;
+            });
+            
+            html += `</ul></div>`;
+            html += `</div>`;
+            
+            document.getElementById('error-details').innerHTML = html;
+        });
+        
+        // Log Analysis
+        document.getElementById('analyze-log-btn').addEventListener('click', () => {
+            const logInput = document.getElementById('log-input').value.trim();
+            
+            if (!logInput) {
+                showToast('Please enter a log fragment');
+                return;
+            }
+            
+            const resultsDiv = document.getElementById('log-analysis-results');
+            resultsDiv.style.display = 'block';
+            
+            // Common API error patterns
+            const errorPatterns = [
+                {
+                    name: 'HTTP Error Codes',
+                    regex: /\b(4\d{2}|5\d{2})\s-\s(.+?)\s/g,
+                    examples: ['404 - Not Found', '500 - Internal Server Error']
+                },
+                {
+                    name: 'Timeout Errors',
+                    regex: /(timeout|timed\sout|ETIMEDOUT|TIMEOUT)/gi,
+                    examples: ['ETIMEDOUT', 'Connection timed out']
+                },
+                {
+                    name: 'Connection Errors',
+                    regex: /(ECONNREFUSED|ENOTFOUND|ECONNRESET)/gi,
+                    examples: ['ECONNREFUSED', 'ENOTFOUND']
+                },
+                {
+                    name: 'Authentication Errors',
+                    regex: /(unauthorized|forbidden|invalid\s+token|invalid\s+credential)/gi,
+                    examples: ['Unauthorized', 'Invalid token']
+                },
+                {
+                    name: 'Rate Limiting',
+                    regex: /(rate\s+limit|too\s+many\s+requests|429)/gi,
+                    examples: ['429 - Too Many Requests', 'Rate limit exceeded']
+                },
+                {
+                    name: 'Request Validation',
+                    regex: /(bad\s+request|validation\s+error|invalid\s+parameter)/gi,
+                    examples: ['400 - Bad Request', 'Validation error']
+                }
+            ];
+            
+            let analysisHtml = `<div class="log-analysis">`;
+            analysisHtml += `<h3>Detected Issues</h3>`;
+            
+            let hasIssues = false;
+            
+            errorPatterns.forEach(pattern => {
+                const matches = logInput.match(pattern.regex);
+                if (matches) {
+                    hasIssues = true;
+                    analysisHtml += `<div class="error-item">`;
+                    analysisHtml += `<div class="error-code">${pattern.name}</div>`;
+                    analysisHtml += `<div class="error-message">Found ${matches.length} occurrence(s)</div>`;
+                    analysisHtml += `<div class="error-solutions"><strong>Suggested Actions:</strong><ul>`;
+                    
+                    switch (pattern.name) {
+                        case 'HTTP Error Codes':
+                            analysisHtml += `<li>Check the API documentation for the specific error code</li>`;
+                            analysisHtml += `<li>Verify your request parameters and format</li>`;
+                            break;
+                        case 'Timeout Errors':
+                            analysisHtml += `<li>Increase timeout values in your application</li>`;
+                            analysisHtml += `<li>Check network connectivity to the API server</li>`;
+                            break;
+                        case 'Connection Errors':
+                            analysisHtml += `<li>Verify the API endpoint URL is correct</li>`;
+                            analysisHtml += `<li>Check if the API server is running</li>`;
+                            break;
+                        case 'Authentication Errors':
+                            analysisHtml += `<li>Check your authentication credentials</li>`;
+                            analysisHtml += `<li>Ensure your token is valid and not expired</li>`;
+                            break;
+                        case 'Rate Limiting':
+                            analysisHtml += `<li>Implement exponential backoff in your application</li>`;
+                            analysisHtml += `<li>Reduce the frequency of your requests</li>`;
+                            break;
+                        case 'Request Validation':
+                            analysisHtml += `<li>Validate your request data before sending</li>`;
+                            analysisHtml += `<li>Check the API documentation for required parameters</li>`;
+                            break;
+                    }
+                    
+                    analysisHtml += `</ul></div>`;
+                    analysisHtml += `</div>`;
+                }
+            });
+            
+            if (!hasIssues) {
+                analysisHtml += `<div class="log-result">No obvious API errors detected in the log fragment.</div>`;
+                analysisHtml += `<div class="log-result" style="margin-top: 16px;">If you're experiencing issues, check for:</div>`;
+                analysisHtml += `<ul style="margin-top: 8px; padding-left: 20px;">`;
+                analysisHtml += `<li>Network connectivity problems</li>`;
+                analysisHtml += `<li>API service status</li>`;
+                analysisHtml += `<li>Request/response timing issues</li>`;
+                analysisHtml += `<li>Application logic errors</li>`;
+                analysisHtml += `</ul>`;
+            }
+            
+            // Highlight API-related parts
+            analysisHtml += `<div class="log-result" style="margin-top: 24px;">`;
+            analysisHtml += `<h3>Highlighted API References</h3>`;
+            analysisHtml += `<div style="background-color: var(--bg-tertiary); padding: 12px; border-radius: 4px; margin-top: 12px; word-break: break-all;">`;
+            
+            let highlightedLog = logInput;
+            const urlPattern = /https?:\/\/[^\s]+/gi;
+            const highlightedLogWithUrls = highlightedLog.replace(urlPattern, '<span class="highlight">$&</span>');
+            
+            analysisHtml += highlightedLogWithUrls;
+            analysisHtml += `</div>`;
+            analysisHtml += `</div>`;
+            
+            analysisHtml += `</div>`;
+            
+            document.getElementById('log-details').innerHTML = analysisHtml;
+        });
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Web API Performance Analyzer":"Web API Performance Analyzer","API Performance Analyzer":"API Performance Analyzer","API Performance":"API Performance","Request \u0026 Response":"Request \u0026 Response","Test Code Generator":"Test Code Generator","Error Lookup":"Error Lookup","Log Analysis":"Log Analysis","History":"History","API Performance Analysis":"API Performance Analysis","API URL":"API URL","HTTP Method":"HTTP Method","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Headers (JSON format)":"Headers (JSON format)","Request Body":"Request Body","Test API Performance":"Test API Performance","Performance Metrics":"Performance Metrics","Response Time (ms)":"Response Time (ms)","Status Code":"Status Code","Response Size (KB)":"Response Size (KB)","Success Rate":"Success Rate","Response Body":"Response Body","Request \u0026 Response Viewer":"Request \u0026 Response Viewer","Request URL":"Request URL","Request Parameters (JSON format)":"Request Parameters (JSON format)","Send Request":"Send Request","Response Details":"Response Details","Status":"Status","Response Headers":"Response Headers","Upload Request Example (JSON file)":"Upload Request Example (JSON file)","Test Framework":"Test Framework","Axios":"Axios","Fetch API":"Fetch API","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","Generate Test Code":"Generate Test Code","Generated Test Code":"Generated Test Code","Copy Code":"Copy Code","Error Code Lookup":"Error Code Lookup","HTTP Error Code":"HTTP Error Code","Lookup Error":"Lookup Error","Error Information":"Error Information","Log Error Analysis":"Log Error Analysis","Log Fragment":"Log Fragment","Analyze Log":"Analyze Log","Analysis Results":"Analysis Results","API Test History":"API Test History","Clear History":"Clear History","Error":"Error","Solutions:":"Solutions:","Detected Issues":"Detected Issues","occurrence(s)":"occurrence(s)","Suggested Actions:":"Suggested Actions:","Check the API documentation for the specific error code":"Check the API documentation for the specific error code","Verify your request parameters and format":"Verify your request parameters and format","Increase timeout values in your application":"Increase timeout values in your application","Check network connectivity to the API server":"Check network connectivity to the API server","Verify the API endpoint URL is correct":"Verify the API endpoint URL is correct","Check if the API server is running":"Check if the API server is running","Check your authentication credentials":"Check your authentication credentials","Ensure your token is valid and not expired":"Ensure your token is valid and not expired","Implement exponential backoff in your application":"Implement exponential backoff in your application","Reduce the frequency of your requests":"Reduce the frequency of your requests","Validate your request data before sending":"Validate your request data before sending","Check the API documentation for required parameters":"Check the API documentation for required parameters","No obvious API errors detected in the log fragment.":"No obvious API errors detected in the log fragment.","If you're experiencing issues, check for:":"If you're experiencing issues, check for:","Network connectivity problems":"Network connectivity problems","API service status":"API service status","Request/response timing issues":"Request/response timing issues","Application logic errors":"Application logic errors","Highlighted API References":"Highlighted API References","https://httpbin.org/get":"https://httpbin.org/get","Paste your log fragment here...":"Paste your log fragment here...","Success":"Success","Failed":"Failed","Loaded test from history":"Loaded test from history","Are you sure you want to clear all test history?":"Are you sure you want to clear all test history?","History cleared":"History cleared","Please enter an API URL":"Please enter an API URL","N/A":"N/A","status-badge status-error":"status-badge status-error","API test failed:":"API test failed:","Please enter a request URL":"Please enter a request URL","margin-top: 8px;":"margin-top: 8px;","Request failed:":"Request failed:","Please upload a request example file":"Please upload a request example file","Error parsing JSON file:":"Error parsing JSON file:","Status:":"Status:","Headers:":"Headers:","Data:":"Data:","Error:":"Error:","Code copied to clipboard":"Code copied to clipboard","Please enter an error code":"Please enter an error code","Bad Request":"Bad Request","The server cannot or will not process the request due to something that is perceived to be a client error.":"The server cannot or will not process the request due to something that is perceived to be a client error.","Check your request syntax":"Check your request syntax","Ensure all required parameters are provided":"Ensure all required parameters are provided","Validate input data format":"Validate input data format","Unauthorized":"Unauthorized","The client must authenticate itself to get the requested response.":"The client must authenticate itself to get the requested response.","Verify the authorization header format":"Verify the authorization header format","Forbidden":"Forbidden","The client does not have access rights to the content.":"The client does not have access rights to the content.","Check your permissions for this resource":"Check your permissions for this resource","Contact the API administrator if you believe this is an error":"Contact the API administrator if you believe this is an error","Verify if you have the necessary API access level":"Verify if you have the necessary API access level","Not Found":"Not Found","The server cannot find the requested resource.":"The server cannot find the requested resource.","Check if the endpoint URL is correct":"Check if the endpoint URL is correct","Verify the resource exists":"Verify the resource exists","Check for typos in the request path":"Check for typos in the request path","Internal Server Error":"Internal Server Error","The server has encountered a situation it does not know how to handle.":"The server has encountered a situation it does not know how to handle.","Wait and try again later":"Wait and try again later","__title__":"Web API Performance Analyzer","No test history available.":"No test history available.","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","req.on(":"req.on(","Check the service status page":"Check the service status page","Contact the API provider if the issue persists":"Contact the API provider if the issue persists","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"The server, while acting as a gateway or proxy, received an invalid response from an upstream server.","Try again after some time":"Try again after some time","Check if the upstream service is down":"Check if the upstream service is down","Contact the API provider":"Contact the API provider","Service Unavailable":"Service Unavailable","The server is not ready to handle the request.":"The server is not ready to handle the request.","Gateway Timeout":"Gateway Timeout","The server did not receive a timely response from an upstream server.":"The server did not receive a timely response from an upstream server.","Check if the upstream service is slow":"Check if the upstream service is slow","Unknown Error Code":"Unknown Error Code","No information available for this error code.":"No information available for this error code.","Check the API documentation":"Check the API documentation","Contact the API provider for more information":"Contact the API provider for more information","Please enter a log fragment":"Please enter a log fragment","HTTP Error Codes":"HTTP Error Codes","Timeout Errors":"Timeout Errors","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"Connection timed out","Connection Errors":"Connection Errors","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"Authentication Errors","Invalid token":"Invalid token","Rate Limiting":"Rate Limiting","Rate limit exceeded":"Rate limit exceeded","Request Validation":"Request Validation","Validation error":"Validation error","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Web API Performance Analyzer":"Web API性能分析器","API Performance Analyzer":"API性能分析器","API Performance":"API性能","Request \u0026 Response":"请求与响应","Test Code Generator":"测试代码生成器","Error Lookup":"错误查找","Log Analysis":"日志分析","History":"历史","API Performance Analysis":"API性能分析","HTTP Method":"HTTP方法","Headers (JSON format)":"头部（JSON格式）","Request Body":"请求体","Test API Performance":"测试API性能","Performance Metrics":"性能指标","Response Time (ms)":"响应时间（毫秒）","Status Code":"状态码","Response Size (KB)":"响应大小（KB）","Success Rate":"成功率","Response Body":"响应体","Request \u0026 Response Viewer":"请求与响应查看器","Request URL":"请求URL","Request Parameters (JSON format)":"请求参数（JSON格式）","Send Request":"发送请求","Response Details":"响应详情","Status":"状态","Response Headers":"响应头部","Upload Request Example (JSON file)":"上传请求示例（JSON文件）","Test Framework":"测试框架","Generate Test Code":"生成测试代码","Generated Test Code":"生成的测试代码","Copy Code":"复制代码","Error Code Lookup":"错误代码查找","HTTP Error Code":"HTTP错误代码","Lookup Error":"查找错误","Error Information":"错误信息","Log Error Analysis":"日志错误分析","Log Fragment":"日志片段","Analyze Log":"分析日志","Analysis Results":"分析结果","API Test History":"API测试历史","Clear History":"清除历史","Error":"错误","Solutions:":"解决方案：","Detected Issues":"检测到的问题","occurrence(s)":"发生次数","Suggested Actions:":"建议操作：","Check the API documentation for the specific error code":"检查特定错误代码的API文档","Verify your request parameters and format":"验证您的请求参数和格式","Increase timeout values in your application":"在您的应用程序中增加超时值","Check network connectivity to the API server":"检查与API服务器的网络连接","Verify the API endpoint URL is correct":"验证API端点URL是否正确","Check if the API server is running":"检查API服务器是否正在运行","Check your authentication credentials":"检查您的认证凭据","Ensure your token is valid and not expired":"确保您的令牌有效且未过期","Implement exponential backoff in your application":"在您的应用程序中实现指数退避","Reduce the frequency of your requests":"减少您的请求频率","Validate your request data before sending":"在发送之前验证您的请求数据","Check the API documentation for required parameters":"检查API文档中所需的参数","No obvious API errors detected in the log fragment.":"在日志片段中没有检测到明显的API错误。","If you're experiencing issues, check for:":"如果您遇到问题，请检查以下内容：","Network connectivity problems":"网络连接问题","API service status":"API服务状态","Request/response timing issues":"请求/响应时间问题","Application logic errors":"应用程序逻辑错误","Highlighted API References":"突出显示的API引用","Paste your log fragment here...":"在此处粘贴您的日志片段...","Success":"成功","Failed":"失败","Loaded test from history":"从历史记录中加载测试","Are you sure you want to clear all test history?":"您确定要清除所有测试历史吗？","History cleared":"历史已清除","Please enter an API URL":"请输入API URL","status-badge status-error":"状态徽章状态错误","API test failed:":"API测试失败：","Please enter a request URL":"请输入请求URL","Request failed:":"请求失败：","Please upload a request example file":"请上传一个请求示例文件","Error parsing JSON file:":"解析JSON文件错误：","Status:":"状态：","Headers:":"头部：","Data:":"数据：","Error:":"错误：","Code copied to clipboard":"代码已复制到剪贴板","Please enter an error code":"请输入错误代码","Bad Request":"无效请求","The server cannot or will not process the request due to something that is perceived to be a client error.":"服务器无法处理请求，因为认为是客户端错误。","Check your request syntax":"检查您的请求语法","Ensure all required parameters are provided":"确保所有必需的参数都已提供","Validate input data format":"验证输入数据格式","Unauthorized":"未授权","The client must authenticate itself to get the requested response.":"客户端必须进行身份验证才能获取请求的响应。","Verify the authorization header format":"验证授权头格式","Forbidden":"禁止","The client does not have access rights to the content.":"客户端没有访问内容的权限。","Check your permissions for this resource":"检查您对此资源的权限","Contact the API administrator if you believe this is an error":"如果您认为这是一个错误，请联系API管理员","Verify if you have the necessary API access level":"验证您是否有必要的API访问级别","Not Found":"未找到","The server cannot find the requested resource.":"服务器无法找到请求的资源。","Check if the endpoint URL is correct":"检查端点URL是否正确","Verify the resource exists":"验证资源是否存在","Check for typos in the request path":"检查请求路径中的拼写错误","Internal Server Error":"内部服务器错误","The server has encountered a situation it does not know how to handle.":"服务器遇到了它不知道如何处理的情况。","Wait and try again later":"稍等一下，稍后再试","__title__":"Web API性能分析器","No test history available.":"无测试历史记录。","完全免费":"完全免费","提意见":"提建议","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"免费在线工具：Web API 性能分析器。无需注册，无需付费 — 永久免费。","og:title":"og:标题","og:description":"og:描述","og:type":"og:类型","og:url":"og:URL","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"当前部分","Service Unavailable":"服务不可用","The server is not ready to handle the request.":"服务器尚未准备好处理请求。","Gateway Timeout":"网关超时","The server did not receive a timely response from an upstream server.":"服务器未及时收到上游服务器的响应。","Check if the upstream service is slow":"检查上游服务是否缓慢","Unknown Error Code":"未知错误代码","No information available for this error code.":"此错误代码没有可用信息。","Check the API documentation":"检查API文档","Contact the API provider for more information":"联系API提供商获取更多信息","Please enter a log fragment":"请输入日志片段","HTTP Error Codes":"HTTP错误代码","Timeout Errors":"超时错误","ETIMEDOUT":"连接超时","Connection timed out":"连接超时","Connection Errors":"连接错误","ECONNREFUSED":"连接拒绝","ENOTFOUND":"未找到主机","Authentication Errors":"认证错误","Invalid token":"无效令牌","Rate Limiting":"速率限制","Rate limit exceeded":"速率限制超出","Request Validation":"请求验证","Validation error":"验证错误","PingFang SC":"PingFang SC","Microsoft YaHei":"微软雅黑","API URL":"API URL","GET":"获取","POST":"提交","PUT":"更新","DELETE":"删除","PATCH":"修补","Axios":"Axios","Fetch API":"Fetch API","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","Content-Type":"内容类型","application/json":"application/json","Authorization":"授权","Bearer token":"Bearer令牌","Contact the API provider if the issue persists":"如果问题持续存在，请联系API提供商","Bad Gateway":"坏网关","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"服务器在充当网关或代理时，从上游服务器接收到了无效响应。","Try again after some time":"稍后再试","Check if the upstream service is down":"检查上游服务是否已关闭","Contact the API provider":"联系API提供商","req.on(":"调用","Check the service status page":"检查服务状态页面"},"es":{"Web API Performance Analyzer":"Analizador de Rendimiento de API Web","API Performance Analyzer":"Analizador de Rendimiento de API","API Performance":"Rendimiento de API","Request \u0026 Response":"Solicitud y Respuesta","Test Code Generator":"Generador de Código de Pruebas","Error Lookup":"Búsqueda de Error","Log Analysis":"Análisis de Registro","History":"Historial","API Performance Analysis":"Análisis de Rendimiento de API","API URL":"URL de API","HTTP Method":"Método HTTP","Headers (JSON format)":"Encabezados (formato JSON)","Request Body":"Cuerpo de Solicitud","Test API Performance":"Pruebas de Rendimiento de API","Performance Metrics":"Métricas de Rendimiento","Response Time (ms)":"Tiempo de Respuesta (ms)","Status Code":"Código de Estado","Response Size (KB)":"Tamaño de Respuesta (KB)","Success Rate":"Tasa de Éxito","Response Body":"Cuerpo de Respuesta","Request \u0026 Response Viewer":"Visor de Solicitud y Respuesta","Request URL":"URL de Solicitud","Request Parameters (JSON format)":"Parámetros de Solicitud (formato JSON)","Send Request":"Enviar Solicitud","Response Details":"Detalles de Respuesta","Status":"Estado","Response Headers":"Encabezados de Respuesta","Upload Request Example (JSON file)":"Ejemplo de Solicitud de Subida (archivo JSON)","Test Framework":"Marco de Pruebas","Fetch API":"API Fetch","Node.js HTTP":"HTTP Node.js","Generate Test Code":"Generar Código de Pruebas","Generated Test Code":"Código de Pruebas Generado","Copy Code":"Copiar Código","Error Code Lookup":"Búsqueda de Código de Error","HTTP Error Code":"Código de Error HTTP","Lookup Error":"Búsqueda de Error","Error Information":"Información de Error","Log Error Analysis":"Análisis de Error de Registro","Log Fragment":"Fragmento de Registro","Analyze Log":"Análisis de Registro","Analysis Results":"Resultados del Análisis","API Test History":"Historial de Pruebas de API","Clear History":"Borrar Historial","Solutions:":"Soluciones:","Detected Issues":"Problemas Detectados","occurrence(s)":"ocurrencia(s)","Suggested Actions:":"Acciones Sugeridas:","Check the API documentation for the specific error code":"Verifique la documentación de la API para el código de error específico","Verify your request parameters and format":"Verifique sus parámetros de solicitud y formato","Increase timeout values in your application":"Aumente los valores de tiempo de espera en su aplicación","Check network connectivity to the API server":"Verifique la conectividad de red al servidor de API","Verify the API endpoint URL is correct":"Verifica que la URL del punto final de la API sea correcta","Check if the API server is running":"Verifica si el servidor de la API está en ejecución","Check your authentication credentials":"Verifica tus credenciales de autenticación","Ensure your token is valid and not expired":"Asegúrate de que tu token sea válido y no haya expirado","Implement exponential backoff in your application":"Implementa el retardo exponencial en tu aplicación","Reduce the frequency of your requests":"Reduce la frecuencia de tus solicitudes","Validate your request data before sending":"Valida tus datos de solicitud antes de enviarlos","Check the API documentation for required parameters":"Revisa la documentación de la API para los parámetros requeridos","No obvious API errors detected in the log fragment.":"No se detectaron errores obvios en el fragmento del registro.","If you're experiencing issues, check for:":"Si estás experimentando problemas, verifica:","Network connectivity problems":"Problemas de conectividad de red","API service status":"Estado del servicio de la API","Request/response timing issues":"Problemas de tiempo de solicitud/respuesta","Application logic errors":"Errores de lógica de la aplicación","Highlighted API References":"Referencias de la API resaltadas","Paste your log fragment here...":"Pega tu fragmento de registro aquí...","Success":"Éxito","Failed":"Fallido","Loaded test from history":"Carga de prueba desde el historial","Are you sure you want to clear all test history?":"¿Estás seguro de que quieres borrar todo el historial de pruebas?","History cleared":"Historial borrado","Please enter an API URL":"Por favor, introduce una URL de la API","API test failed:":"La prueba de la API falló:","Please enter a request URL":"Por favor, introduce una URL de solicitud","Request failed:":"La solicitud falló:","Please upload a request example file":"Por favor, sube un archivo de ejemplo de solicitud","Error parsing JSON file:":"Error al analizar el archivo JSON:","Status:":"Estado:","Headers:":"Encabezados:","Data:":"Datos:","Code copied to clipboard":"Código copiado al portapapeles","Please enter an error code":"Por favor, introduce un código de error","Bad Request":"Solicitud incorrecta","The server cannot or will not process the request due to something that is perceived to be a client error.":"El servidor no puede o no procesará la solicitud debido a algo que se percibe como un error del cliente.","Check your request syntax":"Revisa la sintaxis de tu solicitud","Ensure all required parameters are provided":"Asegúrate de que se proporcionen todos los parámetros requeridos","Validate input data format":"Valida el formato de los datos de entrada","Unauthorized":"No autorizado","The client must authenticate itself to get the requested response.":"El cliente debe autenticarse para obtener la respuesta solicitada.","Verify the authorization header format":"Verifica el formato del encabezado de autorización","Forbidden":"Prohibido","The client does not have access rights to the content.":"El cliente no tiene derechos de acceso al contenido.","Check your permissions for this resource":"Revisa tus permisos para este recurso","Contact the API administrator if you believe this is an error":"Contacta al administrador de la API si crees que esto es un error","Verify if you have the necessary API access level":"Verifica si tienes el nivel de acceso a la API necesario","Not Found":"No encontrado","The server cannot find the requested resource.":"El servidor no puede encontrar el recurso solicitado.","Check if the endpoint URL is correct":"Verifica si la URL del punto final es correcta","Verify the resource exists":"Verifica que el recurso existe","Check for typos in the request path":"Revisa por errores tipográficos en la ruta de solicitud","Internal Server Error":"Error interno del servidor","The server has encountered a situation it does not know how to handle.":"El servidor ha encontrado una situación que no sabe cómo manejar.","Wait and try again later":"Espera y intenta de nuevo más tarde","__title__":"Analizador de Rendimiento de API Web","No test history available.":"No hay historial de pruebas disponible.","完全免费":"Totalmente gratuito","提意见":"Dar意见和建议","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Herramienta online gratuita: Analizador de Desempeño de Web API. Sin registro, sin pago — gratis para siempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"sección activa","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","Check the service status page":"Verifique la página de estado del servicio","Contact the API provider if the issue persists":"Contacte al proveedor de la API si el problema persiste","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"El servidor, mientras actúa como gateway o proxy, recibió una respuesta no válida de un servidor ascendente.","Try again after some time":"Intente de nuevo después de un tiempo","Check if the upstream service is down":"Verifique si el servicio ascendente está caído","Contact the API provider":"Contacte al proveedor de la API","Service Unavailable":"Servicio no disponible","The server is not ready to handle the request.":"El servidor no está listo para manejar la solicitud.","Gateway Timeout":"Tiempo de espera del gateway","The server did not receive a timely response from an upstream server.":"El servidor no recibió una respuesta oportuna de un servidor en el flujo ascendente.","Check if the upstream service is slow":"Verifique si el servicio en el flujo ascendente es lento","Unknown Error Code":"Código de error desconocido","No information available for this error code.":"No hay información disponible para este código de error.","Check the API documentation":"Revise la documentación de la API","Contact the API provider for more information":"Contacte al proveedor de la API para obtener más información","Please enter a log fragment":"Por favor, introduzca un fragmento de registro","HTTP Error Codes":"Códigos de Error HTTP","Timeout Errors":"Errores de Tiempo de Espera","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"Conexión agotada","Connection Errors":"Errores de conexión","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"Errores de autenticación","Invalid token":"Token no válido","Rate Limiting":"Límite de tasa","Rate limit exceeded":"Límite de tasa excedido","Request Validation":"Validación de solicitud","Validation error":"Error de validación","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Error":"Error","status-badge status-error":"estatus-badgem estado-error","Error:":"Error:","req.on(":"req.on("},"ja":{"Web API Performance Analyzer":"Web APIパフォーマンスアナライザ","API Performance Analyzer":"APIパフォーマンスアナライザ","API Performance":"APIパフォーマンス","Request \u0026 Response":"リクエストとレスポンス","Test Code Generator":"テストコード生成器","Error Lookup":"エラーラップアップ","Log Analysis":"ログ分析","History":"履歴","API Performance Analysis":"APIパフォーマンス分析","HTTP Method":"HTTPメソッド","Headers (JSON format)":"ヘッダー（JSON形式）","Request Body":"リクエストボディ","Test API Performance":"テストAPIパフォーマンス","Performance Metrics":"パフォーマンスメトリクス","Response Time (ms)":"レスポンスタイム（ms）","Status Code":"ステータスコード","Response Size (KB)":"レスポンスサイズ（KB）","Success Rate":"成功率","Response Body":"レスポンスボディ","Request \u0026 Response Viewer":"リクエストとレスポンスビューア","Request URL":"リクエストURL","Request Parameters (JSON format)":"リクエストパラメータ（JSON形式）","Send Request":"リクエストを送信","Response Details":"レスポンス詳細","Status":"ステータス","Response Headers":"レスポンスヘッダー","Upload Request Example (JSON file)":"アップロードリクエスト例（JSONファイル）","Test Framework":"テストフレームワーク","Generate Test Code":"テストコードを生成","Generated Test Code":"生成されたテストコード","Copy Code":"コードをコピー","Error Code Lookup":"エラーコードラップアップ","HTTP Error Code":"HTTPエラーコード","Lookup Error":"ラップアップエラー","Error Information":"エラーよくある質問","Log Error Analysis":"ログエラーアナライズ","Log Fragment":"ログフラグメント","Analyze Log":"ログを分析","Analysis Results":"分析結果","API Test History":"APIテスト履歴","Clear History":"履歴をクリア","Error":"エラー","Solutions:":"解決策：","Detected Issues":"検出された問題","occurrence(s)":"発生","Suggested Actions:":"推奨アクション：","Check the API documentation for the specific error code":"特定のエラーコードに関するAPIドキュメントを確認","Verify your request parameters and format":"リクエストパラメータと形式を確認","Increase timeout values in your application":"アプリケーションでのタイムアウト値を増加","Check network connectivity to the API server":"APIサーバーへのネットワーク接続を確認","Verify the API endpoint URL is correct":"APIエンドポイントURLが正しいか確認してください","Check if the API server is running":"APIサーバーが動作しているか確認してください","Check your authentication credentials":"認証情報を確認してください","Ensure your token is valid and not expired":"トークンが有効で期限切れていないことを確認してください","Implement exponential backoff in your application":"アプリケーションに指数的バックオフを実装してください","Reduce the frequency of your requests":"リクエストの頻度を減らしてください","Validate your request data before sending":"送信前にリクエストデータを確認してください","Check the API documentation for required parameters":"必要なパラメータについてAPIドキュメントを確認してください","No obvious API errors detected in the log fragment.":"ログフラグメントに明らかなAPIエラーは検出されていません。","If you're experiencing issues, check for:":"問題が発生している場合は、以下を確認してください：","Network connectivity problems":"ネットワーク接続問題","API service status":"APIサービスステータス","Request/response timing issues":"リクエスト/レスポンスのタイミング問題","Application logic errors":"アプリケーションロジックエラー","Highlighted API References":"ハイライトされたAPIリファレンス","Paste your log fragment here...":"ログフラグメントをここに貼り付けてください...","Success":"成功","Failed":"失敗","Loaded test from history":"履歴からテストをロードしました","Are you sure you want to clear all test history?":"すべてのテスト履歴をクリアする確定ですか？","History cleared":"履歴がクリアされました","Please enter an API URL":"API URLを入力してください","API test failed:":"APIテストが失敗しました：","Please enter a request URL":"リクエストURLを入力してください","Request failed:":"リクエストが失敗しました：","Please upload a request example file":"リクエスト例ファイルをアップロードしてください","Error parsing JSON file:":"JSONファイルのパースエラー：","Status:":"ステータス：","Headers:":"ヘッダー：","Data:":"データ：","Error:":"エラー：","Code copied to clipboard":"コードがクリップボードにコピーされました","Please enter an error code":"エラーコードを入力してください","The server cannot or will not process the request due to something that is perceived to be a client error.":"サーバーはクライアントエラーと認識される何かのためにリクエストを処理できないか、処理しないでしょう。","Check your request syntax":"リクエストの構文を確認してください","Ensure all required parameters are provided":"すべての必要なパラメータが提供されていることを確認してください","Validate input data format":"入力データのフォーマットを確認してください","The client must authenticate itself to get the requested response.":"クライアントはリクエストされたレスポンスを取得するために自身を認証する必要があります。","Verify the authorization header format":"認可ヘッダーのフォーマットを確認してください","The client does not have access rights to the content.":"クライアントにはコンテンツへのアクセス権がありません。","Check your permissions for this resource":"このリソースに対する許可を確認してください","Contact the API administrator if you believe this is an error":"これがエラーであると考えた場合は、API管理者に連絡してください","Verify if you have the necessary API access level":"必要なAPIアクセスレベルがあるか確認してください","The server cannot find the requested resource.":"サーバーはリクエストされたリソースを見つけることができません。","Check if the endpoint URL is correct":"エンドポイントURLが正しいか確認してください","Verify the resource exists":"リソースが存在するか確認してください","Check for typos in the request path":"リクエストパスのスペルミスを確認してください","The server has encountered a situation it does not know how to handle.":"サーバーは対処できない状況に直面しました。","Wait and try again later":"少し待ってからもう一度試してください","__title__":"Web APIパフォーマンスアナライザ","No test history available.":"テスト履歴が利用できません。","提意见":"意見を提出する","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"無料オンラインツール：Web APIパフォーマンスアナライザ。登録不要、支払い不要—永遠に無料","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"セクションアクティブ","Service Unavailable":"サービスが利用できません","The server is not ready to handle the request.":"サーバーはリクエストを処理する準備ができていません。","Gateway Timeout":"ゲートウェイタイムアウト","The server did not receive a timely response from an upstream server.":"サーバーは上位サーバーからのタイムリーな応答を受け取れませんでした。","Check if the upstream service is slow":"上位サービスが遅いか確認してください","Unknown Error Code":"不明なエラーコード","No information available for this error code.":"このエラーコードに関する情報が利用できません。","Check the API documentation":"APIドキュメントを確認してください","Contact the API provider for more information":"詳細についてはAPIプロバイダーに連絡してください","Please enter a log fragment":"ログフレグメントを入力してください","HTTP Error Codes":"HTTPエラーコード","Timeout Errors":"タイムアウトエラー","ETIMEDOUT":"タイムアウト","Connection timed out":"接続タイムアウト","Connection Errors":"接続エラー","ECONNREFUSED":"接続拒否","ENOTFOUND":"アドレス未発見","Authentication Errors":"認証エラー","Invalid token":"無効なトークン","Rate Limiting":"レート制限","Rate limit exceeded":"レート制限超過","Request Validation":"リクエスト検証","Validation error":"検証エラー","PingFang SC":"ピンファンSC","Microsoft YaHei":"マイクロソフト ヤヘイ","Contact the API provider":"APIプロバイダーに連絡してください","API URL":"API URL","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","Fetch API":"Fetch API","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","status-badge status-error":"ステータス バッジ エラー","Bad Request":"バッド リクエスト","Unauthorized":"未認証","Forbidden":"禁止","Not Found":"_not_found","Internal Server Error":"内部サーバーエラー","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","req.on(":")","Check the service status page":"サービスステータスページを確認してください","Contact the API provider if the issue persists":"問題が続く場合は、APIプロバイダーに連絡してください","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"サーバーがゲートウェイやプロキシとして動作中に、アップストリームサーバーから無効な応答を受信しました。","Try again after some time":"少し経ってからもう一度試してください","Check if the upstream service is down":"アップストリームサービスが停止しているか確認してください","完全免费":"完全無料"},"ko":{"Web API Performance Analyzer":"웹 API 성능 분석기","API Performance Analyzer":"API 성능 분석기","API Performance":"API 성능","Request \u0026 Response":"요청 \u0026 응답","Test Code Generator":"테스트 코드 생성기","Error Lookup":"에러 검색","Log Analysis":"로그 분석","History":"히스토리","API Performance Analysis":"API 성능 분석","HTTP Method":"HTTP 메서드","Headers (JSON format)":"헤더 (JSON 형식)","Request Body":"요청 본문","Test API Performance":"API 성능 테스트","Performance Metrics":"성능 지표","Response Time (ms)":"응답 시간 (ms)","Status Code":"상태 코드","Response Size (KB)":"응답 크기 (KB)","Success Rate":"성공률","Response Body":"응답 본문","Request \u0026 Response Viewer":"요청 \u0026 응답 뷰어","Request URL":"요청 URL","Request Parameters (JSON format)":"요청 파라미터 (JSON 형식)","Send Request":"요청 전송","Response Details":"응답 상세","Status":"상태","Response Headers":"응답 헤더","Upload Request Example (JSON file)":"요청 예제 업로드 (JSON 파일)","Test Framework":"테스트 프레임워크","Generate Test Code":"테스트 코드 생성","Generated Test Code":"생성된 테스트 코드","Copy Code":"코드 복사","Error Code Lookup":"에러 코드 검색","HTTP Error Code":"HTTP 에러 코드","Lookup Error":"검색 에러","Error Information":"에러 정보","Log Error Analysis":"로그 에러 분석","Log Fragment":"로그 조각","Analyze Log":"로그 분석","Analysis Results":"분석 결과","API Test History":"API 테스트 히스토리","Clear History":"히스토리 지우기","Error":"에러","Solutions:":"해결책:","Detected Issues":"발견된 문제","occurrence(s)":"발생","Suggested Actions:":"추천 조치:","Check the API documentation for the specific error code":"특정 에러 코드에 대한 API 문서를 확인하세요","Verify your request parameters and format":"요청 파라미터 및 형식을 확인하세요","Increase timeout values in your application":"응답 시간을 증가시키세요","Check network connectivity to the API server":"API 서버와의 네트워크 연결을 확인하세요","Verify the API endpoint URL is correct":"API 엔드포인트 URL이 올바른지 확인하세요","Check if the API server is running":"API 서버가 실행 중인지 확인하세요","Check your authentication credentials":"인증 정보를 확인하세요","Ensure your token is valid and not expired":"토큰이 유효하며 만료되지 않았는지 확인하세요","Implement exponential backoff in your application":"응용 프로그램에서 지수적 지연을 구현하세요","Reduce the frequency of your requests":"요청 빈도를 줄이세요","Validate your request data before sending":"요청 데이터를 보내기 전에 검증하세요","Check the API documentation for required parameters":"필수 매개변수에 대해 API 문서를 확인하세요","No obvious API errors detected in the log fragment.":"로그 부분에서 명확한 API 오류가 발견되지 않았습니다.","If you're experiencing issues, check for:":"문제가 발생하면 다음을 확인하세요:","Network connectivity problems":"네트워크 연결 문제","API service status":"API 서비스 상태","Request/response timing issues":"요청/응답 시간 문제","Application logic errors":"응용 프로그램 로직 오류","Highlighted API References":"강조된 API 참조","Paste your log fragment here...":"여기에 로그 부분을 붙여넣으세요...","Success":"성공","Failed":"실패","Loaded test from history":"이력에서 테스트를 로드했습니다","Are you sure you want to clear all test history?":"모든 테스트 이력을 지우시겠습니까?","History cleared":"이력이 지워졌습니다","Please enter an API URL":"API URL을 입력하세요","API test failed:":"API 테스트 실패:","Please enter a request URL":"요청 URL을 입력하세요","Request failed:":"요청 실패:","Please upload a request example file":"요청 예제 파일을 업로드하세요","Error parsing JSON file:":"JSON 파일 파싱 오류:","Status:":"상태:","Headers:":"헤더:","Data:":"데이터:","Error:":"오류:","Code copied to clipboard":"코드가 클립보드에 복사되었습니다","Please enter an error code":"에러 코드를 입력하세요","Bad Request":"잘못된 요청","The server cannot or will not process the request due to something that is perceived to be a client error.":"서버는 클라이언트 오류로 인해 요청을 처리할 수 없거나 처리하지 않을 것입니다.","Check your request syntax":"요청 문법을 확인하세요","Ensure all required parameters are provided":"모든 필수 매개변수가 제공되었는지 확인하세요","Validate input data format":"입력 데이터 형식을 검증하세요","Unauthorized":"미인증","The client must authenticate itself to get the requested response.":"클라이언트는 요청된 응답을 얻기 위해 자신을 인증해야 합니다.","Verify the authorization header format":"인증 헤더 형식을 확인하세요","Forbidden":"금지","The client does not have access rights to the content.":"클라이언트는 내용에 접근 권한이 없습니다.","Check your permissions for this resource":"이 리소스에 대한 권한을 확인하세요","Contact the API administrator if you believe this is an error":"이 오류라고 생각하면 API 관리자에게 연락하세요","Verify if you have the necessary API access level":"필요한 API 접근 수준을 가지고 있는지 확인하세요","Not Found":"찾을 수 없음","The server cannot find the requested resource.":"서버는 요청된 리소스를 찾을 수 없습니다.","Check if the endpoint URL is correct":"엔드포인트 URL이 올바른지 확인하세요","Verify the resource exists":"리소스가 존재하는지 확인하세요","Check for typos in the request path":"요청 경로에서 틀림을 확인하세요","Internal Server Error":"내부 서버 오류","The server has encountered a situation it does not know how to handle.":"서버는 해결할 수 없는 상황을 만났습니다.","Wait and try again later":"잠시 기다리고 나중에 다시 시도하세요","__title__":"웹 API 성능 분석기","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Service Unavailable":"서비스 사용 불가","The server is not ready to handle the request.":"서버가 요청을 처리할 준비가 되어 있지 않습니다.","Gateway Timeout":"게이트웨이 타임아웃","The server did not receive a timely response from an upstream server.":"서버가 상위 서버로부터 시간적 응답을 받지 못했습니다.","Check if the upstream service is slow":"상위 서비스가 느리지 않은지 확인하세요","Unknown Error Code":"알 수 없는 오류 코드","No information available for this error code.":"이 오류 코드에 대한 정보가 사용할 수 없습니다.","Check the API documentation":"API 문서를 확인하세요","Contact the API provider for more information":"추가 정보를 얻기 위해 API 제공자에게 연락하세요","Please enter a log fragment":"로그 부분을 입력하세요","HTTP Error Codes":"HTTP 오류 코드","Timeout Errors":"타임아웃 오류","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"연결 시간 초과","Connection Errors":"연결 오류","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"인증 오류","Invalid token":"잘못된 토큰","Rate Limiting":"速率限制","Rate limit exceeded":"速率限制 초과","Request Validation":"요청 검증","Validation error":"검증 오류","PingFang SC":"PingFang SC","Microsoft YaHei":"미크로소프트 yaHei","No test history available.":"테스트 이력이 없습니다.","完全免费":"완전 무료","提意见":"의견 제시","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"무료 온라인 도구: 웹 API 성능 분석기. 회원가입 없음, 결제 없음 — 영원히 무료","og:title":"og:title","Contact the API provider if the issue persists":"문제가 지속된다면 API 제공자에게 연락하세요","Bad Gateway":"불량 게이트웨이","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"서버가 게이트웨이나 프록시로 작동 중이었을 때, 상위 서버에서 무효한 응답을 받았습니다.","Try again after some time":"한동안 지나서 다시 시도하세요","Check if the upstream service is down":"상위 서비스가 다운되지 않았는지 확인하세요","Contact the API provider":"API 제공자에게 연락하세요","API URL":"API URL","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","Fetch API":"Fetch API","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","status-badge status-error":"상태BADGE 상태오류","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","Check the service status page":"서비스 상태 페이지 확인","req.on(":"req.on("},"fr":{"Web API Performance Analyzer":"Analyseur de Performance d'API Web","API Performance Analyzer":"Analyseur de Performance API","API Performance":"Performance API","Request \u0026 Response":"Requête \u0026 Réponse","Test Code Generator":"Générateur de Code de Test","Error Lookup":"Recherche d'Erreur","Log Analysis":"Analyse de Journal","History":"Historique","API Performance Analysis":"Analyse de Performance API","API URL":"URL API","HTTP Method":"Méthode HTTP","Headers (JSON format)":"En-têtes (format JSON)","Request Body":"Corps de Requête","Test API Performance":"Test de Performance API","Performance Metrics":"Mètres de Performance","Response Time (ms)":"Temps de Réponse (ms)","Status Code":"Code de Statut","Response Size (KB)":"Taille de Réponse (KB)","Success Rate":"Taux de Succès","Response Body":"Corps de Réponse","Request \u0026 Response Viewer":"Visualiseur de Requête \u0026 Réponse","Request URL":"URL de Requête","Request Parameters (JSON format)":"Paramètres de Requête (format JSON)","Send Request":"Envoyer une Requête","Response Details":"Détails de Réponse","Status":"Statut","Response Headers":"En-têtes de Réponse","Upload Request Example (JSON file)":"Exemple de Requête de Téléversement (fichier JSON)","Test Framework":"Cadre de Test","Fetch API":"API Fetch","Generate Test Code":"Générer du Code de Test","Generated Test Code":"Code de Test Généré","Copy Code":"Copier le Code","Error Code Lookup":"Recherche de Code d'Erreur","HTTP Error Code":"Code d'Erreur HTTP","Lookup Error":"Erreur de Recherche","Error Information":"Informations sur l'Erreur","Log Error Analysis":"Analyse d'Erreur de Journal","Log Fragment":"Fragment de Journal","Analyze Log":"Analyser le Journal","Analysis Results":"Résultats d'Analyse","API Test History":"Historique de Test API","Clear History":"Effacer l'Historique","Error":"Erreur","Solutions:":"Solutions :","Detected Issues":"Problèmes Détectés","Suggested Actions:":"Actions Suggérées :","Check the API documentation for the specific error code":"Vérifiez la documentation de l'API pour le code d'erreur spécifique","Verify your request parameters and format":"Vérifiez vos paramètres de requête et le format","Increase timeout values in your application":"Augmentez les valeurs de délai d'attente dans votre application","Check network connectivity to the API server":"Vérifiez la connectivité réseau vers le serveur API","Verify the API endpoint URL is correct":"Vérifiez que l'URL de l'endpoint API est correcte","Check if the API server is running":"Vérifiez si le serveur API est en cours d'exécution","Check your authentication credentials":"Vérifiez vos informations d'authentification","Ensure your token is valid and not expired":"Assurez-vous que votre jeton est valide et non expiré","Implement exponential backoff in your application":"Mettez en œuvre un délai d'attente exponentiel dans votre application","Reduce the frequency of your requests":"Réduisez la fréquence de vos demandes","Validate your request data before sending":"Validez vos données de demande avant d'envoyer","Check the API documentation for required parameters":"Vérifiez la documentation de l'API pour les paramètres requis","No obvious API errors detected in the log fragment.":"Aucune erreur API évidente détectée dans le fragment de journal.","If you're experiencing issues, check for:":"Si vous rencontrez des problèmes, vérifiez les points suivants :","Network connectivity problems":"Problèmes de connectivité réseau","API service status":"Statut du service API","Request/response timing issues":"Problèmes de temps de demande/réponse","Application logic errors":"Erreurs de logique de l'application","Highlighted API References":"Références API mises en surbrillance","Paste your log fragment here...":"Coller votre fragment de journal ici...","Success":"Réussite","Failed":"Échoué","Loaded test from history":"Test chargé depuis l'historique","Are you sure you want to clear all test history?":"Êtes-vous sûr de vouloir effacer tout l'historique des tests ?","History cleared":"Historique effacé","Please enter an API URL":"Veuillez entrer une URL API","API test failed:":"Échec du test API :","Please enter a request URL":"Veuillez entrer une URL de demande","Request failed:":"Demande échouée :","Please upload a request example file":"Veuillez télécharger un fichier exemple de demande","Error parsing JSON file:":"Erreur lors de l'analyse du fichier JSON :","Status:":"Statut :","Headers:":"En-têtes :","Data:":"Données :","Error:":"Erreur :","Code copied to clipboard":"Code copié dans le presse-papiers","Please enter an error code":"Veuillez entrer un code d'erreur","Bad Request":"Mauvaise demande","The server cannot or will not process the request due to something that is perceived to be a client error.":"Le serveur ne peut pas ou ne traitera pas la demande en raison de quelque chose qui est perçu comme une erreur client.","Check your request syntax":"Vérifiez la syntaxe de votre demande","Ensure all required parameters are provided":"Assurez-vous que tous les paramètres requis sont fournis","Validate input data format":"Valider le format des données d'entrée","Unauthorized":"Non autorisé","The client must authenticate itself to get the requested response.":"Le client doit s'authentifier pour obtenir la réponse demandée.","Verify the authorization header format":"Vérifiez le format de l'en-tête d'autorisation","Forbidden":"Interdit","The client does not have access rights to the content.":"Le client n'a pas les droits d'accès au contenu.","Check your permissions for this resource":"Vérifiez vos permissions pour ce ressource","Contact the API administrator if you believe this is an error":"Contactez l'administrateur de l'API si vous pensez que c'est une erreur","Verify if you have the necessary API access level":"Vérifiez si vous avez le niveau d'accès API nécessaire","Not Found":"Non trouvé","The server cannot find the requested resource.":"Le serveur ne peut pas trouver la ressource demandée.","Check if the endpoint URL is correct":"Vérifiez si l'URL de l'endpoint est correcte","Verify the resource exists":"Vérifiez que la ressource existe","Check for typos in the request path":"Vérifiez les fautes dans le chemin de la demande","Internal Server Error":"Erreur interne du serveur","The server has encountered a situation it does not know how to handle.":"Le serveur a rencontré une situation qu'il ne sait pas gérer.","Wait and try again later":"Attendez et essayez à nouveau plus tard","__title__":"Analyseur de Performance d'API Web","No test history available.":"Aucune historique de tests disponible.","完全免费":"Completement gratuit","提意见":"Proposer un avis","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Outil en ligne gratuit : Analyseur de performance API Web. Aucune inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section actif","Service Unavailable":"Service non disponible","The server is not ready to handle the request.":"Le serveur n'est pas prêt à gérer la demande.","Gateway Timeout":"Délai de réponse du passerelle expiré","The server did not receive a timely response from an upstream server.":"Le serveur n'a pas reçu une réponse à temps d'un serveur amont.","Check if the upstream service is slow":"Vérifiez si le service amont est lent","Unknown Error Code":"Code d'erreur inconnu","No information available for this error code.":"Aucune information disponible pour ce code d'erreur.","Check the API documentation":"Vérifiez la documentation de l'API","Contact the API provider for more information":"Contactez le fournisseur de l'API pour plus d'informations","Please enter a log fragment":"Veuillez entrer un fragment de journal","HTTP Error Codes":"Codes d'erreur HTTP","Timeout Errors":"Erreurs de délai","ETIMEDOUT":"Dépassement du temps d'attente","Connection timed out":"Délai de connexion expiré","Connection Errors":"Erreurs de connexion","ECONNREFUSED":"Refus de connexion","ENOTFOUND":"Non trouvé","Authentication Errors":"Erreurs d'authentification","Invalid token":"Jeton invalide","Rate Limiting":"Limitation de taux","Rate limit exceeded":"Taux de limitation dépassé","Request Validation":"Validation de la requête","Validation error":"Erreur de validation","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","occurrence(s)":"occurrence(s)","status-badge status-error":"status-badge status-error","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Autorisation","Bearer token":"Jeton d'accès","Contact the API provider if the issue persists":"Contactez le fournisseur de l'API si le problème persiste","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"Le serveur, en agissant en tant que passerelle ou proxy, a reçu une réponse invalide d'un serveur en amont.","Try again after some time":"Essayer à nouveau après un certain temps","Check if the upstream service is down":"Vérifiez si le service en amont est en panne","Contact the API provider":"Contactez le fournisseur de l'API","req.on(":"req.on(","Check the service status page":"Vérifiez la page d'état du service"},"de":{"Verify the API endpoint URL is correct":"Überprüfen Sie, ob die API-Endpunktkennung korrekt ist","Check if the API server is running":"Überprüfen Sie, ob der API-Server läuft","Check your authentication credentials":"Überprüfen Sie Ihre Anmeldeinformationen","Ensure your token is valid and not expired":"Stellen Sie sicher, dass Ihr Token gültig und nicht abgelaufen ist","Implement exponential backoff in your application":"Implementieren Sie eine exponentielle Verzögerung in Ihrer Anwendung","Reduce the frequency of your requests":"Verringern Sie die Häufigkeit Ihrer Anfragen","Validate your request data before sending":"Validieren Sie Ihre Anfrage-Daten vor dem Senden","Check the API documentation for required parameters":"Überprüfen Sie die API-Dokumentation für erforderliche Parameter","No obvious API errors detected in the log fragment.":"Keine offensichtlichen API-Fehler im Protokollierungsabschnitt erkannt.","If you're experiencing issues, check for:":"Falls Sie Probleme haben, überprüfen Sie:","Network connectivity problems":"Netzwerkverbindungsprobleme","API service status":"API-Dienststatus","Request/response timing issues":"Anfrage/Antwort-Timing-Probleme","Application logic errors":"Anwendungslogikfehler","Highlighted API References":"Hervorgehobene API-Referenzen","Paste your log fragment here...":"Fügen Sie hier Ihren Protokollierungsabschnitt ein...","Success":"Erfolg","Failed":"Fehlgeschlagen","Loaded test from history":"Test aus der Historie geladen","Are you sure you want to clear all test history?":"Sind Sie sicher, dass Sie alle Testhistorie löschen möchten?","History cleared":"Historie gelöscht","Please enter an API URL":"Bitte geben Sie eine API-URL ein","API test failed:":"API-Test fehlgeschlagen:","Please enter a request URL":"Bitte geben Sie eine Anfrage-URL ein","Request failed:":"Anfrage fehlgeschlagen:","Please upload a request example file":"Bitte laden Sie eine Beispielanfrage-Datei hoch","Error parsing JSON file:":"Fehler beim Parsen der JSON-Datei:","Data:":"Daten:","Error:":"Fehler:","Code copied to clipboard":"Code in die Zwischenablage kopiert","Please enter an error code":"Bitte geben Sie einen Fehlercode ein","The server cannot or will not process the request due to something that is perceived to be a client error.":"Der Server kann die Anfrage aufgrund eines als Clientfehler wahrgenommenen Problems nicht oder wird nicht verarbeiten.","Check your request syntax":"Überprüfen Sie Ihre Anfragesyntax","Ensure all required parameters are provided":"Stellen Sie sicher, dass alle erforderlichen Parameter bereitgestellt sind","Validate input data format":"Validieren Sie das Eingabedatenformat","Unauthorized":"Unauthorisiert","The client must authenticate itself to get the requested response.":"Der Client muss sich authentifizieren, um die angeforderte Antwort zu erhalten.","Verify the authorization header format":"Überprüfen Sie das Format des Autorisierungsheaders","Forbidden":"Verboten","The client does not have access rights to the content.":"Der Client hat keine Zugriffsrechte auf den Inhalt.","Check your permissions for this resource":"Überprüfen Sie Ihre Berechtigungen für diese Ressource","Contact the API administrator if you believe this is an error":"Kontaktieren Sie den API-Administrator, wenn Sie der Meinung sind, dass dies ein Fehler ist","Verify if you have the necessary API access level":"Überprüfen Sie, ob Sie den erforderlichen API-Zugriffsniveau haben","Not Found":"Nicht gefunden","The server cannot find the requested resource.":"Der Server kann die angeforderte Ressource nicht finden.","Check if the endpoint URL is correct":"Überprüfen Sie, ob die Endpunktkennung korrekt ist","Verify the resource exists":"Überprüfen Sie, ob die Ressource existiert","Check for typos in the request path":"Überprüfen Sie auf Tippfehler im Anfragepfad","Internal Server Error":"Interner Serverfehler","The server has encountered a situation it does not know how to handle.":"Der Server hat eine Situation encountered, die er nicht behandeln kann.","Wait and try again later":"Warten Sie eine Weile und versuchen Sie es später noch einmal","__title__":"Web API Performance Analyzer","No test history available.":"Keine Testhistorie verfügbar.","完全免费":"Komplett kostenlos","提意见":"Feedback geben","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Kostenloses Online-Tool: Web API Performance Analyzer. Keine Registrierung, kein Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"Abschnitt aktiv","Service Unavailable":"Dienst nicht verfügbar","The server is not ready to handle the request.":"Der Server ist nicht bereit, die Anfrage zu verarbeiten.","Gateway Timeout":"Gateway-Timeout","The server did not receive a timely response from an upstream server.":"Der Server hat keine rechtzeitige Antwort eines Upstream-Servers erhalten.","Check if the upstream service is slow":"Überprüfen Sie, ob der Upstream-Dienst langsam ist","Unknown Error Code":"Unbekannter Fehlercode","No information available for this error code.":"Keine Informationen verfügbar für diesen Fehlercode.","Check the API documentation":"Überprüfen Sie die API-Dokumentation","Contact the API provider for more information":"Kontaktieren Sie den API-Anbieter für weitere Informationen","Please enter a log fragment":"Bitte geben Sie einen Log-Ausschnitt ein","HTTP Error Codes":"HTTP-Fehlercodes","Timeout Errors":"Zeitüberschreitungsfehler","ETIMEDOUT":"Verbindungsfehler","Connection timed out":"Verbindungsabbruch","Connection Errors":"Verbindungsfehler","ECONNREFUSED":"Verbindungsabbruch","ENOTFOUND":"Nicht gefunden","Authentication Errors":"Authentifizierungsfehler","Invalid token":"Ungültiges Token","Rate Limiting":"Ratebeschränkung","Rate limit exceeded":"Ratebeschränkung überschritten","Request Validation":"Anfragevalidierung","Validation error":"Validierungsfehler","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Web API Performance Analyzer":"Web-API-Leistungsanalyzer","API Performance Analyzer":"API-Leistungsanalyzer","API Performance":"API-Leistung","Request \u0026 Response":"Anfrage \u0026 Antwort","Test Code Generator":"Testcode-Generator","Error Lookup":"Fehler-Suche","Log Analysis":"Log-Analyse","History":"Verlauf","API Performance Analysis":"API-Leistungsanalyse","API URL":"API-URL","HTTP Method":"HTTP-Methode","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Headers (JSON format)":"Headers (JSON format)","Request Body":"Anfragekörper","Test API Performance":"API-Leistung testen","Performance Metrics":"Leistungsmetriken","Response Time (ms)":"Antwortzeit (ms)","Status Code":"Statuscode","Response Size (KB)":"Antwortgröße (KB)","Success Rate":"Erfolgsquote","Response Body":"Antwortkörper","Request \u0026 Response Viewer":"Anfrage- \u0026 Antwortbetrachter","Request URL":"Anfrage-URL","Request Parameters (JSON format)":"Anfrageparameter (JSON-Format)","Send Request":"Anfrage senden","Response Details":"Antwortdetails","Status":"Status","Response Headers":"Antwortkopfzeilen","Upload Request Example (JSON file)":"Beispiel für Upload-Anfrage (JSON-Datei)","Test Framework":"Testrahmen","Axios":"Axios","Fetch API":"Fetch-API","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","Generate Test Code":"Testcode generieren","Generated Test Code":"Generierter Testcode","Copy Code":"Kode kopieren","Error Code Lookup":"Fehlercode-Suche","HTTP Error Code":"HTTP-Fehlercode","Lookup Error":"Suchfehler","Error Information":"Fehlerinformation","Log Error Analysis":"Fehleranalyse im Log","Log Fragment":"Log-Abschnitt","Analyze Log":"Log analysieren","Analysis Results":"Analyseergebnisse","API Test History":"API-Testverlauf","Clear History":"Verlauf löschen","Error":"Fehler","Solutions:":"Lösungen:","Detected Issues":"Erkannte Probleme","occurrence(s)":"Vorkommen","Suggested Actions:":"Vorgeschlagene Maßnahmen:","Check the API documentation for the specific error code":"Überprüfen Sie die API-Dokumentation für den spezifischen Fehlercode","Verify your request parameters and format":"Überprüfen Sie Ihre Anfrageparameter und das Format","Increase timeout values in your application":"Erhöhen Sie die Timeout-Werte in Ihrer Anwendung","Check network connectivity to the API server":"Überprüfen Sie die Netzwerkverbindung zum API-Server","status-badge status-error":"status-badge status-error","Status:":"Status:","Headers:":"Headers:","Bad Request":"Bad Request","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","req.on(":")","Check the service status page":"Den Servicestatus überprüfen","Contact the API provider if the issue persists":"Kontaktieren Sie den API-Anbieter, wenn das Problem weiterhin besteht","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"Der Server hat als Gateway oder Proxy eine ungültige Antwort von einem Oberstromserver erhalten.","Try again after some time":"Versuchen Sie es nach einer Weile noch einmal","Check if the upstream service is down":"Überprüfen Sie, ob der Oberstromdienst ausgefallen ist","Contact the API provider":"Kontaktieren Sie den API-Anbieter"},"ru":{"Web API Performance Analyzer":"Анализатор производительности Web API","API Performance Analyzer":"Анализатор производительности API","API Performance":"Производительность API","Request \u0026 Response":"Запрос и ответ","Test Code Generator":"Генератор тестового кода","Error Lookup":"Поиск ошибки","Log Analysis":"Анализ журнала","History":"История","API Performance Analysis":"Анализ производительности API","API URL":"URL API","HTTP Method":"Метод HTTP","Headers (JSON format)":"Заголовки (формат JSON)","Request Body":"Тело запроса","Test API Performance":"Тестирование производительности API","Performance Metrics":"Метрики производительности","Response Time (ms)":"Время ответа (мс)","Status Code":"Код состояния","Response Size (KB)":"Размер ответа (КБ)","Success Rate":"Успешность","Response Body":"Тело ответа","Request \u0026 Response Viewer":"Просмотрщик запроса и ответа","Request URL":"URL запроса","Request Parameters (JSON format)":"Параметры запроса (формат JSON)","Send Request":"Отправить запрос","Response Details":"Подробности ответа","Status":"Статус","Response Headers":"Заголовки ответа","Upload Request Example (JSON file)":"Пример запроса для загрузки (файл JSON)","Test Framework":"Фреймворк тестирования","Fetch API":"API Fetch","Generate Test Code":"Генерировать тестовый код","Generated Test Code":"Генерированный тестовый код","Copy Code":"Скопировать код","Error Code Lookup":"Поиск кода ошибки","HTTP Error Code":"Код ошибки HTTP","Lookup Error":"Ошибка поиска","Error Information":"Информация об ошибке","Log Error Analysis":"Анализ ошибки журнала","Log Fragment":"Фрагмент журнала","Analyze Log":"Анализировать журнал","Analysis Results":"Результаты анализа","API Test History":"История тестирования API","Clear History":"Очистить историю","Error":"Ошибка","Solutions:":"Решения:","Detected Issues":"Обнаруженные проблемы","occurrence(s)":"встреча(и)","Suggested Actions:":"Предлагаемые действия:","Check the API documentation for the specific error code":"Проверьте документацию API на конкретный код ошибки","Verify your request parameters and format":"Проверьте параметры вашего запроса и формат","Increase timeout values in your application":"Увеличьте значения таймаута в вашем приложении","Check network connectivity to the API server":"Проверьте подключение к серверу API","Verify the API endpoint URL is correct":"Проверьте, что URL точки API правильный","Check if the API server is running":"Проверьте, работает ли сервер API","Check your authentication credentials":"Проверьте свои учетные данные аутентификации","Ensure your token is valid and not expired":"Убедитесь, что ваш токен действителен и не истек","Implement exponential backoff in your application":"Реализуйте экспоненциальное откладывание в вашем приложении","Reduce the frequency of your requests":"Уменьшите частоту ваших запросов","Validate your request data before sending":"Проверьте данные запроса перед отправкой","Check the API documentation for required parameters":"Проверьте документацию API на наличие необходимых параметров","No obvious API errors detected in the log fragment.":"В фрагменте журнала не обнаружены очевидные ошибки API.","If you're experiencing issues, check for:":"Если вы сталкиваетесь с проблемами, проверьте:","Network connectivity problems":"Проблемы с подключением к сети","API service status":"Статус сервиса API","Request/response timing issues":"Проблемы с временем запроса/ответа","Application logic errors":"Ошибки логики приложения","Highlighted API References":"Выделенные ссылки на API","Paste your log fragment here...":"Вставьте фрагмент вашего журнала здесь...","Success":"Успех","Failed":"Не удалось","Loaded test from history":"Загружен тест из истории","Are you sure you want to clear all test history?":"Вы уверены, что хотите очистить всю историю тестов?","History cleared":"История очищена","Please enter an API URL":"Пожалуйста, введите URL API","API test failed:":"Тест API не прошел:","Please enter a request URL":"Пожалуйста, введите URL запроса","Request failed:":"Запрос не удался:","Please upload a request example file":"Пожалуйста, загрузите пример файла запроса","Error parsing JSON file:":"Ошибка парсинга файла JSON:","Status:":"Статус:","Headers:":"Заголовки:","Data:":"Данные:","Error:":"Ошибка:","Code copied to clipboard":"Код скопирован в буфер обмена","Please enter an error code":"Пожалуйста, введите код ошибки","Bad Request":"Неправильный запрос","The server cannot or will not process the request due to something that is perceived to be a client error.":"Сервер не может или не будет обрабатывать запрос из-за чего-то, что считается клиентской ошибкой.","Check your request syntax":"Проверьте синтаксис вашего запроса","Ensure all required parameters are provided":"Убедитесь, что все необходимые параметры предоставлены","Validate input data format":"Проверьте формат вводимых данных","Unauthorized":"Неавторизованный доступ","The client must authenticate itself to get the requested response.":"Клиент должен аутентифицировать себя, чтобы получить запрошенный ответ.","Verify the authorization header format":"Проверьте формат заголовка авторизации","Forbidden":"Запрещен","The client does not have access rights to the content.":"Клиент не имеет прав доступа к содержимому.","Check your permissions for this resource":"Проверьте свои права доступа к этому ресурсу","Contact the API administrator if you believe this is an error":"Свяжитесь с администратором API, если вы считаете, что это ошибка","Verify if you have the necessary API access level":"Проверьте, имеете ли вы необходимый уровень доступа к API","Not Found":"Не найдено","The server cannot find the requested resource.":"Сервер не может найти запрошенный ресурс.","Check if the endpoint URL is correct":"Проверьте, правильно ли указан URL точки API","Verify the resource exists":"Проверьте, существует ли ресурс","Check for typos in the request path":"Проверьте на наличие опечаток в пути запроса","Internal Server Error":"Внутренняя ошибка сервера","The server has encountered a situation it does not know how to handle.":"Сервер встретил ситуацию, с которой он не знает, как справиться.","Wait and try again later":"Подождите и попробуйте позже","__title__":"Анализатор производительности Web API","No test history available.":"Нет истории тестирования.","完全免费":"Полностью бесплатно","提意见":"Оставить отзыв","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Бесплатный онлайн инструмент: Анализ производительности веб-API. Регистрация и оплата не требуются — бесплатный навсегда.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"раздел активен","Service Unavailable":"Услуга недоступна","The server is not ready to handle the request.":"Сервер не готов обрабатывать запрос","Gateway Timeout":"Тайм-аут шлюза","The server did not receive a timely response from an upstream server.":"Сервер не получил своевременного ответа от upstream сервера","Check if the upstream service is slow":"Проверьте, медленный ли upstream сервис","Unknown Error Code":"Неизвестный код ошибки","No information available for this error code.":"Нет информации о данном коде ошибки","Check the API documentation":"Проверьте документацию API","Contact the API provider for more information":"Свяжитесь с провайдером API для получения дополнительной информации","Please enter a log fragment":"Пожалуйста, введите фрагмент лога","HTTP Error Codes":"HTTP коды ошибок","Timeout Errors":"Ошибки тайм-аут","ETIMEDOUT":"Время ожидания истекло","Connection timed out":"Соединение завершено","Connection Errors":"Ошибки подключения","ECONNREFUSED":"Отказ в приеме соединения","ENOTFOUND":"Не найден","Authentication Errors":"Ошибки аутентификации","Invalid token":"Неправильный токен","Rate Limiting":"Ограничение скорости","Rate limit exceeded":"Превышен лимит скорости","Request Validation":"Проверка запроса","Validation error":"Ошибка проверки","PingFang SC":"Пингфан СС","Microsoft YaHei":"Microsoft YaHei","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","status-badge status-error":"status-badge status-error","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer токен","Check the service status page":"Проверьте страницу статуса услуги","Contact the API provider if the issue persists":"Свяжитесь с провайдером API, если проблема не исчезнет","Bad Gateway":"Неправильный шлюз","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"Сервер, действуя в качестве шлюза или прокси, получил недопустимый ответ от верхнего сервера.","Try again after some time":"Попробуйте еще через некоторое время","Check if the upstream service is down":"Проверьте, не остановлен ли верхний сервис","Contact the API provider":"Свяжитесь с провайдером API","req.on(":"req.on("},"pt":{"Web API Performance Analyzer":"Analizador de Desempenho de API Web","API Performance Analyzer":"Analizador de Desempenho de API","API Performance":"Desempenho da API","Request \u0026 Response":"Requisição \u0026 Resposta","Test Code Generator":"Gerador de Código de Teste","Error Lookup":"Busca de Erro","Log Analysis":"Análise de Log","History":"Histórico","API Performance Analysis":"Análise de Desempenho da API","API URL":"URL da API","HTTP Method":"Método HTTP","Headers (JSON format)":"Cabeçalhos (formato JSON)","Request Body":"Corpo da Requisição","Test API Performance":"Testar Desempenho da API","Performance Metrics":"Métricas de Desempenho","Response Time (ms)":"Tempo de Resposta (ms)","Status Code":"Código de Status","Response Size (KB)":"Tamanho da Resposta (KB)","Success Rate":"Taxa de Sucesso","Response Body":"Corpo da Resposta","Request \u0026 Response Viewer":"Visualizador de Requisição \u0026 Resposta","Request URL":"URL da Requisição","Request Parameters (JSON format)":"Parâmetros da Requisição (formato JSON)","Send Request":"Enviar Requisição","Response Details":"Detalhes da Resposta","Response Headers":"Cabeçalhos da Resposta","Upload Request Example (JSON file)":"Exemplo de Requisição de Upload (arquivo JSON)","Test Framework":"Ferramenta de Teste","Fetch API":"API Fetch","Node.js HTTP":"HTTP Node.js","Generate Test Code":"Gerar Código de Teste","Generated Test Code":"Código de Teste Gerado","Copy Code":"Copiar Código","Error Code Lookup":"Busca de Código de Erro","HTTP Error Code":"Código de Erro HTTP","Lookup Error":"Busca de Erro","Error Information":"Informação de Erro","Log Error Analysis":"Análise de Erro de Log","Log Fragment":"Fragmento de Log","Analyze Log":"Analisar Log","Analysis Results":"Resultados da Análise","API Test History":"Histórico de Teste de API","Clear History":"Limpar Histórico","Error":"Erro","Solutions:":"Soluções:","Detected Issues":"Problemas Detectados","occurrence(s)":"occorrência(s)","Suggested Actions:":"Ações Sugeridas:","Check the API documentation for the specific error code":"Verifique a documentação da API para o código de erro específico","Verify your request parameters and format":"Verifique seus parâmetros de requisição e formato","Increase timeout values in your application":"Aumente os valores de timeout em sua aplicação","Check network connectivity to the API server":"Verifique a conectividade de rede com o servidor da API","Verify the API endpoint URL is correct":"Verifique se a URL do endpoint da API está correta","Check if the API server is running":"Verifique se o servidor da API está em execução","Check your authentication credentials":"Verifique suas credenciais de autenticação","Ensure your token is valid and not expired":"Certifique-se de que seu token é válido e não expirou","Implement exponential backoff in your application":"Implemente o backoff exponencial em sua aplicação","Reduce the frequency of your requests":"Reduza a frequência de suas solicitações","Validate your request data before sending":"Validade seus dados de solicitação antes de enviar","Check the API documentation for required parameters":"Verifique a documentação da API para os parâmetros necessários","No obvious API errors detected in the log fragment.":"Nenhum erro óbvio da API detectado no fragmento do log.","If you're experiencing issues, check for:":"Se você está enfrentando problemas, verifique por:","Network connectivity problems":"Problemas de conectividade de rede","API service status":"Status do serviço da API","Request/response timing issues":"Problemas de tempo de solicitação/resposta","Application logic errors":"Erros de lógica da aplicação","Highlighted API References":"Referências da API destacadas","Paste your log fragment here...":"Cole seu fragmento de log aqui...","Success":"Sucesso","Failed":"Falhou","Loaded test from history":"Teste carregado do histórico","Are you sure you want to clear all test history?":"Tem certeza de que deseja limpar todo o histórico de testes?","History cleared":"Histórico limpo","Please enter an API URL":"Por favor, insira uma URL da API","API test failed:":"Teste da API falhou:","Please enter a request URL":"Por favor, insira uma URL de solicitação","Request failed:":"Solicitação falhou:","Please upload a request example file":"Por favor, faça upload de um arquivo de exemplo de solicitação","Error parsing JSON file:":"Erro ao analisar arquivo JSON:","Headers:":"Cabeçalhos:","Data:":"Dados:","Error:":"Erro:","Code copied to clipboard":"Código copiado para a área de transferência","Please enter an error code":"Por favor, insira um código de erro","Bad Request":"Solicitação Ruim","The server cannot or will not process the request due to something that is perceived to be a client error.":"O servidor não pode ou não processará a solicitação devido a algo que é percebido como um erro do cliente.","Check your request syntax":"Verifique a sintaxe da sua solicitação","Ensure all required parameters are provided":"Certifique-se de que todos os parâmetros necessários estão fornecidos","Validate input data format":"Validade o formato dos dados de entrada","Unauthorized":"Não Autorizado","The client must authenticate itself to get the requested response.":"O cliente deve se autenticar para obter a resposta solicitada.","Verify the authorization header format":"Verifique o formato do cabeçalho de autorização","Forbidden":"Proibido","The client does not have access rights to the content.":"O cliente não possui direitos de acesso ao conteúdo.","Check your permissions for this resource":"Verifique suas permissões para este recurso","Contact the API administrator if you believe this is an error":"Entre em contato com o administrador da API se você acha que isso é um erro","Verify if you have the necessary API access level":"Verifique se você tem o nível de acesso à API necessário","Not Found":"Não Encontrado","The server cannot find the requested resource.":"O servidor não pode encontrar o recurso solicitado.","Check if the endpoint URL is correct":"Verifique se a URL do endpoint está correta","Verify the resource exists":"Verifique se o recurso existe","Check for typos in the request path":"Verifique por erros de digitação no caminho da solicitação","Internal Server Error":"Erro Interno do Servidor","The server has encountered a situation it does not know how to handle.":"O servidor encontrou uma situação que não sabe como lidar.","Wait and try again later":"Aguarde e tente novamente mais tarde","__title__":"Analizador de Desempenho de API Web","Service Unavailable":"Serviço Indisponível","The server is not ready to handle the request.":"O servidor não está pronto para lidar com a solicitação.","Gateway Timeout":"Tempo de Espera do Gateway","The server did not receive a timely response from an upstream server.":"O servidor não recebeu uma resposta oportuna de um servidor upstream.","Check if the upstream service is slow":"Verifique se o serviço upstream está lento","Unknown Error Code":"Código de Erro Desconhecido","No information available for this error code.":"Nenhuma informação disponível para este código de erro.","Check the API documentation":"Verifique a documentação da API","Contact the API provider for more information":"Entre em contato com o provedor da API para mais informações","Please enter a log fragment":"Por favor, insira um fragmento de log","HTTP Error Codes":"Códigos de Erro HTTP","Timeout Errors":"Erros de Tempo de Espera","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"Conexão expirada","Connection Errors":"Erros de Conexão","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"Erros de Autenticação","Invalid token":"Token inválido","Rate Limiting":"Limite de Taxa","Rate limit exceeded":"Limite de taxa excedido","Request Validation":"Validação de Requisição","Validation error":"Erro de validação","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","No test history available.":"Não há histórico de testes disponível.","完全免费":"Completamente gratuito","提意见":"Enviar sugestões","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Ferramenta online gratuita: Analisador de Desempenho de API Web. Sem inscrição, sem pagamento — gratuito para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"seção ativa","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","Check the service status page":"Verifique a página de status do serviço","Contact the API provider if the issue persists":"Contacte o provedor da API se o problema persistir","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"O servidor, enquanto atuava como gateway ou proxy, recebeu uma resposta inválida de um servidor upstream.","Try again after some time":"Tente novamente após algum tempo","Check if the upstream service is down":"Verifique se o serviço upstream está fora do ar","Contact the API provider":"Contacte o provedor da API","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Status":"Status","Axios":"Axios","jQuery AJAX":"jQuery AJAX","status-badge status-error":"status-badge status-erro","Status:":"Status:","req.on(":"req.on("},"ar":{"Web API Performance Analyzer":"تحليل أداء واجهة برمجة التطبيقات الويب","API Performance Analyzer":"تحليل أداء API","API Performance":"أداء API","Request \u0026 Response":"الطلب والإجابة","Test Code Generator":"مولد كود الاختبار","Error Lookup":"بحث عن خطأ","Log Analysis":"تحليل السجلات","History":"التاريخ","API Performance Analysis":"تحليل أداء API","API URL":"رابط API","HTTP Method":"طريقة HTTP","Headers (JSON format)":"الرؤوس (تنسيق JSON)","Request Body":"جسم الطلب","Test API Performance":"اختبار أداء API","Performance Metrics":"مقاييس الأداء","Response Time (ms)":"وقت الإجابة (ميغا ثانية)","Status Code":"كود الحالة","Response Size (KB)":"حجم الإجابة (كيلوبايت)","Success Rate":"نسبة النجاح","Response Body":"جسم الإجابة","Request \u0026 Response Viewer":"مستعرض الطلب والإجابة","Request URL":"رابط الطلب","Request Parameters (JSON format)":"معلمات الطلب (تنسيق JSON)","Send Request":"إرسال الطلب","Response Details":"تفاصيل الإجابة","Status":"الحالة","Response Headers":"رؤوس الإجابة","Upload Request Example (JSON file)":"مثال على طلب التحميل (ملف JSON)","Test Framework":"إطار اختبار","Fetch API":"واجهة Fetch API","Generate Test Code":"إنشاء كود الاختبار","Generated Test Code":"كود الاختبار المُنتج","Copy Code":"نسخ الكود","Error Code Lookup":"بحث عن كود الخطأ","HTTP Error Code":"كود خطأ HTTP","Lookup Error":"بحث عن خطأ","Error Information":"معلومات الخطأ","Log Error Analysis":"تحليل خطأ السجل","Log Fragment":"جزء من السجل","Analyze Log":"تحليل السجل","Analysis Results":"نتائج التحليل","API Test History":"تاريخ اختبار API","Clear History":"حذف التاريخ","Error":"خطأ","Solutions:":"حلول:","Detected Issues":"المشاكل المكتشفة","occurrence(s)":"حدوث","Suggested Actions:":"إجراءات مقترحة:","Check the API documentation for the specific error code":"تحقق من وثائق API للكود المحدد للخطأ","Verify your request parameters and format":"تأكد من معلمات طلبك وتنسيقه","Increase timeout values in your application":"زيادة قيم الاستحقاق في تطبيقك","Check network connectivity to the API server":"تحقق من توصيل الشبكة إلى خادم API","Verify the API endpoint URL is correct":"تحقق من أن عنوان نهاية API صحيح","Check if the API server is running":"تحقق من أن خادم API يعمل","Check your authentication credentials":"تحقق من معرفات التحقق من هويتك","Ensure your token is valid and not expired":"تأكد من أن رمزك صالح وليس منتهي الصلاحية","Implement exponential backoff in your application":"تنفيذ استراتيجية التأخير المتناسب في تطبيقك","Reduce the frequency of your requests":"انقاص تردد طلباتك","Validate your request data before sending":"تحقق من بيانات طلبك قبل إرسالها","Check the API documentation for required parameters":"تحقق من وثائق API للحصول على المعلمات المطلوبة","No obvious API errors detected in the log fragment.":"لم يتم اكتشاف أخطاء واضحة في جزء السجل.","If you're experiencing issues, check for:":"إذا كنت تواجه مشاكل، فتحقق من:","Network connectivity problems":"مشاكل اتصال الشبكة","API service status":"حالة خدمة API","Request/response timing issues":"مشاكل في وقت الطلب/الاستجابة","Application logic errors":"أخطاء في منطق التطبيق","Highlighted API References":"مراجع API مظللة","Paste your log fragment here...":"ألصق جزء السجل هنا...","Success":"نجاح","Failed":"فشل","Loaded test from history":"تم تحميل الاختبار من التاريخ","Are you sure you want to clear all test history?":"هل أنت متأكد من أنك تريد مسح جميع تاريخ الاختبارات؟","History cleared":"تم مسح التاريخ","Please enter an API URL":"الرجاء إدخال عنوان URL للAPI","N/A":"غير متاح","status-badge status-error":"شريط الحالة حالة الخطأ","API test failed:":"فشل اختبار API:","Please enter a request URL":"الرجاء إدخال عنوان URL للطلب","Request failed:":"فشل الطلب:","Please upload a request example file":"الرجاء تحميل ملف مثال على الطلب","Error parsing JSON file:":"خطأ في تحليل ملف JSON:","Status:":"الحالة:","Headers:":"العناوين:","Data:":"البيانات:","Error:":"الخطأ:","Code copied to clipboard":"تم نسخ الكود إلى لوحة المفاتيح","Please enter an error code":"الرجاء إدخال رمز الخطأ","Bad Request":"طلب سيء","The server cannot or will not process the request due to something that is perceived to be a client error.":"لا يمكن للخادم أو لن يتعامل مع الطلب بسبب شيء يُعتبر خطأ عميل.","Check your request syntax":"تحقق من بناء طلبك","Ensure all required parameters are provided":"تأكد من أن جميع المعلمات المطلوبة متوفرة","Validate input data format":"تحقق من تنسيق بيانات الإدخال","Unauthorized":"غير مسموح","The client must authenticate itself to get the requested response.":"يجب على العميل التحقق من هويته للحصول على الاستجابة المطلوبة.","Verify the authorization header format":"تحقق من تنسيق عنوان الاعتماد","Forbidden":"منع","The client does not have access rights to the content.":"لا يملك العميل حقوق الوصول إلى المحتوى.","Check your permissions for this resource":"تحقق من إذنك لهذا المصدر","Contact the API administrator if you believe this is an error":"اتصل بمسؤول API إذا كنت تعتقد أن هذا خطأ","Verify if you have the necessary API access level":"تحقق من أن لديك المستوى اللازم من الوصول إلى API","Not Found":"غير موجود","The server cannot find the requested resource.":"لا يمكن للخادم العثور على المصدر المطلوب.","Check if the endpoint URL is correct":"تحقق من أن عنوان نهاية الوجه صحيح","Verify the resource exists":"تحقق من وجود المصدر","Check for typos in the request path":"تحقق من الأخطاء الإملائية في مسار الطلب","Internal Server Error":"خطأ داخلي في الخادم","The server has encountered a situation it does not know how to handle.":"واجه الخادم حالة لا يعلم كيفية التعامل معها.","Wait and try again later":"انتظر ثم حاول لاحقاً","__title__":"تحليل أداء واجهة برمجة التطبيقات الويب","No test history available.":"لا توجد تاريخ الاختبارات متاح.","完全免费":" مجاني بالكامل","提意见":"أقدم اقتراحاً","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: تحليل أداء API للويب. بدون تسجيل، بدون دفع — مجانية إلى الأبد.","og:title":"og:title","og:description":"وصف OG","og:type":"نوع OG","og:url":"رابط OG","Segoe UI":"سيجوا UI","LA_COLLECT":"جمع LA","section active":"قسم نشط","Service Unavailable":"خدمة غير متاحة","The server is not ready to handle the request.":"الخادم ليس جاهزاً لتعامل مع الطلب.","Gateway Timeout":"انتهاء وقت التمرير","The server did not receive a timely response from an upstream server.":"لم يتلق الخادم استجابة في الوقت المناسب من خادم أعلى.","Check if the upstream service is slow":"تحقق مما إذا كانت خدمة الخادم أعلى بطيئة","Unknown Error Code":"كود خطأ غير معروف","No information available for this error code.":"لا توجد معلومات متاحة لهذا كود الخطأ.","Check the API documentation":"تحقق من وثائق واجهة البرمجة","Contact the API provider for more information":"اتصل بتزويد واجهة البرمجة للحصول على معلومات إضافية","Please enter a log fragment":"من فضلك أدخل جزء من السجل","HTTP Error Codes":"كودات الأخطاء HTTP","Timeout Errors":"أخطاء انتهاء الوقت","ETIMEDOUT":"…","Connection timed out":"…","Connection Errors":"…","ECONNREFUSED":"…","ENOTFOUND":"…","Authentication Errors":"…","Invalid token":"…","Rate Limiting":"…","Rate limit exceeded":"…","Request Validation":"…","Validation error":"…","PingFang SC":"…","Microsoft YaHei":"ميكروسوفت ياهي","GET":"الحصول","POST":"إرسال","PUT":"تحديث","DELETE":"حذف","PATCH":"تصحيح","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","Content-Type":"نوع المحتوى","application/json":"تطبيق/json","Authorization":"الم�权نة","Bearer token":"بصمة المستخدم","req.on(":"req.on(","Check the service status page":"تحقق من صفحة حالة الخدمة","Contact the API provider if the issue persists":"اتصل بمالك API إذا استمرت المشكلة","Bad Gateway":"شبكة خاطئة","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"استلم الخادم، بينما كان يعمل كشبكة توجيه أو بروكسى، استجابة غير صالحة من خادم تبعي.","Try again after some time":"جرب مجدداً بعد فترة","Check if the upstream service is down":"تحقق مما إذا كانت الخدمة التبعية غير متاحة","Contact the API provider":"اتصل بمالك API"},"hi":{"Web API Performance Analyzer":"वेब एपीआई परफॉर्मेंस एनालायजर","API Performance Analyzer":"एपीआई परफॉर्मेंस एनालायजर","API Performance":"एपीआई परफॉर्मेंस","Request \u0026 Response":"रिक्वेस्ट एंड रेस्पांस","Test Code Generator":"टेस्ट कोड जनरेटर","Error Lookup":"एरर लुकअप","Log Analysis":"लॉग एनालिसिस","History":"हिस्ट्री","API Performance Analysis":"एपीआई परफॉर्मेंस एनालिसिस","API URL":"एपीआई यूआरएल","HTTP Method":"एचटीटीपी मथोड","GET":"जीईटी","POST":"पोस्ट","PUT":"पूट","DELETE":"डेलीट","PATCH":"पैच","Headers (JSON format)":"हेडर्स (जेएसओएन फॉर्मेट)","Request Body":"रिक्वेस्ट बॉडी","Test API Performance":"टेस्ट एपीआई परफॉर्मेंस","Performance Metrics":"परफॉर्मेंस मेट्रिक्स","Response Time (ms)":"रेस्पांस टाइम (मिलीसेकंड)","Status Code":"स्टेटस कोड","Response Size (KB)":"रेस्पांस साइज (किलोबाइट)","Success Rate":"सफलता दर","Response Body":"रेस्पांस बॉडी","Request \u0026 Response Viewer":"रिक्वेस्ट एंड रेस्पांस व्यूअर","Request URL":"रिक्वेस्ट यूआरएल","Request Parameters (JSON format)":"रिक्वेस्ट पारामीटर्स (जेएसओएन फॉर्मेट)","Send Request":"रिक्वेस्ट भेजें","Response Details":"रेस्पांस विवरण","Status":"स्टेटस","Response Headers":"रेस्पांस हेडर्स","Upload Request Example (JSON file)":"अपलोड रिक्वेस्ट एक्साम्पले (जेएसओएन फ़ाइल)","Test Framework":"टेस्ट फ्रेमवर्क","Axios":"एक्सियोस","Fetch API":"फेच एपीआई","jQuery AJAX":"जकीएएजी एजेक्स","Node.js HTTP":"नोडजेएस एचटीटीपी","Generate Test Code":"टेस्ट कोड जनरेट करें","Generated Test Code":"जनरेटेड टेस्ट कोड","Copy Code":"कोड कॉपी करें","Error Code Lookup":"एरर कोड लुकअप","HTTP Error Code":"एचटीटीपी एरर कोड","Lookup Error":"लुकअप एरर","Error Information":"एरर जानकारी","Log Error Analysis":"लॉग एरर एनालिसिस","Log Fragment":"लॉग फ्रैगमेंट","Analyze Log":"लॉग विश्लेषण करें","Analysis Results":"विश्लेषण परिणाम","API Test History":"एपीआई टेस्ट हिस्ट्री","Clear History":"हिस्ट्री साफ करें","Error":"एरर","Solutions:":"समाधान: ","Detected Issues":"दूषित मुद्दे","occurrence(s)":"उद्भव(ओं)","Suggested Actions:":"सुझाव देने की कार्रवाइयाँ: ","Check the API documentation for the specific error code":"विशिष्ट एरर कोड के लिए एपीआई दस्तावेज़ की जाँच करें","Verify your request parameters and format":"आपके रिक्वेस्ट पारामीटर्स और फॉर्मेट की पुष्टि करें","Increase timeout values in your application":"आपके अनुप्रयोग में टाइमआउट मूल्य बढ़ाएं","Check network connectivity to the API server":"एपीआई सर्वर के साथ नेटवर्क कनेक्टिविटी की जाँच करें","Verify the API endpoint URL is correct":"API एंडपॉइंट URL सही है या नहीं जांचें","Check if the API server is running":"API सर्वर चल रहा है या नहीं जांचें","Check your authentication credentials":"अपनी प्रमाणीकरण क्रेडेंशियल्स जांचें","Ensure your token is valid and not expired":"सुनिश्चित करें कि आपका टोकन वैध है और समाप्त नहीं हुआ है","Implement exponential backoff in your application":"अपने एप्लिकेशन में घातीय बैकऑफ लागू करें","Reduce the frequency of your requests":"अपने अनुरोधों की आवृत्ति कम करें","Validate your request data before sending":"भेजने से पहले अपने अनुरोध डेटा का सत्यापन करें","Check the API documentation for required parameters":"आवश्यक पैरामीटर्स के लिए API दस्तावेज़ीकरण जांचें","No obvious API errors detected in the log fragment.":"लॉग फ्रैगमेंट में कोई स्पष्ट API त्रुटियां पता नहीं चली।","If you're experiencing issues, check for:":"यदि आप समस्याओं का अनुभव कर रहे हैं, तो जांचें:","Network connectivity problems":"नेटवर्क कनेक्टिविटी समस्याएं","API service status":"API सेवा स्थिति","Request/response timing issues":"अनुरोध/प्रतिक्रिया टाइमिंग समस्याएं","Application logic errors":"एप्लिकेशन लॉजिक त्रुटियां","Highlighted API References":"हाइलाइट किए गए API संदर्भ","Paste your log fragment here...":"अपना लॉग फ्रैगमेंट यहाँ पेस्ट करें...","Success":"सफलता","Failed":"असफल","Loaded test from history":"इतिहास से लोड किया गया टेस्ट","Are you sure you want to clear all test history?":"क्या आप वाकई सभी टेस्ट इतिहास को साफ़ करना चाहते हैं?","History cleared":"इतिहास साफ़ किया गया","Please enter an API URL":"कृपया एक API URL दर्ज करें","status-badge status-error":"स्टेटस-बैज स्टेटस-एरर","API test failed:":"API टेस्ट विफल:","Please enter a request URL":"कृपया एक अनुरोध URL दर्ज करें","Request failed:":"अनुरोध विफल:","Please upload a request example file":"कृपया एक अनुरोध उदाहरण फ़ाइल अपलोड करें","Error parsing JSON file:":"JSON फ़ाइल पार्स करने में त्रुटि:","Status:":"स्थिति:","Headers:":"हेडर्स:","Data:":"डेटा:","Error:":"त्रुटि:","Code copied to clipboard":"कोड क्लिपबोर्ड पर कॉपी किया गया","Please enter an error code":"कृपया एक त्रुटि कोड दर्ज करें","Bad Request":"बैड रिक्वेस्ट","The server cannot or will not process the request due to something that is perceived to be a client error.":"सर्वर किसी ऐसी बात के कारण अनुरोध को प्रसंस्करित नहीं कर सकता या नहीं करेगा जिसे क्लाइंट त्रुटि माना जाता है।","Check your request syntax":"अपने अनुरोध सिंटैक्स की जांच करें","Ensure all required parameters are provided":"सुनिश्चित करें कि सभी आवश्यक पैरामीटर्स प्रदान किए गए हैं","Validate input data format":"इनपुट डेटा फॉर्मेट का सत्यापन करें","Unauthorized":"अनऑथराइज़्ड","The client must authenticate itself to get the requested response.":"क्लाइंट को अनुरोधित प्रतिक्रिया प्राप्त करने के लिए खुद को प्रमाणित करना होगा।","Verify the authorization header format":"अधिकारीकरण हेडर फॉर्मेट की पुष्टि करें","Forbidden":"फॉरबिडन","The client does not have access rights to the content.":"क्लाइंट के पास सामग्री तक पहुँच के अधिकार नहीं हैं।","Check your permissions for this resource":"इस संसाधन के लिए अपनी अनुमतियां जांचें","Contact the API administrator if you believe this is an error":"यदि आप मानते हैं कि यह एक त्रुटि है, तो API व्यवस्थापक से संपर्क करें","Verify if you have the necessary API access level":"जांचें कि आपके पास आवश्यक API एक्सेस लेवल है या नहीं","Not Found":"नहीं मिला","The server cannot find the requested resource.":"सर्वर अनुरोधित संसाधन नहीं ढूँढ सकता।","Check if the endpoint URL is correct":"जांचें कि एंडपॉइंट URL सही है या नहीं","Verify the resource exists":"संसाधन मौजूद है या नहीं इसकी पुष्टि करें","Check for typos in the request path":"अनुरोथ पथ में टाइपो की जांच करें","Internal Server Error":"इंटरनल सर्वर एरर","The server has encountered a situation it does not know how to handle.":"सर्वर की एक स्थिति से मुलाकात हुई है जिसे वह हैंडल करने का तरीका नहीं जानता।","Wait and try again later":"थोड़ा प्रतीक्षा करें और बाद मेफिर से प्रयास करें","__title__":"वेब एपीआई परफॉर्मेंस एनालायजर","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"मुफ्त ऑनलाइन टूल: वेब एपीआई परफॉर्मेंस एनालायज़र. कोई रजिस्ट्रेशन नहीं, कोई भुगतान नहीं — हमेशा मुफ्त","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"सेक्शन ऑक्टिव","Service Unavailable":"सेवा निष्क्रिय","The server is not ready to handle the request.":"सर्वर अनुरोध को प्रबंधित करने के लिए तैयार नहीं है.","Gateway Timeout":"गेटवे टाइमआउट","The server did not receive a timely response from an upstream server.":"सर्वर ने उपरीचक सर्वर से समयबद्ध प्रतिक्रिया नहीं प्राप्त की.","Check if the upstream service is slow":"उपरीचक सेवा धीमी होने की जाँच करें","Unknown Error Code":"अज्ञात त्रुटि कोड","No information available for this error code.":"इस त्रुटि कोड के लिए कोई सूचना उपलब्ध नहीं है.","Check the API documentation":"API दस्तावेज़ को जांच करें","Contact the API provider for more information":"अधिक सूचना के लिए API प्रदाता से संपर्क करें","Please enter a log fragment":"कृपया लॉ फ्रैगमेंट भरें","HTTP Error Codes":"HTTP त्रुटि कोड","Timeout Errors":"टाइमआउट त्रुटियाँ","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"कनेक्शन टाइमआउट","Connection Errors":"कनेक्शन त्रुटियाँ","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"प्रमाणीकरण त्रुटियाँ","Invalid token":"अवैध टोकन","Rate Limiting":"रेट लिमिटिंग","Rate limit exceeded":"रेट लिमिट अतिक्रमित","Request Validation":"अनुरोध प्रमाणीकरण","Validation error":"प्रमाणीकरण त्रुटि","PingFang SC":"PingFang SC","Microsoft YaHei":"माइक्रोसॉफ्ट याहै","No test history available.":"कोई परीक्षण इतिहास उपलब्ध नहीं है।","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Bearer token","req.on(":"req.on(","Contact the API provider":"API प्रदाता से संपर्क करें","Check the service status page":"सेवा स्थिति पृष्ठ की जाँच करें","Contact the API provider if the issue persists":"यदि समस्या जारी रहती है, API प्रदाता से संपर्क करें","Bad Gateway":"बैड गेटवे","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"सर्वर जब गेटवे या प्रॉक्सी के रूप में काम कर रहा था, तो उसने उपरी सर्वर से अवैध प्रतिक्रिया प्राप्त की.","Try again after some time":"कुछ समय बाद फिर से प्रयास करें","Check if the upstream service is down":"जाँच करें कि उपरी सेवा बंद है"},"id":{"Web API Performance Analyzer":"Analisis Performa API Web","API Performance Analyzer":"Analisis Performa API","API Performance":"Performa API","Request \u0026 Response":"Permintaan \u0026 Respon","Test Code Generator":"Generator Kode Test","Error Lookup":"Pencarian Error","Log Analysis":"Analisis Log","History":"Riwayat","API Performance Analysis":"Analisis Performa API","API URL":"URL API","HTTP Method":"Metode HTTP","Headers (JSON format)":"Headers (format JSON)","Request Body":"Body Permintaan","Test API Performance":"Test Performa API","Performance Metrics":"Metrik Performa","Response Time (ms)":"Waktu Respon (ms)","Status Code":"Kode Status","Response Size (KB)":"Ukuran Respon (KB)","Success Rate":"Tingkat Sukses","Response Body":"Body Respon","Request \u0026 Response Viewer":"Penilik Permintaan \u0026 Respon","Request URL":"URL Permintaan","Request Parameters (JSON format)":"Parameter Permintaan (format JSON)","Send Request":"Kirim Permintaan","Response Details":"Detil Respon","Response Headers":"Header Respon","Upload Request Example (JSON file)":"Contoh Permintaan Uploud (berkas JSON)","Test Framework":"Kerangka Kerja Test","Fetch API":"API Fetch","Generate Test Code":"Buat Kode Test","Generated Test Code":"Kode Test Dibuat","Copy Code":"Salin Kode","Error Code Lookup":"Pencarian Kode Error","HTTP Error Code":"Kode Error HTTP","Lookup Error":"Pencarian Error","Error Information":"Informasi Error","Log Error Analysis":"Analisis Error Log","Log Fragment":"Fragmen Log","Analyze Log":"Analisis Log","Analysis Results":"Hasil Analisis","API Test History":"Riwayat Test API","Clear History":"Bersihkan Riwayat","Solutions:":"Lösungen:","Detected Issues":"Masalah Terdeteksi","occurrence(s)":"perkembangan","Suggested Actions:":"Tindakan Sugeruh:","Check the API documentation for the specific error code":"Periksa dokumentasi API untuk kode error khusus","Verify your request parameters and format":"Verifikasi parameter permintaan dan format anda","Increase timeout values in your application":"Tingkatkan nilai timeout di aplikasi anda","Check network connectivity to the API server":"Periksa konektivitas jaringan ke server API","Verify the API endpoint URL is correct":"Verifikasi URL endpoint API sudah benar","Check if the API server is running":"Periksa apakah server API berjalan","Check your authentication credentials":"Periksa kredensial autentikasi Anda","Ensure your token is valid and not expired":"Pastikan token Anda valid dan tidak kedaluwarsa","Implement exponential backoff in your application":"Terapkan exponential backoff di aplikasi Anda","Reduce the frequency of your requests":"Kurangi frekuensi permintaan Anda","Validate your request data before sending":"Validasi data permintaan Anda sebelum mengirimkan","Check the API documentation for required parameters":"Periksa dokumentasi API untuk parameter yang diperlukan","No obvious API errors detected in the log fragment.":"Tidak ada kesalahan API yang jelas terdeteksi dalam fragmen log.","If you're experiencing issues, check for:":"Jika Anda mengalami masalah, periksa untuk:","Network connectivity problems":"Masalah konektivitas jaringan","API service status":"Status layanan API","Request/response timing issues":"Masalah timing permintaan/respons","Application logic errors":"Kesalahan logika aplikasi","Highlighted API References":"Referensi API yang Ditekankan","Paste your log fragment here...":"Tempel fragmen log Anda di sini...","Success":"Berhasil","Failed":"Gagal","Loaded test from history":"Tes dimuat dari riwayat","Are you sure you want to clear all test history?":"Apakah Anda yakin ingin menghapus semua riwayat tes?","History cleared":"Riwayat telah dihapus","Please enter an API URL":"Silakan masukkan URL API","API test failed:":"Tes API gagal:","Please enter a request URL":"Silakan masukkan URL permintaan","Request failed:":"Permintaan gagal:","Please upload a request example file":"Silakan unggah file contoh permintaan","Error parsing JSON file:":"Kesalahan saat mem-parsing file JSON:","Headers:":"Header:","Error:":"Kesalahan:","Code copied to clipboard":"Kode disalin ke papan klip","Please enter an error code":"Silakan masukkan kode kesalahan","Bad Request":"Permintaan Buruk","The server cannot or will not process the request due to something that is perceived to be a client error.":"Server tidak dapat atau tidak akan memproses permintaan karena sesuatu yang dianggap sebagai kesalahan klien.","Check your request syntax":"Periksa sintaks permintaan Anda","Ensure all required parameters are provided":"Pastikan semua parameter yang diperlukan telah disediakan","Validate input data format":"Validasi format data input","Unauthorized":"Tidak Terautentikasi","The client must authenticate itself to get the requested response.":"Klien harus mengautentikasi dirinya sendiri untuk mendapatkan respons yang diminta.","Verify the authorization header format":"Verifikasi format header otorisasi","Forbidden":"Dilarang","The client does not have access rights to the content.":"Klien tidak memiliki hak akses ke konten tersebut.","Check your permissions for this resource":"Periksa izin Anda untuk sumber daya ini","Contact the API administrator if you believe this is an error":"Hubungi administrator API jika Anda percaya ini adalah kesalahan","Verify if you have the necessary API access level":"Verifikasi apakah Anda memiliki tingkat akses API yang diperlukan","Not Found":"Tidak Ditemukan","The server cannot find the requested resource.":"Server tidak dapat menemukan sumber daya yang diminta.","Check if the endpoint URL is correct":"Periksa apakah URL endpoint sudah benar","Verify the resource exists":"Verifikasi sumber daya tersebut ada","Check for typos in the request path":"Periksa ada kesalahan ketikan di path permintaan","Internal Server Error":"Kesalahan Server Internal","The server has encountered a situation it does not know how to handle.":"Server telah menghadapi situasi yang tidak tahu bagaimana menanganinya.","Wait and try again later":"Tunggu dan coba lagi nanti","__title__":"Analisis Performa API Web","No test history available.":"Tidak ada riwayat tes yang tersedia.","完全免费":"Lengkap gratis","提意见":"Berikan saran","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Alat online gratis: Analisis Performa Web API. Tanpa pendaftaran, tanpa pembayaran — gratis selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Service Unavailable":" Layanan Tidak Tersedia","The server is not ready to handle the request.":" Server belum siap untuk menangani permintaan","Gateway Timeout":" Batas Waktu Gateway","The server did not receive a timely response from an upstream server.":" Server tidak menerima tanggapan dalam waktu yang singkat dari server tingkat atas","Check if the upstream service is slow":" Periksa apakah layanan tingkat atas lambat","Unknown Error Code":" Kode Error Tidak Dikenal","No information available for this error code.":" Tidak ada informasi yang tersedia untuk kode error ini","Check the API documentation":" Periksa dokumentasi API","Contact the API provider for more information":" Hubungi pemberi layanan API untuk informasi lebih lanjut","Please enter a log fragment":" Silakan masukkan frasa log","HTTP Error Codes":" Kode Error HTTP","Timeout Errors":" Error Batas Waktu","ETIMEDOUT":"Waktu Koneksi Habis","Connection timed out":"Koneksi habis","Connection Errors":"Kesalahan Koneksi","ECONNREFUSED":"Ditolak Koneksi","ENOTFOUND":"Tidak Ditemukan","Authentication Errors":"Kesalahan Autentikasi","Invalid token":"Token Tidak Valid","Rate Limiting":"Batas Pengiriman","Rate limit exceeded":"Batas pengiriman melebihi","Request Validation":"Validasi Permintaan","Validation error":"Kesalahan Validasi","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","Content-Type":"Tipe Konten","application/json":"Format JSON","Authorization":"Otorisasi","Bearer token":"Token Bearer","Check the service status page":"Periksa halaman status layanan","Contact the API provider if the issue persists":"Hubungi pemberi layanan API jika masalah tetap ada","Bad Gateway":"Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"Server, saat bertindak sebagai gateway atau proxy, menerima tanggapan yang tidak sah dari server tingkat atas.","Try again after some time":"Coba lagi setelah beberapa waktu","Check if the upstream service is down":"Periksa apakah layanan tingkat atas mati","Contact the API provider":"Hubungi pemberi layanan API","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Status":"Status","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","Error":"Error","status-badge status-error":"status-badge status-error","Status:":"Status:","Data:":"Data:","req.on(":":"},"vi":{"Web API Performance Analyzer":"Phân tích hiệu suất Web API","API Performance Analyzer":"Phân tích hiệu suất API","API Performance":"Hiệu suất API","Request \u0026 Response":"Yêu cầu \u0026 Phản hồi","Test Code Generator":"Tạo mã kiểm tra","Error Lookup":"Tìm kiếm lỗi","Log Analysis":"Phân tích log","History":"Lịch sử","API Performance Analysis":"Phân tích hiệu suất API","API URL":"URL API","HTTP Method":"Phương thức HTTP","Headers (JSON format)":"Đầu đề (định dạng JSON)","Request Body":"Thân yêu cầu","Test API Performance":"Kiểm tra hiệu suất API","Performance Metrics":"Chỉ số hiệu suất","Response Time (ms)":"Thời gian phản hồi (ms)","Status Code":"Mã trạng thái","Response Size (KB)":"Kích thước phản hồi (KB)","Success Rate":"Tỷ lệ thành công","Response Body":"Thân phản hồi","Request \u0026 Response Viewer":"Trình xem yêu cầu \u0026 phản hồi","Request URL":"URL yêu cầu","Request Parameters (JSON format)":"Tham số yêu cầu (định dạng JSON)","Send Request":"Gửi yêu cầu","Response Details":"Chi tiết phản hồi","Status":"Trạng thái","Response Headers":"Đầu đề phản hồi","Upload Request Example (JSON file)":"Ví dụ yêu cầu tải lên (tệp JSON)","Test Framework":"Khung kiểm tra","Fetch API":"API Fetch","Generate Test Code":"Tạo mã kiểm tra","Generated Test Code":"Mã kiểm tra đã tạo","Copy Code":"Sao chép mã","Error Code Lookup":"Tìm kiếm mã lỗi","HTTP Error Code":"Mã lỗi HTTP","Lookup Error":"Tìm kiếm lỗi","Error Information":"Thông tin lỗi","Log Error Analysis":"Phân tích lỗi log","Log Fragment":"Phần log","Analyze Log":"Phân tích log","Analysis Results":"Kết quả phân tích","API Test History":"Lịch sử kiểm tra API","Clear History":"Xóa lịch sử","Error":"Lỗi","Solutions:":"Giải pháp:","Detected Issues":"Vấn đề phát hiện","occurrence(s)":"sự xuất hiện","Suggested Actions:":"Hành động đề xuất:","Check the API documentation for the specific error code":"Kiểm tra tài liệu API cho mã lỗi cụ thể","Verify your request parameters and format":"Xác minh tham số yêu cầu và định dạng của bạn","Increase timeout values in your application":"Tăng giá trị timeout trong ứng dụng của bạn","Check network connectivity to the API server":"Kiểm tra kết nối mạng đến máy chủ API","Verify the API endpoint URL is correct":"Kiểm tra URL endpoint API có chính xác không","Check if the API server is running":"Kiểm tra xem máy chủ API có đang chạy không","Check your authentication credentials":"Kiểm tra thông tin xác thực của bạn","Ensure your token is valid and not expired":"Đảm bảo token của bạn hợp lệ và chưa hết hạn","Implement exponential backoff in your application":"Triển khai cơ chế backoff mũ trong ứng dụng của bạn","Reduce the frequency of your requests":"Giảm tần suất yêu cầu của bạn","Validate your request data before sending":"Xác thực dữ liệu yêu cầu trước khi gửi","Check the API documentation for required parameters":"Kiểm tra tài liệu API để biết các tham số bắt buộc","No obvious API errors detected in the log fragment.":"Không phát hiện lỗi API rõ ràng trong đoạn nhật ký.","If you're experiencing issues, check for:":"Nếu bạn đang gặp vấn đề, hãy kiểm tra:","Network connectivity problems":"Vấn đề kết nối mạng","API service status":"Trạng thái dịch vụ API","Request/response timing issues":"Vấn đề thời gian yêu cầu/phản hồi","Application logic errors":"Lỗi logic ứng dụng","Highlighted API References":"API tham chiếu được làm nổi bật","Paste your log fragment here...":"Dán đoạn nhật ký của bạn tại đây...","Success":"Thành công","Failed":"Thất bại","Loaded test from history":"Đã tải thử nghiệm từ lịch sử","Are you sure you want to clear all test history?":"Bạn có chắc muốn xóa toàn bộ lịch sử thử nghiệm?","History cleared":"Lịch sử đã được xóa","Please enter an API URL":"Vui lòng nhập URL API","API test failed:":"Thử nghiệm API thất bại:","Please enter a request URL":"Vui lòng nhập URL yêu cầu","Request failed:":"Yêu cầu thất bại:","Please upload a request example file":"Vui lòng tải lên tệp ví dụ yêu cầu","Error parsing JSON file:":"Lỗi phân tích tệp JSON:","Status:":"Trạng thái:","Headers:":"Tiêu đề:","Data:":"Dữ liệu:","Error:":"Lỗi:","Code copied to clipboard":"Đã sao chép mã vào clipboard","Please enter an error code":"Vui lòng nhập mã lỗi","Bad Request":"Yêu cầu không hợp lệ","The server cannot or will not process the request due to something that is perceived to be a client error.":"Máy chủ không thể hoặc sẽ không xử lý yêu cầu do một điều gì đó được coi là lỗi từ phía khách hàng.","Check your request syntax":"Kiểm tra cú pháp yêu cầu của bạn","Ensure all required parameters are provided":"Đảm bảo tất cả các tham số bắt buộc đều được cung cấp","Validate input data format":"Xác thực định dạng dữ liệu đầu vào","Unauthorized":"Chưa được ủy quyền","The client must authenticate itself to get the requested response.":"Khách hàng phải xác thực chính mình để nhận được phản hồi được yêu cầu.","Verify the authorization header format":"Xác thực định dạng tiêu đề ủy quyền","Forbidden":"Cấm truy cập","The client does not have access rights to the content.":"Khách hàng không có quyền truy cập vào nội dung.","Check your permissions for this resource":"Kiểm tra quyền của bạn cho tài nguyên này","Contact the API administrator if you believe this is an error":"Liên hệ với quản trị viên API nếu bạn tin rằng đây là một lỗi","Verify if you have the necessary API access level":"Xác minh xem bạn có cấp độ truy cập API cần thiết không","Not Found":"Không tìm thấy","The server cannot find the requested resource.":"Máy chủ không thể tìm thấy tài nguyên được yêu cầu.","Check if the endpoint URL is correct":"Kiểm tra xem URL endpoint có chính xác không","Verify the resource exists":"Xác thực tài nguyên có tồn tại","Check for typos in the request path":"Kiểm tra lỗi chính tả trong đường dẫn yêu cầu","Internal Server Error":"Lỗi máy chủ nội bộ","The server has encountered a situation it does not know how to handle.":"Máy chủ đã gặp một tình huống mà nó không biết cách xử lý.","Wait and try again later":"Hãy đợi và thử lại sau","__title__":"Phân tích hiệu suất Web API","No test history available.":"Không có lịch sử kiểm tra nào có sẵn.","完全免费":"Hoàn toàn miễn phí","提意见":"Gửi ý kiến","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"Công cụ online miễn phí: Phân tích hiệu suất Web API. Không cần đăng ký, không cần thanh toán — miễn phí vĩnh viễn.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Service Unavailable":"Dịch vụ không khả dụng","The server is not ready to handle the request.":"Máy chủ không sẵn sàng xử lý yêu cầu.","Gateway Timeout":"Thời gian chờ của cổng kết nối đã hết hạn","The server did not receive a timely response from an upstream server.":"Máy chủ không nhận được phản hồi kịp thời từ máy chủ đầu mối.","Check if the upstream service is slow":"Kiểm tra xem dịch vụ đầu mối có chậm không","Unknown Error Code":"Mã lỗi không xác định","No information available for this error code.":"Không có thông tin nào sẵn sàng cho mã lỗi này.","Check the API documentation":"Kiểm tra tài liệu API","Contact the API provider for more information":"Liên hệ với nhà cung cấp API để có thêm thông tin","Please enter a log fragment":"Vui lòng nhập đoạn log","HTTP Error Codes":"Mã lỗi HTTP","Timeout Errors":"Lỗi chờ đợi quá hạn","ETIMEDOUT":"Thời gian chờ hết","Connection timed out":"Kết nối hết hạn","Connection Errors":"Lỗi kết nối","ECONNREFUSED":"Lỗi từ chối kết nối","ENOTFOUND":"Không tìm thấy","Authentication Errors":"Lỗi xác thực","Invalid token":"Token không hợp lệ","Rate Limiting":"Giới hạn tốc độ","Rate limit exceeded":"Vượt quá giới hạn tốc độ","Request Validation":"Kiểm tra yêu cầu","Validation error":"Lỗi kiểm tra","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","status-badge status-error":"status-badge status-error","Content-Type":"Content-Type","application/json":"application/json","Authorization":"Authorization","Bearer token":"Token mang theo","req.on(":"):","Check the service status page":"Kiểm tra trang trạng thái dịch vụ","Contact the API provider if the issue persists":"Liên hệ với nhà cung cấp API nếu vấn đề vẫn tiếp diễn","Bad Gateway":"Lỗi Bad Gateway","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"Máy chủ, trong khi hoạt động như một cổng hoặc proxy, đã nhận được phản hồi không hợp lệ từ máy chủ dòng trên.","Try again after some time":"Thử lại sau một段时间","Check if the upstream service is down":"Kiểm tra xem dịch vụ dòng trên có ngừng hoạt động không","Contact the API provider":"Liên hệ với nhà cung cấp API"},"th":{"Web API Performance Analyzer":"วิเคราะห์การทำงาน API ออนไลน์","API Performance Analyzer":"วิเคราะห์การทำงาน API","API Performance":"การทำงาน API","Request \u0026 Response":"คำขอ \u0026 ตอบ","Test Code Generator":"เครื่องสร้างรหัสทดสอบ","Error Lookup":"ค้นหาข้อผิดพลาด","Log Analysis":"วิเคราะห์หลักฐาน","History":"ประวัติ","API Performance Analysis":"วิเคราะห์การทำงาน API","API URL":"URL API","HTTP Method":"วิธี HTTP","Headers (JSON format)":"หัวข้อ (รูปแบบ JSON)","Request Body":"ร่างคำขอ","Test API Performance":"ทดสอบการทำงาน API","Performance Metrics":"ตัวมาตรฐานการทำงาน","Response Time (ms)":"เวลาตอบ (มิลิวินาที)","Status Code":"รหัสสถานะ","Response Size (KB)":"ขนาดตอบ (KB)","Success Rate":"อัตราการสำเร็จ","Response Body":"ร่างตอบ","Request \u0026 Response Viewer":"ตัวดูคำขอ \u0026 ตอบ","Request URL":"URL คำขอ","Request Parameters (JSON format)":"ตัวแปรคำขอ (รูปแบบ JSON)","Send Request":"ส่งคำขอ","Response Details":"รายละเอียดตอบ","Status":"สถานะ","Response Headers":"หัวข้อตอบ","Upload Request Example (JSON file)":"ตัวอย่างคำขอบันทึก (ไฟล์ JSON)","Test Framework":"รูปแบบทดสอบ","Fetch API":"API Fetch","Generate Test Code":"สร้างรหัสทดสอบ","Generated Test Code":"รหัสทดสอบที่สร้างขึ้น","Copy Code":"คัดลอกรหัส","Error Code Lookup":"ค้นหารหัสข้อผิดพลาด","HTTP Error Code":"รหัสข้อผิดพลาด HTTP","Lookup Error":"ค้นหาข้อผิดพลาด","Error Information":"ข้อมูลข้อผิดพลาด","Log Error Analysis":"วิเคราะห์ข้อผิดพลาดหลักฐาน","Log Fragment":"ส่วนหนึ่งหลักฐาน","Analyze Log":"วิเคราะห์หลักฐาน","Analysis Results":"ผลลัพธ์การวิเคราะห์","API Test History":"ประวัติการทดสอบ API","Clear History":"ล้างประวัติ","Error":"ข้อผิดพลาด","Solutions:":"แนะนำแก้ปัญหา:","Detected Issues":"ปัญหาที่ตรวจพบ","occurrence(s)":"การเกิดขึ้น","Suggested Actions:":"แนะนำการกระทำ:","Check the API documentation for the specific error code":"ตรวจสอบเอกสาร API สำหรับรหัสข้อผิดพลาดเฉพาะ","Verify your request parameters and format":"ตรวจสอบตัวแปรคำขอและรูปแบบของคุณ","Increase timeout values in your application":"เพิ่มค่า timeout ในโปรแกรมของคุณ","Check network connectivity to the API server":"ตรวจสอบการเชื่อมต่อเครือข่ายไปยังเซิร์ฟเวอร์ API","Verify the API endpoint URL is correct":"ตรวจสอบให้แน่ใจว่า URL ของ endpoint API ถูกต้อง","Check if the API server is running":"ตรวจสอบว่าเซิร์ฟเวอร์ API กำลังทำงานอยู่หรือไม่","Check your authentication credentials":"ตรวจสอบข้อมูลตรวจสอบตัวตนของคุณ","Ensure your token is valid and not expired":"ตรวจสอบให้แน่ใจว่าโทเคนของคุณมีความถูกต้องและไม่หมดอายุ","Implement exponential backoff in your application":"นำ exponential backoff ไปใช้ในแอปพลิเคชันของคุณ","Reduce the frequency of your requests":"ลดความถี่ของคำขอของคุณ","Validate your request data before sending":"ตรวจสอบข้อมูลคำขอก่อนส่ง","Check the API documentation for required parameters":"ตรวจสอบเอกสาร API เพื่อดูพารามิเตอร์ที่จำเป็น","No obvious API errors detected in the log fragment.":"ไม่พบข้อผิดพลาดของ API ที่ชัดเจนในส่วนของ log","If you're experiencing issues, check for:":"หากคุณประสบปัญหา ให้ตรวจสอบของดังนี้:","Network connectivity problems":"ปัญหาการเชื่อมต่อเครือข่าย","API service status":"สถานะของบริการ API","Request/response timing issues":"ปัญหาเวลาในการส่ง/รับคำขอ","Application logic errors":"ข้อผิดพลาดในตรรกะของแอปพลิเคชัน","Highlighted API References":"API References ที่ไฮไลต์","Paste your log fragment here...":"วางส่วนของ log ที่นี่...","Success":"สำเร็จ","Failed":"ล้มเหลว","Loaded test from history":"โหลดการทดสอบจากประวัติ","Are you sure you want to clear all test history?":"คุณแน่ใจหรือไม่ว่าต้องการลบประวัติการทดสอบทั้งหมด?","History cleared":"ลบประวัติเรียบร้อยแล้ว","Please enter an API URL":"กรุณาป้อน URL ของ API","API test failed:":"การทดสอบ API ล้มเหลว:","Please enter a request URL":"กรุณาป้อน URL ของคำขอ","Request failed:":"คำขอล้มเหลว:","Please upload a request example file":"กรุณาอัปโหลดไฟล์ตัวอย่างคำขอ","Error parsing JSON file:":"เกิดข้อผิดพลาดในการแยกวิเคราะห์ไฟล์ JSON:","Status:":"สถานะ:","Data:":"ข้อมูล:","Error:":"ข้อผิดพลาด:","Code copied to clipboard":"คัดลอกโค้ดไปยังคลิปบอร์ดแล้ว","Please enter an error code":"กรุณาป้อนรหัสข้อผิดพลาด","The server cannot or will not process the request due to something that is perceived to be a client error.":"เซิร์ฟเวอร์ไม่สามารถหรือไม่ต้องการประมวลผลคำขอเนื่องจากมีบางอย่างที่ถูกมองว่าเป็นข้อผิดพลาดของไคลเอนต์","Check your request syntax":"ตรวจสอบไวยากรณ์ของคำขอของคุณ","Ensure all required parameters are provided":"ตรวจสอบให้แน่ใจว่าได้ให้พารามิเตอร์ที่จำเป็นทั้งหมด","Validate input data format":"ตรวจสอบรูปแบบข้อมูลที่ป้อนเข้า","The client must authenticate itself to get the requested response.":"ไคลเอนต์ต้องตรวจสอบตัวตนเพื่อรับการตอบสนองที่ขอ","Verify the authorization header format":"ตรวจสอบรูปแบบของ header การให้สิทธิ์","The client does not have access rights to the content.":"ไคลเอนต์ไม่มีสิทธิ์เข้าถึงเนื้อหา","Check your permissions for this resource":"ตรวจสอบสิทธิ์ของคุณสำหรับทรัพยากรนี้","Contact the API administrator if you believe this is an error":"ติดต่อผู้ดูแลระบบ API หากคุณเชื่อว่านี่เป็นข้อผิดพลาด","Verify if you have the necessary API access level":"ตรวจสอบว่าคุณมีระดับการเข้าถึง API ที่จำเป็นหรือไม่","The server cannot find the requested resource.":"เซิร์ฟเวอร์ไม่พบทรัพยากรที่ถูกขอ","Check if the endpoint URL is correct":"ตรวจสอบว่า URL ของ endpoint ถูกต้องหรือไม่","Verify the resource exists":"ตรวจสอบว่าทรัพยากรมีอยู่จริงหรือไม่","Check for typos in the request path":"ตรวจสอบสำหรับตัวพิมพ์ผิดในเส้นทางคำขอ","The server has encountered a situation it does not know how to handle.":"เซิร์ฟเวอร์ได้พบสถานการณ์ที่ไม่รู้จักว่าจะจัดการอย่างไร","Wait and try again later":"รอสักครู่แล้วลองใหม่อีกครั้งภายหลัง","__title__":"วิเคราะห์การทำงาน API ออนไลน์","No test history available.":"ไม่มีประวัติทดสอบ","完全免费":"ฟรีทั้งหมด","提意见":"แนะนำ","UTF-8":"UTF-8","Free online tool: Web API Performance Analyzer. No signup, no payment — free forever.":"เครื่องมือตรวจสอบการทำงาน API ออนไลน์ ฟรี: Web API Performance Analyzer. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย — ฟรีตลอดช่วงเวลา","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","Segoe UI":"Segoe UI","LA_COLLECT":"LA_COLLECT","section active":"section active","Service Unavailable":"บริการไม่สามารถใช้งานได้","The server is not ready to handle the request.":"เซิร์ฟเวอร์ยังไม่พร้อมที่จะรับคำขอ","Gateway Timeout":"เวลาหน่วงของเกตเวย์หลังเกินกำหนด","The server did not receive a timely response from an upstream server.":"เซิร์ฟเวอร์ไม่ได้รับการตอบกลับทันเวลาจากเซิร์ฟเวอร์ข้างต้น","Check if the upstream service is slow":"ตรวจสอบว่าบริการข้างต้นช้าหรือไม่","Unknown Error Code":"รหัสข้อผิดพลาดที่ไม่ทราบ","No information available for this error code.":"ไม่มีข้อมูลให้กับรหัสข้อผิดพลาดนี้","Check the API documentation":"ตรวจสอบเอกสาร API","Contact the API provider for more information":"ติดต่อผู้ให้บริการ API สำหรับข้อมูลเพิ่มเติม","Please enter a log fragment":"โปรดใส่ส่วนหนึ่งของบันทึก","HTTP Error Codes":"รหัสข้อผิดพลาด HTTP","Timeout Errors":"ข้อผิดพลาดเวลาหยุดเวลา","ETIMEDOUT":"ETIMEDOUT","Connection timed out":"การต่อเชื่อมหมดเวลา","Connection Errors":"ข้อผิดพลาดในการต่อเชื่อม","ECONNREFUSED":"ECONNREFUSED","ENOTFOUND":"ENOTFOUND","Authentication Errors":"ข้อผิดพลาดในการรับรองตัวตน","Invalid token":"token ผิด","Rate Limiting":"จำกัดอัตราการใช้","Rate limit exceeded":"เกินจำกัดอัตราการใช้","Request Validation":"การตรวจสอบคำขอ","Validation error":"ข้อผิดพลาดในการตรวจสอบ","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","GET":"GET","POST":"POST","PUT":"PUT","DELETE":"DELETE","PATCH":"PATCH","Axios":"Axios","jQuery AJAX":"jQuery AJAX","Node.js HTTP":"Node.js HTTP","status-badge status-error":"status-badge status-error","Headers:":"Headers:","Bad Request":"Bad Request","Unauthorized":"Unauthorized","Forbidden":"…","Not Found":"…","Internal Server Error":"…","Content-Type":"…","application/json":"…","Authorization":"…","Bearer token":"…","req.on(":":","Check the service status page":"…","Contact the API provider if the issue persists":"…","Bad Gateway":"…","The server, while acting as a gateway or proxy, received an invalid response from an upstream server.":"…","Try again after some time":"พยายามอีกครั้งหลังจากเวลานี้","Check if the upstream service is down":"ตรวจสอบว่าบริการของผู้ให้บริการสูงสุดอยู่ในสถานะดับ","Contact the API provider":"ติดต่อผู้ให้บริการ API"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>

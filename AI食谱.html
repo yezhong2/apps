@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI食谱助手 · 智能健康饮食</title>
+<meta name="description" content="输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY">
+<meta property="og:title" content="AI食谱助手 · 智能健康饮食">
+<meta property="og:description" content="输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY">
+<meta name="theme-color" content="#0f1115">
+<style>
+:root{--bg:#0f1115;--card:#171a21;--line:#262b36;--txt:#e6e9ef;--sub:#8b93a3;--acc:#00a884;--acc2:#ffb020;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:30px;}
+header{background:linear-gradient(160deg,#0d2b24,#0f1115 70%);padding:40px 20px 20px;text-align:center;animation:fadeIn 1s ease-in-out;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+h1{font-size:32px;letter-spacing:1px;}
+.tag{color:var(--acc2);font-size:16px;margin-top:8px;}
+.sub{color:var(--sub);font-size:12px;margin-top:6px;}
+.tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:18px;background:var(--card);border:1px solid var(--line);color:var(--sub);font-size:13px;cursor:pointer;transition:all 0.3s ease;}
+.tab:hover{transform:translateY(-2px);border-color:var(--acc2);}
+.tab.active{background:var(--acc);border-color:var(--acc);color:#fff;animation:pulse 2s infinite;}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,168,132,0.4);}70%{box-shadow:0 0 0 10px rgba(0,168,132,0);}100%{box-shadow:0 0 0 0 rgba(0,168,132,0);}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 16px;animation:slideUp 0.8s ease-out forwards;opacity:0;transform:translateY(20px);}
+@keyframes slideUp{to{opacity:1;transform:translateY(0);}}
+.card h3{font-size:15px;margin-bottom:10px;color:var(--acc2);}
+.chip{display:inline-block;padding:6px 12px;border-radius:14px;background:#232835;border:1px solid var(--line);margin:4px 6px 4px 0;font-size:13px;cursor:pointer;transition:.15s;}
+.chip:hover{transform:scale(1.05);background:#2a2f3a;}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff;}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;background:var(--acc);color:#fff;font-size:15px;cursor:pointer;margin-top:12px;position:relative;overflow:hidden;transition:all 0.3s ease;}
+.btn:active{opacity:.85;transform:scale(0.98);}
+.btn::after{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.2);transform:translate(-50%,-50%);transition:width 0.6s,height 0.6s;}
+.btn:active::after{width:300px;height:300px;}
+.recipe{background:#0c0e13;border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:12px;display:none;animation:fadeIn 0.5s ease-in-out;}
+.recipe.show{display:block;}
+.recipe h4{font-size:15px;color:#fff;margin-bottom:6px;}
+.recipe .k{font-size:12px;color:var(--sub);line-height:1.8;}
+.recipe .k b{color:var(--acc2);font-weight:600;}
+.drink{border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;background:#0c0e13;animation:fadeIn 0.6s ease-in-out;}
+.drink h4{font-size:14px;margin-bottom:4px;}
+.drink p{font-size:12px;color:var(--sub);line-height:1.7;}
+.search-box{display:flex;gap:8px;margin:16px 16px 0;}
+.search-box input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;transition:border-color 0.3s ease;}
+.search-box input:focus{border-color:var(--acc2);}
+.search-box button{padding:10px 16px;border-radius:8px;border:none;background:var(--acc);color:#fff;font-size:13px;cursor:pointer;transition:all 0.3s ease;}
+.search-box button:active{opacity:.85;transform:scale(0.98);}
+.cal-row{display:flex;gap:8px;margin:12px 0;}
+.cal-row input{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:#0c0e13;color:var(--txt);font-size:13px;outline:none;transition:border-color 0.3s ease;}
+.cal-row input:focus{border-color:var(--acc2);}
+.calChange{animation:calChange 0.5s ease-in-out;}
+@keyframes calChange{0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+.tab-content {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+.tab-content.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.no-results {
+  color: var(--sub);
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+}
+.search-message {
+  color: var(--acc2);
+  font-size: 14px;
+  text-align: center;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: rgba(0, 168, 132, 0.1);
+}
+.manual-link {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  background: var(--acc2);
+  color: var(--bg);
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.manual-link:hover {
+  background: #ffb040;
+  transform: translateY(-2px);
+}
+.chart-container {
+  margin-top: 20px;
+  background: #0c0e13;
+  border-radius: 10px;
+  padding: 12px;
+  height: 200px;
+  position: relative;
+}
+.chart-bar {
+  position: absolute;
+  bottom: 0;
+  width: 20px;
+  background: var(--acc);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.5s ease-out;
+}
+.chart-label {
+  position: absolute;
+  bottom: -20px;
+  font-size: 12px;
+  color: var(--sub);
+  width: 20px;
+  text-align: center;
+}
+.chart-value {
+  position: absolute;
+  top: -20px;
+  font-size: 12px;
+  color: var(--acc2);
+  width: 20px;
+  text-align: center;
+}
+.cal-record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.cal-record:last-child {
+  border-bottom: none;
+}
+.cal-record-name {
+  flex: 1;
+}
+.cal-record-weight {
+  margin: 0 10px;
+}
+.cal-record-cal {
+  color: var(--acc2);
+  font-weight: 600;
+}
+.cal-record-date {
+  font-size: 12px;
+  color: var(--sub);
+}
+.delete-btn {
+  padding: 4px 8px;
+  background: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.delete-btn:hover {
+  background: #b71c1c;
+}
+.export-btn {
+  width: auto;
+  margin-top: 8px;
+  padding: 8px 16px;
+  background: var(--acc2);
+  color: var(--bg);
+  font-weight: 600;
+}
+.chart-title {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: var(--txt);
+  text-align: center;
+}
+</style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+<header>
+  <h1>🥗 AI食谱助手</h1>
+  <div class="tag">智能健康饮食 · 吃对每一餐</div>
+  <div class="sub">输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY</div>
+</header>
+
+<div class="tabs" id="tabsContainer">
+  <div class="tab active" data-p="rec">🍳 快速制作</div>
+  <div class="tab" data-p="cal">🔥 热量计算</div>
+  <div class="tab" data-p="drink">☕ 饮品 DIY</div>
+</div>
+
+<div id="p-rec" class="tab-content active">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索你的食材">
+    <button id="searchBtn">开始制作</button>
+  </div>
+  <div class="card">
+    <h3>我有这些食材，能做什么？</h3>
+    <div id="ingList"></div>
+    <button class="btn" id="btnGo">推荐食谱</button>
+    <div id="recOut"></div>
+  </div>
+  <a href="#" class="manual-link" id="manualLink">使用手册</a>
+</div>
+
+<div id="p-cal" class="tab-content">
+  <div class="card">
+    <h3>🔥 今日摄入热量估算</h3>
+    <div id="foodList"></div>
+    <div class="cal-row"><input id="calInput" type="number" placeholder="输入克数估算" min="1" max="1000"><button class="btn" style="margin:0;width:auto;padding:10px 18px" id="btnAdd">＋添加</button></div>
+    <div id="calOut">已选 0 项 · 共 0 千卡</div>
+  </div>
+  
+  <div class="card">
+    <h3>📊 热量记录</h3>
+    <div id="calRecords"></div>
+    <button class="btn export-btn" id="exportBtn">导出记录</button>
+    <div class="chart-container" id="chartContainer">
+      <div class="chart-title">7天热量摄入趋势</div>
+    </div>
+  </div>
+</div>
+
+<div id="p-drink" class="tab-content">
+  <div class="card">
+    <h3>☕ 家庭饮品 DIY 指南</h3>
+    <div id="drinkList"></div>
+  </div>
+</div>
+
+<script>
+// ===== 数据 =====
+var RECIPES = [
+  {n:"番茄炒蛋", ing:["番茄","鸡蛋"], k:"<b>食材：</b>番茄2个、鸡蛋3个、葱、盐、糖<br><b>步骤：</b>①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅<br><b>热量：</b>约 260 千卡/份"},
+  {n:"鸡胸肉蔬菜沙拉", ing:["鸡胸肉","生菜"], k:"<b>食材：</b>鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁<br><b>步骤：</b>①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀<br><b>热量：</b>约 320 千卡/份"},
+  {n:"燕麦牛奶早餐", ing:["燕麦","牛奶","鸡蛋"], k:"<b>食材：</b>燕麦40g、牛奶250ml、鸡蛋1个、坚果少许<br><b>步骤：</b>①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果<br><b>热量：</b>约 380 千卡/份"},
+  {n:"清蒸鲈鱼", ing:["鱼","鲈鱼"], k:"<b>食材：</b>鲈鱼1条、姜、葱、蒸鱼豉油<br><b>步骤：</b>①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油<br><b>热量：</b>约 280 千卡/份"},
+  {n:"冬瓜虾仁汤", ing:["冬瓜","虾"], k:"<b>食材：</b>冬瓜300g、虾仁150g、姜<br><b>步骤：</b>①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟<br><b>热量：</b>约 150 千卡/份"},
+  {n:"麻婆豆腐", ing:["豆腐","肉末"], k:"<b>食材：</b>豆腐1盒、肉末100g、豆瓣酱、花椒<br><b>步骤：</b>①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花<br><b>热量：</b>约 420 千卡/份"},
+  {n:"蒜蓉西兰花", ing:["西兰花"], k:"<b>食材：</b>西兰花1颗、蒜、蚝油<br><b>步骤：</b>①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒<br><b>热量：</b>约 120 千卡/份"},
+  {n:"杂粮饭", ing:["米饭","糙米"], k:"<b>食材：</b>大米、糙米、小米 1:1:1<br><b>步骤：</b>①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式<br><b>热量：</b>约 200 千卡/碗"}
+];
+var FOODS = [
+  {n:"米饭", c:116},{n:"馒头", c:223},{n:"面条(熟)", c:110},{n:"鸡胸肉", c:133},{n:"鸡蛋", c:144},
+  {n:"牛肉", c:125},{n:"猪肉", c:395},{n:"鱼", c:110},{n:"豆腐", c:81},{n:"牛奶", c:54},
+  {n:"苹果", c:52},{n:"香蕉", c:93},{n:"西兰花", c:36},{n:"番茄", c:20},{n:"土豆", c:81}
+];
+var DRINKS = [
+  {n:"冰美式", d:"浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。"},
+  {n:"生椰拿铁", d:"浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。"},
+  {n:"柠檬气泡水", d:"柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。"},
+  {n:"绿豆牛乳冰", d:"熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。"}
+];
+
+// ===== 状态管理 =====
+var appState = {
+  sel: {},
+  chosen: [],
+  total: 0,
+  searchTerm: '',
+  currentTab: 'rec',
+  records: JSON.parse(localStorage.getItem('calRecords') || '[]')
+};
+
+// ===== 食材选择 =====
+function renderIngs(){
+  var box = document.getElementById("ingList");
+  var all = [];
+  RECIPES.forEach(function(r){ r.ing.forEach(function(i){ if(all.indexOf(i)<0) all.push(i); }); });
+  box.innerHTML = all.map(function(i){
+    return '<span class="chip'+(appState.sel[i]?' on':'')+'" data-i="'+i+'">'+i+'</span>';
+  }).join("");
+}
+
+// 使用事件委托优化食材选择事件
+document.getElementById("ingList").addEventListener("click", function(e) {
+  if(e.target.classList.contains("chip")) {
+    var i = e.target.getAttribute("data-i");
+    if(appState.sel[i]) delete appState.sel[i]; else appState.sel[i]=1;
+    renderIngs();
+  }
+});
+
+document.getElementById("btnGo").onclick = function(){
+  var out = document.getElementById("recOut");
+  var keys = Object.keys(appState.sel);
+  if(!keys.length){ out.innerHTML = '<div class="recipe show"><h4>💡 先选 1-2 种你有的食材</h4></div>'; return; }
+  var hit = RECIPES.filter(function(r){
+    return keys.some(function(k){ return r.ing.indexOf(k)>=0; });
+  });
+  out.innerHTML = hit.map(function(r){
+    return '<div class="recipe show"><h4>'+r.n+'</h4><div class="k">'+r.k+'</div></div>';
+  }).join("") || '<div class="recipe show"><h4>没有完全匹配的食谱</h4><div class="k">试试少选一种食材，或换个组合再试。</div></div>';
+};
+
+// ===== 搜索功能 =====
+document.getElementById("searchBtn").onclick = function(){
+  appState.searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  if(!appState.searchTerm) {
+    renderIngs();
+    return;
+  }
+  
+  var box = document.getElementById("ingList");
+  var all = [];
+  RECIPES.forEach(function(r){ r.ing.forEach(function(i){ if(all.indexOf(i)<0) all.push(i); }); });
+  
+  var filtered = all.filter(function(i){
+    return i.toLowerCase().indexOf(appState.searchTerm) >= 0;
+  });
+  
+  box.innerHTML = filtered.map(function(i){
+    return '<span class="chip'+(appState.sel[i]?' on':'')+'" data-i="'+i+'">'+i+'</span>';
+  }).join("");
+  
+  if(filtered.length === 0) {
+    box.innerHTML = '<div class="no-results">没有找到匹配的食材</div>';
+  } else {
+    box.innerHTML = '<div class="search-message">搜索结果: ' + filtered.length + ' 种食材</div>';
+  }
+};
+
+// 修复回车键监听器，将其绑定到搜索输入框
+document.getElementById("searchInput").addEventListener("keypress", function(e){
+  if(e.key === "Enter") {
+    document.getElementById("searchBtn").click();
+  }
+});
+
+// ===== 热量计算 =====
+function renderFoods(){
+  var box = document.getElementById("foodList");
+  box.innerHTML = FOODS.map(function(f){
+    return '<span class="chip" data-f="'+f.n+'">'+f.n+' '+f.c+'千卡/100g</span>';
+  }).join("");
+}
+
+// 使用事件委托优化食物选择事件
+document.getElementById("foodList").addEventListener("click", function(e) {
+  if(e.target.classList.contains("chip")) {
+    document.getElementById("calInput").placeholder = e.target.getAttribute("data-f")+" · 输入克数";
+  }
+});
+
+document.getElementById("btnAdd").onclick = function(){
+  var inp = document.getElementById("calInput");
+  var w = parseFloat(inp.value);
+  var ph = inp.placeholder;
+  
+  // 检查输入是否为空
+  if(!inp.value.trim()) {
+    document.getElementById("calOut").textContent = "请输入重量";
+    document.getElementById("calOut").classList.add("calChange");
+    setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+    return;
+  }
+  
+  // 检查输入是否为有效数字
+  if(isNaN(w)) {
+    document.getElementById("calOut").textContent = "请输入有效数字";
+    document.getElementById("calOut").classList.add("calChange");
+    setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+    return;
+  }
+  
+  // 限制最大输入值
+  if(w > 1000) {
+    w = 1000;
+    inp.value = 1000;
+    document.getElementById("calOut").textContent = "已调整为最大值 1000 克";
+    document.getElementById("calOut").classList.add("calChange");
+    setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+    return;
+  }
+  
+  if(!w || ph.indexOf("·")<0) return;
+  var name = ph.split(" ·")[0];
+  var f = FOODS.filter(function(x){return x.n===name;})[0];
+  if(!f) return;
+  
+  // 检查是否已添加相同食物和相同重量
+  var foodExists = appState.chosen.some(function(item) {
+    return item === name + " " + w + "g";
+  });
+  
+  if(foodExists) {
+    document.getElementById("calOut").textContent = "已添加相同食物和重量，请重新输入";
+    document.getElementById("calOut").classList.add("calChange");
+    inp.value = "";
+    inp.placeholder = name + " · 输入克数";
+    setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+    return;
+  }
+  
+  appState.total += Math.round(f.c * w / 100);
+  appState.chosen.push(name + " " + w + "g");
+  document.getElementById("calOut").textContent = "已选 " + appState.chosen.length + " 项 · 共 " + appState.total + " 千卡";
+  document.getElementById("calOut").classList.add("calChange");
+  
+  // 保存记录
+  var record = {
+    name: name,
+    weight: w,
+    calories: Math.round(f.c * w / 100),
+    date: new Date().toISOString()
+  };
+  
+  appState.records.push(record);
+  localStorage.setItem('calRecords', JSON.stringify(appState.records));
+  
+  renderRecords();
+  renderChart();
+  
+  inp.value = "";
+  setTimeout(function(){ document.getElementById("calOut").classList.remove("calChange"); }, 500);
+};
+
+function renderRecords() {
+  var container = document.getElementById("calRecords");
+  var records = appState.records.slice(-10); // 只显示最近10条记录
+  
+  if (records.length === 0) {
+    container.innerHTML = '<div class="no-results">暂无记录</div>';
+    return;
+  }
+  
+  container.innerHTML = records.map(function(record) {
+    var date = new Date(record.date);
+    var formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    
+    return `
+      <div class="cal-record">
+        <div class="cal-record-name">${record.name}</div>
+        <div class="cal-record-weight">${record.weight}g</div>
+        <div class="cal-record-cal">${record.calories}千卡</div>
+        <div class="cal-record-date">${formattedDate}</div>
+        <button class="delete-btn" onclick="deleteRecord(${JSON.stringify(record.date).replace(/"/g, '&quot;')})">删除</button>
+      </div>
+    `;
+  }).join("");
+}
+
+// 修复删除记录函数，传递完整的record对象
+function deleteRecord(dateStr) {
+  var recordDate = new Date(dateStr);
+  appState.records = appState.records.filter(record => {
+    var recordDateCheck = new Date(record.date);
+    return recordDate.getTime() !== recordDateCheck.getTime();
+  });
+  localStorage.setItem('calRecords', JSON.stringify(appState.records));
+  renderRecords();
+  renderChart();
+}
+
+document.getElementById("exportBtn").onclick = function() {
+  if (appState.records.length === 0) {
+    document.getElementById("calOut").textContent = "没有记录可导出";
+    return;
+  }
+  
+  var csvContent = "data:text/csv;charset=utf-8,日期,食物,重量(g),热量(千卡)\n";
+  
+  appState.records.forEach(function(record) {
+    var date = new Date(record.date).toLocaleString();
+    csvContent += `${date},${record.name},${record.weight},${record.calories}\n`;
+  });
+  
+  var encodedUri = encodeURI(csvContent);
+  var link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `热量记录_${new Date().toLocaleDateString()}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
+// 修复图表渲染函数
+function renderChart() {
+  var container = document.getElementById("chartContainer");
+  var chartArea = container.querySelector('.chart-area');
+  
+  if (!chartArea) {
+    chartArea = document.createElement('div');
+    chartArea.className = 'chart-area';
+    chartArea.style.position = 'relative';
+    chartArea.style.height = '150px';
+    chartArea.style.width = '100%';
+    container.appendChild(chartArea);
+  } else {
+    // 清除现有图表内容
+    chartArea.innerHTML = '';
+  }
+  
+  // 获取最近7天的数据
+  var today = new Date();
+  var weekData = [];
+  
+  for (var i = 6; i >= 0; i--) {
+    var day = new Date(today);
+    day.setDate(day.getDate() - i);
+    day.setHours(0, 0, 0, 0);
+    
+    var nextDay = new Date(day);
+    nextDay.setDate(nextDay.getDate() + 1);
+    
+    var dayRecords = appState.records.filter(function(record) {
+      var recordDate = new Date(record.date);
+      return recordDate >= day && recordDate < nextDay;
+    });
+    
+    var dayTotal = dayRecords.reduce(function(sum, record) {
+      return sum + record.calories;
+    }, 0);
+    
+    weekData.push({
+      date: day.toLocaleDateString(),
+      calories: dayTotal
+    });
+  }
+  
+  // 找到最大值用于缩放
+  var maxCalories = Math.max(...weekData.map(d => d.calories), 100);
+  
+  // 创建图表
+  var chartWidth = chartArea.offsetWidth;
+  var barWidth = chartWidth / weekData.length * 0.7;
+  var barSpacing = chartWidth / weekData.length * 0.3;
+  
+  weekData.forEach(function(data, index) {
+    var barHeight = (data.calories / maxCalories) * 130;
+    
+    var bar = document.createElement('div');
+    bar.className = 'chart-bar';
+    bar.style.height = barHeight + 'px';
+    bar.style.left = (index * (barWidth + barSpacing) + barSpacing / 2) + 'px';
+    bar.style.width = barWidth + 'px';
+    
+    var label = document.createElement('div');
+    label.className = 'chart-label';
+    label.textContent = data.date.split('/').pop();
+    label.style.left = (index * (barWidth + barSpacing) + barSpacing / 2) + 'px';
+    
+    var value = document.createElement('div');
+    value.className = 'chart-value';
+    value.textContent = data.calories;
+    value.style.left = (index * (barWidth + barSpacing) + barSpacing / 2) + 'px';
+    value.style.transform = 'translateX(-50%)';
+    
+    chartArea.appendChild(bar);
+    chartArea.appendChild(label);
+    chartArea.appendChild(value);
+  });
+}
+
+// ===== 饮品 =====
+function renderDrinks(){
+  document.getElementById("drinkList").innerHTML = DRINKS.map(function(d){
+    return '<div class="drink"><h4>'+d.n+'</h4><p>'+d.d+'</p></div>';
+  }).join("");
+}
+
+// ===== Tab =====
+// 使用事件委托优化tab点击事件
+document.getElementById("tabsContainer").addEventListener("click", function(e) {
+  if(e.target.classList.contains("tab")) {
+    var activeTab = e.target.getAttribute("data-p");
+    
+    // 更新tab状态
+    document.querySelectorAll(".tab").forEach(function(tab) {
+      tab.classList.remove("active");
+    });
+    e.target.classList.add("active");
+    
+    // 保存当前tab状态
+    appState.currentTab = activeTab;
+    
+    // 更新内容区域
+    document.querySelectorAll(".tab-content").forEach(function(content) {
+      if(content.id === "p-" + activeTab) {
+        content.classList.add("active");
+        content.style.display = "block";
+      } else {
+        content.classList.remove("active");
+        content.style.display = "none";
+      }
+    });
+    
+    // 如果切换到热量计算页面，渲染记录和图表
+    if (activeTab === 'cal') {
+      renderRecords();
+      renderChart();
+    }
+  }
+});
+
+// 使用手册功能
+document.getElementById("manualLink").addEventListener("click", function(e) {
+  e.preventDefault();
+  var manualContent = `
+    <div class="recipe show">
+      <h4>📚 AI食谱助手使用手册</h4>
+      <div class="k">
+        <b>快速制作：</b>选择你拥有的食材，点击"推荐食谱"获取匹配的烹饪方案。<br><br>
+        <b>热量计算：</b>选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。<br><br>
+        <b>饮品DIY：</b>提供多种家庭饮品制作方法，简单易学。<br><br>
+        <b>小贴士：</b>搜索功能可快速找到特定食材，支持回车键快捷搜索。
+      </div>
+    </div>
+  `;
+  document.getElementById("recOut").innerHTML = manualContent;
+});
+
+// 初始化
+renderIngs(); renderFoods(); renderDrinks();
+renderRecords();
+renderChart();
+</script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI食谱助手 · 智能健康饮食":"AI Recipe Assistant · Smart Healthy Diet","🥗 AI食谱助手":"🥗 AI Recipe Assistant","智能健康饮食 · 吃对每一餐":"Smart Healthy Diet · Eat Right Every Meal","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Enter Ingredients and Get Recipes Instantly · Calorie Calculation · DIY Family Drinks","🍳 快速制作":"🍳 Quick Cooking","🔥 热量计算":"🔥 Calorie Calculation","☕ 饮品 DIY":"☕ Drink DIY","开始制作":"Start Cooking","我有这些食材，能做什么？":"What Can I Make with These Ingredients?","推荐食谱":"Recommended Recipes","使用手册":"User Manual","🔥 今日摄入热量估算":"🔥 Estimated Daily Calorie Intake","＋添加":"+ Add","已选 0 项 · 共 0 千卡":"Selected 0 Items · Total 0 Calories","📊 热量记录":"📊 Calorie Record","导出记录":"Export Record","7天热量摄入趋势":"7-Day Calorie Intake Trend","☕ 家庭饮品 DIY 指南":"☕ Family Drink DIY Guide","千卡":"Calories","删除":"Delete",".csv":".csv","📚 AI食谱助手使用手册":"📚 AI Recipe Assistant User Manual","快速制作：":"Quick Cooking: ","热量计算：":"Calorie Calculation: ","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Select food and enter the weight in grams to calculate daily calorie intake, helping to control diet. Records will be automatically saved and displayed visually.","饮品DIY：":"Drink DIY: ","提供多种家庭饮品制作方法，简单易学。":"Provide various methods for making family drinks, simple and easy to learn.","小贴士：":"Tip: ","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"The search function can quickly find specific ingredients, supporting quick search with the Enter key.","搜索你的食材":"Search Your Ingredients","输入克数估算":"Enter Weight to Estimate","番茄炒蛋":"Stir-fried Egg with Tomato","番茄":"Tomato","鸡蛋":"Egg","鸡胸肉蔬菜沙拉":"Chicken Breast and Vegetable Salad","鸡胸肉":"Chicken Breast","生菜":"Lettuce","燕麦牛奶早餐":"Oat Milk Breakfast","燕麦":"Oat","牛奶":"Milk","清蒸鲈鱼":"Steamed Perch","鲈鱼":"Perch","冬瓜虾仁汤":"Winter Melon and Shrimp Soup","冬瓜":"Winter Melon","麻婆豆腐":"Mapo Tofu","豆腐":"Tofu","肉末":"Minced Meat","蒜蓉西兰花":"Garlic Flavored Broccoli","西兰花":"Broccoli","杂粮饭":"Mixed Rice","米饭":"Rice","糙米":"Brown Rice","馒头":"Steamed Bun","牛肉":"Beef","猪肉":"Pork","苹果":"Apple","香蕉":"Banana","土豆":"Potato","冰美式":"Iced Americano","生椰拿铁":"Cold Coconut Latte","柠檬气泡水":"Lemon Bubble Water","绿豆牛乳冰":"Mung Bean Milk Ice","Enter":"Enter","请输入重量":"Please enter the weight","请输入有效数字":"Please enter a valid number","已调整为最大值 1000 克":"Adjusted to the maximum value of 1000 grams","已选":"Selected","没有记录可导出":"No records to export","recipe show":"recipe show","__title__":"AI Recipe Assistant · Smart Healthy Diet","食材：":"Ingredients:","番茄2个、鸡蛋3个、葱、盐、糖":"2 tomatoes, 3 eggs, scallions, salt, sugar","步骤：":"Steps:","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① Beat the eggs and fry until cooked, then remove. ② Cut the tomatoes into pieces and cook until juice is released. ③ Add the eggs to the pan and stir, season with salt and sugar. ④ Sprinkle with chopped scallions and serve","热量：":"Calories:","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"1 chicken breast, lettuce, cherry tomatoes, cucumber, oil and vinegar dressing","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"①Cook chicken breast and tear into strips ②Wash and chop vegetables ③Mix with sauce and blend","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"Oatmeal 40g, Milk 250ml, Egg 1, a few nuts","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"①Boil oatmeal with milk over low heat for 3 minutes ②Beat the egg and mix well ③Sprinkle with nuts","鲈鱼1条、姜、葱、蒸鱼豉油":"1 bass, Ginger, Scallion, Steamed Fish Sauce","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①Make incisions on the fish and lay ginger slices ②Steam for 8 minutes when the water boils ③Pour off the juice, pour sauce, sprinkle scallion slices, and drizzle hot oil","冬瓜300g、虾仁150g、姜":"Winter melon 300g, Shrimp 150g, Ginger","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"Cut winter melon into slices ②Fry shrimp and ginger slices ③Boil winter melon until transparent ④Add shrimp and boil for 2 minutes","豆腐1盒、肉末100g、豆瓣酱、花椒":"1 pack of tofu, 100g minced meat, Douban sauce, Sichuan peppercorns","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①Fry minced meat until dispersed and add Douban sauce ②Add tofu blocks and water ③Simmer for 3 minutes and thicken ④Sprinkle Sichuan peppercorns and scallions","西兰花1颗、蒜、蚝油":"1 head of broccoli, garlic, oyster sauce","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①Blanch broccoli for 1 minute ②Fry minced garlic until fragrant ③Add broccoli and oyster sauce, stir-fry","大米、糙米、小米 1:1:1":"Rice, brown rice, millet 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①Mix and wash ②Soak in water (1:1.3) for 20 minutes ③Cook in rice cooker's mixed grain mode","💡 先选 1-2 种你有的食材":"💡 Select 1-2 ingredients you have","没有完全匹配的食谱":"No completely matching recipes found","试试少选一种食材，或换个组合再试。":"Try selecting one less ingredient or trying a different combination.","没有找到匹配的食材":"No matching ingredients found","搜索结果: ' + filtered.length + ' 种食材":"Search results: ' + filtered.length + ' ingredients","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"tab active","面条(熟)":"…","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Espresso 1 serving (30ml) + 200ml ice water + ice cubes. Add ice first, pour the espresso, then top up with ice water, ready in 3 minutes, about 5 kcal.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Espresso 1 serving + 150ml thick coconut milk + ice. Add ice to the cup, pour in the coconut milk, slowly pour the espresso to create layers, about 160 kcal.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Lemon 2 slices + 300ml soda water + 1 teaspoon of honey. Squeeze the lemon slices, add ice and soda water, finish with honey for taste, about 40 kcal.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Cooked mung beans 50g + 200ml milk + 10g condensed milk + ice. Blend all in a blender for 30 seconds, about 220 kcal.","已添加相同食物和重量，请重新输入":"The same food and weight have been added, please re-enter.","translateX(-50%)":"translateX(-50%)"},"zh-CN":{"Enter":"按Enter键","recipe show":"显示食谱","__title__":"AI食谱助手 · 智能健康饮食",".csv":".csv","食材：":"食材：","番茄2个、鸡蛋3个、葱、盐、糖":"番茄2个、鸡蛋3个、葱、盐、糖","步骤：":"步骤：","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅","热量：":"热量：","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"燕麦40g、牛奶250ml、鸡蛋1个、坚果少许","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果","鲈鱼1条、姜、葱、蒸鱼豉油":"鲈鱼1条、姜、葱、蒸鱼豉油","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油","冬瓜300g、虾仁150g、姜":"冬瓜300g、虾仁150g、姜","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟","豆腐1盒、肉末100g、豆瓣酱、花椒":"豆腐1盒、肉末100g、豆瓣酱、花椒","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花","西兰花1颗、蒜、蚝油":"西兰花1颗、蒜、蚝油","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒","大米、糙米、小米 1:1:1":"大米、糙米、小米 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式","💡 先选 1-2 种你有的食材":"💡 先选 1-2 种你有的食材","没有完全匹配的食谱":"没有完全匹配的食谱","试试少选一种食材，或换个组合再试。":"试试少选一种食材，或换个组合再试。","没有找到匹配的食材":"没有找到匹配的食材","搜索结果: ' + filtered.length + ' 种食材":"搜索结果: ' + filtered.length + ' 种食材","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","PingFang SC":"…","Microsoft YaHei":"…","LA_COLLECT":"…","tab active":"…","面条(熟)":"面条（熟）","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"浓缩咖啡1份（30ml）+ 冰水200ml + 冰块。先加冰，倒入咖啡液，再补充冰水，3分钟搞定，约5千卡。","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"浓缩咖啡1份 + 厚椰乳150ml + 冰。杯中加冰，倒入椰乳，缓缓淋入咖啡液形成分层，约160千卡。","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"柠檬2片 + 苏打水300ml + 蜂蜜1小勺。柠檬片挤出汁，加冰加苏打水，最后蜂蜜调味，约40千卡。","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机搅拌 30 秒，约 220 千卡。","已添加相同食物和重量，请重新输入":"已添加相同食物和重量，请重新输入。","translateX(-50%)":"平移 X(-50%)"},"es":{"AI食谱助手 · 智能健康饮食":"Asistente de recetas AI · Alimentación saludable inteligente","🥗 AI食谱助手":"🥗 Asistente de recetas AI","智能健康饮食 · 吃对每一餐":"Alimentación saludable inteligente · Comer adecuadamente en cada comida","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Ingrese los ingredientes para obtener rápidamente una receta · Cálculo de calorías · DIY de bebidas familiares","🍳 快速制作":"🍳 Preparación rápida","🔥 热量计算":"🔥 Cálculo de calorías","☕ 饮品 DIY":"☕ DIY de bebidas","开始制作":"Comience a preparar","我有这些食材，能做什么？":"¿Qué puedo hacer con estos ingredientes?","推荐食谱":"Recetas recomendadas","使用手册":"Manual de uso","🔥 今日摄入热量估算":"Estimación de calorías consumidas hoy","＋添加":"＋Agregar","已选 0 项 · 共 0 千卡":"0 elementos seleccionados · 0 kcal en total","📊 热量记录":"Registro de calorías","导出记录":"Exportar registro","7天热量摄入趋势":"Tendencia de consumo de calorías en 7 días","☕ 家庭饮品 DIY 指南":"Guía de DIY de bebidas familiares","千卡":"kcal","删除":"Eliminar","📚 AI食谱助手使用手册":"Manual de uso del Asistente de recetas AI","快速制作：":"Preparación rápida：","热量计算：":"Cálculo de calorías：","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Elija alimentos e ingrese la cantidad en gramos, calcule las calorías consumidas diariamente y ayude a controlar la dieta. Los registros se guardarán automáticamente y se mostrarán visualmente.","饮品DIY：":"DIY de bebidas：","提供多种家庭饮品制作方法，简单易学。":"Ofrecer varios métodos de preparación de bebidas familiares, sencillos y fáciles de aprender.","小贴士：":"Consejo:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"La función de búsqueda permite encontrar rápidamente ingredientes específicos, y admite la búsqueda rápida con la tecla de retorno.","搜索你的食材":"Búsqueda de sus ingredientes","输入克数估算":"Ingresar cantidad en gramos para estimar","番茄炒蛋":"Frijoles rojos fritos con huevo","番茄":"Tomate","鸡蛋":"Huevo","鸡胸肉蔬菜沙拉":"Sándwich de pollo pechuga y verduras","鸡胸肉":"Pechuga de pollo","生菜":"Lechuga","燕麦牛奶早餐":"Desayuno de avena y leche","燕麦":"Avena","牛奶":"Leche","清蒸鲈鱼":"Salmón al vapor","鲈鱼":"Salmón","冬瓜虾仁汤":"Sopa de calabaza y camarones","冬瓜":"Calabaza","麻婆豆腐":"Tofu con salsa de pimienta","豆腐":"Tofu","肉末":"Picadillo","蒜蓉西兰花":"Brocoli con ajo","西兰花":"Brocoli","杂粮饭":"Arroz integral","米饭":"Arroz","糙米":"Arroz integral","馒头":"Pan de agua","牛肉":"Carne de res","猪肉":"Carne de cerdo","苹果":"Manzana","香蕉":"Plátano","土豆":"Papa","冰美式":"Americano con hielo","生椰拿铁":"Café con leche de coco natural","柠檬气泡水":"Jugo de limón con burbujas","绿豆牛乳冰":"Helado de leche de soja con lentejas","请输入重量":"Por favor, ingrese el peso","请输入有效数字":"Por favor, ingrese un número válido","已调整为最大值 1000 克":"Se ha ajustado al valor máximo de 1000 gramos","已选":"Seleccionado","没有记录可导出":"No hay registros que exportar","recipe show":"mostrar receta","__title__":"Asistente de recetas AI · Alimentación saludable inteligente","Enter":"Ingrese","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①Cortar el guisante blanco en rodajas ②Saltear camarones y jengibre en escamas ③Añadir agua y cocinar el guisante blanco hasta que quede transparente ④Añadir camarones y cocinar durante 2 minutos","豆腐1盒、肉末100g、豆瓣酱、花椒":"Tofu 1 paquete, carne picada 100g, pastilla de soja, sésamo","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①Freír la carne picada hasta que se deshaga y añadir la pastilla de soja ②Añadir agua y sumergir los cubos de tofu ③Cocinar a fuego lento durante 3 minutos y hacer bechamel ④Espolvorear sésamo y cebolla verde","西兰花1颗、蒜、蚝油":"Brocoli 1, ajo, sauce soja","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①Hervir el brocoli durante 1 minuto ②Saltear los dientes de ajo ③Añadir el brocoli y freír con el sauce soja","大米、糙米、小米 1:1:1":"Arroz, arroz integral,小米 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①Mezclar y lavar ②Hervir agua (1:1.3) y remojar durante 20 minutos ③Configurar el modo de grano integral en la olla arrocera","💡 先选 1-2 种你有的食材":"💡Elige 1-2 ingredientes que tengas","没有完全匹配的食谱":"No se encontraron recetas coincidentes","试试少选一种食材，或换个组合再试。":"Prueba a elegir un ingrediente menos o cambia la combinación e intenta de nuevo。","没有找到匹配的食材":"No se encontraron ingredientes coincidentes","搜索结果: ' + filtered.length + ' 种食材":"Resultados de búsqueda: ' + filtered.length + ' tipos de ingredientes","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","PingFang SC":"…","Microsoft YaHei":"…","LA_COLLECT":"…","tab active":"…","面条(熟)":"Fideos (coccidos)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Café concentrado 1 porción (30ml) + Agua con hielo 200ml + Hielo. Primero agregar hielo, luego verter el líquido de café, agregar más agua con hielo, listo en 3 minutos, aproximadamente 5 kcal.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Café concentrado 1 porción + Leche de coco espesa 150ml + Hielo. Agregar hielo al vaso, verter la leche de coco, verter lentamente el líquido de café para formar capas, aproximadamente 160 kcal.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Limón 2 rodajas + Soda 300ml + Miel 1 cucharadita. Squear el jugo de las rodajas de limón, agregar hielo y soda, finalmente endulzar con miel, aproximadamente 40 kcal.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Guisantes verdes cocidos 50g + Leche 200ml + Nata 10g + Hielo. Verter todo en el procesador de alimentos y batir por 30 segundos, aproximadamente 220 kcal.","已添加相同食物和重量，请重新输入":"Se ha agregado el mismo alimento y peso, por favor ingrese de nuevo","translateX(-50%)":"translateX(-50%)","食材：":"Ingredientes:","番茄2个、鸡蛋3个、葱、盐、糖":"Tomate 2 unidades, huevo 3 unidades, cebolla, sal, azúcar","步骤：":"Pasos:","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"①Desmenuzar los huevos y freírlos hasta que estén cocidos, luego desearlos ②Cortar los tomates en trozos y freírlos hasta que suelten jugo ③Añadir los huevos fritos y sazonar con sal y azúcar, revolver ④Espolvorear con cebollino y servir","热量：":"Calorías:","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"Pechuga de pollo 1 pieza, lechuga, tomate cherry, pepino, adobo de aceite y vinagre","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"①Hervir la pechuga de pollo y desmenuzarla en tiras ②Lavar las verduras y cortarlas ③Mezclar y espolvorear con el adobo de aceite y vinagre","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"40g de avena, 250ml de leche, 1 huevo, un poco de frutos secos","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"①Hervir la avena con leche a fuego lento durante 3 minutos ②Batir el huevo y mezclar ③Espolvorear con frutos secos","鲈鱼1条、姜、葱、蒸鱼豉油":"1 pez luna, jengibre, cebolla, sauce de pescado para vaporizar","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①Marcar el pescado con un cuchillo y esparcir jengibre en rodajas ②Vaporizar 8 minutos cuando el agua hierva ③Desaguar el líquido y rociar con sauce de pescado, esparcir cebollino picado y rociar aceite caliente","冬瓜300g、虾仁150g、姜":"Zucchini 300g, camarones 150g, jengibre"},"ja":{"AI食谱助手 · 智能健康饮食":"AIレシピアシスタント・スマートヘルスダイエット","🥗 AI食谱助手":"🥗 AIレシピアシスタント","智能健康饮食 · 吃对每一餐":"スマートヘルスダイエット・正しい食事を","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"食材を入力してすぐにレシピが出る · 熱量計算 · 家庭飲料DIY","🍳 快速制作":"🍳 よく効率的な作り方","🔥 热量计算":"🔥 熱量計算","☕ 饮品 DIY":"☕ 飲料DIY","开始制作":"作成を開始","我有这些食材，能做什么？":"これらの食材で何を作れる？","推荐食谱":"おすすめレシピ","使用手册":"ユーザーマニュアル","🔥 今日摄入热量估算":"🔥 今日の摂取カロリー推定","＋添加":"＋追加","已选 0 项 · 共 0 千卡":"選択 0 件 · 合計 0 カロリー","📊 热量记录":"📊 熱量記録","导出记录":"記録のエクスポート","7天热量摄入趋势":"7日間の摂取カロリートレンド","☕ 家庭饮品 DIY 指南":"☕ 家庭飲料DIYガイド","千卡":"千カロリー","删除":"削除","📚 AI食谱助手使用手册":"📚 AIレシピアシスタントユーザーマニュアル","快速制作：":"よく効率的な作り方：","热量计算：":"熱量計算：","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"食物を選択し重さを入力して、日々の摂取カロリーを計算し、食事の管理を助けます。記録は自動的に保存され、視覚的に表示されます。","饮品DIY：":"飲料DIY：","提供多种家庭饮品制作方法，简单易学。":"さまざまな家庭飲料の作り方を提供し、簡単で学びやすいです。","小贴士：":"ヒント：","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"検索機能で特定の食材を素早く見つけることができます。Enterキーでの簡単検索をサポートしています。","搜索你的食材":"あなたの食材を検索","输入克数估算":"重さを入力して推定","番茄炒蛋":"トマト炒め卵","番茄":"トマト","鸡蛋":"卵","鸡胸肉蔬菜沙拉":"鶏胸肉野菜サラダ","鸡胸肉":"鶏胸肉","生菜":"レタス","燕麦牛奶早餐":"オートミールミルク朝食","燕麦":"オートミール","牛奶":"ミルク","清蒸鲈鱼":"蒸し鮭","鲈鱼":"鮭","冬瓜虾仁汤":"冬瓜蝦のスープ","肉末":"肉の塊","蒜蓉西兰花":"にんにくマヨネーズ西兰花","西兰花":"カリフラワー","杂粮饭":"雑穀ご飯","米饭":"ご飯","糙米":"玄米","馒头":"饅頭","猪肉":"豚肉","苹果":"リンゴ","香蕉":"バナナ","土豆":"いも","冰美式":"アイエスコーヒー","生椰拿铁":"フレッシュココナッツラテ","柠檬气泡水":"レモン炭酸水","绿豆牛乳冰":"青豆ミルクアイス","请输入重量":"重量を入力してください","请输入有效数字":"有効な数字を入力してください","已调整为最大值 1000 克":"最大値 1000 グラムに調整されました","已选":"選択されました","没有记录可导出":"エクスポートできる記録がありません","recipe show":"レシピ表示","__title__":"AIレシピアシスタント・スマートヘルスダイエット","冬瓜":"冬瓜","麻婆豆腐":"麻婆豆腐","豆腐":"豆腐","牛肉":"牛肉","Enter":"Enter","食材：":"食材：","番茄2个、鸡蛋3个、葱、盐、糖":"トマト2個、卵3個、葱、塩、糖","步骤：":"ステップ：","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"①卵を割って炒って出し ②トマトを切って炒って汁を抽出 ③卵を加えて炒り、塩と糖で味付け ④葱を振りかけ、完成","热量：":"カロリー：","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"鶏胸肉1切れ、レタス、小トマト、キュウリ、油と酢の汁","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"①鶏胸肉を茹でて絞り ②野菜を洗って切る ③汁を混ぜ合わせてよく絡める","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"オートミール40g、ミルク250ml、卵1個、ナッツ少々","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"①オートミールとミルクで弱火で3分煮る ②卵を割って混ぜる ③ナッツを振りかけ","鲈鱼1条、姜、葱、蒸鱼豉油":"鮫1匹、生姜、葱、蒸し魚の醤油","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①魚に切り込みを入れ、生姜の絞りを敷く ②沸騰した水で8分蒸す ③汁を切らして醤油を注ぎ、葱を振りかけ熱油を注ぐ","冬瓜300g、虾仁150g、姜":"胡瓜300g、エビ150g、生姜","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①冬瓜を皮ごと切り刻む ②エビと生姜を香り付け ③冬瓜に水を加えて透明になるまで煮む ④エビを加えてさらに2分煮む","豆腐1盒、肉末100g、豆瓣酱、花椒":"豆腐1缶、肉末100g、豆板醤、花椒","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①肉末を炒って豆板醤を加える ②豆腐を水に加えて入れる ③3分間煮込んでタレを加える ④花椒とニンニクを振る","西兰花1颗、蒜、蚝油":"カリフラワー1個、にんにく、オイスターソース","大米、糙米、小米 1:1:1":"玄米、玄米、小米 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①混ぜて洗う ②水（1:1.3）で20分浸す ③電子レンジの雑穀モード","💡 先选 1-2 种你有的食材":"💡 あなたの材料の中から1-2種を選んでください","没有完全匹配的食谱":"完全に一致するレシピが見つかりません","没有找到匹配的食材":"一致する食材が見つかりません","搜索结果: ' + filtered.length + ' 种食材":"検索結果: ' + filtered.length + ' 種の食材","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+'千卡/100g","暂无记录":"一時的な記録なし","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"あなたが持っている食材を選択して、「おすすめレシピ」をタップして一致する調理方法を取得します。","提意见":"意見を提出する","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"タブアクティブ","面条(熟)":"麺(茹で上がった)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"浓缩コーヒー 1 份（30ml）＋ 冰水 200ml ＋ 冰。まずアイスを入れ、コーヒー液を注ぎ、さらにアイスウォーターを補給して、3 分で完成、約 5 千カロリー。","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"浓缩コーヒー 1 份 ＋ 厚いココナッツミルク 150ml ＋ 冰。カップにアイスを入れ、ココナッツミルクを注ぎ、コーヒー液をゆっくりと垂らして層を形成させ、約 160 千カロリー。","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"レモン 2 枚 ＋ 苏打水 300ml ＋ 蜂蜜 1 さじ。レモン片を絞り、アイスと苏打水を加えて、最後に蜂蜜で味付け、約 40 千カロリー。","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"熟した緑豆 50g ＋ 牛乳 200ml ＋ 砂糖 10g ＋ 冰。すべてをミキサーに投入して 30 秒打ち、約 220 千カロリー。","已添加相同食物和重量，请重新输入":"同じ食品と重量が追加されています。もう一度入力してください。","translateX(-50%)":"translateX(-50%)","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①ブロッコリーを1分間茹で ②にんにくの香りを加える ③ブロッコリーを加えて油とオイスターソースで炒める","试试少选一种食材，或换个组合再试。":"食材を一つ少なく選んでみるか、別の組み合わせで再試してみてください。","完全免费":"完全無料",".csv":"．csv"},"ko":{"AI食谱助手 · 智能健康饮食":"AI 레시피 어시스턴트 · 지능형 건강 식단","🥗 AI食谱助手":"🥗 AI식谱助手","智能健康饮食 · 吃对每一餐":"지능 건강 식사 · 맞는 식사를 먹어요","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"재료 입력하고 즉시 식谱 생성 · 열량 계산 · 가정 음료 DIY","🍳 快速制作":"🍳 빠른 조리","🔥 热量计算":"🔥 열량 계산","☕ 饮品 DIY":"☕ 음료 DIY","开始制作":"시작하기","我有这些食材，能做什么？":"이 재료들로 무엇을 만들 수 있을까요？","推荐食谱":"추천 식谱","使用手册":"사용 매뉴얼","🔥 今日摄入热量估算":"🔥 오늘 섭취 열량 추정","＋添加":"＋ 추가","已选 0 项 · 共 0 千卡":"선택 0 항목 · 총 0 칼로리","📊 热量记录":"📊 열량 기록","导出记录":"데이터 내보내기","7天热量摄入趋势":"7일 열량 섭취 트렌드","☕ 家庭饮品 DIY 指南":"☕ 가정 음료 DIY 가이드","千卡":"칼로리","删除":"삭제","📚 AI食谱助手使用手册":"📚 AI식谱助手 사용 매뉴얼","快速制作：":"빠른 조리：","热量计算：":"열량 계산：","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"음식을 선택하고 그重量을 입력하세요. 매일 섭취하는 열량을 계산하여 식사를 통제하는 데 도움을 줍니다. 기록은 자동으로 저장되고 시각적으로 표시됩니다。","饮品DIY：":"음료 DIY：","提供多种家庭饮品制作方法，简单易学。":"다양한 가정 음료 제작 방법을 제공하여 간단하고 쉽게 배울 수 있습니다。","小贴士：":"팁：","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"검색 기능을 사용하여 특정 재료를 빠르게 찾을 수 있으며, 엔터 키로 빠르게 검색할 수 있습니다。","搜索你的食材":"재료를 검색하세요","输入克数估算":"그重量을 입력하여 추정","番茄炒蛋":"토마토 볶음 달걀","番茄":"토마토","鸡蛋":"달걀","鸡胸肉蔬菜沙拉":"닭가슴살 채소 샐러드","鸡胸肉":"닭가슴살","生菜":"샐러드 채소","燕麦牛奶早餐":"오트밀 우유 아침 식사","燕麦":"오트밀","牛奶":"우유","清蒸鲈鱼":"청蒸 루어","鲈鱼":"루어","冬瓜虾仁汤":"호박 쌀가루 새우 국물","冬瓜":"호박","麻婆豆腐":"마보두부","豆腐":"두부","肉末":"육말","蒜蓉西兰花":"마늘蓉 채소 콩나물","西兰花":"채소 콩나물","杂粮饭":"혼합 쌀","米饭":"쌀","糙米":"곡물","馒头":"만두","牛肉":"불고기","猪肉":"돼지고기","苹果":"사과","香蕉":"바나나","土豆":"감자","冰美式":"아이스 아메리칸","生椰拿铁":"신코 나이테","柠檬气泡水":"레몬 버블 워터","绿豆牛乳冰":"도토리콩 유우 냉제","请输入重量":"무게를 입력하세요","请输入有效数字":"유효한 숫자를 입력하세요","已调整为最大值 1000 克":"최대치로 1000 그램으로 조정됨","已选":"선택됨","没有记录可导出":"데이터를 내보낼 수 있는 기록이 없습니다","recipe show":"레시피 표시","__title__":"AI 레시피 어시스턴트 · 지능형 건강 식단","Enter":"입력","食材：":"…","番茄2个、鸡蛋3个、葱、盐、糖":"토마토 2개, 달걀 3개, 채콩, 소금, 설탕","步骤：":"…","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① 달걀을 풀어炒아웃 ② 토마토를 조각내어 끓여 썬물을 뽑아내 ③ 달걀을 넣고炒아웃, 소금과 설탕을 간조 ④ 채콩을 뿌려서 내리","热量：":"…","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"치킨 턱스테이크 1개, 채콩, 소형 토마토, 오이, 오일 약채","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① 치킨 턱스테이크를 익혀 뽑아서 뽑아내 ② 채소를 씻고 잘라내 ③ 섞어서淋접을 저어서","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"요리아웃 40g, 우유 250ml, 달걀 1개, 견과류 조금","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① 요리아웃을 우유에 넣어小火으로 3분간 끓여내 ② 달걀을 넣어 저어서 ③ 견과류를 뿌려서","鲈鱼1条、姜、葱、蒸鱼豉油":"빙어 1마리, 간, 채콩, 볶음어유","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① 빙어에 칼자루를 깔고 간을 깔아내 ② 물이 끓으면 8분간 뽑아내 ③ 뽑은 물을 버리고 볶음어유를 뿌려서 채콩을 뿌려서 뜨거운 기름을 뿌려서","冬瓜300g、虾仁150g、姜":"도가니 300g, 새우 모자이크 150g, 간","豆腐1盒、肉末100g、豆瓣酱、花椒":"豆腐1箱、肉末100g、豆板醤、花椒","西兰花1颗、蒜、蚝油":"カリフラワー1個、にんにく、オイスターソース","大米、糙米、小米 1:1:1":"米、玄米、小米 1:1:1","💡 先选 1-2 种你有的食材":"💡 あなたが持っている1-2種類の食材を選んでください","没有完全匹配的食谱":"完全に一致するレシピは見つかりませんでした","试试少选一种食材，或换个组合再试。":"食材を少なく選んでみるか、別の組み合わせで再試してください。","没有找到匹配的食材":"一致する食材が見つかりませんでした","搜索结果: ' + filtered.length + ' 种食材":"検索結果: ' + filtered.length + ' 種食材","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+' 칼로리/100g","暂无记录":"기록이 없습니다","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"보유한 식재료를 선택하세요, \"추천 요리\"를 클릭하여 맞춤형 요리 계획을 얻으세요.","完全免费":"전면 무료","提意见":"의견 제출","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"탭 활성","面条(熟)":"면(숙제)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"浓缩咖啡 1 份（30ml）＋ 얼음물 200ml ＋ 얼음. 먼저 얼음을 추가하고, 커피액을 붓다가 얼음물을 추가하여 3 분만에 끝내, 약 5 칼로리.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"浓缩咖啡 1 份 ＋ 두꺼운 코코넛 밀크 150ml ＋ 얼음. 잔에 얼음을 추가하고, 코코넛 밀크를 붓다가, 커피액을 천천히 떨어뜨려 층을 형성시키고, 약 160 칼로리.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"레몬 2枚 ＋ 소다물 300ml ＋ 꿀 1 소스. 레몬 절을 쥐어내고 얼음, 소다물을 추가하여 마지막에 꿀로 간조하며, 약 40 칼로리.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"숙소이 50g ＋ 우유 200ml ＋ 혼합물 10g ＋ 얼음. 모두를 블렌더에 넣어 30초만에 맞추고, 약 220 칼로리.","已添加相同食物和重量，请重新输入":"동일한 식사와 중량이 추가되었습니다. 다시 입력해 주세요","translateX(-50%)":"translateX(-50%)",".csv":".csv","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①�冬瓜薄切り ②우동와사비와 쌈쌀뜨서 풍부하게 ③물에 캔冬瓜을 투명하게 끓여 ④우동을 더욱 끓여 2분煮む","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①양파 말썩어 풍부하게炒いて豆瓣酱 추가 ②물에 담백된지 떠 넣어 ③3분간 끓여 끼운다 ④花椒와 쌈쌀을 뿌린다","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①혼합하여 깨끗하게 하여 ②물을 1:1.3 비율로 20분 동안 담그어 ③전자빔 냄비 다양한 곡류 모드"},"fr":{"AI食谱助手 · 智能健康饮食":"AI Recette Assistant · Alimentation saine intelligente","🥗 AI食谱助手":"🥗 AI Recette Assistant","智能健康饮食 · 吃对每一餐":"Alimentation saine intelligente · Manger bien à chaque repas","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Entrer les ingrédients pour obtenir instantanément des recettes · Calcul de calories · DIY des boissons familiales","🍳 快速制作":"🍳 Préparation rapide","🔥 热量计算":"🔥 Calcul des calories","☕ 饮品 DIY":"☕ DIY des boissons","开始制作":"Commencer la préparation","我有这些食材，能做什么？":"J'ai ces ingrédients, que puis-je faire ?","推荐食谱":"Recettes recommandées","使用手册":"Manuel d'utilisation","🔥 今日摄入热量估算":"Estimation des calories consommées aujourd'hui 🔥","＋添加":"＋Ajouter","已选 0 项 · 共 0 千卡":"0 éléments sélectionnés · Total 0 kcal","📊 热量记录":"Enregistrement des calories","导出记录":"Exporter les enregistrements","7天热量摄入趋势":"Tendance des calories consommées sur 7 jours","☕ 家庭饮品 DIY 指南":"Guide DIY des boissons familiales ☕","千卡":"kcal","删除":"Supprimer","📚 AI食谱助手使用手册":"Manuel d'utilisation de l'AI Recette Assistant 📚","快速制作：":"Préparation rapide :","热量计算：":"Calcul des calories :","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Choisissez les aliments et entrez le poids en grammes pour calculer les calories consommées quotidiennement, aider à contrôler l'alimentation. Les enregistrements seront automatiquement sauvegardés et affichés visuellement.","饮品DIY：":"Boissons DIY :","提供多种家庭饮品制作方法，简单易学。":"Fournit de multiples méthodes de fabrication de boissons familiales, simples et faciles à apprendre.","小贴士：":"Astuce :","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"La fonction de recherche permet de trouver rapidement des ingrédients spécifiques, et prend en charge la recherche rapide avec la touche Entrée.","搜索你的食材":"Recherchez vos ingrédients","输入克数估算":"Entrez le poids pour estimer","番茄炒蛋":"Oeufs à la tomate","番茄":"Tomate","鸡蛋":"Œuf","鸡胸肉蔬菜沙拉":"Salade de poulet et légumes","鸡胸肉":"Poulet","生菜":"Lettuce","燕麦牛奶早餐":"Petit-déjeuner d'avoine et lait","燕麦":"Avoine","牛奶":"Lait","清蒸鲈鱼":"Poisson loup au vapeur","鲈鱼":"Poisson loup","冬瓜虾仁汤":"Soupe de lufa et crevettes","冬瓜":"Lufa","麻婆豆腐":"Tofu ma po","豆腐":"Tofu","肉末":"Hachis de viande","蒜蓉西兰花":"Brocoli à la sauce au garlic","西兰花":"Brocoli","杂粮饭":"Riz de grains mixtes","米饭":"Riz","糙米":"Riz brun","馒头":"Manouk","牛肉":"Bœuf","猪肉":"Porc","苹果":"Pomme","香蕉":"Banane","土豆":"Pomme de terre","冰美式":"Americano froid","生椰拿铁":"Flat white avec noix de coco fraîche","柠檬气泡水":"Eau pétillante au citron","绿豆牛乳冰":"Glacé de lait d'amande à la mungo","Enter":"Entrer","请输入重量":"Veuillez saisir le poids","请输入有效数字":"Veuillez saisir un nombre valide","已调整为最大值 1000 克":"Ajusté à la valeur maximale de 1000 grammes","已选":"Sélectionné","没有记录可导出":"Aucun enregistrement à exporter","__title__":"AI Recette Assistant · Alimentation saine intelligente","recipe show":"affichage de la recette","食材：":"Ingrédients :","步骤：":"Étapes :","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"①Mélanger les œufs et les faire sauter, puis les égoutter ②Couper les tomates en morceaux et les faire sauter pour en extraire le jus ③Ajouter les œufs sautés, saler et sucrer au goût ④Saupoudrer d'oignon vert et servir","热量：":"Calories :","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"poulet de laitue, tomates cerises, concombre, vinaigrette à l'huile","暂无记录":"Aucun enregistrement","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"Choisissez les ingrédients que vous avez, cliquez sur \"Recettes recommandées\" pour obtenir des plans de cuisson correspondants.","完全免费":"Completement gratuit","提意见":"Proposer des suggestions","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"onglet actif","面条(熟)":"Pâtes cuites","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Expresso 1 portion (30ml) + Eau glaceée 200ml + Glaces. Ajoutez d'abord les glaces, versez le liquide de café, puis remettez de l'eau glaceée, tout est prêt en 3 minutes, environ 5 kcal.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Expresso 1 portion + Lait de noix de coco épais 150ml + Glaces. Ajoutez des glaces dans le verre, versez le lait de noix de coco, puis ajoutez lentement le liquide de café pour former une couche, environ 160 kcal.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Citron 2 tranches + Eau gazeuse 300ml + Miel 1 cuillère à café. Écrasez les tranches de citron pour en extraire le jus, ajoutez de l'eau gazeuse et du miel pour goûter, environ 40 kcal.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Mousseline de haricot mungo 50g + lait 200ml + lait concentré 10g + glace. Mélanger tous les ingrédients dans un mixeur en verre en verre pendant 30 secondes, environ 220 kcal.","已添加相同食物和重量，请重新输入":"Même aliment et poids déjà ajoutés, veuillez saisir à nouveau.","translateX(-50%)":"translateX(-50%)","大米、糙米、小米 1:1:1":"Riz, riz brun, riz glutineux 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"① Mélanger et laver ② Ajouter de l'eau (1:1.3) et laisser tremper pendant 20 minutes ③ Mode céréales dans le rizière","💡 先选 1-2 种你有的食材":"💡 Choisissez 1-2 types de denrées alimentaires que vous avez","没有完全匹配的食谱":"Aucune recette correspondante","试试少选一种食材，或换个组合再试。":"Essayer de choisir moins d'un ingrédient ou de changer de combinaison","没有找到匹配的食材":"Aucun ingrédient correspondant trouvé","搜索结果: ' + filtered.length + ' 种食材":"Résultat de la recherche: ' + filtered.length + ' types d'ingrédients","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+' kcal/100g",".csv":".csv","番茄2个、鸡蛋3个、葱、盐、糖":"tomate 2 pièces, œuf 3 pièces, oignon, sel, sucre","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① poitrine de poulet cuite et épluchée ② légumes lavés et tranchés ③ mélanger avec le sauce arrosée","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"avoine 40g, lait 250ml, œuf 1 pièce, quelques noix","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① faire bouillir l'avoine avec du lait à feu doux pendant 3 minutes ② battre l'œuf mélangé ③ saupoudrer de noix","鲈鱼1条、姜、葱、蒸鱼豉油":"poisson-lune 1 pièce, gingembre, oignon, sauce de poisson bouillie","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① faire des incisions sur le poisson et poser des fibres de gingembre ② cuire à la vapeur pendant 8 minutes après l'ébullition de l'eau ③ jeter le liquide, arroser de sauce de poisson, saupoudrer de fines tranches d'oignon et arroser d'huile chaude","冬瓜300g、虾仁150g、姜":"mangue des savanes 300g, crevettes 150g, gingembre","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"① couper la mangue des savanes en tranches ② faire sauter les crevettes et les fibres de gingembre ③ ajouter de l'eau pour cuire la mangue des savanes jusqu'à ce qu'elle devienne transparente ④ ajouter les crevettes et cuire encore 2 minutes","豆腐1盒、肉末100g、豆瓣酱、花椒":"tofu 1 boîte, haché de viande 100g, pâte de haricots rouges, poivre de Sichuan","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"① faire sauter le haché de viande, ajouter de la pâte de haricots rouges ② ajouter de l'eau et plonger les morceaux de tofu ③ cuire à feu doux pendant 3 minutes et lier la sauce ④ saupoudrer de poivre de Sichuan et d'oignon ciselé","西兰花1颗、蒜、蚝油":"chou-fleur 1 tête, ail, sauce soja brune"},"de":{"AI食谱助手 · 智能健康饮食":"AI-Rezeptservice-Assistent · intelligente gesunde Ernährung","🥗 AI食谱助手":"🥗 AI-Rezeptservice-Assistent","智能健康饮食 · 吃对每一餐":"intelligente gesunde Ernährung · das Richtige zu jedem Mahlzeit","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Eingabe von Zutaten, um sofort ein Rezept zu erhalten · Kalorienberechnung · Familiengetränk DIY","🍳 快速制作":"🍳 schnelle Zubereitung","🔥 热量计算":"🔥 Kalorienberechnung","☕ 饮品 DIY":"☕ Getränk DIY","开始制作":"Beginnen Sie die Zubereitung","我有这些食材，能做什么？":"Ich habe diese Zutaten, was kann ich machen?","推荐食谱":"empfohlene Rezepte","使用手册":"Bedienungsanleitung","🔥 今日摄入热量估算":"🔥 heutige Kalorienaufnahme schätzen","＋添加":"＋ hinzufügen","已选 0 项 · 共 0 千卡":"0 ausgewählt · gesamt 0 kcal","📊 热量记录":"📊 Kalorienverlauf","导出记录":"Daten exportieren","7天热量摄入趋势":"7-Tage-Trend der Kalorienaufnahme","☕ 家庭饮品 DIY 指南":"☕ Anleitung für Familiengetränk DIY","千卡":"kcal","删除":"löschen","📚 AI食谱助手使用手册":"📚 Bedienungsanleitung für AI-Rezeptservice-Assistent","快速制作：":"schnelle Zubereitung:","热量计算：":"Kalorienberechnung:","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Wählen Sie Lebensmittel aus und geben Sie die Grammzahl ein, um die tägliche Kalorienaufnahme zu berechnen und die Ernährung zu kontrollieren. Die Aufzeichnungen werden automatisch gespeichert und visuell dargestellt.","饮品DIY：":"Getränk DIY:","提供多种家庭饮品制作方法，简单易学。":"Bietet verschiedene Methoden zur Herstellung von Haushaltsgetränken, einfach und leicht zu erlernen.","小贴士：":"Tipp:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"Die Suchfunktion ermöglicht die schnelle Suche nach bestimmten Zutaten und unterstützt die schnelle Suche mit der Eingabetaste.","搜索你的食材":"Suchen Sie Ihre Zutaten","输入克数估算":"Geben Sie die Grammzahl ein, um zu schätzen","番茄炒蛋":"Tomaten-Ei-Spätzle","番茄":"Tomate","鸡蛋":"Ei","鸡胸肉蔬菜沙拉":"Hühnerbrustsalat mit Gemüse","鸡胸肉":"Hühnerbrust","生菜":"Salat","燕麦牛奶早餐":"Hafermilch-Frühstück","燕麦":"Haferflocken","牛奶":"Milch","清蒸鲈鱼":"Dampfgegarder Seefisch","鲈鱼":"Barsch","冬瓜虾仁汤":"Wintermelon-Shrimp-Suppe","冬瓜":"Wintermelon","麻婆豆腐":"Mapo-Tofu","豆腐":"Tofu","肉末":"Fleischwürfel","蒜蓉西兰花":"Knoblauch-Schwarzwurzel","西兰花":"Schwarzwurzel","杂粮饭":"Gemüseflocken-Reis","米饭":"Reis","糙米":"Roggenreis","馒头":"Mantou","牛肉":"Rindfleisch","猪肉":"Schweinefleisch","苹果":"Apfel","香蕉":"Banane","土豆":"Kartoffel","冰美式":"Eiskaffee","生椰拿铁":"Kokosmilch-Latte","柠檬气泡水":"Zitronen-Sprudelwasser","绿豆牛乳冰":"Mungbohnen-Kuhmilch-Eis","Enter":"Eingabe","请输入重量":"Gewicht eingeben","请输入有效数字":"Gültige Ziffern eingeben","已调整为最大值 1000 克":"Auf 1000 Gramm angepasst","已选":"Ausgewählt","没有记录可导出":"Keine Daten zum Exportieren vorhanden","recipe show":"Rezept anzeigen","__title__":"AI-Rezeptservice-Assistent · intelligente gesunde Ernährung","食材：":"Zutaten：","番茄2个、鸡蛋3个、葱、盐、糖":"Tomaten 2 Stück, Eier 3 Stück, Schnittlauch, Salz, Zucker","步骤：":"Schritte：","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① Eier aufbrechen und durchschlagen, scharf anbraten und herausnehmen ② Tomaten in Würfel schneiden und in den Topf geben, um den Saft zu kochen ③ Die Eier dazugeben und umrühren, mit Salz und Zucker würzen ④ mit Schnittlauch bestreuen und herausnehmen","热量：":"Kalorien：","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"1 Stück Hühnerbrust, Salat, kleine Tomaten, Gurke, Essig-Öl-Sauce","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① Hühnerbrust kochen und in Fäden zerkleinern ② Gemüse waschen und schneiden ③ mischen und mit Sauce vermengen","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"40g Haferflocken, 250ml Milch, 1 Ei, ein paar Nüsse","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① Haferflocken mit Milch bei kleiner Hitze 3 Minuten kochen ② Ei dazugeben und vermischen ③ mit Nüssen bestreuen","鲈鱼1条、姜、葱、蒸鱼豉油":"1 Stück Barsch, Ingwer, Schnittlauch, Dashi-Soße","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① In das Fischfleisch Schnittmuster schneiden und mit Ingwerstreifen bestreuen ② Wasser kochen und 8 Minuten dampfen ③ den Saft abgießen und mit Dashi-Soße übergießen, mit Schnittlauchstreifen bestreuen und heiße Öl gießen","冬瓜300g、虾仁150g、姜":"300g Winterkohl, 150g Shrimp, Ingwer","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"① Zucchini schneiden ② Shrimp und Zwiebeln anbraten ③ Zucchini mit Wasser kochen, bis sie transparent werden ④ Shrimp dazugeben und weitere 2 Minuten kochen","豆腐1盒、肉末100g、豆瓣酱、花椒":"Tofu 1 Packung, Fleischbrühe 100g, Doubanjiang, Sichuanpfeffer","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"① Fleischbrühe vermengen und mit Doubanjiang anbraten ② Wasser hinzufügen und Tofublocke dazugeben ③ 3 Minuten köcheln und mit Stärke binden ④ Sichuanpfeffer und Schnittlauch darüber streuen","西兰花1颗、蒜、蚝油":"Blumenkohl 1 Stück, Zwiebeln, Oyster Sauce","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"① Blumenkohl 1 Minute blanchieren ② Zwiebeln anbraten ③ Blumenkohl mit Oyster Sauce braten","大米、糙米、小米 1:1:1":"Reis, brauner Reis, klebriger Reis 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"① Mischen und waschen ② Mit Wasser (1:1.3) 20 Minuten einweichen ③ Multikocher auf Getreide-Modus stellen","💡 先选 1-2 种你有的食材":"💡 Wähle 1-2 Zutaten aus, die du hast","没有完全匹配的食谱":"Keine vollständig übereinstimmenden Rezepte","试试少选一种食材，或换个组合再试。":"Versuche, eine Zutat weniger auszuwählen oder eine andere Kombination zu probieren.","没有找到匹配的食材":"Keine passenden Zutaten gefunden","搜索结果: ' + filtered.length + ' 种食材":"Suchergebnisse: ' + filtered.length + ' Zutaten","暂无记录":"Keine Einträge","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"Wähle die Zutaten, die du hast, und klicke auf \"Empfohlene Rezepte\", um passende Kochpläne zu erhalten.","完全免费":"Komplett kostenlos","提意见":"Vorschläge einreichen","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"Tab aktiv","面条(熟)":"Nudeln (gekocht)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Konzentrierter Kaffee 1 Portion (30ml) + Eiswasser 200ml + Eiswürfel. Zuerst Eis hinzufügen, dann Kaffeeliquid einrühren, Eiswasser nachfüllen, in 3 Minuten fertig, etwa 5 Kalorien.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Konzentrierter Kaffee 1 Portion + Dicker Kokosmilch 150ml + Eis. Eis in den Becher geben, Kokosmilch einrühren, Kaffeeliquid langsam einrühren, um Schichten zu bilden, etwa 160 Kalorien.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Zitronen 2 Scheiben + Sodawasser 300ml + Honig 1 Teelöffel. Zitronenscheiben auspressen, Eis und Sodawasser hinzufügen, zuletzt mit Honig abschmecken, etwa 40 Kalorien.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Gekochte Linsen 50g ＋ Milch 200ml ＋ Kondensmilch 10g ＋ Eis. Alles in den Mixer geben und 30 Sekunden mixen, etwa 220 Kalorien.","已添加相同食物和重量，请重新输入":"Gleiche Lebensmittel und Gewicht bereits hinzugefügt, bitte neu eingeben","translateX(-50%)":"translateX(-50%)","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+' Kalorien/100g",".csv":".csv"},"ru":{"AI食谱助手 · 智能健康饮食":"AI кулинарный ассистент · умное здоровое питание","智能健康饮食 · 吃对每一餐":"ИНТЕЛЛЕКТУАЛЬНОЕ ЗДОРОВОЕ ПИТАНИЕ · ЕДИТЬ ПРАВИЛЬНО КАЖДУЮ ВЕЧЕРЮ","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"ВВОД ИНГРЕДИЕНТОВ ИММЕДИАТНО ВЫДАЕТ РЕЦЕПТ · РАСЧЕТ КАЛОРИЙ · САМ ГОТОВИТЬ ДОМАШНИЕ НАПИТКИ","🍳 快速制作":"🍳 СКОРЫЙ РЕЦЕПТ","🔥 热量计算":"🔥 РАСЧЕТ КАЛОРИЙ","☕ 饮品 DIY":"☕ САМ ГОТОВИТЬ НАПИТКИ","开始制作":"НАЧАТЬ ПРИГОТОВЛЕНИЕ","我有这些食材，能做什么？":"У МЕНЯ ЭТИ ИНГРЕДИЕНТЫ, ЧТО Я МОГУ ПРИГОТОВИТЬ?","推荐食谱":"РЕКОМЕНДУЕМЫЕ РЕЦЕПТЫ","使用手册":"ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ","🔥 今日摄入热量估算":"🔥 ОЦЕНКА ВВОДЯЩИХ КАЛОРИЙ НА СЕГОДНЯ","＋添加":"＋ ДОБАВИТЬ","已选 0 项 · 共 0 千卡":"УЖЕ ВЫБРАНО 0 ЭЛЕМЕНТОВ · ВСОЛО 0 ККАЛ","📊 热量记录":"📊 ЗАПИСЬ КАЛОРИЙ","导出记录":"ЭКSPORT ЗАПИСЕЙ","7天热量摄入趋势":"ТРЕНД ВВОДА КАЛОРИЙ ЗА 7 ДНЕЙ","☕ 家庭饮品 DIY 指南":"РУКОВОДСТВО ПО САМ ГОТОВИТЬ ДОМАШНИЕ НАПИТКИ","千卡":"ККАЛ","删除":"УДАЛИТЬ","📚 AI食谱助手使用手册":"📚 ИНСТРУКЦИЯ ПО ИСПОЛЬЗОВАНИЮ AI РЕЦЕПТНОГО АССИСТЕНТА","快速制作：":"СКОРОЙ РЕЦЕПТ:","热量计算：":"РАСЧЕТ КАЛОРИЙ:","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"ВЫБЕРИТЕ ЕДУ И ВВЕDEТЕ ВЕС В ГРАММАХ, РАСЧЕТ ВВОДЯЩИХ КАЛОРИЙ В ДЕНЬ, ПОМОГАЕТ КОНТРОЛИРОВАТЬ ПИТАНИЕ. ЗАПИСИ АВТОМАТИЧЕСКИ СОХРАНЯЮТСЯ И ВИЗУАЛИЗИРУЮТСЯ.","饮品DIY：":"САМ ГОТОВИТЬ НАПИТКИ:","提供多种家庭饮品制作方法，简单易学。":"ПРЕДЛАГАЕТ МНОЖЕСТВО МЕТОДОВ ПРИГОТОВЛЕНИЯ ДОМАШНИХ НАПИТКОВ, ПРОСТО И ЛЕГКО УЧИТЬСЯ.","小贴士：":"ПУТИНКА:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"ФУНКЦИЯ ПОИСКА ПОЗВОЛЯЕТ БЫСТРО НАЙТИ ОПРЕДЕЛЕННЫЕ ИНГРЕДИЕНТЫ, ПОДДЕРЖИВАЕТ БЫСТРЫЙ ПОИСК С НАЖАТИЕМ КЛАВИШИ RETURN.","搜索你的食材":"ИСКАТЬ ВАШИ ИНГРЕДИЕНТЫ","输入克数估算":"ВВЕСТИ ВЕС ДЛЯ ОЦЕНКИ","番茄炒蛋":"КРЕП-СЮИЗЕ","番茄":"ТОМАТ","鸡蛋":"ЯЙЦО","鸡胸肉蔬菜沙拉":"КРЕП-СЮИЗЕ С ОВОЩАМИ","鸡胸肉":"КРЕП-СЮИЗЕ","生菜":"СALАТ","燕麦牛奶早餐":"ОВСЕНИЦА С МОЛОКОМ УТРОМ","燕麦":"ОВСЕНИЦА","牛奶":"МОЛОКО","清蒸鲈鱼":"ПАРОВАЯ ЛЮБИЩА","鲈鱼":"ЛЮБИЩА","冬瓜虾仁汤":"СУП С КУЛИНСКОЙ КУРЕЙ И КРЕП-СЮИЗЕ","冬瓜":"КУЛИНСКАЯ КУРЯ","麻婆豆腐":"МАПУ ДОУФУ","豆腐":"ДОУФУ","肉末":"МЯСНОЙ ИЗМЕР","蒜蓉西兰花":"СЕЛДЕРЕЛ С ЧЕСНОЧНОЙ ПАШТЕЙ","西兰花":"СЕЛДЕРЕЛ","杂粮饭":"СМЕШАННОЕ ЗЕРНО","米饭":"РИС","糙米":"НЕРЕФИНИРОВАННЫЙ РИС","馒头":"МУЧНЫЕ БУЛКИ","牛肉":"ГОВЯДИНА","猪肉":"СВИНИНА","苹果":"АПЕЛЬСИН","香蕉":"БАНАН","土豆":"Картофель","冰美式":"ЭЙСЭМ","生椰拿铁":"НЭТ ГУОЯНЬ ЛАТЭ","柠檬气泡水":"Лимонад с газом","绿豆牛乳冰":"Морковный молочный冰","Enter":"Вход","请输入重量":"Введите вес","请输入有效数字":"Введите действительное число","已调整为最大值 1000 克":"Изменено на максимальное значение 1000 г","已选":"Выбрано","没有记录可导出":"Нет записей для экспорта","__title__":"AI кулинарный ассистент · умное здоровое питание","🥗 AI食谱助手":"🥗 AI помощник по рецептам",".csv":".csv","recipe show":"показывать рецепт","食材：":"Ингредиенты:","步骤：":"①Разбить яйца, поджарить и слить ②Нарезать помидоры и добавить в кастрюлю, чтобы выпарить сок ③Добавить яйца и перемешать, добавить соль и сахар для приправы ④Посыпать луком и подавать","热量：":"1 кусок курицы, салат, помидоры черри, огурец, масло и уксус","豆腐1盒、肉末100g、豆瓣酱、花椒":"творог 1 упаковка, фарш 100 г, соевый соус, кунжут","西兰花1颗、蒜、蚝油":"брокколи 1 шт., чеснок, соевый соус","大米、糙米、小米 1:1:1":"рис, коричневый рис, мультизерновая крупа 1:1:1","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"Нет записей","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"Выберите продукты, которые у вас есть, и нажмите \"Рекомендованные рецепты\", чтобы получить подходящие кулинарные решения.","完全免费":" Абсолютно бесплатно","提意见":"Предложить идею","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"активная вкладка","面条(熟)":"Нoodles (готовые)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Концентрированный кофе 1 порция (30 мл) + холодная вода 200 мл + лед. Сначала добавить лед, затем налить кофе, добавить холодную воду, все готово за 3 минуты, около 5 ккал.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Концентрированный кофе 1 порция + густой кокосовый молоко 150 мл + лед. Добавить лед в стакан, налить кокосовое молоко, медленно влить кофе, чтобы образовалась分层, около 160 ккал.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Лимон 2 шт. + содовая вода 300 мл + мед 1 чайная ложка. Выжать лимон, добавить лед и содовую воду,最后加蜂蜜调味, около 40 ккал.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Зрелые зеленые бобы 50г + молоко 200мл + сгущенное молоко 10г + лед. Все вылить в блендер и взбить 30 секунд, около 220 ккал。","已添加相同食物和重量，请重新输入":"Добавлено такое же блюдо и вес, пожалуйста, введите заново","translateX(-50%)":"translateX(-50%)","番茄2个、鸡蛋3个、葱、盐、糖":"помидоры 2 шт., яичные желтки 3 шт., зелень, соль, сахар","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① Разбейте яичные желтки, обжарьте до готовности и снимите с плиты ② Нарежьте помидоры кубиками и добавьте в сковороду, чтобы получился сок ③ Добавьте яичные желтки, перемешайте, добавьте соль и сахар по вкусу ④ Посыпьте зеленью и подавайте","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"1 кусок курицы-бройлера, салат, черри, огурец, заправка из оливкового масла и уксуса","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① Отварите курицу-бройлер, отделите волокна ② Очистите овощи и нарежьте ③ Смешайте с заправкой и перемешайте","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"40 г овсяных хлопьев, 250 мл молока, 1 шт. яйца, немного орехов","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① Варите овсяные хлопья с молоком на медленном огне 3 минуты ② Вбейте яйцо и перемешайте ③ Посыпьте орехами","鲈鱼1条、姜、葱、蒸鱼豉油":"Лосось 1 шт., имбирь, лук, соевый соус для запекания рыбы","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① Накройте рыбу нарезанным имбирем ② Когда вода закипит, варите 8 минут ③ Слейте сок, полейте соевым соусом, посыпьте измельченным луком и полейте горячим маслом","冬瓜300g、虾仁150g、姜":"Мандарины 300 г, креветки 150 г, имбирь","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"① Нарежьте мандарины кружочками ② Обжарьте креветки с нарезанным имбирем ③ Добавьте воду и варите мандарины до прозрачности ④ Добавьте креветки и варите еще 2 минуты","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"① Обжарьте измельченное мясо, добавьте соевую пасту ② Добавьте воду и положите кубики тофу ③ Тушите 3 минуты, добавьте крахмал, чтобы загустеть ④ Посыпьте чили и зеленым луком","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"① Отварите брокколи в воде 1 минуту ② Обжарьте измельченный чеснок ③ Добавьте брокколи и потушите с соевым соусом","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①Смешать и промыть ②Добавить воду (1:1.3) и замочить на 20 минут ③Режим для круп в мультиварке","💡 先选 1-2 种你有的食材":"💡 Выберите 1-2 вида имеющихся у вас продуктов","没有完全匹配的食谱":"Нет полных соответствий в рецептах","试试少选一种食材，或换个组合再试。":"Попробуйте выбрать меньше продуктов или попробовать другую комбинацию.","没有找到匹配的食材":"Не найдены соответствующие продукты","搜索结果: ' + filtered.length + ' 种食材":"Результаты поиска: ' + filtered.length + ' видов продуктов"},"pt":{"AI食谱助手 · 智能健康饮食":"AI Assistente de Receitas · Alimentação Saudável Inteligente","🥗 AI食谱助手":"🥗 Assistente de Receitas AI","智能健康饮食 · 吃对每一餐":"Alimentação Saudável Inteligente · Comer Certo em Cada Refeição","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Inserir Ingredientes e Gerar Receitas em Segundos · Cálculo de Calorias · DIY de Bebidas Domésticas","🍳 快速制作":"Preparação Rápida","🔥 热量计算":"Cálculo de Calorias","☕ 饮品 DIY":"DIY de Bebidas","开始制作":"Iniciar Preparação","我有这些食材，能做什么？":"Eu tenho esses ingredientes, o que posso fazer?","推荐食谱":"Receitas Recomendadas","使用手册":"Manual de Uso","🔥 今日摄入热量估算":"Estimativa de Calorias Ingeridas Hoje","＋添加":"＋ Adicionar","已选 0 项 · 共 0 千卡":"Selecionados 0 Itens · Total 0 Calorias","📊 热量记录":"Registro de Calorias","导出记录":"Exportar Registro","7天热量摄入趋势":"Tendência de Ingestão de Calorias em 7 Dias","☕ 家庭饮品 DIY 指南":"Guia de DIY de Bebidas Domésticas","千卡":"Calorias","删除":"Excluir","📚 AI食谱助手使用手册":"Manual de Uso do Assistente de Receitas AI","快速制作：":"Preparação Rápida：","热量计算：":"Cálculo de Calorias：","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Escolha os alimentos e insira a quantidade em gramas, calcule as calorias ingeridas diariamente, ajudando a controlar a dieta. O registro será salvo automaticamente e exibido visualmente.","饮品DIY：":"Bebidas DIY：","提供多种家庭饮品制作方法，简单易学。":"Oferece várias maneiras de fazer bebidas domésticas, simples e fácil de aprender.","小贴士：":"Dica:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"A função de busca pode encontrar rapidamente ingredientes específicos, suportando a busca rápida com a tecla Enter.","搜索你的食材":"Procure seus ingredientes","输入克数估算":"Insira a quantidade em gramas para estimar","番茄炒蛋":"Ovo Frito com Tomate","番茄":"Tomate","鸡蛋":"Ovo","鸡胸肉蔬菜沙拉":"Salada de Frango Peito e Vegetais","鸡胸肉":"Frango Peito","生菜":"Alface","燕麦牛奶早餐":"Café da Manhã de Aveia com Leite","燕麦":"Aveia","牛奶":"Leite","清蒸鲈鱼":"Peixe Lúcio cozido a vapor","鲈鱼":"Peixe Lúcio","冬瓜虾仁汤":"Sopa de Melão de Mato com Camarão","冬瓜":"Melão de Mato","麻婆豆腐":"Tofu com Molho de Pimenta","豆腐":"Tofu","肉末":"Carne Ralada","蒜蓉西兰花":"Cebola-roxa com Brócolis","西兰花":"Brócolis","杂粮饭":"Arroz de Grãos Diversos","米饭":"Arroz","糙米":"Arroz Integral","馒头":"Manjar","牛肉":"Carne de Vaca","猪肉":"Carne de Porco","苹果":"Maçã","香蕉":"Banana","土豆":"Batata","冰美式":"Americano com Gelo","生椰拿铁":"Café com Leite de Caju","柠檬气泡水":"Água de limão com gás","绿豆牛乳冰":"Leite de feijão verde com sorvete","请输入重量":"Por favor, insira o peso","请输入有效数字":"Por favor, insira um número válido","已调整为最大值 1000 克":"Ajustado para o valor máximo de 1000 gramas","已选":"Selecionado","没有记录可导出":"Nenhum registro para exportar","recipe show":"Mostrar receita","__title__":"AI Assistente de Receitas · Alimentação Saudável Inteligente","Enter":"…","食材：":"Ingredientes:","番茄2个、鸡蛋3个、葱、盐、糖":"Tomate 2 unidades, ovos 3 unidades, cebola, sal, açúcar","步骤：":"Passos:","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① bater os ovos e fritar até estarem prontos, despejar ② cortar os tomates em cubos e cozinhar em fogo baixo até soltar líquido ③ adicionar os ovos e fritar, adicionar sal e açúcar para temperar ④ esparcir cebolinho e despejar","热量：":"Calorias:","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"Peito de frango 1 unidade, alface, tomate cherry, pepino, molho de azeite e vinagre","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① cozinhar o peito de frango e desfiar ② lavar e cortar os vegetais ③ misturar e regar com molho","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"40g de aveia, 250ml de leite, 1 unidade de ovo, algumas nozes","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① cozinhar a aveia com leite em fogo baixo por 3 minutos ② bater o ovo e misturar ③ esparcir nozes","鲈鱼1条、姜、葱、蒸鱼豉油":"Peixe lufar 1 unidade, gengibre, cebola, shaoxing","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① fazer cortes no peixe e espalhar fatias de gengibre ② cozinhar por 8 minutos após a água ferver ③ derramar o líquido e regar com shaoxing, esparcir cebolinho e derramar óleo quente","冬瓜300g、虾仁150g、姜":"Abóbora dourada 300g, camarão 150g, gengibre","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①Fatia a abóbora ②Refogue os camarões com cebola picada ③Adicione água e cozinhe a abóbora até ficar transparente ④Adicione os camarões e cozinhe por mais 2 minutos","豆腐1盒、肉末100g、豆瓣酱、花椒":"Tofu 1 pacote, carne moída 100g, pimenta baião de dois, salsinha","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①Frite a carne moída e adicione a pimenta baião de dois ②Adicione água e cozinhe os cubos de tofu ③Deixe cozinhar em fogo baixo por 3 minutos e engrossar a salsa ④Espalhe salsinha e salsinha","西兰花1颗、蒜、蚝油":"Brócolis 1 unidade, alho, shiitake","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①Escureça o brócolis por 1 minuto ②Frite os cubos de alho ③Adicione o brócolis e frite com o shiitake","大米、糙米、小米 1:1:1":"Arroz branco, arroz integral, milho 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①Misture e lave ②Adicione água (1:1.3) e deixe repousar por 20 minutos ③Modo de grãos do micro-ondas","💡 先选 1-2 种你有的食材":"💡 Escolha 1-2 tipos de ingredientes que você tem","没有完全匹配的食谱":"Nenhuma receita completa coincidindo","试试少选一种食材，或换个组合再试。":"Tente escolher um ingrediente a menos ou trocar a combinação e tentar novamente。","没有找到匹配的食材":"Nenhum ingrediente correspondente encontrado","搜索结果: ' + filtered.length + ' 种食材":"Resultados da pesquisa: ' + filtered.length + ' tipos de ingredientes","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","PingFang SC":"…","Microsoft YaHei":"…","LA_COLLECT":"…","tab active":"…","面条(熟)":"Macarrão ( cozido )","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Café concentrado 1 unidade (30ml) + Água com gelo 200ml + Cubos de gelo. Adicione o gelo primeiro, despeje o líquido de café, em seguida, complete com água com gelo, pronto em 3 minutos, cerca de 5 kcal.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Café concentrado 1 unidade + Leite de coco espesso 150ml + Gelo. Adicione gelo no copo, despeje o leite de coco, despeje lentamente o líquido de café para formar camadas, cerca de 160 kcal.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Limão 2 fatias + Água de gás 300ml + Mel 1 colher de chá. Esprema as fatias de limão, adicione gelo e água de gás, tempere por último com mel, cerca de 40 kcal.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Manteiga de feijão verde 50g + leite 200ml + creme de leite 10g + gelo. Coloque tudo no liquidificador e bata por 30 segundos, cerca de 220 calorias.","已添加相同食物和重量，请重新输入":"Já adicionou o mesmo alimento e peso, por favor, insira novamente","translateX(-50%)":"translateX(-50%)"},"ar":{"AI食谱助手 · 智能健康饮食":"مساعد وصفة AI · وجبة صحية ذكية","🥗 AI食谱助手":"مساعد وصفة AI 🥗","智能健康饮食 · 吃对每一餐":"وجبة صحية ذكية · تناول الطعام بشكل صحيح في كل وجبة","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"إدخال المكونات لتحصل على وصفة في ثواني · حساب السعرات الحرارية · DIY مشروبات عائلية","🍳 快速制作":"تحضير سريع 🍳","🔥 热量计算":"حساب السعرات الحرارية 🔥","☕ 饮品 DIY":"DIY مشروبات ☕","开始制作":"بدء التحضير","我有这些食材，能做什么？":"لدي هذه المكونات، ماذا يمكنني أن أعد؟","推荐食谱":"وصفات مقترحة","使用手册":"دليل الاستخدام","🔥 今日摄入热量估算":"تقدير السعرات الحرارية اليومية 🔥","＋添加":"＋إضافة","已选 0 项 · 共 0 千卡":"المخزنة 0 item · مجموع 0 كالورى","📊 热量记录":"سجلات السعرات الحرارية 📊","导出记录":"تصدير السجلات","7天热量摄入趋势":"اتجاهات استهلاك السعرات الحرارية لمدة 7 أيام","☕ 家庭饮品 DIY 指南":"دليل DIY مشروبات عائلية ☕","千卡":"كالورى","删除":"حذف","📚 AI食谱助手使用手册":"دليل استخدام مساعد وصفة AI 📚","快速制作：":"تحضير سريع: ","热量计算：":"حساب السعرات الحرارية: ","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"اختر الطعام وادخل الكمية بالجرام، احسب السعرات الحرارية اليومية، وسيساعدك ذلك في التحكم في النظام الغذائي. سيتم حفظ السجلات تلقائيًا وعرضها بوضوح.","饮品DIY：":"DIY مشروبات: ","提供多种家庭饮品制作方法，简单易学。":"يقدم العديد من طرق تحضير مشروبات عائلية بسهولة وسهولة التعلم.","小贴士：":"نصائح:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"يمكن للبحث العثور بسرعة على المكونات المحددة، يدعم مفتاح Enter للبحث السريع.","搜索你的食材":"ابحث عن مكوناتك","输入克数估算":"ادخل الكمية بالجرام لتقدير","番茄炒蛋":"طاجين الطماطم بالبيض","番茄":"طماطم","鸡蛋":"بيض","鸡胸肉蔬菜沙拉":"سلطة لحم الدجاج بالخضروات","鸡胸肉":"لحم الدجاج","生菜":"خس","燕麦牛奶早餐":"وجبة الإفطار من الشوفان واللبن","燕麦":"شوفان","牛奶":"لبن","清蒸鲈鱼":"سمك السلمون المشوي","鲈鱼":"سمك السلمون","冬瓜虾仁汤":"حساء الكوسا بالحبار","冬瓜":"كوسا","麻婆豆腐":"توفو مابو","豆腐":"توفو","肉末":"لحم مفروم","蒜蓉西兰花":"زهرة البرقوق بالثوم","西兰花":"زهرة البرقوق","杂粮饭":"حبوب متنوعة","米饭":"الرز","糙米":"الرز القاسي","馒头":"المو","牛肉":"لحم البقر","猪肉":"لحم الخنزير","苹果":"تفاحة","香蕉":"موز","土豆":"بطاطا","冰美式":"أمريكي بارد","生椰拿铁":"ناني كو كو","柠檬气泡水":"ماء الليمون المضغوط","绿豆牛乳冰":"جبن الأرز المثلج","Enter":"دخل","请输入重量":"الرجاء إدخال الوزن","请输入有效数字":"الرجاء إدخال عدد صحيح","已调整为最大值 1000 克":"تم تعديلها إلى القيمة القصوى 1000 جرام","已选":"محدد","没有记录可导出":"لا توجد سجلات يمكن تصديرها","recipe show":"عرض الوصفة","__title__":"مساعد وصفة AI · وجبة صحية ذكية","食材：":"مكونات: ","番茄2个、鸡蛋3个、葱、盐、糖":"طماطم 2 حبة، بيض 3، بصل، ملح، سكر","步骤：":"خطوات: ","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① اخفق البيض وأطويه ثم أضعه جانباً ② قطع الطماطم وأضفها إلى المقلاة لتبخر المياه ③ أضف البيض إلى الطماطم وأطويه مع إضافة الملح والسكر ④ أضف البصل المفروم وأخرجيها","热量：":"سعر حراري: ","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"لحم الصدر 1 قطعة، خس، طماطم صغيرة، خيار، عصير زيت وخل","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① قم بغلي لحم الصدر وقم بتقسيمه إلى شرائح ② قم بغسل الخضار وقطعها ③ قم بخلطها مع الصلصة وتحريكها","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"شوفان 40g، حليب 250 مل، بيض 1، بذور خليطة قليلة","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① اطحن الشوفان بالحليب على نار هادئة لمدة 3 دقائق ② أضف البيض وأطويه ③ أضف البذور الخليطة","鲈鱼1条、姜、葱、蒸鱼豉油":"سمك السلمون 1 قطعة، جذر الزنجبيل، بصل، صلصة غسيل السمك","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①قطع السمك وأضف شرائح جذر الزنجبيل ②أطوي السمك على نار هادئة لمدة 8 دقائق ③أزيل السائل وأضف صلصة غسيل السمك وأضف شرائح البصل المفروم وأضف الزيت الساخن","冬瓜300g、虾仁150g、姜":"كوسا مزارعة 300g، فاصوليا مائية 150g، جذر الزنجبيل","暂无记录":"لا يوجد سجلات","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"اختر المكونات التي تملكها، انقر على \"وصفة مقترحة\" للحصول على خطة الطهي المناسبة.","完全免费":"مجاني تمامًا","提意见":"قدم اقتراح","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"العلامة الحالية","面条(熟)":"شريط (مطبخ)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"قهوة مركزة 1 قطعة (30 مل) + ماء بارد 200 مل + مكعبات ثلج. أضف مكعبات الثلج أولاً، ثم أضف سائل القهوة، أضف ماء بارد، يتم إكمالها في 3 دقائق، حوالي 5 كالورى.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"قهوة مركزة 1 قطعة + حليب كوكوس كثيف 150 مل + مكعبات ثلج. أضف مكعبات الثلج في الكوب، أضف حليب الكوكوس، أضف سائل القهوة ببطء لإنشاء طبقات، حوالي 160 كالورى.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"ليمون 2 ورقة + ماء غازي 300 مل + عسل 1 ملعقة صغيرة. اضغط على شرائح الليمون لاستخراج العصير، أضف مكعبات الثلج وماء الغازي، أضف العسل كنهاية، حوالي 40 كالورى.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"فول مدمج 50 جرام + حليب 200 مل + كريمة حليب 10 جرام + مكعبات ثلج. أضف جميع المكونات إلى الخلاط، اخفق لمدة 30 ثانية، حوالي 220 كالورى.","已添加相同食物和重量，请重新输入":"تم إضافة نفس الطعام والوزن، يرجى إعادة التدخل","translateX(-50%)":"ترجمه X (-50%)","豆腐1盒、肉末100g、豆瓣酱、花椒":"كيس توفو، 100g لحم ناعم، صلصة تاو كوان، بذور الكمون","西兰花1颗、蒜、蚝油":"زهرة البركلي واحدة، الثوم، صلصة السمك","大米、糙米、小米 1:1:1":"大米،糙米، حبوب القمح 1:1:1","💡 先选 1-2 种你有的食材":"💡 اختر 1-2 نوعًا من المكونات المتاحة لديك","没有完全匹配的食谱":"لا توجد وصفة تطابق كاملًا","试试少选一种食材，或换个组合再试。":"حاول اختيار مكون أقل أو تجربة مجموعة أخرى","没有找到匹配的食材":"لم يتم العثور على مكونات تطابق","搜索结果: ' + filtered.length + ' 种食材":"نتائج البحث: ' + filtered.length + ' أنواع من المكونات","'+f.n+' '+f.c+'千卡/100g":"…",".csv":".csv","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①قطع الكوسا ②قومي بخلط السجق والجزر مع الزيت النباتي ③أضفي الماء واطهي الكوسا حتى تصبح شفافة ④أضفي السجق وأطهي لمدة 2 دقيقة","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①اطهي اللحم المفروم مع الفلفل الأسود ②أضفي الماء وأضف مكعبات الجبن ③اختمي الطهي بعد 3 دقائق من إضافة الصلصة ④أضفي البهارات والبقدونس","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①أطهي البروكلي لمدة دقيقة واحدة ②أطهي البصل المهروس مع الزيت النباتي ③أضفي البروكلي مع الصلصة السمرية وأطهيها","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①اخلطي وغسل ②أضفي الماء (1:1.3) وأغمس لمدة 20 دقيقة ③وضعية الأرز والخبز في الميكروويف"},"hi":{"AI食谱助手 · 智能健康饮食":"AIस्किपबुकसस्त्र · बुद्धिमान स्वास्थ्य आहार","🥗 AI食谱助手":"🥗 AIस्किपबुकसस्त्र","智能健康饮食 · 吃对每一餐":"बुद्धिमान स्वास्थ्य आहार · रातबार ठीक खाना","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"खाद्यान्न भरें और तुरंत रेसिपी बनाएं · ऊर्जा गणना · घरेलू ड्रिंक डायइ","🍳 快速制作":"🍳 तेजी से बनाएं","🔥 热量计算":"🔥 ऊर्जा गणना","☕ 饮品 DIY":"☕ ड्रिंक डायइ","开始制作":"शुरू करें","我有这些食材，能做什么？":"मेरे पास ये खाद्यान्न हैं, क्या बन सकता है?","推荐食谱":"परिचय रेसिपी","使用手册":"उपयोग मानव","🔥 今日摄入热量估算":"🔥 आज की ऊर्जा ग्रेगजना अनुमान","＋添加":"＋ जोड़ें","已选 0 项 · 共 0 千卡":"चयन 0 वस्तु · कुल 0 थायरोडायाइ","📊 热量记录":"📊 ऊर्जा रिकॉर्ड","导出记录":"रिकॉर्ड निर्गमन","7天热量摄入趋势":"7 दिन की ऊर्जा ग्रेगजना रूपरेखा","☕ 家庭饮品 DIY 指南":"☕ घरेलू ड्रिंक डायइ गाइड","千卡":"थायरोडायाइ","删除":"मिटाएं",".csv":".सीवीएस","📚 AI食谱助手使用手册":"📚 AIस्किपबुकसस्त्र उपयोग मानव","快速制作：":"तेजी से बनाएं:","热量计算：":"ऊर्जा गणना:","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"भोजन चुनें और किलोग्राम भरें, प्रतिदिन की ऊर्जा ग्रेगजना गणना करें, आहार नियंत्रण में मदद करें। रिकॉर्ड आटोमेटिक रूप से सहेजा जाएगा और दृश्यीकरण करा जाएगा。","饮品DIY：":"ड्रिंक डायइ:","提供多种家庭饮品制作方法，简单易学。":"घरेलू ड्रिंक के अनेक बनाने के तरीके प्रदान करता है, सरल और आसान सीखना है。","小贴士：":"टिप्पणी:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"खोज फ़ंक्शन विशेष खाद्यान्न को तेजी से खोजने में मदद करता है, इंटर कीबोर्ड बटन के त्वरित खोज का समर्थन करता है。","搜索你的食材":"अपने खाद्यान्न को खोजें","输入克数估算":"किलोग्राम भरें और अनुमान करें","番茄炒蛋":"लेसी भरी डाल","番茄":"लेसी","鸡蛋":"अण्डा","鸡胸肉蔬菜沙拉":"चिकना चेस्ट सलाद","鸡胸肉":"चिकना चेस्ट","生菜":"सलाद","燕麦牛奶早餐":"ओव्स मिल्क ब्रेकफस्ट","燕麦":"ओव्स","牛奶":"दूध","清蒸鲈鱼":"स्वीट बबी","鲈鱼":"बबी","冬瓜虾仁汤":"मोमोडाका शूमी तूरी","冬瓜":"मोमोडाका","麻婆豆腐":"मापोदाओ टॉफू","豆腐":"टॉफू","肉末":"मांस टुकड़े","蒜蓉西兰花":"चीनीशूमा साइबोकाई","西兰花":"साइबोकाई","杂粮饭":"बहुग्राही भात","米饭":"भात","糙米":"अरबी भात","馒头":"मूडाओ","牛肉":"गोमांस","猪肉":"शूत","苹果":"सेब","香蕉":"केला","土豆":"आलू","冰美式":"बर्फीला अमेरिकन","生椰拿铁":"स्वीट कॉको नाइट","柠檬气泡水":"लीमन बबल वाटर","绿豆牛乳冰":"मूगफली के दही का आइसक्रीम","Enter":"इंटर","请输入重量":"पॉइंट वजन भरें","请输入有效数字":"वैध नंबर भरें","已调整为最大值 1000 克":"अब 1000 ग्राम की अधिकतम मात्रा में समायोजित किया गया है","已选":"चुना गया है","没有记录可导出":"कोई रिकॉर्ड नहीं निर्यात किया जा सकता है","recipe show":"रेसिपी दिखाएं","__title__":"AIस्किपबुकसस्त्र · बुद्धिमान स्वास्थ्य आहार","食材：":"…","番茄2个、鸡蛋3个、葱、盐、糖":"…","步骤：":"…","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"…","热量：":"…","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"…","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"…","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"…","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"…","鲈鱼1条、姜、葱、蒸鱼豉油":"…","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"…","冬瓜300g、虾仁150g、姜":"…","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","PingFang SC":"…","Microsoft YaHei":"…","LA_COLLECT":"…","tab active":"…","面条(熟)":"सामना(पकाया हुआ)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"कंपرس्ड कॉफी 1 थाका (30ml) + बर्फीला पानी 200ml + बर्फ। पहले बर्फ जोड़ें, कॉफी रिक्त डालें, फिर बर्फीला पानी जोड़ें, 3 मिनट में तैयार, लगभग 5 किलोकैलोरी।","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"कंप्रेस्ड कॉफी 1 थाका + घनी नारियल दही 150ml + बर्फ। कप में बर्फ जोड़ें, नारियल दही डालें, धीरे-धीरे कॉफी रिक्त डालें ताकि वर्गीकृत होजाए, लगभग 160 किलोकैलोरी।","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"लीमून 2 टुकड़े + सोडा पानी 300ml + शहद 1 चामचा। लीमून टुकड़ों से रस निकालें, बर्फ और सोडा पानी जोड़ें, अंत में शहद से सब्जित करें, लगभग 40 किलोकैलोरी।","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"पकाया हुआ मटर 50g + दूध 200ml + शीतलक 10g + बर्फ। सब कुछ ब्रेकवाल में डालें और 30 सेकंड में मिलाएं, लगभग 220 किलोकैलोरी।","已添加相同食物和重量，请重新输入":"उसी खाद्य पदार्थ और भार को जोड़ा है, कृपया फिर से दाखिल करें","translateX(-50%)":"translateX(-50%)","豆腐1盒、肉末100g、豆瓣酱、花椒":"टूफू 1 पैकेट, मांस टुकड़े 100g, लाल मिर्च पटे, फालूदड़","西兰花1颗、蒜、蚝油":"सलादीन 1 टुकड़ा, जीरा, ओयोसाइ","大米、糙米、小米 1:1:1":"चावल, गेहूं चावल, बाजरा 1:1:1","💡 先选 1-2 种你有的食材":"💡 1-2 आपके पास होने वाले खाद्य पदार्थ चुनें","没有完全匹配的食谱":"कोई पूरी तरह से मेल खाने वाला रेसिपि नहीं","试试少选一种食材，或换个组合再试。":"एक खाद्य पदार्थ कम करके या अलग समानता चुनकर दोबारा प्रयास करें。","没有找到匹配的食材":"कोई मेल खाने वाला खाद्य पदार्थ नहीं मिला","搜索结果: ' + filtered.length + ' 种食材":"खोज परिणाम: ' + filtered.length + ' तरह के खाद्य पदार्थ","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①गौवाल टुकड़ा बनाएं ②टूटी पालक भांग ③पानी जोड़ के गौवाल लगाएं तक कि इसका रंग पार करे ④फिर टूटी लगाएं और 2 मिनट बच्चे ले लें"},"id":{"AI食谱助手 · 智能健康饮食":"AI Resep Asisten · Makan Sehat Inteligensi","🥗 AI食谱助手":"🥗 AI Resep Asisten","智能健康饮食 · 吃对每一餐":"Makan Sehat Inteligensi · Makan dengan Benar Setiap Makanan","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Masukkan Bahan Makanan untuk Membuat Resep Dengan cepat · Perhitungan Kalori · DIY Minuman Rumah","🍳 快速制作":"🍳 Pemilihan Cepat","🔥 热量计算":"🔥 Perhitungan Kalori","☕ 饮品 DIY":"☕ DIY Minuman","开始制作":"Mulai Membuat","我有这些食材，能做什么？":"Saya Memiliki Bahan Ini, Apa yang Dapat Dibuat?","推荐食谱":"Resep yang Disarankan","使用手册":"Panduan Penggunaan","🔥 今日摄入热量估算":"Perkiraan Kalori yang Diambil Hari Ini 🔥","＋添加":"＋Tambah","已选 0 项 · 共 0 千卡":"Pilihan 0 Item · Jumlah 0 Kalori","📊 热量记录":"Catatan Kalori 📊","导出记录":"Eksport Catatan","7天热量摄入趋势":"Tren Pemakaian Kalori 7 Hari","☕ 家庭饮品 DIY 指南":"Panduan DIY Minuman Rumah ☕","千卡":"Kalori","删除":"Hapus","📚 AI食谱助手使用手册":"Panduan Penggunaan AI Resep Asisten 📚","快速制作：":"Pemilihan Cepat:","热量计算：":"Perhitungan Kalori:","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Pilih Makanan dan Masukkan Beratnya, Hitung Kalori yang Diambil Harian, Membantu Mengawasi Makanan. Catatan akan disimpan otomatis dan ditampilkan secara visual.","饮品DIY：":"DIY Minuman:","提供多种家庭饮品制作方法，简单易学。":"Menyediakan berbagai metode untuk membuat minuman rumah, mudah dan dapat dipelajari.","小贴士：":"Tip:","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"Fungsi Pencarian dapat menemukan bahan khusus dengan cepat, mendukung pencarian cepat dengan tombol Enter.","搜索你的食材":"Cari Bahan Makanan Anda","输入克数估算":"Masukkan Berat untuk Perkiraan","番茄炒蛋":"Tumis Tomat Telur","番茄":"Tomat","鸡蛋":"Telur","鸡胸肉蔬菜沙拉":"Salad Daging Ayam Dada dan Sayur","鸡胸肉":"Daging Ayam Dada","生菜":"Sayur Potong","燕麦牛奶早餐":"Pagi Ayam dengan Susu Oat","燕麦":"Oat","牛奶":"Susu","清蒸鲈鱼":"Pacu Rebus","鲈鱼":"Pacu","冬瓜虾仁汤":"Tumisan Kudam Bebek","冬瓜":"Kudam","麻婆豆腐":"Tofu Maba","豆腐":"Tofu","肉末":"Tepung Daging","蒜蓉西兰花":"Bawang Putih Kecap Brokoli","西兰花":"Brokoli","杂粮饭":"Rice Berbagai Gizi","米饭":"Rice","糙米":"Rice Beras","馒头":"Man tou","牛肉":"Daging Sapi","猪肉":"Daging Babi","苹果":"Apel","香蕉":"Banana","土豆":"Kartu","冰美式":"Espresso","生椰拿铁":"Latte Nuts","柠檬气泡水":"Cairan Bubur Lemon","绿豆牛乳冰":"Es Tahu Sapi Kacang Hijau","请输入重量":"Silakan masukkan berat","请输入有效数字":"Silakan masukkan angka yang sah","已调整为最大值 1000 克":"Telah diatur ke nilai maksimal 1000 gram","已选":"Telah dipilih","没有记录可导出":"Tidak ada catatan yang dapat diekspor","__title__":"AI Resep Asisten · Makan Sehat Inteligensi",".csv":".csv","Enter":"Masukkan","recipe show":"Tampilkan Resep","食材：":"Bahan Baku:","番茄2个、鸡蛋3个、葱、盐、糖":"Tomat 2 buah, telur 3 butir, bawang, garam, gula","步骤：":"Langkah:","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① Telur diserbet dan dihalus, diwangi dan diambil keluar ② Tomat disangkep dan dihalus, diwangi sampai kecoklatan ③ Masukkan telur ke dalam dan diaduk, tambahkan garam dan gula untuk menyasai ④ Taburkan bawang merah ke atas dan siap disajikan","热量：":"Kalori:","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"Daging ayam paha 1 potong, daun salada, tomat kecil, cekla, saus bawang putih dan asam jawa","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"①Daging ayam dicampur dan disarung ②Sayur dicuci dan dipotong ③Campur dan taburi adonan","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"40g Shāomài、250ml Susu, 1 butir Telur, sedikit Kacang biji","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"①Masak Shāomài dengan susu di api rendah selama 3 menit ②Masukkan telur dan campur ③Tiriskan kacang biji","鲈鱼1条、姜、葱、蒸鱼豉油":"1 ekor Ikan Lumba-lumba, Jahe, Bawang merah, Shēyú","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"①Garis ikan dengan jeruk jahe ②Kuah mendidih, masak 8 menit ③Tolong cairan, taburi shēyú dan iris bawang merah, tuangkan minyak panas","冬瓜300g、虾仁150g、姜":"300g Kayu Manis, 150g Udang, Jahe","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+' kalori/100g","暂无记录":"Tidak ada catatan","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"Pilih bahan yang anda miliki, klik \"Resep yang Disarankan\" untuk mendapatkan rencana memasak yang cocok.","完全免费":"Lengkapnya gratis","提意见":"Beri masukan","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"tab aktif","面条(熟)":"Noodle (berkuah)","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Kopi yang disaring 1 porsi (30ml) + air es 200ml + es. Masukkan es dahulu, tuangkan kopi, lalu tambahkan kembali air es, selesai dalam 3 menit, sekitar 5 kalori","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Kopi yang disaring 1 porsi + susu kacang 150ml + es. Masukkan es ke dalam mangkuk, tuangkan susu kacang, lalu lenturkan kopi, terbentuk lapisan, sekitar 160 kalori","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Limau 2 bagian + air minuman 300ml + madu 1 sendok. Tekan limau untuk mengeksrak, tambahkan es dan air minuman, lalu selasai dengan madu, sekitar 40 kalori","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Kacang hijau yang diolah 50g + susu 200ml + susu susu 10g + es. Masukkan ke blender, haluskan selama 30 detik, sekitar 220 kalori","已添加相同食物和重量，请重新输入":"Telah menambahkan makanan dan berat yang sama, silakan input kembali","translateX(-50%)":"translateX(-50%)","大米、糙米、小米 1:1:1":"Beras, Beras Bulat, Jagung 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①Bersih campur ②Tambah air (1:1.3) masukkan 20 menit ③Mode gandum ricecooker","💡 先选 1-2 种你有的食材":"💡 Pilih 1-2 jenis bahan yang anda punya","没有完全匹配的食谱":"Tidak ada resep yang cocok sepenuhnya","试试少选一种食材，或换个组合再试。":"Coba pilih sedikit bahan, atau coba kombinasi lain","没有找到匹配的食材":"Tidak menemukan bahan yang cocok","搜索结果: ' + filtered.length + ' 种食材":"Hasil pencarian: ' + filtered.length + ' jenis bahan","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①Potong duduk ②Tumis ikan cincang dan bawang putih ③Masak duduk sampai jernih ④Masukkan ikan cincang dan masak selama 2 menit","豆腐1盒、肉末100g、豆瓣酱、花椒":"Tahu 1 pakek, sisa daging 100g, kecap manis, biji sereh","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①Tumis sisa daging sampai halau dan tambahkan kecap manis ②Masukkan duduk potong dan masak selama 3 menit kemudian kocok ④Tiriskan biji sereh dan bawang putih","西兰花1颗、蒜、蚝油":"Sayur brokoli 1 buah, bawang, kecap cincang","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①Keringkan sayur brokoli selama 1 menit ②Tumis bawang putih sampai kenyal ③Masukkan sayur brokoli dan tumis dengan kecap cincang"},"vi":{"AI食谱助手 · 智能健康饮食":"AI Món Ăn · Ăn Uống Sức Khỏe Tinh Thần","🥗 AI食谱助手":"🥗 AI Món Ăn","智能健康饮食 · 吃对每一餐":"Ăn Uống Sức Khỏe Tinh Thần · Ăn Đúng Mỗi Bữa","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"Nhập Nguyên Liệu Đưa Ra Món Ăn Ngay Lập Tức · Tính Calo · DIY Nước Uống Gia Đình","🍳 快速制作":"🍳 Làm Nhanh","🔥 热量计算":"🔥 Tính Calo","☕ 饮品 DIY":"☕ DIY Nước Uống","开始制作":"Bắt Đầu Làm","我有这些食材，能做什么？":"Tôi Có Những Nguyên Liệu Này, Có Thể Làm Gì?","推荐食谱":"Món Ăn Đề Xuất","使用手册":"Hướng Dẫn Sử Dụng","🔥 今日摄入热量估算":"🔥 估算 Calo Ngày Hôm Nay","＋添加":"＋ Thêm","已选 0 项 · 共 0 千卡":"Đã Chọn 0 Món · Tổng 0 Kcal","📊 热量记录":"📊 Ghi Nhận Calo","导出记录":"Xuất Kết Quả","7天热量摄入趋势":"Xu Hướng Tiêu Thụ Calo 7 Ngày","☕ 家庭饮品 DIY 指南":"☕ Hướng Dẫn DIY Nước Uống Gia Đình","千卡":"Kcal","删除":"Xóa","📚 AI食谱助手使用手册":"📚 Hướng Dẫn Sử Dụng AI Món Ăn","快速制作：":"Làm Nhanh: ","热量计算：":"Tính Calo: ","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"Chọn thực phẩm và nhập số gram, tính calo tiêu thụ hàng ngày, giúp kiểm soát chế độ ăn uống. Ghi chép sẽ tự động lưu và hiển thị trực quan.","饮品DIY：":"DIY Nước Uống: ","提供多种家庭饮品制作方法，简单易学。":"Cung cấp nhiều phương pháp làm nước uống gia đình, đơn giản và dễ học.","小贴士：":"Tip: ","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"Chức năng tìm kiếm có thể nhanh chóng tìm thấy nguyên liệu cụ thể, hỗ trợ tìm kiếm nhanh bằng phím Enter.","搜索你的食材":"Tìm Kiếm Nguyên Liệu Của Bạn","输入克数估算":"Nhập Số Gram 估算","番茄炒蛋":"Cà Chua Xào Trứng","番茄":"Cà Chua","鸡蛋":"Trứng Gà","鸡胸肉蔬菜沙拉":"Gà Nạc Thăn Xà Lách","鸡胸肉":"Gà Nạc Thăn","生菜":"Xà Lách","燕麦牛奶早餐":"Bữa Sáng Bột Yến Mạch Sữa","燕麦":"Bột Yến Mạch","牛奶":"Sữa","清蒸鲈鱼":"Lươn Luộc","鲈鱼":"Lươn","冬瓜虾仁汤":"Mướp Đắng Tôm Thìa","冬瓜":"Mướp Đắng","麻婆豆腐":"Tofu Mà Bò","豆腐":"Tofu","肉末":"Thịt Nghiền","蒜蓉西兰花":"Hành Bào Xà Lách Cải Xanh","西兰花":"Xà Lách Cải Xanh","杂粮饭":"Cơm Lúa Hhetero","米饭":"Cơm","糙米":"Gạo Lứt","馒头":"Bánh Măng","牛肉":"Thịt Bò","猪肉":"Thịt Lợn","苹果":"Táo","香蕉":"Chuối","土豆":"Khoai Lang","冰美式":"Cà Phê Sữa Đá","生椰拿铁":"Latte Dừa Sống","柠檬气泡水":"Nước chanh bọt","绿豆牛乳冰":"Sữa đậu xanh đá","请输入重量":"Vui lòng nhập trọng lượng","请输入有效数字":"Vui lòng nhập số nguyên dương","已调整为最大值 1000 克":"Đã điều chỉnh lên giá trị lớn nhất 1000 gram","已选":"Đã chọn","没有记录可导出":"Không có bản ghi nào để xuất","__title__":"AI Món Ăn · Ăn Uống Sức Khỏe Tinh Thần","Enter":"Nhập","recipe show":"hiển thị công thức","食材：":"Nguyên liệu:","番茄2个、鸡蛋3个、葱、盐、糖":"cà chua 2 quả, trứng 3 quả, tỏi, muối, đường","步骤：":"Bước 1:","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"① Trứng đánh tan, xào chín, rưới ra đĩa ② Cà chua thái khúc, cho vào chảo xào ra nước ③ Đổ trứng vào xào, thêm muối và đường ④ Rắc hành lên và rưới dầu nóng lên","热量：":"Năng lượng:","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"cánh gà 1 miếng, bắp cải, cà chua, chuối, nước mắm và dầu trộn","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"① Cánh gà luộc chín, bóc sợi ② Rửa sạch rau, thái nhỏ ③ Trộn đều với nước chấm","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"yến mạch 40g, sữa 250ml, trứng 1 quả, một ít hạt dinh","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"① Đun nhỏ lửa yến mạch với sữa trong 3 phút ② Đập trứng vào trộn đều ③ Rắc hạt dinh lên","鲈鱼1条、姜、葱、蒸鱼豉油":"cá lóc 1 con, gừng, tỏi, nước tương cá chua","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"① Cắt cá thành lát, đắp gừng ② Nấu sôi nước, đun cá trong 8 phút ③ Đổ bỏ nước, rưới nước tương cá chua, rắc hành lên và rưới dầu nóng lên","冬瓜300g、虾仁150g、姜":"đu đủ xanh 300g, tôm nõn 150g, gừng","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"① Cắt đậu hũ thành lát ② Hấp hành tỏi ③ Chần đậu hũ cho đến khi trong suốt ④ Thêm tôm vào và đun thêm 2 phút","豆腐1盒、肉末100g、豆瓣酱、花椒":"Tào khúc 1 hộp, xì dầu 100g, ớt bột, hạt tiêu","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"① Xào thịt xay cho đến khi tơi ② Thêm nước vào và cho tào khúc vào ③ Đun nhỏ lửa 3 phút, đun sánh ④ Rắc hạt tiêu và hành lá","西兰花1颗、蒜、蚝油":"Bông cải xanh 1 cây, tỏi, dầu hào","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"① Chần bông cải xanh trong 1 phút ② Xào tỏi cho đến khi thơm ③ Thêm bông cải xanh và dầu hào vào xào","大米、糙米、小米 1:1:1":"Gạo tẻ, gạo lứt, gạo nếp 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"① Trộn đều và rửa sạch ② Ngâm nước (1:1.3) trong 20 phút ③ Chọn chế độ gạo lứt của nồi cơm điện","💡 先选 1-2 种你有的食材":"💡 Chọn 1-2 loại nguyên liệu bạn có","没有完全匹配的食谱":"Không có công thức phù hợp hoàn toàn","试试少选一种食材，或换个组合再试。":"Hãy thử chọn ít nguyên liệu hơn hoặc thay đổi thành phần.","没有找到匹配的食材":"Không tìm thấy nguyên liệu phù hợp","搜索结果: ' + filtered.length + ' 种食材":"Kết quả tìm kiếm: ' + filtered.length + ' loại nguyên liệu","'+f.n+' '+f.c+'千卡/100g":"'+f.n+' '+f.c+'千卡/100g","暂无记录":"Chưa có ghi chép","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"Chọn thực phẩm bạn có, nhấn \"Món ăn gợi ý\" để nhận các phương án nấu ăn phù hợp.","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","UTF-8":"UTF-8","og:title":"og:title","og:description":"og:description","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei","LA_COLLECT":"LA_COLLECT","tab active":"tab active","面条(熟)":"Bún chín","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"Cà phê đặc 1 phần (30ml) + Nước đá 200ml + Đá. Trước tiên thêm đá, rót cà phê vào, sau đó thêm nước đá, xong trong 3 phút, khoảng 5 kcal.","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"Cà phê đặc 1 phần + Sữa dừa đặc 150ml + Đá. Thêm đá vào cốc, rót sữa dừa vào, sau đó rót cà phê vào từ từ để tạo lớp phân lớp, khoảng 160 kcal.","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"Mật oranges 2 lá + Nước soda 300ml + Đường hoa 1 muỗng. Nén nước cốt chanh, thêm đá và nước soda, cuối cùng thêm đường hoa để điều vị, khoảng 40 kcal.","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"Đậu xanh chín 50g + Sữa 200ml + Sữa đặc 10g + Nước đá. Đổ tất cả vào máy xay sinh tố xay trong 30 giây, khoảng 220千卡.","已添加相同食物和重量，请重新输入":"Đã thêm thực phẩm và trọng lượng tương tự, vui lòng nhập lại","translateX(-50%)":"translateX(-50%)"},"th":{"AI食谱助手 · 智能健康饮食":"AIรายละเอียดสูตรอาหาร · อาหารสุขภาพสมอง","🥗 AI食谱助手":"🥗 AIรายละเอียดสูตรอาหาร","智能健康饮食 · 吃对每一餐":"อาหารสุขภาพสมอง · รับประทานอาหารตามที่ต้องการ","输入食材秒出食谱 · 热量计算 · 家庭饮品 DIY":"ใส่ส่วนผสมทันทีแล้วได้สูตรอาหาร · คำนวณค่าแรงเผา · ดีไอยี อาหารเครื่องดื่มบ้าน","🍳 快速制作":"🍳 การทำอาหารเร็ว","🔥 热量计算":"🔥 การคำนวณค่าแรงเผา","☕ 饮品 DIY":"☕ ดีไอยี อาหารเครื่องดื่ม","开始制作":"เริ่มทำ","我有这些食材，能做什么？":"ฉันมีส่วนผสมเหล่านี้ จะทำได้อะไรบ้าง?","推荐食谱":"สูตรอาหารที่แนะนำ","使用手册":"คู่มือใช้งาน","🔥 今日摄入热量估算":"🔥 การประมาณค่าแรงเผาที่รับประทานวันนี้","＋添加":"＋เพิ่ม","已选 0 项 · 共 0 千卡":"เลือก 0 รายการ · รวม 0 แคลอรี่","📊 热量记录":"📊 การบันทึกค่าแรงเผา","导出记录":"ส่งออกบันทึก","7天热量摄入趋势":"แนวโน้มการรับประทานค่าแรงเผา 7 วัน","☕ 家庭饮品 DIY 指南":"☕ คู่มือดีไอยี อาหารเครื่องดื่มบ้าน","千卡":"แคลอรี่","删除":"ลบ","📚 AI食谱助手使用手册":"📚 คู่มือใช้งาน AIรายละเอียดสูตรอาหาร","快速制作：":"การทำอาหารเร็ว：","热量计算：":"การคำนวณค่าแรงเผา：","选择食物并输入克数，计算每日摄入热量，帮助控制饮食。记录会自动保存并可视化显示。":"เลือกอาหารและใส่จำนวนกรัม คำนวณค่าแรงเผาที่รับประทานต่อวัน ช่วยควบคุมอาหาร บันทึกจะเก็บไว้โดยอัตโนมัติและแสดงในรูปแบบที่เห็นได้","饮品DIY：":"ดีไอยี อาหารเครื่องดื่ม：","提供多种家庭饮品制作方法，简单易学。":"มีหลายวิธีทำอาหารเครื่องดื่มบ้าน ง่ายต่อการเรียนรู้","小贴士：":"แนวทางเล็กๆ：","搜索功能可快速找到特定食材，支持回车键快捷搜索。":"ฟังก์ชันการค้นหาสามารถหาส่วนผสมเฉพาะทันที สนับสนุนการค้นหาด้วยปุ่ม Enter รวดเร็ว","搜索你的食材":"ค้นหาส่วนผสมของคุณ","输入克数估算":"ใส่จำนวนกรัมประมาณ","番茄炒蛋":"แกงโจ้ยักษ์","番茄":"โจ้","鸡蛋":"ไข่","鸡胸肉蔬菜沙拉":"สลัดไข่ออกและผักผลไม้","鸡胸肉":"ไข่ออก","生菜":"ผักกำแหลง","燕麦牛奶早餐":"อาหารเช้าของออร์เจ้น","燕麦":"ออร์เจ้น","牛奶":"นม","清蒸鲈鱼":"ปลาลูกโล้นนึ่ง","鲈鱼":"ปลาลูกโล้น","冬瓜虾仁汤":"สープกุ้งหวาน","冬瓜":"กุ้งหวาน","麻婆豆腐":"โมโมะทอง","豆腐":"โมโมะ","肉末":"เนื้อเล็กๆ","蒜蓉西兰花":"หอมหวานแกงแครอต","西兰花":"แครอต","杂粮饭":"ข้าวสาร","米饭":"ข้าว","糙米":"ข้าวเหนียว","馒头":"มันโม","牛肉":"เนื้อวัว","猪肉":"เนื้อหมู","苹果":"แอบเปิ้ล","香蕉":"มันจันทร์","土豆":"มันพลับ","冰美式":"เครื่องดื่มแบบอเมริกันเย็น","生椰拿铁":"เครื่องดื่มนมคาวสด","请输入重量":"請輸入重量","请输入有效数字":"請輸入有效數字","已调整为最大值 1000 克":"已調整為最大值 1000 克","已选":"已選","没有记录可导出":"沒有記錄可導出","__title__":"AIรายละเอียดสูตรอาหาร · อาหารสุขภาพสมอง",".csv":".csv","柠檬气泡水":"…","绿豆牛乳冰":"…","Enter":"Enter","recipe show":"recipe show","食材：":"…","番茄2个、鸡蛋3个、葱、盐、糖":"…","步骤：":"…","①鸡蛋打散炒熟盛出 ②番茄切块下锅炒出汁 ③倒入鸡蛋翻炒，加盐糖调味 ④撒葱花出锅":"…","热量：":"…","鸡胸肉1块、生菜、小番茄、黄瓜、油醋汁":"…","①鸡胸肉煮熟撕丝 ②蔬菜洗净切好 ③混合淋汁拌匀":"…","燕麦40g、牛奶250ml、鸡蛋1个、坚果少许":"…","①燕麦加牛奶小火煮3分钟 ②打入鸡蛋搅匀 ③撒坚果":"…","鲈鱼1条、姜、葱、蒸鱼豉油":"…","①鱼划刀铺姜丝 ②水开蒸8分钟 ③倒掉汁水淋豉油撒葱丝浇热油":"…","冬瓜300g、虾仁150g、姜":"…","①冬瓜切片 ②虾仁姜丝爆香 ③加水煮冬瓜至透明 ④下虾仁再煮2分钟":"①ตัดขอนหย่อย ②แจ่มเคี้ยวและแก้วทะเลเปรียบ ③น้ำตาลละลาย ④นำเคี้ยวและแก้วทะเลเข้ามาต้ม2นาที","豆腐1盒、肉末100g、豆瓣酱、花椒":"โครงงาน1แก้ว、เนื้อเคี้ยว100กรัม、พริกแก้วหรือปูนหมู、ขี้กุหลาบ","①肉末炒散加豆瓣酱 ②加水下豆腐块 ③焖3分钟勾芡 ④撒花椒葱花":"①เผาเนื้อเคี้ยวและแก้วหมูและแก้วหรือปูนหมู ②น้ำตาลละลาย ③ยังทอด3นาที ④แจ่มขี้กุหลาบและหอมใบบวม","西兰花1颗、蒜、蚝油":"แก้วทะเล1ฝัก、ขิง、โอโต้","①西兰花焯水1分钟 ②蒜末爆香 ③下西兰花加蚝油翻炒":"①ย่อยแก้วทะเล1นาที ②แจ่มขิง ③ยังทอดแก้วทะเลและโอโต้","大米、糙米、小米 1:1:1":"ข้าวขาว、ข้าวหนังสัตว์、ข้าวสาร 1:1:1","①混合洗净 ②加水（1:1.3）浸泡20分钟 ③电饭煲杂粮模式":"①ผสมทั้งหมดและทำความสะอาด ②น้ำตาลละลาย (1:1.3) โดยใช้เวลา20นาที ③โปรแกรมเครื่องรับประทานข้าวแบบผสม","💡 先选 1-2 种你有的食材":"💡 เลือก 1-2 ชนิดสิ่งที่มี","没有完全匹配的食谱":"ไม่มีสูตรที่ตรงกันตรงปลาย","试试少选一种食材，或换个组合再试。":"ลองลดลงมาหรือเลือกการผสมที่ต่างออกไป","没有找到匹配的食材":"ไม่พบสิ่งที่ตรงกัน","搜索结果: ' + filtered.length + ' 种食材":"ผลลัพธ์การค้นหา: ' + filtered.length + ' ชนิดสิ่ง","'+f.n+' '+f.c+'千卡/100g":"…","暂无记录":"…","选择你拥有的食材，点击\"推荐食谱\"获取匹配的烹饪方案。":"…","完全免费":"…","提意见":"…","UTF-8":"…","og:title":"…","og:description":"…","PingFang SC":"…","Microsoft YaHei":"…","LA_COLLECT":"…","tab active":"…","面条(熟)":"…","浓缩咖啡 1 份（30ml）＋ 冰水 200ml ＋ 冰块。先加冰，倒入咖啡液，再补冰水，3 分钟搞定，约 5 千卡。":"…","浓缩咖啡 1 份 ＋ 厚椰乳 150ml ＋ 冰。杯中加冰，倒椰乳，缓缓淋入咖啡液形成分层，约 160 千卡。":"…","柠檬 2 片 ＋ 苏打水 300ml ＋ 蜂蜜 1 小勺。柠檬片压出汁，加冰加苏打水，最后蜂蜜调味，约 40 千卡。":"…","熟绿豆 50g ＋ 牛奶 200ml ＋ 炼乳 10g ＋ 冰。全部倒入破壁机打 30 秒，约 220 千卡。":"…","已添加相同食物和重量，请重新输入":"…","translateX(-50%)":"…"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
+</html>
