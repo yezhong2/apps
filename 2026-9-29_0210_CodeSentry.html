@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeSentry</title><meta name="description" content="Free online tool: CodeSentry. No signup, no payment — free forever.">
+<meta property="og:title" content="CodeSentry">
+<meta property="og:description" content="Free online tool: CodeSentry. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-9-29_0210_CodeSentry.html">
+<meta name="theme-color" content="#333333">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  header {
+    background-color: #444;
+    padding: 10px 0;
+    text-align: center;
+  }
+  nav {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .hero-section {
+    background-color: #444;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .hero-section h1 {
+    margin-top: 0;
+    color: #00a884;
+  }
+  .quick-start {
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  .code-input {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    width: calc(100% - 20px);
+    border: 2px solid #00a884;
+    border-radius: 4px;
+    min-height: 150px;
+    resize: vertical;
+  }
+  .result, .warnings, .logs {
+    margin: 20px 0;
+    background-color: #555;
+    color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  input[type="text"] {
+    margin: 10px 0;
+    padding: 10px;
+    width: calc(100% - 20px);
+  }
+  .btn {
+    background-color: #00a884;
+    color: #0f1115;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .btn:hover {
+    background-color: #008d6f;
+  }
+  .feature-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  .feature-list li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .feature-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: #00a884;
+  }
+  .page {
+    display: none;
+  }
+  .page.active {
+    display: block;
+  }
+  .code-history {
+    margin: 20px 0;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .code-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .code-item:hover {
+    background-color: #3a3a3a;
+  }
+  .code-item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+  }
+  .code-item-date {
+    font-size: 12px;
+    color: #aaa;
+  }
+  .settings-section {
+    margin: 20px 0;
+    background-color: #555;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  .settings-section h3 {
+    margin-top: 0;
+  }
+  .settings-section label {
+    display: block;
+    margin: 10px 0 5px;
+  }
+  .settings-section select,
+  .settings-section input[type="checkbox"] {
+    margin: 5px 0;
+  }
+</style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+<header>
+  <nav>
+    <a href="#" onclick="showPage('home')">首页</a>
+    <a href="#" onclick="showPage('my-code')">我的代码</a>
+    <a href="#" onclick="showPage('security')">安全报告</a>
+    <a href="#" onclick="showPage('settings')">设置</a>
+  </nav>
+</header>
+<div class="container">
+  <!-- 首页 -->
+  <div id="home" class="page active">
+    <div class="hero-section">
+      <h1>CodeSentry</h1>
+      <p>完全免费的代码安全检测工具</p>
+      <p>实时分析代码漏洞，提供修复建议，保护您的应用程序安全</p>
+    </div>
+    
+    <div class="quick-start">
+      <h3>快速上手指南</h3>
+      <ol class="feature-list">
+        <li>在下方代码输入框中粘贴您的代码</li>
+        <li>点击"分析代码"按钮</li>
+        <li>查看安全检测结果和修复建议</li>
+        <li>根据提示优化您的代码</li>
+      </ol>
+    </div>
+    
+    <textarea class="code-input" placeholder="请输入代码进行检测..." id="codeInput"></textarea>
+    <button class="btn" onclick="analyzeCode()">分析代码</button>
+    
+    <div class="result" id="result">安全检测结果将显示在这里</div>
+    <div class="warnings" id="warnings">漏洞预警及修复建议将显示在这里</div>
+    <div class="logs" id="logs">代码审查日志列表将显示在这里</div>
+  </div>
+
+  <!-- 我的代码页面 -->
+  <div id="my-code" class="page">
+    <div class="hero-section">
+      <h1>我的代码</h1>
+      <p>查看历史代码分析记录</p>
+    </div>
+    
+    <div class="code-history">
+      <h3>历史代码分析</h3>
+      <div id="codeHistoryList">
+        <div class="code-item" onclick="loadCodeFromHistory('2026-10-04 10:30:25', 'console.log(\'Hello World\');')">
+          <div class="code-item-header">
+            <span>console.log('Hello World');</span>
+            <span class="code-item-date">2026-10-04 10:30:25</span>
+          </div>
+          <div>检测到1个潜在问题</div>
+        </div>
+        <div class="code-item" onclick="loadCodeFromHistory('2026-10-03 14:22:10', 'var user = { name: \'admin\', password: \'123456\' };')">
+          <div class="code-item-header">
+            <span>var user = { name: 'admin', password: '123456' };</span>
+            <span class="code-item-date">2026-10-03 14:22:10</span>
+          </div>
+          <div>检测到3个潜在问题</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="result" id="historyResult">选择上方代码查看详细分析结果</div>
+  </div>
+
+  <!-- 安全报告页面 -->
+  <div id="security" class="page">
+    <div class="hero-section">
+      <h1>安全报告</h1>
+      <p>代码安全分析报告</p>
+    </div>
+    
+    <div class="result" id="securityReport">
+      <h3>安全评分</h3>
+      <div id="securityScore">75/100</div>
+      <div style="background-color: #444; height: 20px; border-radius: 10px; margin: 10px 0;">
+        <div style="background-color: #00a884; height: 100%; width: 75%; border-radius: 10px;"></div>
+      </div>
+      
+      <h3>安全统计</h3>
+      <ul class="feature-list">
+        <li>已检查代码: 12次</li>
+        <li>发现漏洞: 28个</li>
+        <li>已修复: 15个</li>
+        <li>高危漏洞: 3个</li>
+      </ul>
+      
+      <h3>常见安全问题</h3>
+      <ul class="feature-list">
+        <li>SQL注入 (发现5次)</li>
+        <li>XSS攻击 (发现8次)</li>
+        <li>弱密码 (发现4次)</li>
+        <li>未验证输入 (发现11次)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 设置页面 -->
+  <div id="settings" class="page">
+    <div class="hero-section">
+      <h1>设置</h1>
+      <p>自定义CodeSentry体验</p>
+    </div>
+    
+    <div class="settings-section">
+      <h3>检测规则</h3>
+      <label for="detectionLevel">检测级别:</label>
+      <select id="detectionLevel">
+        <option value="basic">基本检测</option>
+        <option value="standard" selected>标准检测</option>
+        <option value="advanced">高级检测</option>
+      </select>
+      
+      <label for="checkSQL">SQL注入检测</label>
+      <input type="checkbox" id="checkSQL" checked>
+      
+      <label for="checkXSS">XSS攻击检测</label>
+      <input type="checkbox" id="checkXSS" checked>
+      
+      <label for="checkPassword">弱密码检测</label>
+      <input type="checkbox" id="checkPassword" checked>
+    </div>
+    
+    <div class="settings-section">
+      <h3>显示选项</h3>
+      <label for="showLineNumber">显示行号</label>
+      <input type="checkbox" id="showLineNumber" checked>
+      
+      <label for="showSuggestions">显示修复建议</label>
+      <input type="checkbox" id="showSuggestions" checked>
+    </div>
+    
+    <button class="btn" onclick="saveSettings()">保存设置</button>
+    <div id="settingsMessage" style="margin-top: 10px; color: #00a884;"></div>
+  </div>
+</div>
+
+<script>
+// 页面切换功能
+function showPage(pageId) {
+  // 隐藏所有页面
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => {
+    page.classList.remove('active');
+  });
+  
+  // 显示当前页面
+  document.getElementById(pageId).classList.add('active');
+}
+
+// 代码分析功能
+function analyzeCode() {
+  const codeInput = document.getElementById('codeInput').value;
+  const result = document.getElementById('result');
+  const warnings = document.getElementById('warnings');
+  const logs = document.getElementById('logs');
+  
+  if (!codeInput.trim()) {
+    result.textContent = "请输入代码进行检测";
+    return;
+  }
+  
+  // 开始分析
+  result.textContent = "正在分析代码...";
+  warnings.innerHTML = "";
+  logs.innerHTML = "";
+  
+  // 保存到历史记录
+  const now = new Date();
+  const timestamp = now.getFullYear() + '-' + 
+                   String(now.getMonth() + 1).padStart(2, '0') + '-' + 
+                   String(now.getDate()).padStart(2, '0') + ' ' + 
+                   String(now.getHours()).padStart(2, '0') + ':' + 
+                   String(now.getMinutes()).padStart(2, '0') + ':' + 
+                   String(now.getSeconds()).padStart(2, '0');
+  
+  // 保存到本地存储
+  let history = JSON.parse(localStorage.getItem('codeHistory') || '[]');
+  history.unshift({
+    code: codeInput,
+    timestamp: timestamp,
+    id: Date.now()
+  });
+  
+  // 只保留最近10条记录
+  if (history.length > 10) {
+    history = history.slice(0, 10);
+  }
+  
+  localStorage.setItem('codeHistory', JSON.stringify(history));
+  
+  // 执行实际分析
+  setTimeout(() => {
+    const vulnerabilities = performCodeAnalysis(codeInput);
+    
+    // 显示分析结果
+    result.innerHTML = `
+      <h3>分析完成</h3>
+      <p>检测到 <strong>${vulnerabilities.length}</strong> 个潜在安全问题</p>
+    `;
+    
+    // 显示漏洞
+    warnings.innerHTML = '<h4>安全警告:</h4>';
+    const warningList = document.createElement('ul');
+    
+    vulnerabilities.forEach(vuln => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <strong>${vuln.type}:</strong> ${vuln.description}<br>
+        <small>位置: ${vuln.line}行</small>
+      `;
+      warningList.appendChild(li);
+    });
+    
+    warnings.appendChild(warningList);
+    
+    // 显示修复建议
+    const suggestionList = document.createElement('ul');
+    vulnerabilities.forEach(vuln => {
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>${vuln.type}修复建议:</strong> ${vuln.fix}`;
+      suggestionList.appendChild(li);
+    });
+    
+    warnings.innerHTML += '<h4>修复建议:</h4>';
+    warnings.appendChild(suggestionList);
+    
+    // 显示日志
+    logs.innerHTML = '<h4>审查日志:</h4>';
+    const logList = document.createElement('ul');
+    
+    logList.innerHTML = `
+      <li>[${timestamp}] 开始代码扫描</li>
+      <li>[${timestamp}] 执行安全规则检查</li>
+      <li>[${timestamp}] 检测到潜在安全漏洞</li>
+      <li>[${timestamp}] 生成安全报告</li>
+      <li>[${timestamp}] 分析完成</li>
+    `;
+    
+    logs.appendChild(logList);
+  }, 1500);
+}
+
+// 实际的代码分析逻辑
+function performCodeAnalysis(code) {
+  const vulnerabilities = [];
+  const lines = code.split('\n');
+  
+  // 检查SQL注入
+  const sqlPatterns = [
+    /SELECT\s+.*\s+FROM\s+.*WHERE\s+.*=['"]?[^'"]*['"]?$/,
+    /INSERT\s+INTO\s+.*VALUES\s*\([^)]*\)/,
+    /UPDATE\s+.*SET\s+.*=['"]?[^'"]*['"]?$/,
+    /DELETE\s+FROM\s+.*WHERE\s+.*=['"]?[^'"]*['"]?$/
+  ];
+  
+  lines.forEach((line, index) => {
+    sqlPatterns.forEach(pattern => {
+      if (pattern.test(line)) {
+        vulnerabilities.push({
+          type: 'SQL注入',
+          description: '可能存在SQL注入风险',
+          line: index + 1,
+          fix: '使用参数化查询或预编译语句代替直接拼接SQL'
+        });
+      }
+    });
+  });
+  
+  // 检查XSS
+  const xssPatterns = [
+    /innerHTML\s*=\s*['"`][^'"`]*['"`]/,
+    /document\.write\s*\(/,
+    /eval\s*\(/,
+    /setTimeout\s*\(\s*['"`][^'"`]*['"`]/,
+    /setInterval\s*\(\s*['"`][^'"`]*['"`]/
+  ];
+  
+  lines.forEach((line, index) => {
+    xssPatterns.forEach(pattern => {
+      if (pattern.test(line)) {
+        vulnerabilities.push({
+          type: 'XSS攻击',
+          description: '可能存在XSS攻击风险',
+          line: index + 1,
+          fix: '使用textContent代替innerHTML，避免直接执行用户输入的代码'
+        });
+      }
+    });
+  });
+  
+  // 检查弱密码
+  const passwordPatterns = [
+    /password\s*=\s*['"`][^'"`]{0,5}['"`]/i,
+    /pwd\s*=\s*['"`][^'"`]{0,5}['"`]/i
+  ];
+  
+  lines.forEach((line, index) => {
+    passwordPatterns.forEach(pattern => {
+      if (pattern.test(line)) {
+        vulnerabilities.push({
+          type: '弱密码',
+          description: '可能使用了弱密码',
+          line: index + 1,
+          fix: '使用强密码策略，至少包含8位字符，包含大小写字母、数字和特殊字符'
+        });
+      }
+    });
+  });
+  
+  // 检查未验证输入
+  const inputPatterns = [
+    /request\.getParameter\s*\(/,
+    /req\.getParameter\s*\(/,
+    /input\s*\(\s*['"`][^'"`]*['"`]\s*\)/
+  ];
+  
+  lines.forEach((line, index) => {
+    inputPatterns.forEach(pattern => {
+      if (pattern.test(line)) {
+        vulnerabilities.push({
+          type: '未验证输入',
+          description: '用户输入未经验证',
+          line: index + 1,
+          fix: '添加输入验证和过滤，对特殊字符进行转义'
+        });
+      }
+    });
+  });
+  
+  // 如果没有发现漏洞，添加一条无漏洞信息
+  if (vulnerabilities.length === 0) {
+    vulnerabilities.push({
+      type: '安全',
+      description: '未发现明显安全问题',
+      line: '-',
+      fix: '继续保持良好的安全编码实践'
+    });
+  }
+  
+  return vulnerabilities;
+}
+
+// 从历史记录加载代码
+function loadCodeFromHistory(timestamp, code) {
+  document.getElementById('codeInput').value = code;
+  showPage('home');
+  analyzeCode();
+}
+
+// 保存设置
+function saveSettings() {
+  const settings = {
+    detectionLevel: document.getElementById('detectionLevel').value,
+    checkSQL: document.getElementById('checkSQL').checked,
+    checkXSS: document.getElementById('checkXSS').checked,
+    checkPassword: document.getElementById('checkPassword').checked,
+    showLineNumber: document.getElementById('showLineNumber').checked,
+    showSuggestions: document.getElementById('showSuggestions').checked
+  };
+  
+  localStorage.setItem('codeSentrySettings', JSON.stringify(settings));
+  
+  const message = document.getElementById('settingsMessage');
+  message.textContent = '设置已保存';
+  setTimeout(() => {
+    message.textContent = '';
+  }, 3000);
+}
+
+// 加载保存的设置
+window.onload = function() {
+  const savedSettings = JSON.parse(localStorage.getItem('codeSentrySettings') || '{}');
+  
+  if (savedSettings.detectionLevel) {
+    document.getElementById('detectionLevel').value = savedSettings.detectionLevel;
+  }
+  
+  if (savedSettings.checkSQL !== undefined) {
+    document.getElementById('checkSQL').checked = savedSettings.checkSQL;
+  }
+  
+  if (savedSettings.checkXSS !== undefined) {
+    document.getElementById('checkXSS').checked = savedSettings.checkXSS;
+  }
+  
+  if (savedSettings.checkPassword !== undefined) {
+    document.getElementById('checkPassword').checked = savedSettings.checkPassword;
+  }
+  
+  if (savedSettings.showLineNumber !== undefined) {
+    document.getElementById('showLineNumber').checked = savedSettings.showLineNumber;
+  }
+  
+  if (savedSettings.showSuggestions !== undefined) {
+    document.getElementById('showSuggestions').checked = savedSettings.showSuggestions;
+  }
+};
+</script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"首页":"Home","我的代码":"My Code","安全报告":"Security Report","设置":"Settings","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Completely Free Code Security Detection Tool","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Real-time analysis of code vulnerabilities, providing repair suggestions, and protecting your application security","快速上手指南":"Quick Start Guide","在下方代码输入框中粘贴您的代码":"Paste your code into the code input box below","查看安全检测结果和修复建议":"View security detection results and repair suggestions","根据提示优化您的代码":"Optimize your code according to the prompts","分析代码":"Analyze Code","查看历史代码分析记录":"View historical code analysis records","历史代码分析":"Historical Code Analysis","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Code Security Analysis Report","安全评分":"Security Score","安全统计":"Security Statistics","已检查代码: 12次":"Checked Code: 12 times","发现漏洞: 28个":"Found Vulnerabilities: 28","已修复: 15个":"Fixed: 15","高危漏洞: 3个":"High-Risk Vulnerabilities: 3","常见安全问题":"Common Security Issues","SQL注入 (发现5次)":"SQL Injection (Found 5 times)","XSS攻击 (发现8次)":"XSS Attack (Found 8 times)","弱密码 (发现4次)":"Weak Password (Found 4 times)","未验证输入 (发现11次)":"Unverified Input (Found 11 times)","自定义CodeSentry体验":"Customize Your CodeSentry Experience","检测规则":"Detection Rules","检测级别:":"Detection Level:","基本检测":"Basic Detection","标准检测":"Standard Detection","高级检测":"Advanced Detection","SQL注入检测":"SQL Injection Detection","XSS攻击检测":"XSS Attack Detection","弱密码检测":"Weak Password Detection","显示选项":"Display Options","显示行号":"Show Line Numbers","显示修复建议":"Show Repair Suggestions","保存设置":"Save Settings","正在分析代码...":"Analyzing Code...","__title__":"CodeSentry"},"zh-CN":{"首页":"首页","我的代码":"我的代码","安全报告":"安全报告","设置":"设置","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"完全免费的代码安全检测工具","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"实时分析代码漏洞，提供修复建议，保护您的应用程序安全","快速上手指南":"快速上手指南","在下方代码输入框中粘贴您的代码":"在下方代码输入框中粘贴您的代码","查看安全检测结果和修复建议":"查看安全检测结果和修复建议","根据提示优化您的代码":"根据提示优化您的代码","分析代码":"分析代码","查看历史代码分析记录":"查看历史代码分析记录","历史代码分析":"历史代码分析","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"代码安全分析报告","安全评分":"安全评分","安全统计":"安全统计","已检查代码: 12次":"已检查代码: 12次","发现漏洞: 28个":"发现漏洞: 28个","已修复: 15个":"已修复: 15个","高危漏洞: 3个":"高危漏洞: 3个","常见安全问题":"常见安全问题","SQL注入 (发现5次)":"SQL注入 (发现5次)","XSS攻击 (发现8次)":"XSS攻击 (发现8次)","弱密码 (发现4次)":"弱密码 (发现4次)","未验证输入 (发现11次)":"未验证输入 (发现11次)","自定义CodeSentry体验":"自定义CodeSentry体验","检测规则":"检测规则","检测级别:":"检测级别:","基本检测":"基本检测","标准检测":"标准检测","高级检测":"高级检测","SQL注入检测":"SQL注入检测","XSS攻击检测":"XSS攻击检测","弱密码检测":"弱密码检测","显示选项":"显示选项","显示行号":"显示行号","显示修复建议":"显示修复建议","保存设置":"保存设置","正在分析代码...":"正在分析代码...","__title__":"CodeSentry"},"es":{"首页":"Inicio","我的代码":"Mi código","安全报告":"Informe de seguridad","设置":"Configuración","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Herramienta de detección de seguridad de código completamente gratuita","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Análisis en tiempo real de vulnerabilidades de código, proporciona sugerencias de corrección y protege la seguridad de sus aplicaciones","快速上手指南":"Guía rápida para comenzar","在下方代码输入框中粘贴您的代码":"Pegue su código en el cuadro de entrada de código a continuación","查看安全检测结果和修复建议":"Ver resultados de la detección de seguridad y sugerencias de corrección","根据提示优化您的代码":"Optimice su código según las instrucciones","分析代码":"Análisis de código","查看历史代码分析记录":"Ver registros de análisis de código histórico","历史代码分析":"Análisis de código histórico","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Informe de análisis de seguridad de código","安全评分":"Calificación de seguridad","安全统计":"Estadísticas de seguridad","已检查代码: 12次":"Código revisado: 12 veces","发现漏洞: 28个":"Vulnerabilidades encontradas: 28","已修复: 15个":"Arreglados: 15","高危漏洞: 3个":"Vulnerabilidades de alto riesgo: 3","常见安全问题":"Problemas de seguridad comunes","SQL注入 (发现5次)":"Inyección SQL (encontrado 5 veces)","XSS攻击 (发现8次)":"Ataque XSS (encontrado 8 veces)","弱密码 (发现4次)":"Contraseña débil (encontrado 4 veces)","未验证输入 (发现11次)":"Entrada no verificada (encontrado 11 veces)","自定义CodeSentry体验":"Personalice su experiencia con CodeSentry","检测规则":"Reglas de detección","检测级别:":"Nivel de detección:","基本检测":"Detección básica","标准检测":"Detección estándar","高级检测":"Detección avanzada","SQL注入检测":"Detección de inyección SQL","XSS攻击检测":"Detección de ataque XSS","弱密码检测":"Detección de contraseña débil","显示选项":"Opciones de visualización","显示行号":"Mostrar números de línea","显示修复建议":"Mostrar sugerencias de corrección","保存设置":"Guardar configuración","正在分析代码...":"Analizando código...","__title__":"CodeSentry"},"ja":{"首页":"ホーム","我的代码":"私のコード","安全报告":"セキュリティレポート","设置":"設定","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"完全無料のコードセキュリティチェックツール","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"リアルタイムでコードの脆弱性を分析し、修正提案を提供し、アプリケーションのセキュリティを保護します","快速上手指南":"簡単に使い始めるガイド","在下方代码输入框中粘贴您的代码":"以下のコード入力ボックスにコードを貼り付けます","查看安全检测结果和修复建议":"セキュリティ結果と修正提案を確認します","根据提示优化您的代码":"指示に従ってコードを最適化します","分析代码":"コードを分析します","查看历史代码分析记录":"歴史コード分析記録を確認します","历史代码分析":"歴史コード分析","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"コードセキュリティ分析レポート","安全评分":"セキュリティ評価","安全统计":"セキュリティ統計","已检查代码: 12次":"チェック済みコード: 12回","发现漏洞: 28个":"発見した脆弱性: 28個","已修复: 15个":"修正済み: 15個","高危漏洞: 3个":"高リスク脆弱性: 3個","常见安全问题":"一般的なセキュリティ問題","SQL注入 (发现5次)":"SQLインジェクション (発見5回)","XSS攻击 (发现8次)":"XSS攻撃 (発見8回)","弱密码 (发现4次)":"弱いパスワード (発見4回)","未验证输入 (发现11次)":"未検証の入力 (発見11回)","自定义CodeSentry体验":"カスタマイズされたCodeSentry体験","检测规则":"検出ルール","检测级别:":"検出レベル:","基本检测":"基本的な検出","标准检测":"標準的な検出","高级检测":"高度な検出","SQL注入检测":"SQLインジェクション検出","XSS攻击检测":"XSS攻撃検出","弱密码检测":"弱いパスワード検出","显示选项":"表示オプション","显示行号":"行番号を表示","显示修复建议":"修正提案を表示","保存设置":"設定を保存","正在分析代码...":"コード分析中...","__title__":"CodeSentry"},"ko":{"首页":"홈페이지","我的代码":"나의 코드","安全报告":"보안 보고서","设置":"설정","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"완전 무료 코드 보안 검사 도구","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"실시간으로 코드 루프를 분석하고, 수정 제안을 제공하여应用程序의 보안을 보호합니다","快速上手指南":"빠르게 시작하는 가이드","在下方代码输入框中粘贴您的代码":"아래 코드 입력 상자에 코드를 붙여넣습니다","查看安全检测结果和修复建议":"보안 검사 결과와 수정 제안을 확인하십시오","根据提示优化您的代码":"안내에 따라 코드를 최적화하십시오","分析代码":"코드 분석","查看历史代码分析记录":"역사적인 코드 분석 기록을 확인하십시오","历史代码分析":"역사적인 코드 분석","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"코드 보안 분석 보고서","安全评分":"보안 점수","安全统计":"보안 통계","已检查代码: 12次":"검사된 코드: 12회","发现漏洞: 28个":"발견된 루프: 28개","已修复: 15个":"수정된 것: 15개","高危漏洞: 3个":"고위험 루프: 3개","常见安全问题":"일반적인 보안 문제","SQL注入 (发现5次)":"SQL注入 (발견 5회)","XSS攻击 (发现8次)":"XSS 공격 (발견 8회)","弱密码 (发现4次)":"약한 비밀번호 (발견 4회)","未验证输入 (发现11次)":"미인증 입력 (발견 11회)","自定义CodeSentry体验":"Customize CodeSentry 경험","检测规则":"검사 규칙","检测级别:":"검사 등급:","基本检测":"기본 검사","标准检测":"기준 검사","高级检测":"고급 검사","SQL注入检测":"SQL注入 검사","XSS攻击检测":"XSS 공격 검사","弱密码检测":"약한 비밀번호 검사","显示选项":"표시 옵션","显示行号":"행 번호 표시","显示修复建议":"수정 제안 표시","保存设置":"설정 저장","正在分析代码...":"코드 분석 중...","__title__":"CodeSentry"},"fr":{"首页":"Accueil","我的代码":"Mon code","安全报告":"Rapport de sécurité","设置":"Paramètres","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Outil de détection de sécurité de code complètement gratuit","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Analyse en temps réel des vulnérabilités de code, fourniture de conseils de correction, protection de la sécurité de votre application","快速上手指南":"Guide de démarrage rapide","在下方代码输入框中粘贴您的代码":"Coller votre code dans la zone de saisie de code ci-dessous","查看安全检测结果和修复建议":"Voir les résultats de la détection de sécurité et les conseils de correction","根据提示优化您的代码":"Optimiser votre code selon les instructions","分析代码":"Analyser le code","查看历史代码分析记录":"Voir les enregistrements d'analyse de code historique","历史代码分析":"Analyse de code historique","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Rapport d'analyse de sécurité de code","安全评分":"Score de sécurité","安全统计":"Statistiques de sécurité","已检查代码: 12次":"Code vérifié: 12 fois","发现漏洞: 28个":"Vulnérabilités découvertes: 28","已修复: 15个":"Corrigé: 15","高危漏洞: 3个":"Vulnérabilités à haut risque: 3","常见安全问题":"Problèmes de sécurité courants","SQL注入 (发现5次)":"Injection SQL (découvert 5 fois)","XSS攻击 (发现8次)":"Attaque XSS (découvert 8 fois)","弱密码 (发现4次)":"Mot de passe faible (découvert 4 fois)","未验证输入 (发现11次)":"Entrée non vérifiée (découvert 11 fois)","自定义CodeSentry体验":"Personnaliser l'expérience de CodeSentry","检测规则":"Règles de détection","检测级别:":"Niveau de détection:","基本检测":"Détection de base","标准检测":"Détection standard","高级检测":"Détection avancée","SQL注入检测":"Détection d'injection SQL","XSS攻击检测":"Détection d'attaque XSS","弱密码检测":"Détection de mot de passe faible","显示选项":"Options d'affichage","显示行号":"Afficher les numéros de ligne","显示修复建议":"Afficher les conseils de correction","保存设置":"Enregistrer les paramètres","正在分析代码...":"Analyse du code en cours...","__title__":"CodeSentry"},"de":{"首页":"Startseite","我的代码":"mein Code","安全报告":"Sicherheitsbericht","设置":"Einstellungen","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"komplett kostenloser Code-Sicherheitsprüfungs-Tool","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"In Echtzeit analysiert der Code-Sicherheitsprüfungs-Tool Code-Lücken, bietet Reparaturvorschläge und schützt Ihre Anwendung","快速上手指南":"Schnelle Einsteigeranleitung","在下方代码输入框中粘贴您的代码":"Fügen Sie Ihren Code in das untere Code-Eingabefeld ein","查看安全检测结果和修复建议":"Zeigen Sie die Ergebnisse der Sicherheitsprüfung und die Reparaturvorschläge an","根据提示优化您的代码":"Optimieren Sie Ihren Code gemäß der Anweisungen","分析代码":"Code analysieren","查看历史代码分析记录":"Zeigen Sie die Historie der Code-Analysen an","历史代码分析":"Historische Code-Analyse","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Code-Sicherheitsanalysebericht","安全评分":"Sicherheitsbewertung","安全统计":"Sicherheitsstatistik","已检查代码: 12次":"Geprüfter Code: 12-mal","发现漏洞: 28个":"Gefundene Lücken: 28","已修复: 15个":"Behobene: 15","高危漏洞: 3个":"Hochgefährliche Lücken: 3","常见安全问题":"Häufige Sicherheitsprobleme","SQL注入 (发现5次)":"SQL-Injektion (gefunden 5-mal)","XSS攻击 (发现8次)":"XSS-Angriff (gefunden 8-mal)","弱密码 (发现4次)":"Schwache Passwörter (gefunden 4-mal)","未验证输入 (发现11次)":"Ungeprüfte Eingaben (gefunden 11-mal)","自定义CodeSentry体验":"Individuelle CodeSentry-Erfahrung","检测规则":"Prüfregeln","检测级别:":"Prüflevel:","基本检测":"Grundlegende Überprüfung","标准检测":"Standardprüfung","高级检测":"Erweiterte Überprüfung","SQL注入检测":"SQL-Injektionsprüfung","XSS攻击检测":"XSS-Angriffsprüfung","弱密码检测":"Schwaches Passwort-Prüfung","显示选项":"Anzeigeeinstellungen","显示行号":"Zeilennummern anzeigen","显示修复建议":"Reparaturvorschläge anzeigen","保存设置":"Einstellungen speichern","正在分析代码...":"Code wird analysiert...","__title__":"CodeSentry"},"ru":{"首页":"Главная","我的代码":"Мой код","安全报告":"Отчет о безопасности","设置":"Настройки","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Полностью бесплатный инструмент для проверки безопасности кода","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Реальное анализ уязвимостей кода, предоставление рекомендаций по исправлению и защита безопасности вашего приложения","快速上手指南":"Руководство по быстрому началу работы","在下方代码输入框中粘贴您的代码":"Вставьте ваш код в поле ввода кода下方","查看安全检测结果和修复建议":"Просмотрите результаты проверки безопасности и рекомендации по исправлению","根据提示优化您的代码":"Оптимизируйте ваш код по указаниям","分析代码":"Анализ кода","查看历史代码分析记录":"Просмотрите историю анализа кода","历史代码分析":"История анализа кода","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Отчет о безопасности кода","安全评分":"Оценка безопасности","安全统计":"Статистика безопасности","已检查代码: 12次":"Проверено кода: 12 раз","发现漏洞: 28个":"Обнаружено уязвимостей: 28 шт.","已修复: 15个":"Исправлено: 15 шт.","高危漏洞: 3个":"Высокого риска уязвимости: 3 шт.","常见安全问题":"Частые проблемы безопасности","SQL注入 (发现5次)":"SQL-инъекции (обнаружено 5 раз)","XSS攻击 (发现8次)":"XSS-атаки (обнаружено 8 раз)","弱密码 (发现4次)":"Слабые пароли (обнаружено 4 раза)","未验证输入 (发现11次)":"Не проверенные входные данные (обнаружено 11 раз)","自定义CodeSentry体验":"Настройка опыта использования CodeSentry","检测规则":"Правила проверки","检测级别:":"Уровень проверки:","基本检测":"Базовая проверка","标准检测":"Стандартная проверка","高级检测":"Продвинутая проверка","SQL注入检测":"Проверка на SQL-инъекции","XSS攻击检测":"Проверка на XSS-атаки","弱密码检测":"Проверка на слабые пароли","显示选项":"Параметры отображения","显示行号":"Показывать номера строк","显示修复建议":"Показывать рекомендации по исправлению","保存设置":"Сохранить настройки","正在分析代码...":"Анализ кода...","__title__":"CodeSentry"},"pt":{"首页":"Página Inicial","我的代码":"Meu Código","安全报告":"Relatório de Segurança","设置":"Configurações","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Ferramenta de Detecção de Segurança de Código Completamente Gratuita","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Análise em tempo real de vulnerabilidades no código, fornecendo sugestões de correção e protegendo a segurança do seu aplicativo","快速上手指南":"Guia Rápido para Início","在下方代码输入框中粘贴您的代码":"Cole seu código na caixa de entrada de código abaixo","查看安全检测结果和修复建议":"Ver resultados de segurança e sugestões de correção","根据提示优化您的代码":"Optimize seu código conforme as instruções","分析代码":"Analisar Código","查看历史代码分析记录":"Ver registros de análise de código histórico","历史代码分析":"Análise de Código Histórico","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Relatório de Análise de Segurança de Código","安全评分":"Classificação de Segurança","安全统计":"Estatísticas de Segurança","已检查代码: 12次":"Código verificado: 12 vezes","发现漏洞: 28个":"Vulnerabilidades encontradas: 28","已修复: 15个":"Corrigido: 15","高危漏洞: 3个":"Vulnerabilidades de Alto Risco: 3","常见安全问题":"Problemas de Segurança Comuns","SQL注入 (发现5次)":"Injeção SQL (encontrado 5 vezes)","XSS攻击 (发现8次)":"Ataque XSS (encontrado 8 vezes)","弱密码 (发现4次)":"Senha Fraca (encontrado 4 vezes)","未验证输入 (发现11次)":"Entrada Não Verificada (encontrado 11 vezes)","自定义CodeSentry体验":"Personalizar a Experiência do CodeSentry","检测规则":"Regras de Detecção","检测级别:":"Nível de Detecção:","基本检测":"Detecção Básica","标准检测":"Detecção Padrão","高级检测":"Detecção Avançada","SQL注入检测":"Detecção de Injeção SQL","XSS攻击检测":"Detecção de Ataque XSS","弱密码检测":"Detecção de Senha Fraca","显示选项":"Opções de Exibição","显示行号":"Exibir Número de Linha","显示修复建议":"Exibir Sugestões de Correção","保存设置":"Salvar Configurações","正在分析代码...":"Analisando código...","__title__":"CodeSentry"},"ar":{"首页":"الصفحة الرئيسية","我的代码":"كودي","安全报告":"تقرير الأمان","设置":"الإعدادات","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"أداة فحص أمان الكود مجانية بالكامل","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"تحليل ثابت ثغرات الكود وتقديم نصائح للإصلاح، لحماية تطبيقاتك","快速上手指南":"دليل البدء السريع","在下方代码输入框中粘贴您的代码":"ألصق كودك في مربع إدخال الكود أدناه","查看安全检测结果和修复建议":"عرض نتائج الفحص الأمني والنصائح للإصلاح","根据提示优化您的代码":"تحسين كودك بناءً على الإرشادات","分析代码":"تحليل الكود","查看历史代码分析记录":"عرض سجلات تحليل الكود التاريخية","历史代码分析":"تحليل الكود التاريخي","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"تقرير تحليل أمان الكود","安全评分":"تقييم الأمان","安全统计":"إحصاءات الأمان","已检查代码: 12次":"تم فحص الكود: 12 مرة","发现漏洞: 28个":"تم اكتشاف ثغرات: 28","已修复: 15个":"تم إصلاح: 15","高危漏洞: 3个":"ثغرات عالية الخطورة: 3","常见安全问题":"قضايا أمان شائعة","SQL注入 (发现5次)":"حقن SQL (اكتشاف 5 مرة)","XSS攻击 (发现8次)":"هجوم XSS (اكتشاف 8 مرة)","弱密码 (发现4次)":"كلمات المرور الضعيفة (اكتشاف 4 مرة)","未验证输入 (发现11次)":"الإدخالات غير الم��نة (اكتشاف 11 مرة)","自定义CodeSentry体验":"تخصيص تجربة CodeSentry","检测规则":"قواعد الفحص","检测级别:":"مستوى الفحص:","基本检测":"الفحص الأساسي","标准检测":"الفحص القياسي","高级检测":"الفحص المتقدم","SQL注入检测":"فحص حقن SQL","XSS攻击检测":"فحص هجوم XSS","弱密码检测":"فحص كلمات المرور الضعيفة","显示选项":"خيارات العرض","显示行号":"عرض أرقام السطور","显示修复建议":"عرض نصائح الإصلاح","保存设置":"حفظ الإعدادات","正在分析代码...":"جارٍ تحليل الكود...","__title__":"CodeSentry"},"hi":{"首页":"होमपेज","我的代码":"मेरा कोड","安全报告":"सुरक्षा रिपोर्ट","设置":"सेटिंग","CodeSentry":"कोडसेंट्री","完全免费的代码安全检测工具":"पूरी तरह से मुफ्त कोड सुरक्षा जांच टूल","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"समय-समय पर कोड विकृति का विश्लेषण, मरम्मत सुझाव प्रदान, आपके अनुप्रयोग की सुरक्षा बनाए रखें","快速上手指南":"तेजी से शुरू करने का मार्गदर्शन","在下方代码输入框中粘贴您的代码":"नीचे वाले कोड इनपुट बॉक्स में आपका कोड चिपकाएं","查看安全检测结果和修复建议":"सुरक्षा जांच परिणाम और मरम्मत सुझाव देखें","根据提示优化您的代码":"सूचनाओं के अनुसार आपका कोड सुधारें","分析代码":"कोड का विश्लेषण करें","查看历史代码分析记录":"पुराने कोड विश्लेषण रिकॉर्ड देखें","历史代码分析":"पुराना कोड विश्लेषण","console.log('Hello World');":"कंसोल.लॉग('हेलो वर्ल्ड');","var user = { name: 'admin', password: '123456' };":"वार यूज़र = { नाम: 'एडमिन', पासवर्ड: '123456' };","代码安全分析报告":"कोड सुरक्षा विश्लेषण रिपोर्ट","安全评分":"सुरक्षा स्कोर","安全统计":"सुरक्षा सांख्यिकी","已检查代码: 12次":"जांच किया गया कोड: 12 बार","发现漏洞: 28个":"विकृति पाया: 28 विकृतियाँ","已修复: 15个":"मरम्मत किया: 15 विकृतियाँ","高危漏洞: 3个":"उच्च-जोखिम विकृति: 3 विकृतियाँ","常见安全问题":"सामान्य सुरक्षा समस्याएँ","SQL注入 (发现5次)":"SQL इंजेक्शन (5 बार पाया)","XSS攻击 (发现8次)":"XSS हमला (8 बार पाया)","弱密码 (发现4次)":"कमजोर पासवर्ड (4 बार पाया)","未验证输入 (发现11次)":"अनवैध इनपुट (11 बार पाया)","自定义CodeSentry体验":"कोडसेंट्री अनुभव अनुकूलित करें","检测规则":"जांच नियम","检测级别:":"जांच स्तर:","基本检测":"बुनियादी जांच","标准检测":"मानक जांच","高级检测":"उन्नत जांच","SQL注入检测":"SQL इंजेक्शन जांच","XSS攻击检测":"XSS हमला जांच","弱密码检测":"कमजोर पासवर्ड जांच","显示选项":"दिखाने के विकल्प","显示行号":"वाक्य संख्या दिखाएं","显示修复建议":"मरम्मत सुझाव दिखाएं","保存设置":"सेटिंग सहेजें","正在分析代码...":"कोड का विश्लेषण किया जा रहा है...","__title__":"कोडसेंट्री"},"id":{"首页":"Beranda","我的代码":"Kode Saya","安全报告":"Laporan Keamanan","设置":"Pengaturan","CodeSentry":"Alat Pemeriksa Keamanan Kode yang Sama sekali Gratis","完全免费的代码安全检测工具":"Alat Pemeriksa Keamanan Kode yang Sama sekali Gratis","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Analisis real-time kelebihan kode, menyediakan saran perbaikan, dan melindungi keamanan aplikasi Anda","快速上手指南":"Panduan Memulai Secara Cepat","在下方代码输入框中粘贴您的代码":"Lipat kode Anda ke kotak input kode di bawah","查看安全检测结果和修复建议":"Lihat hasil pemeriksaan keamanan dan saran perbaikan","根据提示优化您的代码":"Optimalisir kode Anda berdasarkan petunjuk","分析代码":"Analisis kode","查看历史代码分析记录":"Lihat riwayat analisis kode","历史代码分析":"Analisis kode historis","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Laporan Analisis Keamanan Kode","安全评分":"Skor Keamanan","安全统计":"Statistik Keamanan","已检查代码: 12次":"Kode yang dicek: 12 kali","发现漏洞: 28个":"Kekurangan yang ditemukan: 28","已修复: 15个":"Diperbaiki: 15","高危漏洞: 3个":"Kekurangan tingkat tinggi: 3","常见安全问题":"Masalah keamanan biasa","SQL注入 (发现5次)":"SQL Injection (ditemukan 5 kali)","XSS攻击 (发现8次)":"Penyerangan XSS (ditemukan 8 kali)","弱密码 (发现4次)":"Kata sandi lemah (ditemukan 4 kali)","未验证输入 (发现11次)":"Masukan yang belum diverifikasi (ditemukan 11 kali)","自定义CodeSentry体验":"Pengalaman CodeSentry yang Disesuaikan","检测规则":"Aturan Pemeriksaan","检测级别:":"Tingkat Pemeriksaan:","基本检测":"Pemeriksaan Dasar","标准检测":"Pemeriksaan Standar","高级检测":"Pemeriksaan Mahir","SQL注入检测":"Pemeriksaan SQL Injection","XSS攻击检测":"Pemeriksaan Penyerangan XSS","弱密码检测":"Pemeriksaan Kata Sandi Lemah","显示选项":"Pilihan Tampilan","显示行号":"Tampilkan nomor baris","显示修复建议":"Tampilkan saran perbaikan","保存设置":"Simpan Pengaturan","正在分析代码...":"Sedang menganalisis kode...","__title__":"Alat Pemeriksa Keamanan Kode yang Sama sekali Gratis"},"vi":{"首页":"Trang chủ","我的代码":"Mã của tôi","安全报告":"Báo cáo an toàn","设置":"Cài đặt","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"Công cụ kiểm tra an toàn mã nguồn hoàn toàn miễn phí","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"Phân tích漏洞 mã nguồn thời gian thực, cung cấp gợi ý sửa lỗi, bảo vệ ứng dụng của bạn","快速上手指南":"Hướng dẫn sử dụng nhanh","在下方代码输入框中粘贴您的代码":"Dán mã nguồn của bạn vào khung nhập mã bên dưới","查看安全检测结果和修复建议":"Xem kết quả kiểm tra an toàn và gợi ý sửa lỗi","根据提示优化您的代码":"Tối ưu mã nguồn của bạn theo gợi ý","分析代码":"Phân tích mã nguồn","查看历史代码分析记录":"Xem lịch sử phân tích mã nguồn","历史代码分析":"Lịch sử phân tích mã nguồn","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"Báo cáo phân tích an toàn mã nguồn","安全评分":"Điểm an toàn","安全统计":"Thống kê an toàn","已检查代码: 12次":"Đã kiểm tra mã: 12 lần","发现漏洞: 28个":"Tìm thấy lỗ hổng: 28 cái","已修复: 15个":"Đã sửa: 15 cái","高危漏洞: 3个":"Lỗ hổng cao: 3 cái","常见安全问题":"Vấn đề an toàn phổ biến","SQL注入 (发现5次)":"SQL Injection (tìm thấy 5 lần)","XSS攻击 (发现8次)":"XSS Attack (tìm thấy 8 lần)","弱密码 (发现4次)":"Mật khẩu yếu (tìm thấy 4 lần)","未验证输入 (发现11次)":"Input không được xác thực (tìm thấy 11 lần)","自定义CodeSentry体验":"Tùy chỉnh trải nghiệm CodeSentry","检测规则":"Quy tắc kiểm tra","检测级别:":"Cấp độ kiểm tra:","基本检测":"Kiểm tra cơ bản","标准检测":"Kiểm tra tiêu chuẩn","高级检测":"Kiểm tra cao cấp","SQL注入检测":"Kiểm tra SQL Injection","XSS攻击检测":"Kiểm tra XSS Attack","弱密码检测":"Kiểm tra mật khẩu yếu","显示选项":"Hiển thị tùy chọn","显示行号":"Hiển thị số dòng","显示修复建议":"Hiển thị gợi ý sửa lỗi","保存设置":"Lưu cài đặt","正在分析代码...":"Đang phân tích mã nguồn...","__title__":"CodeSentry"},"th":{"首页":"หน้าแรก","我的代码":"รหัสโค้ดของฉัน","安全报告":"รายงานความปลอดภัย","设置":"การตั้งค่า","CodeSentry":"CodeSentry","完全免费的代码安全检测工具":"เครื่องมือตรวจสอบความปลอดภัยรหัสโค้ดฟรีทั้งหมด","实时分析代码漏洞，提供修复建议，保护您的应用程序安全":"วิเคราะห์ช่องว่างรหัสโค้ดจริงเมื่อเกิดขึ้น และให้ความแนะนำการซ่อมแซม ปกป้องการใช้งานแอปพลิเคชันของคุณ","快速上手指南":"คู่มือเริ่มใช้งานอย่างรวดเร็ว","在下方代码输入框中粘贴您的代码":"แปะรหัสโค้ดของคุณลงในช่องแปลงรหัสโค้ดด้านล่าง","查看安全检测结果和修复建议":"ดูผลลัพธ์ตรวจสอบความปลอดภัยและความแนะนำการซ่อมแซม","根据提示优化您的代码":"ปรับปรุงรหัสโค้ดของคุณตามคำแนะนำ","分析代码":"วิเคราะห์รหัสโค้ด","查看历史代码分析记录":"ดูบันทึกวิเคราะห์รหัสโค้ดประวัติ","历史代码分析":"วิเคราะห์รหัสโค้ดประวัติ","console.log('Hello World');":"console.log('Hello World');","var user = { name: 'admin', password: '123456' };":"var user = { name: 'admin', password: '123456' };","代码安全分析报告":"รายงานวิเคราะห์ความปลอดภัยรหัสโค้ด","安全评分":"คะแนนความปลอดภัย","安全统计":"สถิติความปลอดภัย","已检查代码: 12次":"รหัสโค้ดที่ตรวจสอบ: 12 ครั้ง","发现漏洞: 28个":"พบช่องว่าง: 28 ช่อง","已修复: 15个":"ได้ซ่อมแซม: 15 ช่อง","高危漏洞: 3个":"ช่องว่างระดับสูง: 3 ช่อง","常见安全问题":"ปัญหาความปลอดภัยที่พบบ่อย","SQL注入 (发现5次)":"SQL Injection (พบ 5 ครั้ง)","XSS攻击 (发现8次)":"XSS Attack (พบ 8 ครั้ง)","弱密码 (发现4次)":"รหัสผ่านที่อ่อน (พบ 4 ครั้ง)","未验证输入 (发现11次)":"ข้อมูลที่ยังไม่ได้ตรวจสอบ (พบ 11 ครั้ง)","自定义CodeSentry体验":"ปรับปรุงประสบการณ์ CodeSentry","检测规则":"กฎตรวจสอบ","检测级别:":"ระดับตรวจสอบ:","基本检测":"ตรวจสอบพื้นฐาน","标准检测":"ตรวจสอบมาตรฐาน","高级检测":"ตรวจสอบระดับสูง","SQL注入检测":"ตรวจสอบ SQL Injection","XSS攻击检测":"ตรวจสอบ XSS Attack","弱密码检测":"ตรวจสอบรหัสผ่านที่อ่อน","显示选项":"แสดงตัวเลือก","显示行号":"แสดงหมายเลขบรรทัด","显示修复建议":"แสดงความแนะนำการซ่อมแซม","保存设置":"บันทึกการตั้งค่า","正在分析代码...":"กำลังวิเคราะห์รหัสโค้ด...","__title__":"CodeSentry"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
+</html>

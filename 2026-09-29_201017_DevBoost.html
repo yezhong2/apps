@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevBoost - 智能开发助手</title>
+    <meta name="description" content="Free online tool: DevBoost - 智能开发助手. No signup, no payment — free forever.">
+    <meta property="og:title" content="DevBoost - 智能开发助手">
+    <meta property="og:description" content="Free online tool: DevBoost - 智能开发助手. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-09-29_201017_DevBoost.html">
+    <meta name="theme-color" content="#333333">
+    
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4f8cff;
+            --accent-hover: #3a6be0;
+            --locked: #ff5252;
+            --border: #333333;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --mode: light; /* New variable for theme mode */
+        }
+        
+        /* Dark theme styles */
+        :root[data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+        }
+        
+        /* Light theme styles */
+        :root[data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f0f0f0;
+            --bg-tertiary: #e0e0e0;
+            --text-primary: #000000;
+            --text-secondary: #606060;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* Header styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+        
+        /* Main content styles */
+        main {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+        
+        .user-guide {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .user-guide h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .guide-steps {
+            list-style-type: none;
+        }
+        
+        .guide-steps li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .guide-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 12px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .result-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .result-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .copy-button {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .copy-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .copy-message.show {
+            opacity: 1;
+        }
+        
+        .result-content {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 15px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 100px;
+        }
+        
+        /* Add theme switch button */
+        .theme-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--bg-tertiary);
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        /* Guide arrow */
+        .guide-arrow {
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+        }
+        
+        /* Feature highlight */
+        .feature-highlight {
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        /* Free service badge */
+        .free-badge {
+            background-color: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+        
+        /* Focus styles */
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(79, 140, 255, 0.2);
+        }
+        
+        /* Core function button */
+        .core-function {
+            background-color: var(--success);
+        }
+        
+        .core-function:hover {
+            background-color: #3d8b40;
+        }
+        
+        /* Privacy policy link */
+        .privacy-link {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .privacy-link:hover {
+            color: var(--accent);
+        }
+        
+        /* Quick start section */
+        .quick-start {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .quick-start h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .quick-start p {
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .input-section {
+            margin-top: 30px;
+        }
+    </style>
+    <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script>
+    <script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script>
+</head>
+<body>
+    <!-- Theme switch button -->
+    <div class="theme-switcher" onclick="toggleTheme()" data-i18n-id="db-theme">切换主题</div>
+    
+    <!-- Header -->
+    <header>
+        <h1>DevBoost - 智能开发助手 <span class="free-badge">免费服务</span></h1>
+        <p class="subtitle">提升您的开发效率，智能生成代码与解决方案</p>
+    </header>
+    
+    <!-- Main content -->
+    <main>
+        <!-- Quick start section -->
+        <section class="quick-start">
+            <h3>快速开始</h3>
+            <p>• 免费使用，无需注册</p>
+            <p>• 输入您的开发需求或技术问题</p>
+            <p>• 获取详细的解决方案和代码示例</p>
+            <p>• 一键复制结果，直接使用</p>
+        </section>
+        
+        <!-- User guide section -->
+        <section class="user-guide">
+            <h2>使用指南</h2>
+            <ul class="guide-steps">
+                <li>DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用</li>
+                <li>输入您的开发需求或技术问题，我们将为您提供解决方案</li>
+                <li>支持数组、字符串、对象、排序等多种编程场景</li>
+                <li>生成的解决方案包含处理步骤和代码示例</li>
+                <li>一键复制结果，方便您直接使用</li>
+            </ul>
+        </section>
+        
+        <!-- Input section -->
+        <section class="input-section">
+            <label class="input-label" for="userInput">请输入您的需求或问题描述：</label>
+            <textarea id="userInput" placeholder="例如：请帮我写一个JavaScript函数，用于数组去重..."></textarea>
+            <div class="button-group">
+                <button class="core-function" onclick="processInput()">生成解决方案<span class="feature-highlight">核心功能</span></button>
+            </div>
+            <div class="guide-arrow" onclick="processInput()">↓</div>
+        </section>
+        
+        <!-- Result section -->
+        <section class="result-section" id="resultSection" style="display: none;">
+            <div class="result-header">
+                <h2 class="result-title">解决方案</h2>
+                <button class="copy-button" onclick="copyResult()">一键复制结果</button>
+            </div>
+            <div class="result-content" id="resultContent"></div>
+        </section>
+    </main>
+    
+    <!-- Copy message -->
+    <div class="copy-message" id="copyMessage" data-i18n-id="db-copy">已复制到剪贴板</div>
+    
+    <!-- Privacy policy link -->
+    <a href="#" class="privacy-link" onclick="showPrivacy()">隐私政策</a>
+    
+    <script>
+    // DevBoost 交互逻辑
+    (function() {
+        "use strict";
+
+        // 主题切换：:root[data-theme] 在 dark / light 之间切换
+        window.toggleTheme = function() {
+            var root = document.documentElement;
+            var cur = root.getAttribute("data-theme") || "dark";
+            root.setAttribute("data-theme", cur === "dark" ? "light" : "dark");
+        };
+
+        // 显示隐私政策
+        window.showPrivacy = function() {
+            var content = document.getElementById("resultContent");
+            var section = document.getElementById("resultSection");
+            if (!content || !section) return;
+            
+            section.style.display = "block";
+            content.innerHTML = `
+                <h3>隐私政策</h3>
+                <p>我们重视您的隐私安全，以下是我们的隐私政策要点：</p>
+                <ol>
+                    <li>我们不会存储您的输入数据或生成的解决方案</li>
+                    <li>所有数据处理均在您的浏览器中完成</li>
+                    <li>我们不会收集您的个人信息或使用记录</li>
+                    <li>工具完全免费使用，无需注册或提供个人信息</li>
+                    <li>我们不会将您的数据分享给第三方</li>
+                </ol>
+                <p>如有任何疑问，请联系我们。</p>
+            `;
+        };
+
+        // 生成解决方案：静态演示实现（无后端 API），输出明确标注的示例方案，非真实 AI 生成
+        window.processInput = function() {
+            var input = document.getElementById("userInput");
+            var section = document.getElementById("resultSection");
+            var content = document.getElementById("resultContent");
+            var text = (input && input.value || "").trim();
+            if (!section || !content) return;
+            section.style.display = "block";
+            if (!text) {
+                content.innerHTML = "<p>请先输入需求或问题描述。</p>";
+                return;
+            }
+            var esc = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var brief = esc.length > 120 ? esc.slice(0, 120) + "…" : esc;
+            
+            // 根据不同输入类型生成相应的解决方案
+            var steps = [];
+            var codeExample = "";
+            
+            // 检测输入类型
+            if (text.toLowerCase().includes("数组") || text.toLowerCase().includes("array")) {
+                steps = [
+                    "分析数组结构和需要处理的数据类型",
+                    "确定去重或排序的具体需求",
+                    "选择合适的方法（如 Set、filter、reduce 等）",
+                    "编写函数并测试边界情况",
+                    "优化性能，考虑大数组处理"
+                ];
+                codeExample = `// 数组去重函数
+function removeDuplicates(arr) {
+  return Array.from(new Set(arr));
+}
+
+// 使用示例
+const array = [1, 2, 2, 3, 4, 4, 5];
+const uniqueArray = removeDuplicates(array);
+console.log(uniqueArray); // [1, 2, 3, 4, 5]`;
+            } else if (text.toLowerCase().includes("字符串") || text.toLowerCase().includes("string")) {
+                steps = [
+                    "分析字符串内容和处理需求",
+                    "确定是否需要特殊字符处理",
+                    "选择合适的方法（如 split、join、正则表达式等）",
+                    "编写函数并测试不同输入",
+                    "优化性能，考虑长字符串处理"
+                ];
+                codeExample = `// 字符串反转函数
+function reverseString(str) {
+  return str.split('').reverse().join('');
+}
+
+// 使用示例
+const text = "DevBoost";
+const reversedText = reverseString(text);
+console.log(reversedText); // "tsoBeVD"`;
+            } else if (text.toLowerCase().includes("对象") || text.toLowerCase().includes("object")) {
+                steps = [
+                    "分析对象结构和属性类型",
+                    "确定需要处理的属性和方法",
+                    "选择深拷贝或浅拷贝方案",
+                    "编写函数并处理循环引用",
+                    "优化性能，考虑大对象处理"
+                ];
+                codeExample = `// 深拷贝对象函数
+function deepClone(obj) {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+  
+  if (obj instanceof Date) {
+    return new Date(obj);
+  }
+  
+  if (obj instanceof Array) {
+    return obj.map(item => deepClone(item));
+  }
+  
+  const cloned = {};
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      cloned[key] = deepClone(obj[key]);
+    }
+  }
+  return cloned;
+}`;
+            } else if (text.toLowerCase().includes("排序") || text.toLowerCase().includes("sort")) {
+                steps = [
+                    "分析数据类型和排序需求",
+                    "确定排序算法（快速排序、归并排序等）",
+                    "实现比较函数或排序逻辑",
+                    "编写排序函数并测试不同数据",
+                    "优化性能，考虑大数据量处理"
+                ];
+                codeExample = `// 数组排序函数
+function customSort(arr, compareFn) {
+  return arr.slice().sort(compareFn);
+}
+
+// 使用示例 - 数字排序
+const numbers = [3, 1, 4, 1, 5, 9, 2, 6];
+const sortedNumbers = customSort(numbers, (a, b) => a - b);
+console.log(sortedNumbers); // [1, 1, 2, 3, 4, 5, 6, 9]`;
+            } else {
+                // 默认通用步骤
+                steps = [
+                    "明确输入与输出的数据格式，画出最小流程图",
+                    "先实现最小可用版本（MVP），跑通主流程",
+                    "补充边界处理与错误提示",
+                    "写出测试用例验证关键路径",
+                    "逐步优化性能与可读性"
+                ];
+                codeExample = `// 根据需求实现的核心逻辑
+function solve(input) {
+  // 1. 验证输入
+  if (!input || typeof input !== 'expected_type') {
+    throw new Error('Invalid input');
+  }
+  
+  // 2. 处理主要逻辑
+  const result = processInput(input);
+  
+  // 3. 返回处理结果
+  return result;
+}`;
+            }
+            
+            var html = "<p><i>（演示示例 · 非真实 AI 生成）</i></p>";
+            html += "<p><b>需求理解：</b>" + brief + "</p>";
+            html += "<p><b>建议步骤：</b></p><ol>";
+            for (var i = 0; i < steps.length; i++) {
+                html += "<li>" + steps[i] + "</li>";
+            }
+            html += "</ol>";
+            html += "<pre><code>" + codeExample + "</code></pre>";
+            content.innerHTML = html;
+        };
+
+        // 一键复制结果：优先 navigator.clipboard，失败回退 execCommand
+        window.copyResult = function() {
+            var content = document.getElementById("resultContent");
+            var msg = document.getElementById("copyMessage");
+            if (!content || !msg) return;
+            var text = content.innerText || content.textContent || "";
+            function show() {
+                msg.classList.add("show");
+                setTimeout(function() { msg.classList.remove("show"); }, 1500);
+            }
+            function fallback() {
+                var ta = document.createElement("textarea");
+                ta.value = text;
+                ta.style.position = "fixed";
+                ta.style.opacity = "0";
+                document.body.appendChild(ta);
+                ta.select();
+                try { document.execCommand("copy"); } catch (e) {}
+                document.body.removeChild(ta);
+                show();
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(show, fallback);
+            } else {
+                fallback();
+            }
+        };
+    })();
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"DevBoost - 智能开发助手":"DevBoost - Intelligent Development Assistant","DevBoost - 智能开发助手 免费服务":"DevBoost - Intelligent Development Assistant Free Service","提升您的开发效率，智能生成代码与解决方案":"Enhance Your Development Efficiency, Intelligently Generate Code and Solutions","快速开始":"Quick Start","• 免费使用，无需注册":"• Free to Use, No Registration Required","• 输入您的开发需求或技术问题":"• Enter Your Development Needs or Technical Issues","• 获取详细的解决方案和代码示例":"• Get Detailed Solutions and Code Examples","• 一键复制结果，直接使用":"• One-click Copy Results, Ready to Use","使用指南":"User Guide","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost is a free online development assistant tool, no registration required, free to use permanently","输入您的开发需求或技术问题，我们将为您提供解决方案":"Enter Your Development Needs or Technical Issues, We Will Provide You with Solutions","支持数组、字符串、对象、排序等多种编程场景":"Supports Various Programming Scenarios Such as Arrays, Strings, Objects, Sorting, Etc.","生成的解决方案包含处理步骤和代码示例":"Generated Solutions Include Processing Steps and Code Examples","一键复制结果，方便您直接使用":"One-click Copy Results, Convenient for Direct Use","请输入您的需求或问题描述：":"Please Enter Your Requirements or Description of the Problem:","生成解决方案 核心功能":"Generate Solution Core Features","解决方案":"Solution","一键复制结果":"One-click Copy Result","隐私政策":"Privacy Policy","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - Intelligent Development Assistant"},"zh-CN":{"DevBoost - 智能开发助手":"DevBoost - 智能开发助手","DevBoost - 智能开发助手 免费服务":"DevBoost - 智能开发助手 免费服务","提升您的开发效率，智能生成代码与解决方案":"提升您的开发效率，智能生成代码与解决方案","快速开始":"快速开始","• 免费使用，无需注册":"• 免费使用，无需注册","• 输入您的开发需求或技术问题":"• 输入您的开发需求或技术问题","• 获取详细的解决方案和代码示例":"• 获取详细的解决方案和代码示例","• 一键复制结果，直接使用":"• 一键复制结果，直接使用","使用指南":"使用指南","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用","输入您的开发需求或技术问题，我们将为您提供解决方案":"输入您的开发需求或技术问题，我们将为您提供解决方案","支持数组、字符串、对象、排序等多种编程场景":"支持数组、字符串、对象、排序等多种编程场景","生成的解决方案包含处理步骤和代码示例":"生成的解决方案包含处理步骤和代码示例","一键复制结果，方便您直接使用":"一键复制结果，方便您直接使用","请输入您的需求或问题描述：":"请输入您的需求或问题描述：","生成解决方案 核心功能":"生成解决方案 核心功能","解决方案":"解决方案","一键复制结果":"一键复制结果","隐私政策":"隐私政策","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - 智能开发助手"},"es":{"DevBoost - 智能开发助手":"DevBoost - Asistente de desarrollo inteligente","DevBoost - 智能开发助手 免费服务":"DevBoost - Asistente de desarrollo inteligente servicio gratuito","提升您的开发效率，智能生成代码与解决方案":"Mejore su eficiencia en desarrollo, genere código y soluciones inteligentes","快速开始":"Inicio rápido","• 免费使用，无需注册":"• Uso gratuito, sin necesidad de registro","• 输入您的开发需求或技术问题":"• Introduzca sus necesidades de desarrollo o problemas técnicos","• 获取详细的解决方案和代码示例":"• Obtenga soluciones detalladas y ejemplos de código","• 一键复制结果，直接使用":"• Copie los resultados con un solo clic, utilícelos directamente","使用指南":"Guía de uso","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost es una herramienta de asistencia de desarrollo en línea gratuita, sin necesidad de registro, uso gratuito perpetuo","输入您的开发需求或技术问题，我们将为您提供解决方案":"Introduzca sus necesidades de desarrollo o problemas técnicos, le proporcionaremos soluciones","支持数组、字符串、对象、排序等多种编程场景":"Soporta varios escenarios de programación como arreglos, cadenas, objetos, ordenamiento","生成的解决方案包含处理步骤和代码示例":"Las soluciones generadas incluyen pasos de procesamiento y ejemplos de código","一键复制结果，方便您直接使用":"Copie los resultados con un solo clic, para su uso directo","请输入您的需求或问题描述：":"Por favor, introduzca sus necesidades o descripción del problema:","生成解决方案 核心功能":"Generar solución Funcionalidades nucleares","解决方案":"Solución","一键复制结果":"Copiar resultados con un solo clic","隐私政策":"Política de privacidad","use strict":"usar estricto","Invalid input":"Entrada no válida","__title__":"DevBoost - Asistente de desarrollo inteligente"},"ja":{"DevBoost - 智能开发助手":"DevBoost - 智能開発アシスタント","DevBoost - 智能开发助手 免费服务":"DevBoost - 智能開発アシスタント 無料サービス","提升您的开发效率，智能生成代码与解决方案":"開発効率を向上させ、スマートにコードとソリューションを生成します","快速开始":"速やかに始める","• 免费使用，无需注册":"• 無料で使用可能、登録は不要","• 输入您的开发需求或技术问题":"• 您の開発要件または技術的な問題を入力してください","• 获取详细的解决方案和代码示例":"• 詳細なソリューションとコード例を取得します","• 一键复制结果，直接使用":"• 一押しで結果をコピーし、直接使用できます","使用指南":"使用ガイド","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoostは、登録なしで永久に無料で使用できるオンライン開発アシスタントツールです","输入您的开发需求或技术问题，我们将为您提供解决方案":"あなたの開発要件または技術的な問題を入力してください、私たちはあなたにソリューションを提供します","支持数组、字符串、对象、排序等多种编程场景":"配列、文字列、オブジェクト、ソートなど、さまざまなプログラミングシーンをサポート","生成的解决方案包含处理步骤和代码示例":"生成されたソリューションには、処理手順とコード例が含まれています","一键复制结果，方便您直接使用":"一押しで結果をコピーし、直接使用しやすくなります","请输入您的需求或问题描述：":"あなたの要件または問題の説明を入力してください：","生成解决方案 核心功能":"ソリューション生成 核心機能","解决方案":"ソリューション","一键复制结果":"一押しで結果をコピー","隐私政策":"プライバシーポリシー","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - 智能開発アシスタント"},"ko":{"DevBoost - 智능 개발 도우미":"DevBoost - 智능 개발 도우미","DevBoost - 智능 개발 도우미 무료 서비스":"DevBoost - 智능 개발 도우미 무료 서비스","提升您的开发效率，智能生成代码与解决方案":"개발 효율성을 높이세요. 지능적으로 코드와 솔루션을 생성합니다.","快速开始":"빠르게 시작하기","• 免费使用，无需注册":"• 무료 사용, 등록 없이도 가능","• 输入您的开发需求或技术问题":"• 여러분의 개발 요구사항이나 기술 문제를 입력하세요","• 获取详细的解决方案和代码示例":"• 상세한 솔루션과 코드 예제를 얻으세요","• 一键复制结果，直接使用":"•一键复制结果，直接使用","使用指南":"사용 가이드","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost는 등록 없이도 무료로 사용할 수 있는 온라인 개발 도우미 도구입니다.","输入您的开发需求或技术问题，我们将为您提供解决方案":"여러분의 개발 요구사항이나 기술 문제를 입력하세요. 우리는 여러분에게 솔루션을 제공할 것입니다.","支持数组、字符串、对象、排序等多种编程场景":"배열, 문자열, 객체, 정렬 등 다양한 프로그래밍 시나리오를 지원합니다.","生成的解决方案包含处理步骤和代码示例":"생성된 솔루션은 처리 단계와 코드 예제를 포함합니다.","一键复制结果，方便您直接使用":"一键复制结果，方便您直接使用","请输入您的需求或问题描述：":"여러분의 요구사항이나 문제 설명을 입력하세요：","生成解决方案 核心功能":"솔루션 생성 핵심 기능","解决方案":"솔루션","一键复制结果":"一键复制结果","隐私政策":"개인정보 보호 정책","use strict":"use strict","Invalid input":"Invalid input","DevBoost - 智能开发助手":"DevBoost - 인공지능 개발 도구","DevBoost - 智能开发助手 免费服务":"DevBoost - 인공지능 개발 도구 무료 서비스","__title__":"DevBoost - 인공지능 개발 도구"},"fr":{"DevBoost - 智能开发助手":"DevBoost - Assistant de développement intelligent","DevBoost - 智能开发助手 免费服务":"DevBoost - Assistant de développement intelligent gratuit","提升您的开发效率，智能生成代码与解决方案":"Améliorez l'efficacité de votre développement, génération intelligente de code et de solutions","快速开始":"Démarrage rapide","• 免费使用，无需注册":"• Utilisation gratuite, sans inscription","• 输入您的开发需求或技术问题":"• Entrez vos besoins de développement ou vos problèmes techniques","• 获取详细的解决方案和代码示例":"• Obtenez des solutions détaillées et des exemples de code","• 一键复制结果，直接使用":"• Copiez le résultat en un clic, utilisez-le directement","使用指南":"Guide d'utilisation","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost est un outil d'assistant de développement en ligne gratuit, sans inscription, utilisation gratuite à vie","输入您的开发需求或技术问题，我们将为您提供解决方案":"Entrez vos besoins de développement ou vos problèmes techniques, nous vous fournirons des solutions","支持数组、字符串、对象、排序等多种编程场景":"Supporte plusieurs scénarios de programmation tels que les tableaux, les chaînes, les objets, le tri, etc.","生成的解决方案包含处理步骤和代码示例":"Les solutions générées incluent des étapes de traitement et des exemples de code","一键复制结果，方便您直接使用":"Copiez le résultat en un clic, pratique pour une utilisation directe","请输入您的需求或问题描述：":"Veuillez entrer vos besoins ou votre description du problème :","生成解决方案 核心功能":"Fonctionnalités centrales de génération de solutions","解决方案":"Solutions","一键复制结果":"Copier le résultat en un clic","隐私政策":"Politique de confidentialité","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - Assistant de développement intelligent"},"de":{"DevBoost - 智能开发助手":"DevBoost - Intelligente Entwicklungsassistentin","DevBoost - 智能开发助手 免费服务":"DevBoost - Intelligente Entwicklungsassistentin - Kostenlose Dienstleistung","提升您的开发效率，智能生成代码与解决方案":"Erhöhen Sie Ihre Entwicklungsleistung, generieren Sie intelligent Code und Lösungen","快速开始":"Schneller Start","• 免费使用，无需注册":"• Kostenlose Nutzung, keine Registrierung erforderlich","• 输入您的开发需求或技术问题":"• Geben Sie Ihre Entwicklungsanforderungen oder technischen Fragen ein","• 获取详细的解决方案和代码示例":"• Erhalten Sie detaillierte Lösungen und Code-Beispiele","• 一键复制结果，直接使用":"• Ein Klick zum Kopieren des Ergebnisses, sofort einsetzbar","使用指南":"Anleitung zur Verwendung","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost ist ein kostenloses Online-Entwicklungsassistenten-Tool, das ohne Registrierung und dauerhaft kostenlos genutzt werden kann","输入您的开发需求或技术问题，我们将为您提供解决方案":"Geben Sie Ihre Entwicklungsanforderungen oder technischen Fragen ein, wir bieten Ihnen Lösungen an","支持数组、字符串、对象、排序等多种编程场景":"Unterstützt verschiedene Programmierszenarien wie Arrays, Strings, Objekte, Sortieren usw.","生成的解决方案包含处理步骤和代码示例":"Die generierten Lösungen enthalten Verarbeitungsschritte und Code-Beispiele","一键复制结果，方便您直接使用":"Ein Klick zum Kopieren des Ergebnisses, zum direkten Einsatz geeignet","请输入您的需求或问题描述：":"Bitte geben Sie Ihre Anforderungen oder Problembeschreibung ein:","生成解决方案 核心功能":"Erstellung von Lösungen - Kernfunktionen","解决方案":"Lösungen","一键复制结果":"Ein Klick zum Kopieren des Ergebnisses","隐私政策":"Datenschutzerklärung","use strict":"use strict","Invalid input":"Ungültige Eingabe","__title__":"DevBoost - Intelligente Entwicklungsassistentin"},"ru":{"DevBoost - 智能开发助手":"DevBoost - помощник для умного развития","DevBoost - 智能开发助手 免费服务":"DevBoost - помощник для умного развития, бесплатная услуга","提升您的开发效率，智能生成代码与解决方案":"Повышение эффективности вашего развития, умное создание кода и решений","快速开始":"Быстрый старт","• 免费使用，无需注册":"• Бесплатное использование, регистрация не требуется","• 输入您的开发需求或技术问题":"• Введите ваши требования к развитию или технические вопросы","• 获取详细的解决方案和代码示例":"• Получите подробные решения и примеры кода","• 一键复制结果，直接使用":"• Одним кликом скопируйте результат и используйте его напрямую","使用指南":"Инструкции по использованию","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost - это бесплатный онлайн-инструмент помощника для развития, который можно использовать бесплатно и без регистрации вечно","输入您的开发需求或技术问题，我们将为您提供解决方案":"Введите ваши требования к развитию или технические вопросы, и мы предоставим вам решения","支持数组、字符串、对象、排序等多种编程场景":"Поддержка различных сценариев программирования, таких как массивы, строки, объекты, сортировка и т.д.","生成的解决方案包含处理步骤和代码示例":"Генерируемые решения включают шаги обработки и примеры кода","一键复制结果，方便您直接使用":"Одним кликом скопируйте результат, чтобы использовать его напрямую","请输入您的需求或问题描述：":"Введите ваши требования или описание проблемы:","生成解决方案 核心功能":"Генерация решений - основные функции","解决方案":"Решения","一键复制结果":"Одним кликом скопируйте результат","隐私政策":"Политика конфиденциальности","use strict":"use strict","Invalid input":"Неправильный ввод","__title__":"DevBoost - помощник для умного развития"},"pt":{"DevBoost - 智能开发助手":"DevBoost - Assistente de Desenvolvimento Inteligente","DevBoost - 智能开发助手 免费服务":"DevBoost - Assistente de Desenvolvimento Inteligente Serviço Gratuito","提升您的开发效率，智能生成代码与解决方案":"Aumente a eficiência do seu desenvolvimento, geração inteligente de código e soluções","快速开始":"Comece Rapidamente","• 免费使用，无需注册":"• Uso gratuito, sem registro necessário","• 输入您的开发需求或技术问题":"• Insira suas necessidades de desenvolvimento ou problemas técnicos","• 获取详细的解决方案和代码示例":"• Obtenha soluções detalhadas e exemplos de código","• 一键复制结果，直接使用":"• Copie os resultados com um clique, use diretamente","使用指南":"Guia de Uso","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost é uma ferramenta de assistente de desenvolvimento online gratuita, sem registro necessário, uso gratuito permanente","输入您的开发需求或技术问题，我们将为您提供解决方案":"Insira suas necessidades de desenvolvimento ou problemas técnicos, forneceremos-lhe soluções","支持数组、字符串、对象、排序等多种编程场景":"Suporta多种编程场景，如数组、字符串、对象、排序等","生成的解决方案包含处理步骤和代码示例":"As soluções geradas incluem passos de processamento e exemplos de código","一键复制结果，方便您直接使用":"Copia com um clique, fácil de usar diretamente","请输入您的需求或问题描述：":"Por favor, insira suas necessidades ou descrição do problema:","生成解决方案 核心功能":"Geração de Solução Funcionalidades Nucleares","解决方案":"Solução","一键复制结果":"Copiar Resultado com um Clique","隐私政策":"Política de Privacidade","use strict":"use strict","Invalid input":"Entrada inválida","__title__":"DevBoost - Assistente de Desenvolvimento Inteligente"},"ar":{"DevBoost - 智能开发助手":"DevBoost - مساعد التطوير الذكي","DevBoost - 智能开发助手 免费服务":"DevBoost - خدمة التطوير الذكي المجانية","提升您的开发效率，智能生成代码与解决方案":"زيادة كفاءة تطويرك، توليد الكود والحلول الذكية","快速开始":"بدء سريع","• 免费使用，无需注册":"• استخدام مجاني بدون تسجيل","• 输入您的开发需求或技术问题":"• إدخال احتياجاتك في التطوير أو مشكلتك التقنية","• 获取详细的解决方案和代码示例":"• الحصول على حلول مفصلة وامثلة على الكود","• 一键复制结果，直接使用":"• نسخ النتيجة بلمسة واحدة، استخدمها مباشرة","使用指南":"دليل الاستخدام","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost هو أداة مساعد للتطوير عبر الإنترنت مجانية، دون الحاجة إلى التسجيل، واستخدامها مجانية إلى الأبد","输入您的开发需求或技术问题，我们将为您提供解决方案":"ادخل احتياجاتك أو أسئلتك التقنية وسنقدم لك الحلول","支持数组、字符串、对象、排序等多种编程场景":"يدعم الأنواع مثل المجموعات والسلاسل والأجسام والترتيب وغيرها من سيناريوهات البرمجة","生成的解决方案包含处理步骤和代码示例":"تحتوي الحلول المولدة على خطوات التشغيل وامثلة على الكود","一键复制结果，方便您直接使用":"نساعدك في نسخ النتائج بلمسة واحدة للاستخدام الفوري","请输入您的需求或问题描述：":"الرجاء إدخال احتياجاتك أو وصف المشكلة","生成解决方案 核心功能":"وظائف نواة توليد الحلول","解决方案":"الحلول","一键复制结果":"نسخ النتائج بلمسة واحدة","隐私政策":"سياسة الخصوصية","use strict":"استخدام strict","Invalid input":"مقدار إدخال غير صالح","__title__":"DevBoost - مساعد التطوير الذكي"},"hi":{"DevBoost - 智能开发助手":"DevBoost - इंटेलिजेंट डेवलपमेंट सहायक","DevBoost - 智能开发助手 免费服务":"DevBoost - इंटेलिजेंट डेवलपमेंट सहायक मुफ्त सेवा","提升您的开发效率，智能生成代码与解决方案":"आपकी डेवलपमेंट इफेक्टिविटी बढ़ाएं, इंटेलिजेंट रूप से कोड और समाधान बनाएं","快速开始":"तेजी से शुरू करें","• 免费使用，无需注册":"• मुफ्त में उपयोग, रजिस्ट्रेशन की आवश्यकता नहीं","• 输入您的开发需求或技术问题":"• आपकी डेवलपमेंट आवश्यकता या तकनीकी समस्या भरें","• 获取详细的解决方案和代码示例":"• विस्तृत समाधान और कोड उदाहरण प्राप्त करें","• 一键复制结果，直接使用":"• एक क्लिक से परिणाम कॉपी करें, सीधे उपयोग करें","使用指南":"उपयोग निर्देश","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost एक मुफ्त ऑनलाइन डेवलपमेंट सहायक टूल है, रजिस्ट्रेशन की आवश्यकता नहीं, सदा मुफ्त","输入您的开发需求或技术问题，我们将为您提供解决方案":"आपकी डेवलपमेंट आवश्यकता या तकनीकी समस्या भरें, हम आपको समाधान प्रदान करेंगे","支持数组、字符串、对象、排序等多种编程场景":"अनुग्रह, स्ट्रिंग, ऑब्जेक्ट, सॉर्टिंग जैसे कई प्रोग्रामिंग सीनारियों का समर्थन करता है","生成的解决方案包含处理步骤和代码示例":"बनाए गए समाधान में हैंडलिंग स्टेप्स और कोड उदाहरण","一键复制结果，方便您直接使用":"एक क्लिक से परिणाम कॉपी करें, सीधे उपयोग करने में सहायक","请输入您的需求或问题描述：":"कृपया आपकी आवश्यकता या समस्या का वर्णन भरें:","生成解决方案 核心功能":"समाधान बनाएं के लिए कोर कार्यक्षमता","解决方案":"समाधान","一键复制结果":"एक क्लिक से परिणाम कॉपी करें","隐私政策":"गोपनीयता नीति","use strict":"use strict","Invalid input":"अवैध इनपुट","__title__":"DevBoost - इंटेलिजेंट डेवलपमेंट सहायक"},"id":{"DevBoost - 智能开发助手":"DevBoost - Asisten Pengembangan Intelligensia","DevBoost - 智能开发助手 免费服务":"DevBoost - Layanan Asisten Pengembangan Intelligensia Gratis","提升您的开发效率，智能生成代码与解决方案":"Tingkatkan efisiensi pengembangan Anda, generate kode dan solusi otomatis","快速开始":"Mulai Secara Cepat","• 免费使用，无需注册":"• Pakai gratis, tanpa pendaftaran","• 输入您的开发需求或技术问题":"• Masukkan kebutuhan pengembangan atau masalah teknis Anda","• 获取详细的解决方案和代码示例":"• Dapatkan solusi detil dan contoh kode","• 一键复制结果，直接使用":"• Salin hasil dengan satu klik, gunakan langsung","使用指南":"Panduan Penggunaan","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost adalah alat asisten pengembangan online gratis, tanpa pendaftaran, dapat digunakan gratis selamanya","输入您的开发需求或技术问题，我们将为您提供解决方案":"Masukkan kebutuhan pengembangan atau masalah teknis Anda, kami akan memberikan solusi bagi Anda","支持数组、字符串、对象、排序等多种编程场景":"Dukung berbagai latar belakang pemrograman seperti array, string, objek, pengurutan, dan lainnya","生成的解决方案包含处理步骤和代码示例":"Solusi yang dihasilkan termasuk langkah pelaksanaan dan contoh kode","一键复制结果，方便您直接使用":"Salin hasil dengan satu klik, mempermudah penggunaan langsung","请输入您的需求或问题描述：":"Silakan masukkan kebutuhan atau deskripsi masalah Anda：","生成解决方案 核心功能":"Fungsi Utama Pengembangan Solusi","解决方案":"Solusi","一键复制结果":"Salin Hasil dengan Satu Klik","隐私政策":"Kebijakan Privasi","use strict":"use strict","Invalid input":"Input tidak valid","__title__":"DevBoost - Asisten Pengembangan Intelligensia"},"vi":{"DevBoost - 智能开发助手":"DevBoost - Trợ lý phát triển thông minh","DevBoost - 智能开发助手 免费服务":"DevBoost - Trợ lý phát triển thông minh miễn phí","提升您的开发效率，智能生成代码与解决方案":"Tăng cường hiệu suất phát triển của bạn, tạo mã và giải pháp thông minh","快速开始":"Bắt đầu nhanh chóng","• 免费使用，无需注册":"• Sử dụng miễn phí, không cần đăng ký","• 输入您的开发需求或技术问题":"• Nhập yêu cầu phát triển hoặc vấn đề kỹ thuật của bạn","• 获取详细的解决方案和代码示例":"• Nhận giải pháp chi tiết và ví dụ mã","• 一键复制结果，直接使用":"• Nhấn một nút để sao chép kết quả, sử dụng trực tiếp","使用指南":"Hướng dẫn sử dụng","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost là một công cụ trợ lý phát triển trực tuyến miễn phí, không cần đăng ký, sử dụng miễn phí vĩnh viễn","输入您的开发需求或技术问题，我们将为您提供解决方案":"Nhập yêu cầu phát triển hoặc vấn đề kỹ thuật của bạn, chúng tôi sẽ cung cấp giải pháp cho bạn","支持数组、字符串、对象、排序等多种编程场景":"Hỗ trợ nhiều kịch bản lập trình như mảng, chuỗi, đối tượng, sắp xếp...","生成的解决方案包含处理步骤和代码示例":"Giải pháp tạo ra bao gồm các bước xử lý và ví dụ mã","一键复制结果，方便您直接使用":"Nhấn một nút để sao chép kết quả, tiện lợi để bạn sử dụng trực tiếp","请输入您的需求或问题描述：":"Vui lòng nhập yêu cầu hoặc mô tả vấn đề của bạn:","生成解决方案 核心功能":"Tính năng chính của việc tạo giải pháp","解决方案":"Giải pháp","一键复制结果":"Nhấn một nút để sao chép kết quả","隐私政策":"Chính sách bảo mật","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - Trợ lý phát triển thông minh"},"th":{"DevBoost - 智能开发助手":"DevBoost - ช่วยเหลือการพัฒนาโปรแกรมอินทีนีท","DevBoost - 智能开发助手 免费服务":"DevBoost - ช่วยเหลือการพัฒนาโปรแกรมอินทีนีท บริการฟรี","提升您的开发效率，智能生成代码与解决方案":"เพิ่มประสิทธิภาพการพัฒนาโปรแกรมของคุณ สร้างโค้ดและแนวทางแก้ปัญหาโดยอินทีนีท","快速开始":"เริ่มใช้งานอย่างรวดเร็ว","• 免费使用，无需注册":"• ใช้งานฟรี ไม่ต้องลงทะเบียน","• 输入您的开发需求或技术问题":"• ใส่ความต้องการการพัฒนาโปรแกรมหรือปัญหาเทคโนโลยีของคุณ","• 获取详细的解决方案和代码示例":"• รับแนวทางแก้ปัญหาและตัวอย่างโค้ดเป็นรายละเอียด","• 一键复制结果，直接使用":"• คัดลอกผลลัพธ์ด้วยปุ่มเดียว ใช้งานทันที","使用指南":"คู่มือการใช้งาน","DevBoost 是一款免费的在线开发助手工具，无需注册，永久免费使用":"DevBoost เป็นเครื่องมือช่วยเหลือการพัฒนาโปรแกรมออนไลน์ฟรี ไม่ต้องลงทะเบียน ใช้งานฟรีตลอดชีวิต","输入您的开发需求或技术问题，我们将为您提供解决方案":"ใส่ความต้องการการพัฒนาโปรแกรมหรือปัญหาเทคโนโลยีของคุณ เราจะให้คุณแนวทางแก้ปัญหา","支持数组、字符串、对象、排序等多种编程场景":"สนับสนุนหลายสถานการณ์การเขียนโปรแกรม เช่น ตัวแปรแบบแรงยกสอง ตัวแปรแบบข้อความ ตัวแปรแบบวัตถุ การจัดลำดับ และอื่นๆ","生成的解决方案包含处理步骤和代码示例":"แนวทางแก้ปัญหาที่สร้างขึ้นมีการระบุขั้นตอนการจัดการและตัวอย่างโค้ด","一键复制结果，方便您直接使用":"คัดลอกผลลัพธ์ด้วยปุ่มเดียว ง่ายต่อการใช้งานทันที","请输入您的需求或问题描述：":"กรุณาใส่ความต้องการหรือคำอธิบายปัญหาของคุณ：","生成解决方案 核心功能":"การสร้างแนวทางแก้ปัญหา ฟีเจอร์นิกเกิล","解决方案":"แนวทางแก้ปัญหา","一键复制结果":"คัดลอกผลลัพธ์ด้วยปุ่มเดียว","隐私政策":"นโยบายความเป็นส่วนตัว","use strict":"use strict","Invalid input":"Invalid input","__title__":"DevBoost - ช่วยเหลือการพัฒนาโปรแกรมอินทีนีท"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
+</html>

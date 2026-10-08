@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudEventFlow - Your Workflow Automation Hub</title>
+    <meta name="description" content="Free online tool: CloudEventFlow - Your Workflow Automation Hub. No signup, no payment — free forever.">
+    <meta property="og:title" content="CloudEventFlow - Your Workflow Automation Hub">
+    <meta property="og:description" content="Free online tool: CloudEventFlow - Your Workflow Automation Hub. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-03_000124_CloudEventFl.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #0f0f23;
+            --bg-secondary: #1a1a2e;
+            --bg-tertiary: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a8a8b3;
+            --accent: #4fbdba;
+            --accent-hover: #7ec8e3;
+            --success: #2ed573;
+            --error: #ff6348;
+            --warning: #ffa502;
+            --border: #2d2d44;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 1.5rem 0;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .search-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Main Content */
+        main {
+            padding: 1.5rem 0;
+        }
+
+        .intro-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .intro-section h1 {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent);
+        }
+
+        .intro-section p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .feature-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .feature-btn:hover {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Content Display Area */
+        .content-display {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            min-height: 300px;
+            display: none;
+        }
+
+        .content-display h2 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .content-area {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            min-height: 200px;
+            white-space: pre-wrap;
+            color: var(--text-primary);
+            font-family: monospace;
+        }
+
+        /* Input Areas */
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        textarea.input-field {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .action-btn {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: var(--bg-primary);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .action-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* File Upload */
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 0.8rem;
+            background-color: var(--bg-tertiary);
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .file-upload:hover .file-upload-label {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Task Reminder */
+        .reminder-time {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .reminder-time input {
+            padding: 0.5rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+        }
+
+        /* Data Visualization */
+        .chart-container {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            min-height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.error {
+            border-left: 4px solid var(--error);
+        }
+
+        .notification.warning {
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .intro-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">CloudEventFlow</a>
+                <nav>
+                    <ul class="nav-menu">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" class="search-input" id="globalSearch" placeholder="Search for features...">
+                <button class="search-btn" id="globalSearchBtn">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+            <section class="intro-section">
+                <h1>CloudEventFlow - Your Workflow Automation Hub</h1>
+                <p>Streamline your tasks with our powerful tools. Summarize text, analyze data, visualize information, set reminders, and more - all in one place.</p>
+            </section>
+
+            <section id="features" class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Keyword Search</h3>
+                    <p>Find relevant information and content based on your keywords with our intelligent search engine.</p>
+                    <button class="feature-btn" onclick="showFeature('search')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Text Summarizer</h3>
+                    <p>Transform long articles into concise summaries with our text processing algorithm that extracts key points.</p>
+                    <button class="feature-btn" onclick="showFeature('summarizer')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🖼️</div>
+                    <h3>Image Analyzer</h3>
+                    <p>Upload any image to extract metadata, dimensions, and color information using client-side processing.</p>
+                    <button class="feature-btn" onclick="showFeature('image')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Data Visualizer</h3>
+                    <p>Transform your raw data into interactive charts and graphs with customizable visualization options.</p>
+                    <button class="feature-btn" onclick="showFeature('data')">Try Now</button>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⏰</div>
+                    <h3>Task Reminder</h3>
+                    <p>Never forget important tasks again with our smart reminder system that stores and alerts you locally.</p>
+                    <button class="feature-btn" onclick="showFeature('reminder')">Try Now</button>
+                </div>
+            </section>
+
+            <section id="content-display" class="content-display">
+                <h2 id="feature-title">Feature Title</h2>
+                <div id="feature-content" class="content-area">Content will appear here...</div>
+            </section>
+
+            <section id="feature-inputs" class="input-section">
+                <!-- Feature-specific inputs will be dynamically inserted here -->
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <ul class="footer-links">
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                    <li><a href="#terms">Terms of Service</a></li>
+                    <li><a href="#support">Support</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification">
+        <span id="notification-text">Notification text</span>
+    </div>
+
+    <script>
+        // Feature data and implementations
+        const features = {
+            summarizer: {
+                title: 'Text Summarizer',
+                description: 'Enter your text below and get a concise summary.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="summarizer-input">Enter text to summarize:</label>
+                        <textarea id="summarizer-input" class="input-field" placeholder="Paste or type your text here..."></textarea>
+                    </div>
+                    <button class="action-btn" id="summarizer-btn">Generate Summary</button>
+                `,
+                process: function(input) {
+                    // Extract key sentences based on length and importance
+                    const sentences = input.split(/[.!?]+/).filter(s => s.trim().length > 0);
+                    if (sentences.length <= 2) return input;
+                    
+                    // Calculate average sentence length
+                    const avgLength = sentences.reduce((sum, s) => sum + s.length, 0) / sentences.length;
+                    
+                    // Select sentences that are longer than average or contain key indicators
+                    const importantSentences = sentences.filter((s, i) => {
+                        const isLong = s.length > avgLength * 1.2;
+                        const isFirstOrLast = i === 0 || i === sentences.length - 1;
+                        const hasKeywords = /however|therefore|consequently|in conclusion|important|key|significant/i.test(s);
+                        return isLong || isFirstOrLast || hasKeywords;
+                    });
+                    
+                    // Limit to 3-4 sentences
+                    const summary = importantSentences.slice(0, 4).join('. ') + '.';
+                    
+                    return `Summary:\n\n${summary}`;
+                }
+            },
+            search: {
+                title: 'Keyword Search',
+                description: 'Enter keywords to find relevant information.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="search-input">Enter keywords:</label>
+                        <input type="text" id="search-input" class="input-field" placeholder="Type your keywords here...">
+                    </div>
+                    <button class="action-btn" id="search-btn">Search</button>
+                `,
+                process: function(input) {
+                    // Predefined topics with keywords
+                    const topics = [
+                        { name: 'Technology', keywords: ['tech', 'computer', 'software', 'digital', 'innovation'] },
+                        { name: 'Science', keywords: ['research', 'experiment', 'discovery', 'hypothesis', 'theory'] },
+                        { name: 'Business', keywords: ['market', 'economy', 'finance', 'strategy', 'growth'] },
+                        { name: 'Health', keywords: ['medicine', 'wellness', 'nutrition', 'fitness', 'care'] },
+                        { name: 'Education', keywords: ['learning', 'teaching', 'school', 'course', 'student'] },
+                        { name: 'Environment', keywords: ['climate', 'nature', 'sustainability', 'pollution', 'ecology'] },
+                        { name: 'Arts', keywords: ['creative', 'design', 'culture', 'music', 'visual'] },
+                        { name: 'Sports', keywords: ['athletic', 'competition', 'fitness', 'game', 'team'] }
+                    ];
+                    
+                    const searchTerms = input.toLowerCase().split(' ');
+                    const matchedTopics = topics.filter(topic => 
+                        searchTerms.some(term => 
+                            topic.keywords.some(keyword => keyword.includes(term)) ||
+                            topic.name.toLowerCase().includes(term)
+                        )
+                    );
+                    
+                    if (matchedTopics.length === 0) {
+                        return `No direct matches found for "${input}". Try different keywords or browse our popular topics: Technology, Science, Business, Health, Education.`;
+                    }
+                    
+                    let output = `Search results for "${input}":\n\n`;
+                    matchedTopics.forEach((topic, index) => {
+                        output += `${index + 1}. ${topic.name}\n`;
+                        output += `   Keywords: ${topic.keywords.join(', ')}\n\n`;
+                    });
+                    
+                    return output;
+                }
+            },
+            image: {
+                title: 'Image Analyzer',
+                description: 'Upload an image to get detailed analysis.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="image-upload">Upload an image:</label>
+                        <div class="file-upload">
+                            <input type="file" id="image-upload" accept="image/*">
+                            <label for="image-upload" class="file-upload-label">
+                                Click to upload or drag and drop your image here
+                            </label>
+                        </div>
+                    </div>
+                    <button class="action-btn" id="image-btn">Analyze Image</button>
+                `,
+                process: function(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.maxWidth = '100%';
+                        img.style.marginTop = '1rem';
+                        
+                        // Create canvas for image analysis
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        const tempImg = new Image();
+                        
+                        tempImg.onload = function() {
+                            canvas.width = tempImg.width;
+                            canvas.height = tempImg.height;
+                            ctx.drawImage(tempImg, 0, 0);
+                            
+                            // Get image data
+                            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                            const data = imageData.data;
+                            
+                            // Calculate color distribution
+                            const colorMap = {};
+                            for (let i = 0; i < data.length; i += 4) {
+                                const r = data[i];
+                                const g = data[i + 1];
+                                const b = data[i + 2];
+                                const color = `${Math.floor(r/64)*64},${Math.floor(g/64)*64},${Math.floor(b/64)*64}`;
+                                colorMap[color] = (colorMap[color] || 0) + 1;
+                            }
+                            
+                            // Sort colors by frequency
+                            const sortedColors = Object.entries(colorMap)
+                                .sort((a, b) => b[1] - a[1])
+                                .slice(0, 5);
+                            
+                            document.getElementById('feature-content').innerHTML = `
+                                <div style="text-align: center;">
+                                    <h3>Image Analysis Results:</h3>
+                                    ${img.outerHTML}
+                                    <div style="margin-top: 1rem;">
+                                        <h4>Image Details:</h4>
+                                        <p><strong>Dimensions:</strong> ${tempImg.width} × ${tempImg.height} pixels</p>
+                                        <p><strong>File Size:</strong> ${(file.size / 1024).toFixed(2)} KB</p>
+                                        <p><strong>File Type:</strong> ${file.type}</p>
+                                        
+                                        <h4 style="margin-top: 1rem;">Dominant Colors:</h4>
+                                        <div style="display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;">
+                                            ${sortedColors.map(([color, count]) => 
+                                                `<div style="display: flex; flex-direction: column; align-items: center;">
+                                                    <div style="width: 30px; height: 30px; background-color: rgb(${color}); border-radius: 4px;"></div>
+                                                    <span style="font-size: 0.8rem; margin-top: 0.2rem;">rgb(${color})</span>
+                                                </div>`
+                                            ).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        };
+                        
+                        tempImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    return 'Analyzing image...';
+                }
+            },
+            data: {
+                title: 'Data Visualizer',
+                description: 'Enter your data to generate interactive charts.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="data-input">Enter data (comma-separated values):</label>
+                        <input type="text" id="data-input" class="input-field" placeholder="e.g., 10, 20, 30, 40, 50">
+                    </div>
+                    <div class="input-group">
+                        <label for="data-labels">Enter labels (comma-separated):</label>
+                        <input type="text" id="data-labels" class="input-field" placeholder="e.g., Jan, Feb, Mar, Apr, May">
+                    </div>
+                    <button class="action-btn" id="data-btn">Generate Chart</button>
+                `,
+                process: function(data, labels) {
+                    const values = data.split(',').map(v => parseFloat(v.trim())).filter(v => !isNaN(v));
+                    const labelList = labels.split(',').map(l => l.trim());
+                    
+                    if (values.length === 0) {
+                        return 'Please enter valid numeric data.';
+                    }
+                    
+                    // Ensure we have enough labels
+                    while (labelList.length < values.length) {
+                        labelList.push(`Item ${labelList.length + 1}`);
+                    }
+                    
+                    const maxValue = Math.max(...values);
+                    const minValue = Math.min(...values);
+                    const range = maxValue - minValue || 1;
+                    
+                    // Generate chart based on data characteristics
+                    let chartHTML = '<div style="text-align: center;">';
+                    chartHTML += '<h3>Data Visualization</h3>';
+                    
+                    // Determine chart type based on data distribution
+                    const variance = values.reduce((sum, val) => sum + Math.pow(val - (maxValue + minValue) / 2, 2), 0) / values.length;
+                    const isEvenlyDistributed = variance < range * range / 8;
+                    
+                    if (isEvenlyDistributed) {
+                        // Bar chart for evenly distributed data
+                        chartHTML += '<div style="position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;">';
+                        
+                        values.forEach((value, index) => {
+                            const height = ((value - minValue) / range) * 250;
+                            chartHTML += `
+                                <div style="flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;">
+                                    <div style="width: 100%; background-color: var(--accent); height: ${height}px; border-radius: 4px 4px 0 0;"></div>
+                                    <div style="margin-top: 5px; font-size: 0.8rem;">${labelList[index]}</div>
+                                    <div style="margin-top: 2px; font-size: 0.8rem;">${value}</div>
+                                </div>
+                            `;
+                        });
+                        
+                        chartHTML += '</div>';
+                    } else {
+                        // Line chart for unevenly distributed data
+                        chartHTML += '<div style="position: relative; height: 300px; margin: 20px 0;">';
+                        
+                        // Calculate points for line chart
+                        const points = values.map((value, index) => {
+                            const x = (index / (values.length - 1)) * 100;
+                            const y = 100 - ((value - minValue) / range) * 90;
+                            return `${x}% ${y}%`;
+                        });
+                        
+                        chartHTML += `
+                            <svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline 
+                                    points="${points.join(' ')}" 
+                                    fill="none" 
+                                    stroke="var(--accent)" 
+                                    stroke-width="2"
+                                />
+                                ${points.map((point, index) => 
+                                    `<circle cx="${point.split(' ')[0]}" cy="${point.split(' ')[1]}" r="2" fill="var(--accent)" />`
+                                ).join('')}
+                            </svg>
+                        `;
+                        
+                        // Add labels
+                        chartHTML += '<div style="position: absolute; bottom: 0; width: 100%; display: flex; justify-content: space-between;">';
+                        labelList.forEach((label, index) => {
+                            chartHTML += `<div style="font-size: 0.8rem;">${label}</div>`;
+                        });
+                        chartHTML += '</div>';
+                        
+                        chartHTML += '</div>';
+                    }
+                    
+                    chartHTML += '</div>';
+                    return chartHTML;
+                }
+            },
+            reminder: {
+                title: 'Task Reminder',
+                description: 'Set a reminder for your important tasks.',
+                inputs: `
+                    <div class="input-group">
+                        <label for="reminder-task">Task description:</label>
+                        <input type="text" id="reminder-task" class="input-field" placeholder="Enter your task description...">
+                    </div>
+                    <div class="input-group">
+                        <label>Reminder time:</label>
+                        <div class="reminder-time">
+                            <input type="date" id="reminder-date">
+                            <input type="time" id="reminder-time">
+                        </div>
+                    </div>
+                    <button class="action-btn" id="reminder-btn">Set Reminder</button>
+                `,
+                process: function(task, date, time) {
+                    const now = new Date();
+                    const reminderDateTime = new Date(`${date}T${time}`);
+                    
+                    if (reminderDateTime <= now) {
+                        return 'Please select a future date and time for your reminder.';
+                    }
+                    
+                    // Store reminder in localStorage
+                    const reminders = JSON.parse(localStorage.getItem('reminders') || '[]');
+                    reminders.push({
+                        id: Date.now(),
+                        task: task,
+                        date: date,
+                        time: time,
+                        timestamp: reminderDateTime.getTime()
+                    });
+                    localStorage.setItem('reminders', JSON.stringify(reminders));
+                    
+                    // Set actual timeout for notification
+                    const delay = reminderDateTime.getTime() - now.getTime();
+                    setTimeout(() => {
+                        showNotification(`Reminder: ${task}`, 'success');
+                    }, delay);
+                    
+                    // Display existing reminders
+                    let output = `Reminder set successfully!\n\nTask: ${task}\nDate: ${date}\nTime: ${time}\n\nYour Reminders:\n`;
+                    reminders.forEach((reminder, index) => {
+                        output += `${index + 1}. ${reminder.task} - ${reminder.date} at ${reminder.time}\n`;
+                    });
+                    
+                    return output;
+                }
+            }
+        };
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Feature display function
+        function showFeature(featureName) {
+            const feature = features[featureName];
+            if (!feature) return;
+            
+            const contentDisplay = document.getElementById('content-display');
+            const featureTitle = document.getElementById('feature-title');
+            const featureContent = document.getElementById('feature-content');
+            const featureInputs = document.getElementById('feature-inputs');
+            
+            contentDisplay.style.display = 'block';
+            featureTitle.textContent = feature.title;
+            featureContent.textContent = feature.description;
+            featureInputs.innerHTML = feature.inputs;
+            featureInputs.style.display = 'block';
+            
+            // Scroll to feature inputs
+            featureInputs.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Bind feature-specific event handlers
+            bindFeatureHandlers(featureName);
+        }
+
+        // Feature-specific event handlers
+        function bindFeatureHandlers(featureName) {
+            switch(featureName) {
+                case 'summarizer':
+                    document.getElementById('summarizer-btn').onclick = function() {
+                        const input = document.getElementById('summarizer-input').value;
+                        if (!input.trim()) {
+                            showNotification('Please enter text to summarize', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.summarizer.process(input);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Summary generated successfully!', 'success');
+                    };
+                    break;
+                    
+                case 'search':
+                    document.getElementById('search-btn').onclick = function() {
+                        const input = document.getElementById('search-input').value;
+                        if (!input.trim()) {
+                            showNotification('Please enter keywords to search', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.search.process(input);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Search completed!', 'success');
+                    };
+                    break;
+                    
+                case 'image':
+                    document.getElementById('image-btn').onclick = function() {
+                        const fileInput = document.getElementById('image-upload');
+                        const file = fileInput.files[0];
+                        
+                        if (!file) {
+                            showNotification('Please upload an image first', 'warning');
+                            return;
+                        }
+                        
+                        if (!file.type.startsWith('image/')) {
+                            showNotification('Please upload a valid image file', 'error');
+                            return;
+                        }
+                        
+                        const result = features.image.process(file);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Image analysis started!', 'success');
+                    };
+                    break;
+                    
+                case 'data':
+                    document.getElementById('data-btn').onclick = function() {
+                        const dataInput = document.getElementById('data-input').value;
+                        const labelsInput = document.getElementById('data-labels').value || '';
+                        
+                        if (!dataInput.trim()) {
+                            showNotification('Please enter data to visualize', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.data.process(dataInput, labelsInput);
+                        document.getElementById('feature-content').innerHTML = result;
+                        showNotification('Chart generated successfully!', 'success');
+                    };
+                    break;
+                    
+                case 'reminder':
+                    document.getElementById('reminder-btn').onclick = function() {
+                        const taskInput = document.getElementById('reminder-task').value;
+                        const dateInput = document.getElementById('reminder-date').value;
+                        const timeInput = document.getElementById('reminder-time').value;
+                        
+                        if (!taskInput.trim()) {
+                            showNotification('Please enter a task description', 'warning');
+                            return;
+                        }
+                        
+                        if (!dateInput || !timeInput) {
+                            showNotification('Please select both date and time for the reminder', 'warning');
+                            return;
+                        }
+                        
+                        const result = features.reminder.process(taskInput, dateInput, timeInput);
+                        document.getElementById('feature-content').textContent = result;
+                        showNotification('Reminder set successfully!', 'success');
+                    };
+                    break;
+            }
+        }
+
+        // Global search functionality
+        document.getElementById('globalSearchBtn').onclick = function() {
+            const searchInput = document.getElementById('globalSearch').value;
+            if (!searchInput.trim()) {
+                showNotification('Please enter a search term', 'warning');
+                return;
+            }
+            
+            // Find matching features
+            const matchingFeatures = Object.keys(features).filter(key => 
+                key.toLowerCase().includes(searchInput.toLowerCase()) || 
+                features[key].title.toLowerCase().includes(searchInput.toLowerCase())
+            );
+            
+            if (matchingFeatures.length > 0) {
+                showFeature(matchingFeatures[0]);
+                showNotification(`Found matching feature: ${features[matchingFeatures[0]].title}`, 'success');
+            } else {
+                showNotification('No matching features found', 'warning');
+            }
+        };
+
+        // Enter key support for global search
+        document.getElementById('globalSearch').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('globalSearchBtn').click();
+            }
+        });
+
+        // Initialize with today's date for reminder date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('reminder-date').setAttribute('min', today);
+        });
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Your Workflow Automation Hub","Keyword Search":"Keyword Search","Find relevant information and content based on your keywords with our intelligent search engine.":"Find relevant information and content based on your keywords with our intelligent search engine.","Try Now":"Try Now","Text Summarizer":"Text Summarizer","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transform long articles into concise summaries with our text processing algorithm that extracts key points.","Image Analyzer":"Image Analyzer","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Upload any image to extract metadata, dimensions, and color information using client-side processing.","Data Visualizer":"Data Visualizer","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transform your raw data into interactive charts and graphs with customizable visualization options.","Task Reminder":"Task Reminder","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Never forget important tasks again with our smart reminder system that stores and alerts you locally.","Feature Title":"Feature Title","About Us":"About Us","Contact Us":"Contact Us","Privacy Policy":"Privacy Policy","Terms of Service":"Terms of Service","Support":"Support","Notification text":"Notification text","Enter your text below and get a concise summary.":"Enter your text below and get a concise summary.","Paste or type your text here...":"Paste or type your text here...","Enter keywords to find relevant information.":"Enter keywords to find relevant information.","Type your keywords here...":"Type your keywords here...","Upload an image to get detailed analysis.":"Upload an image to get detailed analysis.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Analyzing image...","Enter your data to generate interactive charts.":"Enter your data to generate interactive charts.","e.g., 10, 20, 30, 40, 50":"e.g., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"e.g., Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Please enter valid numeric data.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Set a reminder for your important tasks.","Enter your task description...":"Enter your task description...","Please select a future date and time for your reminder.":"Please select a future date and time for your reminder.","Please enter text to summarize":"Please enter text to summarize","Summary generated successfully!":"Summary generated successfully!","__title__":"CloudEventFlow - Your Workflow Automation Hub"},"zh-CN":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - 您的工作流程自动化中心","Keyword Search":"关键词搜索","Find relevant information and content based on your keywords with our intelligent search engine.":"通过我们的智能搜索引擎，根据您的关键词查找相关信息和内容。","Try Now":"立即尝试","Text Summarizer":"文本摘要工具","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"使用我们的文本处理算法提取关键点，将长篇文章转换为简洁的摘要。","Image Analyzer":"图像分析器","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"上传任何图像，使用客户端处理提取元数据、尺寸和颜色信息。","Data Visualizer":"数据可视化工具","Transform your raw data into interactive charts and graphs with customizable visualization options.":"将您的原始数据转换为具有自定义可视化选项的交互式图表和图形。","Task Reminder":"任务提醒","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"使用我们的智能提醒系统，本地存储并提醒您，再也不用忘记重要任务。","Feature Title":"功能标题","About Us":"关于我们","Contact Us":"联系我们","Privacy Policy":"隐私政策","Terms of Service":"服务条款","Support":"支持","Notification text":"通知文本","Enter your text below and get a concise summary.":"在下方输入您的文本以获取简洁的摘要。","Paste or type your text here...":"在此粘贴或输入您的文本...","Enter keywords to find relevant information.":"输入关键词以查找相关信息。","Type your keywords here...":"在此处输入您的关键词...","Upload an image to get detailed analysis.":"上传图像以获取详细分析。","text-align: center;":"文本居中","margin-top: 1rem;":"上边距：1rem","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"字体大小：0.8rem; 上边距：0.2rem","Analyzing image...":"分析图像...","Enter your data to generate interactive charts.":"输入您的数据以生成交互式图表。","e.g., 10, 20, 30, 40, 50":"例如，10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"例如，一，二，三，四，五","Please enter valid numeric data.":"请输入有效的数字数据。","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"上边距：5px; 字体大小：0.8rem","margin-top: 2px; font-size: 0.8rem;":"上边距：2px; 字体大小：0.8rem","font-size: 0.8rem;":"字体大小：0.8rem","Set a reminder for your important tasks.":"为您的任务设置提醒。","Enter your task description...":"输入您的任务描述...","Please select a future date and time for your reminder.":"请选择一个未来的日期和时间来设置提醒。","Please enter text to summarize":"请输入要总结的文本","Summary generated successfully!":"摘要生成成功！","__title__":"CloudEventFlow - 您的工作流程自动化中心"},"es":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Tu Hub de Automatización de Flujos de Trabajo","Keyword Search":"Búsqueda de Palabras Clave","Find relevant information and content based on your keywords with our intelligent search engine.":"Encuentra información y contenido relevante basado en tus palabras clave con nuestro motor de búsqueda inteligente.","Try Now":"Prueba Ahora","Text Summarizer":"Resumidor de Texto","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transforma artículos largos en resúmenes concisos con nuestro algoritmo de procesamiento de texto que extrae puntos clave.","Image Analyzer":"Analizador de Imágenes","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Sube cualquier imagen para extraer metadatos, dimensiones e información de color utilizando el procesamiento del lado del cliente.","Data Visualizer":"Visualizador de Datos","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transforma tus datos en bruto en gráficos interactivos y gráficos con opciones de visualización personalizables.","Task Reminder":"Recordatorio de Tareas","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Nunca olvides más tareas importantes con nuestro sistema inteligente de recordatorios que almacena y te alerta localmente.","Feature Title":"Título de Funcionalidad","About Us":"Sobre Nosotros","Contact Us":"Contactarnos","Privacy Policy":"Política de Privacidad","Terms of Service":"Términos de Servicio","Support":"Soporte","Notification text":"Texto de Notificación","Enter your text below and get a concise summary.":"Ingresa tu texto a continuación y obtén un resumen conciso.","Paste or type your text here...":"Pega o escribe tu texto aquí...","Enter keywords to find relevant information.":"Ingresa palabras clave para encontrar información relevante.","Type your keywords here...":"Escribe tus palabras clave aquí...","Upload an image to get detailed analysis.":"Sube una imagen para obtener un análisis detallado.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Analizando imagen...","Enter your data to generate interactive charts.":"Ingresa tus datos para generar gráficos interactivos.","e.g., 10, 20, 30, 40, 50":"por ejemplo, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"por ejemplo, Ene, Feb, Mar, Abr, May","Please enter valid numeric data.":"Por favor, introduce datos numéricos válidos.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Establece un recordatorio para tus tareas importantes.","Enter your task description...":"Ingresa la descripción de tu tarea...","Please select a future date and time for your reminder.":"Por favor, selecciona una fecha y hora futuras para tu recordatorio.","Please enter text to summarize":"Por favor, introduce texto para resumir","Summary generated successfully!":"Resumen generado con éxito!","__title__":"CloudEventFlow - Tu Hub de Automatización de Flujos de Trabajo"},"ja":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Your Workflow Automation Hub","Keyword Search":"Keyword Search","Find relevant information and content based on your keywords with our intelligent search engine.":"Keywordで検索して、我々のインテリジェント検索エンジンを使って関連する情報とコンテンツを見つけます。","Try Now":"Try Now","Text Summarizer":"Text Summarizer","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"我々のテキスト処理アルゴリズムがキーポイントを抽出して、長い記事を簡潔な要約に変換します。","Image Analyzer":"Image Analyzer","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"どのような画像でもアップロードして、クライアントサイド処理を使用してメタデータ、寸法、色情報を抽出します。","Data Visualizer":"Data Visualizer","Transform your raw data into interactive charts and graphs with customizable visualization options.":"カスタマイズ可能なビジュアライゼーションオプションを使用して、生データをインタラクティブなグラフに変換します。","Task Reminder":"Task Reminder","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"我々のスマートリマインダーシステムを使用して、ローカルに保存し、通知して、重要なタスクを再び忘れないようにします。","Feature Title":"Feature Title","About Us":"About Us","Contact Us":"Contact Us","Privacy Policy":"Privacy Policy","Terms of Service":"Terms of Service","Support":"Support","Notification text":"Notification text","Enter your text below and get a concise summary.":"以下にテキストを入力して、簡潔な要約を取得します。","Paste or type your text here...":"ここにテキストを貼り付けるか、タイプしてください...","Enter keywords to find relevant information.":"関連する情報を見つけるためにキーワードを入力してください。","Type your keywords here...":"ここにキーワードをタイプしてください...","Upload an image to get detailed analysis.":"詳細な分析を行うために画像をアップロードしてください。","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"画像を分析中...","Enter your data to generate interactive charts.":"インタラクティブなグラフを生成するためにデータを入力してください。","e.g., 10, 20, 30, 40, 50":"例：10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"例：Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"有効な数値データを入力してください。","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"重要なタスクのリマインダーを設定します。","Enter your task description...":"タスクの説明を入力してください...","Please select a future date and time for your reminder.":"リマインダーの未来の日付と時間を選んでください。","Please enter text to summarize":"要約するテキストを入力してください。","Summary generated successfully!":"要約が成功しました！","__title__":"CloudEventFlow - Your Workflow Automation Hub"},"ko":{"CloudEventFlow":"CloudEventFlow","Home":"홈","Features":"기능","About":"정보","Contact":"연락처","Search":"검색","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - 귀하의 작업 자동화 중심","Keyword Search":"키워드 검색","Find relevant information and content based on your keywords with our intelligent search engine.":"귀하의 키워드를 기반으로 지능적인 검색 엔진을 통해 관련 정보와 내용을 찾아보세요.","Try Now":"지금 시험해 보세요","Text Summarizer":"텍스트 요약기","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"우리의 텍스트 처리 알고리즘을 통해 핵심 포인트를 추출하여 장문의 기사를 요약으로 변환하세요.","Image Analyzer":"이미지 분석기","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"客户端处理以提取元数据、尺寸和颜色信息，上传任何图像。","Data Visualizer":"데이터 시각화 도구","Transform your raw data into interactive charts and graphs with customizable visualization options.":"사용자 정의 시각화 옵션을 통해 원시 데이터를 상호작용형 차트와 그래프로 변환하세요.","Task Reminder":"태스크 알림","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"우리의 지능적인 알림 시스템을 통해 로컬에서 저장하고 알림을 보내므로 중요한 작업을 다시는 잊지 마세요.","Feature Title":"기능 제목","About Us":"우리에 대해","Contact Us":"연락처","Privacy Policy":"개인정보 보호 정책","Terms of Service":"서비스 조건","Support":"지원","Notification text":"알림 텍스트","Enter your text below and get a concise summary.":"하단에 텍스트를 입력하고 요약을 받아보세요.","Paste or type your text here...":"여기에 텍스트를 붙여넣거나 입력하세요...","Enter keywords to find relevant information.":"관련 정보를 찾기 위해 키워드를 입력하세요.","Type your keywords here...":"여기에 키워드를 입력하세요...","Upload an image to get detailed analysis.":"상세한 분석을 위해 이미지를 업로드하세요.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"이미지 분석 중...","Enter your data to generate interactive charts.":"상호작용형 차트를 생성하기 위해 데이터를 입력하세요.","e.g., 10, 20, 30, 40, 50":"예: 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"예: Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"유효한 숫자 데이터를 입력하세요.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"중요한 작업을 위한 알림을 설정하세요.","Enter your task description...":"태스크 설명을 입력하세요...","Please select a future date and time for your reminder.":"알림의 미래 날짜와 시간을 선택하세요.","Please enter text to summarize":"요약할 텍스트를 입력하세요","Summary generated successfully!":"요약이 성공적으로 생성되었습니다!","__title__":"CloudEventFlow - 귀하의 작업 자동화 중심"},"fr":{"CloudEventFlow":"CloudEventFlow","Home":"Accueil","Features":"Fonctionnalités","About":"À propos","Contact":"Contact","Search":"Recherche","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Votre Centre d'Automatisation de Flux de Travail","Keyword Search":"Recherche par mot-clé","Find relevant information and content based on your keywords with our intelligent search engine.":"Trouvez des informations et du contenu pertinents en fonction de vos mots-clés avec notre moteur de recherche intelligent.","Try Now":"Essayer maintenant","Text Summarizer":"Résumeur de texte","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transformez des articles longs en résumés concis avec notre algorithme de traitement de texte qui extrait les points clés.","Image Analyzer":"Analyseur d'image","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Téléchargez n'importe quelle image pour extraire les métadonnées, les dimensions et les informations de couleur en utilisant le traitement côté client.","Data Visualizer":"Visualisateur de données","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transformez vos données brutes en graphiques interactifs et en graphiques avec des options de visualisation personnalisables.","Task Reminder":"Rappel de tâche","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Ne ratez plus jamais des tâches importantes avec notre système de rappel intelligent qui stocke et vous alerte localement.","Feature Title":"Titre de fonctionnalité","About Us":"À propos de nous","Contact Us":"Contactez-nous","Privacy Policy":"Politique de confidentialité","Terms of Service":"Conditions d'utilisation","Support":"Support","Notification text":"Texte de notification","Enter your text below and get a concise summary.":"Entrez votre texte ci-dessous et obtenez un résumé concis.","Paste or type your text here...":"Coller ou saisir votre texte ici...","Enter keywords to find relevant information.":"Entrez des mots-clés pour trouver des informations pertinentes.","Type your keywords here...":"Saisissez vos mots-clés ici...","Upload an image to get detailed analysis.":"Téléchargez une image pour obtenir une analyse détaillée.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Analyse de l'image...","Enter your data to generate interactive charts.":"Entrez vos données pour générer des graphiques interactifs.","e.g., 10, 20, 30, 40, 50":"par exemple, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"par exemple, Jan, Fév, Mar, Avr, Mai","Please enter valid numeric data.":"Veuillez entrer des données numériques valides.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Définissez un rappel pour vos tâches importantes.","Enter your task description...":"Entrez une description de votre tâche...","Please select a future date and time for your reminder.":"Veuillez sélectionner une date et une heure futures pour votre rappel.","Please enter text to summarize":"Veuillez entrer du texte à résumer","Summary generated successfully!":"Résumé généré avec succès!","__title__":"CloudEventFlow - Votre Centre d'Automatisation de Flux de Travail"},"de":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"Über","Contact":"Kontakt","Search":"Suche","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Ihr Workflow-Automatisierungs-Hub","Keyword Search":"Schlüsselwort-Suche","Find relevant information and content based on your keywords with our intelligent search engine.":"Finden Sie relevante Informationen und Inhalte basierend auf Ihren Schlüsselwörtern mit unserem intelligenten Suchmotor.","Try Now":"Jetzt ausprobieren","Text Summarizer":"Textzusammenfasser","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transformieren Sie lange Artikel in prägnante Zusammenfassungen mit unserem Textverarbeitungsalgorithmus, der Schlüsselpunkte extrahiert.","Image Analyzer":"Bilananalyzer","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Laden Sie jedes Bild hoch, um Metadaten, Abmessungen und Farbinformationen mit clientseitiger Verarbeitung zu extrahieren.","Data Visualizer":"Datenvisualisierer","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transformieren Sie Ihre Rohdaten in interaktive Diagramme und Graphen mit anpassbaren Visualisierungsoptionen.","Task Reminder":"Aufgaben-Erinnerung","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Vergessen Sie wichtige Aufgaben nie wieder mit unserem intelligenten Erinnerungssystem, das lokal speichert und Sie benachrichtigt.","Feature Title":"Funktionstitel","About Us":"Über uns","Contact Us":"Kontaktieren Sie uns","Privacy Policy":"Datenschutzbestimmungen","Terms of Service":"Nutzungsbedingungen","Support":"Support","Notification text":"Benachrichtigungstext","Enter your text below and get a concise summary.":"Geben Sie Ihren Text unten ein und erhalten Sie eine prägnante Zusammenfassung.","Paste or type your text here...":"Fügen Sie Ihren Text hier ein oder tippen Sie ihn ein...","Enter keywords to find relevant information.":"Geben Sie Schlüsselwörter ein, um relevante Informationen zu finden.","Type your keywords here...":"Geben Sie Ihre Schlüsselwörter hier ein...","Upload an image to get detailed analysis.":"Laden Sie ein Bild hoch, um eine detaillierte Analyse zu erhalten.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Bild wird analysiert...","Enter your data to generate interactive charts.":"Geben Sie Ihre Daten ein, um interaktive Diagramme zu generieren.","e.g., 10, 20, 30, 40, 50":"z.B., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"z.B., Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Bitte geben Sie gültige numerische Daten ein.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Setzen Sie eine Erinnerung für Ihre wichtigen Aufgaben.","Enter your task description...":"Geben Sie Ihre Aufgabenbeschreibung ein...","Please select a future date and time for your reminder.":"Bitte wählen Sie ein zukünftiges Datum und eine Uhrzeit für Ihre Erinnerung aus.","Please enter text to summarize":"Bitte geben Sie Text zum Zusammenfassen ein","Summary generated successfully!":"Zusammenfassung erfolgreich generiert!","__title__":"CloudEventFlow - Ihr Workflow-Automatisierungs-Hub"},"ru":{"CloudEventFlow":"CloudEventFlow","Home":"Дом","Features":"Функции","About":"О нас","Contact":"Контакт","Search":"Поиск","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Ваш хаб автоматизации рабочих процессов","Keyword Search":"Поиск по ключевым словам","Find relevant information and content based on your keywords with our intelligent search engine.":"Найдите релевантную информацию и контент на основе ваших ключевых слов с помощью нашего умного поискового двигателя.","Try Now":"Попробуйте сейчас","Text Summarizer":"Сумmarizer текста","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Преобразуйте длинные статьи в краткие резюме с помощью нашего алгоритма обработки текста, который извлекает ключевые моменты.","Image Analyzer":"Анализатор изображений","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Загрузите любое изображение, чтобы извлечь метаданные, размеры и информацию о цвете с помощью клиентской обработки.","Data Visualizer":"Визуализатор данных","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Преобразуйте ваши исходные данные в интерактивные графики и диаграммы с настраиваемыми параметрами визуализации.","Task Reminder":"Памятка задачи","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Больше не забывайте важные задачи с помощью нашего умного системы напоминаний, которая хранит и оповещает вас локально.","Feature Title":"Заголовок функции","About Us":"О нас","Contact Us":"Свяжитесь с нами","Privacy Policy":"Политика конфиденциальности","Terms of Service":"Условия обслуживания","Support":"Поддержка","Notification text":"Текст уведомления","Enter your text below and get a concise summary.":"Введите ваш текст ниже и получите краткое резюме.","Paste or type your text here...":"Вставьте или введите ваш текст здесь...","Enter keywords to find relevant information.":"Введите ключевые слова, чтобы найти релевантную информацию.","Type your keywords here...":"Введите ваши ключевые слова здесь...","Upload an image to get detailed analysis.":"Загрузите изображение, чтобы получить детальный анализ.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Анализ изображения...","Enter your data to generate interactive charts.":"Введите ваши данные для генерации интерактивных графиков.","e.g., 10, 20, 30, 40, 50":"например, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"например, Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Пожалуйста, введите действительные числовые данные.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Установите напоминание для ваших важных задач.","Enter your task description...":"Введите описание вашей задачи...","Please select a future date and time for your reminder.":"Пожалуйста, выберите будущее дату и время для вашего напоминания.","Please enter text to summarize":"Пожалуйста, введите текст для резюмирования","Summary generated successfully!":"Резюме успешно сгенерировано!","__title__":"CloudEventFlow - Ваш хаб автоматизации рабочих процессов"},"pt":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Seu Hub de Automação de Fluxo de Trabalho","Keyword Search":"Pesquisa por Palavra-chave","Find relevant information and content based on your keywords with our intelligent search engine.":"Encontre informações e conteúdo relevantes com base nas suas palavras-chave através do nosso motor de busca inteligente.","Try Now":"Experimente Agora","Text Summarizer":"Resumidor de Texto","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transforme artigos longos em resumos concisos com nosso algoritmo de processamento de texto que extrai pontos-chave.","Image Analyzer":"Analisador de Imagem","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Carregue qualquer imagem para extrair metadados, dimensões e informações de cor usando processamento no lado do cliente.","Data Visualizer":"Visualizador de Dados","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transforme seus dados brutos em gráficos e gráficos interativos com opções de visualização personalizáveis.","Task Reminder":"Lembrete de Tarefa","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Nunca mais esqueça tarefas importantes com nosso sistema inteligente de lembrete que armazena e alerta você localmente.","Feature Title":"Título da Funcionalidade","About Us":"Sobre Nós","Contact Us":"Entre em Contato conosco","Privacy Policy":"Política de Privacidade","Terms of Service":"Termos de Serviço","Support":"Suporte","Notification text":"Texto de Notificação","Enter your text below and get a concise summary.":"Insira seu texto abaixo e obtenha um resumo conciso.","Paste or type your text here...":"Cole ou digite seu texto aqui...","Enter keywords to find relevant information.":"Insira palavras-chave para encontrar informações relevantes.","Type your keywords here...":"Digite suas palavras-chave aqui...","Upload an image to get detailed analysis.":"Carregue uma imagem para obter análise detalhada.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Analisando imagem...","Enter your data to generate interactive charts.":"Insira seus dados para gerar gráficos interativos.","e.g., 10, 20, 30, 40, 50":"ex., 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"ex., Jan, Fev, Mar, Abr, Mai","Please enter valid numeric data.":"Por favor, insira dados numéricos válidos.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Defina um lembrete para suas tarefas importantes.","Enter your task description...":"Insira a descrição da sua tarefa...","Please select a future date and time for your reminder.":"Por favor, selecione uma data e hora futuras para o seu lembrete.","Please enter text to summarize":"Por favor, insira o texto a ser resumido","Summary generated successfully!":"Resumo gerado com sucesso!","__title__":"CloudEventFlow - Seu Hub de Automação de Fluxo de Trabalho"},"ar":{"CloudEventFlow":"CloudEventFlow","Home":"المنزل","Features":"الميزات","About":"عننا","Contact":"اتصل بنا","Search":"البحث","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - مركز تحكم عملياتك","Keyword Search":"البحث عن الكلمات المفتاحية","Find relevant information and content based on your keywords with our intelligent search engine.":"ابحث عن معلومات و محتوى مرتبط بناءً على كلماتك المفتاحية باستخدام محرك البحث الذكي الخاص بنا.","Try Now":"جرب الآن","Text Summarizer":"مختصر النص","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"تحويل المقالات الطويلة إلى مختصرات مختصرة باستخدام خوارزمية معالجة النصوص الخاصة بنا التي تخرج النقاط الرئيسية.","Image Analyzer":"محلل الصور","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"رفع أي صورة لاستخراج البيانات الوصفية، الأبعاد، و معلومات الألوان باستخدام معالجة الجانب العملاء.","Data Visualizer":"مفسر البيانات","Transform your raw data into interactive charts and graphs with customizable visualization options.":"تحويل بياناتك الخام إلى رسوم بيانية و مخططات تفاعلية بخيارات عرض مخصصة.","Task Reminder":"تذكير المهمة","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"لا تنسى المهمات الهامة مرة أخرى مع نظام التذكير الذكي الخاص بنا الذي يحفظ ويخبرك محليًا.","Feature Title":"عنوان الميزة","About Us":"عننا","Contact Us":"اتصل بنا","Privacy Policy":"سياسة الخصوصية","Terms of Service":"شروط الخدمة","Support":"الدعم","Notification text":"نص الإخطار","Enter your text below and get a concise summary.":"أدخل نصك أدناه للحصول على مختصر.","Paste or type your text here...":"ألصق أو اكتب نصك هنا...","Enter keywords to find relevant information.":"أدخل الكلمات المفتاحية للبحث عن معلومات مرتبطة.","Type your keywords here...":"اكتب كلماتك المفتاحية هنا...","Upload an image to get detailed analysis.":"رفع صورة للحصول على تحليل مفصل.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"تحليل الصورة...","Enter your data to generate interactive charts.":"أدخل بياناتك لإنشاء رسوم بيانية تفاعلية.","e.g., 10, 20, 30, 40, 50":"مثلاً، 10، 20، 30، 40، 50","e.g., Jan, Feb, Mar, Apr, May":"مثلاً، كانون الثاني، شباط، آذار، نيسان، أيار","Please enter valid numeric data.":"يرجى إدخال بيانات عددية صالحة.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"ضبط تذكير للمهمات الهامة.","Enter your task description...":"أدخل وصف مهمتك...","Please select a future date and time for your reminder.":"يرجى اختيار تاريخ وموعد المستقبلية لتذكيرك.","Please enter text to summarize":"يرجى إدخال النص للتحليل.","Summary generated successfully!":"تم إنشاء المختصر بنجاح!","__title__":"CloudEventFlow - مركز تحكم عملياتك"},"hi":{"CloudEventFlow":"CloudEventFlow","Home":"होम","Features":"फीचर्स","About":"बारे में","Contact":"संपर्क","Search":"खोज","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - आपके कार्य प्रणाली ऑटोमेशन हब","Keyword Search":"कीवर्ड सर्च","Find relevant information and content based on your keywords with our intelligent search engine.":"हमारे बुद्धिमान खोज इंजन के आधार पर आपके कीवर्ड्स के आधार पर प्रासंगिक सूचना और सामग्री खोजें。","Try Now":"अभी चालू करें","Text Summarizer":"पाठ संक्षेपक","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"हमारे पाठ प्रसंस्करण एल्गोरिथम के साथ लंबे लेखों को संक्षिप्त संक्षेप में बदलें जो मुख्य बिंदुओं को निकालता है。","Image Analyzer":"इमेज एनालायज़र","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"किसी भी इमेज को अपलोड करें ताकि क्लायंट-साइड प्रोसेसिंग के जरिए मेटाडाटा, आकार और रंग सूचना निकाला जा सके。","Data Visualizer":"डेटा विज़ुअलाइज़र","Transform your raw data into interactive charts and graphs with customizable visualization options.":"अपने कच्चे डेटा को अनुकूलनीय विज़ुअलाइज़ेशन विकल्पों के साथ इंटरैक्टिव चार्ट और ग्राफ के रूप में बदलें。","Task Reminder":"कार्य रीमाइंडर","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"हमारे बुद्धिमान रीमाइंडर सिस्टम के साथ फिर कभी महत्वपूर्ण कार्यों को नहीं भूलें जो स्थानीय रूप से भंडारित और आपको अलर्ट करता है。","Feature Title":"फीचर शीर्षक","About Us":"हम के बारे में","Contact Us":"हमसे संपर्क करें","Privacy Policy":"गोपनीयता नीति","Terms of Service":"सेवा शर्तें","Support":"सपोर्ट","Notification text":"अधिसूचना पाठ","Enter your text below and get a concise summary.":"अपना पाठ नीचे दर्ज करें और एक संक्षिप्त संक्षेप प्राप्त करें。","Paste or type your text here...":"यहाँ क्लिप करें या पाठ टाइप करें...","Enter keywords to find relevant information.":"प्रासंगिक सूचना खोजने के लिए कीवर्ड्स दर्ज करें。","Type your keywords here...":"यहाँ अपने कीवर्ड्स टाइप करें...","Upload an image to get detailed analysis.":"विस्तृत विश्लेषण प्राप्त करने के लिए इमेज अपलोड करें。","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"इमेज विश्लेषण किया जा रहा है...","Enter your data to generate interactive charts.":"अपना डेटा दर्ज करें ताकि इंटरैक्टिव चार्ट बनाए जा सकें。","e.g., 10, 20, 30, 40, 50":"उदाहरण के लिए, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"उदाहरण के लिए, जन, फ़ेब, मार, अप्र, मई","Please enter valid numeric data.":"कृपया वैध नंबरिक डेटा दर्ज करें。","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"अपने महत्वपूर्ण कार्यों के लिए एक रीमाइंडर सेट करें。","Enter your task description...":"अपने कार्य वर्णन दर्ज करें...","Please select a future date and time for your reminder.":"कृपया अपने रीमाइंडर के लिए भविष्य की तारीख और समय चुनें。","Please enter text to summarize":"कृपया संक्षेप करने के लिए पाठ दर्ज करें","Summary generated successfully!":"संक्षेप सफलता से बनाया गया!","__title__":"CloudEventFlow - आपके कार्य प्रणाली ऑटोमेशन हब"},"id":{"CloudEventFlow":"CloudEventFlow","Home":"Beranda","Features":"Fitur","About":"Tentang","Contact":"Kontak","Search":"Cari","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Pusat Otomatisasi Alur Kerja Anda","Keyword Search":"Pencarian Kata Kunci","Find relevant information and content based on your keywords with our intelligent search engine.":"Temukan informasi dan konten yang relevan berdasarkan kata kunci Anda dengan mesin pencari cerdas kami.","Try Now":"Coba Sekarang","Text Summarizer":"Penggabung Teks","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Transformasi artikel yang panjang menjadi ringkasan yang singkat dengan algoritma pengolahan teks kami yang mengeluarkan titik penting.","Image Analyzer":"Analisis Gambar","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Unggah gambar apapun untuk mengekstrak metadata, dimensi, dan informasi warna menggunakan proses sisi klien.","Data Visualizer":"Penggambangan Data","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Transformasi data mentah Anda menjadi grafik dan papan interaktif dengan opsi penggambangan yang dapat disesuaikan.","Task Reminder":"Pengingat Tugas","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Jangan lupa lagi tugas penting dengan sistem pengingat cerdas kami yang menyimpan dan memberi tanda peringatan secara lokal.","Feature Title":"Judul Fitur","About Us":"Tentang Kami","Contact Us":"Hubungi Kami","Privacy Policy":"Kebijakan Privasi","Terms of Service":"Syarat Layanan","Support":"Dukungan","Notification text":"Teks Notifikasi","Enter your text below and get a concise summary.":"Masukkan teks Anda di bawah ini dan dapatkan ringkasan yang singkat.","Paste or type your text here...":"Lepas atau ketik teks di sini...","Enter keywords to find relevant information.":"Masukkan kata kunci untuk menemukan informasi yang relevan.","Type your keywords here...":"Ketik kata kunci Anda di sini...","Upload an image to get detailed analysis.":"Unggah gambar untuk mendapatkan analisis detil.","text-align: center;":"text-align: tengah;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Menganalisis gambar...","Enter your data to generate interactive charts.":"Masukkan data Anda untuk menghasilkan grafik interaktif.","e.g., 10, 20, 30, 40, 50":"contoh, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"contoh, Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Silakan masukkan data numerik yang valid.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Atur pengingat untuk tugas penting Anda.","Enter your task description...":"Masukkan deskripsi tugas Anda...","Please select a future date and time for your reminder.":"Silakan pilih tanggal dan waktu masa mendatang untuk pengingat Anda.","Please enter text to summarize":"Silakan masukkan teks untuk disumarsikan","Summary generated successfully!":"Ringkasan dihasilkan dengan sukses!","__title__":"CloudEventFlow - Pusat Otomatisasi Alur Kerja Anda"},"vi":{"CloudEventFlow":"CloudEventFlow","Home":"Home","Features":"Features","About":"About","Contact":"Contact","Search":"Search","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - Trung tâm Tự động hóa Công việc của Bạn","Keyword Search":"Tìm kiếm từ khóa","Find relevant information and content based on your keywords with our intelligent search engine.":"Tìm kiếm thông tin và nội dung liên quan dựa trên từ khóa của bạn bằng bộ tìm kiếm thông minh của chúng tôi.","Try Now":"Thử Ngay","Text Summarizer":"Tóm tắt văn bản","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"Chuyển đổi các bài viết dài thành tóm tắt ngắn gọn bằng thuật toán xử lý văn bản của chúng tôi, lấy ra các điểm chính.","Image Analyzer":"Phân tích hình ảnh","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"Tải lên bất kỳ hình ảnh nào để lấy metadata, kích thước và thông tin màu sắc bằng cách xử lý tại client.","Data Visualizer":"Xử lý dữ liệu trực quan","Transform your raw data into interactive charts and graphs with customizable visualization options.":"Chuyển đổi dữ liệu thô của bạn thành biểu đồ và đồ thị tương tác với các tùy chọn trực quan hóa tùy chỉnh.","Task Reminder":"Nhắc việc","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"Không bao giờ quên các công việc quan trọng nữa với hệ thống nhắc việc thông minh của chúng tôi, lưu trữ và thông báo cho bạn loca.","Feature Title":"Tiêu đề tính năng","About Us":"Về Chúng Tôi","Contact Us":"Liên Hệ Với Chúng Tôi","Privacy Policy":"Chính Sách Bảo Mật","Terms of Service":"Điều Khoản Dịch Vụ","Support":"Hỗ Trợ","Notification text":"Văn bản thông báo","Enter your text below and get a concise summary.":"Nhập văn bản của bạn dưới đây và nhận tóm tắt ngắn gọn.","Paste or type your text here...":"Dán hoặc gõ văn bản của bạn ở đây...","Enter keywords to find relevant information.":"Nhập từ khóa để tìm thông tin liên quan.","Type your keywords here...":"Gõ từ khóa của bạn ở đây...","Upload an image to get detailed analysis.":"Tải lên hình ảnh để nhận phân tích chi tiết.","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"Đang phân tích hình ảnh...","Enter your data to generate interactive charts.":"Nhập dữ liệu của bạn để tạo biểu đồ tương tác.","e.g., 10, 20, 30, 40, 50":"ví dụ: 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"ví dụ: Jan, Feb, Mar, Apr, May","Please enter valid numeric data.":"Vui lòng nhập dữ liệu số học hợp lệ.","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"Đặt nhắc việc cho các công việc quan trọng của bạn.","Enter your task description...":"Nhập mô tả công việc của bạn...","Please select a future date and time for your reminder.":"Vui lòng chọn ngày và giờ trong tương lai cho nhắc việc của bạn.","Please enter text to summarize":"Vui lòng nhập văn bản để tóm tắt","Summary generated successfully!":"Tóm tắt được tạo thành công!","__title__":"CloudEventFlow - Trung tâm Tự động hóa Công việc của Bạn"},"th":{"CloudEventFlow":"CloudEventFlow","Home":"หน้าหลัก","Features":"คุณสมบัติ","About":"เกี่ยวกับเรา","Contact":"ติดต่อเรา","Search":"ค้นหา","CloudEventFlow - Your Workflow Automation Hub":"CloudEventFlow - ฮับบ์ท์ประสานงานอัตโนมัติของคุณ","Keyword Search":"ค้นหาด้วยคำกำหนด","Find relevant information and content based on your keywords with our intelligent search engine.":"หาข้อมูลและเนื้อหาที่เกี่ยวข้องตามคำกำหนดของคุณด้วยเครื่องค้นหาที่มีสมองของเรา","Try Now":"ลองทำเลย","Text Summarizer":"ตัวย่อข้อความ","Transform long articles into concise summaries with our text processing algorithm that extracts key points.":"แปลงบทความยาวเป็นบทสรุปที่สั้นๆด้วยแอลกอริทึมการประมวลผลข้อความของเราที่เอาจุดสำคัญออกมา","Image Analyzer":"ตัววิเคราะห์ภาพ","Upload any image to extract metadata, dimensions, and color information using client-side processing.":"อัพโหลดภาพใดก็ได้เพื่อดึงข้อมูล metadata, ขนาด, และข้อมูลสีด้วยการประมวลผลทางฝั่งลูกค้า","Data Visualizer":"ตัววิเคราะห์ข้อมูล","Transform your raw data into interactive charts and graphs with customizable visualization options.":"แปลงข้อมูลส่วนตัวของคุณเป็นกราฟและตารางที่สามารถปรับแต่งตามต้องการ","Task Reminder":"คำเตือนงานภารกิจ","Never forget important tasks again with our smart reminder system that stores and alerts you locally.":"จะไม่ลืมภารกิจสำคัญอีกต่อไปด้วยระบบคำเตือนสมองของเราที่เก็บและเตือนคุณท้องถิ่น","Feature Title":"หัวข้อคุณสมบัติ","About Us":"เกี่ยวกับเรา","Contact Us":"ติดต่อเรา","Privacy Policy":"นโยบายความเป็นส่วนตัว","Terms of Service":"เงื่อนไขการให้บริการ","Support":"สนับสนุน","Notification text":"ข้อความการแจ้งเตือน","Enter your text below and get a concise summary.":"ใส่ข้อความของคุณด้านล่างและได้รับบทสรุปที่สั้นๆ","Paste or type your text here...":"แปะหรือใส่ข้อความของคุณที่นี่... ","Enter keywords to find relevant information.":"ใส่คำกำหนดเพื่อหาข้อมูลที่เกี่ยวข้อง","Type your keywords here...":"ใส่คำกำหนดของคุณที่นี่...","Upload an image to get detailed analysis.":"อัพโหลดภาพเพื่อได้รับการวิเคราะห์ละเอียด","text-align: center;":"text-align: center;","margin-top: 1rem;":"margin-top: 1rem;","display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;":"display: flex; justify-content: center; gap: 10px; margin-top: 0.5rem;","display: flex; flex-direction: column; align-items: center;":"display: flex; flex-direction: column; align-items: center;","font-size: 0.8rem; margin-top: 0.2rem;":"font-size: 0.8rem; margin-top: 0.2rem;","Analyzing image...":"กำลังวิเคราะห์ภาพ...","Enter your data to generate interactive charts.":"ใส่ข้อมูลของคุณเพื่อสร้างกราฟที่สามารถปรับแต่งตามต้องการ","e.g., 10, 20, 30, 40, 50":"ตัวอย่าง, 10, 20, 30, 40, 50","e.g., Jan, Feb, Mar, Apr, May":"ตัวอย่าง, ม.ค., ก.พ., มี.ค., เม.ย., พ.ค.","Please enter valid numeric data.":"กรุณาใส่ข้อมูลตัวเลขที่ถูกต้อง","position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;":"position: relative; height: 300px; margin: 20px 0; display: flex; align-items: flex-end; justify-content: space-around;","flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;":"flex: 1; margin: 0 5px; display: flex; flex-direction: column; align-items: center;","margin-top: 5px; font-size: 0.8rem;":"margin-top: 5px; font-size: 0.8rem;","margin-top: 2px; font-size: 0.8rem;":"margin-top: 2px; font-size: 0.8rem;","font-size: 0.8rem;":"font-size: 0.8rem;","Set a reminder for your important tasks.":"ตั้งคำเตือนสำหรับภารกิจสำคัญของคุณ","Enter your task description...":"ใส่คำอธิบายภารกิจของคุณ...","Please select a future date and time for your reminder.":"กรุณาเลือกวันและเวลาในอนาคตสำหรับคำเตือนของคุณ","Please enter text to summarize":"กรุณาใส่ข้อความที่ต้องการสรุป","Summary generated successfully!":"สร้างบทสรุปสำเร็จ!","__title__":"CloudEventFlow - ฮับบ์ท์ประสานงานอัตโนมัติของคุณ"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
+</html>

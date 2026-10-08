@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StoryBoarder · Storyboard Builder</title>
+    <meta name="description" content="StoryBoarder · Storyboard Builder. No signup, no payment — free forever.">
+    <meta property="og:title" content="StoryBoarder · Storyboard Builder">
+    <meta property="og:description" content="StoryBoarder · Storyboard Builder. No signup, no payment — free forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_223313_AI StoryBoar.html">
+    <meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --primary-color: #00a884;
+            --bg-primary: #0f1115;
+            --bg-secondary: #262b36;
+            --bg-tertiary: #1a1d23;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a9b8;
+            --text-tertiary: #6b7280;
+            --border-color: #3a4152;
+            --error-color: #f44336;
+            --warning-color: #ff9800;
+            --success-color: #4caf50;
+            --info-color: #2196f3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: var(--bg-tertiary);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .upload-section {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 3rem;
+            text-align: center;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover, .upload-area.drag-over {
+            background-color: var(--bg-tertiary);
+        }
+
+        .upload-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .upload-button:hover {
+            background-color: #008a6f;
+        }
+
+        .storyboard-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .storyboard-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .storyboard-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .storyboard-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .storyboard-item-caption {
+            padding: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #008a6f;
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #2a2e36;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            color: white;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.info {
+            background-color: var(--info-color);
+        }
+
+        .notification.success {
+            background-color: var(--success-color);
+        }
+
+        .notification.warning {
+            background-color: var(--warning-color);
+        }
+
+        .notification.error {
+            background-color: var(--error-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body h3 {
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .modal-body h4 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body ul {
+            margin-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .storyboard-preview {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">StoryBoarder</div>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link active" data-feature="tool">Storyboard Tool</a></li>
+                <li><a href="#" class="nav-link" data-feature="help">How to Use</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>AI StoryBoarder</h1>
+            <p>Turn your images and videos into a clean storyboard board. Upload your visual content, build a shot list, edit titles and notes, then export or save your project, all locally in your browser.</p>
+        </section>
+
+        <section class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <p>Drag & drop your images or videos here</p>
+                <p style="margin-top: 1rem; color: var(--text-secondary);">or</p>
+                <button class="upload-button" id="uploadButton">Browse Files</button>
+                <input type="file" id="fileInput" style="display: none;" accept="image/*,video/*" multiple>
+            </div>
+
+            <div class="storyboard-preview" id="storyboardPreview"></div>
+
+            <div class="action-buttons">
+                <button class="btn" id="generateStoryboard">Generate Storyboard</button>
+                <button class="btn btn-secondary" id="exportStoryboard">Export Storyboard</button>
+                <button class="btn btn-secondary" id="saveProject">Save Project</button>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <h3 class="feature-title">Instant Storyboard Board</h3>
+                <p class="feature-description">Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3 class="feature-title">Multi-Format Support</h3>
+                <p class="feature-description">Upload images and videos in various formats. Our system handles all major file types seamlessly.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💾</div>
+                <h3 class="feature-title">Save & Export</h3>
+                <p class="feature-description">Save your projects locally and export your storyboard as a shareable file for review and presentation.</p>
+            </div>
+        </section>
+    </main>
+
+    <div class="notification" id="notification"></div>
+
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>How to Use AI StoryBoarder</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h3>Getting Started</h3>
+                <p>AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:</p>
+                
+                <h4>Step 1: Upload Your Content</h4>
+                <p>Drag and drop your images or videos into the upload area, or click "Browse Files" to select them from your device. You can upload multiple files at once.</p>
+                
+                <h4>Step 2: Generate Storyboard</h4>
+                <p>Once your files are uploaded, click Generate Storyboard to build your board, one card per file. You can edit each card's title and notes right on the board, reorder or remove shots.</p>
+                
+                <h4>Step 3: Review and Export</h4>
+                <p>Preview your storyboard and make any adjustments. When you're satisfied, export it as a shareable file or save your project to resume later.</p>
+                
+                <h3>Tips for Best Results</h3>
+                <ul>
+                    <li>Use high-quality images and videos for best results</li>
+                    <li>Include visual variety in your uploads</li>
+                    <li>Consider the narrative flow of your content</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let uploadedFiles = [];
+        let storyboardData = [];
+        
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const uploadButton = document.getElementById('uploadButton');
+        const fileInput = document.getElementById('fileInput');
+        const generateStoryboardBtn = document.getElementById('generateStoryboard');
+        const exportStoryboardBtn = document.getElementById('exportStoryboard');
+        const saveProjectBtn = document.getElementById('saveProject');
+        const storyboardPreview = document.getElementById('storyboardPreview');
+        const notification = document.getElementById('notification');
+        const helpModal = document.getElementById('helpModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSavedProject();
+            setupEventListeners();
+        });
+        
+        // Event listeners setup
+        function setupEventListeners() {
+            // File upload
+            uploadButton.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            uploadArea.addEventListener('dragover', handleDragOver);
+            uploadArea.addEventListener('dragleave', handleDragLeave);
+            uploadArea.addEventListener('drop', handleDrop);
+            
+            // Action buttons
+            generateStoryboardBtn.addEventListener('click', generateStoryboard);
+            exportStoryboardBtn.addEventListener('click', exportStoryboard);
+            saveProjectBtn.addEventListener('click', saveProject);
+            
+            // Modal
+            closeModalBtn.addEventListener('click', () => helpModal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === helpModal) {
+                    helpModal.style.display = 'none';
+                }
+            });
+            
+            // Navigation - Fixed to properly bind to all nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', handleNavClick);
+            });
+        }
+        
+        // File handling
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
+        
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        }
+        
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+        }
+        
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
+        
+        function processFiles(files) {
+            const validFiles = files.filter(file => {
+                return file.type.startsWith('image/') || file.type.startsWith('video/');
+            });
+            
+            if (validFiles.length === 0) {
+                showNotification('Please upload valid image or video files.', 'error');
+                return;
+            }
+            
+            validFiles.forEach(file => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const fileData = {
+                        id: Date.now() + Math.random(),
+                        name: file.name,
+                        type: file.type,
+                        url: e.target.result,
+                        duration: 0
+                    };
+                    
+                    // Get actual video duration for video files
+                    if (file.type.startsWith('video/')) {
+                        const video = document.createElement('video');
+                        video.preload = 'metadata';
+                        video.onloadedmetadata = function() {
+                            fileData.duration = Math.floor(video.duration);
+                            uploadedFiles.push(fileData);
+                            displayFile(fileData);
+                        };
+                        video.src = e.target.result;
+                    } else {
+                        uploadedFiles.push(fileData);
+                        displayFile(fileData);
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            showNotification(`${validFiles.length} file(s) uploaded successfully.`, 'success');
+        }
+        
+        function displayFile(fileData) {
+            const fileElement = document.createElement('div');
+            fileElement.className = 'storyboard-item';
+            fileElement.id = `file-${fileData.id}`;
+            
+            let content;
+            if (fileData.type.startsWith('image/')) {
+                content = `<img src="${fileData.url}" alt="${fileData.name}">`;
+            } else {
+                content = `<div style="height: 150px; display: flex; align-items: center; justify-content: center; background-color: var(--bg-tertiary);">
+                    <span>Video: ${fileData.name} (${fileData.duration}s)</span>
+                </div>`;
+            }
+            
+            fileElement.innerHTML = `
+                ${content}
+                <div class="storyboard-item-caption">${fileData.name}</div>
+            `;
+            
+            storyboardPreview.appendChild(fileElement);
+        }
+        
+        // Storyboard building（真实逻辑：把上传素材整理成可编辑的分镜卡；无假延迟、无模板假文案）
+        function generateStoryboard() {
+            if (uploadedFiles.length === 0) {
+                showNotification('Please upload files first.', 'warning');
+                return;
+            }
+            storyboardData = uploadedFiles.map((file, index) => ({
+                id: file.id,
+                position: index,
+                title: file.name.replace(/\.[^.]+$/, ''),
+                description: '',
+                duration: file.duration,
+                notes: ''
+            }));
+            displayStoryboard();
+            showNotification('Storyboard built, edit titles and notes on each card.', 'success');
+        }
+
+        function displayStoryboard() {
+            storyboardPreview.innerHTML = '';
+            storyboardData.forEach((scene, index) => {
+                const file = uploadedFiles.find(f => f.id === scene.id);
+                const sceneElement = document.createElement('div');
+                sceneElement.className = 'storyboard-item';
+                sceneElement.id = 'scene-' + scene.id;
+
+                if (file && file.type && file.type.startsWith('image/')) {
+                    const img = document.createElement('img');
+                    img.src = file.url;
+                    img.alt = scene.title || 'scene';
+                    sceneElement.appendChild(img);
+                } else {
+                    const holder = document.createElement('div');
+                    holder.style.cssText = 'height:150px;display:flex;align-items:center;justify-content:center;background-color:var(--bg-tertiary);';
+                    const span = document.createElement('span');
+                    span.textContent = '🎬 ' + (scene.title || '') + (scene.duration > 0 ? ' · ' + scene.duration + 's' : '');
+                    holder.appendChild(span);
+                    sceneElement.appendChild(holder);
+                }
+
+                const cap = document.createElement('div');
+                cap.className = 'storyboard-item-caption';
+                const titleIn = document.createElement('input');
+                titleIn.className = 'sb-title';
+                titleIn.value = scene.title || '';
+                titleIn.placeholder = 'Shot title';
+                titleIn.style.cssText = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:6px;color:inherit;font-weight:600;font-size:13px;padding:4px 6px;margin-bottom:4px;';
+                titleIn.oninput = function() { scene.title = titleIn.value; };
+                const notesIn = document.createElement('textarea');
+                notesIn.className = 'sb-notes';
+                notesIn.rows = 2;
+                notesIn.value = scene.notes || '';
+                notesIn.placeholder = 'Notes';
+                notesIn.style.cssText = 'width:100%;box-sizing:border-box;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:6px;color:inherit;font-size:12px;padding:4px 6px;resize:vertical;';
+                notesIn.oninput = function() { scene.notes = notesIn.value; };
+                cap.appendChild(titleIn);
+                cap.appendChild(notesIn);
+                const ops = document.createElement('div');
+                ops.style.cssText = 'display:flex;align-items:center;gap:6px;margin-top:4px;';
+                const info = document.createElement('span');
+                info.style.cssText = 'font-size:11px;opacity:.7;margin-right:auto;';
+                info.textContent = '#' + (index + 1) + (scene.duration > 0 ? ' · ' + scene.duration + 's' : '');
+                ops.appendChild(info);
+                const btnUp = document.createElement('button');
+                btnUp.type = 'button';
+                btnUp.textContent = '↑';
+                btnUp.disabled = index === 0;
+                btnUp.style.cssText = 'min-width:30px;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:inherit;cursor:pointer;';
+                btnUp.onclick = function() { moveScene(index, -1); };
+                const btnDown = document.createElement('button');
+                btnDown.type = 'button';
+                btnDown.textContent = '↓';
+                btnDown.disabled = index === storyboardData.length - 1;
+                btnDown.style.cssText = btnUp.style.cssText;
+                btnDown.onclick = function() { moveScene(index, 1); };
+                const btnDel = document.createElement('button');
+                btnDel.type = 'button';
+                btnDel.textContent = '✕';
+                btnDel.style.cssText = btnUp.style.cssText;
+                btnDel.onclick = function() { removeScene(index); };
+                ops.appendChild(btnUp);
+                ops.appendChild(btnDown);
+                ops.appendChild(btnDel);
+                cap.appendChild(ops);
+                sceneElement.appendChild(cap);
+                storyboardPreview.appendChild(sceneElement);
+            });
+        }
+
+        function moveScene(index, delta) {
+            const j = index + delta;
+            if (j < 0 || j >= storyboardData.length) return;
+            const tmp = storyboardData[index];
+            storyboardData[index] = storyboardData[j];
+            storyboardData[j] = tmp;
+            storyboardData.forEach((s, i) => { s.position = i; });
+            displayStoryboard();
+        }
+
+        function removeScene(index) {
+            storyboardData.splice(index, 1);
+            storyboardData.forEach((s, i) => { s.position = i; });
+            displayStoryboard();
+            showNotification('Shot removed.', 'info');
+        }
+
+        // Export functionality（真实导出：生成本地可查看的 HTML 分镜文件并下载）
+        function exportStoryboard() {
+            if (storyboardData.length === 0) {
+                showNotification('Generate a storyboard first before exporting.', 'warning');
+                return;
+            }
+            let cards = '';
+            storyboardData.forEach((scene, index) => {
+                const file = uploadedFiles.find(f => f.id === scene.id);
+                let media = '';
+                if (file && file.type && file.type.startsWith('image/')) {
+                    media = '<img src="' + file.url + '" alt="" style="max-width:100%;border-radius:8px;">';
+                }
+                cards += '<section style="border:1px solid #ccc;border-radius:10px;padding:12px;margin:10px 0;">'
+                    + '<h3 style="margin:0 0 6px;">#' + (index + 1) + ' · ' + escapeHtml(scene.title || '') + '</h3>'
+                    + media
+                    + (scene.duration > 0 ? '<p style="color:#666;font-size:12px;">Duration: ' + scene.duration + 's</p>' : '')
+                    + '<p style="white-space:pre-wrap;">' + escapeHtml(scene.notes || '') + '</p>'
+                    + (file ? '<p style="color:#888;font-size:12px;">File: ' + escapeHtml(file.name || '') + '</p>' : '')
+                    + '</section>';
+            });
+            const doc = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>' + escapeHtml(document.title || 'Storyboard') + '</title></head>'
+                + '<body style="font-family:sans-serif;max-width:860px;margin:20px auto;padding:0 14px;">'
+                + '<h1>Storyboard</h1>' + cards + '</body></html>';
+            const blob = new Blob([doc], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'storyboard.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showNotification('Storyboard exported as a shareable HTML file.', 'success');
+        }
+
+        function escapeHtml(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        // Save project（真实保存：localStorage；超限时如实报错而不是假装成功）
+        function saveProject() {
+            if (uploadedFiles.length === 0) {
+                showNotification('No project to save.', 'warning');
+                return;
+            }
+            const projectData = {
+                uploadedFiles: uploadedFiles,
+                storyboardData: storyboardData,
+                timestamp: new Date().toISOString()
+            };
+            try {
+                localStorage.setItem('ai-storyboard-project', JSON.stringify(projectData));
+                showNotification('Project saved successfully!', 'success');
+            } catch (e) {
+                showNotification('Save failed: project exceeds browser storage limit. Try fewer or smaller files.', 'error');
+            }
+        }
+
+        function loadSavedProject() {
+            try {
+                const savedProject = localStorage.getItem('ai-storyboard-project');
+                if (!savedProject) return;
+                const projectData = JSON.parse(savedProject);
+                uploadedFiles = projectData.uploadedFiles || [];
+                storyboardData = projectData.storyboardData || [];
+                uploadedFiles.forEach(file => displayFile(file));
+                if (storyboardData.length > 0) displayStoryboard();
+            } catch (e) {
+                uploadedFiles = [];
+                storyboardData = [];
+            }
+        }
+
+        // Navigation（真实导航：工具 → 滚动到工作区；使用说明 → 打开弹窗）
+        function handleNavClick(e) {
+            e.preventDefault();
+            navLinks.forEach(link => { link.classList.remove('active'); });
+            e.target.classList.add('active');
+            const feature = e.target.dataset.feature;
+            if (feature === 'tool') {
+                uploadArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else if (feature === 'help') {
+                helpModal.style.display = 'flex';
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","Storyboard Tool":"Storyboard Tool","How to Use":"How to Use","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Drag \u0026 drop your images or videos here","or":"or","Browse Files":"Browse Files","Generate Storyboard":"Generate Storyboard","Export Storyboard":"Export Storyboard","Save Project":"Save Project","Instant Storyboard Board":"Instant Storyboard Board","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.","Multi-Format Support":"Multi-Format Support","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Upload images and videos in various formats. Our system handles all major file types seamlessly.","Save \u0026 Export":"Save \u0026 Export","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Save your projects locally and export your storyboard as a shareable file for review and presentation.","How to Use AI StoryBoarder":"How to Use AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Getting Started","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:","Step 1: Upload Your Content":"Step 1: Upload Your Content","Step 2: Generate Storyboard":"Step 2: Generate Storyboard","Step 3: Review and Export":"Step 3: Review and Export","Tips for Best Results":"Tips for Best Results","Use high-quality images and videos for best results":"Use high-quality images and videos for best results","Include visual variety in your uploads":"Include visual variety in your uploads","Consider the narrative flow of your content":"Consider the narrative flow of your content","Please upload valid image or video files.":"Please upload valid image or video files.","Please upload files first.":"Please upload files first.","Storyboard built, edit titles and notes on each card.":"Storyboard built, edit titles and notes on each card.","Shot title":"Shot title","Shot removed.":"Shot removed.","Generate a storyboard first before exporting.":"Generate a storyboard first before exporting.","Storyboard exported as a shareable HTML file.":"Storyboard exported as a shareable HTML file.","No project to save.":"No project to save.","Project saved successfully!":"Project saved successfully!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Save failed: project exceeds browser storage limit. Try fewer or smaller files.","__title__":"StoryBoarder · Storyboard Builder"},"zh-CN":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","Storyboard Tool":"Storyboard Tool","How to Use":"如何使用","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"在此处拖放您的图片或视频","or":"或","Browse Files":"浏览文件","Generate Storyboard":"生成分镜","Export Storyboard":"导出分镜","Save Project":"保存项目","Instant Storyboard Board":"即时分镜板","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"一键从您的上传中创建分镜，然后直接在板上编辑每个镜头的标题和备注。","Multi-Format Support":"多格式支持","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"上传各种格式的图片和视频。我们的系统无缝处理所有主要文件类型。","Save \u0026 Export":"保存和导出","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"在本地保存您的项目，并将您的分镜导出为可分享的文件以供审阅和演示。","How to Use AI StoryBoarder":"如何使用 AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"开始","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder 帮助您从您的视觉内容中创建专业的分镜。以下是使用方法：","Step 1: Upload Your Content":"步骤 1：上传您的内容","Step 2: Generate Storyboard":"步骤 2：生成分镜","Step 3: Review and Export":"步骤 3：审阅和导出","Tips for Best Results":"最佳结果提示","Use high-quality images and videos for best results":"使用高质量的图片和视频以获得最佳结果","Include visual variety in your uploads":"在您的上传中包含视觉多样性","Consider the narrative flow of your content":"考虑您内容的故事流程","Please upload valid image or video files.":"请上传有效的图片或视频文件。","Please upload files first.":"请先上传文件。","Storyboard built, edit titles and notes on each card.":"分镜已构建，在每个卡片上编辑标题和备注。","Shot title":"镜头标题","Shot removed.":"镜头已移除。","Generate a storyboard first before exporting.":"在导出之前先生成分镜。","Storyboard exported as a shareable HTML file.":"分镜已导出为可分享的 HTML 文件。","No project to save.":"没有项目要保存。","Project saved successfully!":"项目已成功保存！","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"保存失败：项目超出浏览器存储限制。尝试上传较少或较小的文件。","__title__":"StoryBoarder · Storyboard Builder"},"es":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Constructor de Storyboard","Storyboard Tool":"Herramienta de Storyboard","How to Use":"Cómo Utilizar","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Arrastra tus imágenes o videos aquí","or":"o","Browse Files":"Explorar Archivos","Generate Storyboard":"Generar Storyboard","Export Storyboard":"Exportar Storyboard","Save Project":"Guardar Proyecto","Instant Storyboard Board":"Tablero de Storyboard Instantáneo","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Crea un storyboard de tus subidas con un clic, luego edita directamente los títulos y notas de cada toma en el tablero.","Multi-Format Support":"Soporte Multiformato","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Sube imágenes y videos en varios formatos. Nuestro sistema maneja todos los tipos de archivos principales sin problemas.","Save \u0026 Export":"Guardar y Exportar","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Guarda tus proyectos localmente y exporta tu storyboard como un archivo compartible para revisión y presentación.","How to Use AI StoryBoarder":"Cómo Utilizar AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Comenzando","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder te ayuda a crear storyboards profesionales a partir de tu contenido visual. Aquí está cómo usarlo:","Step 1: Upload Your Content":"Paso 1: Sube tu Contenido","Step 2: Generate Storyboard":"Paso 2: Generar Storyboard","Step 3: Review and Export":"Paso 3: Revisar y Exportar","Tips for Best Results":"Consejos para los Mejores Resultados","Use high-quality images and videos for best results":"Usa imágenes y videos de alta calidad para obtener los mejores resultados","Include visual variety in your uploads":"Incluye variedad visual en tus subidas","Consider the narrative flow of your content":"Considera el flujo narrativo de tu contenido","Please upload valid image or video files.":"Por favor, sube archivos de imagen o video válidos.","Please upload files first.":"Por favor, sube los archivos primero.","Storyboard built, edit titles and notes on each card.":"Storyboard construido, edita títulos y notas en cada tarjeta.","Shot title":"Título de Toma","Shot removed.":"Toma eliminada.","Generate a storyboard first before exporting.":"Genera un storyboard primero antes de exportar.","Storyboard exported as a shareable HTML file.":"Storyboard exportado como un archivo HTML compartible.","No project to save.":"No hay proyecto para guardar.","Project saved successfully!":"¡Proyecto guardado con éxito!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Fallo al guardar: el proyecto excede el límite de almacenamiento del navegador. Intenta con menos o archivos más pequeños.","__title__":"StoryBoarder · Constructor de Storyboard"},"ja":{"StoryBoarder · Storyboard Builder":"ストーリーボードエディタ","Storyboard Tool":"ストーリーボードツール","How to Use":"使い方","AI StoryBoarder":"AIストーリーボードエディタ","Drag \u0026 drop your images or videos here":"ここに画像や動画をドラッグ＆ドロップしてください","or":"または","Browse Files":"ファイルをブラウズ","Generate Storyboard":"ストーリーボードの生成","Export Storyboard":"ストーリーボードのエクスポート","Save Project":"プロジェクトの保存","Instant Storyboard Board":"インスタントストーリーボードボード","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"アップロードしたファイルから一クリックでストーリーボードを作成し、タイトルやノートを直接ボード上で編集できます。","Multi-Format Support":"多形式サポート","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"様々な形式の画像や動画をアップロードできます。システムは主要なファイル形式をスムーズに処理します。","Save \u0026 Export":"保存とエクスポート","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"プロジェクトをローカルに保存し、レビューやプレゼンテーション用に共有可能なファイルとしてストーリーボードをエクスポートします。","How to Use AI StoryBoarder":"AIストーリーボードエディタの使い方","\u0026times;":"×","Getting Started":"始めましょう","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AIストーリーボードエディタは、視覚コンテンツからプロフェッショナルなストーリーボードを作成するのに役立ちます。使い方は以下の通りです：","Step 1: Upload Your Content":"ステップ1: コンテンツのアップロード","Step 2: Generate Storyboard":"ステップ2: ストーリーボードの生成","Step 3: Review and Export":"ステップ3: レビューとエクスポート","Tips for Best Results":"最良の結果のためのヒント","Use high-quality images and videos for best results":"最良の結果を得るために高品質の画像や動画を使用してください","Include visual variety in your uploads":"アップロードに視覚的な多様性を含めます","Consider the narrative flow of your content":"コンテンツの物語の流れを考慮します","Please upload valid image or video files.":"有効な画像や動画ファイルをアップロードしてください。","Please upload files first.":"まずファイルをアップロードしてください。","Storyboard built, edit titles and notes on each card.":"ストーリーボードが作成されました。各カードのタイトルやノートを編集します。","Shot title":"ショットタイトル","Shot removed.":"ショットが削除されました。","Generate a storyboard first before exporting.":"エクスポートする前にまずストーリーボードを作成します。","Storyboard exported as a shareable HTML file.":"共有可能なHTMLファイルとしてエクスポートされたストーリーボード。","No project to save.":"保存するプロジェクトがありません。","Project saved successfully!":"プロジェクトが正常に保存されました！","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"保存に失敗しました：プロジェクトがブラウザのストレージ制限を超えています。ファイルを少なくしたり小さなファイルにしてみてください。","__title__":"ストーリーボードエディタ"},"ko":{"StoryBoarder · Storyboard Builder":"스토리보드어 · 스토리보드 빌더","Storyboard Tool":"스토리보드 도구","How to Use":"이용 방법","AI StoryBoarder":"AI 스토리보드어","Drag \u0026 drop your images or videos here":"이미지나 비디오를 여기에 드래그 앤 드롭하세요","or":"또는","Browse Files":"파일 탐색","Generate Storyboard":"스토리보드 생성","Export Storyboard":"스토리보드 내보내기","Save Project":"프로젝트 저장","Instant Storyboard Board":"즉시 스토리보드 보드","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"한 번 클릭으로 업로드한 파일로 스토리보드를 만들고, 그 뒤 촬영 제목과 메모를 보드에서 직접 편집하세요.","Multi-Format Support":"다양한 형식 지원","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"다양한 형식의 이미지와 비디오를 업로드하세요. 시스템은 모든 주요 파일 형식을 원활하게 처리합니다.","Save \u0026 Export":"저장 및 내보내기","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"프로젝트를 로컬로 저장하고, 검토 및 발표를 위해 공유할 수 있는 파일로 스토리보드를 내보내세요.","How to Use AI StoryBoarder":"AI 스토리보드어 사용 방법","\u0026times;":"\u0026times;","Getting Started":"Getting Started","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder는 시각 내용에서 전문 스토리보드를 만들어 드립니다. 이렇게 사용하세요:","Step 1: Upload Your Content":"Step 1: Your Content 업로드","Step 2: Generate Storyboard":"Step 2: 스토리보드 생성","Step 3: Review and Export":"Step 3: 검토 및 내보내기","Tips for Best Results":"최고의 결과를 위해 팁","Use high-quality images and videos for best results":"최고의 결과를 위해 고화질 이미지와 비디오를 사용하세요","Include visual variety in your uploads":"업로드에 시각적 다양성을 포함하세요","Consider the narrative flow of your content":"내용의 이야기 흐름을 고려하세요","Please upload valid image or video files.":"유효한 이미지 또는 비디오 파일을 업로드하세요.","Please upload files first.":"먼저 파일을 업로드하세요.","Storyboard built, edit titles and notes on each card.":"스토리보드 구축, 각 카드의 제목과 메모를 편집하세요.","Shot title":"촬영 제목","Shot removed.":"촬영 제거.","Generate a storyboard first before exporting.":"내보내기 전에 먼저 스토리보드를 생성하세요.","Storyboard exported as a shareable HTML file.":"공유 가능한 HTML 파일로 스토리보드 내보내기.","No project to save.":"저장할 프로젝트가 없습니다.","Project saved successfully!":"프로젝트 저장 성공!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"저장 실패: 프로젝트가 브라우저 저장 공간 제한을 초과했습니다. 더 적은 파일이나 작은 파일을 시도하세요.","__title__":"스토리보드어 · 스토리보드 빌더"},"fr":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Constructeur de Storyboard","Storyboard Tool":"Outil de Storyboard","How to Use":"Comment Utiliser","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Glissez et déposez vos images ou vidéos ici","or":"ou","Browse Files":"Parcourir les Fichiers","Generate Storyboard":"Générer un Storyboard","Export Storyboard":"Exporter un Storyboard","Save Project":"Enregistrer le Projet","Instant Storyboard Board":"Tableau de Storyboard Instantané","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Construisez un storyboard à partir de vos téléchargements en un clic, puis éditez directement chaque titre de prise et note sur le tableau.","Multi-Format Support":"Support de Multiples Formats","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Téléchargez des images et des vidéos dans divers formats. Notre système gère tous les principaux types de fichiers sans encombre.","Save \u0026 Export":"Enregistrer \u0026 Exporter","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Enregistrez vos projets localement et exportez votre storyboard sous forme de fichier partageable pour l'examen et la présentation.","How to Use AI StoryBoarder":"Comment Utiliser AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Démarrer","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder vous aide à créer des storyboards professionnels à partir de votre contenu visuel. Voici comment l'utiliser :","Step 1: Upload Your Content":"Étape 1: Téléchargez Votre Contenu","Step 2: Generate Storyboard":"Étape 2: Générer un Storyboard","Step 3: Review and Export":"Étape 3: Revoyez et Exportez","Tips for Best Results":"Conseils pour des Résultats Optimaux","Use high-quality images and videos for best results":"Utilisez des images et des vidéos de haute qualité pour des résultats optimaux","Include visual variety in your uploads":"Incluez une variété visuelle dans vos téléchargements","Consider the narrative flow of your content":"Considérez le flux narratif de votre contenu","Please upload valid image or video files.":"Veuillez télécharger des fichiers image ou vidéo valides.","Please upload files first.":"Veuillez d'abord télécharger des fichiers.","Storyboard built, edit titles and notes on each card.":"Storyboard construit, éditez les titres et les notes sur chaque carte.","Shot title":"Titre de la Prise","Shot removed.":"Prise Supprimée.","Generate a storyboard first before exporting.":"Générez d'abord un storyboard avant d'exporter.","Storyboard exported as a shareable HTML file.":"Storyboard exporté sous forme de fichier HTML partageable.","No project to save.":"Aucun projet à enregistrer.","Project saved successfully!":"Projet enregistré avec succès!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Échec de l'enregistrement : le projet dépasse la limite de stockage du navigateur. Essayez de télécharger moins de fichiers ou des fichiers plus petits.","__title__":"StoryBoarder · Constructeur de Storyboard"},"de":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","Storyboard Tool":"Storyboard Tool","How to Use":"Wie man verwendet","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Ziehen und loslassen Sie hier Ihre Bilder oder Videos","or":"oder","Browse Files":"Dateien durchsuchen","Generate Storyboard":"Storyboard generieren","Export Storyboard":"Storyboard exportieren","Save Project":"Projekt speichern","Instant Storyboard Board":"Instant Storyboard Board","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Erstellen Sie mit einem Klick ein Storyboard aus Ihren hochgeladenen Dateien und bearbeiten Sie direkt auf dem Board jeden Einstellungs- und Notiztitel.","Multi-Format Support":"Multi-Format-Unterstützung","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Laden Sie Bilder und Videos in verschiedenen Formaten hoch. Unser System verarbeitet alle großen Dateitypen nahtlos.","Save \u0026 Export":"Speichern und exportieren","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Speichern Sie Ihre Projekte lokal und exportieren Sie Ihr Storyboard als teilbares Datei für die Überprüfung und Präsentation.","How to Use AI StoryBoarder":"Wie man AI StoryBoarder verwendet","\u0026times;":"\u0026times;","Getting Started":"Erste Schritte","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder hilft Ihnen, professionelle Storyboards aus Ihrem visuellen Inhalt zu erstellen. Hier ist, wie Sie es verwenden:","Step 1: Upload Your Content":"Schritt 1: Ihren Inhalt hochladen","Step 2: Generate Storyboard":"Schritt 2: Storyboard generieren","Step 3: Review and Export":"Schritt 3: Überprüfen und exportieren","Tips for Best Results":"Tipps für beste Ergebnisse","Use high-quality images and videos for best results":"Verwenden Sie für beste Ergebnisse hochwertige Bilder und Videos","Include visual variety in your uploads":"Schließen Sie visuelle Vielfalt in Ihre Uploads ein","Consider the narrative flow of your content":"Denken Sie über den Erzählfluss Ihres Inhalts nach","Please upload valid image or video files.":"Bitte laden Sie gültige Bild- oder Videodateien hoch.","Please upload files first.":"Bitte laden Sie zuerst Dateien hoch.","Storyboard built, edit titles and notes on each card.":"Storyboard erstellt, bearbeiten Sie Titel und Notizen auf jeder Karte.","Shot title":"Einstellungsname","Shot removed.":"Einstellung entfernt.","Generate a storyboard first before exporting.":"Erstellen Sie ein Storyboard, bevor Sie exportieren.","Storyboard exported as a shareable HTML file.":"Storyboard als teilbares HTML-Datei exportiert.","No project to save.":"Kein Projekt zum Speichern.","Project saved successfully!":"Projekt erfolgreich gespeichert!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Speichern fehlgeschlagen: Projekt überschreitet die Speicherbegrenzung des Browsers. Versuchen Sie weniger oder kleinere Dateien.","__title__":"StoryBoarder · Storyboard Builder"},"ru":{"StoryBoarder · Storyboard Builder":"Стрингбордер · Стрингборд Билдер","Storyboard Tool":"Инструмент для создания стингбордов","How to Use":"Как использовать","AI StoryBoarder":"AI Стрингбордер","Drag \u0026 drop your images or videos here":"Перетащите свои изображения или видео сюда","or":"или","Browse Files":"Просмотр файлов","Generate Storyboard":"Создать стингборд","Export Storyboard":"Экспортировать стингборд","Save Project":"Сохранить проект","Instant Storyboard Board":"Instant Storyboard Board","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Создайте стингборд из ваших загрузок одним кликом, затем редактируйте заголовки и заметки каждого кадра прямо на доске.","Multi-Format Support":"Поддержка множественных форматов","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Загружайте изображения и видео в различных форматах. Наша система без проблем обрабатывает все основные типы файлов.","Save \u0026 Export":"Сохранить и экспортировать","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Сохраняйте свои проекты локально и экспортируйте стингборд в файл, который можно делиться для просмотра и презентации.","How to Use AI StoryBoarder":"Как использовать AI Стрингбордер","\u0026times;":"\u0026times;","Getting Started":"Начало работы","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder помогает вам создавать профессиональные стингборды из вашего визуального контента. Вот как это сделать:","Step 1: Upload Your Content":"Шаг 1: Загрузите ваш контент","Step 2: Generate Storyboard":"Шаг 2: Создайте стингборд","Step 3: Review and Export":"Шаг 3: Проверьте и экспортируйте","Tips for Best Results":"Советы для достижения лучших результатов","Use high-quality images and videos for best results":"Используйте изображения и видео высокого качества для достижения лучших результатов","Include visual variety in your uploads":"Включайте визуальное разнообразие в ваши загрузки","Consider the narrative flow of your content":"Учитывайте сюжетный поток вашего контента","Please upload valid image or video files.":"Пожалуйста, загрузите действительные изображения или видео файлы.","Please upload files first.":"Пожалуйста, сначала загрузите файлы.","Storyboard built, edit titles and notes on each card.":"Стингборд создан, редактируйте заголовки и заметки на каждой карте.","Shot title":"Заголовок кадра","Shot removed.":"Кадр удален.","Generate a storyboard first before exporting.":"Сначала создайте стингборд, прежде чем экспортировать.","Storyboard exported as a shareable HTML file.":"Стингборд экспортирован в файл HTML, который можно делиться.","No project to save.":"Нет проекта для сохранения.","Project saved successfully!":"Проект сохранен успешно!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Не удалось сохранить: проект exceeds browser storage limit. Попробуйте загрузить меньше или более мелкие файлы.","__title__":"Стрингбордер · Стрингборд Билдер"},"pt":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Construtor de Storyboard","Storyboard Tool":"Ferramenta de Storyboard","How to Use":"Como Usar","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Arraste suas imagens ou vídeos aqui","or":"ou","Browse Files":"Navegue pelos arquivos","Generate Storyboard":"Gerar Storyboard","Export Storyboard":"Exportar Storyboard","Save Project":"Salvar Projeto","Instant Storyboard Board":"Quadro de Storyboard Instantâneo","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Construa um storyboard a partir de seus uploads com um clique, então edite cada título de cena e nota diretamente no quadro.","Multi-Format Support":"Suporte a Múltiplos Formatos","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Carregue imagens e vídeos em vários formatos. Nosso sistema lida com todos os principais tipos de arquivos sem problemas.","Save \u0026 Export":"Salvar \u0026 Exportar","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Salve seus projetos localmente e exporte seu storyboard como um arquivo compartilhável para revisão e apresentação.","How to Use AI StoryBoarder":"Como Usar o AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Começando","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"O AI StoryBoarder ajuda você a criar storyboards profissionais a partir de seu conteúdo visual. Aqui está como usá-lo:","Step 1: Upload Your Content":"Passo 1: Carregue Seu Conteúdo","Step 2: Generate Storyboard":"Passo 2: Gerar Storyboard","Step 3: Review and Export":"Passo 3: Revisar e Exportar","Tips for Best Results":"Dicas para Melhores Resultados","Use high-quality images and videos for best results":"Use imagens e vídeos de alta qualidade para melhores resultados","Include visual variety in your uploads":"Inclua variedade visual em seus uploads","Consider the narrative flow of your content":"Considere o fluxo narrativo do seu conteúdo","Please upload valid image or video files.":"Por favor, carregue arquivos de imagem ou vídeo válidos.","Please upload files first.":"Por favor, carregue os arquivos primeiro.","Storyboard built, edit titles and notes on each card.":"Storyboard construído, edite títulos e notas em cada cartão.","Shot title":"Título da Cena","Shot removed.":"Cena Removida.","Generate a storyboard first before exporting.":"Gerar um storyboard antes de exportar.","Storyboard exported as a shareable HTML file.":"Storyboard exportado como um arquivo HTML compartilhável.","No project to save.":"Nenhum projeto para salvar.","Project saved successfully!":"Projeto salvo com sucesso!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Falha ao salvar: o projeto excede o limite de armazenamento do navegador. Tente menos ou arquivos menores.","__title__":"StoryBoarder · Construtor de Storyboard"},"ar":{"StoryBoarder · Storyboard Builder":"مدير السيناريو · بناء السيناريو","Storyboard Tool":"أداة السيناريو","How to Use":"كيفية الاستخدام","AI StoryBoarder":"مدير السيناريو الذكاء الاصطناعي","Drag \u0026 drop your images or videos here":"سحب وإفلات صورك أو فيديوهك هنا","or":"أو","Browse Files":"استعرض الملفات","Generate Storyboard":"إنشاء سيناريو","Export Storyboard":"تصدير سيناريو","Save Project":"حفظ المشروع","Instant Storyboard Board":"لوحة سيناريو فورية","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"أنشئ سيناريو من إدراجاتك بنقرة واحدة، ثم قم بتعديل كل عنوان وأعذار اللقطات مباشرة على اللوحة.","Multi-Format Support":"دعم متعدد الأشكال","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"قم بتحميل صور وفيديوهات بأشكال متعددة. نظامنا يعالج جميع أنواع الملفات الرئيسية بشكل سلس.","Save \u0026 Export":"حفظ وتصدير","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"حفظ مشاريعك محليًا وتصدير سيناريوك كملف قابل للشارك لمراجعة وتقديم.","How to Use AI StoryBoarder":"كيفية استخدام مدير السيناريو الذكاء الاصطناعي","\u0026times;":"\u0026times;","Getting Started":"بدء العمل","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"مدير السيناريو الذكاء الاصطناعي يساعدك في إنشاء سيناريوهات محترفة من محتواك البصري. إليك كيفية استخدامه:","Step 1: Upload Your Content":"الخطوة 1: تحميل محتواك","Step 2: Generate Storyboard":"الخطوة 2: إنشاء سيناريو","Step 3: Review and Export":"الخطوة 3: الاستعراض والتصدير","Tips for Best Results":"نصائح للحصول على أفضل النتائج","Use high-quality images and videos for best results":"استخدم صور وفيديوهات عالية الجودة للحصول على أفضل النتائج","Include visual variety in your uploads":"تضمين تنوع بصري في إدراجاتك","Consider the narrative flow of your content":"تأمل في تدفق القصة لمحتواك","Please upload valid image or video files.":"يرجى تحميل ملفات صور أو فيديوهات صالحة.","Please upload files first.":"يرجى تحميل الملفات أولاً.","Storyboard built, edit titles and notes on each card.":"تم بناء السيناريو، تعديل العناوين والأعذار على كل بطاقة.","Shot title":"عنوان اللقطة","Shot removed.":"تم إزالة اللقطة.","Generate a storyboard first before exporting.":"أنشئ سيناريو أولاً قبل التصدير.","Storyboard exported as a shareable HTML file.":"تم تصدير السيناريو كملف HTML قابل للشارك.","No project to save.":"لا يوجد مشروع لحفظه.","Project saved successfully!":"تم حفظ المشروع بنجاح!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"فشل الحفظ: المشروع يتجاوز حد مخزن المتصفح. جرب ملفات أقل أو أصغر حجمًا.","__title__":"مدير السيناريو · بناء السيناريو"},"hi":{"StoryBoarder · Storyboard Builder":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर","Storyboard Tool":"स्टोरीबोर्ड टूल","How to Use":"कैसे इस्तेमाल करें","AI StoryBoarder":"एआई स्टोरीबोर्डर","Drag \u0026 drop your images or videos here":"अपनी छवियों या वीडियो को यहाँ ड्रैग एंड ड्रॉप करें","or":"या","Browse Files":"फ़ाइलों को ब्राउज़ करें","Generate Storyboard":"स्टोरीबोर्ड जनरेट करें","Export Storyboard":"स्टोरीबोर्ड एक्सपोर्ट करें","Save Project":"प्रोजेक्ट सहेजें","Instant Storyboard Board":"इंस्टैंट स्टोरीबोर्ड बोर्ड","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"एक क्लिक में अपने अपलोड के से स्टोरीबोर्ड बनाएं, फिर प्रत्येक शॉट शीर्षक और नोट को बोर्ड पर सीधे संपादित करें.","Multi-Format Support":"मल्टी-फॉर्मेट सपोर्ट","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"विभिन्न फॉर्मेट में छवियों और वीडियो अपलोड करें. हमारी प्रणाली सभी प्रमुख फ़ाइल तैपों को बिना गड़बड़ी से संभालती है.","Save \u0026 Export":"सहेजें और एक्सपोर्ट करें","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"अपने प्रोजेक्ट को स्थानीय रूप से सहेजें और अपने स्टोरीबोर्ड को समीक्षा और प्रस्तुति के लिए साझेदारी योग्य फ़ाइल के रूप में एक्सपोर्ट करें.","How to Use AI StoryBoarder":"एआई स्टोरीबोर्डर कैसे इस्तेमाल करें","\u0026times;":"\u0026times;","Getting Started":"शुरू करना","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"एआई स्टोरीबोर्डर आपको अपने विजुअल कंटेंट से पेशेवर स्टोरीबोर्ड बनाने में मदद करता है. यहाँ इसके इस्तेमाल के तरीके हैं:","Step 1: Upload Your Content":"चरण 1: अपनी सामग्री अपलोड करें","Step 2: Generate Storyboard":"चरण 2: स्टोरीबोर्ड जनरेट करें","Step 3: Review and Export":"चरण 3: समीक्षा और एक्सपोर्ट करें","Tips for Best Results":"सर्वश्रेष्ठ परिणाम के लिए तिप्पणी","Use high-quality images and videos for best results":"सर्वश्रेष्ठ परिणाम के लिए उच्च गुणवत्ता की छवियों और वीडियो का इस्तेमाल करें","Include visual variety in your uploads":"अपने अपलोड में विजुअल विविधता शामिल करें","Consider the narrative flow of your content":"अपनी सामग्री के नाटकीय प्रवाह पर गौर करें","Please upload valid image or video files.":"कृपया वैध छवि या वीडियो फ़ाइलें अपलोड करें.","Please upload files first.":"कृपया पहले फ़ाइलें अपलोड करें.","Storyboard built, edit titles and notes on each card.":"स्टोरीबोर्ड बना, प्रत्येक कार्ड पर शीर्षक और नोट संपादित करें.","Shot title":"शॉट शीर्षक","Shot removed.":"शॉट हटा दिया.","Generate a storyboard first before exporting.":"एक्सपोर्ट करने से पहले पहले स्टोरीबोर्ड जनरेट करें.","Storyboard exported as a shareable HTML file.":"स्टोरीबोर्ड एक साझेदारी योग्य HTML फ़ाइल के रूप में एक्सपोर्ट किया.","No project to save.":"सहेजने के लिए कोई प्रोजेक्ट नहीं.","Project saved successfully!":"प्रोजेक्ट सफलता से सहेजा गया!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"सहेजना असफल: प्रोजेक्ट ब्राउज़र स्टोरेज लिमिट के बाहर है. कम या छोटे फ़ाइलों को प्रयास करें.","__title__":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर"},"id":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Builder Storyboard","Storyboard Tool":"Alat Storyboard","How to Use":"Bagaimana Menggunakan","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Seret dan lepas gambar atau video anda disini","or":"atau","Browse Files":"Buka Berkas","Generate Storyboard":"Buat Storyboard","Export Storyboard":"Ekspor Storyboard","Save Project":"Simpan Proyek","Instant Storyboard Board":"Papan Storyboard Instant","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Buat storyboard dari pemuatan anda dengan sekali klik, kemudian edit judul dan catatan setiap gambar langsung di papan.","Multi-Format Support":"Dukungan Format Banyak","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Unggah gambar dan video dalam berbagai format. Sistem kami menangani semua tipe berkas utama dengan lancar.","Save \u0026 Export":"Simpan \u0026 Ekspor","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Simpan proyek anda di tempat dan ekspor storyboard anda sebagai berkas yang dapat dibagikan untuk peninjauan dan presentasi.","How to Use AI StoryBoarder":"Bagaimana Menggunakan AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Mulai","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder membantu anda membuat storyboard profesional dari konten visual anda. Berikut cara penggunaannya:","Step 1: Upload Your Content":"Langkah 1: Unggah Konten Anda","Step 2: Generate Storyboard":"Langkah 2: Buat Storyboard","Step 3: Review and Export":"Langkah 3: Tinjau dan Ekspor","Tips for Best Results":"Tip untuk Hasil Terbaik","Use high-quality images and videos for best results":"Gunakan gambar dan video kualitas tinggi untuk hasil terbaik","Include visual variety in your uploads":"Termasuk beragam visual dalam pemuatan anda","Consider the narrative flow of your content":"Berhati-hatilah alur naratif konten anda","Please upload valid image or video files.":"Silakan unggah berkas gambar atau video yang valid.","Please upload files first.":"Silakan unggah berkas terlebih dahulu.","Storyboard built, edit titles and notes on each card.":"Storyboard dibuat, edit judul dan catatan di setiap kartu.","Shot title":"Judul Gambar","Shot removed.":"Gambar dihapus.","Generate a storyboard first before exporting.":"Buat storyboard dahulu sebelum ekspor.","Storyboard exported as a shareable HTML file.":"Storyboard diekspor sebagai berkas HTML yang dapat dibagikan.","No project to save.":"Tidak ada proyek untuk disimpan.","Project saved successfully!":"Proyek disimpan dengan sukses!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Gagal disimpan: proyek melebihi batas penyimpanan peramban. Coba gunakan berkas yang lebih sedikit atau yang lebih kecil.","__title__":"StoryBoarder · Builder Storyboard"},"vi":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","Storyboard Tool":"Công cụ Storyboard","How to Use":"Cách sử dụng","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"Kéo và thả hình ảnh hoặc video của bạn vào đây","or":"hoặc","Browse Files":"Duyệt tệp","Generate Storyboard":"Tạo Storyboard","Export Storyboard":"Xuất Storyboard","Save Project":"Lưu Dự án","Instant Storyboard Board":"Bảng Storyboard tức thì","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"Tạo Storyboard từ các tệp tải lên của bạn với một cú nhấp, sau đó chỉnh sửa tiêu đề và ghi chú của từng cảnh trực tiếp trên bảng.","Multi-Format Support":"Hỗ trợ nhiều định dạng","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"Tải lên hình ảnh và video với nhiều định dạng. Hệ thống của chúng tôi xử lý tất cả các loại tệp chính một cách mượt mà.","Save \u0026 Export":"Lưu \u0026 Xuất","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"Lưu dự án của bạn cục bộ và xuất Storyboard của bạn dưới dạng tệp chia sẻ để xem xét và trình bày.","How to Use AI StoryBoarder":"Cách sử dụng AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"Bắt đầu","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder giúp bạn tạo Storyboard chuyên nghiệp từ nội dung視 giác của mình. Dưới đây là cách sử dụng nó:","Step 1: Upload Your Content":"Bước 1: Tải lên Nội dung của bạn","Step 2: Generate Storyboard":"Bước 2: Tạo Storyboard","Step 3: Review and Export":"Bước 3: Xem xét và Xuất","Tips for Best Results":"Cách để đạt kết quả tốt nhất","Use high-quality images and videos for best results":"Sử dụng hình ảnh và video chất lượng cao để đạt kết quả tốt nhất","Include visual variety in your uploads":"Chia sẻ sự đa dạng về hình ảnh trong các tệp tải lên của bạn","Consider the narrative flow of your content":"Xem xét dòng chuyện của nội dung của bạn","Please upload valid image or video files.":"Vui lòng tải lên các tệp hình ảnh hoặc video hợp lệ.","Please upload files first.":"Vui lòng tải lên các tệp trước.","Storyboard built, edit titles and notes on each card.":"Storyboard đã được xây dựng, chỉnh sửa tiêu đề và ghi chú trên mỗi thẻ.","Shot title":"Tiêu đề cảnh","Shot removed.":"Cảnh đã bị xóa.","Generate a storyboard first before exporting.":"Tạo Storyboard trước khi xuất.","Storyboard exported as a shareable HTML file.":"Storyboard đã được xuất dưới dạng tệp HTML có thể chia sẻ.","No project to save.":"Không có dự án để lưu.","Project saved successfully!":"Dự án đã được lưu thành công!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"Lưu thất bại: dự án vượt quá giới hạn lưu trữ trình duyệt. Hãy thử ít hoặc các tệp nhỏ hơn.","__title__":"StoryBoarder · Storyboard Builder"},"th":{"StoryBoarder · Storyboard Builder":"StoryBoarder · ตัวก่อตัวสตอรีบอร์ด","Storyboard Tool":"เครื่องมือสตอรีบอร์ด","How to Use":"แบบใช้งาน","AI StoryBoarder":"AI StoryBoarder","Drag \u0026 drop your images or videos here":"ลากและปล่อยภาพหรือวีดีโอของคุณที่นี่","or":"หรือ","Browse Files":"เลือกไฟล์","Generate Storyboard":"สร้างสตอรีบอร์ด","Export Storyboard":"ส่งออกสตอรีบอร์ด","Save Project":"บันทึกโครงการ","Instant Storyboard Board":"สตอรีบอร์ด Board ทันที","Build a storyboard from your uploads in one click, then edit every shot title and note directly on the board.":"สร้างสตอรีบอร์ดจากการโหลดของคุณด้วยการคลิกเพียงครั้งเดียว แล้วแก้ไขชื่อและหมายเหตุของแต่ละชิ้นทันทีบนบอร์ด","Multi-Format Support":"สนับสนุนรูปแบบหลายรูปแบบ","Upload images and videos in various formats. Our system handles all major file types seamlessly.":"โหลดภาพและวีดีโอในรูปแบบหลายรูปแบบ. ระบบของเราจัดการไฟล์ประเภทหลักโดยไม่มีปัญหา","Save \u0026 Export":"บันทึกและส่งออก","Save your projects locally and export your storyboard as a shareable file for review and presentation.":"บันทึกโครงการของคุณที่ท้องถิ่นและส่งออกสตอรีบอร์ดของคุณเป็นไฟล์ที่สามารถแชร์เพื่อตรวจสอบและนำเสนอ","How to Use AI StoryBoarder":"แบบใช้งาน AI StoryBoarder","\u0026times;":"\u0026times;","Getting Started":"เริ่มต้น","AI StoryBoarder helps you create professional storyboards from your visual content. Here's how to use it:":"AI StoryBoarder ช่วยคุณสร้างสตอรีบอร์ดในรูปแบบมืออาชีพจากสื่อทางภาพของคุณ นี่คือวิธีการใช้งานมัน:","Step 1: Upload Your Content":"ขั้นตอนที่ 1: โหลดสื่อของคุณ","Step 2: Generate Storyboard":"ขั้นตอนที่ 2: สร้างสตอรีบอร์ด","Step 3: Review and Export":"ขั้นตอนที่ 3: ตรวจสอบและส่งออก","Tips for Best Results":"ความคิดเห็นสำหรับผลลัพธ์ที่ดีที่สุด","Use high-quality images and videos for best results":"ใช้ภาพและวีดีโอคุณภาพสูงสำหรับผลลัพธ์ที่ดีที่สุด","Include visual variety in your uploads":"รวมความหลากหลายทางภาพแนวในการโหลดของคุณ","Consider the narrative flow of your content":"ใส่ใจกับกระแสเรื่องที่มีอยู่ในสื่อของคุณ","Please upload valid image or video files.":"กรุณาโหลดไฟล์ภาพหรือวีดีโอที่ถูกต้อง","Please upload files first.":"กรุณาโหลดไฟล์ก่อน","Storyboard built, edit titles and notes on each card.":"สตอรีบอร์ด สร้างแล้ว แก้ไขชื่อและหมายเหตุบนแต่ละแก็ด","Shot title":"ชื่อชิ้น","Shot removed.":"ชิ้นถูกลบ","Generate a storyboard first before exporting.":"สร้างสตอรีบอร์ดก่อนที่จะส่งออก","Storyboard exported as a shareable HTML file.":"สตอรีบอร์ดถูกส่งออกเป็นไฟล์ HTML ที่สามารถแชร์ได้","No project to save.":"ไม่มีโครงการที่จะบันทึก","Project saved successfully!":"โครงการบันทึกสำเร็จ!","Save failed: project exceeds browser storage limit. Try fewer or smaller files.":"บันทึกล้มเหลว: โครงการเกินจำกัดความจุเก็บข้อมูลของเว็บเบราวเซอร์ ลองใช้ไฟล์น้อยกว่าหรือขนาดเล็กกว่า","__title__":"StoryBoarder · ตัวก่อตัวสตอรีบอร์ด"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --></body>
+</html>
