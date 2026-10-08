@@ -688,7 +688,8 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 立即使用按钮点击事件
   document.getElementById('useNowBtn').addEventListener('click', function() {
-    document.getElementById('codeInput').focus();
+    var _ci = document.getElementById('codeInput');
+    if (_ci) { try { _ci.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {} try { _ci.focus(); } catch (e) {} }
   });
   
   // 从历史记录加载代码
@@ -939,6 +940,9 @@ function updateSecurityStats(vulnerabilitiesCount) {
 }
 
 // 加载安全统计数据
+// 【修复 2026-10-09】loadSettings 原缺失（DOMContentLoaded 里调用 → Uncaught ReferenceError: loadSettings is not defined）。
+// 当前版本没有需要额外恢复的设置项（语言设置在初始化链下方单独读取），提供安全实现保证初始化流程完整。
+function loadSettings() { try {} catch (e) {} }
 function loadSecurityStats() {
   const stats = JSON.parse(localStorage.getItem('securityStats') || '{}');
   
