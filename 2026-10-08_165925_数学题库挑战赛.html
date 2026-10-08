@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Math Challenge Hub</title><meta name="description" content="Free online tool: Math Challenge Hub. No signup, no payment — free forever.">
+<meta property="og:title" content="Math Challenge Hub">
+<meta property="og:description" content="Free online tool: Math Challenge Hub. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-08_165925_数学题库挑战赛.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            color: #b0b0b0;
+        }
+        
+        .section {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #a78bfa;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+            font-size: 1rem;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        button:hover {
+            background-color: #5a67d8;
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result-area {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            min-height: 100px;
+        }
+        
+        .result-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #a78bfa;
+        }
+        
+        .difficulty-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .difficulty-btn {
+            padding: 8px 16px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            color: #f0f0f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .difficulty-btn:hover, .difficulty-btn.active {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+        
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            min-height: 80px;
+        }
+        
+        .math-input {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .math-input input {
+            flex: 1;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Math Challenge Hub</h1>
+            <p class="subtitle">Solve, learn, and master mathematical problems</p>
+        </header>
+        
+        <section class="section">
+            <h2 class="section-title">Input Math Problem</h2>
+            <div class="math-input">
+                <textarea id="mathInput" placeholder="Enter your math problem here..."></textarea>
+            </div>
+            <div class="button-group">
+                <button id="solveBtn">Solve</button>
+                <button id="similarBtn">Find Similar Problems</button>
+                <button id="checkAnswerBtn">Check Answer</button>
+                <button id="optimizeBtn">Optimize Solution</button>
+            </div>
+            <div id="solutionResult" class="result-area" style="display: none;">
+                <div class="result-title">Solution</div>
+                <div id="solutionContent"></div>
+            </div>
+            <div id="similarResult" class="result-area" style="display: none;">
+                <div class="result-title">Similar Problems</div>
+                <div id="similarContent"></div>
+            </div>
+            <div id="answerResult" class="result-area" style="display: none;">
+                <div class="result-title">Answer Check</div>
+                <div id="answerContent"></div>
+            </div>
+            <div id="optimizeResult" class="result-area" style="display: none;">
+                <div class="result-title">Optimization Suggestions</div>
+                <div id="optimizeContent"></div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Solution Process</h2>
+            <textarea id="solutionInput" placeholder="Enter your solution process here..."></textarea>
+            <div class="button-group">
+                <button id="processBtn">Get Feedback</button>
+            </div>
+            <div id="processResult" class="result-area" style="display: none;">
+                <div class="result-title">Process Feedback</div>
+                <div id="processContent"></div>
+            </div>
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">Difficulty Level</h2>
+            <div class="difficulty-selector">
+                <button class="difficulty-btn" data-level="beginner">Beginner</button>
+                <button class="difficulty-btn" data-level="intermediate">Intermediate</button>
+                <button class="difficulty-btn" data-level="advanced">Advanced</button>
+                <button class="difficulty-btn" data-level="expert">Expert</button>
+            </div>
+            <div class="button-group">
+                <button id="recommendBtn">Recommend Problems</button>
+            </div>
+            <div id="recommendResult" class="result-area" style="display: none;">
+                <div class="result-title">Recommended Problems</div>
+                <div id="recommendContent"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Problem types and solutions database
+        const mathProblems = {
+            beginner: [
+                { problem: "2 + 3 × 4", solution: "2 + 12 = 14", explanation: "First multiply 3 by 4, then add 2" },
+                { problem: "15 ÷ 3 + 2", solution: "5 + 2 = 7", explanation: "First divide 15 by 3, then add 2" },
+                { problem: "5² + 3²", solution: "25 + 9 = 34", explanation: "Calculate squares first, then add" }
+            ],
+            intermediate: [
+                { problem: "√(36 + 64)", solution: "√100 = 10", explanation: "First add inside the square root, then find the square root" },
+                { problem: "3x + 5 = 17, find x", solution: "x = 4", explanation: "Subtract 5 from both sides, then divide by 3" },
+                { problem: "Factor: x² - 5x + 6", solution: "(x - 2)(x - 3)", explanation: "Find two numbers that multiply to 6 and add to -5" }
+            ],
+            advanced: [
+                { problem: "∫(2x + 3)dx", solution: "x² + 3x + C", explanation: "Integrate each term separately" },
+                { problem: "lim(x→∞) (3x² + 2x)/(x² + 1)", solution: "3", explanation: "Divide numerator and denominator by x²" },
+                { problem: "Solve: sin²x + cos²x = ?", solution: "1", explanation: "Pythagorean identity" }
+            ],
+            expert: [
+                { problem: "Find the derivative of f(x) = e^(2x) sin(x)", solution: "f'(x) = e^(2x)(2sin(x) + cos(x))", explanation: "Product rule and chain rule" },
+                { problem: "Evaluate: ∫(0 to π) sin²(x) dx", solution: "π/2", explanation: "Use trigonometric identity" },
+                { problem: "Prove: ∑(n=1 to ∞) 1/n² = π²/6", solution: "Proof involves Fourier series", explanation: "Basel problem solution" }
+            ]
+        };
+
+        // Initialize difficulty buttons
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Solve button functionality
+        document.getElementById('solveBtn').addEventListener('click', function() {
+            const input = document.getElementById('mathInput').value.trim();
+            if (!input) {
+                showSolution("Please enter a math problem");
+                return;
+            }
+            
+            // Simple equation parser for demonstration
+            let solution = "";
+            let explanation = "";
+            
+            // Basic arithmetic operations
+            if (input.includes('+') || input.includes('-') || input.includes('*') || input.includes('/')) {
+                try {
+                    // Safe evaluation - only allow numbers and basic operations
+                    const sanitizedInput = input.replace(/[^0-9+\-*/().\s]/g, '');
+                    const result = eval(sanitizedInput);
+                    solution = `Result: ${result}`;
+                    explanation = `The expression evaluates to ${result}.`;
+                } catch (e) {
+                    solution = "Unable to solve";
+                    explanation = "The expression contains invalid characters or operations.";
+                }
+            } else if (input.includes('x')) {
+                // Simple linear equation
+                const match = input.match(/(\d*)x\s*([+-])\s*(\d+)\s*=\s*(\d+)/);
+                if (match) {
+                    const a = match[1] ? parseInt(match[1]) : 1;
+                    const op = match[2];
+                    const b = parseInt(match[3]);
+                    const c = parseInt(match[4]);
+                    
+                    if (op === '+') {
+                        const x = (c - b) / a;
+                        solution = `x = ${x}`;
+                        explanation = `Move ${b} to the other side: ${a}x = ${c - b}, then divide by ${a}: x = ${x}`;
+                    } else {
+                        const x = (c + b) / a;
+                        solution = `x = ${x}`;
+                        explanation = `Move ${b} to the other side: ${a}x = ${c + b}, then divide by ${a}: x = ${x}`;
+                    }
+                } else {
+                    solution = "Unable to solve";
+                    explanation = "Please enter a linear equation in the format: ax + b = c";
+                }
+            } else {
+                solution = "Please enter a valid math problem";
+                explanation = "Supported operations: +, -, *, /, and linear equations (e.g., 2x + 3 = 7)";
+            }
+            
+            showSolution(solution, explanation);
+        });
+
+        // Find similar problems
+        document.getElementById('similarBtn').addEventListener('click', function() {
+            const input = document.getElementById('mathInput').value.trim();
+            if (!input) {
+                showSimilar("Please enter a math problem");
+                return;
+            }
+            
+            // Determine difficulty based on input complexity
+            let difficulty = "beginner";
+            if (input.includes('√') || input.includes('^2')) difficulty = "intermediate";
+            if (input.includes('∫') || input.includes('lim') || input.includes('∑')) difficulty = "expert";
+            if (input.includes('x') && input.match(/[a-z]/gi)) difficulty = "intermediate";
+            
+            const similarProblems = mathProblems[difficulty].slice(0, 3);
+            let similarContent = `<p>Similar problems at ${difficulty} level:</p><ul>`;
+            
+            similarProblems.forEach(problem => {
+                similarContent += `<li><strong>${problem.problem}</strong> → Solution: ${problem.solution}</li>`;
+            });
+            
+            similarContent += `</ul>`;
+            showSimilar(similarContent);
+        });
+
+        // Check answer button
+        document.getElementById('checkAnswerBtn').addEventListener('click', function() {
+            const input = document.getElementById('mathInput').value.trim();
+            if (!input) {
+                showAnswer("Please enter a math problem");
+                return;
+            }
+            
+            // Extract the answer part if it exists (e.g., "x = ?" format)
+            let userAnswer = "";
+            let isCorrect = false;
+            
+            if (input.includes('x')) {
+                const match = input.match(/x\s*=\s*([^ ]+)/);
+                if (match) {
+                    userAnswer = match[1].trim();
+                    
+                    // Solve the equation
+                    const equation = input.replace(/\s*x\s*=\s*[^ ]+/, "");
+                    try {
+                        const sanitizedInput = equation.replace(/[^0-9+\-*/().\s]/g, '');
+                        const correctAnswer = eval(sanitizedInput);
+                        isCorrect = Math.abs(parseFloat(userAnswer) - correctAnswer) < 0.001;
+                    } catch (e) {
+                        showAnswer("Unable to verify the answer. Please check your equation format.");
+                        return;
+                    }
+                }
+            } else {
+                // For direct calculations
+                try {
+                    const sanitizedInput = input.replace(/[^0-9+\-*/().\s]/g, '');
+                    const correctAnswer = eval(sanitizedInput);
+                    isCorrect = true;
+                    userAnswer = correctAnswer.toString();
+                } catch (e) {
+                    showAnswer("Unable to verify the answer. Please enter a valid math expression.");
+                    return;
+                }
+            }
+            
+            const result = isCorrect ? "Correct!" : "Incorrect";
+            const message = isCorrect 
+                ? "Your answer is correct!"
+                : `The correct answer is ${userAnswer}. Please review your solution.`;
+            
+            showAnswer(result, message);
+        });
+
+        // Optimize solution button
+        document.getElementById('optimizeBtn').addEventListener('click', function() {
+            const input = document.getElementById('mathInput').value.trim();
+            if (!input) {
+                showOptimization("Please enter a math problem");
+                return;
+            }
+            
+            // Basic optimization suggestions based on problem type
+            let suggestions = "";
+            
+            if (input.includes('+') || input.includes('-')) {
+                suggestions = `
+                    <p><strong>Commutative Property:</strong> You can rearrange terms: a + b = b + a</p>
+                    <p><strong>Associative Property:</strong> Grouping doesn't matter: (a + b) + c = a + (b + c)</p>
+                `;
+            }
+            
+            if (input.includes('*') || input.includes('/')) {
+                suggestions += `
+                    <p><strong>Distributive Property:</strong> a × (b + c) = a × b + a × c</p>
+                    <p><strong>Division Simplification:</strong> Simplify fractions before multiplying</p>
+                `;
+            }
+            
+            if (input.includes('x')) {
+                suggestions += `
+                    <p><strong>Isolate the Variable:</strong> Move all terms without x to the other side</p>
+                    <p><strong>Check Your Solution:</strong> Substitute x back into the original equation</p>
+                `;
+            }
+            
+            if (input.includes('^') || input.includes('²')) {
+                suggestions += `
+                    <p><strong>Exponent Rules:</strong> a^m × a^n = a^(m+n)</p>
+                    <p><strong>Factoring:</strong> Look for common factors or patterns</p>
+                `;
+            }
+            
+            if (!suggestions) {
+                suggestions = "<p>Please enter a mathematical expression to receive optimization suggestions.</p>";
+            }
+            
+            showOptimization(suggestions);
+        });
+
+        // Process feedback button
+        document.getElementById('processBtn').addEventListener('click', function() {
+            const input = document.getElementById('solutionInput').value.trim();
+            if (!input) {
+                showProcessFeedback("Please enter your solution process");
+                return;
+            }
+            
+            // Analyze the solution for common issues
+            let feedback = "";
+            
+            // Check for common mistakes
+            if (input.includes('+') && input.includes('*') && !input.includes('(')) {
+                feedback += "<p><strong>Parentheses Missing:</strong> Consider using parentheses to clarify order of operations.</p>";
+            }
+            
+            if (input.includes('x') && !input.includes('=')) {
+                feedback += "<p><strong>Incomplete Solution:</strong> Your solution doesn't show the final value of x.</p>";
+            }
+            
+            if (input.includes('÷') && !input.includes('/')) {
+                feedback += "<p><strong>Division Notation:</strong> Consider using / instead of ÷ for clarity.</p>";
+            }
+            
+            // Check for steps
+            if (input.split('\n').length < 2) {
+                feedback += "<p><strong>Show Your Steps:</strong> Break down your solution into smaller, clear steps.</p>";
+            }
+            
+            // If no specific issues found, provide general feedback
+            if (!feedback) {
+                feedback = `
+                    <p><strong>Good Structure:</strong> Your solution is well-organized.</p>
+                    <p><strong>Improvement Tips:</strong></p>
+                    <ul>
+                        <li>Double-check each calculation step</li>
+                        <li>Verify your final answer by plugging it back into the original problem</li>
+                        <li>Consider alternative approaches to confirm your solution</li>
+                    </ul>
+                `;
+            }
+            
+            showProcessFeedback(feedback);
+        });
+
+        // Recommend problems button
+        document.getElementById('recommendBtn').addEventListener('click', function() {
+            const activeBtn = document.querySelector('.difficulty-btn.active');
+            if (!activeBtn) {
+                showRecommendation("Please select a difficulty level");
+                return;
+            }
+            
+            const difficulty = activeBtn.dataset.level;
+            const problems = mathProblems[difficulty];
+            
+            let recommendation = `<p>Recommended ${difficulty} problems:</p><ul>`;
+            
+            // Show 3 random problems from the selected difficulty
+            const shuffled = [...problems].sort(() => 0.5 - Math.random());
+            const selected = shuffled.slice(0, 3);
+            
+            selected.forEach((problem, index) => {
+                recommendation += `
+                    <li>
+                        <strong>Problem ${index + 1}:</strong> ${problem.problem}<br>
+                        <em>Solution:</em> ${problem.solution}
+                    </li>
+                `;
+            });
+            
+            recommendation += `</ul>`;
+            showRecommendation(recommendation);
+        });
+
+        // Helper functions to display results
+        function showSolution(solution, explanation = "") {
+            document.getElementById('solutionContent').innerHTML = 
+                `<p><strong>Solution:</strong> ${solution}</p>${explanation ? `<p><strong>Explanation:</strong> ${explanation}</p>` : ''}`;
+            document.getElementById('solutionResult').style.display = 'block';
+            hideOtherResults('solutionResult');
+        }
+
+        function showSimilar(content) {
+            document.getElementById('similarContent').innerHTML = content;
+            document.getElementById('similarResult').style.display = 'block';
+            hideOtherResults('similarResult');
+        }
+
+        function showAnswer(result, message = "") {
+            document.getElementById('answerContent').innerHTML = 
+                `<p><strong>Result:</strong> ${result}</p>${message ? `<p>${message}</p>` : ''}`;
+            document.getElementById('answerResult').style.display = 'block';
+            hideOtherResults('answerResult');
+        }
+
+        function showOptimization(content) {
+            document.getElementById('optimizeContent').innerHTML = content;
+            document.getElementById('optimizeResult').style.display = 'block';
+            hideOtherResults('optimizeResult');
+        }
+
+        function showProcessFeedback(content) {
+            document.getElementById('processContent').innerHTML = content;
+            document.getElementById('processResult').style.display = 'block';
+            hideOtherResults('processResult');
+        }
+
+        function showRecommendation(content) {
+            document.getElementById('recommendContent').innerHTML = content;
+            document.getElementById('recommendResult').style.display = 'block';
+            hideOtherResults('recommendResult');
+        }
+
+        function hideOtherResults(activeId) {
+            const resultIds = ['solutionResult', 'similarResult', 'answerResult', 'optimizeResult', 'processResult', 'recommendResult'];
+            resultIds.forEach(id => {
+                if (id !== activeId) {
+                    document.getElementById(id).style.display = 'none';
+                }
+            });
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Math Challenge Hub":"Math Challenge Hub","Solve, learn, and master mathematical problems":"Solve, learn, and master mathematical problems","Input Math Problem":"Input Math Problem","Solve":"Solve","Find Similar Problems":"Find Similar Problems","Check Answer":"Check Answer","Optimize Solution":"Optimize Solution","Solution":"Solution","Similar Problems":"Similar Problems","Answer Check":"Answer Check","Optimization Suggestions":"Optimization Suggestions","Solution Process":"Solution Process","Get Feedback":"Get Feedback","Process Feedback":"Process Feedback","Difficulty Level":"Difficulty Level","Beginner":"Beginner","Intermediate":"Intermediate","Advanced":"Advanced","Expert":"Expert","Recommend Problems":"Recommend Problems","Recommended Problems":"Recommended Problems","level:":"level:",". Please review your solution.":". Please review your solution.","Commutative Property:":"Commutative Property:","Associative Property:":"Associative Property:","Distributive Property:":"Distributive Property:","Division Simplification:":"Division Simplification:","Simplify fractions before multiplying":"Simplify fractions before multiplying","Isolate the Variable:":"Isolate the Variable:","Move all terms without x to the other side":"Move all terms without x to the other side","Check Your Solution:":"Check Your Solution:","Substitute x back into the original equation":"Substitute x back into the original equation","Exponent Rules:":"Exponent Rules:","Factoring:":"Factoring:","Look for common factors or patterns":"Look for common factors or patterns","Good Structure:":"Good Structure:","Your solution is well-organized.":"Your solution is well-organized.","Improvement Tips:":"Improvement Tips:","Double-check each calculation step":"Double-check each calculation step","Verify your final answer by plugging it back into the original problem":"Verify your final answer by plugging it back into the original problem","Consider alternative approaches to confirm your solution":"Consider alternative approaches to confirm your solution","problems:":"problems:","Solution:":"Solution:","Result:":"Result:","Enter your math problem here...":"Enter your math problem here...","Enter your solution process here...":"Enter your solution process here...","First multiply 3 by 4, then add 2":"First multiply 3 by 4, then add 2","First divide 15 by 3, then add 2":"First divide 15 by 3, then add 2","Calculate squares first, then add":"Calculate squares first, then add","First add inside the square root, then find the square root":"First add inside the square root, then find the square root","Subtract 5 from both sides, then divide by 3":"Subtract 5 from both sides, then divide by 3","Find two numbers that multiply to 6 and add to -5":"Find two numbers that multiply to 6 and add to -5","Integrate each term separately":"Integrate each term separately","Product rule and chain rule":"Product rule and chain rule","Use trigonometric identity":"Use trigonometric identity","Proof involves Fourier series":"Proof involves Fourier series","Basel problem solution":"Basel problem solution","Please enter a math problem":"Please enter a math problem","Unable to solve":"Unable to solve","The expression contains invalid characters or operations.":"The expression contains invalid characters or operations.","Please enter a valid math problem":"Please enter a valid math problem","Unable to verify the answer. Please check your equation format.":"Unable to verify the answer. Please check your equation format.","Unable to verify the answer. Please enter a valid math expression.":"Unable to verify the answer. Please enter a valid math expression.","Correct!":"Correct!","Incorrect":"Incorrect","Your answer is correct!":"Your answer is correct!","Please enter your solution process":"Please enter your solution process","Please select a difficulty level":"Please select a difficulty level","__title__":"Math Challenge Hub"},"zh-CN":{"Math Challenge Hub":"数学挑战中心","Solve, learn, and master mathematical problems":"解决、学习和掌握数学问题","Input Math Problem":"输入数学问题","Solve":"解决","Find Similar Problems":"查找相似问题","Check Answer":"检查答案","Optimize Solution":"优化解决方案","Solution":"解决方案","Similar Problems":"相似问题","Answer Check":"答案检查","Optimization Suggestions":"优化建议","Solution Process":"解决方案过程","Get Feedback":"获取反馈","Process Feedback":"处理反馈","Difficulty Level":"难度级别","Beginner":"初学者","Intermediate":"中级","Advanced":"高级","Expert":"专家","Recommend Problems":"推荐问题","Recommended Problems":"推荐问题","level:":"级别：",". Please review your solution.":". 请审查您的解决方案。","Commutative Property:":"交换律：","Associative Property:":"结合律：","Distributive Property:":"分配律：","Division Simplification:":"除法简化：","Simplify fractions before multiplying":"在乘法之前简化分数","Isolate the Variable:":"隔离变量：","Move all terms without x to the other side":"将所有不带x的项移到另一边","Check Your Solution:":"检查您的解决方案：","Substitute x back into the original equation":"将x代入原始方程","Exponent Rules:":"指数规则：","Factoring:":"因式分解：","Look for common factors or patterns":"寻找公共因子或模式","Good Structure:":"良好的结构：","Your solution is well-organized.":"您的解决方案组织得很好。","Improvement Tips:":"改进提示：","Double-check each calculation step":"双重检查每个计算步骤","Verify your final answer by plugging it back into the original problem":"通过将其放回原始问题中验证您的最终答案","Consider alternative approaches to confirm your solution":"考虑其他方法来确认您的解决方案","problems:":"问题：","Solution:":"解决方案：","Result:":"结果：","Enter your math problem here...":"在这里输入您的数学问题...","Enter your solution process here...":"在这里输入您的解决方案过程...","First multiply 3 by 4, then add 2":"首先将3乘以4，然后加2","First divide 15 by 3, then add 2":"首先将15除以3，然后加2","Calculate squares first, then add":"首先计算平方，然后相加","First add inside the square root, then find the square root":"首先在平方根内相加，然后找到平方根","Subtract 5 from both sides, then divide by 3":"从两边减去5，然后除以3","Find two numbers that multiply to 6 and add to -5":"找到两个相乘为6且相加为-5的数","Integrate each term separately":"分别积分每一项","Product rule and chain rule":"乘积规则和链式法则","Use trigonometric identity":"使用三角恒等式","Proof involves Fourier series":"证明涉及傅里叶级数","Basel problem solution":"巴塞尔问题解决方案","Please enter a math problem":"请输入一个数学问题","Unable to solve":"无法解决","The expression contains invalid characters or operations.":"表达式包含无效字符或操作。","Please enter a valid math problem":"请输入一个有效的数学问题","Unable to verify the answer. Please check your equation format.":"无法验证答案。请检查您的方程格式。","Unable to verify the answer. Please enter a valid math expression.":"无法验证答案。请输入一个有效的数学表达式。","Correct!":"正确！","Incorrect":"错误","Your answer is correct!":"你的答案是正确的！","Please enter your solution process":"请输入你的解题过程","Please select a difficulty level":"请选择难度级别","__title__":"数学挑战中心"},"es":{"Math Challenge Hub":"Hub de Desafíos Matemáticos","Solve, learn, and master mathematical problems":"Resolver, aprender y dominar problemas matemáticos","Input Math Problem":"Ingresar Problema Matemático","Solve":"Resolver","Find Similar Problems":"Encontrar Problemas Similares","Check Answer":"Revisar Respuesta","Optimize Solution":"Optimizar Solución","Solution":"Solución","Similar Problems":"Problemas Similares","Answer Check":"Revisión de Respuesta","Optimization Suggestions":"Sugerencias de Optimización","Solution Process":"Proceso de Solución","Get Feedback":"Obtener Retroalimentación","Process Feedback":"Retroalimentación del Proceso","Difficulty Level":"Nivel de Dificultad","Beginner":"Principiante","Intermediate":"Intermedio","Advanced":"Avanzado","Expert":"Experto","Recommend Problems":"Recomendar Problemas","Recommended Problems":"Problemas Recomendados","level:":"nivel:",". Please review your solution.":". Por favor, revise su solución.","Commutative Property:":"Propiedad Comutativa:","Associative Property:":"Propiedad Asociativa:","Distributive Property:":"Propiedad Distributiva:","Division Simplification:":"Simplificación de División:","Simplify fractions before multiplying":"Simplificar fracciones antes de multiplicar","Isolate the Variable:":"Aislar la Variable:","Move all terms without x to the other side":"Mover todos los términos sin x al otro lado","Check Your Solution:":"Revisar Su Solución:","Substitute x back into the original equation":"Sustituir x de vuelta en la ecuación original","Exponent Rules:":"Reglas de Potencia:","Factoring:":"Factorización:","Look for common factors or patterns":"Buscar factores comunes o patrones","Good Structure:":"Buena Estructura:","Your solution is well-organized.":"Su solución está bien organizada.","Improvement Tips:":"Consejos de Mejora:","Double-check each calculation step":"Revisar cada paso de cálculo","Verify your final answer by plugging it back into the original problem":"Verifique su respuesta final introduciéndola de vuelta en el problema original","Consider alternative approaches to confirm your solution":"Considerar enfoques alternativos para confirmar su solución","problems:":"problemas:","Solution:":"Solución:","Result:":"Resultado:","Enter your math problem here...":"Ingrese su problema matemático aquí...","Enter your solution process here...":"Ingrese su proceso de solución aquí...","First multiply 3 by 4, then add 2":"Primero multiplique 3 por 4, luego sume 2","First divide 15 by 3, then add 2":"Primero divida 15 entre 3, luego sume 2","Calculate squares first, then add":"Calcular primero los cuadrados, luego sumar","First add inside the square root, then find the square root":"Primero sume dentro de la raíz cuadrada, luego encuentre la raíz cuadrada","Subtract 5 from both sides, then divide by 3":"Reste 5 de ambos lados, luego divida por 3","Find two numbers that multiply to 6 and add to -5":"Encuentre dos números que multipliquen 6 y sumen -5","Integrate each term separately":"Integrar cada término por separado","Product rule and chain rule":"Regla de producto y regla de cadena","Use trigonometric identity":"Usar identidad trigonométrica","Proof involves Fourier series":"La prueba implica series de Fourier","Basel problem solution":"Solución del problema de Basel","Please enter a math problem":"Por favor, ingrese un problema matemático","Unable to solve":"Incapaz de resolver","The expression contains invalid characters or operations.":"La expresión contiene caracteres o operaciones no válidos.","Please enter a valid math problem":"Por favor, introduce un problema matemático válido","Unable to verify the answer. Please check your equation format.":"No se puede verificar la respuesta. Por favor, verifica el formato de tu ecuación.","Unable to verify the answer. Please enter a valid math expression.":"No se puede verificar la respuesta. Por favor, introduce una expresión matemática válida.","Correct!":"¡Correcto!","Incorrect":"Incorrecto","Your answer is correct!":"¡Tu respuesta es correcta!","Please enter your solution process":"Por favor, introduce tu proceso de solución","Please select a difficulty level":"Por favor, selecciona un nivel de dificultad","__title__":"Hub de Desafíos Matemáticos"},"ja":{"Math Challenge Hub":"数学チャレンジハブ","Solve, learn, and master mathematical problems":"問題を解き、学び、数学の問題をマスターする","Input Math Problem":"数学の問題を入力","Solve":"解く","Find Similar Problems":"似たような問題を見つける","Check Answer":"答えを確認","Optimize Solution":"解を最適化","Solution":"解","Similar Problems":"似たような問題","Answer Check":"答えの確認","Optimization Suggestions":"最適化の提案","Solution Process":"解のプロセス","Get Feedback":"フィードバックを得る","Process Feedback":"プロセスのフィードバック","Difficulty Level":"難易度レベル","Beginner":"初心者","Intermediate":"中級者","Advanced":"上級者","Expert":"エキスパート","Recommend Problems":"推奨問題","Recommended Problems":"推奨問題","level:":"レベル：",". Please review your solution.":". あなたの解決策を確認してください。","Commutative Property:":"交換律：","Associative Property:":"結合律：","Distributive Property:":"分配律：","Division Simplification:":"除算の簡化：","Simplify fractions before multiplying":"掛ける前に分数を簡化","Isolate the Variable:":"変数を孤立させる","Move all terms without x to the other side":"xを含まないすべての項を反対側に移動","Check Your Solution:":"あなたの解決策を確認：","Substitute x back into the original equation":"xを元の方程式に戻す","Exponent Rules:":"指数の則：","Factoring:":"因数分解：","Look for common factors or patterns":"共通の因数やパターンを見つける","Good Structure:":"良い構造：","Your solution is well-organized.":"あなたの解決策はよく構成されています。","Improvement Tips:":"改善のヒント：","Double-check each calculation step":"各計算ステップを二重確認","Verify your final answer by plugging it back into the original problem":"元の問題に戻して最終答えを確認","Consider alternative approaches to confirm your solution":"あなたの解決策を確認するために、代替的なアプローチを考慮","problems:":"問題：","Solution:":"解：","Result:":"結果：","Enter your math problem here...":"ここにあなたの数学の問題を入力...","Enter your solution process here...":"ここにあなたの解決プロセスを入力...","First multiply 3 by 4, then add 2":"まず3を4に掛け、その後2を加える","First divide 15 by 3, then add 2":"まず15を3で割る、その後2を加える","Calculate squares first, then add":"まず平方を計算、その後加える","First add inside the square root, then find the square root":"まず平方根の中に加える、その後平方根を見つける","Subtract 5 from both sides, then divide by 3":"両側から5を引いて、その後3で割る","Find two numbers that multiply to 6 and add to -5":"6に掛かって-5に加わる2つの数を見つける","Integrate each term separately":"各項をそれぞれ積分","Product rule and chain rule":"積の則と連鎖の則","Use trigonometric identity":"三角関数の恒等式を使用","Proof involves Fourier series":"証明にはフーリエ級数が関与","Basel problem solution":"バーゼル問題の解","Please enter a math problem":"数学の問題を入力してください","Unable to solve":"解けません","The expression contains invalid characters or operations.":"式には無効な文字や演算が含まれています。","Please enter a valid math problem":"有効な数学問題を入力してください","Unable to verify the answer. Please check your equation format.":"答えを確認できません。式の形式を確認してください。","Unable to verify the answer. Please enter a valid math expression.":"答えを確認できません。有効な数学表現を入力してください。","Correct!":"正解！","Incorrect":"不正解","Your answer is correct!":"あなたの答えは正しいです！","Please enter your solution process":"解決プロセスを入力してください","Please select a difficulty level":"難易度を選択してください","__title__":"数学チャレンジハブ"},"ko":{"Math Challenge Hub":"마θη학 도전 허브","Solve, learn, and master mathematical problems":"해결하고 배우고 수학 문제를 마스터하세요","Input Math Problem":"수학 문제 입력","Solve":"해결","Find Similar Problems":"유사한 문제 찾기","Check Answer":"답안 확인","Optimize Solution":"해결 방법 최적화","Solution":"해결","Similar Problems":"유사한 문제","Answer Check":"답안 확인","Optimization Suggestions":"최적화 제안","Solution Process":"해결 과정","Get Feedback":"피드백 받기","Process Feedback":"과정 피드백","Difficulty Level":"난이도 수준","Beginner":"시작자","Intermediate":"중급자","Advanced":"고급자","Expert":"전문가","Recommend Problems":"추천 문제","Recommended Problems":"추천 문제","level:":"레벨:",". Please review your solution.":". 답안을 검토해 주세요.","Commutative Property:":"교환 성질:","Associative Property:":"결합 성질:","Distributive Property:":"분배 성질:","Division Simplification:":"분할 간소화:","Simplify fractions before multiplying":"곱하기 전에 분수를 간소화하세요","Isolate the Variable:":"변수를 분리하세요","Move all terms without x to the other side":"x를 포함하지 않는 모든 항을 다른 쪽으로 옮겨주세요","Check Your Solution:":"답안을 확인하세요:","Substitute x back into the original equation":"x를 원래 방정식에 다시 대입하세요","Exponent Rules:":"지수 규칙:","Factoring:":"분해:","Look for common factors or patterns":"공통 요인이나 패턴을 찾아보세요","Good Structure:":"좋은 구조:","Your solution is well-organized.":"답안은 잘 정리되었습니다.","Improvement Tips:":"개선 제안:","Double-check each calculation step":"각 계산 단계를 다시 확인하세요","Verify your final answer by plugging it back into the original problem":"원래 문제에 답안을 다시 대입하여 최종 답안을 확인하세요","Consider alternative approaches to confirm your solution":"답안을 확인하기 위해 다른 접근 방법을 고려하세요","problems:":"문제:","Solution:":"해결:","Result:":"결과:","Enter your math problem here...":"여기에 수학 문제를 입력하세요...","Enter your solution process here...":"여기에 해결 과정을 입력하세요...","First multiply 3 by 4, then add 2":"먼저 3을 4로 곱하고 2를 더하세요","First divide 15 by 3, then add 2":"먼저 15을 3으로 나누고 2를 더하세요","Calculate squares first, then add":"먼저 제곱을 계산하고, 그 다음 더하세요","First add inside the square root, then find the square root":"먼저 제곱근 내부에 더하고, 그 다음 제곱근을 찾으세요","Subtract 5 from both sides, then divide by 3":"양쪽에서 5을 뺄 후 3으로 나눕니다","Find two numbers that multiply to 6 and add to -5":"6을 곱하는 두 수를 찾고, -5를 더합니다","Integrate each term separately":"각 항을 각각 통합하세요","Product rule and chain rule":"곱의 규칙과 연쇄 규칙","Use trigonometric identity":"三角恒等식 사용","Proof involves Fourier series":"증명은 포이어리에 시리즈를 포함합니다","Basel problem solution":"베塞尔 문제 해결","Please enter a math problem":"수학 문제를 입력하세요","Unable to solve":"해결할 수 없음","The expression contains invalid characters or operations.":"표현식에는 무효한 문자나 연산이 포함되어 있습니다.","Please enter a valid math problem":"정확한 수학 문제를 입력하세요","Unable to verify the answer. Please check your equation format.":"답안을 확인할 수 없습니다. 계산식 형식을 확인해 주세요.","Unable to verify the answer. Please enter a valid math expression.":"답안을 확인할 수 없습니다. 정확한 수학 표현을 입력하세요.","Correct!":"정답!","Incorrect":"오답","Your answer is correct!":"당신의 답은 정답입니다!","Please enter your solution process":"해결 과정을 입력하세요","Please select a difficulty level":"난이도를 선택하세요","__title__":"마θη학 도전 허브"},"fr":{"Math Challenge Hub":"Centre de Défi Mathématique","Solve, learn, and master mathematical problems":"Résolvez, apprenez et maîtrisez les problèmes mathématiques","Input Math Problem":"Entrer un Problème Mathématique","Solve":"Résoudre","Find Similar Problems":"Trouver des Problèmes Similaires","Check Answer":"Vérifier la Réponse","Optimize Solution":"Optimiser la Solution","Similar Problems":"Problèmes Similaires","Answer Check":"Vérification de la Réponse","Optimization Suggestions":"Suggestions d'Optimisation","Solution Process":"Processus de Solution","Get Feedback":"Obtenir un Retour","Process Feedback":"Processus de Retour","Difficulty Level":"Niveau de Difficulté","Beginner":"Débutant","Intermediate":"Intermédiaire","Advanced":"Avancé","Recommend Problems":"Recommander des Problèmes","Recommended Problems":"Problèmes Recommandés","level:":"niveau :",". Please review your solution.":". Veuillez examiner votre solution.","Commutative Property:":"Propriété Commutative :","Associative Property:":"Propriété Associative :","Distributive Property:":"Propriété Distributive :","Division Simplification:":"Simplification de Division :","Simplify fractions before multiplying":"Simplifiez les fractions avant la multiplication","Isolate the Variable:":"Isoler la Variable :","Move all terms without x to the other side":"Déplacez tous les termes sans x à l'autre côté","Check Your Solution:":"Vérifiez Votre Solution :","Substitute x back into the original equation":"Remplacez x dans l'équation originale","Exponent Rules:":"Règles des Exponents :","Factoring:":"Factorisation :","Look for common factors or patterns":"Recherchez des facteurs communs ou des motifs","Good Structure:":"Bonne Structure :","Your solution is well-organized.":"Votre solution est bien organisée.","Improvement Tips:":"Conseils d'Amélioration :","Double-check each calculation step":"Vérifiez chaque étape de calcul","Verify your final answer by plugging it back into the original problem":"Vérifiez votre réponse finale en la remettant dans le problème original","Consider alternative approaches to confirm your solution":"Considérez des approches alternatives pour confirmer votre solution","problems:":"Problèmes :","Solution:":"Solution :","Result:":"Résultat :","Enter your math problem here...":"Entrez votre problème mathématique ici...","Enter your solution process here...":"Entrez votre processus de solution ici...","First multiply 3 by 4, then add 2":"Multipliez d'abord 3 par 4, puis ajoutez 2","First divide 15 by 3, then add 2":"Divisez d'abord 15 par 3, puis ajoutez 2","Calculate squares first, then add":"Calculez d'abord les carrés, puis ajoutez","First add inside the square root, then find the square root":"Ajoutez d'abord à l'intérieur de la racine carrée, puis trouvez la racine carrée","Subtract 5 from both sides, then divide by 3":"Soustrayez 5 des deux côtés, puis divisez par 3","Find two numbers that multiply to 6 and add to -5":"Trouvez deux nombres qui multiplient à 6 et ajoutent à -5","Integrate each term separately":"Intégrez chaque terme séparément","Product rule and chain rule":"Règle de produit et règle de chaîne","Use trigonometric identity":"Utilisez l'identité trigonométrique","Proof involves Fourier series":"La preuve implique les séries de Fourier","Basel problem solution":"Solution du Problème de Basel","Please enter a math problem":"Veuillez entrer un problème mathématique","Unable to solve":"Incapable de résoudre","The expression contains invalid characters or operations.":"L'expression contient des caractères ou des opérations invalides.","Please enter a valid math problem":"Veuillez saisir un problème mathématique valide","Unable to verify the answer. Please check your equation format.":"Impossible de vérifier la réponse. Veuillez vérifier le format de votre équation.","Unable to verify the answer. Please enter a valid math expression.":"Impossible de vérifier la réponse. Veuillez saisir une expression mathématique valide.","Your answer is correct!":"Votre réponse est correcte!","Please enter your solution process":"Veuillez saisir votre processus de résolution","Please select a difficulty level":"Veuillez sélectionner un niveau de difficulté","__title__":"Centre de Défi Mathématique"},"de":{"Solve, learn, and master mathematical problems":"Lösen, lernen und mathematische Probleme meistern","Input Math Problem":"Geben Sie das mathematische Problem ein","Solve":"Lösen","Find Similar Problems":"Ähnliche Probleme finden","Check Answer":"Antwort überprüfen","Optimize Solution":"Lösung optimieren","Solution":"Lösung","Similar Problems":"Ähnliche Probleme","Answer Check":"Antwort überprüfen","Optimization Suggestions":"Optimierungsvorschläge","Solution Process":"Lösungsprozess","Get Feedback":"Feedback erhalten","Process Feedback":"Feedback bearbeiten","Difficulty Level":"Schwierigkeitsgrad","Beginner":"Anfänger","Intermediate":"Mittelstufe","Advanced":"Fortgeschrittene","Expert":"Experte","Recommend Problems":"Empfohlene Probleme","Recommended Problems":"Empfohlene Probleme",". Please review your solution.":". Bitte überprüfen Sie Ihre Lösung.","Commutative Property:":"Kommutativität:","Associative Property:":"Assoziativität:","Distributive Property:":"Distributivität:","Division Simplification:":"Division vereinfachen","Simplify fractions before multiplying":"Brüche vereinfachen, bevor Sie multiplizieren","Isolate the Variable:":"Die Variable isolieren","Move all terms without x to the other side":"Bewegen Sie alle Termen ohne x auf die andere Seite","Check Your Solution:":"Überprüfen Sie Ihre Lösung:","Substitute x back into the original equation":"Ersetzen Sie x in die ursprüngliche Gleichung zurück","Exponent Rules:":"Exponentenregeln:","Factoring:":"Faktorisieren","Look for common factors or patterns":"Suchen Sie gemeinsame Faktoren oder Muster","Good Structure:":"Gute Struktur","Your solution is well-organized.":"Ihre Lösung ist gut organisiert.","Improvement Tips:":"Verbesserungstipps:","Double-check each calculation step":"Überprüfen Sie jeden Rechen Schritt","Verify your final answer by plugging it back into the original problem":"Überprüfen Sie Ihre endgültige Antwort, indem Sie sie in das ursprüngliche Problem einsetzen","Consider alternative approaches to confirm your solution":"Überlegen Sie alternative Ansätze, um Ihre Lösung zu bestätigen","problems:":"Probleme:","Solution:":"Lösung:","Result:":"Ergebnis:","Enter your math problem here...":"Geben Sie hier Ihr mathematisches Problem ein...","Enter your solution process here...":"Geben Sie hier Ihren Lösungsprozess ein...","First multiply 3 by 4, then add 2":"Multiplizieren Sie zuerst 3 mit 4, dann addieren Sie 2","First divide 15 by 3, then add 2":"Teilen Sie zuerst 15 durch 3, dann addieren Sie 2","Calculate squares first, then add":"Berechnen Sie zuerst die Quadrate, dann addieren Sie","First add inside the square root, then find the square root":"Addieren Sie zuerst innerhalb der Quadratwurzel, dann finden Sie die Quadratwurzel","Subtract 5 from both sides, then divide by 3":"Subtrahieren Sie 5 von beiden Seiten, dann teilen Sie durch 3","Find two numbers that multiply to 6 and add to -5":"Finden Sie zwei Zahlen, die multipliziert 6 ergeben und -5 addieren","Integrate each term separately":"Integrieren Sie jeden Term separately","Product rule and chain rule":"Produktregel und Kettenregel","Use trigonometric identity":"Verwenden Sie die trigonometrische Identität","Proof involves Fourier series":"Der Beweis beinhaltet Fourier-Serien","Basel problem solution":"Lösung des Basel-Problems","Please enter a math problem":"Bitte geben Sie ein mathematisches Problem ein","Unable to solve":"Kann nicht lösen","The expression contains invalid characters or operations.":"Der Ausdruck enthält ungültige Zeichen oder Operationen.","Please enter a valid math problem":"Bitte geben Sie ein gültiges Mathematikproblem ein","Unable to verify the answer. Please check your equation format.":"Die Antwort kann nicht überprüft werden. Bitte überprüfen Sie Ihr Gleichungsfomrat","Unable to verify the answer. Please enter a valid math expression.":"Die Antwort kann nicht überprüft werden. Bitte geben Sie einen gültigen mathematischen Ausdruck ein","Correct!":"Richtig!","Incorrect":"Falsch","Your answer is correct!":"Ihre Antwort ist korrekt!","Please enter your solution process":"Bitte geben Sie Ihren Lösungsweg ein","Please select a difficulty level":"Bitte wählen Sie eine Schwierigkeitsstufe aus","__title__":"Math Challenge Hub"},"ru":{"Math Challenge Hub":"Центр математических вызовов","Solve, learn, and master mathematical problems":"Решайте, изучайте и mastering математические задачи","Input Math Problem":"Ввести математическую задачу","Solve":"Решить","Find Similar Problems":"Найти похожие задачи","Check Answer":"Проверить ответ","Optimize Solution":"Оптимизация решения","Solution":"Решение","Similar Problems":"Похожие задачи","Answer Check":"Проверка ответа","Optimization Suggestions":"Рекомендации по оптимизации","Solution Process":"Процесс решения","Get Feedback":"Получить отзыв","Process Feedback":"Обработка отзывов","Difficulty Level":"Уровень сложности","Beginner":"Начинающий","Intermediate":"Средний","Advanced":"Продвинутый","Expert":"Эксперт","Recommend Problems":"Рекомендуемые задачи","Recommended Problems":"Рекомендуемые задачи","level:":"уровень:",". Please review your solution.":". Пожалуйста, проверьте ваше решение.","Commutative Property:":"Коммутативный закон:","Associative Property:":"Ассоциативный закон:","Distributive Property:":"Дistributive закон:","Division Simplification:":"Упрощение деления:","Simplify fractions before multiplying":"Упростите дроби перед умножением","Isolate the Variable:":"Изолируйте переменную:","Move all terms without x to the other side":"Перенесите все выражения без x на другую сторону","Check Your Solution:":"Проверьте ваше решение:","Substitute x back into the original equation":"Подставьте x обратно в исходное уравнение","Exponent Rules:":"Правила степеней:","Factoring:":"Дробление на множители:","Look for common factors or patterns":"Ищите общие множители или шаблоны","Good Structure:":"Хорошая структура:","Your solution is well-organized.":"Ваше решение хорошо организовано.","Improvement Tips:":"Советы по улучшению:","Double-check each calculation step":"Дважды проверьте каждый шаг вычислений","Verify your final answer by plugging it back into the original problem":"Проверьте ваш конечный ответ, подставив его обратно в исходную задачу","Consider alternative approaches to confirm your solution":"Рассмотрите альтернативные подходы для подтверждения вашего решения","problems:":"Задачи:","Solution:":"Решение:","Result:":"Результат:","Enter your math problem here...":"Введите вашу математическую задачу здесь...","Enter your solution process here...":"Введите ваш процесс решения здесь...","First multiply 3 by 4, then add 2":"Сначала умножьте 3 на 4, затем добавьте 2","First divide 15 by 3, then add 2":"Сначала разделите 15 на 3, затем добавьте 2","Calculate squares first, then add":"Сначала вычислите квадраты, затем добавьте","First add inside the square root, then find the square root":"Сначала добавьте внутри квадратного корня, затем найдите квадратный корень","Subtract 5 from both sides, then divide by 3":"Отнимите 5 от обеих сторон, затем разделите на 3","Find two numbers that multiply to 6 and add to -5":"Найдите два числа, которые умножаются на 6 и добавляются к -5","Integrate each term separately":"Интегрируйте каждый член отдельно","Product rule and chain rule":"Правило произведения и цепное правило","Use trigonometric identity":"Используйте тригонометрическую идентичность","Proof involves Fourier series":"Доказательство включает в себя ряды Фурье","Basel problem solution":"Решение проблемы Базеля","Please enter a math problem":"Пожалуйста, введите математическую задачу","Unable to solve":"Невозможно решить","The expression contains invalid characters or operations.":"Выражение содержит недопустимые символы или операции.","Please enter a valid math problem":"Пожалуйста, введите корректную математическую задачу","Unable to verify the answer. Please check your equation format.":"Невозможно проверить ответ. Пожалуйста, проверьте формат вашего уравнения","Unable to verify the answer. Please enter a valid math expression.":"Невозможно проверить ответ. Пожалуйста, введите корректное математическое выражение","Correct!":"Правильно!","Incorrect":"Неправильно","Your answer is correct!":"Ваш ответ правильный!","Please enter your solution process":"Пожалуйста, введите процесс решения","Please select a difficulty level":"Пожалуйста, выберите уровень сложности","__title__":"Центр математических вызовов"},"pt":{"Math Challenge Hub":"Hub do Desafio Matemático","Solve, learn, and master mathematical problems":"Resolva, aprenda e domine problemas matemáticos","Input Math Problem":"Insira um Problema Matemático","Solve":"Resolver","Find Similar Problems":"Encontre Problemas Semelhantes","Check Answer":"Verificar Resposta","Optimize Solution":"Otimizar Solução","Solution":"Solução","Similar Problems":"Problemas Semelhantes","Answer Check":"Verificação da Resposta","Optimization Suggestions":"Sugestões de Otimização","Solution Process":"Processo de Solução","Get Feedback":"Obter Feedback","Process Feedback":"Processar Feedback","Difficulty Level":"Nível de Dificuldade","Beginner":"Iniciante","Intermediate":"Intermediário","Advanced":"Avançado","Expert":"Experto","Recommend Problems":"Recomendar Problemas","Recommended Problems":"Problemas Recomendados","level:":"nível:",". Please review your solution.":". Por favor, revise sua solução.","Commutative Property:":"Propriedade Comutativa:","Associative Property:":"Propriedade Associativa:","Distributive Property:":"Propriedade Distributiva:","Division Simplification:":"Simplificação de Divisão:","Simplify fractions before multiplying":"Simplifique as frações antes de multiplicar","Isolate the Variable:":"Isolar a Variável:","Move all terms without x to the other side":"Mova todos os termos sem x para o outro lado","Check Your Solution:":"Verifique Sua Solução:","Substitute x back into the original equation":"Substitua x novamente na equação original","Exponent Rules:":"Regras de Potência:","Factoring:":"Fatoração:","Look for common factors or patterns":"Procure fatores comuns ou padrões","Good Structure:":"Boa Estrutura:","Your solution is well-organized.":"Sua solução está bem organizada.","Improvement Tips:":"Dicas de Melhoria:","Double-check each calculation step":"Verifique cada passo de cálculo","Verify your final answer by plugging it back into the original problem":"Verifique sua resposta final inserindo-a novamente no problema original","Consider alternative approaches to confirm your solution":"Considere abordagens alternativas para confirmar sua solução","problems:":"problemas:","Solution:":"Solução:","Result:":"Resultado:","Enter your math problem here...":"Insira seu problema matemático aqui...","Enter your solution process here...":"Insira seu processo de solução aqui...","First multiply 3 by 4, then add 2":"Primeiro multiplique 3 por 4, então some 2","First divide 15 by 3, then add 2":"Primeiro divida 15 por 3, então some 2","Calculate squares first, then add":"Calcule os quadrados primeiro, então some","First add inside the square root, then find the square root":"Primeiro some dentro da raiz quadrada, então encontre a raiz quadrada","Subtract 5 from both sides, then divide by 3":"Subtraia 5 de ambos os lados, então divida por 3","Find two numbers that multiply to 6 and add to -5":"Encontre dois números que multiplicados dêem 6 e somados dêem -5","Integrate each term separately":"Integre cada termo separadamente","Product rule and chain rule":"Regra de Produto e Regra da Cadeia","Use trigonometric identity":"Use a Identidade Trigonométrica","Proof involves Fourier series":"A prova envolve séries de Fourier","Basel problem solution":"Solução do Problema de Basel","Please enter a math problem":"Por favor, insira um problema matemático","Unable to solve":"Incapaz de resolver","The expression contains invalid characters or operations.":"A expressão contém caracteres ou operações inválidos.","Please enter a valid math problem":"Por favor, insira um problema matemático válido","Unable to verify the answer. Please check your equation format.":"Não foi possível verificar a resposta. Por favor, verifique o formato da sua equação.","Unable to verify the answer. Please enter a valid math expression.":"Não foi possível verificar a resposta. Por favor, insira uma expressão matemática válida.","Correct!":"Correto!","Incorrect":"Incorreto","Your answer is correct!":"Sua resposta está correta!","Please enter your solution process":"Por favor, insira o seu processo de solução","Please select a difficulty level":"Por favor, selecione um nível de dificuldade","__title__":"Hub do Desafio Matemático"},"ar":{"Math Challenge Hub":"مركز تحدي الرياضيات","Solve, learn, and master mathematical problems":"حل، تعلم، وتحكم في مشاكل الرياضيات","Input Math Problem":"إدخل مشكلة رياضية","Solve":"حل","Find Similar Problems":"ابحث عن مشاكل مشابهة","Check Answer":"تحقق من الإجابة","Optimize Solution":"تحسين الحل","Solution":"الحل","Similar Problems":"مشاكل مشابهة","Answer Check":"تحقق من الإجابة","Optimization Suggestions":"تقديم مقترحات تحسين","Solution Process":"عملية الحل","Get Feedback":"الحصول على ملاحظات","Process Feedback":"ملاحظات العملية","Difficulty Level":"مستوى الصعوبة","Beginner":"مبتدئ","Intermediate":"متوسط","Advanced":"مقدم","Expert":"خبير","Recommend Problems":"اقتراح مشاكل","Recommended Problems":"مشاكل مقترحة","level:":"مستوى:",". Please review your solution.":". يرجى مراجعة حلك.","Commutative Property:":"خصائص التبادل:","Associative Property:":"خصائص التجميع:","Distributive Property:":"خصائص التوزيع:","Division Simplification:":"بسط عملية التقسيم:","Simplify fractions before multiplying":"بسط الأشكال分数 قبل الضرب","Isolate the Variable:":"عزل المتغير","Move all terms without x to the other side":"تحرك جميع التعبيرات بدون x إلى الجانب الآخر","Check Your Solution:":"تحقق من حلك","Substitute x back into the original equation":"استبدل x مرة أخرى في المعادلة الأصلية","Exponent Rules:":"قوانين الأسس:","Factoring:":"تحليل الأعمدة","Look for common factors or patterns":"ابحث عن عوامل مشتركة أو أنماط","Good Structure:":"هيكل جيد","Your solution is well-organized.":"حل الخاص بك منظم بشكل جيد.","Improvement Tips:":"نصائح التحسين","Double-check each calculation step":"تحقق مرتين من كل خطوة حسابية","Verify your final answer by plugging it back into the original problem":"تحقق من إجابتك النهائية عن طريق إدخالها مرة أخرى في المشكلة الأصلية","Consider alternative approaches to confirm your solution":"اعتمد طرق بديلة للتأكد من حلك","problems:":"مشاكل:","Solution:":"الحل:","Result:":"النتيجة:","Enter your math problem here...":"أدخل مشكلة رياضية هنا...","Enter your solution process here...":"أدخل عملية حلك هنا...","First multiply 3 by 4, then add 2":"أولاً، ضع 3 ضرب 4 ثم أضف 2","First divide 15 by 3, then add 2":"أولاً، قس 15 على 3 ثم أضف 2","Calculate squares first, then add":"احسب الأضلاع أولاً، ثم أضف","First add inside the square root, then find the square root":"أولاً، أضف داخل الجذر التربيعي، ثم ابحث عن الجذر التربيعي","Subtract 5 from both sides, then divide by 3":"طرح 5 من الجانبين، ثم قسمة على 3","Find two numbers that multiply to 6 and add to -5":"ابحث عن عددين يضربان في 6 ويضيفان إلى -5","Integrate each term separately":"دمج كل شرط على حدة","Product rule and chain rule":"قاعدة المنتج وقاعدة السلسلة","Use trigonometric identity":"استخدم هوية الجبر التربيعي","Proof involves Fourier series":"البرهان يتضمن سلسلة فيوريه","Basel problem solution":"حل مشكلة بازل","Please enter a math problem":"يرجى إدخال مشكلة رياضية","Unable to solve":"غير قادر على الحل","The expression contains invalid characters or operations.":"يحتوي التعبير على أحرف أو عمليات غير صالحة.","Please enter a valid math problem":"من فضلك أدخل مشكلة رياضية صحيحة","Unable to verify the answer. Please check your equation format.":"غير قادر على التحقق من الإجابة. يرجى التحقق من صيغة المعادلة الخاصة بك","Unable to verify the answer. Please enter a valid math expression.":"غير قادر على التحقق من الإجابة. يرجى أدخل تعبير رياضي صحيح","Correct!":"صحيح!","Incorrect":"خطأ","Your answer is correct!":"إجابتك صحيحة!","Please enter your solution process":"من فضلك أدخل عملية حل المشكلة الخاصة بك","Please select a difficulty level":"من فضلك اختر مستوى الصعوبة","__title__":"مركز تحدي الرياضيات"},"hi":{"Math Challenge Hub":"मैथ चैलेंज हब","Solve, learn, and master mathematical problems":"समाधान करें, सीखें और गणितीय समस्याओं को मास्टर करें","Input Math Problem":"गणितीय समस्या इनपुट करें","Solve":"समाधान करें","Find Similar Problems":"समान समस्याएँ खोजें","Check Answer":"उत्तर जाँच करें","Optimize Solution":"समाधान अधिकतम करें","Solution":"समाधान","Similar Problems":"समान समस्याएँ","Answer Check":"उत्तर जाँच","Optimization Suggestions":"अधिकतमीकरण सुझाव","Solution Process":"समाधान प्रक्रिया","Get Feedback":"फ़ीडबैक प्राप्त करें","Process Feedback":"प्रक्रिया फ़ीडबैक","Difficulty Level":"कठिनाई स्तर","Beginner":"शुरुआती","Intermediate":"मध्यम","Advanced":"आधुनिक","Expert":"विशेषज्ञ","Recommend Problems":"अनुशंसित समस्याएँ","Recommended Problems":"अनुशंसित समस्याएँ","level:":"स्तर:",". Please review your solution.":". कृपया अपने समाधान की समीक्षा करें.","Commutative Property:":"संगति गुण:","Associative Property:":"संगति गुण:","Distributive Property:":"वितरण गुण:","Division Simplification:":"विभाजन सरलीकरण:","Simplify fractions before multiplying":"गुणा करने से पहले अनुपातों को सरल करें","Isolate the Variable:":"चल को अलग करें","Move all terms without x to the other side":"x के बिना के सभी शर्तों को दूसरी तरफ ले जाएं","Check Your Solution:":"अपने समाधान की जाँच करें:","Substitute x back into the original equation":"x को मूल समीकरण में वापस डालें","Exponent Rules:":"गुणांक नियम:","Factoring:":"गुणांकीकरण:","Look for common factors or patterns":"सामान्य गुणांक या पैटर्न खोजें","Good Structure:":"अच्छा संरचना:","Your solution is well-organized.":"आपका समाधान अच्छी तरह से संगठित है.","Improvement Tips:":"सुधार सुझाव:","Double-check each calculation step":"प्रत्येक गणना कदम को दोहरी जाँच करें","Verify your final answer by plugging it back into the original problem":"मूल समस्या में वापस डालकर अपना अंतिम उत्तर जाँच करें","Consider alternative approaches to confirm your solution":"अपने समाधान की पुष्टि के लिए वैकल्पिक दृष्टिकोणों पर विचार करें","problems:":"समस्याएँ:","Solution:":"समाधान:","Result:":"परिणाम:","Enter your math problem here...":"अपनी गणितीय समस्या यहाँ दर्ज करें...","Enter your solution process here...":"अपने समाधान प्रक्रिया यहाँ दर्ज करें...","First multiply 3 by 4, then add 2":"पहले 3 को 4 से गुणा करें, फिर 2 को जोड़ें","First divide 15 by 3, then add 2":"पहले 15 को 3 से विभाजित करें, फिर 2 को जोड़ें","Calculate squares first, then add":"पहले वर्गों की गणना करें, फिर जोड़ें","First add inside the square root, then find the square root":"पहले वर्गांतर में जोड़ें, फिर वर्गांतर खोजें","Subtract 5 from both sides, then divide by 3":"दोनों तरफ से 5 को घटाएं, फिर 3 से विभाजित करें","Find two numbers that multiply to 6 and add to -5":"ऐसे दो अंकों को खोजें जो 6 को गुणा करें और -5 को जोड़ें","Integrate each term separately":"प्रत्येक शर्त को अलग से एकीकृत करें","Product rule and chain rule":"गुणा नियम और श्रृंखला नियम","Use trigonometric identity":"त्रिकोणमितीय पहचान का उपयोग करें","Proof involves Fourier series":"दृढ़ीभूति फ्यूरिया श्रृंखला में शामिल है","Basel problem solution":"बेसल समस्या का समाधान","Please enter a math problem":"कृपया एक गणितीय समस्या दर्ज करें","Unable to solve":"समाधान नहीं कर सका","The expression contains invalid characters or operations.":"इस अभिव्यक्ति में अवैध अक्षरों या ऑपरेशन हैं.","Please enter a valid math problem":"कृपया एक वैध गणित समस्या भरें","Unable to verify the answer. Please check your equation format.":"उत्तर की पुष्टि नहीं कर सका. कृपया अपने समीकरण के रूप की जाँच करें","Unable to verify the answer. Please enter a valid math expression.":"उत्तर की पुष्टि नहीं कर सका. कृपया एक वैध गणित अभिव्यक्ति भरें","Correct!":"सही!","Incorrect":"गलत","Your answer is correct!":"आपका उत्तर सही है!","Please enter your solution process":"कृपया आपकी समाधान प्रक्रिया भरें","Please select a difficulty level":"कृपया कठिनाई स्तर चुनें","__title__":"मैथ चैलेंज हब"},"id":{"Math Challenge Hub":"Pusat Tanggapan Matematika","Solve, learn, and master mathematical problems":"Lahankan, belajar, dan ciptakan masalah matematika","Input Math Problem":"Masukkan Masalah Matematika","Solve":"Lahankan","Find Similar Problems":"Cari Masalah yang Serupa","Check Answer":"Periksa Jawaban","Optimize Solution":"Optimalisir Solusi","Solution":"Solusi","Similar Problems":"Masalah yang Serupa","Answer Check":"Periksa Jawaban","Optimization Suggestions":"Saran Optimisasi","Solution Process":"Proses Solusi","Get Feedback":"Dapatkan Umpan Balik","Process Feedback":"Proses Umpan Balik","Difficulty Level":"Tingkat Kesulitan","Beginner":"Pemula","Intermediate":"Menengah","Advanced":"Mahir","Expert":"Ahli","Recommend Problems":"Rekomendasikan Masalah","Recommended Problems":"Masalah yang Disarankan",". Please review your solution.":". Silakan periksa solusi Anda.","Commutative Property:":"Properti Komutatif:","Associative Property:":"Properti Asosiatif:","Distributive Property:":"Properti Distributif:","Division Simplification:":"Pendekatan Pemecahan:","Simplify fractions before multiplying":"Pendekatan pengurangan persen sebelum perkalian","Isolate the Variable:":"Isolasi Variabel:","Move all terms without x to the other side":"Pindahkan semua istilah tanpa x ke sisi lain","Check Your Solution:":"Periksa Solusi Anda:","Substitute x back into the original equation":"Ganti x kembali ke persamaan asli","Exponent Rules:":"Aturan Eksponen:","Factoring:":"Faktorisasi:","Look for common factors or patterns":"Cari faktor umum atau pola","Good Structure:":"Struktur Baik:","Your solution is well-organized.":"Solusi Anda sangat terorganisir.","Improvement Tips:":"Saran Peningkatan:","Double-check each calculation step":"Periksa kembali setiap tahap perhitungan","Verify your final answer by plugging it back into the original problem":"Verifikasi jawaban akhir Anda dengan memasukkannya kembali ke masalah asli","Consider alternative approaches to confirm your solution":"Berikan pertimbangan tentang pendekatan alternatif untuk mengkonfirmasi solusi Anda","problems:":"Masalah:","Solution:":"Solusi:","Result:":"Hasil:","Enter your math problem here...":"Masukkan masalah matematika Anda di sini...","Enter your solution process here...":"Masukkan proses solusi Anda di sini...","First multiply 3 by 4, then add 2":"Kali terlebih dahulu 3 dengan 4, lalu tambahkan 2","First divide 15 by 3, then add 2":"Pecahkan terlebih dahulu 15 dengan 3, lalu tambahkan 2","Calculate squares first, then add":"Hitung kuadrat terlebih dahulu, lalu tambahkan","First add inside the square root, then find the square root":"Tambahkan di dalam akar kuadrat terlebih dahulu, lalu cari akar kuadrat","Subtract 5 from both sides, then divide by 3":"Kurangi 5 dari kedua sisi, lalu bagi dengan 3","Find two numbers that multiply to 6 and add to -5":"Cari dua angka yang berjumlah 6 dan menambahkan -5","Integrate each term separately":"Integrasi setiap istilah secara terpisah","Product rule and chain rule":"Aturan perkalian dan aturan rantai","Use trigonometric identity":"Gunakan identitas trigonometri","Proof involves Fourier series":"Bukti melibatkan serangkaian Fourier","Basel problem solution":"Solusi masalah Basel","Please enter a math problem":"Silakan masukkan masalah matematika","Unable to solve":"Tidak dapat dipecahkan","The expression contains invalid characters or operations.":"Ekspresi mengandung karakter atau operasi yang tidak sah.","Please enter a valid math problem":"Silakan masukkan masalah matematika yang valid","Unable to verify the answer. Please check your equation format.":"Tidak dapat memverifikasi jawaban. Silakan periksa format ekspresi persamaan Anda","Unable to verify the answer. Please enter a valid math expression.":"Tidak dapat memverifikasi jawaban. Silakan masukkan ekspresi matematika yang valid","Correct!":"Benar!","Incorrect":"Salah","Your answer is correct!":"Jawaban Anda benar!","Please enter your solution process":"Silakan masukkan proses penyelesaian Anda","Please select a difficulty level":"Silakan pilih tingkat kesulitan","__title__":"Pusat Tanggapan Matematika"},"vi":{"Math Challenge Hub":"Trung tâm Thách thức Toán học","Solve, learn, and master mathematical problems":"Giải, học và nắm vững các bài toán toán học","Input Math Problem":"Nhập bài toán toán học","Solve":"Giải","Find Similar Problems":"Tìm các bài toán tương tự","Check Answer":"Kiểm tra đáp án","Optimize Solution":"Tối ưu hóa giải pháp","Solution":"Giải pháp","Similar Problems":"Các bài toán tương tự","Answer Check":"Kiểm tra đáp án","Optimization Suggestions":"Đề xuất tối ưu hóa","Solution Process":"Quá trình giải quyết","Get Feedback":"Nhận phản hồi","Process Feedback":"Quá trình phản hồi","Difficulty Level":"Mức độ khó","Beginner":"Khởi đầu","Intermediate":"Trung cấp","Advanced":"Cao cấp","Expert":"Chuyên gia","Recommend Problems":"Gợi ý bài toán","Recommended Problems":"Bài toán được gợi ý","level:":"mức:",". Please review your solution.":". Vui lòng xem xét giải pháp của bạn.","Commutative Property:":"Tính chất commutative:","Associative Property:":"Tính chất associative:","Distributive Property:":"Tính chất phân phối:","Division Simplification:":"Giải pháp đơn giản hóa phân số:","Simplify fractions before multiplying":"Giảm phân số trước khi nhân","Isolate the Variable:":"Tách biến","Move all terms without x to the other side":"Chuyển tất cả các điều kiện không chứa x sang bên kia","Check Your Solution:":"Kiểm tra giải pháp của bạn:","Substitute x back into the original equation":"Thay thế x trở lại vào phương trình gốc","Exponent Rules:":"Quy tắc指数:","Factoring:":"Phân tích","Look for common factors or patterns":"Tìm các yếu tố chung hoặc mẫu","Good Structure:":"Cấu trúc tốt:","Your solution is well-organized.":"Giải pháp của bạn rất tổ chức.","Improvement Tips:":"Đề xuất cải thiện:","Double-check each calculation step":"Kiểm tra lại từng bước tính toán","Verify your final answer by plugging it back into the original problem":"Xác minh đáp án cuối cùng bằng cách chèn nó trở lại vào bài toán gốc","Consider alternative approaches to confirm your solution":"Thinking about alternative approaches to confirm your solution","problems:":"bài toán:","Solution:":"Giải pháp:","Result:":"Kết quả:","Enter your math problem here...":"Nhập bài toán toán học của bạn ở đây...","Enter your solution process here...":"Nhập quá trình giải quyết của bạn ở đây...","First multiply 3 by 4, then add 2":"Trước tiên nhân 3 với 4, sau đó cộng 2","First divide 15 by 3, then add 2":"Trước tiên chia 15 cho 3, sau đó cộng 2","Calculate squares first, then add":"Tính toán bình phương trước, sau đó cộng","First add inside the square root, then find the square root":"Trước tiên cộng trong dấu căn, sau đó tìm căn bậc hai","Subtract 5 from both sides, then divide by 3":"Trừ 5 từ cả hai bên, sau đó chia cho 3","Find two numbers that multiply to 6 and add to -5":"Tìm hai số nhân với 6 và cộng với -5","Integrate each term separately":"Tích hợp từng điều kiện riêng lẻ","Product rule and chain rule":"Quy tắc nhân và quy tắc chuỗi","Use trigonometric identity":"Sử dụng định lý toán học","Proof involves Fourier series":"Bằng chứng liên quan đến chuỗi Fourier","Basel problem solution":"Giải pháp bài toán Basel","Please enter a math problem":"Vui lòng nhập bài toán toán học","Unable to solve":"Không thể giải","The expression contains invalid characters or operations.":"Câu biểu đạt chứa ký tự hoặc toán tử không hợp lệ.","Please enter a valid math problem":"Vui lòng nhập một bài toán hợp lệ","Unable to verify the answer. Please check your equation format.":"Không thể xác minh câu trả lời. Vui lòng kiểm tra định dạng phương trình của bạn.","Unable to verify the answer. Please enter a valid math expression.":"Không thể xác minh câu trả lời. Vui lòng nhập một biểu thức toán học hợp lệ.","Correct!":"Đúng!","Incorrect":"Sai!","Your answer is correct!":"Câu trả lời của bạn là đúng!","Please enter your solution process":"Vui lòng nhập quá trình giải quyết của bạn","Please select a difficulty level":"Vui lòng chọn mức độ khó","__title__":"Trung tâm Thách thức Toán học"},"th":{"Math Challenge Hub":"ฮับบี้แชลเล่นจี้แมทธ์","Solve, learn, and master mathematical problems":"แก้ปัญหา เรียนรู้ และมีความสำเร็จในความรู้ทางคณิตศาสตร์","Input Math Problem":"ใส่ปัญหาคณิตศาสตร์","Solve":"แก้","Find Similar Problems":"หาปัญหาที่คล้ายกัน","Check Answer":"ตรวจคำตอบ","Optimize Solution":"ปรับปรุงแนวทางแก้ปัญหา","Solution":"แนวทางแก้ปัญหา","Similar Problems":"ปัญหาที่คล้ายกัน","Answer Check":"ตรวจคำตอบ","Optimization Suggestions":"ข้อเสนอปรับปรุง","Solution Process":"กระบวนการแก้ปัญหา","Get Feedback":"รับความคิดเห็น","Process Feedback":"ความคิดเห็นเกี่ยวกับกระบวนการ","Difficulty Level":"ระดับความยาก","Beginner":"เริ่มต้น","Intermediate":"ปานกลาง","Advanced":"อาวุโส","Expert":"ผู้เชี่ยวชาญ","Recommend Problems":"ข้อบอกเลือกปัญหา","Recommended Problems":"ปัญหาที่เป็นที่แนะนำ","level:":"ระดับ:",". Please review your solution.":". โปรดตรวจสอบแนวทางแก้ปัญหาของคุณ。","Commutative Property:":"คุณสมบัติเรียงลำดับที่เท่ากัน:","Associative Property:":"คุณสมบัติเรียงลำดับที่เท่ากัน:","Distributive Property:":"คุณสมบัติแบ่งและแจกแจง:","Division Simplification:":"การลดแบ่งที่ง่ายต่อใช้","Simplify fractions before multiplying":"ลดแบ่งให้เป็นส่วนลัดก่อนที่จะคูณ","Isolate the Variable:":"แยกตัวแปร","Move all terms without x to the other side":"ย้ายทุกเอกสารที่ไม่มีตัว x ไปทางด้านอื่น","Check Your Solution:":"ตรวจสอบแนวทางแก้ปัญหาของคุณ","Substitute x back into the original equation":"แทนที่ x กลับเข้าไปในสมการต้นแบบ","Exponent Rules:":"กฎเมทริก","Factoring:":"การแยกตัว","Look for common factors or patterns":"หาตัวแปรที่มีร่วมกันหรือมอร์เกอร์น","Good Structure:":"โครงสร้างที่ดี","Your solution is well-organized.":"แนวทางแก้ปัญหาของคุณมีโครงสร้างที่ดี","Improvement Tips:":"ข้อเสนอปรับปรุง","Double-check each calculation step":"ตรวจสอบทุกขั้นตอนคำนวณ","Verify your final answer by plugging it back into the original problem":"ยืนยันคำตอบสุดท้ายของคุณโดยใส่คำตอบกลับเข้าไปในปัญหาต้นแบบ","Consider alternative approaches to confirm your solution":"คิดค้นวิธีทางเลือกเพื่อยืนยันแนวทางแก้ปัญหาของคุณ","problems:":"ปัญหา:","Solution:":"แนวทางแก้ปัญหา:","Result:":"ผลลัพธ์:","Enter your math problem here...":"ใส่ปัญหาคณิตศาสตร์ของคุณตรงนี้...","Enter your solution process here...":"ใส่กระบวนการแก้ปัญหาของคุณตรงนี้...","First multiply 3 by 4, then add 2":"หนึ่งในสอง ครั้งแรกคูณ 3 และ 4 จากนั้นเพิ่ม 2","First divide 15 by 3, then add 2":"หนึ่งในสอง ครั้งแรกแบ่ง 15 ด้วย 3 จากนั้นเพิ่ม 2","Calculate squares first, then add":"คำนวณทรงกลมก่อน จากนั้นเพิ่ม","First add inside the square root, then find the square root":"หนึ่งในสอง ครั้งแรกเพิ่มภายในรίζคอน จากนั้นหารίζคอน","Subtract 5 from both sides, then divide by 3":"หนึ่งในสอง ลบ 5 จากทั้งสองด้าน จากนั้นแบ่งด้วย 3","Find two numbers that multiply to 6 and add to -5":"หาตัวเลขสองตัวที่คูณกันได้ 6 และเพิ่มกันได้ -5","Integrate each term separately":"รวมทุกเอกสารแยกตัว","Product rule and chain rule":"กฎผลคูณและกฎแนวทาง","Use trigonometric identity":"ใช้ไอดิอันติทีของทรงเวียน","Proof involves Fourier series":"หลักฐานมีการใช้ซีรีส์ฟูร์เยอร์","Basel problem solution":"แนวทางแก้ปัญหาของประเทศเบลเยียม","Please enter a math problem":"โปรดใส่ปัญหาคณิตศาสตร์","Unable to solve":"ไม่สามารถแก้ได้","Please enter a valid math problem":"กรุณาใส่ปัญหาทางคณิตศาสตร์ที่ถูกต้อง","Unable to verify the answer. Please check your equation format.":"ไม่สามารถตรวจสอบคำตอบได้. กรุณาตรวจสอบรูปแบบสมการของคุณ","Unable to verify the answer. Please enter a valid math expression.":"ไม่สามารถตรวจสอบคำตอบได้. กรุณาใส่รูปแบบการแสดงทางคณิตศาสตร์ที่ถูกต้อง","Correct!":"ถูกต้อง!","Incorrect":"ผิด!","Your answer is correct!":"คำตอบของคุณถูกต้อง!","Please enter your solution process":"กรุณาใส่กระบวนการหาคำตอบของคุณ","Please select a difficulty level":"กรุณาเลือกระดับยากงาม","__title__":"ฮับบี้แชลเล่นจี้แมทธ์"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
