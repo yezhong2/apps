@@ -1082,7 +1082,9 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         ];
         
         function diagnoseError() {
-            const errorInput = document.getElementById('errorInput').value;
+            var _ei = document.getElementById('errorInput');
+            if (!_ei) { showNotification('诊断输入框未就绪，请刷新页面重试', 'error'); return; }
+            const errorInput = _ei.value;
             const resultsContainer = document.getElementById('diagnosisResults');
             
             if (!errorInput.trim()) {
@@ -1172,6 +1174,7 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         // Save current version
         function saveVersion() {
             const codeEditor = document.getElementById('codeEditor');
+            if (!codeEditor) { showNotification('编辑器未就绪，请刷新页面重试', 'error'); return; }
             const code = codeEditor.value;
             
             if (!code.trim()) {
@@ -1194,7 +1197,7 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         // Load a specific version
         function loadVersion(index) {
             const codeEditor = document.getElementById('codeEditor');
-            codeEditor.value = codeVersions[index].code;
+            if (codeEditor) { codeEditor.value = codeVersions[index].code; }
             showNotification(`版本 ${index + 1} 已加载`, 'info');
         }
         
@@ -1210,7 +1213,9 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         
         // Clear code editor
         function clearEditor() {
-            document.getElementById('codeEditor').value = '';
+            var _ce = document.getElementById('codeEditor');
+            if (_ce) { _ce.value = ''; }
+            showNotification('已清除编辑区', 'info');
         }
         
         // File upload handling for version control
@@ -1334,7 +1339,9 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         
         // Run tests
         function runTests() {
-            const code = document.getElementById('testCodeEditor').value;
+            var _tce = document.getElementById('testCodeEditor');
+            if (!_tce) { showNotification('测试编辑器未就绪，请刷新页面重试', 'error'); return; }
+            const code = _tce.value;
             const resultsContainer = document.getElementById('testResults');
             
             if (!code.trim()) {
@@ -1445,8 +1452,11 @@ console.log(names); // ['Alice', 'Bob', 'Charlie']`
         
         // Clear test editor
         function clearTestEditor() {
-            document.getElementById('testCodeEditor').value = '';
-            document.getElementById('testResults').innerHTML = '';
+            var _tce2 = document.getElementById('testCodeEditor');
+            if (_tce2) { _tce2.value = ''; }
+            var _tr = document.getElementById('testResults');
+            if (_tr) { _tr.innerHTML = ''; }
+            showNotification('已清空测试区', 'info');
         }
         
         document.getElementById('clearTestEditor').addEventListener('click', clearTestEditor);
