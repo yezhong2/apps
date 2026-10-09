@@ -1,6 +1,6 @@
 {
-  "updated": "2026-10-3",
-  "note": "glm-4-flash 免费且可商用；glm-4-flashx 极低价快速版；glm-4-air 付费增强。2026-10-03 移除 glm-4-airx：其能力分与 air 相同（都是 5）但价格档更高（3 vs 2），属纯亏项——去掉它零质量损失、省最多；保留 flashx 则是因为日常阶梯按价格升序，少了它会在 flash 被限流时直接掉到更贵的 air。429 限流自动冷却切换下一档。",
+  "updated": "2026-10-9",
+  "note": "glm-4-flash 免费且可商用；glm-4-flashx 极低价快速版；glm-4-air 付费增强。2026-10-03 移除 glm-4-airx：其能力分与 air 相同（都是 5）但价格档更高（3 vs 2），属纯亏项——去掉它零质量损失、省最多；保留 flashx 则是因为日常阶梯按价格升序，少了它会在 flash 被限流时直接掉到更贵的 air。2026-10-09 新增 glm-4-plus（能力分 6、高价档 3）：「报告（提案/决策）+ 换选 + 生成/重写」这些走能力优先的环节会自动升到它（判断力环节；实测分身 air→plus 同题 1 步直达 vs 9 步，总 token 反降）；翻译/补漏/格式检查等杂活仍走免费 flash。要回退：从本文件移除 glm-4-plus 一条即可，下一轮全线自动生效。429 限流自动冷却切换下一档。",
   "models": [
     {
       "name": "glm-4-flash",
@@ -22,6 +22,13 @@
       "commercial": true,
       "price": 2,
       "quality": 5
+    },
+    {
+      "name": "glm-4-plus",
+      "enabled": true,
+      "commercial": true,
+      "price": 3,
+      "quality": 6
     }
   ]
 }
