@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Character Design Assistant</title><meta name="description" content="Free online tool: AI Character Design Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Character Design Assistant">
+<meta property="og:description" content="Free online tool: AI Character Design Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-09_184043_AI角色形象设计助手.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --border-color: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Feature Cards */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .feature-card button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* Input Section */
+        .input-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .button-primary {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .button-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .button-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .button-secondary:hover {
+            background-color: #3a3a3a;
+        }
+
+        /* Results Section */
+        .results-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .results-section.active {
+            display: block;
+        }
+
+        .results-section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-item {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .result-image {
+            width: 100%;
+            height: 200px;
+            background-color: #2a2a2a;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+        }
+
+        .result-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-name {
+            color: var(--text-primary);
+            font-weight: bold;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+        }
+
+        .upload-area.active {
+            border-color: var(--accent);
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: var(--text-secondary);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-primary,
+            .button-secondary {
+                width: 100%;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">AI Character Design</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <h1>AI Character Design Assistant</h1>
+            <p>Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.</p>
+        </section>
+
+        <section id="features" class="features">
+            <div class="feature-card">
+                <h3>🎨 Character Generator</h3>
+                <p>Generate character sketches based on keywords and descriptions.</p>
+                <button id="generate-character-btn">Generate Character</button>
+            </div>
+            <div class="feature-card">
+                <h3>🔍 Image Analysis</h3>
+                <p>Upload an image to get AI-powered design improvement suggestions.</p>
+                <button id="analyze-image-btn">Analyze Image</button>
+            </div>
+            <div class="feature-card">
+                <h3>📖 Story Matching</h3>
+                <p>Get character recommendations based on your story synopsis.</p>
+                <button id="recommend-character-btn">Recommend Characters</button>
+            </div>
+            <div class="feature-card">
+                <h3>🎭 Style Variations</h3>
+                <p>Create multiple character designs in different artistic styles.</p>
+                <button id="generate-style-btn">Generate Styles</button>
+            </div>
+            <div class="feature-card">
+                <h3>💡 Name Inspiration</h3>
+                <p>Get character name ideas with font pairings and naming tips.</p>
+                <button id="name-inspiration-btn">Get Names</button>
+            </div>
+        </section>
+
+        <section id="tools" class="input-section">
+            <h2>Character Design Tools</h2>
+            
+            <div id="character-generator" class="tool-section">
+                <h3>Generate Character from Keywords</h3>
+                <div class="input-group">
+                    <label for="character-keywords">Enter keywords (e.g., "mystical warrior", "cyberpunk detective"):</label>
+                    <textarea id="character-keywords" placeholder="Describe your character with keywords..."></textarea>
+                </div>
+                <div class="button-group">
+                    <button id="generate-character-submit" class="button-primary">Generate Character</button>
+                </div>
+            </div>
+
+            <div id="image-analyzer" class="tool-section" style="display: none;">
+                <h3>Analyze Character Design</h3>
+                <div class="upload-area" id="upload-area">
+                    <p>Drop your image here or click to browse</p>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;">
+                </div>
+                <div class="button-group">
+                    <button id="analyze-image-submit" class="button-primary">Analyze Image</button>
+                    <button id="back-to-features" class="button-secondary">Back to Features</button>
+                </div>
+            </div>
+
+            <div id="story-matcher" class="tool-section" style="display: none;">
+                <h3>Match Characters to Story</h3>
+                <div class="input-group">
+                    <label for="story-synopsis">Enter your story synopsis:</label>
+                    <textarea id="story-synopsis" placeholder="Describe your story's plot, setting, and themes..."></textarea>
+                </div>
+                <div class="button-group">
+                    <button id="recommend-character-submit" class="button-primary">Recommend Characters</button>
+                    <button id="back-to-features-2" class="button-secondary">Back to Features</button>
+                </div>
+            </div>
+
+            <div id="style-generator" class="tool-section" style="display: none;">
+                <h3>Generate Style Variations</h3>
+                <div class="input-group">
+                    <label for="character-base">Describe your base character:</label>
+                    <textarea id="character-base" placeholder="Describe your character's appearance and personality..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="art-style">Select art style:</label>
+                    <select id="art-style">
+                        <option value="realistic">Realistic</option>
+                        <option value="anime">Anime</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="pixel-art">Pixel Art</option>
+                        <option value="watercolor">Watercolor</option>
+                        <option value="cyberpunk">Cyberpunk</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button id="generate-style-submit" class="button-primary">Generate Styles</button>
+                    <button id="back-to-features-3" class="button-secondary">Back to Features</button>
+                </div>
+            </div>
+
+            <div id="name-inspiration" class="tool-section" style="display: none;">
+                <h3>Character Name Inspiration</h3>
+                <div class="input-group">
+                    <label for="character-name">Enter a character name or part of a name:</label>
+                    <input type="text" id="character-name" placeholder="e.g., Alex, Shadow, Star">
+                </div>
+                <div class="input-group">
+                    <label for="character-type">Character type:</label>
+                    <select id="character-type">
+                        <option value="hero">Hero</option>
+                        <option value="villain">Villain</option>
+                        <option value="supporting">Supporting</option>
+                        <option value="sidekick">Sidekick</option>
+                        <option value="mysterious">Mysterious</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button id="name-inspiration-submit" class="button-primary">Get Names</button>
+                    <button id="back-to-features-4" class="button-secondary">Back to Features</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="results" class="results-section">
+            <h2>Results</h2>
+            <div id="results-content" class="result-grid">
+                <!-- Results will be populated here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>AI Character Design Assistant - Create unique characters with artificial intelligence</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">All character designs are generated for demonstration purposes</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Feature buttons
+        document.getElementById('generate-character-btn').addEventListener('click', () => {
+            showToolSection('character-generator');
+        });
+
+        document.getElementById('analyze-image-btn').addEventListener('click', () => {
+            showToolSection('image-analyzer');
+        });
+
+        document.getElementById('recommend-character-btn').addEventListener('click', () => {
+            showToolSection('story-matcher');
+        });
+
+        document.getElementById('generate-style-btn').addEventListener('click', () => {
+            showToolSection('style-generator');
+        });
+
+        document.getElementById('name-inspiration-btn').addEventListener('click', () => {
+            showToolSection('name-inspiration');
+        });
+
+        // Back to features buttons
+        document.getElementById('back-to-features').addEventListener('click', () => {
+            showToolSection('features');
+        });
+
+        document.getElementById('back-to-features-2').addEventListener('click', () => {
+            showToolSection('features');
+        });
+
+        document.getElementById('back-to-features-3').addEventListener('click', () => {
+            showToolSection('features');
+        });
+
+        document.getElementById('back-to-features-4').addEventListener('click', () => {
+            showToolSection('features');
+        });
+
+        function showToolSection(sectionId) {
+            // Hide all tool sections
+            document.querySelectorAll('.tool-section').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Hide features section
+            document.getElementById('features').style.display = 'none';
+
+            // Show the selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.style.display = 'block';
+            }
+
+            // Hide results section
+            document.getElementById('results').classList.remove('active');
+        }
+
+        // Generate Character
+        document.getElementById('generate-character-submit').addEventListener('click', () => {
+            const keywords = document.getElementById('character-keywords').value.trim();
+            
+            if (!keywords) {
+                showMessage('Please enter character keywords');
+                return;
+            }
+
+            showLoading();
+            
+            // Use AI channel to generate character
+            window.__AIChannel.submit('story', `Generate a character design based on these keywords: ${keywords}`)
+                .then(response => {
+                    displayResults(response.text, 'character');
+                })
+                .catch(error => {
+                    console.error('Error generating character:', error);
+                    displayFallbackResults('character', keywords);
+                });
+        });
+
+        // Analyze Image
+        const uploadArea = document.getElementById('upload-area');
+        const imageUpload = document.getElementById('image-upload');
+        let uploadedImageUrl = null;
+
+        uploadArea.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('active');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('active');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('active');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].type.startsWith('image/')) {
+                handleImageUpload(files[0]);
+            }
+        });
+
+        imageUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleImageUpload(e.target.files[0]);
+            }
+        });
+
+        function handleImageUpload(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImageUrl = e.target.result;
+                uploadArea.innerHTML = `<p>Image uploaded successfully!</p>`;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('analyze-image-submit').addEventListener('click', () => {
+            if (!uploadedImageUrl) {
+                showMessage('Please upload an image first');
+                return;
+            }
+
+            showLoading();
+            
+            // Use AI channel to analyze image
+            window.__AIChannel.submit('explain', `Analyze this character design and provide improvement suggestions: ${uploadedImageUrl}`)
+                .then(response => {
+                    displayResults(response.text, 'analysis');
+                })
+                .catch(error => {
+                    console.error('Error analyzing image:', error);
+                    displayFallbackResults('analysis');
+                });
+        });
+
+        // Recommend Characters
+        document.getElementById('recommend-character-submit').addEventListener('click', () => {
+            const synopsis = document.getElementById('story-synopsis').value.trim();
+            
+            if (!synopsis) {
+                showMessage('Please enter a story synopsis');
+                return;
+            }
+
+            showLoading();
+            
+            // Use AI channel to recommend characters
+            window.__AIChannel.submit('plot', `Suggest character designs that would fit this story: ${synopsis}`)
+                .then(response => {
+                    displayResults(response.text, 'recommendation');
+                })
+                .catch(error => {
+                    console.error('Error recommending characters:', error);
+                    displayFallbackResults('recommendation', synopsis);
+                });
+        });
+
+        // Generate Style Variations
+        document.getElementById('generate-style-submit').addEventListener('click', () => {
+            const character = document.getElementById('character-base').value.trim();
+            const style = document.getElementById('art-style').value;
+            
+            if (!character) {
+                showMessage('Please describe your character');
+                return;
+            }
+
+            showLoading();
+            
+            // Use AI channel to generate style variations
+            window.__AIChannel.submit('refine', `Create character design variations in ${style} style for this character: ${character}`)
+                .then(response => {
+                    displayResults(response.text, 'style');
+                })
+                .catch(error => {
+                    console.error('Error generating styles:', error);
+                    displayFallbackResults('style', character, style);
+                });
+        });
+
+        // Name Inspiration
+        document.getElementById('name-inspiration-submit').addEventListener('click', () => {
+            const name = document.getElementById('character-name').value.trim();
+            const type = document.getElementById('character-type').value;
+            
+            if (!name) {
+                showMessage('Please enter a character name or part of a name');
+                return;
+            }
+
+            showLoading();
+            
+            // Use AI channel to get name inspiration
+            window.__AIChannel.submit('tips', `Generate character name variations and font suggestions for a ${type} character with name elements from: ${name}`)
+                .then(response => {
+                    displayResults(response.text, 'name');
+                })
+                .catch(error => {
+                    console.error('Error getting name inspiration:', error);
+                    displayFallbackResults('name', name, type);
+                });
+        });
+
+        // Display results
+        function displayResults(text, type) {
+            const resultsSection = document.getElementById('results');
+            const resultsContent = document.getElementById('results-content');
+            
+            resultsContent.innerHTML = '';
+            
+            // Parse AI response and create result items
+            const results = parseAIResponse(text, type);
+            
+            results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                resultItem.innerHTML = `
+                    <div class="result-image">
+                        <span>Character Design</span>
+                    </div>
+                    <div class="result-name">${result.name}</div>
+                    <div class="result-description">${result.description}</div>
+                `;
+                
+                resultsContent.appendChild(resultItem);
+            });
+            
+            resultsSection.classList.add('active');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function parseAIResponse(text, type) {
+            // In a real implementation, this would parse the AI response
+            // For demonstration, we'll create mock results
+            const results = [];
+            
+            if (type === 'character') {
+                const lines = text.split('\n');
+                let currentResult = { name: '', description: '' };
+                
+                lines.forEach(line => {
+                    if (line.startsWith('Name:')) {
+                        if (currentResult.name) {
+                            results.push(currentResult);
+                        }
+                        currentResult = { name: line.substring(5).trim(), description: '' };
+                    } else if (line.startsWith('Description:')) {
+                        currentResult.description = line.substring(12).trim();
+                    }
+                });
+                
+                if (currentResult.name) {
+                    results.push(currentResult);
+                }
+            } else {
+                // For other types, create simple results
+                const lines = text.split('\n');
+                lines.slice(0, 4).forEach(line => {
+                    if (line.trim()) {
+                        results.push({
+                            name: line.split(':')[0].trim() || 'Character',
+                            description: line.split(':').slice(1).join(':').trim() || 'Description'
+                        });
+                    }
+                });
+            }
+            
+            return results;
+        }
+
+        // Fallback results when AI fails
+        function displayFallbackResults(type, ...args) {
+            const resultsSection = document.getElementById('results');
+            const resultsContent = document.getElementById('results-content');
+            
+            resultsContent.innerHTML = '';
+            
+            let results = [];
+            
+            switch(type) {
+                case 'character':
+                    results = [
+                        { name: 'Mystical Warrior', description: 'A warrior with magical abilities and mystical armor' },
+                        { name: 'Cyberpunk Detective', description: 'A high-tech investigator in a dystopian future' },
+                        { name: 'Forest Guardian', description: 'A protector of the ancient woods with nature powers' }
+                    ];
+                    break;
+                case 'analysis':
+                    results = [
+                        { name: 'Design Analysis', description: 'Character shows strong silhouette but needs more detail in facial features' },
+                        { name: 'Color Palette', description: 'Current colors are good but could use more contrast for better visual impact' },
+                        { name: 'Improvement Suggestions', description: 'Add more unique elements to make the character more memorable' }
+                    ];
+                    break;
+                case 'recommendation':
+                    results = [
+                        { name: 'Hero Protagonist', description: 'A brave leader with a mysterious past' },
+                        { name: 'Mentor Figure', description: 'Wise guide with hidden knowledge' },
+                        { name: 'Comic Relief', description: 'Lighthearted character with unexpected depths' }
+                    ];
+                    break;
+                case 'style':
+                    results = [
+                        { name: 'Realistic Style', description: 'Detailed rendering with realistic proportions and textures' },
+                        { name: 'Anime Style', description: 'Exaggerated features with expressive eyes and dynamic poses' },
+                        { name: 'Pixel Art Style', description: 'Retro 8-bit aesthetic with limited color palette' }
+                    ];
+                    break;
+                case 'name':
+                    results = [
+                        { name: 'Alex Shadowmere', description: 'Mysterious name with dark fantasy elements' },
+                        { name: 'Stellaris', description: 'Cosmic-themed name suggesting otherworldly origins' },
+                        { name: 'Thorne Blackwood', description: 'Nature-inspired name with a dark edge' }
+                    ];
+                    break;
+            }
+            
+            results.forEach(result => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                
+                resultItem.innerHTML = `
+                    <div class="result-image">
+                        <span>Character Design</span>
+                    </div>
+                    <div class="result-name">${result.name}</div>
+                    <div class="result-description">${result.description}</div>
+                `;
+                
+                resultsContent.appendChild(resultItem);
+            });
+            
+            resultsSection.classList.add('active');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Show loading state
+        function showLoading() {
+            const resultsSection = document.getElementById('results');
+            const resultsContent = document.getElementById('results-content');
+            
+            resultsContent.innerHTML = `
+                <div style="text-align: center; padding: 2rem;">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 1rem;">Generating character designs...</p>
+                </div>
+            `;
+            
+            resultsSection.classList.add('active');
+        }
+
+        // Show message to user
+        function showMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.style.position = 'fixed';
+            messageDiv.style.top = '20px';
+            messageDiv.style.left = '50%';
+            messageDiv.style.transform = 'translateX(-50%)';
+            messageDiv.style.backgroundColor = '#ff6b6b';
+            messageDiv.style.color = 'white';
+            messageDiv.style.padding = '1rem 2rem';
+            messageDiv.style.borderRadius = '5px';
+            messageDiv.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
+            messageDiv.style.zIndex = '1000';
+            messageDiv.textContent = message;
+            
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                document.body.removeChild(messageDiv);
+            }, 3000);
+        }
+
+        // Initialize with features section visible
+        document.getElementById('features').style.display = 'block';
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Character Design Assistant":"AI Character Design Assistant","AI Character Design":"AI Character Design","Features":"Features","Tools":"Tools","About":"About","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.","🎨 Character Generator":"🎨 Character Generator","Generate character sketches based on keywords and descriptions.":"Generate character sketches based on keywords and descriptions.","Generate Character":"Generate Character","🔍 Image Analysis":"🔍 Image Analysis","Upload an image to get AI-powered design improvement suggestions.":"Upload an image to get AI-powered design improvement suggestions.","Analyze Image":"Analyze Image","📖 Story Matching":"📖 Story Matching","Get character recommendations based on your story synopsis.":"Get character recommendations based on your story synopsis.","Recommend Characters":"Recommend Characters","🎭 Style Variations":"🎭 Style Variations","Create multiple character designs in different artistic styles.":"Create multiple character designs in different artistic styles.","Generate Styles":"Generate Styles","💡 Name Inspiration":"💡 Name Inspiration","Get character name ideas with font pairings and naming tips.":"Get character name ideas with font pairings and naming tips.","Get Names":"Get Names","Character Design Tools":"Character Design Tools","Generate Character from Keywords":"Generate Character from Keywords","Analyze Character Design":"Analyze Character Design","Drop your image here or click to browse":"Drop your image here or click to browse","Back to Features":"Back to Features","Match Characters to Story":"Match Characters to Story","Enter your story synopsis:":"Enter your story synopsis:","Generate Style Variations":"Generate Style Variations","Describe your base character:":"Describe your base character:","Select art style:":"Select art style:","Realistic":"Realistic","Anime":"Anime","Cartoon":"Cartoon","Pixel Art":"Pixel Art","Watercolor":"Watercolor","Cyberpunk":"Cyberpunk","Character Name Inspiration":"Character Name Inspiration","Enter a character name or part of a name:":"Enter a character name or part of a name:","Character type:":"Character type:","Hero":"Hero","Villain":"Villain","Supporting":"Supporting","Sidekick":"Sidekick","Mysterious":"Mysterious","Results":"Results","AI Character Design Assistant - Create unique characters with artificial intelligence":"AI Character Design Assistant - Create unique characters with artificial intelligence","All character designs are generated for demonstration purposes":"All character designs are generated for demonstration purposes","Image uploaded successfully!":"Image uploaded successfully!","Character Design":"Character Design","Generating character designs...":"Generating character designs...","Describe your character with keywords...":"Describe your character with keywords...","Describe your story's plot, setting, and themes...":"Describe your story's plot, setting, and themes...","Describe your character's appearance and personality...":"Describe your character's appearance and personality...","e.g., Alex, Shadow, Star":"e.g., Alex, Shadow, Star","Please enter character keywords":"Please enter character keywords","Error generating character:":"Error generating character:","Please upload an image first":"Please upload an image first","Error analyzing image:":"Error analyzing image:","Please enter a story synopsis":"Please enter a story synopsis","Error recommending characters:":"Error recommending characters:","Please describe your character":"Please describe your character","Error generating styles:":"Error generating styles:","Please enter a character name or part of a name":"Please enter a character name or part of a name","Error getting name inspiration:":"Error getting name inspiration:","Name:":"Name:","Description:":"Description:","Mystical Warrior":"Mystical Warrior","A warrior with magical abilities and mystical armor":"A warrior with magical abilities and mystical armor","Cyberpunk Detective":"Cyberpunk Detective","A high-tech investigator in a dystopian future":"A high-tech investigator in a dystopian future","Forest Guardian":"Forest Guardian","A protector of the ancient woods with nature powers":"A protector of the ancient woods with nature powers","Design Analysis":"Design Analysis","Character shows strong silhouette but needs more detail in facial features":"Character shows strong silhouette but needs more detail in facial features","Color Palette":"Color Palette","Current colors are good but could use more contrast for better visual impact":"Current colors are good but could use more contrast for better visual impact","Improvement Suggestions":"Improvement Suggestions","Add more unique elements to make the character more memorable":"Add more unique elements to make the character more memorable","Hero Protagonist":"Hero Protagonist","A brave leader with a mysterious past":"A brave leader with a mysterious past","Mentor Figure":"Mentor Figure","Wise guide with hidden knowledge":"Wise guide with hidden knowledge","Comic Relief":"Comic Relief","Lighthearted character with unexpected depths":"Lighthearted character with unexpected depths","Realistic Style":"Realistic Style","Detailed rendering with realistic proportions and textures":"Detailed rendering with realistic proportions and textures","Anime Style":"Anime Style","Exaggerated features with expressive eyes and dynamic poses":"Exaggerated features with expressive eyes and dynamic poses","Pixel Art Style":"Pixel Art Style","Retro 8-bit aesthetic with limited color palette":"Retro 8-bit aesthetic with limited color palette","Alex Shadowmere":"Alex Shadowmere","Mysterious name with dark fantasy elements":"Mysterious name with dark fantasy elements","Stellaris":"Stellaris","Cosmic-themed name suggesting otherworldly origins":"Cosmic-themed name suggesting otherworldly origins","Thorne Blackwood":"Thorne Blackwood","Nature-inspired name with a dark edge":"Nature-inspired name with a dark edge","text-align: center; padding: 2rem;":"text-align: center; padding: 2rem;","margin-top: 1rem;":"margin-top: 1rem;","__title__":"AI Character Design Assistant"},"zh-CN":{"AI Character Design Assistant":"AI角色设计助手","AI Character Design":"AI角色设计","Features":"功能","Tools":"工具","About":"关于","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"使用AI驱动的工具为艺术家、作家和游戏开发者创建独特的角色设计。生成角色概念，完善现有设计，并为您的下一个项目寻找灵感。","🎨 Character Generator":"🎨角色生成器","Generate character sketches based on keywords and descriptions.":"根据关键词和描述生成角色草图。","Generate Character":"生成角色","🔍 Image Analysis":"🔍图像分析","Upload an image to get AI-powered design improvement suggestions.":"上传图像以获取AI驱动的设计改进建议。","Analyze Image":"分析图像","📖 Story Matching":"📖故事匹配","Get character recommendations based on your story synopsis.":"根据您的剧情简介获取角色推荐。","Recommend Characters":"推荐角色","🎭 Style Variations":"🎭风格变化","Create multiple character designs in different artistic styles.":"创建不同艺术风格的多款角色设计。","Generate Styles":"生成风格","💡 Name Inspiration":"💡命名灵感","Get character name ideas with font pairings and naming tips.":"通过字体搭配和命名技巧获取角色命名灵感。","Get Names":"获取名称","Character Design Tools":"角色设计工具","Generate Character from Keywords":"从关键词生成角色","Analyze Character Design":"分析角色设计","Drop your image here or click to browse":"将图片拖放到此处或点击浏览","Back to Features":"返回功能","Match Characters to Story":"将角色匹配到故事","Enter your story synopsis:":"输入您的剧情简介：","Generate Style Variations":"生成风格变化","Describe your base character:":"描述您的基线角色：","Select art style:":"选择艺术风格：","Realistic":"写实","Anime":"动漫","Cartoon":"卡通","Pixel Art":"像素艺术","Watercolor":"水彩","Cyberpunk":"赛博朋克","Character Name Inspiration":"角色名称灵感","Enter a character name or part of a name:":"输入角色名称或名称的一部分：","Character type:":"角色类型：","Hero":"英雄","Villain":"反派","Supporting":"支持","Sidekick":"伙伴","Mysterious":"神秘","Results":"结果","AI Character Design Assistant - Create unique characters with artificial intelligence":"AI角色设计助手 - 使用人工智能创建独特的角色","All character designs are generated for demonstration purposes":"所有角色设计均用于演示目的","Image uploaded successfully!":"图片上传成功！","Character Design":"角色设计","Generating character designs...":"正在生成角色设计...","Describe your character with keywords...":"用关键词描述您的角色...","Describe your story's plot, setting, and themes...":"描述您故事的故事情节、背景和主题...","Describe your character's appearance and personality...":"描述您角色的外观和个性...","e.g., Alex, Shadow, Star":"例如，Alex，Shadow，Star","Please enter character keywords":"请输入角色关键词","Error generating character:":"错误生成角色：","Please upload an image first":"请先上传图片","Error analyzing image:":"错误分析图像：","Please enter a story synopsis":"请输入剧情简介","Please describe your character":"请描述您的角色","Please enter a character name or part of a name":"请输入角色名称或名称的一部分","Name:":"名称：","Description:":"描述：","Mystical Warrior":"神秘战士","A warrior with magical abilities and mystical armor":"拥有魔法能力和神秘盔甲的战士","Cyberpunk Detective":"赛博朋克侦探","A high-tech investigator in a dystopian future":"在反乌托邦未来中的高科技调查员","Forest Guardian":"森林守护者","A protector of the ancient woods with nature powers":"拥有自然力量的古老森林守护者","Design Analysis":"设计分析","Character shows strong silhouette but needs more detail in facial features":"角色轮廓鲜明但面部特征需要更多细节","Color Palette":"色彩调色板","Current colors are good but could use more contrast for better visual impact":"当前颜色不错，但为了更好的视觉效果，需要更多对比度","Improvement Suggestions":"改进建议","Add more unique elements to make the character more memorable":"添加更多独特元素，使角色更加难忘","Hero Protagonist":"英雄主角","A brave leader with a mysterious past":"一位神秘过去的勇敢领导者","Mentor Figure":"导师形象","Wise guide with hidden knowledge":"拥有隐藏知识的智者向导","Comic Relief":"喜剧元素","Lighthearted character with unexpected depths":"轻松愉快的角色，却有着意想不到的深度","Realistic Style":"现实主义风格","Detailed rendering with realistic proportions and textures":"具有现实比例和质感的细致描绘","Anime Style":"动漫风格","Exaggerated features with expressive eyes and dynamic poses":"夸张的特征，有表情的眼睛和动态的姿势","Pixel Art Style":"像素艺术风格","Retro 8-bit aesthetic with limited color palette":"有限色彩调色的复古8位美学","Alex Shadowmere":"亚历克斯·阴影之翼","Mysterious name with dark fantasy elements":"带有黑暗幻想元素的神秘名字","Stellaris":"星际","Cosmic-themed name suggesting otherworldly origins":"暗示超凡脱俗起源的宇宙主题名字","Thorne Blackwood":"刺棘黑木","Nature-inspired name with a dark edge":"带有黑暗边缘的自然灵感名字","text-align: center; padding: 2rem;":"文本居中；内边距：2rem；","margin-top: 1rem;":"上边距：1rem；","__title__":"AI角色设计助手"},"es":{"AI Character Design Assistant":"Asistente de Diseño de Personajes de IA","AI Character Design":"Diseño de Personajes de IA","Features":"Características","Tools":"Herramientas","About":"Crea diseños de personajes únicos con herramientas impulsadas por IA para artistas, escritores y desarrolladores de juegos. Genera conceptos de personajes, refina diseños existentes y encuentra inspiración para tu próximo proyecto.","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Cree diseños únicos de personajes con herramientas impulsadas por IA para artistas, escritores y desarrolladores de videojuegos. Genere conceptos de personajes, refiné diseños existentes y encuentre inspiración para su próximo proyecto.","🎨 Character Generator":"Generador de Personajes","Generate character sketches based on keywords and descriptions.":"Genera bosquejos de personajes basados en palabras clave y descripciones.","Generate Character":"Generar Personaje","🔍 Image Analysis":"Análisis de Imágenes","Upload an image to get AI-powered design improvement suggestions.":"Sube una imagen para obtener sugerencias de mejora de diseño impulsadas por IA.","Analyze Image":"Analizar Imagen","📖 Story Matching":"Coincidencia de Historias","Get character recommendations based on your story synopsis.":"Obtén recomendaciones de personajes basadas en el resumen de tu historia.","Recommend Characters":"Recomendar Personajes","🎭 Style Variations":"Variaciones de Estilo","Create multiple character designs in different artistic styles.":"Crea múltiples diseños de personajes en diferentes estilos artísticos.","Generate Styles":"Generar Estilos","💡 Name Inspiration":"Inspiración de Nombres","Get character name ideas with font pairings and naming tips.":"Obtén ideas de nombres de personajes con combinaciones de fuentes y consejos de nombramiento.","Get Names":"Obtener Nombres","Character Design Tools":"Herramientas de Diseño de Personajes","Generate Character from Keywords":"Generar Personaje desde Palabras Clave","Analyze Character Design":"Analizar Diseño de Personajes","Drop your image here or click to browse":"Suelta tu imagen aquí o haz clic para buscar","Back to Features":"Volver a Características","Match Characters to Story":"Coincidir Personajes con Historia","Enter your story synopsis:":"Ingresa el resumen de tu historia:","Generate Style Variations":"Generar Variaciones de Estilo","Describe your base character:":"Describir tu personaje base:","Select art style:":"Seleccionar estilo artístico:","Realistic":"Realista","Pixel Art":"Arte de Píxeles","Watercolor":"Acuarela","Character Name Inspiration":"Inspiración de Nombres de Personajes","Enter a character name or part of a name:":"Ingresa un nombre de personaje o parte de un nombre:","Character type:":"Tipo de Personaje:","Hero":"Héroe","Villain":"Villano","Supporting":"Apoyo","Sidekick":"Compinche","Mysterious":"Misterioso","Results":"Resultados","AI Character Design Assistant - Create unique characters with artificial intelligence":"Asistente de Diseño de Personajes de IA - Crea personajes únicos con inteligencia artificial","All character designs are generated for demonstration purposes":"Todos los diseños de personajes se generan con fines de demostración","Image uploaded successfully!":"¡Imagen subida con éxito!","Character Design":"Diseño de Personajes","Generating character designs...":"Generando diseños de personajes...","Describe your character with keywords...":"Describir tu personaje con palabras clave...","Describe your story's plot, setting, and themes...":"Describir el argumento, el entorno y los temas de tu historia...","Describe your character's appearance and personality...":"Describir la apariencia y personalidad de tu personaje...","e.g., Alex, Shadow, Star":"por ejemplo, Alex, Sombra, Estrella","Please enter character keywords":"Por favor, ingresa palabras clave del personaje","Error generating character:":"Error generando personaje:","Please upload an image first":"Por favor, sube una imagen primero","Error analyzing image:":"Error analizando imagen:","Please enter a story synopsis":"Por favor, ingresa un resumen de historia","Please describe your character":"Por favor, describa a su personaje","Please enter a character name or part of a name":"Por favor, introduzca un nombre de personaje o parte de un nombre","Error getting name inspiration:":"Error obteniendo inspiración de nombre:","Name:":"Nombre:","Description:":"Descripción:","Mystical Warrior":"Guerrero Místico","A warrior with magical abilities and mystical armor":"Un guerrero con habilidades mágicas y armadura mística","Cyberpunk Detective":"Detective de Cyberpunk","A high-tech investigator in a dystopian future":"Un investigador de alta tecnología en un futuro distópico","Forest Guardian":"Guardián del Bosque","A protector of the ancient woods with nature powers":"Un protector de los antiguos bosques con poderes de la naturaleza","Design Analysis":"Análisis de Diseño","Character shows strong silhouette but needs more detail in facial features":"El personaje muestra una silueta fuerte pero necesita más detalles en las características faciales","Color Palette":"Paleta de Colores","Current colors are good but could use more contrast for better visual impact":"Los colores actuales son buenos pero podrían usar más contraste para un impacto visual mejor","Improvement Suggestions":"Sugerencias de Mejora","Add more unique elements to make the character more memorable":"Añadir más elementos únicos para que el personaje sea más memorable","Hero Protagonist":"Héroe Protagonista","A brave leader with a mysterious past":"Un líder valiente con un pasado misterioso","Mentor Figure":"Figura de Mentor","Wise guide with hidden knowledge":"Guía sabia con conocimiento oculto","Comic Relief":"Relieve Cómico","Lighthearted character with unexpected depths":"Personaje ligero de espíritu con profundidades inesperadas","Realistic Style":"Estilo Realista","Detailed rendering with realistic proportions and textures":"Renderizado detallado con proporciones y texturas realistas","Anime Style":"Estilo de Anime","Exaggerated features with expressive eyes and dynamic poses":"Características exageradas con ojos expresivos y poses dinámicas","Pixel Art Style":"Estilo de Arte de Píxeles","Retro 8-bit aesthetic with limited color palette":"Estética retro de 8 bits con paleta de colores limitada","Mysterious name with dark fantasy elements":"Nombre misterioso con elementos de fantasía oscura","Cosmic-themed name suggesting otherworldly origins":"Nombre temático cósmico sugiriendo orígenes de otro mundo","Nature-inspired name with a dark edge":"Nombre inspirado en la naturaleza con un matiz oscuro","__title__":"Asistente de Diseño de Personajes de IA"},"ja":{"AI Character Design Assistant":"AIキャラクターデザインアシスタント","AI Character Design":"AIキャラクターデザイン","Features":"特徴","Tools":"ツール","About":"について","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"アーティスト、作家、ゲーム開発者のためのAIパワードツールでユニークなキャラクターデザインを作成します。キャラクターコンセプトを生成し、既存のデザインを精査し、次のプロジェクトのインスピレーションを得ましょう。","🎨 Character Generator":"🎨キャラクターゲネレーター","Generate character sketches based on keywords and descriptions.":"キーワードと説明に基づいてキャラクタースケッチを生成します。","Generate Character":"キャラクター生成","🔍 Image Analysis":"🔍画像分析","Upload an image to get AI-powered design improvement suggestions.":"画像をアップロードしてAIパワードのデザイン改善提案を受け取ります。","Analyze Image":"画像分析","📖 Story Matching":"📖ストーリー一致","Get character recommendations based on your story synopsis.":"あなたのストーリーの概要に基づいてキャラクターレコメンデーションを受け取ります。","Recommend Characters":"キャラクター推薦","🎭 Style Variations":"🎭スタイル変化","Create multiple character designs in different artistic styles.":"異なる芸術スタイルで複数のキャラクターデザインを作成します。","Generate Styles":"スタイル生成","💡 Name Inspiration":"💡名前のインスピレーション","Get character name ideas with font pairings and naming tips.":"フォントの組み合わせと名前付けのヒントでキャラクターの名前アイデアを得ます。","Get Names":"名前を取得","Character Design Tools":"キャラクターデザインツール","Generate Character from Keywords":"キーワードからキャラクターを生成","Analyze Character Design":"キャラクターデザインを分析","Drop your image here or click to browse":"画像をここにドラッグまたはクリックしてブラウズ","Back to Features":"特徴に戻る","Match Characters to Story":"キャラクターをストーリーに一致させる","Enter your story synopsis:":"あなたのストーリーの概要を入力してください：","Generate Style Variations":"スタイル変化を生成","Describe your base character:":"ベースキャラクターを説明してください：","Select art style:":"アートスタイルを選択してください：","Realistic":"リアリスティック","Anime":"アニメ","Cartoon":"キャラクターコミック","Pixel Art":"ピクセルアート","Watercolor":"水彩画","Cyberpunk":"サイバーパンク","Character Name Inspiration":"キャラクター名のインスピレーション","Enter a character name or part of a name:":"キャラクターの名前または名前の一部を入力してください：","Character type:":"キャラクタータイプ：","Hero":"ヒーロー","Villain":"ボス","Supporting":"サブ","Sidekick":"サイドキック","Mysterious":"ミステリアス","Results":"結果","AI Character Design Assistant - Create unique characters with artificial intelligence":"AIキャラクターデザインアシスタント - 人工知能でユニークなキャラクターを作成","All character designs are generated for demonstration purposes":"すべてのキャラクターデザインはデモ目的で生成されています","Image uploaded successfully!":"画像のアップロードに成功しました！","Character Design":"キャラクターデザイン","Generating character designs...":"キャラクターデザインの生成中...","Describe your character with keywords...":"キーワードでキャラクターを説明してください...","Describe your story's plot, setting, and themes...":"あなたのストーリーの展開、舞台、テーマを説明してください...","Describe your character's appearance and personality...":"キャラクターの外見と性格を説明してください...","e.g., Alex, Shadow, Star":"例：Alex、Shadow、Star","Please enter character keywords":"キャラクターキーワードを入力してください","Error generating character:":"キャラクターの生成エラー：","Please upload an image first":"まず画像をアップロードしてください","Error analyzing image:":"画像の分析エラー：","Please enter a story synopsis":"ストーリーの概要を入力してください","Please describe your character":"あなたのキャラクターを説明してください","Please enter a character name or part of a name":"キャラクターの名前または名前の一部を入力してください","Error getting name inspiration:":"名前のインスピレーションを取得中にエラーが発生しました：","Name:":"名前：","Description:":"説明：","Mystical Warrior":"神秘的な戦士","A warrior with magical abilities and mystical armor":"魔法の能力と神秘的な甲冑を持つ戦士","Cyberpunk Detective":"サイバーパンク探偵","A high-tech investigator in a dystopian future":"ディストピアの未来におけるハイテク調査官","Forest Guardian":"森の守護者","A protector of the ancient woods with nature powers":"自然の力を持つ古代の森の守護者","Design Analysis":"デザイン分析","Character shows strong silhouette but needs more detail in facial features":"キャラクターは強いシルエットを示していますが、顔の特徴に詳細が必要です","Color Palette":"カラーパレット","Current colors are good but could use more contrast for better visual impact":"現在の色は良いですが、視覚的な影響をより良くするためにコントラストが必要です","Improvement Suggestions":"改善提案","Add more unique elements to make the character more memorable":"キャラクターをより覚えやすくするために、よりユニークな要素を追加してください","Hero Protagonist":"ヒーロー主人公","A brave leader with a mysterious past":"謎の過去を持つ勇敢なリーダー","Mentor Figure":"師匠の存在","Wise guide with hidden knowledge":"隠された知識を持つ賢いガイド","Comic Relief":"ユーモアの要素","Lighthearted character with unexpected depths":"予想外の深さを持つ軽やかなキャラクター","Realistic Style":"リアリスティックなスタイル","Detailed rendering with realistic proportions and textures":"リアリスティックな比率とテクスチャーの詳細なレンダリング","Anime Style":"アニメスタイル","Exaggerated features with expressive eyes and dynamic poses":"表現力豊かな目とダイナミックなポーズを持つ過大化された特徴","Pixel Art Style":"ピクセルアートスタイル","Retro 8-bit aesthetic with limited color palette":"限られたカラーパレットを持つレトロ8ビットの美学","Alex Shadowmere":"アレックス・シャドウメア","Mysterious name with dark fantasy elements":"暗いファンタジーの要素を持つ神秘的な名前","Stellaris":"ステルラリス","Cosmic-themed name suggesting otherworldly origins":"超自然的な起源を示唆する宇宙テーマの名前","Thorne Blackwood":"スパイア・ブラックウッド","Nature-inspired name with a dark edge":"自然にインスパイアされた名前に暗いエッジ","__title__":"AIキャラクターデザインアシスタント"},"ko":{"AI Character Design Assistant":"AI 캐릭터 디자인 어시스턴트","AI Character Design":"AI 캐릭터 디자인","Features":"기능","Tools":"도구","About":"정보","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"아티스트, 작가, 게임 개발자를 위한 AI 기반 도구로 독특한 캐릭터 디자인을 만들어보세요. 캐릭터 개념을 생성하고, 기존 디자인을 정리하고, 다음 프로젝트의 영감을 찾으세요.","🎨 Character Generator":"🎨 캐릭터 제너레이터","Generate character sketches based on keywords and descriptions.":"키워드와 설명에 기반한 캐릭터 스케치를 생성하세요.","Generate Character":"캐릭터 생성","🔍 Image Analysis":"🔍 이미지 분석","Upload an image to get AI-powered design improvement suggestions.":"이미지를 업로드하여 AI 기반 디자인 개선 제안을 받으세요.","Analyze Image":"이미지 분석","📖 Story Matching":"📖 스토리 매칭","Get character recommendations based on your story synopsis.":"스토리 요약에 기반한 캐릭터 추천을 받으세요.","Recommend Characters":"캐릭터 추천","🎭 Style Variations":"🎭 스타일 변형","Create multiple character designs in different artistic styles.":"다양한 예술 스타일에서 여러 캐릭터 디자인을 생성하세요.","Generate Styles":"스타일 생성","💡 Name Inspiration":"💡 이름 영감","Get character name ideas with font pairings and naming tips.":"폰트 조합과 이름 제안으로 캐릭터 이름 아이디어를 얻으세요.","Get Names":"이름 얻기","Character Design Tools":"캐릭터 디자인 도구","Generate Character from Keywords":"키워드로 캐릭터 생성","Analyze Character Design":"캐릭터 디자인 분석","Drop your image here or click to browse":"이미지를 여기에 드래그하거나 클릭하여 탐색하세요","Back to Features":"기능으로 돌아가기","Match Characters to Story":"캐릭터를 스토리에 매칭","Enter your story synopsis:":"스토리 요약을 입력하세요:","Generate Style Variations":"스타일 변형 생성","Describe your base character:":"기본 캐릭터를 설명하세요:","Select art style:":"예술 스타일 선택:","Realistic":"현실적","Anime":"애니메이션","Cartoon":"카툰","Pixel Art":"픽셀 아트","Watercolor":"물감화","Cyberpunk":"사이버 패ンク","Character Name Inspiration":"캐릭터 이름 영감","Enter a character name or part of a name:":"캐릭터 이름 또는 이름의 일부를 입력하세요:","Character type:":"캐릭터 유형:","Hero":"영웅","Villain":"마피아","Supporting":"지원자","Sidekick":"조력자","Mysterious":"비밀스러운","Results":"결과","AI Character Design Assistant - Create unique characters with artificial intelligence":"AI 캐릭터 디자인 어시스턴트 - 인공지능으로 독특한 캐릭터를 생성하세요","All character designs are generated for demonstration purposes":"모든 캐릭터 디자인은 시연 목적으로 생성됩니다","Image uploaded successfully!":"이미지 업로드 성공!","Character Design":"캐릭터 디자인","Generating character designs...":"캐릭터 디자인 생성 중...","Describe your character with keywords...":"키워드로 캐릭터를 설명하세요...","Describe your story's plot, setting, and themes...":"스토리의 줄거리, 배경, 주제를 설명하세요...","Describe your character's appearance and personality...":"캐릭터의 외모와 성격을 설명하세요...","e.g., Alex, Shadow, Star":"예를 들어, Alex, Shadow, Star","Please enter character keywords":"캐릭터 키워드를 입력하세요","Error generating character:":"캐릭터 생성 오류:","Please upload an image first":"먼저 이미지를 업로드하세요","Error analyzing image:":"이미지 분석 오류:","Please enter a story synopsis":"스토리 요약을 입력하세요","Please describe your character":"당신의 캐릭터를 설명해 주세요","Please enter a character name or part of a name":"캐릭터 이름 또는 이름 일부를 입력하세요","Error getting name inspiration:":"이름 영감을 얻는 데 오류가 발생했습니다:","Name:":"이름:","Description:":"설명:","Mystical Warrior":"마법 능력과 신비한 갑옷을 가진 전사","A warrior with magical abilities and mystical armor":"마법 능력과 신비한 갑옷을 가진 전사","Cyberpunk Detective":"디스토피아 미래의 고도 기술 수사관","A high-tech investigator in a dystopian future":"디스토피아 미래의 고도 기술 수사관","Forest Guardian":"자연의 힘을 가진 고대 숲의 보호자","A protector of the ancient woods with nature powers":"자연의 힘을 가진 고대 숲의 보호자","Design Analysis":"디자인 분석","Character shows strong silhouette but needs more detail in facial features":"캐릭터는 강한 silhouet을 보여줍니다만, 얼굴 특징에 더 많은 세부 사항이 필요합니다","Color Palette":"색상 팔레트","Current colors are good but could use more contrast for better visual impact":"현재의 색상은 좋지만 더 많은 대비를 통해 더 나은 시각적 영향을 줄 수 있습니다","Improvement Suggestions":"개선 제안","Add more unique elements to make the character more memorable":"캐릭터를 더 기억에 남게 만들기 위해 더 많은 독특한 요소를 추가하세요","Hero Protagonist":"무사한 주인공","A brave leader with a mysterious past":"신비로운 과거를 가진 용감한 지도자","Mentor Figure":"지도자 인물","Wise guide with hidden knowledge":"숨겨진 지식을 가진 지혜로운 지도자","Comic Relief":"코믹 리라이즈","Lighthearted character with unexpected depths":"기대치 이상의 깊이를 가진 가벼운 캐릭터","Realistic Style":"실제적인 스타일","Detailed rendering with realistic proportions and textures":"실제적인 비율과 텍스처로 자세히 렌더링","Anime Style":"애니메이션 스타일","Exaggerated features with expressive eyes and dynamic poses":"표현력 있는 눈과 동적 자세로 과장된 특징","Pixel Art Style":"픽셀 아트 스타일","Retro 8-bit aesthetic with limited color palette":"제한된 색상 팔레트와 함께 레트로 8비트 감각","Alex Shadowmere":"dark fantasy 요소를 가진 신비로운 이름","Mysterious name with dark fantasy elements":"dark fantasy 요소를 가진 신비로운 이름","Stellaris":"우주 주제의 이름으로 천지외계적인 출신을 시사","Cosmic-themed name suggesting otherworldly origins":"천지외계적인 출신을 시사하는 우주 주제의 이름","Thorne Blackwood":"자연을 영감으로 하고 어둡은 톤을 가진 이름","Nature-inspired name with a dark edge":"자연을 영감으로 하고 어둡은 톤을 가진 이름","__title__":"AI 캐릭터 디자인 어시스턴트"},"fr":{"AI Character Design Assistant":"Assistant de conception de personnages IA","AI Character Design":"Conception de personnages IA","Features":"Fonctionnalités","Tools":"Outils","About":"À propos","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Créez des designs de personnages uniques avec des outils alimentés par l'IA pour les artistes, les écrivains et les développeurs de jeux. Générez des concepts de personnages, affinez les designs existants et trouvez de l'inspiration pour votre prochain projet.","🎨 Character Generator":"Générateur de personnages","Generate character sketches based on keywords and descriptions.":"Générez des esquisses de personnages sur la base de mots-clés et de descriptions.","Generate Character":"Générer un personnage","🔍 Image Analysis":"Analyse d'image","Upload an image to get AI-powered design improvement suggestions.":"Téléchargez une image pour obtenir des suggestions d'amélioration de conception alimentées par l'IA.","Analyze Image":"Analyser l'image","📖 Story Matching":"Matching d'histoire","Get character recommendations based on your story synopsis.":"Obtenez des recommandations de personnages sur la base de votre résumé d'histoire.","Recommend Characters":"Recommander des personnages","🎭 Style Variations":"Variations de style","Create multiple character designs in different artistic styles.":"Créez plusieurs designs de personnages dans différents styles artistiques.","Generate Styles":"Générer des styles","💡 Name Inspiration":"Inspiration de noms","Get character name ideas with font pairings and naming tips.":"Obtenez des idées de noms de personnages avec des associations de polices et des conseils de nommage.","Get Names":"Obtenir des noms","Character Design Tools":"Outils de conception de personnages","Generate Character from Keywords":"Générer un personnage à partir de mots-clés","Analyze Character Design":"Analyser la conception de personnages","Drop your image here or click to browse":"Déposez votre image ici ou cliquez pour parcourir","Back to Features":"Retour aux fonctionnalités","Match Characters to Story":"Associer des personnages à l'histoire","Enter your story synopsis:":"Entrez le résumé de votre histoire :","Generate Style Variations":"Générer des variations de style","Describe your base character:":"Décrivez votre personnage de base :","Select art style:":"Sélectionnez le style d'art :","Realistic":"Réaliste","Pixel Art":"Art pixel","Watercolor":"Aquarelle","Character Name Inspiration":"Inspiration de noms de personnages","Enter a character name or part of a name:":"Entrez un nom de personnage ou une partie d'un nom :","Character type:":"Type de personnage :","Hero":"Héros","Villain":"Vilain","Supporting":"Secondaire","Sidekick":"Compagnon","Mysterious":"Mystérieux","Results":"Résultats","AI Character Design Assistant - Create unique characters with artificial intelligence":"Assistant de conception de personnages IA - Créez des personnages uniques avec l'intelligence artificielle","All character designs are generated for demonstration purposes":"Tous les designs de personnages sont générés à des fins de démonstration","Image uploaded successfully!":"Image téléchargée avec succès !","Character Design":"Conception de personnages","Generating character designs...":"Génération des designs de personnages...","Describe your character with keywords...":"Décrivez votre personnage avec des mots-clés...","Describe your story's plot, setting, and themes...":"Décrivez le intrigue, le cadre et les thèmes de votre histoire...","Describe your character's appearance and personality...":"Décrivez l'apparence et la personnalité de votre personnage...","e.g., Alex, Shadow, Star":"par exemple, Alex, Ombre, Étoile","Please enter character keywords":"Veuillez entrer des mots-clés de personnage","Error generating character:":"Erreur lors de la génération du personnage :","Please upload an image first":"Veuillez d'abord télécharger une image","Error analyzing image:":"Erreur lors de l'analyse de l'image :","Please enter a story synopsis":"Veuillez entrer un résumé d'histoire","Please describe your character":"Veuillez décrire votre personnage","Please enter a character name or part of a name":"Veuillez saisir un nom de personnage ou une partie d'un nom","Error getting name inspiration:":"Erreur lors de l'obtention de l'inspiration de nom:","Name:":"Nom:","Mystical Warrior":"Guerrier mystique","A warrior with magical abilities and mystical armor":"Un guerrier avec des capacités magiques et une armure mystique","Cyberpunk Detective":"Detective cyberpunk","A high-tech investigator in a dystopian future":"Un enquêteur high-tech dans un futur dystopique","Forest Guardian":"Gardien de la forêt","A protector of the ancient woods with nature powers":"Un protecteur des vieilles forêts avec des pouvoirs naturels","Design Analysis":"Analyse de conception","Character shows strong silhouette but needs more detail in facial features":"Le personnage montre une silhouette forte mais nécessite plus de détails dans les caractéristiques faciales","Color Palette":"Palette de couleurs","Current colors are good but could use more contrast for better visual impact":"Les couleurs actuelles sont bonnes mais pourraient bénéficier de plus de contraste pour un impact visuel supérieur","Improvement Suggestions":"Suggestions d'amélioration","Add more unique elements to make the character more memorable":"Ajoutez plus d'éléments uniques pour rendre le personnage plus mémorable","Hero Protagonist":"Héros protagoniste","A brave leader with a mysterious past":"Un leader courageux avec un passé mystérieux","Mentor Figure":"Figure de mentor","Wise guide with hidden knowledge":"Guide sage avec des connaissances cachées","Comic Relief":"Raison d'être comique","Lighthearted character with unexpected depths":"Personnage léger avec des profondeurs inattendues","Realistic Style":"Style réaliste","Detailed rendering with realistic proportions and textures":"Rendu détaillé avec des proportions et des textures réalistes","Anime Style":"Style anime","Exaggerated features with expressive eyes and dynamic poses":"Caractéristiques exagérées avec des yeux expressifs et des poses dynamiques","Pixel Art Style":"Style pixel art","Retro 8-bit aesthetic with limited color palette":"Esthétique 8-bit rétro avec une palette de couleurs limitée","Mysterious name with dark fantasy elements":"Nom mystérieux avec des éléments de fantasy sombre","Cosmic-themed name suggesting otherworldly origins":"Nom thématique cosmique suggérant des origines autres que terrestres","Nature-inspired name with a dark edge":"Nom inspiré de la nature avec une touche sombre","__title__":"Assistant de conception de personnages IA"},"de":{"AI Character Design Assistant":"AI Charaktergestaltungs-Assistent","AI Character Design":"AI Charaktergestaltung","Features":"Funktionen","About":"Über","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Erstellen Sie einzigartige Charaktergestaltungen mit künstlicher Intelligenz-betriebenen Tools für Künstler, Schriftsteller und Spieleentwickler. Generieren Sie Charakterkonzepte, verfeinern Sie bestehende Designs und finden Sie Inspiration für Ihr nächstes Projekt.","🎨 Character Generator":"🎨 Charaktergenerator","Generate character sketches based on keywords and descriptions.":"Generieren Sie Charakterzeichnungen basierend auf Schlüsselwörtern und Beschreibungen.","Generate Character":"Charakter generieren","🔍 Image Analysis":"🔍 Bildanalyse","Upload an image to get AI-powered design improvement suggestions.":"Laden Sie ein Bild hoch, um Verbesserungsvorschläge für das Design mit künstlicher Intelligenz zu erhalten.","Analyze Image":"Bild analysieren","📖 Story Matching":"📖 Geschichten zugeordnet","Get character recommendations based on your story synopsis.":"Erhalten Sie Charakterempfehlungen basierend auf Ihrer Geschichtszusammenfassung.","Recommend Characters":"Charaktere empfehlen","🎭 Style Variations":"🎭 Stilvarianten","Create multiple character designs in different artistic styles.":"Erstellen Sie mehrere Charaktergestaltungen in verschiedenen künstlerischen Stilen.","Generate Styles":"Stile generieren","💡 Name Inspiration":"💡 Namensinspiration","Get character name ideas with font pairings and naming tips.":"Erhalten Sie Namensideen für Charaktere mit Schriftarten und Namensvorschlägen.","Get Names":"Namen erhalten","Character Design Tools":"Charaktergestaltungstools","Generate Character from Keywords":"Charakter aus Schlüsselwörtern generieren","Analyze Character Design":"Charaktergestaltung analysieren","Drop your image here or click to browse":"Legen Sie Ihr Bild hier ab oder klicken Sie zum Durchsuchen","Back to Features":"Zurück zu Funktionen","Match Characters to Story":"Charaktere mit Geschichte zugeordnet","Enter your story synopsis:":"Geben Sie Ihre Geschichtszusammenfassung ein:","Generate Style Variations":"Stilvarianten generieren","Describe your base character:":"Beschreiben Sie Ihren Basiskarakter:","Select art style:":"Wählen Sie den künstlerischen Stil:","Realistic":"Realistisch","Pixel Art":"Pixelkunst","Watercolor":"Aquarell","Character Name Inspiration":"Charakternamensinspiration","Enter a character name or part of a name:":"Geben Sie einen Charakternamen oder einen Teil eines Namens ein:","Character type:":"Charaktertyp:","Hero":"Held","Villain":"Bösewicht","Supporting":"Hilfscharakter","Sidekick":"Hilfsgeselle","Mysterious":"Geheimnisvoll","Results":"Ergebnisse","AI Character Design Assistant - Create unique characters with artificial intelligence":"AI Charaktergestaltungs-Assistent - Erstellen Sie einzigartige Charaktere mit künstlicher Intelligenz","All character designs are generated for demonstration purposes":"Alle Charaktergestaltungen werden zu Demonstrationszwecken generiert","Image uploaded successfully!":"Bild erfolgreich hochgeladen!","Character Design":"Charaktergestaltung","Generating character designs...":"Charaktergestaltungen werden generiert...","Describe your character with keywords...":"Beschreiben Sie Ihren Charakter mit Schlüsselwörtern...","Describe your story's plot, setting, and themes...":"Beschreiben Sie die Handlung, den Ort und die Themen Ihrer Geschichte...","Describe your character's appearance and personality...":"Beschreiben Sie das Aussehen und die Persönlichkeit Ihres Charakters...","e.g., Alex, Shadow, Star":"z.B., Alex, Schatten, Stern","Please enter character keywords":"Bitte geben Sie Charakter-Schlüsselwörter ein","Error generating character:":"Fehler beim Generieren des Charakters:","Please upload an image first":"Bitte laden Sie zuerst ein Bild hoch","Error analyzing image:":"Fehler bei der Analyse des Bildes:","Please enter a story synopsis":"Bitte geben Sie eine Geschichtszusammenfassung ein","Please describe your character":"Bitte beschreiben Sie Ihren Charakter","Please enter a character name or part of a name":"Bitte geben Sie einen Charakternamen oder einen Teil desselben ein","Error getting name inspiration:":"Fehler beim Abrufen von Namensinspirationen:","Description:":"Beschreibung:","Mystical Warrior":"Mystischer Krieger","A warrior with magical abilities and mystical armor":"Ein Krieger mit magischen Fähigkeiten und mystischem Panzer","Cyberpunk Detective":"Cyberpunk-Ermittler","A high-tech investigator in a dystopian future":"Ein hochtechnischer Ermittler in einer dystopischen Zukunft","Forest Guardian":"Waldbeschützer","A protector of the ancient woods with nature powers":"Ein Beschützer der alten Wälder mit Naturkräften","Design Analysis":"Designanalyse","Character shows strong silhouette but needs more detail in facial features":"Der Charakter zeigt eine starke Silhouette, aber er benötigt mehr Details in den Gesichtszügen","Color Palette":"Farbpalette","Current colors are good but could use more contrast for better visual impact":"Die aktuellen Farben sind gut, könnten aber mehr Kontrast für einen besseren visuellen Effekt benötigen","Improvement Suggestions":"Verbesserungsvorschläge","Add more unique elements to make the character more memorable":"Fügen Sie mehr einzigartige Elemente hinzu, um den Charakter besser in Erinnerung zu behalten","Hero Protagonist":"Heldischer Hauptcharakter","A brave leader with a mysterious past":"Ein tapferer Führer mit einem geheimnisvollen Hintergrund","Mentor Figure":"Beraterfigur","Wise guide with hidden knowledge":"Weiser Leiter mit verborgtem Wissen","Comic Relief":"Komödiantische Entlastung","Lighthearted character with unexpected depths":"Leichtfüßiger Charakter mit unerwarteten Tiefen","Realistic Style":"Realistischer Stil","Detailed rendering with realistic proportions and textures":"Detaillierte Darstellung mit realistischen Proportionen und Texturen","Anime Style":"Anime-Stil","Exaggerated features with expressive eyes and dynamic poses":"Überteuerte Merkmale mit ausdrucksstarken Augen und dynamischen Posen","Pixel Art Style":"Pixelkunst-Stil","Retro 8-bit aesthetic with limited color palette":"Retro-8-bit-Aesthetik mit begrenzter Farbauswahl","Mysterious name with dark fantasy elements":"Geheimnisvoller Name mit dunklen Fantasy-Elementen","Cosmic-themed name suggesting otherworldly origins":"Kosmisch-thematischer Name, der andereworldliche Ursprünge suggeriert","Nature-inspired name with a dark edge":"Von der Natur inspirierter Name mit einem dunklen Hauch","__title__":"AI Charaktergestaltungs-Assistent"},"ru":{"AI Character Design Assistant":"Ассистент по дизайну персонажей AI","AI Character Design":"Дизайн персонажей AI","Features":"Функции","Tools":"Инструменты","About":"О нас","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Создавайте уникальные дизайн персонажей с помощью инструментов AI для художников, писателей и разработчиков игр. Генерируйте концепции персонажей, улучшайте существующие designs и находите вдохновение для вашего следующего проекта.","🎨 Character Generator":"Генератор персонажей 🎨","Generate character sketches based on keywords and descriptions.":"Генерируйте эскизы персонажей на основе ключевых слов и описаний.","Generate Character":"Генерировать персонаж","🔍 Image Analysis":"Анализ изображения 🔍","Upload an image to get AI-powered design improvement suggestions.":"Загрузите изображение, чтобы получить советы по улучшению дизайна с использованием AI.","Analyze Image":"Анализ изображения","📖 Story Matching":"Совпадение с историей 📖","Get character recommendations based on your story synopsis.":"Получите рекомендации по персонажам на основе резюме вашей истории.","Recommend Characters":"Рекомендовать персонажей","🎭 Style Variations":"Вариации стиля 🎭","Create multiple character designs in different artistic styles.":"Создавайте несколько дизайнов персонажей в различных стилях искусства.","Generate Styles":"Генерировать стили","💡 Name Inspiration":"Идеи для имен 💡","Get character name ideas with font pairings and naming tips.":"Получите идеи для имен персонажей с сочетанием шрифтов и советами по命名.","Get Names":"Получить имена","Character Design Tools":"Инструменты для дизайна персонажей","Generate Character from Keywords":"Генерировать персонаж из ключевых слов","Analyze Character Design":"Анализ дизайна персонажа","Drop your image here or click to browse":"Перетащите изображение сюда или нажмите, чтобы просмотреть","Back to Features":"Вернуться к функциям","Match Characters to Story":"Совместить персонажей с историей","Enter your story synopsis:":"Введите резюме вашей истории:","Generate Style Variations":"Генерировать вариации стиля","Describe your base character:":"Опишите базового персонажа:","Select art style:":"Выберите стиль искусства:","Realistic":"Реалистичный","Anime":"Аниме","Cartoon":"Карикатура","Pixel Art":"Пиксель-арт","Watercolor":"Акварель","Cyberpunk":"Киберпанк","Character Name Inspiration":"Идеи для имен персонажей","Enter a character name or part of a name:":"Введите имя персонажа или часть имени:","Character type:":"Тип персонажа:","Hero":"Герой","Villain":"Злодей","Supporting":"Поддерживающий","Sidekick":"Спутник","Mysterious":"Тайный","Results":"Результаты","AI Character Design Assistant - Create unique characters with artificial intelligence":"Ассистент по дизайну персонажей AI - Создавайте уникальных персонажей с использованием искусственного интеллекта","All character designs are generated for demonstration purposes":"Все дизайн персонажей генерируются в демонстрационных целях","Image uploaded successfully!":"Изображение успешно загружено!","Character Design":"Дизайн персонажа","Generating character designs...":"Генерация дизайна персонажа...","Describe your character with keywords...":"Опишите вашего персонажа с использованием ключевых слов...","Describe your story's plot, setting, and themes...":"Опишите сюжет,setting и темы вашей истории...","Describe your character's appearance and personality...":"Опишите внешность и характер вашего персонажа...","e.g., Alex, Shadow, Star":"например, Alex, Тень, Звезда","Please enter character keywords":"Пожалуйста, введите ключевые слова персонажа","Error generating character:":"Ошибка при генерации персонажа:","Please upload an image first":"Пожалуйста, сначала загрузите изображение","Error analyzing image:":"Ошибка при анализе изображения:","Please enter a story synopsis":"Пожалуйста, введите резюме вашей истории","Please describe your character":"Опишите вашего персонажа","Please enter a character name or part of a name":"Введите имя персонажа или его часть","Error getting name inspiration:":"Ошибка получения вдохновения для имени:","Name:":"Имя:","Description:":"Описание:","Mystical Warrior":"Мистический воин","A warrior with magical abilities and mystical armor":"Воин с магическими способностями и мистической броней","Cyberpunk Detective":"Киберпанковский детектив","A high-tech investigator in a dystopian future":"Высокотехнологичный investigator в dystopian future","Forest Guardian":"Защитник леса","A protector of the ancient woods with nature powers":"Защитник древних лесов с силами природы","Design Analysis":"Анализ дизайна","Character shows strong silhouette but needs more detail in facial features":"Персонаж показывает сильный силуэт, но требует больше деталей в facial features","Color Palette":"Цветовая палитра","Current colors are good but could use more contrast for better visual impact":"Текущие цвета хорошие, но можно использовать больше контраста для лучшего визуального эффекта","Improvement Suggestions":"Рекомендации по улучшению","Add more unique elements to make the character more memorable":"Добавьте больше уникальных элементов, чтобы сделать персонажа более запоминающимся","Hero Protagonist":"Герой-пρωtagonist","A brave leader with a mysterious past":"Отважный лидер с загадочным прошлым","Mentor Figure":"Фигура наставника","Wise guide with hidden knowledge":"Мудрый наставник с скрытыми знаниями","Comic Relief":"Комедийное облегчение","Lighthearted character with unexpected depths":"Легкомысленный персонаж с неожиданными глубинами","Realistic Style":"Реалистичный стиль","Detailed rendering with realistic proportions and textures":"Подробное изображение с реалистичными пропорциями и текстурами","Anime Style":"Аниме стиль","Exaggerated features with expressive eyes and dynamic poses":"Экстремальные черты с выразительными глазами и динамичными позами","Pixel Art Style":"Стиль пиксельной анимации","Retro 8-bit aesthetic with limited color palette":"Ретро-8-битный эстетический вид с ограниченной палитрой цветов","Alex Shadowmere":"Алекс Шедуармер","Mysterious name with dark fantasy elements":"Загадочное имя с элементамиdark fantasy","Stellaris":"Стелларис","Cosmic-themed name suggesting otherworldly origins":"Имя в тему космоса, sugereting otherworldly origins","Thorne Blackwood":"Торн Блэквуд","Nature-inspired name with a dark edge":"Имя, вдохновленное природой с тёмным акцентом","__title__":"Ассистент по дизайну персонажей AI"},"pt":{"AI Character Design Assistant":"Assistente de Design de Personagens por IA","AI Character Design":"Design de Personagens por IA","Features":"Recursos","Tools":"Ferramentas","About":"Sobre","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Crie designs únicos de personagens com ferramentas alimentadas por IA para artistas, escritores e desenvolvedores de jogos. Gere conceitos de personagens, refine designs existentes e encontre inspiração para seu próximo projeto.","🎨 Character Generator":"Gerador de Personagens","Generate character sketches based on keywords and descriptions.":"Gere esboços de personagens com base em palavras-chave e descrições.","Generate Character":"Gerar Personagem","🔍 Image Analysis":"Análise de Imagem","Upload an image to get AI-powered design improvement suggestions.":"Carregue uma imagem para obter sugestões de melhoria de design alimentadas por IA.","Analyze Image":"Analisar Imagem","📖 Story Matching":"Correspondência de História","Get character recommendations based on your story synopsis.":"Obtenha recomendações de personagens com base no resumo da sua história.","Recommend Characters":"Recomendar Personagens","🎭 Style Variations":"Variações de Estilo","Create multiple character designs in different artistic styles.":"Crie múltiplos designs de personagens em diferentes estilos artísticos.","Generate Styles":"Gerar Estilos","💡 Name Inspiration":"Inspiração de Nomes","Get character name ideas with font pairings and naming tips.":"Obtenha ideias de nomes de personagens com combinações de fontes e dicas de nominação.","Get Names":"Obter Nomes","Character Design Tools":"Ferramentas de Design de Personagens","Generate Character from Keywords":"Gerar Personagem a Partir de Palavras-Chave","Analyze Character Design":"Analisar Design de Personagem","Drop your image here or click to browse":"Solte sua imagem aqui ou clique para navegar","Back to Features":"Voltar para Recursos","Match Characters to Story":"Correspondência de Personagens à História","Enter your story synopsis:":"Insira o resumo da sua história:","Generate Style Variations":"Gerar Variações de Estilo","Describe your base character:":"Descreva seu personagem base:","Select art style:":"Selecione o estilo artístico:","Realistic":"Realista","Pixel Art":"Arte de Pixels","Watercolor":"Aquarela","Character Name Inspiration":"Inspiração de Nomes de Personagens","Enter a character name or part of a name:":"Insira um nome de personagem ou parte de um nome:","Character type:":"Tipo de Personagem:","Hero":"Herói","Villain":"Vilão","Supporting":"Suporte","Sidekick":"Parceiro","Mysterious":"Misterioso","Results":"Resultados","AI Character Design Assistant - Create unique characters with artificial intelligence":"Assistente de Design de Personagens por IA - Crie personagens únicos com inteligência artificial","All character designs are generated for demonstration purposes":"Todos os designs de personagens são gerados para fins de demonstração","Image uploaded successfully!":"Imagem carregada com sucesso!","Character Design":"Design de Personagem","Generating character designs...":"Gerando designs de personagens...","Describe your character with keywords...":"Descreva seu personagem com palavras-chave...","Describe your story's plot, setting, and themes...":"Descreva a trama, o enredo e os temas da sua história...","Describe your character's appearance and personality...":"Descreva a aparência e a personalidade do seu personagem...","e.g., Alex, Shadow, Star":"por exemplo, Alex, Shadow, Star","Please enter character keywords":"Por favor, insira palavras-chave do personagem","Error generating character:":"Erro ao gerar caractere:","Please upload an image first":"Por favor, carregue uma imagem primeiro","Error analyzing image:":"Erro ao analisar imagem:","Please enter a story synopsis":"Por favor, insira um resumo da história","Please describe your character":"Por favor, descreva seu personagem","Please enter a character name or part of a name":"Por favor, insira o nome do personagem ou parte do nome","Error getting name inspiration:":"Erro ao obter inspiração de nome:","Name:":"Nome:","Description:":"Descrição:","Mystical Warrior":"Guerrero Místico","A warrior with magical abilities and mystical armor":"Um guerreiro com habilidades mágicas e armadura mística","Cyberpunk Detective":"Detective de Cyberpunk","A high-tech investigator in a dystopian future":"Um investigador de alta tecnologia em um futuro distópico","Forest Guardian":"Guardião da Floresta","A protector of the ancient woods with nature powers":"Um protetor das antigas florestas com poderes da natureza","Design Analysis":"Análise de Design","Character shows strong silhouette but needs more detail in facial features":"O personagem mostra uma silhueta forte mas precisa de mais detalhes nas características faciais","Color Palette":"Paleta de Cores","Current colors are good but could use more contrast for better visual impact":"As cores atuais são boas mas poderiam usar mais contraste para um impacto visual melhor","Improvement Suggestions":"Sugestões de Melhoria","Add more unique elements to make the character more memorable":"Adicione mais elementos únicos para tornar o personagem mais memorável","Hero Protagonist":"Protagonista Herói","A brave leader with a mysterious past":"Um líder corajoso com um passado misterioso","Mentor Figure":"Figura Mentor","Wise guide with hidden knowledge":"Guia sábio com conhecimento oculto","Comic Relief":"Alívio Cômico","Lighthearted character with unexpected depths":"Personagem leve com profundidades inesperadas","Realistic Style":"Estilo Realista","Detailed rendering with realistic proportions and textures":"Renderização detalhada com proporções e texturas realistas","Anime Style":"Estilo Anime","Exaggerated features with expressive eyes and dynamic poses":"Características exageradas com olhos expressivos e poses dinâmicas","Pixel Art Style":"Estilo de Arte de Pixel","Retro 8-bit aesthetic with limited color palette":"Estética retro de 8 bits com paleta de cores limitada","Mysterious name with dark fantasy elements":"Nome misterioso com elementos de fantasia sombria","Cosmic-themed name suggesting otherworldly origins":"Nome temático cósmico sugerindo origens sobrenaturais","Nature-inspired name with a dark edge":"Nome inspirado na natureza com um toque sombrio","__title__":"Assistente de Design de Personagens por IA"},"ar":{"AI Character Design Assistant":"مساعد تصميم الشخصيات الافتراضية","AI Character Design":"تصميم الشخصيات الافتراضية باستخدام الذكاء الاصطناعي","Features":"الميزات","Tools":"الأدوات","About":"عن","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"إنشاء تصميمات شخصيات فريدة باستخدام أدوات تعتمد على الذكاء الاصطناعي للفنانين، الكتاب، ومطوري الألعاب. إنشاء مفاهيم شخصيات، تحسين التصميمات الحالية، والبحث عن إلهام لمشروعك القادم.","🎨 Character Generator":"مولد الشخصيات","Generate character sketches based on keywords and descriptions.":"إنشاء رسومات شخصيات بناءً على الكلمات المفتاحية والوصف.","Generate Character":"إنشاء شخصية","🔍 Image Analysis":"تحليل الصورة","Upload an image to get AI-powered design improvement suggestions.":"رفع صورة للحصول على اقتراحات تحسين تصميم باستخدام الذكاء الاصطناعي.","Analyze Image":"تحليل الصورة","📖 Story Matching":"تطابق القصة","Get character recommendations based on your story synopsis.":"الحصول على توصيات بشخصيات بناءً على ملخص قصتك.","Recommend Characters":"توصية الشخصيات","🎭 Style Variations":"تنوع الأساليب","Create multiple character designs in different artistic styles.":"إنشاء تصميمات متعددة للشخصيات في أساليب فنية مختلفة.","Generate Styles":"إنشاء الأساليب","💡 Name Inspiration":"إلهام الأسماء","Get character name ideas with font pairings and naming tips.":"الحصول على أفكار أسماء الشخصيات مع تنسيقات الخطوط وأقوال الاسماء.","Get Names":"الحصول على الأسماء","Character Design Tools":"أدوات تصميم الشخصيات","Generate Character from Keywords":"إنشاء شخصية من الكلمات المفتاحية","Analyze Character Design":"تحليل تصميم الشخصية","Drop your image here or click to browse":"إفلت الصورة هنا أو انقر للتصفح","Back to Features":"العودة إلى الميزات","Match Characters to Story":"تطابق الشخصيات مع القصة","Enter your story synopsis:":"أدخل ملخص قصتك:","Generate Style Variations":"إنشاء تنوعات الأساليب","Describe your base character:":"وصف شخصيتك الأساسية:","Select art style:":"اختر أسلوب الفن:","Realistic":"حقيقي","Anime":"أنيمي","Cartoon":"كاريكاتير","Pixel Art":"فن البكسل","Watercolor":"الزيتي","Cyberpunk":"السايبربانك","Character Name Inspiration":"إلهام أسماء الشخصيات","Enter a character name or part of a name:":"أدخل اسم الشخصية أو جزء من الاسم:","Character type:":"نوع الشخصية:","Hero":"البرء","Villain":"الشر","Supporting":"الدعم","Sidekick":"الشريك","Mysterious":"مجهول","Results":"النتائج","AI Character Design Assistant - Create unique characters with artificial intelligence":"مساعد تصميم الشخصيات الافتراضية - إنشاء شخصيات فريدة باستخدام الذكاء الاصطناعي","All character designs are generated for demonstration purposes":"جميع تصميمات الشخصيات تم إنشاؤها لأغراض العرض فقط","Image uploaded successfully!":"تم رفع الصورة بنجاح!","Character Design":"تصميم الشخصية","Generating character designs...":"إنشاء تصميمات الشخصيات...","Describe your character with keywords...":"وصف شخصيتك بالكلمات المفتاحية...","Describe your story's plot, setting, and themes...":"وصف نصك القصصي، الموقع، والقواسم المشتركة...","Describe your character's appearance and personality...":"وصف مظهر شخصيتك ومزاجها...","e.g., Alex, Shadow, Star":"مثلاً، Alex، Shadow، Star","Please enter character keywords":"من فضلك أدخل كلمات المفتاحية للشخصية","Error generating character:":"خطأ في إنشاء الشخصية:","Please upload an image first":"من فضلك رفع صورة أولاً","Error analyzing image:":"خطأ في تحليل الصورة:","Please enter a story synopsis":"من فضلك أدخل ملخص القصة","Please describe your character":"من فضلك وصف شخصيتك","Please enter a character name or part of a name":"من فضلك أدخل اسم الشخصية أو جزء من الاسم","Error getting name inspiration:":"خطأ في الحصول على إلهام الاسم:","Name:":"الاسم:","Description:":"الوصف:","Mystical Warrior":"حربى خارق","A warrior with magical abilities and mystical armor":"حربى بقدرات سحرية ودرع خارق","Cyberpunk Detective":"محقق سايبربونك","A high-tech investigator in a dystopian future":"باحث تقني عالي في مستقبل كارثي","Forest Guardian":"حامى الغابة","A protector of the ancient woods with nature powers":"حامى الغابات القديمة بقدرات الطبيعة","Design Analysis":"تحليل التصميم","Character shows strong silhouette but needs more detail in facial features":"الشخصية تظهر شكلاً قوياً لكنها تحتاج إلى تفاصيل أكثر في ملامح الوجه","Color Palette":"لون الألوان","Current colors are good but could use more contrast for better visual impact":"الألوان الحالية جيدة لكن يمكن استخدام مزيد من التباين للحصول على تأثير مرئي أفضل","Improvement Suggestions":"تقديم مقترحات تحسين","Add more unique elements to make the character more memorable":"إضافة مزيد من العناصر الفريدة لجعل الشخصية أكثر تذكراً","Hero Protagonist":"بطل البطل","A brave leader with a mysterious past":"قائد شجاع بماضي غامق","Mentor Figure":"شخصية مرشدة","Wise guide with hidden knowledge":"مرشد حكيم بمعرفة مخفية","Comic Relief":"راحة كوميدية","Lighthearted character with unexpected depths":"شخصية خفيفة القلب بعمق غير متوقع","Realistic Style":"نمط واقعي","Detailed rendering with realistic proportions and textures":"تصوير مفصل بقياسات واقعية وتساويات","Anime Style":"نمط الأنمي","Exaggerated features with expressive eyes and dynamic poses":"ميزات مبالغ فيها بعيون تعبرية ومواقف حيوية","Pixel Art Style":"نمط الفن البكسلي","Retro 8-bit aesthetic with limited color palette":"نمط رtro 8-bit بلونات محدودة","Alex Shadowmere":"أليكس شادوماير","Mysterious name with dark fantasy elements":"اسم غامق يحتوي على عناصر خيال مظلم","Stellaris":"ستيلاريس","Cosmic-themed name suggesting otherworldly origins":"اسم مواضيع كونية يوحي بأصول غير مادية","Thorne Blackwood":"ثورن بلكوود","Nature-inspired name with a dark edge":"اسم مستوحى من الطبيعة بجوانب مظلمة","__title__":"مساعد تصميم الشخصيات الافتراضية"},"hi":{"AI Character Design Assistant":"एआई चारैक्टर डिजाइन असिस्टेंट","AI Character Design":"एआई चारैक्टर डिजाइन","Features":"फीचर्स","Tools":"टूल्स","About":"बारे में","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"कलाकार, लेखक और गेम डेवलपर्स के लिए एआई-चालित टूल्स के साथ अनूठे चारैक्टर डिजाइन्स बनाएं. चारैक्टर कॉनसेप्ट्स जन्माएं, मौजूदा डिजाइन्स को उन्नत करें और अपने अगले प्रोजेक्ट के लिए प्रेरणा ढूँढ़ें.","🎨 Character Generator":"🎨 चारैक्टर जनरेटर","Generate character sketches based on keywords and descriptions.":"शब्दावली और वर्णन के आधार पर चारैक्टर स्केच जन्माएं.","Generate Character":"🔍 चारैक्टर जन्माएं","🔍 Image Analysis":"🔍 इमेज एनालिसिस","Upload an image to get AI-powered design improvement suggestions.":"एक इमेज अपलोड करें ताकि एआई-चालित डिजाइन सुधार सुझाव प्राप्त करें.","Analyze Image":"इमेज का विश्लेषण करें","📖 Story Matching":"📖 स्टोरी मैचिंग","Get character recommendations based on your story synopsis.":"अपनी कहानी के संक्षेप के आधार पर चारैक्टर सिफारिश प्राप्त करें.","Recommend Characters":"सिफारिश चारैक्टर्स","🎭 Style Variations":"🎭 स्टाइल वेरिएशन्स","Create multiple character designs in different artistic styles.":"विभिन्न कलाकृतिक शैलियों में कई चारैक्टर डिजाइन्स बनाएं.","Generate Styles":"स्टाइल्स जन्माएं","💡 Name Inspiration":"💡 नाम प्रेरणा","Get character name ideas with font pairings and naming tips.":"फ़ॉन्ट पेयरिंग्स और नामकरण टिप्पणियों के साथ चारैक्टर नाम के विचार प्राप्त करें.","Get Names":"नाम प्राप्त करें","Character Design Tools":"चारैक्टर डिजाइन टूल्स","Generate Character from Keywords":"शब्दावली से चारैक्टर जन्माएं","Analyze Character Design":"चारैक्टर डिजाइन का विश्लेषण करें","Drop your image here or click to browse":"अपनी इमेज को यहाँ ड्रॉप करें या ब्राउज़ करने के लिए क्लिक करें","Back to Features":"फीचर्स के लिए वापस","Match Characters to Story":"कहानी के लिए चारैक्टर्स को मेल खाना","Enter your story synopsis:":"अपनी कहानी के संक्षेप को भरें:","Generate Style Variations":"स्टाइल वेरिएशन्स जन्माएं","Describe your base character:":"अपने बेस चारैक्टर का वर्णन करें:","Select art style:":"कला शैली चुनें:","Realistic":"यथार्थ","Anime":"एनीमे","Cartoon":"कार्टून","Pixel Art":"पिक्सेल कला","Watercolor":"वाटरकालर","Cyberpunk":"साइबरपंक","Character Name Inspiration":"चारैक्टर नाम प्रेरणा","Enter a character name or part of a name:":"चारैक्टर नाम या नाम का हिस्सा भरें:","Character type:":"चारैक्टर क़िस्म:","Hero":"हीरो","Villain":"विलेन","Supporting":"सहायक","Sidekick":"साइडकिक","Mysterious":"मायसरीयस","Results":"परिणाम","AI Character Design Assistant - Create unique characters with artificial intelligence":"एआई चारैक्टर डिजाइन असिस्टेंट - आर्टिफिशियल इंटेलिजेंस के साथ अनूठे चारैक्टर्स बनाएं","All character designs are generated for demonstration purposes":"सभी चारैक्टर डिजाइन्स प्रदर्शन के लिए जन्माई हैं","Image uploaded successfully!":"इमेज सफलता से अपलोड की गई!","Character Design":"चारैक्टर डिजाइन","Generating character designs...":"चारैक्टर डिजाइन्स जन्माएं जा रहे...","Describe your character with keywords...":"अपने चारैक्टर को शब्दावली से वर्णित करें...","Describe your story's plot, setting, and themes...":"अपनी कहानी की कथा, सेटिंग और थीम्स का वर्णन करें...","Describe your character's appearance and personality...":"अपने चारैक्टर की उपस्थिति और चरित्र का वर्णन करें...","e.g., Alex, Shadow, Star":"उदाहरण के लिए, Alex, Shadow, Star","Please enter character keywords":"कृपया चारैक्टर शब्दावली भरें","Error generating character:":"चारैक्टर जन्माते समय त्रुटि:","Please upload an image first":"कृपया पहले इमेज अपलोड करें","Error analyzing image:":"इमेज का विश्लेषण करते समय त्रुटि:","Please enter a story synopsis":"कृपया कहानी के संक्षेप को भरें","Please describe your character":"कृपया अपने चरित्र का वर्णन करें","Please enter a character name or part of a name":"कृपया चरित्र का नाम या नाम का किसी हिस्से को भरें","Error getting name inspiration:":"नाम प्रेरणा प्राप्त करने में त्रुटि:","Name:":"नाम:","Description:":"वर्णन:","Mystical Warrior":"मायस्टिक वॉरियर","A warrior with magical abilities and mystical armor":"मायस्टिक आस्त्रोगात्रा वाले वॉरियर","Cyberpunk Detective":"साइबरपंक डिटेक्टिव","A high-tech investigator in a dystopian future":"डिस्टोपियन भविष्य में उच्च तकनीकी जांचकर्ता","Forest Guardian":"जंगल के रक्षक","A protector of the ancient woods with nature powers":"प्राचीन जंगलों के रक्षक जो प्रकृति की शक्तियों के साथ है","Design Analysis":"डिजाइन विश्लेषण","Character shows strong silhouette but needs more detail in facial features":"चरित्र में मजबूत सिलूएट दिखाई देता है लेकिन चेहरे की विशेषताओं में अधिक विस्तार की जरूरत है","Color Palette":"रंग स्कीम","Current colors are good but could use more contrast for better visual impact":"वर्तमान रंग अच्छे हैं लेकिन अधिक कंट्रास्ट के साथ अच्छा दृश्यीय प्रभाव हो सकता है","Improvement Suggestions":"सुधार सुझाव","Add more unique elements to make the character more memorable":"चरित्र को अधिक याद रखने वाले अधिक अद्वितीय तत्वों को जोड़ें","Hero Protagonist":"हीरो प्रोटागोनिस्ट","A brave leader with a mysterious past":"एक बहादुर नेता जिसका अतीत रहस्यमय है","Mentor Figure":"गुरू चेहरा","Wise guide with hidden knowledge":"छिपे हुए ज्ञान के साथ विवेकपूर्ण गाइड","Comic Relief":"कॉमिक रिलीफ","Lighthearted character with unexpected depths":"अपेक्षाकृत गहरी गहराई वाला उदासीन चरित्र","Realistic Style":"यथार्थवादी शैली","Detailed rendering with realistic proportions and textures":"यथार्थवादी आनुपात और टैक्सचर्स के साथ विस्तृत रेंडरिंग","Anime Style":"एनिमे शैली","Exaggerated features with expressive eyes and dynamic poses":"अधिकार्थक विशेषताओं, अभिव्यक्त आँखों और गतिशील पोज़ों के साथ","Pixel Art Style":"पिक्सल आर्ट स्टाइल","Retro 8-bit aesthetic with limited color palette":"सीमित रंग स्कीम के साथ रिट्रो 8-बिट आस्थेटिक","Alex Shadowmere":"एलेक्स शैडोमीर","Mysterious name with dark fantasy elements":"अज्ञात नाम जो गहन फिक्शन तत्वों के साथ है","Stellaris":"स्टेलारिस","Cosmic-themed name suggesting otherworldly origins":"कॉस्मिक थीम का नाम जो अन्यदेशी मूल का सुझाव देता है","Thorne Blackwood":"थोर्न ब्लैकवुड","Nature-inspired name with a dark edge":"प्रकृति से प्रेरित नाम जो गहन किनारा रखता है","__title__":"एआई चारैक्टर डिजाइन असिस्टेंट"},"id":{"AI Character Design Assistant":"Asisten Desain Karakter AI","AI Character Design":"Desain Karakter AI","Features":"Fitur","Tools":"Alat","About":"Tentang","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Buat desain karakter unik dengan alat yang dipower AI untuk para seniman, penulis, dan pengembang permainan. Buat konsep karakter, perbaiki desain yang sudah ada, dan cari inspirasi untuk proyek berikutnya.","🎨 Character Generator":"Generasi Karakter 🎨","Generate character sketches based on keywords and descriptions.":"Buat sketsa karakter berdasarkan kata kunci dan deskripsi.","Generate Character":"Buat Karakter","🔍 Image Analysis":"Analisis Gambar 🔍","Upload an image to get AI-powered design improvement suggestions.":"Unggah gambar untuk mendapatkan saran peningkatan desain yang dipower AI.","Analyze Image":"Analisis Gambar","📖 Story Matching":"Persetujuan Cerita 📖","Get character recommendations based on your story synopsis.":"Dapatkan rekomendasi karakter berdasarkan sinopsis ceritamu.","Recommend Characters":"Rekomendasi Karakter","🎭 Style Variations":"Variasi Gaya 🎭","Create multiple character designs in different artistic styles.":"Buat beberapa desain karakter dalam gaya artistik yang berbeda.","Generate Styles":"Buat Gaya","💡 Name Inspiration":"Inspirasi Nama 💡","Get character name ideas with font pairings and naming tips.":"Dapatkan ide nama karakter dengan pasangan font dan tips penamaan.","Get Names":"Dapatkan Nama","Character Design Tools":"Alat Desain Karakter","Generate Character from Keywords":"Buat Karakter dari Kata Kunci","Analyze Character Design":"Analisis Desain Karakter","Drop your image here or click to browse":"Seret gambar disini atau klik untuk menggulir","Back to Features":"Kembali ke Fitur","Match Characters to Story":"Persetujui Karakter dengan Cerita","Enter your story synopsis:":"Masukkan sinopsis ceritamu:","Generate Style Variations":"Buat Variasi Gaya","Describe your base character:":"Jelaskan karakter dasarmu:","Select art style:":"Pilih gaya seni:","Realistic":"Realistik","Cartoon":"Kartun","Pixel Art":"Seni Pixel","Watercolor":"Akrilik","Character Name Inspiration":"Inspirasi Nama Karakter","Enter a character name or part of a name:":"Masukkan nama karakter atau bagian dari nama:","Character type:":"Tipe karakter:","Hero":"Pahlawan","Villain":"Penjahat","Supporting":"Pendukung","Sidekick":"Kawan","Mysterious":"Misterius","Results":"Hasil","AI Character Design Assistant - Create unique characters with artificial intelligence":"Asisten Desain Karakter AI - Buat karakter unik dengan intelligeni buatan","All character designs are generated for demonstration purposes":"Semua desain karakter dihasilkan untuk tujuan demonstrasi","Image uploaded successfully!":"Gambar diunggah dengan sukses!","Character Design":"Desain Karakter","Generating character designs...":"Menghasilkan desain karakter...","Describe your character with keywords...":"Jelaskan karaktermu dengan kata kunci...","Describe your story's plot, setting, and themes...":"Jelaskan jalur ceritamu, tempat, dan tema...","Describe your character's appearance and personality...":"Jelaskan penampilan dan sifat karaktermu...","e.g., Alex, Shadow, Star":"contoh, Alex, Bayang, Bintang","Please enter character keywords":"Silakan masukkan kata kunci karakter","Please upload an image first":"Silakan unggah gambar dahulu","Please enter a story synopsis":"Silakan masukkan sinopsis cerita","Please describe your character":"Silakan deskripsikan karakter Anda","Please enter a character name or part of a name":"Silakan masukkan nama karakter atau bagian dari nama","Error getting name inspiration:":"Kesalahan dalam mendapatkan inspirasi nama:","Name:":"Nama:","Description:":"Deskripsi:","Mystical Warrior":"Pahlawan Mistis","A warrior with magical abilities and mystical armor":"Pahlawan dengan kemampuan magis dan pakaian mistis","Cyberpunk Detective":"Detektif Cyberpunk","A high-tech investigator in a dystopian future":"Penyelidik teknologi tinggi di masa mendatang yang kacau","Forest Guardian":"Penjaga Hutan","A protector of the ancient woods with nature powers":"Penjaga hutan kuno dengan kekuatan alam","Design Analysis":"Analisis Desain","Character shows strong silhouette but needs more detail in facial features":"Karakter menunjukkan siluet kuat tetapi memerlukan detil lebih banyak di fitur wajah","Color Palette":"Koleksi Warna","Current colors are good but could use more contrast for better visual impact":"Warna saat ini bagus tetapi bisa menggunakan kontras yang lebih tinggi untuk pengaruh visual yang lebih baik","Improvement Suggestions":"Saran Peningkatan","Add more unique elements to make the character more memorable":"Tambahkan elemen unik untuk membuat karakter lebih diingat","Hero Protagonist":"Pemimpin Pahlawan","A brave leader with a mysterious past":"Pemimpin yang berani dengan masa lalu misterius","Mentor Figure":"Pemimpin Pendidik","Wise guide with hidden knowledge":"Pandai yang mengandung pengetahuan tersembunyi","Comic Relief":"Pemungkinkan untuk Bersenang-senang","Lighthearted character with unexpected depths":"Karakter yang ringan tetapi memiliki kedalaman yang tak diharapkan","Realistic Style":"Gaya Realistik","Detailed rendering with realistic proportions and textures":"Peredaran detil dengan proporsi dan tekstur yang realistik","Anime Style":"Gaya Anime","Exaggerated features with expressive eyes and dynamic poses":"Fitur yang diekskalasi dengan mata yang ekspresif dan pose yang dinamis","Pixel Art Style":"Gaya Seni Pixel","Retro 8-bit aesthetic with limited color palette":"Estetika Retro 8-bit dengan pilihan warna terbatas","Mysterious name with dark fantasy elements":"Nama misterius dengan elemen fiksi gelap","Cosmic-themed name suggesting otherworldly origins":"Nama berdasarkan tema kosmik yang menunjukkan asal bukan dari dunia ini","Nature-inspired name with a dark edge":"Nama yang diinspirasi alam dengan ciri gelap","__title__":"Asisten Desain Karakter AI"},"vi":{"AI Character Design Assistant":"Trợ lý Thiết kế Nhân vật AI","AI Character Design":"Thiết kế Nhân vật AI","Features":"Tính năng","Tools":"Công cụ","About":"Giới thiệu","Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"Tạo ra các thiết kế nhân vật độc đáo với các công cụ được cung cấp bởi AI cho các nghệ sĩ, nhà văn và nhà phát triển trò chơi. Tạo ra các khái niệm nhân vật, hoàn thiện các thiết kế hiện có và tìm cảm hứng cho dự án tiếp theo của bạn.","🎨 Character Generator":"Bộ tạo nhân vật","Generate character sketches based on keywords and descriptions.":"Tạo ra các bản vẽ nhân vật dựa trên từ khóa và mô tả.","Generate Character":"Tạo nhân vật","🔍 Image Analysis":"Phân tích hình ảnh","Upload an image to get AI-powered design improvement suggestions.":"Tải lên một hình ảnh để nhận được các gợi ý cải thiện thiết kế được cung cấp bởi AI.","Analyze Image":"Phân tích hình ảnh","📖 Story Matching":"Khớp truyện","Get character recommendations based on your story synopsis.":"Nhận được các gợi ý nhân vật dựa trên tóm tắt truyện của bạn.","Recommend Characters":"Gợi ý nhân vật","🎭 Style Variations":"Bài biến thể phong cách","Create multiple character designs in different artistic styles.":"Tạo ra nhiều thiết kế nhân vật trong các phong cách nghệ thuật khác nhau.","Generate Styles":"Tạo phong cách","💡 Name Inspiration":"Gợi ý tên","Get character name ideas with font pairings and naming tips.":"Nhận được các ý tưởng tên nhân vật với các cặp font và gợi ý đặt tên.","Get Names":"Nhận tên","Character Design Tools":"Công cụ Thiết kế Nhân vật","Generate Character from Keywords":"Tạo nhân vật từ từ khóa","Analyze Character Design":"Phân tích Thiết kế Nhân vật","Drop your image here or click to browse":"Thả hình ảnh vào đây hoặc nhấp để duyệt","Back to Features":"Quay lại Tính năng","Match Characters to Story":"Khớp nhân vật với truyện","Enter your story synopsis:":"Nhập tóm tắt truyện của bạn:","Generate Style Variations":"Tạo bài biến thể phong cách","Describe your base character:":"Mô tả nhân vật cơ bản của bạn:","Select art style:":"Chọn phong cách nghệ thuật:","Realistic":"Thực tế","Cartoon":"Hoạt hình","Pixel Art":"Nghệ thuật pixel","Watercolor":"Nghệ thuật nước","Character Name Inspiration":"Gợi ý tên nhân vật","Enter a character name or part of a name:":"Nhập tên nhân vật hoặc phần của tên:","Character type:":"Loại nhân vật:","Hero":"Người hùng","Villain":"Kẻ xấu","Supporting":"Phụ","Sidekick":"Phụ tá","Mysterious":"Mysteries","Results":"Kết quả","AI Character Design Assistant - Create unique characters with artificial intelligence":"Trợ lý Thiết kế Nhân vật AI - Tạo ra các nhân vật độc đáo với trí tuệ nhân tạo","All character designs are generated for demonstration purposes":"Tất cả các thiết kế nhân vật đều được tạo ra với mục đích演示","Image uploaded successfully!":"Hình ảnh đã tải lên thành công!","Character Design":"Thiết kế Nhân vật","Generating character designs...":"Đang tạo ra các thiết kế nhân vật...","Describe your character with keywords...":"Mô tả nhân vật của bạn với các từ khóa...","Describe your story's plot, setting, and themes...":"Mô tả cốt truyện, bối cảnh và chủ đề của truyện của bạn...","Describe your character's appearance and personality...":"Mô tả ngoại hình và tính cách của nhân vật của bạn...","e.g., Alex, Shadow, Star":"ví dụ: Alex, Shadow, Star","Please enter character keywords":"Vui lòng nhập từ khóa nhân vật","Error generating character:":"Lỗi khi tạo nhân vật:","Please upload an image first":"Vui lòng tải lên hình ảnh đầu tiên","Error analyzing image:":"Lỗi khi phân tích hình ảnh:","Please enter a story synopsis":"Vui lòng nhập tóm tắt truyện","Please describe your character":"Vui lòng mô tả nhân vật của bạn","Please enter a character name or part of a name":"Vui lòng nhập tên nhân vật hoặc phần của tên","Error getting name inspiration:":"Lỗi lấy cảm hứng tên:","Name:":"Tên:","Description:":"Mô tả:","Mystical Warrior":"Chiến binh huyền bí","A warrior with magical abilities and mystical armor":"Một chiến binh với khả năng魔法 và giáp huyền bí","Cyberpunk Detective":"Cảnh sát cyberpunk","A high-tech investigator in a dystopian future":"Một nhà điều tra công nghệ cao trong một tương lai dystopian","Forest Guardian":"Bảo vệ rừng","A protector of the ancient woods with nature powers":"Một bảo vệ rừng cổ xưa với sức mạnh tự nhiên","Design Analysis":"Phân tích thiết kế","Character shows strong silhouette but needs more detail in facial features":"Nhân vật có hình ảnh rõ ràng nhưng cần thêm chi tiết hơn trong đặc điểm khuôn mặt","Color Palette":"Bảng màu","Current colors are good but could use more contrast for better visual impact":"Màu hiện tại tốt nhưng có thể cần thêm độ tương phản để có ảnh hưởng thị giác tốt hơn","Improvement Suggestions":"Đề xuất cải thiện","Add more unique elements to make the character more memorable":"Thêm nhiều yếu tố độc đáo để làm cho nhân vật dễ nhớ hơn","Hero Protagonist":"Nhân vật chính anh hùng","A brave leader with a mysterious past":"Một nhà lãnh đạo dũng cảm với quá khứ bí ẩn","Mentor Figure":"Hình ảnh导师","Wise guide with hidden knowledge":"Hướng dẫn viên thông thái với kiến thức ẩn","Comic Relief":"Giải trí hài hước","Lighthearted character with unexpected depths":"Nhân vật nhẹ nhàng với độ sâu không ngờ","Realistic Style":"Phong cách thực tế","Detailed rendering with realistic proportions and textures":"Xuất bản chi tiết với tỷ lệ và chất liệu thực tế","Anime Style":"Phong cách anime","Exaggerated features with expressive eyes and dynamic poses":"Đặc điểm được夸张 với đôi mắt biểu cảm và tư thế động","Pixel Art Style":"Phong cách nghệ thuật pixel","Retro 8-bit aesthetic with limited color palette":"Thẩm mỹ retro 8-bit với bảng màu hạn chế","Alex Shadowmere":"Tên bí ẩn với yếu tố huyền bí","Mysterious name with dark fantasy elements":"Tên bí ẩn với yếu tố huyền thoại tối","Stellaris":"Tên đề cập đến chủ đề vũ trụ","Cosmic-themed name suggesting otherworldly origins":"Tên đề cập đến chủ đề vũ trụ gợi ý nguồn gốc khác thế giới","Thorne Blackwood":"Tên gợi ý cảm giác tự nhiên với cạnh tối","Nature-inspired name with a dark edge":"Tên gợi ý cảm giác tự nhiên với cạnh tối","__title__":"Trợ lý Thiết kế Nhân vật AI"},"th":{"Create unique character designs with AI-powered tools for artists, writers, and game developers. Generate character concepts, refine existing designs, and find inspiration for your next project.":"สร้างแบบตัวละครที่มีความเด่นที่มาจากเครื่องมือสร้างแบบตัวละครด้วย AI สำหรับนักศิลปะ, นักเขียน, และนักพัฒนาเกมส์. สร้างความคิดของตัวละคร, แก้ไขแบบตัวละครที่มีอยู่แล้ว, และหาแรงบันดาลใจสำหรับโครงการของคุณต่อไป","Generate character sketches based on keywords and descriptions.":"สร้างบวมตัวละครตามคำกำหนดและคำอธิบาย","Upload an image to get AI-powered design improvement suggestions.":"อัพโหลดภาพเพื่อได้คำแนะนำการปรับปรุงการออกแบบด้วย AI","Get character recommendations based on your story synopsis.":"ได้คำแนะนำตัวละครตามบทสรุปของเรื่องของคุณ","Create multiple character designs in different artistic styles.":"สร้างแบบตัวละครหลายรูปแบบในสไตล์ศิลปะต่างๆ","Get character name ideas with font pairings and naming tips.":"ได้ความคิดของชื่อตัวละครด้วยการเลือกตัวอักษรและคำแนะนำการตั้งชื่อ","Drop your image here or click to browse":"ทิ้งภาพของคุณที่นี่ หรือคลิกเพื่อเลือก","Enter your story synopsis:":"ใส่บทสรุปของเรื่องของคุณ:","Describe your base character:":"อธิบายตัวละครพื้นฐานของคุณ:","Select art style:":"เลือกสไตล์ศิลปะ:","Enter a character name or part of a name:":"ใส่ชื่อตัวละครหรือส่วนหนึ่งของชื่อ:","Character type:":"ประเภทตัวละคร:","AI Character Design Assistant - Create unique characters with artificial intelligence":"AI Character Design Assistant - สร้างตัวละครที่มีความเด่นด้วยอุปกรณ์เทคโนโลยีประสาทฟิสิกส์","All character designs are generated for demonstration purposes":"ทุกแบบตัวละครถูกสร้างเพื่อเป็นตัวอย่าง","Image uploaded successfully!":"อัพโหลดภาพสำเร็จ!","Generating character designs...":"กำลังสร้างแบบตัวละคร...","Describe your character with keywords...":"อธิบายตัวละครของคุณด้วยคำกำหนด...","Describe your story's plot, setting, and themes...":"อธิบายเนื้อเรื่อง, สถานที่, และประเด็นของเรื่องของคุณ...","Describe your character's appearance and personality...":"อธิบายรูปทรงและบุคลิกภาพของตัวละครของคุณ...","e.g., Alex, Shadow, Star":"ตัวอย่าง: Alex, Shadow, Star","Please enter character keywords":"กรุณาใส่คำกำหนดตัวละคร","Error generating character:":"Error การสร้างตัวอักษร:","Please upload an image first":"กรุณาอัพโหลดภาพก่อน","Error analyzing image:":"Error การวิเคราะห์ภาพ:","Please enter a story synopsis":"กรุณาใส่บทสรุปของเรื่อง","Please describe your character":"กรุณาอธิบายตัวละครของคุณ","Please enter a character name or part of a name":"กรุณาใส่ชื่อตัวละครหรือส่วนหนึ่งของชื่อ","Mystical Warrior":"ตัวละครนักรบที่มีความสามารถและชุดเกราะมหาศาล","A warrior with magical abilities and mystical armor":"นักสู้ที่มีความสามารถเหนือธรรมชาติและชุดเกราะมหาศาล","Cyberpunk Detective":"สายลับทางเทคโนโลยีสู่อนาคตที่ลึกลับ","A high-tech investigator in a dystopian future":"นักสืบทางเทคโนโลยีในอนาคตที่ยุทธภาพ","Forest Guardian":"ผู้รักษาป่าและมีพลังของธรรมชาติ","A protector of the ancient woods with nature powers":"ผู้ปกป้องป่าแก่ๆ ที่มีพลังของธรรมชาติ","Design Analysis":"วิเคราะห์การออกแบบ","Character shows strong silhouette but needs more detail in facial features":"ตัวละครมีลักษณะทรงร่างที่แข็งแกร่งแต่ต้องการรายละเอียดเพิ่มเติมในลักษณะหน้า","Color Palette":"สีสลัก","Current colors are good but could use more contrast for better visual impact":"สีปัจจุบันดีแต่อาจจะต้องการความเปรียบเทียบที่ดีขึ้นเพื่อสร้างผลทาง視覚","Improvement Suggestions":"ข้อเสนอแนะที่จะช่วยปรับปรุง","Add more unique elements to make the character more memorable":"เพิ่มองค์ประกอบที่มีความเด่นที่จะทำให้ตัวละครที่จำได้ง่าย","Hero Protagonist":"ตัวละครหลักที่เป็นนักบาทาธิการที่มีอดีตลึกลับ","A brave leader with a mysterious past":"ผู้นำที่มีกล้าหาญและอดีตลึกลับ","Mentor Figure":"บุคคลที่มีความรู้และประสบการณ์ที่ลึกลับ","Wise guide with hidden knowledge":"ที่นำที่ฉลาดและมีความรู้ลับ","Comic Relief":"ตัวละครที่มีความละลายแหล่งเสียงและมีลักษณะที่ไม่คาดคิด","Lighthearted character with unexpected depths":"ตัวละครที่มีจิตใจแข็งแกร่งแต่มีลักษณะที่ไม่คาดคิด","Realistic Style":"รูปแบบที่มีลักษณะที่เป็นจริงจัง","Detailed rendering with realistic proportions and textures":"การวาดลายละเอียดที่มีขนาดและทรงพลังที่เป็นจริงจัง","Anime Style":"รูปแบบอนิเมะ","Exaggerated features with expressive eyes and dynamic poses":"ลักษณะที่เกินจริงที่มีตาที่มีอารมณ์และท่าทางที่มีอิงอ่อน","Pixel Art Style":"รูปแบบภาพจุด","Retro 8-bit aesthetic with limited color palette":"ลักษณะที่เก่าแก่แบบ 8-bit ที่มีสีที่จำกัด","Alex Shadowmere":"ชื่อที่ลึกลับที่มีลักษณะของเทคโนโลยีและแนวเทคโนโลยี","Mysterious name with dark fantasy elements":"ชื่อที่ลึกลับและมีองค์ประกอบของเรื่องแฟนตาซีมืด","Stellaris":"ชื่อที่มีลักษณะทางดาราศาสตร์ที่บอกว่ามีต้นกำเนิดจากโลกอื่น","Cosmic-themed name suggesting otherworldly origins":"ชื่อที่มีลักษณะของจักรวาลและบอกเล่าเกี่ยวกับเชื้อสายจากโลกอื่น","Thorne Blackwood":"ชื่อที่มีลักษณะทางธรรมชาติและมีลักษณะที่มืด","Nature-inspired name with a dark edge":"ชื่อที่ได้รับแรงบันดาลใจจากธรรมชาติแต่มีลักษณะมืด","__title__":"AI Character Design Assistant"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://10b1c7b861b449.lhr.life",
+            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
+            "https://isyex-111-55-145-97.run.pinggy-free.link"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
