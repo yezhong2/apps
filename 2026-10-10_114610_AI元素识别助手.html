@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Element Recognition Assistant</title><meta name="description" content="Free online tool: AI Element Recognition Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Element Recognition Assistant">
+<meta property="og:description" content="Free online tool: AI Element Recognition Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-10_114610_AI元素识别助手.html">
+<meta name="theme-color" content="#333333">
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #333;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  input[type="file"], input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #555;
+    border-radius: 5px;
+  }
+  button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background-color: #0095ff;
+    color: white;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #007acc;
+  }
+  .result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #444;
+    border-radius: 5px;
+  }
+</style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>AI Element Recognition Assistant</h1>
+    <p>Upload an image to get element recognition results.</p>
+  </div>
+  <input type="file" id="imageInput" accept="image/*">
+  <button id="recognizeButton">Recognize Elements</button>
+  <div class="result" id="recognitionResult"></div>
+
+  <div class="header">
+    <h2>Image Search</h2>
+    <p>Enter a keyword to find matching images.</p>
+  </div>
+  <input type="text" id="keywordInput">
+  <button id="searchButton">Search Images</button>
+  <div class="result" id="searchResult"></div>
+
+  <div class="header">
+    <h2>Story Plot Suggestions</h2>
+    <p>Enter a story outline to get AI-assisted plot suggestions.</p>
+  </div>
+  <textarea id="storyInput" rows="4"></textarea>
+  <button id="plotSuggestionButton">Generate Plot Suggestions</button>
+  <div class="result" id="plotSuggestions"></div>
+
+  <div class="header">
+    <h2>Text Refinement</h2>
+    <p>Enter text to get AI-enhanced text.</p>
+  </div>
+  <textarea id="textInput" rows="4"></textarea>
+  <button id="refineTextButton">Refine Text</button>
+  <div class="result" id="refinedText"></div>
+
+  <div class="header">
+    <h2>Dialogue Enhancement</h2>
+    <p>Enter dialogue content to get AI-enhanced dialogue.</p>
+  </div>
+  <textarea id="dialogueInput" rows="4"></textarea>
+  <button id="enhanceDialogueButton">Enhance Dialogue</button>
+  <div class="result" id="enhancedDialogue"></div>
+</div>
+
+<script>
+  document.getElementById('recognizeButton').onclick = function() {
+    const imageInput = document.getElementById('imageInput');
+    if (imageInput.files.length > 0) {
+      const file = imageInput.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        document.getElementById('recognitionResult').innerHTML = '';
+        document.getElementById('recognitionResult').appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  document.getElementById('searchButton').onclick = function() {
+    const keyword = document.getElementById('keywordInput').value;
+    if (keyword) {
+      const searchResult = document.createElement('div');
+      searchResult.textContent = 'Searching for images with keyword: ' + keyword;
+      document.getElementById('searchResult').innerHTML = '';
+      document.getElementById('searchResult').appendChild(searchResult);
+      // Real search logic would go here
+    }
+  };
+
+  document.getElementById('plotSuggestionButton').onclick = function() {
+    const story = document.getElementById('storyInput').value;
+    if (story) {
+      const plotSuggestions = document.createElement('div');
+      plotSuggestions.textContent = 'Generating plot suggestions based on story outline: ' + story;
+      document.getElementById('plotSuggestions').innerHTML = '';
+      document.getElementById('plotSuggestions').appendChild(plotSuggestions);
+      // Real AI task submission would go here
+    }
+  };
+
+  document.getElementById('refineTextButton').onclick = function() {
+    const text = document.getElementById('textInput').value;
+    if (text) {
+      const refinedText = document.createElement('div');
+      refinedText.textContent = 'Refining text: ' + text;
+      document.getElementById('refinedText').innerHTML = '';
+      document.getElementById('refinedText').appendChild(refinedText);
+      // Real AI text enhancement would go here
+    }
+  };
+
+  document.getElementById('enhanceDialogueButton').onclick = function() {
+    const dialogue = document.getElementById('dialogueInput').value;
+    if (dialogue) {
+      const enhancedDialogue = document.createElement('div');
+      enhancedDialogue.textContent = 'Enhancing dialogue based on content: ' + dialogue;
+      document.getElementById('enhancedDialogue').innerHTML = '';
+      document.getElementById('enhancedDialogue').appendChild(enhancedDialogue);
+      // Real AI dialogue enhancement would go here
+    }
+  };
+</script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Element Recognition Assistant":"AI Element Recognition Assistant","Upload an image to get element recognition results.":"Upload an image to get element recognition results.","Recognize Elements":"Recognize Elements","Image Search":"Image Search","Enter a keyword to find matching images.":"Enter a keyword to find matching images.","Search Images":"Search Images","Story Plot Suggestions":"Story Plot Suggestions","Enter a story outline to get AI-assisted plot suggestions.":"Enter a story outline to get AI-assisted plot suggestions.","Generate Plot Suggestions":"Generate Plot Suggestions","Text Refinement":"Text Refinement","Enter text to get AI-enhanced text.":"Enter text to get AI-enhanced text.","Refine Text":"Refine Text","Dialogue Enhancement":"Dialogue Enhancement","Enter dialogue content to get AI-enhanced dialogue.":"Enter dialogue content to get AI-enhanced dialogue.","Enhance Dialogue":"Enhance Dialogue","Searching for images with keyword:":"Searching for images with keyword:","Generating plot suggestions based on story outline:":"Generating plot suggestions based on story outline:","Refining text:":"Refining text:","Enhancing dialogue based on content:":"Enhancing dialogue based on content:","__title__":"AI Element Recognition Assistant"},"zh-CN":{"AI Element Recognition Assistant":"AI元素识别助手","Upload an image to get element recognition results.":"上传图片以获取元素识别结果。","Recognize Elements":"识别元素","Image Search":"图片搜索","Enter a keyword to find matching images.":"输入关键词以查找匹配的图片。","Search Images":"搜索图片","Story Plot Suggestions":"故事情节建议","Enter a story outline to get AI-assisted plot suggestions.":"输入故事大纲以获取AI辅助的情节建议。","Generate Plot Suggestions":"生成情节建议","Text Refinement":"文本精炼","Enter text to get AI-enhanced text.":"输入文本以获取AI增强的文本。","Refine Text":"精炼文本","Dialogue Enhancement":"对话增强","Enter dialogue content to get AI-enhanced dialogue.":"输入对话内容以获取AI增强的对话。","Enhance Dialogue":"增强对话","Searching for images with keyword:":"正在搜索包含关键词的图片：","Generating plot suggestions based on story outline:":"根据故事大纲生成情节建议：","Refining text:":"正在精炼文本：","Enhancing dialogue based on content:":"根据内容增强对话：","__title__":"AI元素识别助手"},"es":{"AI Element Recognition Assistant":"Asistente de Reconocimiento de Elementos de IA","Upload an image to get element recognition results.":"Sube una imagen para obtener resultados de reconocimiento de elementos.","Recognize Elements":"Reconocer Elementos","Image Search":"Búsqueda de Imágenes","Enter a keyword to find matching images.":"Introduce una palabra clave para encontrar imágenes coincidentes.","Search Images":"Buscar Imágenes","Story Plot Suggestions":"Sugerencias de Guion de Historia","Enter a story outline to get AI-assisted plot suggestions.":"Introduce un esquema de historia para obtener sugerencias de guion asistidas por IA.","Generate Plot Suggestions":"Generar Sugerencias de Guion","Text Refinement":"Refinamiento de Texto","Enter text to get AI-enhanced text.":"Introduce texto para obtener texto mejorado por IA.","Refine Text":"Refinar Texto","Dialogue Enhancement":"Mejora de Diálogos","Enter dialogue content to get AI-enhanced dialogue.":"Introduce contenido de diálogo para obtener diálogos mejorados por IA.","Enhance Dialogue":"Mejorar Diálogos","Searching for images with keyword:":"Buscando imágenes con la palabra clave:","Generating plot suggestions based on story outline:":"Generando sugerencias de guion basadas en el esquema de historia:","Refining text:":"Refinando texto:","Enhancing dialogue based on content:":"Mejorando diálogos basados en el contenido:","__title__":"Asistente de Reconocimiento de Elementos de IA"},"ja":{"AI Element Recognition Assistant":"AI要素認識アシスタント","Upload an image to get element recognition results.":"画像をアップロードして要素認識結果を取得します。","Recognize Elements":"要素を認識する","Image Search":"画像検索","Enter a keyword to find matching images.":"キーワードを入力して一致する画像を検索します。","Search Images":"画像検索","Story Plot Suggestions":"ストーリープロットの提案","Enter a story outline to get AI-assisted plot suggestions.":"ストーリーの概要を入力してAIアシストによるプロット提案を取得します。","Generate Plot Suggestions":"プロット提案を生成する","Text Refinement":"テキストの精査","Enter text to get AI-enhanced text.":"テキストを入力してAI強化されたテキストを取得します。","Refine Text":"テキストを精査する","Dialogue Enhancement":"台詞強化","Enter dialogue content to get AI-enhanced dialogue.":"台詞の内容を入力してAI強化された台詞を取得します。","Enhance Dialogue":"台詞を強化する","Searching for images with keyword:":"キーワードで画像を検索しています：","Generating plot suggestions based on story outline:":"ストーリーの概要に基づいてプロット提案を生成しています：","Refining text:":"テキストを精査しています：","Enhancing dialogue based on content:":"内容に基づいて台詞を強化しています：","__title__":"AI要素認識アシスタント"},"ko":{"AI Element Recognition Assistant":"AI 요소 인식 비서","Upload an image to get element recognition results.":"이미지를 업로드하여 요소 인식 결과를 얻으세요.","Recognize Elements":"요소 인식","Image Search":"이미지 검색","Enter a keyword to find matching images.":"일치하는 이미지를 찾기 위해 키워드를 입력하세요.","Search Images":"이미지 검색","Story Plot Suggestions":"스토리 플롯 제안","Enter a story outline to get AI-assisted plot suggestions.":"AI 지원 플롯 제안을 얻기 위해 스토리 개요를 입력하세요.","Generate Plot Suggestions":"플롯 제안 생성","Text Refinement":"텍스트 정제","Enter text to get AI-enhanced text.":"AI 강화 텍스트를 얻기 위해 텍스트를 입력하세요.","Refine Text":"텍스트 정제","Dialogue Enhancement":"대사 강화","Enter dialogue content to get AI-enhanced dialogue.":"AI 강화 대사를 얻기 위해 대사 내용을 입력하세요.","Enhance Dialogue":"대사 강화","Searching for images with keyword:":"키워드로 이미지를 검색 중입니다:","Generating plot suggestions based on story outline:":"스토리 개요를 기반으로 플롯 제안을 생성 중입니다:","Refining text:":"텍스트 정제 중:","Enhancing dialogue based on content:":"내용을 기반으로 대사 강화 중:","__title__":"AI 요소 인식 비서"},"fr":{"AI Element Recognition Assistant":"Assistant de reconnaissance d'éléments IA","Upload an image to get element recognition results.":"Téléchargez une image pour obtenir des résultats de reconnaissance d'éléments.","Recognize Elements":"Reconnaître des éléments","Image Search":"Recherche d'images","Enter a keyword to find matching images.":"Entrez un mot-clé pour trouver des images correspondantes.","Search Images":"Rechercher des images","Story Plot Suggestions":"Suggestions de intrigue de l'histoire","Enter a story outline to get AI-assisted plot suggestions.":"Entrez un aperçu de l'histoire pour obtenir des suggestions d'intrigue assistées par l'IA.","Generate Plot Suggestions":"Générer des suggestions d'intrigue","Text Refinement":"Affinage du texte","Enter text to get AI-enhanced text.":"Entrez du texte pour obtenir un texte amélioré par l'IA.","Refine Text":"Affiner le texte","Dialogue Enhancement":"Amélioration du dialogue","Enter dialogue content to get AI-enhanced dialogue.":"Entrez du contenu de dialogue pour obtenir un dialogue amélioré par l'IA.","Enhance Dialogue":"Améliorer le dialogue","Searching for images with keyword:":"Recherche d'images avec le mot-clé :","Generating plot suggestions based on story outline:":"Génération de suggestions d'intrigue basées sur l'aperçu de l'histoire :","Refining text:":"Affinage du texte :","Enhancing dialogue based on content:":"Amélioration du dialogue basé sur le contenu :","__title__":"Assistant de reconnaissance d'éléments IA"},"de":{"AI Element Recognition Assistant":"AI-Elementerkennungsassistent","Upload an image to get element recognition results.":"Laden Sie ein Bild hoch, um Ergebnisse der Elementerkennung zu erhalten.","Recognize Elements":"Elemente erkennen","Image Search":"Bildsuche","Enter a keyword to find matching images.":"Geben Sie einen Suchbegriff ein, um passende Bilder zu finden.","Search Images":"Bilder suchen","Story Plot Suggestions":"Handlungsentwurfsvorschläge","Enter a story outline to get AI-assisted plot suggestions.":"Geben Sie einen Handlungsübersicht ein, um AI-gestützte Handlungsvorschläge zu erhalten.","Generate Plot Suggestions":"Handlungsvorschläge generieren","Text Refinement":"Textverbesserung","Enter text to get AI-enhanced text.":"Geben Sie Text ein, um einen verbesserten Text durch AI zu erhalten.","Refine Text":"Text verbessern","Dialogue Enhancement":"Dialogverbesserung","Enter dialogue content to get AI-enhanced dialogue.":"Geben Sie Dialoginhalte ein, um einen verbesserten Dialog durch AI zu erhalten.","Enhance Dialogue":"Dialog verbessern","Searching for images with keyword:":"Suche nach Bildern mit dem Suchbegriff:","Generating plot suggestions based on story outline:":"Generierung von Handlungsvorschlägen basierend auf der Handlungsübersicht:","Refining text:":"Textverbesserung:","Enhancing dialogue based on content:":"Dialogverbesserung basierend auf Inhalt:","__title__":"AI-Elementerkennungsassistent"},"ru":{"AI Element Recognition Assistant":"Ассистент по распознаванию элементов AI","Upload an image to get element recognition results.":"Загрузите изображение, чтобы получить результаты распознавания элементов.","Recognize Elements":"Распознавать элементы","Image Search":"Поиск изображений","Enter a keyword to find matching images.":"Введите ключевое слово, чтобы найти соответствующие изображения.","Search Images":"Искать изображения","Story Plot Suggestions":"Рекомендации по сюжету истории","Enter a story outline to get AI-assisted plot suggestions.":"Введите резюме сюжета, чтобы получить рекомендации по сюжету с помощью AI.","Generate Plot Suggestions":"Генерировать рекомендации по сюжету","Text Refinement":"Улучшение текста","Enter text to get AI-enhanced text.":"Введите текст, чтобы получить улучшенный текст с помощью AI.","Refine Text":"Улучшить текст","Dialogue Enhancement":"Улучшение диалога","Enter dialogue content to get AI-enhanced dialogue.":"Введите содержимое диалога, чтобы получить улучшенный диалог с помощью AI.","Enhance Dialogue":"Улучшить диалог","Searching for images with keyword:":"Искать изображения с ключевым словом:","Generating plot suggestions based on story outline:":"Генерация рекомендаций по сюжету на основе резюме сюжета:","Refining text:":"Улучшение текста:","Enhancing dialogue based on content:":"Улучшение диалога на основе содержимого:","__title__":"Ассистент по распознаванию элементов AI"},"pt":{"AI Element Recognition Assistant":"Assistente de Reconhecimento de Elementos de IA","Upload an image to get element recognition results.":"Carregue uma imagem para obter resultados de reconhecimento de elementos.","Recognize Elements":"Reconhecer Elementos","Image Search":"Pesquisa de Imagens","Enter a keyword to find matching images.":"Insira uma palavra-chave para encontrar imagens correspondentes.","Search Images":"Pesquisar Imagens","Story Plot Suggestions":"Sugestões de Plano de História","Enter a story outline to get AI-assisted plot suggestions.":"Insira um rascunho de história para obter sugestões de plano assistidas por IA.","Generate Plot Suggestions":"Gerar Sugestões de Plano","Text Refinement":"Refinamento de Texto","Enter text to get AI-enhanced text.":"Insira texto para obter texto melhorado por IA.","Refine Text":"Refinar Texto","Dialogue Enhancement":"Aumento de Diálogo","Enter dialogue content to get AI-enhanced dialogue.":"Insira conteúdo de diálogo para obter diálogo melhorado por IA.","Enhance Dialogue":"Aumentar Diálogo","Searching for images with keyword:":"Pesquisando imagens com a palavra-chave:","Generating plot suggestions based on story outline:":"Gerando sugestões de plano com base no rascunho de história:","Refining text:":"Refinando texto:","Enhancing dialogue based on content:":"Aumentando diálogo com base no conteúdo:","__title__":"Assistente de Reconhecimento de Elementos de IA"},"ar":{"AI Element Recognition Assistant":"مساعد التعرف على العناصر الذكاء الاصطناعي","Upload an image to get element recognition results.":"أرفق صورة للحصول على نتائج التعرف على العناصر.","Recognize Elements":"تعرف على العناصر","Image Search":"بحث عن الصور","Enter a keyword to find matching images.":"أدخل كلمة مفتاحية للبحث عن صور تطابقها.","Search Images":"البحث عن الصور","Story Plot Suggestions":"اقتراحات نصوص القصص","Enter a story outline to get AI-assisted plot suggestions.":"أدخل مخطط القصة للحصول على اقتراحات نصوص القصص بمساعدة الذكاء الاصطناعي.","Generate Plot Suggestions":"توليد اقتراحات نصوص القصص","Text Refinement":"تحسين النص","Enter text to get AI-enhanced text.":"أدخل النص للحصول على نص مُحسن باستخدام الذكاء الاصطناعي.","Refine Text":"تحسين النص","Dialogue Enhancement":"تحسين الحوار","Enter dialogue content to get AI-enhanced dialogue.":"أدخل محتوى الحوار للحصول على حوار مُحسن باستخدام الذكاء الاصطناعي.","Enhance Dialogue":"تحسين الحوار","Searching for images with keyword:":"البحث عن الصور باستخدام كلمة مفتاحية:","Generating plot suggestions based on story outline:":"توليد اقتراحات نصوص القصص بناءً على مخطط القصة:","Refining text:":"تحسين النص:","Enhancing dialogue based on content:":"تحسين الحوار بناءً على المحتوى:","__title__":"مساعد التعرف على العناصر الذكاء الاصطناعي"},"hi":{"AI Element Recognition Assistant":"एआई एलीमेंट रिकग्नीशन असिस्टेंट","Upload an image to get element recognition results.":"एक छवि अपलोड करें ताकि एलीमेंट रिकग्नीशन परिणाम प्राप्त करें。","Recognize Elements":"एलीमेंट रिकग्नाइज करें","Image Search":"छवि खोज","Enter a keyword to find matching images.":"एक कीवर्ड भरें ताकि मेल खाने वाली छवियाँ खोजें。","Search Images":"छवियाँ खोजें","Story Plot Suggestions":"कहानी कथा सुझाव","Enter a story outline to get AI-assisted plot suggestions.":"कहानी का सूचीबद्ध भरें ताकि एआई-सहायता से कथा सुझाव प्राप्त करें。","Generate Plot Suggestions":"कथा सुझाव जन्माएँ","Text Refinement":"पाठ सुधार","Enter text to get AI-enhanced text.":"पाठ भरें ताकि एआई-उन्नत पाठ प्राप्त करें。","Refine Text":"पाठ सुधारें","Dialogue Enhancement":"संवाद उन्नतीकरण","Enter dialogue content to get AI-enhanced dialogue.":"संवाद की सामग्री भरें ताकि एआई-उन्नत संवाद प्राप्त करें。","Enhance Dialogue":"संवाद उन्नत करें","Searching for images with keyword:":"कीवर्ड के साथ छवियाँ खोज रहे हैं:","Generating plot suggestions based on story outline:":"कहानी के सूचीबद्ध के आधार पर कथा सुझाव जन्माएँ:","Refining text:":"पाठ सुधारा:","Enhancing dialogue based on content:":"सामग्री के आधार पर संवाद उन्नत करा:","__title__":"एआई एलीमेंट रिकग्नीशन असिस्टेंट"},"id":{"AI Element Recognition Assistant":"Asisten Pengenalan Elemen AI","Upload an image to get element recognition results.":"Unggah gambar untuk mendapatkan hasil pengenalan elemen.","Recognize Elements":"Pengenalan Elemen","Image Search":"Pencarian Gambar","Enter a keyword to find matching images.":"Masukkan kata kunci untuk menemukan gambar yang cocok.","Search Images":"Cari Gambar","Story Plot Suggestions":"Saran Plot Cerita","Enter a story outline to get AI-assisted plot suggestions.":"Masukkan laporan cerita untuk mendapatkan saran plot yang didukung AI.","Generate Plot Suggestions":"Buat Saran Plot","Text Refinement":"Perbaikan Teks","Enter text to get AI-enhanced text.":"Masukkan teks untuk mendapatkan teks yang dipertahankan AI.","Refine Text":"Perbaiki Teks","Dialogue Enhancement":"Peningkatan Dialog","Enter dialogue content to get AI-enhanced dialogue.":"Masukkan konten dialog untuk mendapatkan dialog yang dipertahankan AI.","Enhance Dialogue":"Peningkatkan Dialog","Searching for images with keyword:":"Mencari gambar dengan kata kunci:","Generating plot suggestions based on story outline:":"Membuat saran plot berdasarkan laporan cerita:","Refining text:":"Perbaikan teks:","Enhancing dialogue based on content:":"Peningkatan dialog berdasarkan konten:","__title__":"Asisten Pengenalan Elemen AI"},"vi":{"AI Element Recognition Assistant":"Trợ lý nhận diện yếu tố AI","Upload an image to get element recognition results.":"Tải ảnh để nhận kết quả nhận diện yếu tố.","Recognize Elements":"Nhận diện yếu tố","Image Search":"Tìm kiếm ảnh","Enter a keyword to find matching images.":"Nhập từ khóa để tìm kiếm ảnh phù hợp.","Search Images":"Tìm kiếm ảnh","Story Plot Suggestions":"Đề xuất kịch bản truyện","Enter a story outline to get AI-assisted plot suggestions.":"Nhập tóm tắt truyện để nhận đề xuất kịch bản được hỗ trợ bởi AI.","Generate Plot Suggestions":"Tạo đề xuất kịch bản","Text Refinement":"Chỉnh sửa văn bản","Enter text to get AI-enhanced text.":"Nhập văn bản để nhận văn bản được增强 bởi AI.","Refine Text":"Chỉnh sửa văn bản","Dialogue Enhancement":"Tăng cường đối thoại","Enter dialogue content to get AI-enhanced dialogue.":"Nhập nội dung đối thoại để nhận đối thoại được增强 bởi AI.","Enhance Dialogue":"Tăng cường đối thoại","Searching for images with keyword:":"Đang tìm kiếm ảnh với từ khóa:","Generating plot suggestions based on story outline:":"Đang tạo đề xuất kịch bản dựa trên tóm tắt truyện:","Refining text:":"Đang chỉnh sửa văn bản:","Enhancing dialogue based on content:":"Đang tăng cường đối thoại dựa trên nội dung:","__title__":"Trợ lý nhận diện yếu tố AI"},"th":{"Upload an image to get element recognition results.":"อัพโหลดภาพเพื่อได้รับข้อมูลการรับรู้องค์ประกอบ","Recognize Elements":"รับรู้องค์ประกอบ","Image Search":"ค้นหาภาพ","Enter a keyword to find matching images.":"ใส่คำค้นหาเพื่อหาภาพที่ตรงกัน","Search Images":"ค้นหาภาพ","Story Plot Suggestions":"ข้อเสนอเนื้อเรื่อง","Enter a story outline to get AI-assisted plot suggestions.":"ใส่สรุปเนื้อเรื่องเพื่อได้รับข้อเสนอเนื้อเรื่องที่ช่วยด้วย AI","Generate Plot Suggestions":"สร้างข้อเสนอเนื้อเรื่อง","Text Refinement":"การแก้ไขข้อความ","Enter text to get AI-enhanced text.":"ใส่ข้อความเพื่อได้รับข้อความที่ช่วยด้วย AI","Refine Text":"แก้ไขข้อความ","Dialogue Enhancement":"การปรับปรุงการสนทนา","Enter dialogue content to get AI-enhanced dialogue.":"ใส่เนื้อหาการสนทนาเพื่อได้รับการปรับปรุงการสนทนาที่ช่วยด้วย AI","Enhance Dialogue":"ปรับปรุงการสนทนา","Searching for images with keyword:":"กำลังค้นหาภาพด้วยคำค้นหา:","Generating plot suggestions based on story outline:":"กำลังสร้างข้อเสนอเนื้อเรื่องตามสรุปเนื้อเรื่อง:","Refining text:":"การแก้ไขข้อความ:","Enhancing dialogue based on content:":"การปรับปรุงการสนทนาตามเนื้อหา:","__title__":"AI Element Recognition Assistant"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
