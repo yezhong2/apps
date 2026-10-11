@@ -13,7 +13,606 @@
     <meta name="theme-color" content="#333333">
 
     <style>
-        /* Styles unchanged as per instructions */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary-color: #00a884;
+            --secondary-color: #0f1115;
+            --background-color: #0c0e13;
+            --text-color: #e1e6ed;
+            --border-color: #262b36;
+            --hover-color: #1a1d22;
+        }
+        
+        body {
+            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        
+        header {
+            background-color: var(--secondary-color);
+            padding: 16px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .logo-subtitle {
+            font-size: 14px;
+            color: #8b93a3;
+            margin-top: 4px;
+        }
+        
+        .welcome-banner {
+            background-color: var(--hover-color);
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        
+        .welcome-text {
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .welcome-text strong {
+            color: var(--primary-color);
+        }
+        
+        nav {
+            margin-bottom: 20px;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-item:hover {
+            background-color: var(--hover-color);
+        }
+        
+        .nav-item.active {
+            background-color: var(--primary-color);
+        }
+        
+        .workspace {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .workspace-section {
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .workspace-section h2 {
+            margin-bottom: 16px;
+            color: var(--primary-color);
+        }
+        
+        .document-editor {
+            display: none;
+        }
+        
+        .document-editor.active {
+            display: block;
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-btn {
+            background-color: var(--hover-color);
+            border: none;
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .editor-btn:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .editor-content {
+            min-height: 300px;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+            width: 100%;
+            resize: vertical;
+        }
+        
+        .image-gallery {
+            display: none;
+        }
+        
+        .image-gallery.active {
+            display: block;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+        
+        .image-item {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+        
+        .image-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .image-item-actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(15, 17, 21, 0.7);
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .image-item:hover .image-item-actions {
+            opacity: 1;
+        }
+        
+        .image-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .discussion-area {
+            display: none;
+        }
+        
+        .discussion-area.active {
+            display: block;
+        }
+        
+        .discussion-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 12px;
+        }
+        
+        .message {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .message:last-child {
+            border-bottom: none;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .message-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .message-time {
+            font-size: 12px;
+            color: #8b93a3;
+        }
+        
+        .message-input-area {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .message-input {
+            flex: 1;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: var(--text-color);
+        }
+        
+        .message-send-btn {
+            background-color: var(--primary-color);
+            border: none;
+            color: var(--secondary-color);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .file-manager {
+            display: none;
+        }
+        
+        .file-manager.active {
+            display: block;
+        }
+        
+        .file-upload {
+            margin-bottom: 16px;
+        }
+        
+        .file-list {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .file-item:last-child {
+            border-bottom: none;
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .file-icon {
+            font-size: 20px;
+        }
+        
+        .file-name {
+            font-weight: 500;
+        }
+        
+        .file-actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .file-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .todo-list {
+            display: none;
+        }
+        
+        .todo-list.active {
+            display: block;
+        }
+        
+        .todo-input-area {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .todo-input {
+            flex: 1;
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px 12px;
+            color: var(--text-color);
+        }
+        
+        .todo-add-btn {
+            background-color: var(--primary-color);
+            border: none;
+            color: var(--secondary-color);
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .todo-items {
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .todo-item:last-child {
+            border-bottom: none;
+        }
+        
+        .todo-checkbox {
+            margin-right: 12px;
+        }
+        
+        .todo-text {
+            flex: 1;
+        }
+        
+        .todo-item.completed .todo-text {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        
+        .todo-delete-btn {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .bottom-toolbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--secondary-color);
+            padding: 8px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+        }
+        
+        .toolbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 20px;
+        }
+        
+        .helper-tooltip {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background-color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            max-width: 300px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 200;
+        }
+        
+        .helper-tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 150;
+        }
+        
+        .overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .settings-panel {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--secondary-color);
+            border-radius: 8px;
+            padding: 24px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 300;
+        }
+        
+        .settings-panel.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .settings-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        .settings-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 24px;
+        }
+        
+        .settings-section {
+            margin-bottom: 20px;
+        }
+        
+        .settings-section h3 {
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+        
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .setting-label {
+            flex: 1;
+        }
+        
+        .setting-input {
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: var(--text-color);
+            width: 100%;
+        }
+        
+        .setting-select {
+            background-color: var(--background-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 6px 12px;
+            color: var(--text-color);
+            width: 100%;
+        }
+        
+        .setting-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .color-picker {
+            width: 50px;
+            height: 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .save-settings-btn {
+            background-color: var(--primary-color);
+            border: none;
+            color: var(--secondary-color);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 12px;
+            }
+            
+            .nav-item {
+                padding: 10px 5px;
+                font-size: 14px;
+            }
+            
+            .workspace-section {
+                padding: 16px;
+            }
+        }
     </style>
 <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
@@ -37,7 +636,11 @@
     <nav>
         <div class="container">
             <ul class="nav-list">
-                <!-- Navigation items unchanged as per instructions -->
+                <li class="nav-item active" data-tab="document-editor">Document Editor</li>
+                <li class="nav-item" data-tab="image-gallery">Image Gallery</li>
+                <li class="nav-item" data-tab="discussion-area">Discussion</li>
+                <li class="nav-item" data-tab="file-manager">File Manager</li>
+                <li class="nav-item" data-tab="todo-list">Todo List</li>
             </ul>
         </div>
     </nav>
@@ -45,27 +648,142 @@
     <main>
         <div class="container">
             <div class="workspace">
-                <!-- Workspace content unchanged as per instructions -->
+                <div class="workspace-section document-editor active" id="document-editor">
+                    <h2>Document Editor</h2>
+                    <div class="editor-toolbar">
+                        <button class="editor-btn" data-command="bold">Bold</button>
+                        <button class="editor-btn" data-command="italic">Italic</button>
+                        <button class="editor-btn" data-command="underline">Underline</button>
+                        <button class="editor-btn" data-command="insertOrderedList">Numbered List</button>
+                        <button class="editor-btn" data-command="insertUnorderedList">Bullet List</button>
+                        <button class="editor-btn" data-command="justifyLeft">Align Left</button>
+                        <button class="editor-btn" data-command="justifyCenter">Align Center</button>
+                        <button class="editor-btn" data-command="justifyRight">Align Right</button>
+                        <button class="editor-btn" data-command="createLink">Insert Link</button>
+                        <button class="editor-btn" data-command="insertImage">Insert Image</button>
+                    </div>
+                    <div class="editor-content" contenteditable="true" id="document-content">
+                        <p>Welcome to the Community Collaboration Assistant! Start typing here...</p>
+                    </div>
+                </div>
+
+                <div class="workspace-section image-gallery" id="image-gallery">
+                    <h2>Image Gallery</h2>
+                    <div class="upload-area" id="image-upload-area">
+                        <p>Click to upload images or drag and drop</p>
+                        <input type="file" id="image-upload" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-grid" id="image-grid">
+                        <!-- Images will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="workspace-section discussion-area" id="discussion-area">
+                    <h2>Discussion</h2>
+                    <div class="discussion-messages" id="discussion-messages">
+                        <div class="message">
+                            <div class="message-header">
+                                <span class="message-author">System</span>
+                                <span class="message-time">Just now</span>
+                            </div>
+                            <div class="message-content">Welcome to the discussion area! Share your thoughts here.</div>
+                        </div>
+                    </div>
+                    <div class="message-input-area">
+                        <input type="text" class="message-input" id="message-input" placeholder="Type your message...">
+                        <button class="message-send-btn" id="message-send">Send</button>
+                    </div>
+                </div>
+
+                <div class="workspace-section file-manager" id="file-manager">
+                    <h2>File Manager</h2>
+                    <div class="file-upload">
+                        <div class="upload-area" id="file-upload-area">
+                            <p>Click to upload files or drag and drop</p>
+                            <input type="file" id="file-upload" multiple style="display: none;">
+                        </div>
+                    </div>
+                    <div class="file-list" id="file-list">
+                        <!-- Files will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="workspace-section todo-list" id="todo-list">
+                    <h2>Todo List</h2>
+                    <div class="todo-input-area">
+                        <input type="text" class="todo-input" id="todo-input" placeholder="Add a new task...">
+                        <button class="todo-add-btn" id="todo-add">Add</button>
+                    </div>
+                    <div class="todo-items" id="todo-items">
+                        <!-- Todo items will be added here dynamically -->
+                    </div>
+                </div>
             </div>
         </div>
     </main>
 
     <div class="bottom-toolbar">
-        <!-- Bottom toolbar unchanged as per instructions -->
+        <div class="container toolbar-content">
+            <div>Community Collaboration Assistant</div>
+            <button class="settings-btn" id="settings-btn">⚙️</button>
+        </div>
     </div>
 
     <div class="helper-tooltip" id="helper-tooltip">
-        <!-- Helper tooltip unchanged as per instructions -->
+        <p id="helper-text">Welcome! Click the settings button to customize your experience.</p>
     </div>
 
     <div class="overlay" id="overlay"></div>
     
     <div class="settings-panel" id="settings-panel">
-        <!-- Settings panel unchanged as per instructions -->
+        <div class="settings-header">
+            <h2 class="settings-title">Settings</h2>
+            <button class="settings-close-btn" id="settings-close">✕</button>
+        </div>
+        
+        <div class="settings-section">
+            <h3>General</h3>
+            <div class="setting-item">
+                <label class="setting-label">Theme</label>
+                <select class="setting-select" id="theme-select">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">Font Size</label>
+                <input type="range" class="setting-input" id="font-size-slider" min="12" max="24" value="16">
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Editor</h3>
+            <div class="setting-item">
+                <label class="setting-label">Auto-save</label>
+                <input type="checkbox" class="setting-checkbox" id="autosave-checkbox" checked>
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">Highlight Current Line</label>
+                <input type="checkbox" class="setting-checkbox" id="highlight-line-checkbox">
+            </div>
+        </div>
+        
+        <div class="settings-section">
+            <h3>Colors</h3>
+            <div class="setting-item">
+                <label class="setting-label">Primary Color</label>
+                <input type="color" class="color-picker" id="primary-color-picker" value="#00a884">
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">Background Color</label>
+                <input type="color" class="color-picker" id="bg-color-picker" value="#0c0e13">
+            </div>
+        </div>
+        
+        <button class="save-settings-btn" id="save-settings">Save Settings</button>
     </div>
 
     <script>
-        // JavaScript code changed to address issues:
         document.addEventListener('DOMContentLoaded', function() {
             // Tab navigation
             const navItems = document.querySelectorAll('.nav-item');
@@ -88,10 +806,356 @@
                 });
             });
 
-            // ... rest of the JavaScript code is unchanged except for replacing document.querySelector with event delegation where appropriate.
+            // Document Editor functionality
+            const editorContent = document.getElementById('document-content');
+            const editorButtons = document.querySelectorAll('.editor-btn');
+            
+            editorButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const command = this.getAttribute('data-command');
+                    document.execCommand(command, false, null);
+                    editorContent.focus();
+                });
+            });
+
+            // Image Gallery functionality
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageUpload = document.getElementById('image-upload');
+            const imageGrid = document.getElementById('image-grid');
+            
+            imageUploadArea.addEventListener('click', function() {
+                imageUpload.click();
+            });
+            
+            imageUpload.addEventListener('change', function() {
+                handleImageUpload(this.files);
+            });
+            
+            // Drag and drop for images
+            imageUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+            });
+            
+            imageUploadArea.addEventListener('dragleave', function() {
+                this.style.borderColor = 'var(--border-color)';
+            });
+            
+            imageUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--border-color)';
+                handleImageUpload(e.dataTransfer.files);
+            });
+            
+            function handleImageUpload(files) {
+                for (let i = 0; i < files.length; i++) {
+                    if (files[i].type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const imageItem = document.createElement('div');
+                            imageItem.className = 'image-item';
+                            imageItem.innerHTML = `
+                                <img src="${e.target.result}" alt="Uploaded image">
+                                <div class="image-item-actions">
+                                    <button class="image-action-btn" data-action="download">⬇</button>
+                                    <button class="image-action-btn" data-action="delete">🗑️</button>
+                                </div>
+                            `;
+                            imageGrid.appendChild(imageItem);
+                            
+                            // Add event listeners for image actions
+                            const actionButtons = imageItem.querySelectorAll('.image-action-btn');
+                            actionButtons.forEach(btn => {
+                                btn.addEventListener('click', function() {
+                                    const action = this.getAttribute('data-action');
+                                    if (action === 'delete') {
+                                        imageItem.remove();
+                                    } else if (action === 'download') {
+                                        const link = document.createElement('a');
+                                        link.href = e.target.result;
+                                        link.download = files[i].name;
+                                        link.click();
+                                    }
+                                });
+                            });
+                        };
+                        reader.readAsDataURL(files[i]);
+                    }
+                }
+            }
+
+            // Discussion functionality
+            const discussionMessages = document.getElementById('discussion-messages');
+            const messageInput = document.getElementById('message-input');
+            const messageSend = document.getElementById('message-send');
+            
+            messageSend.addEventListener('click', sendMessage);
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+            
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText) {
+                    const message = document.createElement('div');
+                    message.className = 'message';
+                    const now = new Date();
+                    message.innerHTML = `
+                        <div class="message-header">
+                            <span class="message-author">You</span>
+                            <span class="message-time">${now.toLocaleTimeString()}</span>
+                        </div>
+                        <div class="message-content">${messageText}</div>
+                    `;
+                    discussionMessages.appendChild(message);
+                    messageInput.value = '';
+                    discussionMessages.scrollTop = discussionMessages.scrollHeight;
+                }
+            }
+
+            // File Manager functionality
+            const fileUploadArea = document.getElementById('file-upload-area');
+            const fileUpload = document.getElementById('file-upload');
+            const fileList = document.getElementById('file-list');
+            
+            fileUploadArea.addEventListener('click', function() {
+                fileUpload.click();
+            });
+            
+            fileUpload.addEventListener('change', function() {
+                handleFileUpload(this.files);
+            });
+            
+            // Drag and drop for files
+            fileUploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--primary-color)';
+            });
+            
+            fileUploadArea.addEventListener('dragleave', function() {
+                this.style.borderColor = 'var(--border-color)';
+            });
+            
+            fileUploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = 'var(--border-color)';
+                handleFileUpload(e.dataTransfer.files);
+            });
+            
+            function handleFileUpload(files) {
+                for (let i = 0; i < files.length; i++) {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    const fileSize = (files[i].size / 1024).toFixed(2) + ' KB';
+                    
+                    // Determine file icon based on type
+                    let fileIcon = '📄';
+                    if (files[i].type.startsWith('image/')) {
+                        fileIcon = '🖼️';
+                    } else if (files[i].type.startsWith('video/')) {
+                        fileIcon = '🎬';
+                    } else if (files[i].type.startsWith('audio/')) {
+                        fileIcon = '🎵';
+                    } else if (files[i].type.includes('sheet') || files[i].type.includes('excel')) {
+                        fileIcon = '📊';
+                    } else if (files[i].type.includes('presentation') || files[i].type.includes('powerpoint')) {
+                        fileIcon = '📑';
+                    } else if (files[i].type.includes('zip') || files[i].type.includes('rar')) {
+                        fileIcon = '📦';
+                    }
+                    
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <span class="file-icon">${fileIcon}</span>
+                            <span class="file-name">${files[i].name}</span>
+                            <span class="file-size">${fileSize}</span>
+                        </div>
+                        <div class="file-actions">
+                            <button class="file-action-btn" data-action="download">⬇</button>
+                            <button class="file-action-btn" data-action="delete">🗑️</button>
+                        </div>
+                    `;
+                    fileList.appendChild(fileItem);
+                    
+                    // Add event listeners for file actions
+                    const actionButtons = fileItem.querySelectorAll('.file-action-btn');
+                    actionButtons.forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const action = this.getAttribute('data-action');
+                            if (action === 'delete') {
+                                fileItem.remove();
+                            } else if (action === 'download') {
+                                const link = document.createElement('a');
+                                link.href = URL.createObjectURL(files[i]);
+                                link.download = files[i].name;
+                                link.click();
+                            }
+                        });
+                    });
+                }
+            }
+
+            // Todo List functionality
+            const todoInput = document.getElementById('todo-input');
+            const todoAdd = document.getElementById('todo-add');
+            const todoItems = document.getElementById('todo-items');
+            
+            todoAdd.addEventListener('click', addTodo);
+            todoInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addTodo();
+                }
+            });
+            
+            function addTodo() {
+                const todoText = todoInput.value.trim();
+                if (todoText) {
+                    const todoItem = document.createElement('div');
+                    todoItem.className = 'todo-item';
+                    todoItem.innerHTML = `
+                        <input type="checkbox" class="todo-checkbox">
+                        <span class="todo-text">${todoText}</span>
+                        <button class="todo-delete-btn">🗑️</button>
+                    `;
+                    todoItems.appendChild(todoItem);
+                    todoInput.value = '';
+                    
+                    // Add event listeners for todo item
+                    const checkbox = todoItem.querySelector('.todo-checkbox');
+                    const deleteBtn = todoItem.querySelector('.todo-delete-btn');
+                    
+                    checkbox.addEventListener('change', function() {
+                        if (this.checked) {
+                            todoItem.classList.add('completed');
+                        } else {
+                            todoItem.classList.remove('completed');
+                        }
+                    });
+                    
+                    deleteBtn.addEventListener('click', function() {
+                        todoItem.remove();
+                    });
+                }
+            }
+
+            // Settings functionality
+            const settingsBtn = document.getElementById('settings-btn');
+            const settingsPanel = document.getElementById('settings-panel');
+            const settingsClose = document.getElementById('settings-close');
+            const overlay = document.getElementById('overlay');
+            const saveSettings = document.getElementById('save-settings');
+            
+            settingsBtn.addEventListener('click', function() {
+                settingsPanel.classList.add('visible');
+                overlay.classList.add('visible');
+            });
+            
+            settingsClose.addEventListener('click', function() {
+                settingsPanel.classList.remove('visible');
+                overlay.classList.remove('visible');
+            });
+            
+            overlay.addEventListener('click', function() {
+                settingsPanel.classList.remove('visible');
+                overlay.classList.remove('visible');
+            });
+            
+            // Helper tooltip
+            const helperTooltip = document.getElementById('helper-tooltip');
+            const helperText = document.getElementById('helper-text');
+            
+            function showHelperTooltip(message) {
+                helperText.textContent = message;
+                helperTooltip.classList.add('visible');
+                
+                setTimeout(() => {
+                    helperTooltip.classList.remove('visible');
+                }, 5000);
+            }
+            
+            settingsBtn.addEventListener('mouseenter', function() {
+                showHelperTooltip('Click to open settings panel');
+            });
+            
+            // Apply saved settings on load
+            function loadSettings() {
+                const theme = localStorage.getItem('theme') || 'dark';
+                document.getElementById('theme-select').value = theme;
+                
+                const fontSize = localStorage.getItem('fontSize') || '16';
+                document.getElementById('font-size-slider').value = fontSize;
+                document.documentElement.style.fontSize = fontSize + 'px';
+                
+                const autoSave = localStorage.getItem('autoSave') === 'true';
+                document.getElementById('autosave-checkbox').checked = autoSave;
+                
+                const highlightLine = localStorage.getItem('highlightLine') === 'true';
+                document.getElementById('highlight-line-checkbox').checked = highlightLine;
+                
+                const primaryColor = localStorage.getItem('primaryColor') || '#00a884';
+                document.getElementById('primary-color-picker').value = primaryColor;
+                document.documentElement.style.setProperty('--primary-color', primaryColor);
+                
+                const bgColor = localStorage.getItem('bgColor') || '#0c0e13';
+                document.getElementById('bg-color-picker').value = bgColor;
+                document.documentElement.style.setProperty('--background-color', bgColor);
+            }
+            
+            loadSettings();
+            
+            // Save settings
+            saveSettings.addEventListener('click', function() {
+                const theme = document.getElementById('theme-select').value;
+                localStorage.setItem('theme', theme);
+                
+                const fontSize = document.getElementById('font-size-slider').value;
+                localStorage.setItem('fontSize', fontSize);
+                document.documentElement.style.fontSize = fontSize + 'px';
+                
+                const autoSave = document.getElementById('autosave-checkbox').checked;
+                localStorage.setItem('autoSave', autoSave);
+                
+                const highlightLine = document.getElementById('highlight-line-checkbox').checked;
+                localStorage.setItem('highlightLine', highlightLine);
+                
+                const primaryColor = document.getElementById('primary-color-picker').value;
+                localStorage.setItem('primaryColor', primaryColor);
+                document.documentElement.style.setProperty('--primary-color', primaryColor);
+                
+                const bgColor = document.getElementById('bg-color-picker').value;
+                localStorage.setItem('bgColor', bgColor);
+                document.documentElement.style.setProperty('--background-color', bgColor);
+                
+                showHelperTooltip('Settings saved successfully!');
+                
+                settingsPanel.classList.remove('visible');
+                overlay.classList.remove('visible');
+            });
+            
+            // Auto-save document content
+            let autoSaveTimer;
+            function autoSaveDocument() {
+                if (document.getElementById('autosave-checkbox').checked) {
+                    clearTimeout(autoSaveTimer);
+                    autoSaveTimer = setTimeout(() => {
+                        localStorage.setItem('documentContent', editorContent.innerHTML);
+                        showHelperTooltip('Document auto-saved');
+                    }, 2000);
+                }
+            }
+            
+            editorContent.addEventListener('input', autoSaveDocument);
+            
+            // Load saved document content
+            const savedContent = localStorage.getItem('documentContent');
+            if (savedContent) {
+                editorContent.innerHTML = savedContent;
+            }
         });
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Community Collaboration Assistant":"Community Collaboration Assistant","Quick collaboration, real-time editing":"Quick collaboration, real-time editing","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.","Start with any tab below to get started.":"Start with any tab below to get started.","DOMContentLoaded":"DOMContentLoaded","__title__":"Community Collaboration Assistant","/* Styles unchanged as per instructions */":"/* Styles unchanged as per instructions */","完全免费":"Totally Free","提意见":"Suggest","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"zh-CN":{"Community Collaboration Assistant":"社区协作助手","Quick collaboration, real-time editing":"快速协作，实时编辑","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"欢迎使用社区协作助手！本工具帮助您创建文档、分享图片、讨论想法、管理文件以及跟踪任务。","Start with any tab below to get started.":"从下面的任何标签页开始使用。","__title__":"社区协作助手","DOMContentLoaded":"DOM加载完成","/* Styles unchanged as per instructions */":"/* 样式按指示保持不变 */","完全免费":"完全免费","提意见":"提意见","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"免费在线工具：社区协作助手。无需注册，无需付费 — 永久免费。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"es":{"Community Collaboration Assistant":"Asistente de Colaboración Comunitaria","Quick collaboration, real-time editing":"Colaboración rápida, edición en tiempo real","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"¡Bienvenido al Asistente de Colaboración Comunitaria! Esta herramienta te ayuda a crear documentos, compartir imágenes, discutir ideas, gestionar archivos y rastrear tareas.","Start with any tab below to get started.":"¡Empieza con cualquier pestaña de abajo para comenzar!","__title__":"Asistente de Colaboración Comunitaria","DOMContentLoaded":"DOMContentLoaded","/* Styles unchanged as per instructions */":"/* Estilos sin cambios según instrucciones */","完全免费":"¡Totalmente gratuito!","提意见":"Enviar sugerencias","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Herramienta online gratuita: Asistente de Colaboración Comunitaria. Sin registro, sin pago — ¡Gratis para siempre!","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ja":{"Community Collaboration Assistant":"コミュニティ協力アシスタント","Quick collaboration, real-time editing":"迅速な協力、リアルタイム編集","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"コミュニティ協力アシスタントへようこそ！このツールは、あなたがドキュメントを作成し、画像を共有し、アイデアを議論し、ファイルを管理し、タスクを追跡するのに役立ちます。","Start with any tab below to get started.":"以下のタブのいずれかから始めましょう。","__title__":"コミュニティ協力アシスタント","DOMContentLoaded":"DOMが読み込まれた","/* Styles unchanged as per instructions */":"・スタイルは指示に従って変更されていません","完全免费":"完全無料","提意见":"意見を述べる","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"無料オンラインツール：コミュニティ協力アシスタント。登録不要、支払い不要 - 永久に無料です","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ko":{"Community Collaboration Assistant":"커뮤니티 협업 어시스턴트","Quick collaboration, real-time editing":"빠른 협업, 실시간 편집","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"커뮤니티 협업 어시스턴트를 환영합니다! 이 도구는 문서를 작성하고, 이미지를 공유하고, 아이디어를 논의하고, 파일을 관리하고, 작업을 추적하는 데 도움을 줍니다.","Start with any tab below to get started.":"아래의 어떤 탭에서든 시작하세요.","__title__":"커뮤니티 협업 어시스턴트","DOMContentLoaded":"DOMContentLoaded","/* Styles unchanged as per instructions */":"/* 스타일이 지시에 따라 변경되지 않음 */","完全免费":"완전 무료","提意见":"의견 제안","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"무료 온라인 도구: 커뮤니티 협력 도구. 등록 없음, 결제 없음 — 영원히 무료","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"fr":{"Community Collaboration Assistant":"Assistant de Collaboration Communautaire","Quick collaboration, real-time editing":"Collaboration rapide, édition en temps réel","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Bienvenue à l'Assistant de Collaboration Communautaire ! Cet outil vous aide à créer des documents, à partager des images, à discuter des idées, à gérer des fichiers et à suivre les tâches.","Start with any tab below to get started.":"Commencez avec n'importe quel onglet ci-dessous pour commencer.","__title__":"Assistant de Collaboration Communautaire","DOMContentLoaded":"…","/* Styles unchanged as per instructions */":"/* Styles unchanged as per instructions */","完全免费":"Complètement gratuit","提意见":"Proposer des suggestions","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Outil en ligne gratuit : Assistant de Collaboration Communautaire. Pas d'inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"de":{"Quick collaboration, real-time editing":"Schnelle Zusammenarbeit, Echtzeitbearbeitung","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Willkommen beim Community Collaboration Assistant! Dieses Tool hilft Ihnen, Dokumente zu erstellen, Bilder zu teilen, Ideen zu diskutieren, Dateien zu verwalten und Aufgaben zu verfolgen.","Start with any tab below to get started.":"Beginnen Sie mit jedem der folgenden Tabs, um loszulegen.","__title__":"Community Collaboration Assistant","Community Collaboration Assistant":"Gemeinschaftliche Zusammenarbeitshilfe","DOMContentLoaded":"DOM vollständig geladen","/* Styles unchanged as per instructions */":"/* Styles unchanged as per instructions */","完全免费":"Komplett kostenlos","提意见":"Vorschläge machen","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Kostenloses Online-Tool: Community Collaboration Assistant. Keine Registrierung, keine Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ru":{"Quick collaboration, real-time editing":"Быстрая коллаборация, редактирование в реальном времени","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Добро пожаловать в Ассистент коллаборации сообщества! Этот инструмент помогает вам создавать документы, делиться изображениями, обсуждать идеи, управлять файлами и отслеживать задачи.","Start with any tab below to get started.":"Начните с любой вкладки ниже, чтобы начать.","__title__":"Community Collaboration Assistant","Community Collaboration Assistant":"Сообщественный помощник по сотрудничеству","DOMContentLoaded":"DOMContentLoaded","/* Styles unchanged as per instructions */":"/* Styles unchanged as per instructions */","完全免费":"абсолютно бесплатно","提意见":"пожаловаться","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"бесплатный онлайн инструмент: Ассистент сотрудничества сообщества. Без регистрации, без оплаты — навсегда бесплатно.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"pt":{"Community Collaboration Assistant":"Assistente de Colaboração Comunitária","Quick collaboration, real-time editing":"Colaboração rápida, edição em tempo real","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Bem-vindo ao Assistente de Colaboração Comunitária! Este ferramenta ajuda você a criar documentos, compartilhar imagens, discutir ideias, gerenciar arquivos e rastrear tarefas.","Start with any tab below to get started.":"Comece com qualquer aba abaixo para começar.","__title__":"Assistente de Colaboração Comunitária","DOMContentLoaded":"Conteúdo carregado","/* Styles unchanged as per instructions */":"/* Estilos inalterados conforme instruções */","完全免费":"Completamente grátis","提意见":"Enviar sugestões","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Ferramenta online gratuita: Assistente de Colaboração Comunitária. Sem inscrição, sem pagamento — gratuito para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"ar":{"Community Collaboration Assistant":"مساعد التعاون المجتمعي","Quick collaboration, real-time editing":"تعاون سريع، تحرير لحظي","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"مرحبًا بك في مساعد التعاون المجتمعي! هذا الأداة يساعدك في إنشاء الوثائق، مشاركة الصور، مناقشة الأفكار، إدارة الملفات، ومراقبة المهام.","Start with any tab below to get started.":"ابدأ بأي بطاقة أدناه للبدء.","__title__":"مساعد التعاون المجتمعي","DOMContentLoaded":"…","/* Styles unchanged as per instructions */":"/* لم يُغير النمط وفقًا للتعليمات */","完全免费":"مجاني تمامًا","提意见":"قدم اقتراحًا","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"أداة مجانية عبر الإنترنت: مساعد التعاون المجتمعي. بدون تسجيل، بدون دفع — مجاني إلى الأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"hi":{"Community Collaboration Assistant":"कम्युनिटी सहयोग सहायक","Quick collaboration, real-time editing":"त्वरित सहयोग, वास्तविक समय संपादन","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"कम्युनिटी सहयोग सहायक का स्वागत करें! यह औजार आपको दस्तावेज बनाने, छवियां साझा करने, विचारों पर चर्चा करने, फ़ाइलों का प्रबंधन करने और कार्यों की ट्रैकिंग करने में मदद करता है。","Start with any tab below to get started.":"किसी भी टैब से शुरू करें ताकि आरंभ करें。","DOMContentLoaded":"डॉक्युमेंट कम्प्लीटेड ऑनलाइन","__title__":"कम्युनिटी सहयोग सहायक","/* Styles unchanged as per instructions */":"/* … */","完全免费":"पूरी तरह से मुफ्त","提意见":"सुझाव दें","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"मुफ्त ऑनलाइन टूल: सामुदायिक सहयोग सहायक. कोई रजिस्ट्रेशन नहीं, कोई भुगतान नहीं — हमेशा मुफ्त","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"id":{"Community Collaboration Assistant":"Kearsan Kerjasama Komunitas","Quick collaboration, real-time editing":"Kerjasama cepat, editing real-time","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Selamat datang di Kearsan Kerjasama Komunitas! Alat ini membantu Anda membuat dokumen, berbagi gambar, diskusikan ide, mengelola berkas, dan melacak tugas.","Start with any tab below to get started.":"Mulai dengan tab apapun di bawah untuk memulai.","__title__":"Kearsan Kerjasama Komunitas","DOMContentLoaded":"DOM terpenuhi","/* Styles unchanged as per instructions */":"/* Styles tidak berubah sesuai perintah */","完全免费":"Gratis sepenuhnya","提意见":"Beri saran","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Alat online gratis: Asisten Kemitraan Komunitas. Tanpa pendaftaran, tanpa pembayaran — gratis selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"vi":{"Quick collaboration, real-time editing":"Hợp tác nhanh chóng, chỉnh sửa thời gian thực","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Chào mừng bạn đến với Công cụ Hợp tác Cộng đồng! Công cụ này giúp bạn tạo tài liệu, chia sẻ hình ảnh, thảo luận ý tưởng, quản lý tệp và theo dõi công việc.","Start with any tab below to get started.":"Bắt đầu với bất kỳ thẻ nào bên dưới để bắt đầu.","__title__":"Community Collaboration Assistant","Community Collaboration Assistant":"Trợ lý Hợp tác Cộng đồng","DOMContentLoaded":"DOMContentLoaded","/* Styles unchanged as per instructions */":"/* Thiết kế không thay đổi theo yêu cầu */","完全免费":"Miễn phí hoàn toàn","提意见":"Gửi ý kiến","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: Trợ lý Hợp tác Cộng đồng. Không đăng ký, không thanh toán — miễn phí mãi mãi.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"},"th":{"Quick collaboration, real-time editing":"ร่วมงานรวมกันเร็ว แก้ไขเรียบร้อยในเวลาทันที","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"ยินดีต้อนรับสู่ Community Collaboration Assistant! ยนนี้ช่วยเหลือคุณทำเอกสาร แชร์ภาพ หารือความคิด จัดการไฟล์ และติดตามงาน","Start with any tab below to get started.":"เริ่มด้วยแท็บใดก็ได้ที่ด้านล่างนี้เพื่อเริ่มต้น","__title__":"Community Collaboration Assistant","Community Collaboration Assistant":"…","DOMContentLoaded":"…","/* Styles unchanged as per instructions */":"/* รูปแบบที่ไม่เปลี่ยนแปลงตามแนวทาง */","完全免费":"ไม่มีค่าใช้จ่าย","提意见":"แสดงความคิดเห็น","UTF-8":"UTF-8","Free online tool: Community Collaboration Assistant. No signup, no payment — free forever.":"เครื่องมือออนไลน์ฟรี: ผู้ช่วยร่วมมือชุมชน. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย — ฟรีตลอดชีวิต.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT","PingFang SC":"PingFang SC","Microsoft YaHei":"Microsoft YaHei"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Community Collaboration Assistant":"Community Collaboration Assistant","Quick collaboration, real-time editing":"Quick collaboration, real-time editing","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.","Start with any tab below to get started.":"Start with any tab below to get started.","Document Editor":"Document Editor","Image Gallery":"Image Gallery","Discussion":"Discussion","File Manager":"File Manager","Todo List":"Todo List","Bold":"Bold","Italic":"Italic","Underline":"Underline","Numbered List":"Numbered List","Bullet List":"Bullet List","Align Left":"Align Left","Align Center":"Align Center","Align Right":"Align Right","Insert Link":"Insert Link","Insert Image":"Insert Image","Welcome to the Community Collaboration Assistant! Start typing here...":"Welcome to the Community Collaboration Assistant! Start typing here...","Click to upload images or drag and drop":"Click to upload images or drag and drop","System":"System","Just now":"Just now","Welcome to the discussion area! Share your thoughts here.":"Welcome to the discussion area! Share your thoughts here.","Send":"Send","Click to upload files or drag and drop":"Click to upload files or drag and drop","Add":"Add","Welcome! Click the settings button to customize your experience.":"Welcome! Click the settings button to customize your experience.","Settings":"Settings","General":"General","Theme":"Theme","Dark":"Dark","Light":"Light","Font Size":"Font Size","Editor":"Editor","Auto-save":"Auto-save","Highlight Current Line":"Highlight Current Line","Colors":"Colors","Primary Color":"Primary Color","Background Color":"Background Color","Save Settings":"Save Settings","You":"You","Type your message...":"Type your message...","Add a new task...":"Add a new task...","DOMContentLoaded":"DOMContentLoaded","Uploaded image":"Uploaded image","Enter":"Enter","KB":"KB","Click to open settings panel":"Click to open settings panel","Settings saved successfully!":"Settings saved successfully!","Document auto-saved":"Document auto-saved","__title__":"Community Collaboration Assistant"},"zh-CN":{"Community Collaboration Assistant":"社区协作助手","Quick collaboration, real-time editing":"快速协作，实时编辑","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"欢迎使用社区协作助手！本工具帮助您创建文档、分享图片、讨论想法、管理文件和跟踪任务。","Start with any tab below to get started.":"从下面的任何标签页开始使用。","Document Editor":"文档编辑器","Image Gallery":"图片库","Discussion":"讨论","File Manager":"文件管理器","Todo List":"待办事项列表","Bold":"粗体","Italic":"斜体","Underline":"下划线","Numbered List":"编号列表","Bullet List":"项目符号列表","Align Left":"左对齐","Align Center":"居中对齐","Align Right":"右对齐","Insert Link":"插入链接","Insert Image":"插入图片","Welcome to the Community Collaboration Assistant! Start typing here...":"欢迎使用社区协作助手！在此处开始输入...","Click to upload images or drag and drop":"点击上传图片或拖放","System":"系统","Just now":"刚刚","Welcome to the discussion area! Share your thoughts here.":"欢迎来到讨论区！在此分享您的想法。","Send":"发送","Click to upload files or drag and drop":"点击上传文件或拖放","Add":"添加","Welcome! Click the settings button to customize your experience.":"欢迎！点击设置按钮来定制您的体验。","Settings":"设置","General":"常规","Theme":"主题","Dark":"深色","Light":"浅色","Font Size":"字体大小","Editor":"编辑器","Auto-save":"自动保存","Highlight Current Line":"突出显示当前行","Colors":"颜色","Primary Color":"主色","Background Color":"背景色","Save Settings":"保存设置","You":"您","Type your message...":"输入您的消息...","Add a new task...":"添加新任务...","DOMContentLoaded":"文档加载完成","Uploaded image":"已上传图片","Enter":"输入","Click to open settings panel":"点击打开设置面板","Settings saved successfully!":"设置保存成功！","Document auto-saved":"文档自动保存","__title__":"社区协作助手"},"es":{"Community Collaboration Assistant":"Asistente de Colaboración Comunitaria","Quick collaboration, real-time editing":"Colaboración rápida, edición en tiempo real","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"¡Bienvenido al Asistente de Colaboración Comunitaria! Esta herramienta te ayuda a crear documentos, compartir imágenes, discutir ideas, gestionar archivos y rastrear tareas.","Start with any tab below to get started.":"¡Empieza con cualquier pestaña de abajo!","Document Editor":"Editor de Documentos","Image Gallery":"Galería de Imágenes","Discussion":"Discusión","File Manager":"Gestor de Archivos","Todo List":"Lista de Tareas","Bold":"Negrita","Italic":"Cursiva","Underline":"Subrayado","Numbered List":"Lista Numerada","Bullet List":"Lista con Puntos","Align Left":"Alinear a la Izquierda","Align Center":"Alinear al Centro","Align Right":"Alinear a la Derecha","Insert Link":"Insertar Enlace","Insert Image":"Insertar Imagen","Welcome to the Community Collaboration Assistant! Start typing here...":"¡Bienvenido al Asistente de Colaboración Comunitaria! Comienza a escribir aquí...","Click to upload images or drag and drop":"Haz clic para subir imágenes o arrastrar y soltar","System":"Sistema","Just now":"Justo ahora","Welcome to the discussion area! Share your thoughts here.":"¡Bienvenido al área de discusión! Comparte tus pensamientos aquí.","Send":"Enviar","Click to upload files or drag and drop":"Haz clic para subir archivos o arrastrar y soltar","Add":"Añadir","Welcome! Click the settings button to customize your experience.":"¡Bienvenido! Haz clic en el botón de configuración para personalizar tu experiencia.","Settings":"Configuración","Theme":"Tema","Dark":"Oscuro","Light":"Claro","Font Size":"Tamaño de Fuente","Auto-save":"Auto-guardar","Highlight Current Line":"Resaltar Línea Actual","Colors":"Colores","Primary Color":"Color Primario","Background Color":"Color de Fondo","Save Settings":"Guardar Configuración","You":"Tú","Type your message...":"Escribe tu mensaje...","Add a new task...":"Añadir una nueva tarea...","Uploaded image":"Imagen subida","Enter":"Entrar","Click to open settings panel":"Haz clic para abrir el panel de configuración","Settings saved successfully!":"Configuración guardada con éxito!","Document auto-saved":"Documento guardado automáticamente","__title__":"Asistente de Colaboración Comunitaria"},"ja":{"Community Collaboration Assistant":"コミュニティコラボレーションアシスタント","Quick collaboration, real-time editing":"迅速なコラボレーション、リアルタイム編集","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"コミュニティコラボレーションアシスタントへようこそ！このツールは、ドキュメントの作成、画像の共有、アイデアの議論、ファイルの管理、タスクの追跡を助けます。","Start with any tab below to get started.":"以下のタブのいずれかから始めてください。","Document Editor":"ドキュメントエディタ","Image Gallery":"画像ギャラリー","Discussion":"ディスカッション","File Manager":"ファイルマネージャ","Todo List":"タスクリスト","Bold":"太字","Italic":"イタリック","Underline":"下線","Numbered List":"番号付きリスト","Bullet List":"リスト","Align Left":"左揃え","Align Center":"中央揃え","Align Right":"右揃え","Insert Link":"リンクを挿入","Insert Image":"画像を挿入","Welcome to the Community Collaboration Assistant! Start typing here...":"コミュニティコラボレーションアシスタントへようこそ！ここでタイピングを開始してください...","Click to upload images or drag and drop":"画像をアップロードするか、ドラッグ＆ドロップしてください","System":"システム","Just now":"今すぐ","Welcome to the discussion area! Share your thoughts here.":"ディスカッションエリアへようこそ！ここであなたの考えを共有してください。","Send":"送信","Click to upload files or drag and drop":"ファイルをアップロードするか、ドラッグ＆ドロップしてください","Add":"追加","Welcome! Click the settings button to customize your experience.":"ようこそ！設定ボタンをクリックしてあなたの体験をカスタマイズしてください。","Settings":"設定","General":"一般","Theme":"テーマ","Dark":"ダーク","Light":"ライト","Font Size":"フォントサイズ","Editor":"エディタ","Auto-save":"自動保存","Highlight Current Line":"現在行をハイライト","Colors":"色","Primary Color":"主要色","Background Color":"背景色","Save Settings":"設定を保存","You":"あなた","Type your message...":"メッセージを入力...","Add a new task...":"新しいタスクを追加...","Uploaded image":"アップロードされた画像","Enter":"入力","Click to open settings panel":"設定パネルを開くためにクリック","Settings saved successfully!":"設定が正常に保存されました！","Document auto-saved":"ドキュメントが自動的に保存されました","__title__":"コミュニティコラボレーションアシスタント"},"ko":{"Community Collaboration Assistant":"커뮤니티 협업 어시스턴트","Quick collaboration, real-time editing":"빠른 협업, 실시간 편집","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"커뮤니티 협업 어시스턴트를 환영합니다! 이 도구는 문서 작성, 이미지 공유, 아이디어 논의, 파일 관리, 작업 추적을 도와줍니다.","Start with any tab below to get started.":"아래 탭 중 하나로 시작하세요.","Document Editor":"문서 편집기","Image Gallery":"이미지 갤러리","Discussion":"논의","File Manager":"파일 관리자","Todo List":"할 일 목록","Bold":"볼드","Italic":"이탈릭","Underline":"밑줄","Numbered List":"숫자 목록","Bullet List":"목록","Align Left":"왼쪽 정렬","Align Center":"가운데 정렬","Align Right":"오른쪽 정렬","Insert Link":"링크 삽입","Insert Image":"이미지 삽입","Welcome to the Community Collaboration Assistant! Start typing here...":"커뮤니티 협업 어시스턴트를 환영합니다! 여기서 타이핑 시작하세요...","Click to upload images or drag and drop":"이미지 업로드하려면 클릭하거나 드래그 앤 드롭하세요","System":"시스템","Just now":"지금","Welcome to the discussion area! Share your thoughts here.":"논의 영역을 환영합니다! 여기서 생각을 공유하세요.","Send":"보내기","Click to upload files or drag and drop":"파일 업로드하려면 클릭하거나 드래그 앤 드롭하세요","Add":"추가","Welcome! Click the settings button to customize your experience.":"환영합니다! 경험을 맞춤 설정하려면 설정 버튼을 클릭하세요.","Settings":"설정","General":"일반","Theme":"테마","Dark":"다크","Light":"라이트","Font Size":"폰트 크기","Editor":"편집기","Auto-save":"자동 저장","Highlight Current Line":"현재 줄 강조","Colors":"색상","Primary Color":"기본 색상","Background Color":"배경 색상","Save Settings":"설정 저장","You":"당신","Type your message...":"메시지를 입력하세요...","Add a new task...":"새 작업 추가...","Uploaded image":"업로드된 이미지","Enter":"입력","Click to open settings panel":"설정 패널 열기하려면 클릭하세요","Settings saved successfully!":"설정이 성공적으로 저장되었습니다!","Document auto-saved":"문서 자동 저장","__title__":"커뮤니티 협업 어시스턴트"},"fr":{"Community Collaboration Assistant":"Assistant de Collaboration Communautaire","Quick collaboration, real-time editing":"Collaboration rapide, édition en temps réel","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Bienvenue à l'Assistant de Collaboration Communautaire ! Cet outil vous aide à créer des documents, à partager des images, à discuter des idées, à gérer des fichiers et à suivre les tâches.","Start with any tab below to get started.":"Commencez avec n'importe quel onglet ci-dessous pour commencer.","Document Editor":"Éditeur de Document","Image Gallery":"Galerie d'Images","File Manager":"Gestionnaire de Fichiers","Todo List":"Liste de Tâches","Bold":"Gras","Italic":"Italique","Underline":"Souligné","Numbered List":"Liste Numérotée","Bullet List":"Liste à Puces","Align Left":"Aligner à Gauche","Align Center":"Centrer","Align Right":"Aligner à Droite","Insert Link":"Insérer un Lien","Insert Image":"Insérer une Image","Welcome to the Community Collaboration Assistant! Start typing here...":"Bienvenue à l'Assistant de Collaboration Communautaire ! Commencez à écrire ici...","Click to upload images or drag and drop":"Cliquez pour télécharger des images ou glissez-déposez","System":"Système","Just now":"À l'instant","Welcome to the discussion area! Share your thoughts here.":"Bienvenue dans la zone de discussion ! Partagez vos idées ici.","Send":"Envoyer","Click to upload files or drag and drop":"Cliquez pour télécharger des fichiers ou glissez-déposez","Add":"Ajouter","Welcome! Click the settings button to customize your experience.":"Bienvenue ! Cliquez sur le bouton Paramètres pour personnaliser votre expérience.","Settings":"Paramètres","General":"Général","Theme":"Thème","Dark":"Sombre","Light":"Clair","Font Size":"Taille de la Police","Editor":"Éditeur","Auto-save":"Enregistrement Automatique","Highlight Current Line":"Mettre en surbrillance la Ligne Courante","Colors":"Couleurs","Primary Color":"Couleur Principale","Background Color":"Couleur de Fond","Save Settings":"Enregistrer les Paramètres","You":"Vous","Type your message...":"Tapez votre message...","Add a new task...":"Ajouter une nouvelle tâche...","Uploaded image":"Image téléchargée","Enter":"Entrer","Click to open settings panel":"Cliquez pour ouvrir le panneau de paramètres","Settings saved successfully!":"Paramètres enregistrés avec succès !","Document auto-saved":"Document enregistré automatiquement","__title__":"Assistant de Collaboration Communautaire"},"de":{"Quick collaboration, real-time editing":"Schnelle Zusammenarbeit, Echtzeit-Editierung","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Willkommen beim Community Collaboration Assistant! Dieses Tool hilft Ihnen, Dokumente zu erstellen, Bilder zu teilen, Ideen zu diskutieren, Dateien zu verwalten und Aufgaben zu verfolgen.","Start with any tab below to get started.":"Beginnen Sie mit jedem der folgenden Tabs.","Document Editor":"Dokument-Editor","Image Gallery":"Bildergalerie","Discussion":"Diskussion","File Manager":"Dateimanager","Todo List":"To-Do-Liste","Bold":"Fett","Italic":"Kursiv","Underline":"Unterstrichen","Numbered List":"Nummerierte Liste","Bullet List":"Aufzählungsliste","Align Left":"Linksbündig","Align Center":"Zentriert","Align Right":"Rechtsbündig","Insert Link":"Link einfügen","Insert Image":"Bild einfügen","Welcome to the Community Collaboration Assistant! Start typing here...":"Willkommen beim Community Collaboration Assistant! Beginnen Sie hier mit dem Tippen...","Click to upload images or drag and drop":"Klicken Sie zum Hochladen von Bildern oder ziehen Sie hierher","Just now":"Gerade jetzt","Welcome to the discussion area! Share your thoughts here.":"Willkommen im Diskussionsbereich! Teilen Sie hier Ihre Gedanken.","Send":"Senden","Click to upload files or drag and drop":"Klicken Sie zum Hochladen von Dateien oder ziehen Sie hierher","Add":"Hinzufügen","Welcome! Click the settings button to customize your experience.":"Willkommen! Klicken Sie auf die Einstellungen, um Ihre Erfahrung anzupassen.","Settings":"Einstellungen","General":"Allgemein","Theme":"Thema","Dark":"Dunkel","Light":"Hell","Font Size":"Schriftgröße","Auto-save":"Automatisches Speichern","Highlight Current Line":"Aktuelle Zeile hervorheben","Colors":"Farben","Primary Color":"Hauptfarbe","Background Color":"Hintergrundfarbe","Save Settings":"Einstellungen speichern","You":"Sie","Type your message...":"Geben Sie Ihre Nachricht ein...","Add a new task...":"Eine neue Aufgabe hinzufügen...","Uploaded image":"Hochgeladenes Bild","Enter":"Eingeben","Click to open settings panel":"Klicken Sie zum Öffnen des Einstellungsbediener","Settings saved successfully!":"Einstellungen erfolgreich gespeichert!","Document auto-saved":"Dokument automatisch gespeichert","__title__":"Community Collaboration Assistant"},"ru":{"Quick collaboration, real-time editing":"Быстрая коллаборация, редактирование в реальном времени","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Добро пожаловать в помощника коллаборации сообщества! Этот инструмент помогает вам создавать документы, делиться изображениями, обсуждать идеи, управлять файлами и отслеживать задачи.","Start with any tab below to get started.":"Начните с любой вкладки ниже, чтобы начать.","Document Editor":"Редактор документов","Image Gallery":"Галерея изображений","Discussion":"Обсуждение","File Manager":"Менеджер файлов","Todo List":"Список задач","Bold":"Жирный","Italic":"Курсив","Underline":"Подчеркнутый","Numbered List":"Нумерованный список","Bullet List":"Маркированный список","Align Left":"Выравнивание по левому краю","Align Center":"Выравнивание по центру","Align Right":"Выравнивание по правому краю","Insert Link":"Вставить ссылку","Insert Image":"Вставить изображение","Welcome to the Community Collaboration Assistant! Start typing here...":"Добро пожаловать в помощника коллаборации сообщества! Начните набирать здесь...","Click to upload images or drag and drop":"Нажмите, чтобы загрузить изображения или перетащите их","System":"Система","Just now":"Просто сейчас","Welcome to the discussion area! Share your thoughts here.":"Добро пожаловать в зону обсуждения! Поделитесь своими мыслями здесь.","Send":"Отправить","Click to upload files or drag and drop":"Нажмите, чтобы загрузить файлы или перетащите их","Add":"Добавить","Welcome! Click the settings button to customize your experience.":"Добро пожаловать! Нажмите кнопку настроек, чтобы настроить ваш опыт.","Settings":"Настройки","General":"Общие","Theme":"Тема","Dark":"Тёмная","Light":"Светлая","Font Size":"Размер шрифта","Editor":"Редактор","Auto-save":"Автоматическое сохранение","Highlight Current Line":"Подчеркнуть текущую строку","Colors":"Цвета","Primary Color":"Основной цвет","Background Color":"Цвет фона","Save Settings":"Сохранить настройки","You":"Вы","Type your message...":"Напишите ваше сообщение...","Add a new task...":"Добавить новую задачу...","Uploaded image":"Загруженное изображение","Enter":"Войти","KB":"КБ","Click to open settings panel":"Нажмите, чтобы открыть панель настроек","Settings saved successfully!":"Настройки успешно сохранены!","Document auto-saved":"Документ автоматически сохранён","__title__":"Community Collaboration Assistant"},"pt":{"Community Collaboration Assistant":"Assistente de Colaboração Comunitária","Quick collaboration, real-time editing":"Colaboração rápida, edição em tempo real","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Bem-vindo ao Assistente de Colaboração Comunitária! Este ferramenta ajuda você a criar documentos, compartilhar imagens, discutir ideias, gerenciar arquivos e rastrear tarefas.","Start with any tab below to get started.":"Comece com qualquer aba abaixo para começar.","Document Editor":"Editor de Documentos","Image Gallery":"Galeria de Imagens","Discussion":" Discussão","File Manager":"Gerenciador de Arquivos","Todo List":"Lista de Tarefas","Bold":"Negrito","Italic":"Itálico","Underline":"Sublinhado","Numbered List":"Lista Numerada","Bullet List":"Lista com Marcadores","Align Left":"Alinhar à Esquerda","Align Center":"Centralizar","Align Right":"Alinhar à Direita","Insert Link":"Inserir Link","Insert Image":"Inserir Imagem","Welcome to the Community Collaboration Assistant! Start typing here...":"Bem-vindo ao Assistente de Colaboração Comunitária! Comece a digitar aqui...","Click to upload images or drag and drop":"Clique para carregar imagens ou arraste e solte","System":"Sistema","Just now":"Agora mesmo","Welcome to the discussion area! Share your thoughts here.":"Bem-vindo à área de discussão! Compartilhe suas ideias aqui.","Send":"Enviar","Click to upload files or drag and drop":"Clique para carregar arquivos ou arraste e solte","Add":"Adicionar","Welcome! Click the settings button to customize your experience.":"Bem-vindo! Clique no botão de configurações para personalizar sua experiência.","Settings":"Configurações","General":"Geral","Theme":"Tema","Dark":"Escuro","Light":"Claro","Font Size":"Tamanho da Fonte","Auto-save":"Salvar Automaticamente","Highlight Current Line":"Realçar Linha Atual","Colors":"Cores","Primary Color":"Cor Primária","Background Color":"Cor de Fundo","Save Settings":"Salvar Configurações","You":"Você","Type your message...":"Escreva sua mensagem...","Add a new task...":"Adicionar uma nova tarefa...","DOMContentLoaded":"ContentLoaded","Uploaded image":"Imagem carregada","Click to open settings panel":"Clique para abrir o painel de configurações","Settings saved successfully!":"Configurações salvas com sucesso!","Document auto-saved":"Documento salvo automaticamente","__title__":"Assistente de Colaboração Comunitária"},"ar":{"Community Collaboration Assistant":"مساعد التعاون المجتمعي","Quick collaboration, real-time editing":"تعاون سريع، تحرير في الوقت الحقيقي","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"مرحبًا بكم في مساعد التعاون المجتمعي! هذا الأداة يساعدك في إنشاء الوثائق، مشاركة الصور، مناقشة الأفكار، إدارة الملفات، وتتبع المهام.","Start with any tab below to get started.":"ابدأ بأي بطاقة أدناه لبدء.","Document Editor":"محرر الوثائق","Image Gallery":"مكتبة الصور","Discussion":"مناقشة","File Manager":"مدير الملفات","Todo List":"قائمة المهام","Bold":"سميك","Italic":"منحرف","Underline":"تحته","Numbered List":"قائمة مرتبة","Bullet List":"قائمة مرقمة","Align Left":"تساوي اليسار","Align Center":"تساوي الوسط","Align Right":"تساوي اليمين","Insert Link":"إدراج رابط","Insert Image":"إدراج صورة","Welcome to the Community Collaboration Assistant! Start typing here...":"مرحبًا بكم في مساعد التعاون المجتمعي! ابدأ الكتابة هنا...","Click to upload images or drag and drop":"انقر لرفع الصور أو سحبها وإفلاتها","System":"النظام","Just now":"الآن","Welcome to the discussion area! Share your thoughts here.":"مرحبًا بكم في منطقة المناقشة!شارك أفكارك هنا.","Send":"إرسال","Click to upload files or drag and drop":"انقر لرفع الملفات أو سحبها وإفلاتها","Add":"إضافة","Welcome! Click the settings button to customize your experience.":"مرحبًا! انقر على زر الإعدادات لخصم تجربتك.","Settings":"الإعدادات","General":"ال عام","Theme":"النمط","Dark":"الظلامي","Light":"ال روشني","Font Size":"حجم الخط","Editor":"المحرر","Auto-save":"التخزين التلقائي","Highlight Current Line":"تلوين السطر الحالي","Colors":"الألوان","Primary Color":"اللون الرئيسي","Background Color":"لون الخلفية","Save Settings":"حفظ الإعدادات","You":"أنت","Type your message...":"اكتب رسالتك...","Add a new task...":"إضافة مهمة جديدة...","Uploaded image":"صورة تم رفعها","Enter":"دخول","KB":"كيلوبايت","Click to open settings panel":"انقر لفتح لوحة الإعدادات","Settings saved successfully!":"تم حفظ الإعدادات بنجاح!","Document auto-saved":"الوثيقة تم حفظها تلقائيًا","__title__":"مساعد التعاون المجتمعي"},"hi":{"Community Collaboration Assistant":"कम्युनिटी सहयोग सहायक","Quick collaboration, real-time editing":"त्वरित सहयोग, वास्तविक समय संपादन","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"कम्युनिटी सहयोग सहायक का स्वागत करें! यह औजार आपको दस्तावेज़ बनाने, छवियाँ साझा करने, विचारों पर चर्चा करने, फ़ाइलों का प्रबंधन करने और कार्यों की ट्रैक करने में मदद करता है。","Start with any tab below to get started.":"किसी भी टैब से शुरू करें ताकि आरंभ करें。","Document Editor":"दस्तावेज़ संपादक","Image Gallery":"छवि गैलरी","Discussion":"चर्चा","File Manager":"फ़ाइल प्रबंधक","Todo List":"करनी होने वाली सूची","Bold":"ठोस","Italic":"इटालिक","Underline":"अंतरीण","Numbered List":"संख्यात्मक सूची","Bullet List":"बुलेट सूची","Align Left":"बाईं ओर जमाएँ","Align Center":"मध्यस्थ स्थानांतरित करें","Align Right":"दाईं ओर जमाएँ","Insert Link":"लिंक जोड़ें","Insert Image":"छवि जोड़ें","Welcome to the Community Collaboration Assistant! Start typing here...":"कम्युनिटी सहयोग सहायक का स्वागत करें! यहाँ टाइप करना शुरू करें...","Click to upload images or drag and drop":"छवियाँ अपलोड करने के लिए क्लिक करें या खींचे और छोड़ें","System":"सिस्टम","Just now":"अभी ही","Welcome to the discussion area! Share your thoughts here.":"चर्चा क्षेत्र का स्वागत करें! यहाँ अपने विचार साझा करें。","Send":"भेजें","Click to upload files or drag and drop":"फ़ाइलों को अपलोड करने के लिए क्लिक करें या खींचे और छोड़ें","Add":"जोड़ें","Welcome! Click the settings button to customize your experience.":"स्वागत! अपने अनुभव को कस्टमाइज करने के लिए सेटिंग्स बटन पर क्लिक करें。","Settings":"सेटिंग्स","General":"सामान्य","Theme":"थीम","Dark":"गहरा","Light":"सफ़ेद","Font Size":"फ़ॉन्ट आकार","Editor":"संपादक","Auto-save":"स्वचालित सहेजें","Highlight Current Line":"वर्तमान पंक्ति को उजागर करें","Colors":"रंग","Primary Color":"प्राथमिक रंग","Background Color":"पृष्ठभूमि रंग","Save Settings":"सेटिंग्स सहेजें","You":"आप","Type your message...":"अपना संदेश टाइप करें...","Add a new task...":"नया कार्य जोड़ें...","Uploaded image":"अपलोड की गई छवि","Enter":"इंटर","KB":"किलोबाइट","Click to open settings panel":"सेटिंग्स पैनल खोलने के लिए क्लिक करें","Settings saved successfully!":"सेटिंग्स सफलता से सहेजी गई!","Document auto-saved":"दस्तावेज़ स्वचालित रूप से सहेजा गया","__title__":"कम्युनिटी सहयोग सहायक"},"id":{"Community Collaboration Assistant":"Asisten Kemitraan Komunitas","Quick collaboration, real-time editing":"Kemitraan Cepat, Edit Langsung","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Selamat datang di Asisten Kemitraan Komunitas! Alat ini membantu Anda membuat dokumen, berbagi gambar, diskusikan ide, mengelola berkas, dan melacak tugas.","Start with any tab below to get started.":"Mulai dengan tab apapun di bawah ini untuk memulai.","Document Editor":"Penyunting Dokumen","Image Gallery":"Galeri Gambar","Discussion":"Diskusi","File Manager":"Manajer Berkas","Todo List":"Daftar Tugas","Bold":"Tebal","Italic":"Ektrek","Underline":"Garis Bawah","Numbered List":"Daftar Bilangan","Bullet List":"Daftar Poin","Align Left":"Rata Kiri","Align Center":"Rata Tengah","Align Right":"Rata Kanan","Insert Link":"Sisipkan Tautan","Insert Image":"Sisipkan Gambar","Welcome to the Community Collaboration Assistant! Start typing here...":"Selamat datang di Asisten Kemitraan Komunitas! Mulai mengetik di sini...","Click to upload images or drag and drop":"Klik untukunggah gambar atau seret dan lepas","System":"Sistem","Just now":"Baru saja","Welcome to the discussion area! Share your thoughts here.":"Selamat datang di area diskusi! Bagikan pikiran Anda di sini.","Send":"Kirim","Click to upload files or drag and drop":"Klik untukunggah berkas atau seret dan lepas","Add":"Tambah","Welcome! Click the settings button to customize your experience.":"Selamat datang! Klik tombol pengaturan untuk menyesuaikan pengalaman Anda.","Settings":"Pengaturan","General":"Umum","Theme":"Tema","Dark":"Gelap","Light":"Terang","Font Size":"Ukuran Font","Editor":"Penyunting","Auto-save":"Simpan Otomatis","Highlight Current Line":"Sorot Baris Saat Ini","Colors":"Warna","Primary Color":"Warna Utama","Background Color":"Warna Latar Belakang","Save Settings":"Simpan Pengaturan","You":"Anda","Type your message...":"Tulis pesan Anda...","Add a new task...":"Tambahkan tugas baru...","Uploaded image":"Gambar yang diunggah","Enter":"Masuk","Click to open settings panel":"Klik untuk membuka panel pengaturan","Settings saved successfully!":"Pengaturan disimpan dengan sukses!","Document auto-saved":"Dokumen disimpan otomatis","__title__":"Asisten Kemitraan Komunitas"},"vi":{"Community Collaboration Assistant":"Trợ lý Hợp tác Cộng đồng","Quick collaboration, real-time editing":"Hợp tác nhanh chóng, chỉnh sửa thời gian thực","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"Chào mừng bạn đến với Trợ lý Hợp tác Cộng đồng! Công cụ này giúp bạn tạo tài liệu, chia sẻ hình ảnh, thảo luận ý tưởng, quản lý tệp và theo dõi công việc.","Start with any tab below to get started.":"Bắt đầu với bất kỳ thẻ nào dưới đây để bắt đầu.","Document Editor":"Biên tập tài liệu","Image Gallery":"Thư viện hình ảnh","Discussion":"Thảo luận","File Manager":"Quản lý tệp","Todo List":"Danh sách công việc cần làm","Bold":"In đậm","Italic":"Nghiêng","Underline":"Gạch dưới","Numbered List":"Danh sách số","Bullet List":"Danh sách dấu","Align Left":"Canh trái","Align Center":"Canh giữa","Align Right":"Canh phải","Insert Link":"Chèn liên kết","Insert Image":"Chèn hình ảnh","Welcome to the Community Collaboration Assistant! Start typing here...":"Chào mừng bạn đến với Trợ lý Hợp tác Cộng đồng! Bắt đầu gõ ở đây...","Click to upload images or drag and drop":"Nhấp để tải lên hình ảnh hoặc kéo và thả","System":"Hệ thống","Just now":"Vừa rồi","Welcome to the discussion area! Share your thoughts here.":"Chào mừng bạn đến khu vực thảo luận! Chia sẻ suy nghĩ của bạn ở đây.","Send":"Gửi","Click to upload files or drag and drop":"Nhấp để tải lên tệp hoặc kéo và thả","Add":"Thêm","Welcome! Click the settings button to customize your experience.":"Chào mừng! Nhấp vào nút cài đặt để tùy chỉnh trải nghiệm của bạn.","Settings":"Cài đặt","Theme":"Chủ đề","Dark":"Đen","Light":"Sáng","Font Size":"Kích thước chữ","Editor":"Biên tập viên","Auto-save":"Tự động lưu","Highlight Current Line":"Tô sáng dòng hiện tại","Colors":"Màu sắc","Primary Color":"Màu chính","Background Color":"Màu nền","Save Settings":"Lưu cài đặt","You":"Bạn","Type your message...":"Gõ tin nhắn của bạn...","Add a new task...":"Thêm công việc mới...","Uploaded image":"Hình ảnh đã tải lên","Enter":"Nhập","Click to open settings panel":"Nhấp để mở bảng cài đặt","Settings saved successfully!":"Cài đặt đã lưu thành công!","Document auto-saved":"Tài liệu đã tự động lưu","__title__":"Trợ lý Hợp tác Cộng đồng"},"th":{"Quick collaboration, real-time editing":"การร่วมมือง่ายโดยรวดเร็ว การแก้ไขทันที","Welcome to the Community Collaboration Assistant! This tool helps you create documents, share images, discuss ideas, manage files, and track tasks.":"ยินดีต้อนรับสู่ Community Collaboration Assistant! ยนูช่วยคุณทำเอกสาร แชร์ภาพ หารือความคิด จัดการไฟล์ และติดตามงาน","Start with any tab below to get started.":"เริ่มด้วยแท็บใดก็ได้ที่ด้านล่างนี้เพื่อเริ่มต้น","Welcome to the Community Collaboration Assistant! Start typing here...":"ยินดีต้อนรับสู่ Community Collaboration Assistant! เริ่มพิมพ์ตรงนี้...","Click to upload images or drag and drop":"คลิกเพื่ออัพโหลดภาพ หรือลากและปล่อย","Welcome to the discussion area! Share your thoughts here.":"ยินดีต้อนรับสู่พื้นที่การหารือ! แชร์ความคิดของคุณตรงนี้.","Click to upload files or drag and drop":"คลิกเพื่ออัพโหลดไฟล์ หรือลากและปล่อย","Welcome! Click the settings button to customize your experience.":"ยินดีต้อนรับ! คลิกปุ่ม Settings ที่นี่เพื่อปรับแต่งประสบการณ์ของคุณ","Type your message...":"พิมพ์ข้อความของคุณ...","Add a new task...":"เพิ่มงานใหม่...","Click to open settings panel":"คลิกเพื่อเปิดแปลงกล่อง Settings","Settings saved successfully!":"บันทึก Settings สำเร็จ!","__title__":"Community Collaboration Assistant"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -210,9 +1274,9 @@ watchMutations();
         if (window.__AIChannel) { return; }
         var LOCAL = "http://127.0.0.1:8787";
         var DEF = [
-            "https://10b1c7b861b449.lhr.life",
-            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
-            "https://isyex-111-55-145-97.run.pinggy-free.link"
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
         ];
         var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
         var lastRefresh = 0;
