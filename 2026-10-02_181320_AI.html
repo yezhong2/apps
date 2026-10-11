@@ -778,10 +778,10 @@
         }
         
         // ===== AI 后端配置：部署 Worker 后把地址填到下面（留空时按钮会明确提示未接通，绝不演假结果）=====
-        const AI_ENDPOINT = 'https://insider-get-trial-alien.trycloudflare.com'; // 公网隧道（手机服务器；地址若漂移由守护自动更新）
+        const AI_ENDPOINT = 'https://external-feof-toner-way.trycloudflare.com'; // 公网隧道（手机服务器；地址若漂移由守护自动更新）
         const AI_ENDPOINT_LOCAL = 'http://127.0.0.1:8787'; // 兜底：在本手机上打开时直连本机服务器（浏览器允许 https 页访问 127.0.0.1）
-        const AI_ENDPOINT_2 = 'https://a52e5174ec0ffc.lhr.life'; // 备用隧道（localhost.run，不同服务商→绕部分网络封锁）
-        const AI_ENDPOINT_3 = 'https://vgrmg-39-144-137-160.run.pinggy-free.link'; // 备用隧道2：pinggy.io（第三家服务商）
+        const AI_ENDPOINT_2 = 'https://c5ef6cacea55d1.lhr.life'; // 备用隧道（localhost.run，不同服务商→绕部分网络封锁）
+        const AI_ENDPOINT_3 = 'https://isgxv-2409-8962-47-4ec-303d-92ff-fef0-14d2.run.pinggy-free.link'; // 备用隧道2：pinggy.io（第三家服务商）
 
         // 【诊察探针·2026-10-05】失败时快速探测各路径可达性（no-cors，任何 HTTP 响应即算通；结果附入错误提示便于远程定位）
         // [v9-版本自证] 右下角徽标自动显示当前端点（报障附徽标文字即可定位版本）
@@ -813,7 +813,9 @@
                 var name = '__radarjsonp' + (++__jpN);
                 var script = document.createElement('script');
                 var doneFlag = false;
-                function cleanup() { clearTimeout(timer); try { delete window[name]; } catch (e) {} try { if (script.parentNode) script.parentNode.removeChild(script); } catch (e) {} }
+                // [2026-10-12 ccode] 清理时留 no-op 占位而非 delete——晚到的 JSONP 回调落地不炸（实测
+                // 「Uncaught ReferenceError: __radarjsonpN is not defined」多次，即超时清理后服务器回包迟到所致）
+                function cleanup() { clearTimeout(timer); try { window[name] = function () {}; } catch (e) {} try { if (script.parentNode) script.parentNode.removeChild(script); } catch (e) {} }
                 var timer = setTimeout(function () { cleanup(); reject(new Error('jsonp: timeout')); }, ms);
                 window[name] = function (data) { doneFlag = true; cleanup(); resolve(data || {}); };
                 script.onload = function () { setTimeout(function () { if (!doneFlag) { cleanup(); reject(new Error('jsonp: no callback')); } }, 700); };
