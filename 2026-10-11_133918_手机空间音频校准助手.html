@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Calibration Assistant</title><meta name="description" content="Free online tool: Audio Calibration Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="Audio Calibration Assistant">
+<meta property="og:description" content="Free online tool: Audio Calibration Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-11_133918_手机空间音频校准助手.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .section {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+        
+        .section-title {
+            color: #4caf50;
+            margin-bottom: 15px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #4caf50;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #b0b0b0;
+            font-size: 14px;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        .button-secondary {
+            background-color: #2196f3;
+        }
+        
+        .button-secondary:hover {
+            background-color: #1976d2;
+        }
+        
+        .button-danger {
+            background-color: #f44336;
+        }
+        
+        .button-danger:hover {
+            background-color: #d32f2f;
+        }
+        
+        .result-box {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            border: 1px solid #444;
+        }
+        
+        .result-title {
+            color: #4caf50;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .result-content {
+            color: #e0e0e0;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload input[type="file"] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            background-color: #2a2a2a;
+            border: 2px dashed #4caf50;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .file-upload-label:hover {
+            background-color: #333;
+        }
+        
+        .file-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #a0a0a0;
+        }
+        
+        .calibration-data {
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .calibration-item {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .calibration-item:last-child {
+            border-bottom: none;
+        }
+        
+        .calibration-date {
+            font-size: 12px;
+            color: #a0a0a0;
+        }
+        
+        .calibration-values {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #444;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background-color: #1e1e1e;
+            border: none;
+            color: #a0a0a0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background-color: #2a2a2a;
+            color: #4caf50;
+            border-bottom: 2px solid #4caf50;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .waveform-container {
+            height: 200px;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            margin-top: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .waveform {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .parameter-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <h1>Audio Calibration Assistant</h1>
+    <p class="subtitle">Optimize your audio experience for immersive sound in your phone space</p>
+    
+    <div class="tab-container">
+        <button class="tab active" id="tab-analysis">Audio Analysis</button>
+        <button class="tab" id="tab-adjustment">Quality Adjustment</button>
+        <button class="tab" id="tab-diagnosis">Problem Diagnosis</button>
+        <button class="tab" id="tab-optimization">Parameter Optimization</button>
+        <button class="tab" id="tab-save">Save Calibration</button>
+    </div>
+    
+    <!-- Audio Analysis Tab -->
+    <div id="content-analysis" class="tab-content active">
+        <div class="section">
+            <h2 class="section-title">Audio File Upload</h2>
+            <div class="input-group">
+                <div class="file-upload">
+                    <input type="file" id="audio-file" accept="audio/*">
+                    <label for="audio-file" class="file-upload-label">
+                        Click to upload audio file or drag and drop
+                    </label>
+                </div>
+                <div id="file-info" class="file-info"></div>
+            </div>
+            
+            <button id="analyze-btn" class="button-secondary">Analyze Audio</button>
+            
+            <div id="waveform-container" class="waveform-container" style="display: none;">
+                <canvas id="waveform" class="waveform"></canvas>
+            </div>
+            
+            <div id="analysis-result" class="result-box" style="display: none;">
+                <div class="result-title">Analysis Results</div>
+                <div id="analysis-content" class="result-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quality Adjustment Tab -->
+    <div id="content-adjustment" class="tab-content">
+        <div class="section">
+            <h2 class="section-title">Current Audio Settings</h2>
+            <div class="input-group">
+                <label for="bass-level">Bass Level</label>
+                <input type="range" id="bass-level" min="0" max="100" value="50">
+                <span id="bass-value">50</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="treble-level">Treble Level</label>
+                <input type="range" id="treble-level" min="0" max="100" value="50">
+                <span id="treble-value">50</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="volume-level">Volume Level</label>
+                <input type="range" id="volume-level" min="0" max="100" value="70">
+                <span id="volume-value">70</span>
+            </div>
+            
+            <div class="input-group">
+                <label for="sound-mode">Sound Mode</label>
+                <select id="sound-mode">
+                    <option value="normal">Normal</option>
+                    <option value="bass">B Boost</option>
+                    <option value="vocal">Vocal</option>
+                    <option value="treble">T Boost</option>
+                </select>
+            </div>
+            
+            <button id="adjust-btn" class="button-secondary">Adjust Audio Quality</button>
+            
+            <div id="adjustment-result" class="result-box" style="display: none;">
+                <div class="result-title">Optimization Results</div>
+                <div id="adjustment-content" class="result-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Problem Diagnosis Tab -->
+    <div id="content-diagnosis" class="tab-content">
+        <div class="section">
+            <h2 class="section-title">Audio Problem Description</h2>
+            <div class="input-group">
+                <label for="problem-type">Problem Type</label>
+                <select id="problem-type">
+                    <option value="distortion">Distortion</option>
+                    <option value="noise">Noise</option>
+                    <option value="volume">Volume Issues</option>
+                    <option value="clarity">Clarity Issues</option>
+                    <option value="balance">Balance Issues</option>
+                </select>
+            </div>
+            
+            <div class="input-group">
+                <label for="problem-description">Describe the Problem</label>
+                <textarea id="problem-description" placeholder="Please describe the audio issue you're experiencing..."></textarea>
+            </div>
+            
+            <button id="diagnose-btn" class="button-secondary">Diagnose Problem</button>
+            
+            <div id="diagnosis-result" class="result-box" style="display: none;">
+                <div class="result-title">Diagnosis Results</div>
+                <div id="diagnosis-content" class="result-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Parameter Optimization Tab -->
+    <div id="content-optimization" class="tab-content">
+        <div class="section">
+            <h2 class="section-title">Audio Parameters</h2>
+            <div class="parameter-grid">
+                <div class="input-group">
+                    <label for="eq-low">EQ Low (Hz)</label>
+                    <input type="number" id="eq-low" value="60" min="20" max="250">
+                </div>
+                
+                <div class="input-group">
+                    <label for="eq-mid">EQ Mid (Hz)</label>
+                    <input type="number" id="eq-mid" value="1000" min="250" max="4000">
+                </div>
+                
+                <div class="input-group">
+                    <label for="eq-high">EQ High (Hz)</label>
+                    <input type="number" id="eq-high" value="8000" min="4000" max="20000">
+                </div>
+                
+                <div class="input-group">
+                    <label for="low-gain">Low Gain (dB)</label>
+                    <input type="number" id="low-gain" value="0" min="-12" max="12" step="0.1">
+                </div>
+                
+                <div class="input-group">
+                    <label for="mid-gain">Mid Gain (dB)</label>
+                    <input type="number" id="mid-gain" value="0" min="-12" max="12" step="0.1">
+                </div>
+                
+                <div class="input-group">
+                    <label for="high-gain">High Gain (dB)</label>
+                    <input type="number" id="high-gain" value="0" min="-12" max="12" step="0.1">
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="room-type">Room Type</label>
+                <select id="room-type">
+                    <option value="small">Small Room</option>
+                    <option value="medium">Medium Room</option>
+                    <option value="large">Large Room</option>
+                    <option value="outdoor">Outdoor</option>
+                </select>
+            </div>
+            
+            <button id="optimize-btn" class="button-secondary">Optimize Parameters</button>
+            
+            <div id="optimization-result" class="result-box" style="display: none;">
+                <div class="result-title">Optimization Results</div>
+                <div id="optimization-content" class="result-content"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Save Calibration Tab -->
+    <div id="content-save" class="tab-content">
+        <div class="section">
+            <h2 class="section-title">Calibration Results</h2>
+            <div class="input-group">
+                <label for="calibration-name">Calibration Name</label>
+                <input type="text" id="calibration-name" placeholder="Enter a name for this calibration">
+            </div>
+            
+            <div class="input-group">
+                <label for="calibration-notes">Notes</label>
+                <textarea id="calibration-notes" placeholder="Add any notes about this calibration..."></textarea>
+            </div>
+            
+            <button id="save-btn" class="button-secondary">Save Calibration</button>
+            
+            <div id="saved-calibrations" class="calibration-data" style="display: none;">
+                <h3 class="result-title">Saved Calibrations</h3>
+                <div id="calibrations-list"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        // Tab switching functionality
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = tab.id.replace('tab-', 'content-');
+                
+                tabs.forEach(t => t.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                tab.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+        
+        // Toast notification
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
+        
+        // Audio file handling
+        const audioFileInput = document.getElementById('audio-file');
+        const fileInfo = document.getElementById('file-info');
+        
+        audioFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                fileInfo.textContent = `File: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+            }
+        });
+        
+        // Waveform visualization
+        function drawWaveform(audioContext, audioBuffer, canvas) {
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width = canvas.offsetWidth;
+            const height = canvas.height = canvas.offsetHeight;
+            
+            ctx.clearRect(0, 0, width, height);
+            ctx.strokeStyle = '#4caf50';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            const data = audioBuffer.getChannelData(0);
+            const step = Math.ceil(data.length / width);
+            const amp = height / 2;
+            
+            for (let i = 0; i < width; i++) {
+                let min = 1.0;
+                let max = -1.0;
+                
+                for (let j = 0; j < step; j++) {
+                    const datum = data[(i * step) + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+                
+                ctx.moveTo(i, (1 + min) * amp);
+                ctx.lineTo(i, (1 + max) * amp);
+            }
+            
+            ctx.stroke();
+        }
+        
+        // Audio analysis
+        document.getElementById('analyze-btn').addEventListener('click', () => {
+            const file = audioFileInput.files[0];
+            if (!file) {
+                showToast('Please upload an audio file first');
+                return;
+            }
+            
+            const waveformContainer = document.getElementById('waveform-container');
+            const waveformCanvas = document.getElementById('waveform');
+            const analysisResult = document.getElementById('analysis-result');
+            const analysisContent = document.getElementById('analysis-content');
+            
+            waveformContainer.style.display = 'block';
+            analysisResult.style.display = 'block';
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioContext.decodeAudioData(e.target.result, (buffer) => {
+                    drawWaveform(audioContext, buffer, waveformCanvas);
+                    
+                    // Perform analysis
+                    const channelData = buffer.getChannelData(0);
+                    const samples = channelData.length;
+                    const sampleRate = buffer.sampleRate;
+                    
+                    // Calculate RMS (Root Mean Square) for loudness
+                    let sum = 0;
+                    for (let i = 0; i < samples; i++) {
+                        sum += channelData[i] * channelData[i];
+                    }
+                    const rms = Math.sqrt(sum / samples);
+                    const db = 20 * Math.log10(rms);
+                    
+                    // Detect peaks
+                    let peaks = 0;
+                    for (let i = 1; i < samples - 1; i++) {
+                        if (channelData[i] > channelData[i-1] && channelData[i] > channelData[i+1] && channelData[i] > 0.5) {
+                            peaks++;
+                        }
+                    }
+                    
+                    // Calculate zero crossings
+                    let zeroCrossings = 0;
+                    for (let i = 1; i < samples; i++) {
+                        if (channelData[i] * channelData[i-1] < 0) {
+                            zeroCrossings++;
+                        }
+                    }
+                    
+                    // Calculate duration
+                    const duration = buffer.duration;
+                    
+                    analysisContent.textContent = `Audio Analysis Results:\n\n` +
+                        `Duration: ${duration.toFixed(2)} seconds\n` +
+                        `Sample Rate: ${sampleRate} Hz\n` +
+                        `Channels: ${buffer.numberOfChannels}\n` +
+                        `Loudness: ${db.toFixed(2)} dB\n` +
+                        `Peak Count: ${peaks}\n` +
+                        `Zero Crossings: ${zeroCrossings}\n\n` +
+                        `Calibration Suggestions:\n` +
+                        `- Adjust volume based on ${db < -20 ? 'low' : db > -10 ? 'high' : 'optimal'} loudness\n` +
+                        `${peaks > 100 ? '- Consider reducing treble to decrease harshness\n' : ''}` +
+                        `${zeroCrossings > samples / 1000 ? '- Audio may be noisy, consider noise reduction\n' : ''}` +
+                        `- Optimal EQ settings:\n` +
+                        `  * Bass: ${db < -15 ? '+' : ''}${Math.max(0, 50 - Math.round(db))}%\n` +
+                        `  * Mid: 50%\n` +
+                        `  * Treble: ${db > -12 ? '-' : ''}${Math.min(100, 50 + Math.round(db))}%`;
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        });
+        
+        // Quality adjustment
+        const bassLevel = document.getElementById('bass-level');
+        const trebleLevel = document.getElementById('treble-level');
+        const volumeLevel = document.getElementById('volume-level');
+        const soundMode = document.getElementById('sound-mode');
+        
+        bassLevel.addEventListener('input', () => {
+            document.getElementById('bass-value').textContent = bassLevel.value;
+        });
+        
+        trebleLevel.addEventListener('input', () => {
+            document.getElementById('treble-value').textContent = trebleLevel.value;
+        });
+        
+        volumeLevel.addEventListener('input', () => {
+            document.getElementById('volume-value').textContent = volumeLevel.value;
+        });
+        
+        document.getElementById('adjust-btn').addEventListener('click', () => {
+            const adjustmentResult = document.getElementById('adjustment-result');
+            const adjustmentContent = document.getElementById('adjustment-content');
+            
+            adjustmentResult.style.display = 'block';
+            
+            // Calculate optimal settings based on current inputs
+            const bass = parseInt(bassLevel.value);
+            const treble = parseInt(trebleLevel.value);
+            const volume = parseInt(volumeLevel.value);
+            const mode = soundMode.value;
+            
+            let optimizedBass = bass;
+            let optimizedTreble = treble;
+            let optimizedVolume = volume;
+            let recommendations = [];
+            
+            // Apply mode-specific adjustments
+            switch (mode) {
+                case 'bass':
+                    optimizedBass = Math.min(100, bass + 15);
+                    optimizedTreble = Math.max(0, treble - 5);
+                    recommendations.push('Enhanced bass for deeper low frequencies');
+                    break;
+                case 'vocal':
+                    optimizedBass = Math.max(0, bass - 5);
+                    optimizedTreble = Math.min(100, treble + 10);
+                    recommendations.push('Enhanced treble for clearer vocals');
+                    break;
+                case 'treble':
+                    optimizedTreble = Math.min(100, treble + 15);
+                    optimizedBass = Math.max(0, bass - 5);
+                    recommendations.push('Enhanced treble for brighter sound');
+                    break;
+                default:
+                    recommendations.push('Balanced sound profile');
+            }
+            
+            // Volume optimization
+            if (volume < 30) {
+                optimizedVolume = Math.min(50, volume + 20);
+                recommendations.push('Increased volume for better audibility');
+            } else if (volume > 80) {
+                optimizedVolume = Math.max(60, volume - 15);
+                recommendations.push('Reduced volume to prevent distortion');
+            }
+            
+            // Display results
+            adjustmentContent.textContent = `Audio Optimization Results:\n\n` +
+                `Original Settings:\n` +
+                `Bass: ${bass}%\n` +
+                `Treble: ${treble}%\n` +
+                `Volume: ${volume}%\n` +
+                `Mode: ${mode.charAt(0).toUpperCase() + mode.slice(1)}\n\n` +
+                `Optimized Settings:\n` +
+                `Bass: ${optimizedBass}%\n` +
+                `Treble: ${optimizedTreble}%\n` +
+                `Volume: ${optimizedVolume}%\n\n` +
+                `Recommendations:\n` +
+                recommendations.join('\n') + '\n\n' +
+                `Expected Improvement:\n` +
+                `- Balanced frequency response\n` +
+                `- Reduced distortion\n` +
+                `- Enhanced clarity`;
+            
+            showToast('Audio quality optimized successfully');
+        });
+        
+        // Problem diagnosis
+        document.getElementById('diagnose-btn').addEventListener('click', () => {
+            const problemType = document.getElementById('problem-type').value;
+            const problemDescription = document.getElementById('problem-description').value;
+            const diagnosisResult = document.getElementById('diagnosis-result');
+            const diagnosisContent = document.getElementById('diagnosis-content');
+            
+            if (!problemDescription.trim()) {
+                showToast('Please describe the audio problem');
+                return;
+            }
+            
+            diagnosisResult.style.display = 'block';
+            
+            // Analyze problem and provide solutions
+            let diagnosis = '';
+            let solutions = [];
+            
+            switch (problemType) {
+                case 'distortion':
+                    diagnosis = 'Audio distortion detected - signals are clipping or being over-amplified';
+                    solutions = [
+                        'Reduce volume levels to prevent clipping',
+                        'Check speaker or headphone connections',
+                        'Apply a soft limiter to dynamic range',
+                        'Adjust EQ to reduce harsh frequencies',
+                        'Ensure audio source is not overloaded'
+                    ];
+                    break;
+                    
+                case 'noise':
+                    diagnosis = 'Unwanted noise detected - background hum, hiss, or interference present';
+                    solutions = [
+                        'Check for electromagnetic interference sources',
+                        'Ensure proper grounding of audio equipment',
+                        'Apply noise reduction filter',
+                        'Try different audio cables or connections',
+                        'Use a high-pass filter to remove low-frequency rumble'
+                    ];
+                    break;
+                    
+                case 'volume':
+                    diagnosis = 'Volume inconsistency detected - uneven volume levels across content';
+                    solutions = [
+                        'Apply normalization to standardize volume',
+                        'Use dynamic range compression',
+                        'Check source material volume levels',
+                        'Enable loudness equalization',
+                        'Adjust volume matching between different tracks'
+                    ];
+                    break;
+                    
+                case 'clarity':
+                    diagnosis = 'Audio clarity issues detected - muffled or unclear sound';
+                    solutions = [
+                        'Enhance mid-range frequencies',
+                        'Apply de-essing to reduce sibilance',
+                        'Use equalization to enhance vocal clarity',
+                        'Adjust microphone positioning or settings',
+                        'Apply clarity enhancement processing'
+                    ];
+                    break;
+                    
+                case 'balance':
+                    diagnosis = 'Audio balance issues detected - uneven frequency distribution';
+                    solutions = [
+                        'Adjust bass and treble levels',
+                        'Use stereo enhancement tools',
+                        'Check speaker placement and alignment',
+                        'Apply stereo widening or narrowing as needed',
+                        'Use balance controls to adjust left/right levels'
+                    ];
+                    break;
+            }
+            
+            diagnosisContent.textContent = `Diagnosis Results:\n\n` +
+                `Problem Type: ${problemType.charAt(0).toUpperCase() + problemType.slice(1)}\n` +
+                `Description: ${problemDescription}\n\n` +
+                `Analysis: ${diagnosis}\n\n` +
+                `Recommended Solutions:\n` +
+                solutions.map((s, i) => `${i + 1}. ${s}`).join('\n') + '\n\n' +
+                `Next Steps:\n` +
+                `- Apply suggested settings\n` +
+                `- Test with different audio content\n` +
+                `- Save calibration results for future use`;
+            
+            showToast('Problem diagnosed successfully');
+        });
+        
+        // Parameter optimization
+        document.getElementById('optimize-btn').addEventListener('click', () => {
+            const eqLow = parseInt(document.getElementById('eq-low').value);
+            const eqMid = parseInt(document.getElementById('eq-mid').value);
+            const eqHigh = parseInt(document.getElementById('eq-high').value);
+            const lowGain = parseFloat(document.getElementById('low-gain').value);
+            const midGain = parseFloat(document.getElementById('mid-gain').value);
+            const highGain = parseFloat(document.getElementById('high-gain').value);
+            const roomType = document.getElementById('room-type').value;
+            
+            const optimizationResult = document.getElementById('optimization-result');
+            const optimizationContent = document.getElementById('optimization-content');
+            
+            optimizationResult.style.display = 'block';
+            
+            // Room-specific adjustments
+            let roomAdjustments = [];
+            switch (roomType) {
+                case 'small':
+                    roomAdjustments.push('Small rooms benefit from reduced bass to prevent boomy sound');
+                    roomAdjustments.push('Add slight high frequency boost for clarity');
+                    break;
+                case 'medium':
+                    roomAdjustments.push('Balanced settings work well for medium rooms');
+                    break;
+                case 'large':
+                    roomAdjustments.push('Large rooms may need enhanced bass response');
+                    roomAdjustments.push('Consider slight high frequency roll-off');
+                    break;
+                case 'outdoor':
+                    roomAdjustments.push('Outdoor environments need enhanced mid-range clarity');
+                    roomAdjustments.push('Bass frequencies may need boost due to open space');
+                    break;
+            }
+            
+            // Calculate optimized gains
+            let optimizedLowGain = lowGain;
+            let optimizedMidGain = midGain;
+            let optimizedHighGain = highGain;
+            
+            // Apply room adjustments
+            if (roomType === 'small') {
+                optimizedLowGain = Math.max(-12, lowGain - 2);
+                optimizedHighGain = Math.min(12, highGain + 1);
+            } else if (roomType === 'large') {
+                optimizedLowGain = Math.min(12, lowGain + 2);
+                optimizedHighGain = Math.max(-12, highGain - 1);
+            } else if (roomType === 'outdoor') {
+                optimizedMidGain = Math.min(12, midGain + 1);
+                optimizedLowGain = Math.min(12, lowGain + 1);
+            }
+            
+            // Calculate crossover points
+            let lowCrossover = eqLow;
+            let midCrossover = eqMid;
+            let highCrossover = eqHigh;
+            
+            // Adjust crossover points based on room characteristics
+            if (roomType === 'small') {
+                lowCrossover = Math.min(100, eqLow + 20);
+                midCrossover = Math.min(2000, eqMid - 200);
+            } else if (roomType === 'large') {
+                lowCrossover = Math.max(40, eqLow - 20);
+                midCrossover = Math.min(5000, eqMid + 500);
+            }
+            
+            optimizationContent.textContent = `Parameter Optimization Results:\n\n` +
+                `Room Type: ${roomType.charAt(0).toUpperCase() + roomType.slice(1)}\n\n` +
+                `Original Parameters:\n` +
+                `EQ Low: ${eqLow} Hz, Gain: ${lowGain} dB\n` +
+                `EQ Mid: ${eqMid} Hz, Gain: ${midGain} dB\n` +
+                `EQ High: ${eqHigh} Hz, Gain: ${highGain} dB\n\n` +
+                `Optimized Parameters:\n` +
+                `EQ Low: ${lowCrossover} Hz, Gain: ${optimizedLowGain.toFixed(1)} dB\n` +
+                `EQ Mid: ${midCrossover} Hz, Gain: ${optimizedMidGain.toFixed(1)} dB\n` +
+                `EQ High: ${highCrossover} Hz, Gain: ${optimizedHighGain.toFixed(1)} dB\n\n` +
+                `Room-Specific Adjustments:\n` +
+                roomAdjustments.join('\n') + '\n\n' +
+                `Expected Improvements:\n` +
+                `- Flatter frequency response\n` +
+                `- Better sound imaging\n` +
+                `- Reduced room acoustics issues\n` +
+                `- Enhanced clarity and detail`;
+            
+            showToast('Parameters optimized successfully');
+        });
+        
+        // Save calibration
+        const calibrationData = JSON.parse(localStorage.getItem('audioCalibrations') || '[]');
+        
+        document.getElementById('save-btn').addEventListener('click', () => {
+            const name = document.getElementById('calibration-name').value;
+            const notes = document.getElementById('calibration-notes').value;
+            
+            if (!name.trim()) {
+                showToast('Please enter a calibration name');
+                return;
+            }
+            
+            const calibration = {
+                id: Date.now(),
+                name: name,
+                notes: notes,
+                date: new Date().toISOString(),
+                settings: {
+                    bass: bassLevel.value,
+                    treble: trebleLevel.value,
+                    volume: volumeLevel.value,
+                    mode: soundMode.value
+                }
+            };
+            
+            calibrationData.push(calibration);
+            localStorage.setItem('audioCalibrations', JSON.stringify(calibrationData));
+            
+            document.getElementById('saved-calibrations').style.display = 'block';
+            updateCalibrationsList();
+            
+            showToast('Calibration saved successfully');
+        });
+        
+        function updateCalibrationsList() {
+            const calibrationsList = document.getElementById('calibrations-list');
+            
+            if (calibrationData.length === 0) {
+                calibrationsList.innerHTML = '<p>No saved calibrations yet</p>';
+                return;
+            }
+            
+            calibrationsList.innerHTML = calibrationData.map(cal => {
+                const date = new Date(cal.date);
+                const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
+                
+                return `
+                    <div class="calibration-item">
+                        <div style="display: flex; justify-content: space-between;">
+                            <strong>${cal.name}</strong>
+                            <button class="button-danger" onclick="deleteCalibration(${cal.id})" style="width: auto; padding: 5px 10px; margin: 0;">Delete</button>
+                        </div>
+                        <div class="calibration-date">${formattedDate}</div>
+                        <div class="calibration-values">
+                            Bass: ${cal.settings.bass}%, Treble: ${cal.settings.treble}%, 
+                            Volume: ${cal.settings.volume}%, Mode: ${cal.settings.mode}
+                        </div>
+                        ${cal.notes ? `<div style="margin-top: 5px; font-style: italic;">${cal.notes}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function deleteCalibration(id) {
+            calibrationData.splice(calibrationData.findIndex(c => c.id === id), 1);
+            localStorage.setItem('audioCalibrations', JSON.stringify(calibrationData));
+            updateCalibrationsList();
+            showToast('Calibration deleted');
+        }
+        
+        // Initialize calibrations list
+        updateCalibrationsList();
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Audio Calibration Assistant":"Audio Calibration Assistant","Optimize your audio experience for immersive sound in your phone space":"Optimize your audio experience for immersive sound in your phone space","Audio Analysis":"Audio Analysis","Quality Adjustment":"Quality Adjustment","Problem Diagnosis":"Problem Diagnosis","Parameter Optimization":"Parameter Optimization","Save Calibration":"Save Calibration","Audio File Upload":"Audio File Upload","Click to upload audio file or drag and drop":"Click to upload audio file or drag and drop","Analyze Audio":"Analyze Audio","Analysis Results":"Analysis Results","Current Audio Settings":"Current Audio Settings","Bass Level":"Bass Level","Treble Level":"Treble Level","Volume Level":"Volume Level","Sound Mode":"Sound Mode","Normal":"Normal","B Boost":"B Boost","Vocal":"Vocal","T Boost":"T Boost","Adjust Audio Quality":"Adjust Audio Quality","Optimization Results":"Optimization Results","Audio Problem Description":"Audio Problem Description","Problem Type":"Problem Type","Distortion":"Distortion","Noise":"Noise","Volume Issues":"Volume Issues","Clarity Issues":"Clarity Issues","Balance Issues":"Balance Issues","Describe the Problem":"Describe the Problem","Diagnose Problem":"Diagnose Problem","Diagnosis Results":"Diagnosis Results","Audio Parameters":"Audio Parameters","EQ Low (Hz)":"EQ Low (Hz)","EQ Mid (Hz)":"EQ Mid (Hz)","EQ High (Hz)":"EQ High (Hz)","Low Gain (dB)":"Low Gain (dB)","Mid Gain (dB)":"Mid Gain (dB)","High Gain (dB)":"High Gain (dB)","Room Type":"Room Type","Small Room":"Small Room","Medium Room":"Medium Room","Large Room":"Large Room","Outdoor":"Outdoor","Optimize Parameters":"Optimize Parameters","Calibration Results":"Calibration Results","Calibration Name":"Calibration Name","Notes":"Notes","Saved Calibrations":"Saved Calibrations","Delete":"Delete","Please describe the audio issue you're experiencing...":"Please describe the audio issue you're experiencing...","Enter a name for this calibration":"Enter a name for this calibration","Add any notes about this calibration...":"Add any notes about this calibration...","Please upload an audio file first":"Please upload an audio file first","Enhanced bass for deeper low frequencies":"Enhanced bass for deeper low frequencies","Enhanced treble for clearer vocals":"Enhanced treble for clearer vocals","Enhanced treble for brighter sound":"Enhanced treble for brighter sound","Balanced sound profile":"Balanced sound profile","Increased volume for better audibility":"Increased volume for better audibility","Reduced volume to prevent distortion":"Reduced volume to prevent distortion","Audio quality optimized successfully":"Audio quality optimized successfully","Please describe the audio problem":"Please describe the audio problem","Audio distortion detected - signals are clipping or being over-amplified":"Audio distortion detected - signals are clipping or being over-amplified","Reduce volume levels to prevent clipping":"Reduce volume levels to prevent clipping","Check speaker or headphone connections":"Check speaker or headphone connections","Apply a soft limiter to dynamic range":"Apply a soft limiter to dynamic range","Adjust EQ to reduce harsh frequencies":"Adjust EQ to reduce harsh frequencies","Ensure audio source is not overloaded":"Ensure audio source is not overloaded","Unwanted noise detected - background hum, hiss, or interference present":"Unwanted noise detected - background hum, hiss, or interference present","Check for electromagnetic interference sources":"Check for electromagnetic interference sources","Ensure proper grounding of audio equipment":"Ensure proper grounding of audio equipment","Apply noise reduction filter":"Apply noise reduction filter","Try different audio cables or connections":"Try different audio cables or connections","Use a high-pass filter to remove low-frequency rumble":"Use a high-pass filter to remove low-frequency rumble","Volume inconsistency detected - uneven volume levels across content":"Volume inconsistency detected - uneven volume levels across content","Apply normalization to standardize volume":"Apply normalization to standardize volume","Use dynamic range compression":"Use dynamic range compression","Check source material volume levels":"Check source material volume levels","Enable loudness equalization":"Enable loudness equalization","Adjust volume matching between different tracks":"Adjust volume matching between different tracks","Audio clarity issues detected - muffled or unclear sound":"Audio clarity issues detected - muffled or unclear sound","Enhance mid-range frequencies":"Enhance mid-range frequencies","Apply de-essing to reduce sibilance":"Apply de-essing to reduce sibilance","Use equalization to enhance vocal clarity":"Use equalization to enhance vocal clarity","Adjust microphone positioning or settings":"Adjust microphone positioning or settings","Apply clarity enhancement processing":"Apply clarity enhancement processing","Audio balance issues detected - uneven frequency distribution":"Audio balance issues detected - uneven frequency distribution","Adjust bass and treble levels":"Adjust bass and treble levels","Use stereo enhancement tools":"Use stereo enhancement tools","Check speaker placement and alignment":"Check speaker placement and alignment","Apply stereo widening or narrowing as needed":"Apply stereo widening or narrowing as needed","Use balance controls to adjust left/right levels":"Use balance controls to adjust left/right levels","Problem diagnosed successfully":"Problem diagnosed successfully","Small rooms benefit from reduced bass to prevent boomy sound":"Small rooms benefit from reduced bass to prevent boomy sound","Add slight high frequency boost for clarity":"Add slight high frequency boost for clarity","Balanced settings work well for medium rooms":"Balanced settings work well for medium rooms","Large rooms may need enhanced bass response":"Large rooms may need enhanced bass response","Consider slight high frequency roll-off":"Consider slight high frequency roll-off","Outdoor environments need enhanced mid-range clarity":"Outdoor environments need enhanced mid-range clarity","Bass frequencies may need boost due to open space":"Bass frequencies may need boost due to open space","Parameters optimized successfully":"Parameters optimized successfully","Please enter a calibration name":"Please enter a calibration name","Calibration saved successfully":"Calibration saved successfully","__title__":"Audio Calibration Assistant"},"zh-CN":{"Audio Calibration Assistant":"音频校准助手","Optimize your audio experience for immersive sound in your phone space":"优化您的手机空间沉浸式音效音频体验","Audio Analysis":"音频分析","Quality Adjustment":"质量调整","Problem Diagnosis":"问题诊断","Parameter Optimization":"参数优化","Save Calibration":"保存校准","Audio File Upload":"音频文件上传","Click to upload audio file or drag and drop":"点击上传音频文件或拖放","Analyze Audio":"分析音频","Analysis Results":"分析结果","Current Audio Settings":"当前音频设置","Bass Level":"低音量级","Treble Level":"高音量级","Volume Level":"音量级","Sound Mode":"声音模式","Normal":"正常","B Boost":"B增强","Vocal":"人声","T Boost":"T增强","Adjust Audio Quality":"调整音频质量","Optimization Results":"优化结果","Audio Problem Description":"音频问题描述","Problem Type":"问题类型","Distortion":"失真","Noise":"噪声","Volume Issues":"音量问题","Clarity Issues":"清晰度问题","Balance Issues":"平衡问题","Describe the Problem":"描述问题","Diagnose Problem":"诊断问题","Diagnosis Results":"诊断结果","Audio Parameters":"音频参数","EQ Low (Hz)":"均衡低频（Hz）","EQ Mid (Hz)":"均衡中频（Hz）","EQ High (Hz)":"均衡高频（Hz）","Low Gain (dB)":"低增益（dB）","Mid Gain (dB)":"中增益（dB）","High Gain (dB)":"高增益（dB）","Room Type":"房间类型","Small Room":"小房间","Medium Room":"中等房间","Large Room":"大房间","Outdoor":"户外","Optimize Parameters":"优化参数","Calibration Results":"校准结果","Calibration Name":"校准名称","Notes":"备注","Saved Calibrations":"已保存校准","Delete":"删除","Please describe the audio issue you're experiencing...":"请描述您遇到的音频问题...","Enter a name for this calibration":"为此校准输入一个名称","Add any notes about this calibration...":"添加有关此校准的任何备注...","Please upload an audio file first":"请先上传音频文件","Enhanced bass for deeper low frequencies":"增强低频以获得更深的低音","Enhanced treble for clearer vocals":"增强高频以获得更清晰的人声","Enhanced treble for brighter sound":"增强高频以获得更明亮的声音","Balanced sound profile":"平衡声音配置文件","Increased volume for better audibility":"增加音量以提高可听度","Reduced volume to prevent distortion":"降低音量以防止失真","Audio quality optimized successfully":"音频质量优化成功","Please describe the audio problem":"请描述音频问题","Audio distortion detected - signals are clipping or being over-amplified":"检测到音频失真 - 信号正在削波或过放大","Reduce volume levels to prevent clipping":"降低音量级别以防止削波","Check speaker or headphone connections":"检查扬声器或耳机连接","Apply a soft limiter to dynamic range":"应用软限制以调整动态范围","Adjust EQ to reduce harsh frequencies":"调整均衡器以降低刺耳频率","Ensure audio source is not overloaded":"确保音频源不被过载","Unwanted noise detected - background hum, hiss, or interference present":"检测到不需要的噪音 - 背景嗡嗡声、嘶嘶声或干扰存在","Check for electromagnetic interference sources":"检查电磁干扰源","Ensure proper grounding of audio equipment":"确保音频设备正确接地","Apply noise reduction filter":"应用降噪过滤器","Try different audio cables or connections":"尝试不同的音频线缆或连接","Use a high-pass filter to remove low-frequency rumble":"使用高通滤波器去除低频嗡嗡声","Volume inconsistency detected - uneven volume levels across content":"检测到音量不一致 - 内容中的音量级别不均匀","Apply normalization to standardize volume":"应用归一化以标准化音量","Use dynamic range compression":"使用动态范围压缩","Check source material volume levels":"检查源材料音量级别","Enable loudness equalization":"启用响度均衡","Adjust volume matching between different tracks":"调整不同曲目之间的音量匹配","Audio clarity issues detected - muffled or unclear sound":"检测到音频清晰度问题 - 声音沉闷或不清晰","Enhance mid-range frequencies":"增强中频","Apply de-essing to reduce sibilance":"应用去齿音以减少齿音","Use equalization to enhance vocal clarity":"使用均衡器以增强人声清晰度","Adjust microphone positioning or settings":"调整麦克风位置或设置","Apply clarity enhancement processing":"应用清晰度增强处理","Audio balance issues detected - uneven frequency distribution":"检测到音频平衡问题 - 频率分布不均匀","Adjust bass and treble levels":"调整低音和高音级别","Use stereo enhancement tools":"使用立体声增强工具","Check speaker placement and alignment":"检查扬声器位置和对齐","Apply stereo widening or narrowing as needed":"根据需要应用立体声拓宽或收窄","Use balance controls to adjust left/right levels":"使用平衡控制调整左右级别","Problem diagnosed successfully":"问题诊断成功","Small rooms benefit from reduced bass to prevent boomy sound":"小房间通过降低低音以防止低沉声音而受益","Add slight high frequency boost for clarity":"添加轻微的高频提升以增强清晰度","Balanced settings work well for medium rooms":"平衡设置适用于中等大小的房间","Large rooms may need enhanced bass response":"大型房间可能需要增强的低音响应","Consider slight high frequency roll-off":"考虑轻微的高频衰减","Outdoor environments need enhanced mid-range clarity":"户外环境需要增强的中频清晰度","Bass frequencies may need boost due to open space":"由于开阔空间，低频可能需要提升","Parameters optimized successfully":"参数优化成功","Please enter a calibration name":"请输入校准名称","Calibration saved successfully":"校准保存成功","__title__":"音频校准助手"},"es":{"Audio Calibration Assistant":"Asistente de Calibración de Audio","Optimize your audio experience for immersive sound in your phone space":"Optimiza tu experiencia de audio para sonido inmersivo en tu espacio de teléfono","Audio Analysis":"Análisis de Audio","Quality Adjustment":"Ajuste de Calidad","Problem Diagnosis":"Diagnóstico de Problemas","Parameter Optimization":"Optimización de Parámetros","Save Calibration":"Guardar Calibración","Audio File Upload":"Subir archivo de audio","Click to upload audio file or drag and drop":"Haz clic para subir archivo de audio o arrastrar y soltar","Analyze Audio":"Analizar Audio","Analysis Results":"Resultados del Análisis","Current Audio Settings":"Configuración de Audio Actual","Bass Level":"Nivel de Bajo","Treble Level":"Nivel de Agudos","Volume Level":"Nivel de Volumen","Sound Mode":"Modo de Sonido","B Boost":"Aumento B","Vocal":"Voces","T Boost":"Aumento T","Adjust Audio Quality":"Ajustar Calidad de Audio","Optimization Results":"Resultados de la Optimización","Audio Problem Description":"Descripción del Problema de Audio","Problem Type":"Tipo de Problema","Distortion":"Distorsión","Noise":"Ruido","Volume Issues":"Problemas de Volumen","Clarity Issues":"Problemas de Claridad","Balance Issues":"Problemas de Balance","Describe the Problem":"Describir el Problema","Diagnose Problem":"Diagnóstico de Problema","Diagnosis Results":"Resultados del Diagnóstico","Audio Parameters":"Parámetros de Audio","EQ Low (Hz)":"EQ Bajo (Hz)","EQ Mid (Hz)":"EQ Medio (Hz)","EQ High (Hz)":"EQ Alto (Hz)","Low Gain (dB)":"Ganancia Baja (dB)","Mid Gain (dB)":"Ganancia Media (dB)","High Gain (dB)":"Ganancia Alta (dB)","Room Type":"Tipo de Habitación","Small Room":"Habitación Pequeña","Medium Room":"Habitación Media","Large Room":"Habitación Grande","Outdoor":"Aire Libre","Optimize Parameters":"Optimizar Parámetros","Calibration Results":"Resultados de la Calibración","Calibration Name":"Nombre de la Calibración","Notes":"Notas","Saved Calibrations":"Calibraciones Guardadas","Delete":"Eliminar","Please describe the audio issue you're experiencing...":"Por favor, describe el problema de audio que estás experimentando...","Enter a name for this calibration":"Introduce un nombre para esta calibración","Add any notes about this calibration...":"Añade cualquier nota sobre esta calibración...","Please upload an audio file first":"Por favor, sube un archivo de audio primero","Enhanced bass for deeper low frequencies":"Bajo mejorado para frecuencias bajas más profundas","Enhanced treble for clearer vocals":"Agudos mejorados para voces más claras","Enhanced treble for brighter sound":"Agudos mejorados para un sonido más brillante","Balanced sound profile":"Perfil de sonido equilibrado","Increased volume for better audibility":"Volumen aumentado para una audibilidad mejor","Reduced volume to prevent distortion":"Volumen reducido para evitar distorsión","Audio quality optimized successfully":"Calidad de audio optimizada con éxito","Please describe the audio problem":"Por favor, describa el problema de audio","Audio distortion detected - signals are clipping or being over-amplified":"Detección de distorsión de audio - las señales están cortando o están siendo sobreamplificadas","Reduce volume levels to prevent clipping":"Reduzca los niveles de volumen para evitar cortes","Check speaker or headphone connections":"Verifique las conexiones del altavoz o auriculares","Apply a soft limiter to dynamic range":"Aplicar un limitador suave al rango dinámico","Adjust EQ to reduce harsh frequencies":"Ajuste el EQ para reducir las frecuencias agudas","Ensure audio source is not overloaded":"Asegúrese de que la fuente de audio no esté sobrecargada","Unwanted noise detected - background hum, hiss, or interference present":"Detección de ruido no deseado - zumbido de fondo, siseo o interferencia presente","Check for electromagnetic interference sources":"Verifique las fuentes de interferencia electromagnética","Ensure proper grounding of audio equipment":"Asegúrese de que el equipo de audio esté bien aterrizado","Apply noise reduction filter":"Aplicar un filtro de reducción de ruido","Try different audio cables or connections":"Pruebe diferentes cables o conexiones de audio","Use a high-pass filter to remove low-frequency rumble":"Use un filtro de paso alto para eliminar el ruido de baja frecuencia","Volume inconsistency detected - uneven volume levels across content":"Detección de inconsistencia de volumen - niveles de volumen desiguales a lo largo del contenido","Apply normalization to standardize volume":"Aplicar normalización para estandarizar el volumen","Use dynamic range compression":"Use la compresión de rango dinámico","Check source material volume levels":"Verifique los niveles de volumen del material de origen","Enable loudness equalization":"Habilitar la ecualización de volumen","Adjust volume matching between different tracks":"Ajuste la coincidencia de volumen entre diferentes pistas","Audio clarity issues detected - muffled or unclear sound":"Detección de problemas de claridad de audio - sonido opaco o no claro","Enhance mid-range frequencies":"Mejorar las frecuencias medias","Apply de-essing to reduce sibilance":"Aplicar desensibilización para reducir el sibilante","Use equalization to enhance vocal clarity":"Use la ecualización para mejorar la claridad vocal","Adjust microphone positioning or settings":"Ajuste la posición o configuración del micrófono","Apply clarity enhancement processing":"Aplicar procesamiento de mejora de claridad","Audio balance issues detected - uneven frequency distribution":"Detección de problemas de equilibrio de audio - distribución de frecuencias desigual","Adjust bass and treble levels":"Ajuste los niveles de graves y agudos","Use stereo enhancement tools":"Use herramientas de mejora estéreo","Check speaker placement and alignment":"Verifique la colocación y alineación del altavoz","Apply stereo widening or narrowing as needed":"Aplicar ensanchamiento o estrechamiento estéreo según sea necesario","Use balance controls to adjust left/right levels":"Use controles de equilibrio para ajustar los niveles izquierdo/derecho","Problem diagnosed successfully":"Problema diagnosticado con éxito","Small rooms benefit from reduced bass to prevent boomy sound":"Los espacios pequeños se benefician de una reducción de los graves para evitar un sonido resonante","Add slight high frequency boost for clarity":"Añadir un ligero aumento de alta frecuencia para la claridad","Balanced settings work well for medium rooms":"Los ajustes equilibrados funcionan bien para espacios medianos","Large rooms may need enhanced bass response":"Los espacios grandes pueden necesitar una respuesta de graves mejorada","Consider slight high frequency roll-off":"Considere un ligero descenso de alta frecuencia","Outdoor environments need enhanced mid-range clarity":"Los entornos al aire libre necesitan una claridad de frecuencia media mejorada","Bass frequencies may need boost due to open space":"Las frecuencias de graves pueden necesitar un aumento debido al espacio abierto","Parameters optimized successfully":"Parámetros optimizados con éxito","Please enter a calibration name":"Por favor, introduzca un nombre de calibración","Calibration saved successfully":"Calibración guardada con éxito","__title__":"Asistente de Calibración de Audio"},"ja":{"Audio Calibration Assistant":"オーディオカリブレーションアシスタント","Optimize your audio experience for immersive sound in your phone space":"電話空間での没入感のあるオーディオ体験を最適化します","Audio Analysis":"オーディオ分析","Quality Adjustment":"品質調整","Problem Diagnosis":"問題診断","Parameter Optimization":"パラメータ最適化","Save Calibration":"カリブレーションを保存","Audio File Upload":"オーディオファイルのアップロード","Click to upload audio file or drag and drop":"オーディオファイルをアップロードするためにクリックまたはドラッグ＆ドロップ","Analyze Audio":"オーディオ分析","Analysis Results":"分析結果","Current Audio Settings":"現在のオーディオ設定","Bass Level":"ベースレベル","Treble Level":"テイブルベル","Volume Level":"ボリュームレベル","Sound Mode":"サウンドモード","Normal":"通常","B Boost":"Bボースト","Vocal":"ボーカル","T Boost":"Tボースト","Adjust Audio Quality":"オーディオ品質の調整","Optimization Results":"最適化結果","Audio Problem Description":"オーディオ問題の説明","Problem Type":"問題タイプ","Distortion":"歪み","Noise":"ノイズ","Volume Issues":"ボリューム問題","Clarity Issues":"明瞭度問題","Balance Issues":"バランス問題","Describe the Problem":"問題を説明してください","Diagnose Problem":"問題を診断する","Diagnosis Results":"診断結果","Audio Parameters":"オーディオパラメータ","EQ Low (Hz)":"EQ低（Hz）","EQ Mid (Hz)":"EQ中（Hz）","EQ High (Hz)":"EQ高（Hz）","Low Gain (dB)":"低ゲイン（dB）","Mid Gain (dB)":"中ゲイン（dB）","High Gain (dB)":"高ゲイン（dB）","Room Type":"部屋のタイプ","Small Room":"小部屋","Medium Room":"中部屋","Large Room":"大部屋","Outdoor":"屋外","Optimize Parameters":"パラメータ最適化","Calibration Results":"カリブレーション結果","Calibration Name":"カリブレーション名","Notes":"メモ","Saved Calibrations":"保存されたカリブレーション","Delete":"削除","Please describe the audio issue you're experiencing...":"現在お困りのオーディオ問題を説明してください...","Enter a name for this calibration":"このカリブレーションに名前を入力してください","Add any notes about this calibration...":"このカリブレーションに関するメモを追加してください...","Please upload an audio file first":"まずオーディオファイルをアップロードしてください","Enhanced bass for deeper low frequencies":"低音の深さを増したエンハンスベース","Enhanced treble for clearer vocals":"ボーカルを明瞭にするエンハンステイブル","Enhanced treble for brighter sound":"明るいサウンドのためのエンハンステイブル","Balanced sound profile":"バランスの取れたサウンドプロファイル","Increased volume for better audibility":"より明瞭な音を得るためにボリュームを増加","Reduced volume to prevent distortion":"歪みを防ぐためにボリュームを減少","Audio quality optimized successfully":"オーディオ品質が最適化されました","Please describe the audio problem":"オーディオ問題を説明してください","Audio distortion detected - signals are clipping or being over-amplified":"オーディオ歪みが検出されました - シグナルがクリッピングまたは過度に増幅されています","Reduce volume levels to prevent clipping":"クリッピングを防ぐためにボリュームレベルを低下させます","Check speaker or headphone connections":"スピーカーやヘッドフォンの接続を確認してください","Apply a soft limiter to dynamic range":"動態範囲にソフトリミッターを適用します","Adjust EQ to reduce harsh frequencies":"ハードな周波数を減少させるためにEQを調整します","Ensure audio source is not overloaded":"オーディオソースがオーバーロードされていないことを確認します","Unwanted noise detected - background hum, hiss, or interference present":"不快なノイズが検出されました - 背景のヒューム、ヒス、または干渉が存在しています","Check for electromagnetic interference sources":"電磁干渉の原因を確認してください","Ensure proper grounding of audio equipment":"オーディオ機器の適切な接地を確認します","Apply noise reduction filter":"ノイズ減少フィルタを適用します","Try different audio cables or connections":"異なるオーディオケーブルや接続を試してみてください","Use a high-pass filter to remove low-frequency rumble":"低周波のノイズを取り除くためにハイパスフィルタを使用します","Volume inconsistency detected - uneven volume levels across content":"ボリュームの一貫性が検出されました - コンテンツ全体でボリュームレベルが不均一です","Apply normalization to standardize volume":"ノーマライズを適用してボリュームを標準化します","Use dynamic range compression":"動態範囲圧縮を使用します","Check source material volume levels":"ソースマテリアルのボリュームレベルを確認します","Enable loudness equalization":"音量均等化を有効にします","Adjust volume matching between different tracks":"異なるトラック間のボリューム一致を調整します","Audio clarity issues detected - muffled or unclear sound":"オーディオの明瞭さ問題が検出されました - 濃いまたは不明瞭な音","Enhance mid-range frequencies":"中周波を強化します","Apply de-essing to reduce sibilance":"サイランスを減少させるためにデイッシングを適用します","Use equalization to enhance vocal clarity":"ボーカルの明瞭さを向上させるために均等化を使用します","Adjust microphone positioning or settings":"マイクロフォンの位置や設定を調整します","Apply clarity enhancement processing":"明瞭性強化処理を適用します","Audio balance issues detected - uneven frequency distribution":"オーディオバランス問題が検出されました - 周波数分布が不均一です","Adjust bass and treble levels":"ベースとテイブルベルのレベルを調整します","Use stereo enhancement tools":"ステレオ強化ツールを使用します","Check speaker placement and alignment":"スピーカーの配置とアライメントを確認します","Apply stereo widening or narrowing as needed":"必要に応じてステレオ拡張または縮小を適用します","Use balance controls to adjust left/right levels":"バランスコントロールを使用して左/右レベルを調整します","Problem diagnosed successfully":"問題が成功して診断されました","Small rooms benefit from reduced bass to prevent boomy sound":"小さな部屋では低音を低下させることでボーケーションを防ぐために利点があります","Add slight high frequency boost for clarity":"明瞭さを向上させるために少し高周波を増幅します","Balanced settings work well for medium rooms":"バランスの取れた設定は中規模の部屋に適しています","Large rooms may need enhanced bass response":"大きな部屋では低音の反応を強化する必要があるかもしれません","Consider slight high frequency roll-off":"少し高周波のロールオフを考慮します","Outdoor environments need enhanced mid-range clarity":"屋外環境では中周波の明瞭さを強化する必要があります","Bass frequencies may need boost due to open space":"オープンスペースのために低周波が増幅する必要があるかもしれません","Parameters optimized successfully":"パラメータが成功して最適化されました","Please enter a calibration name":"カリブレーション名を入力してください","Calibration saved successfully":"カリブレーションが成功して保存されました","__title__":"オーディオカリブレーションアシスタント"},"ko":{"Audio Calibration Assistant":"오디오 캘리브레이션 어시스턴트","Optimize your audio experience for immersive sound in your phone space":"폰 공간에서의 몰입형 사운드를 위한 오디오 경험 최적화","Audio Analysis":"오디오 분석","Quality Adjustment":"품질 조정","Problem Diagnosis":"문제 진단","Parameter Optimization":"파라미터 최적화","Save Calibration":"캘리브레이션 저장","Audio File Upload":"오디오 파일 업로드","Click to upload audio file or drag and drop":"오디오 파일 업로드하려면 클릭하거나 드래그 앤 드롭","Analyze Audio":"오디오 분석","Analysis Results":"분석 결과","Current Audio Settings":"현재 오디오 설정","Bass Level":"베이스 레벨","Treble Level":"트레블 레벨","Volume Level":"볼륨 레벨","Sound Mode":"사운드 모드","Normal":"일반","B Boost":"B 증폭","Vocal":"보컬","T Boost":"T 증폭","Adjust Audio Quality":"오디오 품질 조정","Optimization Results":" 최적화 결과","Audio Problem Description":"오디오 문제 설명","Problem Type":"문제 유형","Distortion":"변조","Noise":"노이즈","Volume Issues":"볼륨 문제","Clarity Issues":" 명확성 문제","Balance Issues":" 균형 문제","Describe the Problem":"문제 설명","Diagnose Problem":"문제 진단","Diagnosis Results":"진단 결과","Audio Parameters":"오디오 파라미터","EQ Low (Hz)":"EQ 저주파 (Hz)","EQ Mid (Hz)":"EQ 중주파 (Hz)","EQ High (Hz)":"EQ 고주파 (Hz)","Low Gain (dB)":"저주파 증폭 (dB)","Mid Gain (dB)":"중주파 증폭 (dB)","High Gain (dB)":"고주파 증폭 (dB)","Room Type":"룸 타입","Small Room":"작은 방","Medium Room":"중간 크기 방","Large Room":"대형 방","Outdoor":"아웃도어","Optimize Parameters":"파라미터 최적화","Calibration Results":"캘리브레이션 결과","Calibration Name":"캘리브레이션 이름","Notes":"메모","Saved Calibrations":"저장된 캘리브레이션","Delete":"삭제","Please describe the audio issue you're experiencing...":"당신이 경험하는 오디오 문제를 설명해 주세요...","Enter a name for this calibration":"이 캘리브레이션의 이름을 입력하세요","Add any notes about this calibration...":"이 캘리브레이션에 대한 메모를 추가하세요...","Please upload an audio file first":"먼저 오디오 파일을 업로드해 주세요","Enhanced bass for deeper low frequencies":"더 깊은 저주파를 위한 강화된 베이스","Enhanced treble for clearer vocals":"더 명확한 보컬을 위한 강화된 트레블","Enhanced treble for brighter sound":"더 밝은 사운드를 위한 강화된 트레블","Balanced sound profile":"균형 잡힌 사운드 프로필","Increased volume for better audibility":" 더 나은 이해를 위해 증폭된 볼륨","Reduced volume to prevent distortion":"변조를 방지하기 위해 볼륨 감소","Audio quality optimized successfully":"오디오 품질 최적화 성공","Please describe the audio problem":"오디오 문제를 설명해 주세요","Audio distortion detected - signals are clipping or being over-amplified":"오디오 변조가 감지되었습니다 - 신호가 클리핑되거나 과대增幅되고 있습니다","Reduce volume levels to prevent clipping":"클리핑을 방지하기 위해 볼륨 수준을 줄이세요","Check speaker or headphone connections":"스피커나 헤드폰 연결을 확인하세요","Apply a soft limiter to dynamic range":"드라마틱 레인지에 소프트 리미터를 적용하세요","Adjust EQ to reduce harsh frequencies":"EQ을 조정하여 강한 주파수를 줄이세요","Ensure audio source is not overloaded":"오디오 소스가 과부하되지 않도록 확인하세요","Unwanted noise detected - background hum, hiss, or interference present":"실허적 소음이 감지되었습니다 - 배경 소리, 고약이나 간섭이 있습니다","Check for electromagnetic interference sources":"전자기적 간섭 원인을 확인하세요","Ensure proper grounding of audio equipment":"오디오 장비의 적절한 지면 연결을 확인하세요","Apply noise reduction filter":"노이즈 감소 필터를 적용하세요","Try different audio cables or connections":"다른 오디오 케이블이나 연결을 시도하세요","Use a high-pass filter to remove low-frequency rumble":"저주파수 뒤죽음을 제거하기 위해 고주파 필터를 사용하세요","Volume inconsistency detected - uneven volume levels across content":"볼륨 불일치가 감지되었습니다 - 콘텐츠 전체에 걸쳐 불균형한 볼륨 수준","Apply normalization to standardize volume":"노멀라이제이션을 적용하여 볼륨을 표준화하세요","Use dynamic range compression":"드라마틱 레인지 컴프레션을 사용하세요","Check source material volume levels":"소스 매터리얼 볼륨 수준을 확인하세요","Enable loudness equalization":"락노스 이퀄라이제이션을 활성화하세요","Adjust volume matching between different tracks":"다른 트랙 간의 볼륨 일치를 조정하세요","Audio clarity issues detected - muffled or unclear sound":"오디오 명확성 문제가 감지되었습니다 - 가려운거나 불명확한 소리","Enhance mid-range frequencies":"미들 레인지 주파수를 강화하세요","Apply de-essing to reduce sibilance":"디에스링을 적용하여 시비언스를 줄이세요","Use equalization to enhance vocal clarity":"이퀄라이제이션을 사용하여 보컬 명확성을 강화하세요","Adjust microphone positioning or settings":"麦克风的 위치나 설정을 조정하세요","Apply clarity enhancement processing":"명확성 강화 처리를 적용하세요","Audio balance issues detected - uneven frequency distribution":"오디오 밸런스 문제가 감지되었습니다 - 주파수 분포 불균형","Adjust bass and treble levels":"베이스와 트레블 레벨을 조정하세요","Use stereo enhancement tools":"스테레오 강화 도구를 사용하세요","Check speaker placement and alignment":"스피커 배치와 정렬을 확인하세요","Apply stereo widening or narrowing as needed":"필요에 따라 스테레오 넓이 확장이나 좁히기를 적용하세요","Use balance controls to adjust left/right levels":"밸런스 제어를 사용하여 왼쪽/오른쪽 레벨을 조정하세요","Problem diagnosed successfully":"문제 진단 성공","Small rooms benefit from reduced bass to prevent boomy sound":"작은 방은 뒤죽음을 방지하기 위해 베이스를 줄이면 유익합니다","Add slight high frequency boost for clarity":"명확성을 위해 약간의 고주파 부양을 추가하세요","Balanced settings work well for medium rooms":"균형 잡힌 설정은 중간 크기의 방에 잘 맞습니다","Large rooms may need enhanced bass response":"대형 방은 강화된 베이스 응답이 필요할 수 있습니다","Consider slight high frequency roll-off":"약간의 고주파 롤오프를 고려하세요","Outdoor environments need enhanced mid-range clarity":"아웃도어 환경은 중간 주파수 명확성을 강화할 필요가 있습니다","Bass frequencies may need boost due to open space":"공간이 개방적이어서 베이스 주파수는 부양이 필요할 수 있습니다","Parameters optimized successfully":"파라미터 최적화 성공","Please enter a calibration name":"캘리브레이션 이름을 입력하세요","Calibration saved successfully":"캘리브레이션 저장 성공","__title__":"오디오 캘리브레이션 어시스턴트"},"fr":{"Audio Calibration Assistant":"Assistant de Calibration Audio","Optimize your audio experience for immersive sound in your phone space":"Optimisez votre expérience audio pour un son immersif dans votre espace de téléphone","Audio Analysis":"Analyse Audio","Quality Adjustment":"Ajustement de Qualité","Problem Diagnosis":"Diagnostic de Problèmes","Parameter Optimization":"Optimisation des Paramètres","Save Calibration":"Enregistrer la Calibration","Audio File Upload":"Téléversement de Fichier Audio","Click to upload audio file or drag and drop":"Cliquez pour téléverser un fichier audio ou glissez-déposez","Analyze Audio":"Analyser l'Audio","Analysis Results":"Résultats de l'Analyse","Current Audio Settings":"Paramètres Audio Actuels","Bass Level":"Niveau de Basses","Treble Level":"Niveau d'Aigus","Volume Level":"Niveau de Volume","Sound Mode":"Mode Sonore","B Boost":"Boost B","T Boost":"Boost T","Adjust Audio Quality":"Ajuster la Qualité Audio","Optimization Results":"Résultats de l'Optimisation","Audio Problem Description":"Description du Problème Audio","Problem Type":"Type de Problème","Distortion":"Distorion","Noise":"Bruit","Volume Issues":"Problèmes de Volume","Clarity Issues":"Problèmes de Clarté","Balance Issues":"Problèmes d'Équilibre","Describe the Problem":"Décrivez le Problème","Diagnose Problem":"Diagnostiquer le Problème","Diagnosis Results":"Résultats du Diagnostique","Audio Parameters":"Paramètres Audio","EQ Low (Hz)":"EQ Bas (Hz)","EQ Mid (Hz)":"EQ Milieu (Hz)","EQ High (Hz)":"EQ Haut (Hz)","Low Gain (dB)":"Gain Bas (dB)","Mid Gain (dB)":"Gain Milieu (dB)","High Gain (dB)":"Gain Haut (dB)","Room Type":"Type de Chambre","Small Room":"Petite Chambre","Medium Room":"Chambre de Milieu","Large Room":"Grande Chambre","Outdoor":"Extérieur","Optimize Parameters":"Optimiser les Paramètres","Calibration Results":"Résultats de Calibration","Calibration Name":"Nom de Calibration","Saved Calibrations":"Calibrations Enregistrées","Delete":"Supprimer","Please describe the audio issue you're experiencing...":"Veuillez décrire le problème audio que vous rencontrez...","Enter a name for this calibration":"Entrez un nom pour cette calibration","Add any notes about this calibration...":"Ajoutez toute note concernant cette calibration...","Please upload an audio file first":"Veuillez téléverser un fichier audio d'abord","Enhanced bass for deeper low frequencies":"Basses améliorées pour des fréquences basses plus profondes","Enhanced treble for clearer vocals":"Aigus améliorés pour des voix plus claires","Enhanced treble for brighter sound":"Aigus améliorés pour un son plus clair","Balanced sound profile":"Profil sonore équilibré","Increased volume for better audibility":"Volume augmenté pour une meilleure audibilité","Reduced volume to prevent distortion":"Réduction du volume pour éviter la distorsion","Audio quality optimized successfully":"La qualité audio a été optimisée avec succès","Please describe the audio problem":"Veuillez décrire le problème audio","Audio distortion detected - signals are clipping or being over-amplified":"Détection de distorsion audio - les signaux sont coupés ou surexpandus","Reduce volume levels to prevent clipping":"Réduire les niveaux de volume pour éviter les coupures","Check speaker or headphone connections":"Vérifiez les connexions du haut-parleur ou des écouteurs","Apply a soft limiter to dynamic range":"Appliquer un limiteur doux à la plage dynamique","Adjust EQ to reduce harsh frequencies":"Ajuster l'égalisation pour réduire les fréquences aigües","Ensure audio source is not overloaded":"Assurez-vous que la source audio n'est pas surchargée","Unwanted noise detected - background hum, hiss, or interference present":"Détection de bruit indésirable - bourdonnement de fond, sifflement ou interférence présente","Check for electromagnetic interference sources":"Vérifiez les sources d'interférence électromagnétique","Ensure proper grounding of audio equipment":"Assurez-vous que l'équipement audio est bien接地","Apply noise reduction filter":"Appliquer un filtre de réduction du bruit","Try different audio cables or connections":"Essayer différents câbles ou connexions audio","Use a high-pass filter to remove low-frequency rumble":"Utiliser un filtre passe-haut pour supprimer les bruits de basse fréquence","Volume inconsistency detected - uneven volume levels across content":"Détection d'inconsistance de volume - niveaux de volume inégaux au sein du contenu","Apply normalization to standardize volume":"Appliquer la normalisation pour standardiser le volume","Use dynamic range compression":"Utiliser la compression de plage dynamique","Check source material volume levels":"Vérifiez les niveaux de volume du matériel source","Enable loudness equalization":"Activer l'égalisation du volume","Adjust volume matching between different tracks":"Ajuster la correspondance du volume entre différentes pistes","Audio clarity issues detected - muffled or unclear sound":"Détection de problèmes de clarté audio - son étouffé ou unclear","Enhance mid-range frequencies":"Amplifier les fréquences moyennes","Apply de-essing to reduce sibilance":"Appliquer le déssage pour réduire les sibilances","Use equalization to enhance vocal clarity":"Utiliser l'égalisation pour améliorer la clarté vocale","Adjust microphone positioning or settings":"Ajuster la position ou les réglages du microphone","Apply clarity enhancement processing":"Appliquer un traitement d'amélioration de la clarté","Audio balance issues detected - uneven frequency distribution":"Détection de problèmes d'équilibre audio - distribution inégale des fréquences","Adjust bass and treble levels":"Ajuster les niveaux de graves et aigus","Use stereo enhancement tools":"Utiliser des outils d'amélioration stéréo","Check speaker placement and alignment":"Vérifiez l'placement et l'alignement des haut-parleurs","Apply stereo widening or narrowing as needed":"Appliquer un élargissement ou un rétrécissement stéréo selon les besoins","Use balance controls to adjust left/right levels":"Utiliser les commandes de balance pour ajuster les niveaux gauche/droite","Problem diagnosed successfully":"Problème diagnostiqué avec succès","Small rooms benefit from reduced bass to prevent boomy sound":"Les petites pièces bénéficient de la réduction des graves pour éviter un son boomy","Add slight high frequency boost for clarity":"Ajouter légèrement un renforcement des hautes fréquences pour la clarté","Balanced settings work well for medium rooms":"Les réglages équilibrés fonctionnent bien pour les pièces de taille moyenne","Large rooms may need enhanced bass response":"Les grandes pièces peuvent nécessiter une réponse de graves améliorée","Consider slight high frequency roll-off":"Considérez un léger affaiblissement des hautes fréquences","Outdoor environments need enhanced mid-range clarity":"Les environnements extérieurs nécessitent une clarté de gamme moyenne améliorée","Bass frequencies may need boost due to open space":"Les fréquences de basse peuvent nécessiter un renforcement en raison de l'espace ouvert","Parameters optimized successfully":"Paramètres optimisés avec succès","Please enter a calibration name":"Veuillez saisir un nom de calibrage","Calibration saved successfully":"Calibration enregistrée avec succès","__title__":"Assistant de Calibration Audio"},"de":{"Optimize your audio experience for immersive sound in your phone space":"Optimieren Sie Ihr Audioerlebnis für immersives Klang in Ihrem Telefonraum","Audio Analysis":"Audioanalyse","Quality Adjustment":"Qualitätsanpassung","Problem Diagnosis":"Problemdiagnose","Parameter Optimization":"Parameteroptimierung","Save Calibration":"Kalibrierung speichern","Audio File Upload":"Audio-Datei hochladen","Click to upload audio file or drag and drop":"Klicken Sie zum Hochladen einer Audio-Datei oder ziehen und lassen Sie sie herein","Analyze Audio":"Audio analysieren","Analysis Results":"Analysergebnisse","Current Audio Settings":"Aktueller Audioeinstellungen","Bass Level":"Basspegel","Treble Level":"Hochtonpegel","Volume Level":"Lautstärkepegel","Sound Mode":"Soundmodus","B Boost":"B-Boost","Vocal":"Vokal","T Boost":"T-Boost","Adjust Audio Quality":"Audioqualität anpassen","Optimization Results":"Optimierungsergebnisse","Audio Problem Description":"Beschreibung des Audioproblems","Problem Type":"Problemtyp","Distortion":"Verzerrung","Noise":"Rauschen","Volume Issues":"Lautstärkeprobleme","Clarity Issues":"Klarheitsprobleme","Balance Issues":"Ausgewogenheitsprobleme","Describe the Problem":"Beschreiben Sie das Problem","Diagnose Problem":"Problem diagnostizieren","Diagnosis Results":"Diagnoseergebnisse","Audio Parameters":"Audio-Parameter","EQ Low (Hz)":"EQ Niedrig (Hz)","EQ Mid (Hz)":"EQ Mittel (Hz)","EQ High (Hz)":"EQ Hoch (Hz)","Low Gain (dB)":"Niedriger Gain (dB)","Mid Gain (dB)":"Mittlerer Gain (dB)","High Gain (dB)":"Höherer Gain (dB)","Room Type":"Raumentyp","Small Room":"Kleiner Raum","Medium Room":"Mittlerer Raum","Large Room":"Großer Raum","Outdoor":"Im Freien","Optimize Parameters":"Parameter optimieren","Calibration Results":"Kalibrierungsergebnisse","Calibration Name":"Kalibrierungsname","Notes":"Notizen","Saved Calibrations":"Gespeicherte Kalibrierungen","Delete":"Löschen","Please describe the audio issue you're experiencing...":"Bitte beschreiben Sie das Audio-Problem, das Sie erleben...","Enter a name for this calibration":"Geben Sie einen Namen für diese Kalibrierung ein","Add any notes about this calibration...":"Fügen Sie alle Notizen zu dieser Kalibrierung hinzu...","Please upload an audio file first":"Bitte laden Sie zunächst eine Audio-Datei hoch","Enhanced bass for deeper low frequencies":"Verbessertes Bass für tiefere Tiefen","Enhanced treble for clearer vocals":"Verbesserte Höhen für klarere Vokale","Enhanced treble for brighter sound":"Verbesserte Höhen für helleren Klang","Balanced sound profile":"Ausgewogenes Klangprofil","Increased volume for better audibility":"Erhöhte Lautstärke für bessere Hörbarkeit","Reduced volume to prevent distortion":"Verringerung der Lautstärke, um Verzerrungen zu verhindern","Audio quality optimized successfully":"Audioqualität erfolgreich optimiert","Please describe the audio problem":"Bitte beschreiben Sie das Audio-Problem","Audio distortion detected - signals are clipping or being over-amplified":"Audiodistorsion erkannt - Signale werden abgehackt oder überverstärkt","Reduce volume levels to prevent clipping":"Volumenstufen reduzieren, um das Abhacken zu verhindern","Check speaker or headphone connections":"Überprüfen Sie die Lautsprecher- oder Kopfhörerverbindungen","Apply a soft limiter to dynamic range":"Einen weichen Limiter auf den Dynamikbereich anwenden","Adjust EQ to reduce harsh frequencies":"EQ anpassen, um harte Frequenzen zu reduzieren","Ensure audio source is not overloaded":"Stellen Sie sicher, dass die Audiosource nicht überlastet ist","Unwanted noise detected - background hum, hiss, or interference present":"Ungewollter Lärm erkannt - Hintergrundbrummen, Pfeifen oder Störungen vorhanden","Check for electromagnetic interference sources":"Überprüfen Sie nach Quellen elektromagnetischer Störungen","Ensure proper grounding of audio equipment":"Stellen Sie sicher, dass die Audioausrüstung ordnungsgemäß geerdet ist","Apply noise reduction filter":"Rauschreduktionsfilter anwenden","Try different audio cables or connections":"Versuchen Sie verschiedene Audiokabel oder Verbindungen","Use a high-pass filter to remove low-frequency rumble":"Verwenden Sie einen Hochpassfilter, um tiefen Frequenzen zu entfernen","Volume inconsistency detected - uneven volume levels across content":"Volumeninkonsistenz erkannt - ungleiche Volumenstufen über den Inhalt","Apply normalization to standardize volume":"Normalisierung anwenden, um das Volumen zu standardisieren","Use dynamic range compression":"Dynamikbereichskompression verwenden","Check source material volume levels":"Überprüfen Sie die Volumenstufen des Quellmaterials","Enable loudness equalization":"Lautstärkeequalisierung aktivieren","Adjust volume matching between different tracks":"Volumenabstimmung zwischen verschiedenen Spuren anpassen","Audio clarity issues detected - muffled or unclear sound":"Audiklarheitsprobleme erkannt - vermurkst oder unklarer Klang","Enhance mid-range frequencies":"Mittelfrequenzen verstärken","Apply de-essing to reduce sibilance":"De-essing anwenden, um das Zischen zu reduzieren","Use equalization to enhance vocal clarity":"Verwenden Sie Equalisierung, um die Klarheit der Stimme zu verbessern","Adjust microphone positioning or settings":"Mikrofonposition oder Einstellungen anpassen","Apply clarity enhancement processing":"Klarheitserhöhungsverarbeitung anwenden","Audio balance issues detected - uneven frequency distribution":"Audobalanceprobleme erkannt - ungleiche Frequenzverteilung","Adjust bass and treble levels":"Bass- und Höhenpegel anpassen","Use stereo enhancement tools":"Stereo-Verstärkungswerkzeuge verwenden","Check speaker placement and alignment":"Lautsprecherplatzierung und Ausrichtung überprüfen","Apply stereo widening or narrowing as needed":"Stereo-Verbreiterung oder -Verengung nach Bedarf anwenden","Use balance controls to adjust left/right levels":"Verwenden Sie Balancekontrollen, um Links/Rechtspegel anzupassen","Problem diagnosed successfully":"Problem erfolgreich diagnostiziert","Small rooms benefit from reduced bass to prevent boomy sound":"Kleine Räume profitieren von reduziertem Bass, um einen dumpfen Klang zu verhindern","Add slight high frequency boost for clarity":"Leichtes Hochtonplus für Klarheit hinzufügen","Balanced settings work well for medium rooms":"Gleichgewichtseinstellungen funktionieren gut für mittlere Räume","Large rooms may need enhanced bass response":"Große Räume mögen möglicherweise eine verstärkte Basswiedergabe benötigen","Consider slight high frequency roll-off":"Berücksichtigen Sie einen leichten Hochtonabfall","Outdoor environments need enhanced mid-range clarity":"Außenumgebungen benötigen eine verbesserte Mittelfrequenzklarheit","Bass frequencies may need boost due to open space":"Bassfrequenzen mögen aufgrund von offener Fläche verstärkt werden","Parameters optimized successfully":"Parameter erfolgreich optimiert","Please enter a calibration name":"Bitte geben Sie einen Kalibrierungsnamen ein","Calibration saved successfully":"Kalibrierung erfolgreich gespeichert","__title__":"Audio Calibration Assistant"},"ru":{"Audio Calibration Assistant":"Ассистент аудиокалибровки","Optimize your audio experience for immersive sound in your phone space":"Оптимизация вашего аудиопривода для погружного звука в вашем телефонном пространстве","Audio Analysis":"Анализ аудио","Quality Adjustment":"Регулировка качества","Problem Diagnosis":"Диагностика проблемы","Parameter Optimization":"Оптимизация параметров","Save Calibration":"Сохранить калибровку","Audio File Upload":"Загрузка аудиофайла","Click to upload audio file or drag and drop":"Нажмите, чтобы загрузить аудиофайл или перетащите его","Analyze Audio":"Анализировать аудио","Analysis Results":"Результаты анализа","Current Audio Settings":"Текущие аудиопараметры","Bass Level":"Уровень баса","Treble Level":"Уровень верхних частот","Volume Level":"Уровень громкости","Sound Mode":"Режим звука","Normal":"Нормальный","B Boost":"Усиление баса","Vocal":"Голосовой","T Boost":"Усиление верхних частот","Adjust Audio Quality":"Регулировка качества аудио","Optimization Results":"Результаты оптимизации","Audio Problem Description":"Описание аудиопроблемы","Problem Type":"Тип проблемы","Distortion":"Погрешность","Noise":"Шум","Volume Issues":"Проблемы с громкостью","Clarity Issues":"Проблемы с ясностью","Balance Issues":"Проблемы с балансом","Describe the Problem":"Описание проблемы","Diagnose Problem":"Диагностировать проблему","Diagnosis Results":"Результаты диагностики","Audio Parameters":"Аудиопараметры","EQ Low (Hz)":"Низкие частоты (Гц)","EQ Mid (Hz)":"Средние частоты (Гц)","EQ High (Hz)":"Высокие частоты (Гц)","Low Gain (dB)":"Низкий уровень усиления (дБ)","Mid Gain (dB)":"Средний уровень усиления (дБ)","High Gain (dB)":"Высокий уровень усиления (дБ)","Room Type":"Тип комнаты","Small Room":"Маленькая комната","Medium Room":"Средняя комната","Large Room":"Большая комната","Outdoor":"На улице","Optimize Parameters":"Оптимизация параметров","Calibration Results":"Результаты калибровки","Calibration Name":"Название калибровки","Notes":"Заметки","Saved Calibrations":"Сохраненные калибровки","Delete":"Удалить","Please describe the audio issue you're experiencing...":"Пожалуйста, опишите аудиопроблему, с которой вы сталкиваетесь...","Enter a name for this calibration":"Введите имя для этой калибровки","Add any notes about this calibration...":"Добавьте любые заметки о этой калибровке...","Please upload an audio file first":"Пожалуйста, сначала загрузите аудиофайл","Enhanced bass for deeper low frequencies":"Усиленный бас для более глубоких низких частот","Enhanced treble for clearer vocals":"Усиленные верхние частоты для более четкого голоса","Enhanced treble for brighter sound":"Усиленные верхние частоты для более яркого звука","Balanced sound profile":"Балансированный профайл звука","Increased volume for better audibility":"Увеличенная громкость для лучшей слышимости","Reduced volume to prevent distortion":"Уменьшенная громкость для предотвращения искажения","Audio quality optimized successfully":"Успешно оптимизировано качество аудио","Please describe the audio problem":"Пожалуйста, опишите проблему с аудио","Audio distortion detected - signals are clipping or being over-amplified":"Обнаружена искажение аудио - сигналы обрезаются или чрезмерно усиливаются","Reduce volume levels to prevent clipping":"Уменьшите уровни громкости, чтобы предотвратить обрезание","Check speaker or headphone connections":"Проверьте подключения динамика или наушников","Apply a soft limiter to dynamic range":"Примените мягкий ограничитель динамического диапазона","Adjust EQ to reduce harsh frequencies":"Настройте均衡器, чтобы уменьшить резкие частоты","Ensure audio source is not overloaded":"Убедитесь, что аудиосource не перегружен","Unwanted noise detected - background hum, hiss, or interference present":"Обнаружен нежелательный шум - присутствует фоновый гул, шипение или помехи","Check for electromagnetic interference sources":"Проверьте источники электромагнитных помех","Ensure proper grounding of audio equipment":"Убедитесь в правильном заземлении аудиооборудования","Apply noise reduction filter":"Примените фильтр уменьшения шума","Try different audio cables or connections":"Попробуйте разные аудиокабели или подключения","Use a high-pass filter to remove low-frequency rumble":"Используйте высокопропускной фильтр для удаления низкочастотных вибраций","Volume inconsistency detected - uneven volume levels across content":"Обнаружена неустойчивость громкости - неравномерные уровни громкости по содержимому","Apply normalization to standardize volume":"Примените нормализацию для стандартизации громкости","Use dynamic range compression":"Используйте сжатие динамического диапазона","Check source material volume levels":"Проверьте уровни громкости исходного материала","Enable loudness equalization":"Включите эквализацию громкости","Adjust volume matching between different tracks":"Настройте соответствие громкости между различными треками","Audio clarity issues detected - muffled or unclear sound":"Обнаружены проблемы с ясностью аудио - приглушенный или неясный звук","Enhance mid-range frequencies":"Усилить средние частоты","Apply de-essing to reduce sibilance":"Примените де-эссинг для уменьшения сибилянции","Use equalization to enhance vocal clarity":"Используйте эквализацию для улучшения ясности голоса","Adjust microphone positioning or settings":"Настройте положение или параметры микрофона","Apply clarity enhancement processing":"Примените обработку улучшения ясности","Audio balance issues detected - uneven frequency distribution":"Обнаружены проблемы с балансом аудио - неравномерное распределение частот","Adjust bass and treble levels":"Настройте уровни баса и верхних частот","Use stereo enhancement tools":"Используйте инструменты улучшения стерео","Check speaker placement and alignment":"Проверьте положение и выравнивание динамиков","Apply stereo widening or narrowing as needed":"Примените расширение или сужение стерео по мере необходимости","Use balance controls to adjust left/right levels":"Используйте регуляторы баланса для настройки уровней слева/справа","Problem diagnosed successfully":"Проблема успешно диагностирована","Small rooms benefit from reduced bass to prevent boomy sound":"Маленькие комнаты выигрывают от уменьшения баса для предотвращения гулкого звука","Add slight high frequency boost for clarity":"Добавьте легкое усиление высоких частот для ясности","Balanced settings work well for medium rooms":"Балансированные настройки хорошо работают для средних помещений","Large rooms may need enhanced bass response":"Большие комнаты могут нуждаться в улучшенной реакции баса","Consider slight high frequency roll-off":"Рассмотрите возможность легкого снижения высоких частот","Outdoor environments need enhanced mid-range clarity":"Для внешней среды необходима улучшенная ясность средних частот","Bass frequencies may need boost due to open space":"Басовые частоты могут нуждаться в усилении из-за открытого пространства","Parameters optimized successfully":"Параметры успешно оптимизированы","Please enter a calibration name":"Пожалуйста, введите имя калибровки","Calibration saved successfully":"Калибровка успешно сохранена","__title__":"Ассистент аудиокалибровки"},"pt":{"Audio Calibration Assistant":"Assistente de Calibração de Áudio","Optimize your audio experience for immersive sound in your phone space":"Otimizar sua experiência de áudio para som imersivo no espaço do seu telefone","Audio Analysis":"Análise de Áudio","Quality Adjustment":"Ajuste de Qualidade","Problem Diagnosis":"Diagnóstico de Problemas","Parameter Optimization":"Otimização de Parâmetros","Save Calibration":"Salvar Calibração","Audio File Upload":"Upload de Arquivo de Áudio","Click to upload audio file or drag and drop":"Clique para upload de arquivo de áudio ou arraste e solte","Analyze Audio":"Analisar Áudio","Analysis Results":"Resultados da Análise","Current Audio Settings":"Configurações de Áudio Atuais","Bass Level":"Nível de Baixas Frequências","Treble Level":"Nível de Altas Frequências","Volume Level":"Nível de Volume","Sound Mode":"Modo de Som","B Boost":"Aumento B","T Boost":"Aumento T","Adjust Audio Quality":"Ajustar Qualidade de Áudio","Optimization Results":"Resultados da Otimização","Audio Problem Description":"Descrição do Problema de Áudio","Problem Type":"Tipo de Problema","Distortion":"Distorção","Noise":"Ruído","Volume Issues":"Problemas de Volume","Clarity Issues":"Problemas de Clareza","Balance Issues":"Problemas de Equilíbrio","Describe the Problem":"Descrever o Problema","Diagnose Problem":"Diagnóstico de Problema","Diagnosis Results":"Resultados do Diagnóstico","Audio Parameters":"Parâmetros de Áudio","EQ Low (Hz)":"EQ Baixo (Hz)","EQ Mid (Hz)":"EQ Médio (Hz)","EQ High (Hz)":"EQ Alto (Hz)","Low Gain (dB)":"Ganho Baixo (dB)","Mid Gain (dB)":"Ganho Médio (dB)","High Gain (dB)":"Ganho Alto (dB)","Room Type":"Tipo de Sala","Small Room":"Sala Pequena","Medium Room":"Sala Média","Large Room":"Sala Grande","Outdoor":"Ao Ar Livre","Optimize Parameters":"Otimizar Parâmetros","Calibration Results":"Resultados da Calibração","Calibration Name":"Nome da Calibração","Notes":"Notas","Saved Calibrations":"Calibrações Salvas","Delete":"Excluir","Please describe the audio issue you're experiencing...":"Por favor, descreva o problema de áudio que você está enfrentando...","Enter a name for this calibration":"Insira um nome para esta calibração","Add any notes about this calibration...":"Adicione quaisquer notas sobre esta calibração...","Please upload an audio file first":"Por favor, upload um arquivo de áudio primeiro","Enhanced bass for deeper low frequencies":"Bass aprimorado para frequências mais baixas","Enhanced treble for clearer vocals":"Treble aprimorado para vozes mais claras","Enhanced treble for brighter sound":"Treble aprimorado para som mais brilhante","Balanced sound profile":"Perfil de som equilibrado","Increased volume for better audibility":"Volume aumentado para melhor audibilidade","Reduced volume to prevent distortion":"Volume reduzido para evitar distorção","Audio quality optimized successfully":"A qualidade do áudio foi otimizada com sucesso","Please describe the audio problem":"Por favor, descreva o problema de áudio","Audio distortion detected - signals are clipping or being over-amplified":"Detecção de distorção de áudio - sinais estão cortando ou sendo amplificados em demasia","Reduce volume levels to prevent clipping":"Reduza os níveis de volume para evitar cortes","Check speaker or headphone connections":"Verifique as conexões do altifalante ou fone de ouvido","Apply a soft limiter to dynamic range":"Aplique um limitador suave ao intervalo dinâmico","Adjust EQ to reduce harsh frequencies":"Ajuste o EQ para reduzir frequências agudas","Ensure audio source is not overloaded":"Certifique-se de que a fonte de áudio não está sobrecarregada","Unwanted noise detected - background hum, hiss, or interference present":"Detecção de ruído indesejado - zumbido de fundo, sibilo ou interferência presente","Check for electromagnetic interference sources":"Verifique as fontes de interferência eletromagnética","Ensure proper grounding of audio equipment":"Certifique-se de que o equipamento de áudio está bem接地","Apply noise reduction filter":"Aplique um filtro de redução de ruído","Try different audio cables or connections":"Tente diferentes cabos de áudio ou conexões","Use a high-pass filter to remove low-frequency rumble":"Use um filtro de alta passagem para remover o estalido de baixa frequência","Volume inconsistency detected - uneven volume levels across content":"Detecção de inconsistência de volume - níveis de volume desiguais ao longo do conteúdo","Apply normalization to standardize volume":"Aplique normalização para padronizar o volume","Use dynamic range compression":"Use compressão de intervalo dinâmico","Check source material volume levels":"Verifique os níveis de volume do material de origem","Enable loudness equalization":"Habilite equalização de volume","Adjust volume matching between different tracks":"Ajuste o ajuste de volume entre diferentes faixas","Audio clarity issues detected - muffled or unclear sound":"Detecção de problemas de clareza do áudio - som engasgado ou não claro","Enhance mid-range frequencies":"Aumente as frequências do meio","Apply de-essing to reduce sibilance":"Aplique desessamento para reduzir sibilância","Use equalization to enhance vocal clarity":"Use equalização para melhorar a clareza vocal","Adjust microphone positioning or settings":"Ajuste a posição ou configurações do microfone","Apply clarity enhancement processing":"Aplique processamento de melhoria de clareza","Audio balance issues detected - uneven frequency distribution":"Detecção de problemas de equilíbrio de áudio - distribuição de frequência desigual","Adjust bass and treble levels":"Ajuste os níveis de graves e agudos","Use stereo enhancement tools":"Use ferramentas de melhoria estéreo","Check speaker placement and alignment":"Verifique a posição e alinhamento dos altifalantes","Apply stereo widening or narrowing as needed":"Aplique alargamento ou estreitamento estéreo conforme necessário","Use balance controls to adjust left/right levels":"Use controles de equilíbrio para ajustar os níveis esquerdo/direito","Problem diagnosed successfully":"Problema diagnosticado com sucesso","Small rooms benefit from reduced bass to prevent boomy sound":"Pequenos espaços beneficiam da redução dos graves para evitar som volumoso","Add slight high frequency boost for clarity":"Adicione um leve aumento de alta frequência para clareza","Balanced settings work well for medium rooms":"Configurações equilibradas funcionam bem para espaços médios","Large rooms may need enhanced bass response":"Grandes espaços podem precisar de resposta de graves aprimorada","Consider slight high frequency roll-off":"Considere a redução de alta frequência ligeira","Outdoor environments need enhanced mid-range clarity":"Ambientes ao ar livre precisam de clareza de meio-aumento aprimorada","Bass frequencies may need boost due to open space":"As frequências de graves podem precisar de aumento devido ao espaço aberto","Parameters optimized successfully":"Parâmetros otimizados com sucesso","Please enter a calibration name":"Por favor, insira um nome de calibração","Calibration saved successfully":"Calibração salva com sucesso","__title__":"Assistente de Calibração de Áudio"},"ar":{"Audio Calibration Assistant":"مساعد ضبط الصوت","Optimize your audio experience for immersive sound in your phone space":"optimise تجربة الصوت الخاصة بك لصوت غامر في مساحة هاتفك","Audio Analysis":"تحليل الصوت","Quality Adjustment":"ضبط الجودة","Problem Diagnosis":"تشخيص المشكلة","Parameter Optimization":"تحسين المعلمات","Save Calibration":"حفظ ضبط الصوت","Audio File Upload":"تحميل ملف الصوت","Click to upload audio file or drag and drop":"انقر لتحميل ملف الصوت أو سحب وإفلات","Analyze Audio":"تحليل الصوت","Analysis Results":"نتائج التحليل","Current Audio Settings":"إعدادات الصوت الحالية","Bass Level":"مستوى الأساس","Treble Level":"مستوى العليا","Volume Level":"مستوى الصوت","Sound Mode":"نمط الصوت","Normal":"عادي","B Boost":"زيادة B","Vocal":"صوت","T Boost":"زيادة T","Adjust Audio Quality":"ضبط جودة الصوت","Optimization Results":"نتائج التحسين","Audio Problem Description":"وصف مشكلة الصوت","Problem Type":"نوع المشكلة","Distortion":"تشويه","Noise":"ضجيج","Volume Issues":"مشاكل مستوى الصوت","Clarity Issues":"مشاكل الوضوح","Balance Issues":"مشاكل التوازن","Describe the Problem":"وصف المشكلة","Diagnose Problem":"تشخيص المشكلة","Diagnosis Results":"نتائج التشخيص","Audio Parameters":"معلمات الصوت","EQ Low (Hz)":"مستوى EQ منخفض (Hz)","EQ Mid (Hz)":"مستوى EQ متوسط (Hz)","EQ High (Hz)":"مستوى EQ عالي (Hz)","Low Gain (dB)":"زيادة منخفضة (dB)","Mid Gain (dB)":"زيادة متوسطة (dB)","High Gain (dB)":"زيادة عالية (dB)","Room Type":"نوع الغرفة","Small Room":"غرفة صغيرة","Medium Room":"غرفة متوسطة","Large Room":"غرفة كبيرة","Outdoor":"خارجي","Optimize Parameters":"تحسين المعلمات","Calibration Results":"نتائج الضبط","Calibration Name":"اسم الضبط","Notes":"ملاحظات","Saved Calibrations":"الضبطات المحفوظة","Delete":"حذف","Please describe the audio issue you're experiencing...":"من فضلك وصف مشكلة الصوت التي تواجهها...","Enter a name for this calibration":"ادخل اسم لهذا الضبط","Add any notes about this calibration...":"أضف أي ملاحظات حول هذا الضبط...","Please upload an audio file first":"من فضلك قم بتحميل ملف الصوت أولاً","Enhanced bass for deeper low frequencies":"زيادة الأساس لتحقيق نغمات منخفضة أعمق","Enhanced treble for clearer vocals":"زيادة العليا لتحقيق صوت واضح","Enhanced treble for brighter sound":"زيادة العليا لتحقيق صوت أكثر إشراقاً","Balanced sound profile":"ملف صوت متوازن","Increased volume for better audibility":"زيادة مستوى الصوت لتحسين السماع","Reduced volume to prevent distortion":"تقليل مستوى الصوت لمنع التشويه","Audio quality optimized successfully":"تم تحسين جودة الصوت بنجاح","Please describe the audio problem":"من فضلك وصف مشكلة الصوت","Audio distortion detected - signals are clipping or being over-amplified":"تم اكتشاف تشويه الصوت - الإشارات تُقطع أو تُزياد في التضخيم","Reduce volume levels to prevent clipping":"انخفظ مستويات الصوت لمنع القطع","Check speaker or headphone connections":"تحقق من اتصالات مكبرات الصوت أو سماعات الأذن","Apply a soft limiter to dynamic range":"تطبيق محدودي الترددات الديناميكية الناعم","Adjust EQ to reduce harsh frequencies":"اضبط مكبر الترددات لتقليل الترددات القاسية","Ensure audio source is not overloaded":"تأكد من أن مصدر الصوت ليس مُحملًا بشكل زائد","Unwanted noise detected - background hum, hiss, or interference present":"تم اكتشاف ضوضاء غير مرغوب فيها - طنين خلفي، صرير، أو تداخل موجود","Check for electromagnetic interference sources":"تحقق من مصادر التداخل الكهرومغناطيسي","Ensure proper grounding of audio equipment":"تأكد من التربة الجيدة لمعدات الصوت","Apply noise reduction filter":"تطبيق مرشح تقليل الضوضاء","Try different audio cables or connections":"جرب الأسلاك أو الاتصالات الصوتية المختلفة","Use a high-pass filter to remove low-frequency rumble":"استخدم مرشح عالي التردد لإزالة الطنين منخفض التردد","Volume inconsistency detected - uneven volume levels across content":"تم اكتشاف عدم تناسق مستويات الصوت - مستويات غير متساوية عبر المحتوى","Apply normalization to standardize volume":"تطبيق التوحيد لتحديد مستوى الصوت","Use dynamic range compression":"استخدام ضغط نطاق التردد الديناميكي","Check source material volume levels":"تحقق من مستويات صوت المواد المصدرية","Enable loudness equalization":"فعّل توازن الصوت","Adjust volume matching between different tracks":"ضبط تطابق مستوى الصوت بين المسارات المختلفة","Audio clarity issues detected - muffled or unclear sound":"تم اكتشاف مشاكل وضوح الصوت - صوت مُغطى أو غير واضح","Enhance mid-range frequencies":"تعزيز ترددات الوسط","Apply de-essing to reduce sibilance":"تطبيق إزالة الصوت العالي لتقليل السيلان","Use equalization to enhance vocal clarity":"استخدام توازن الترددات لتحسين وضوح الصوت","Adjust microphone positioning or settings":"ضبط موقع أو إعدادات الميكروفون","Apply clarity enhancement processing":"تطبيق معالجة تعزيز الوضوح","Audio balance issues detected - uneven frequency distribution":"تم اكتشاف مشاكل توازن الصوت - توزيع غير متساوٍ للترددات","Adjust bass and treble levels":"ضبط مستويات الأساس والصوت العالي","Use stereo enhancement tools":"استخدام أدوات تعزيز الصوت المزدوج","Check speaker placement and alignment":"تحقق من وضع مكبرات الصوت والتوجيه","Apply stereo widening or narrowing as needed":"تطبيق توسيع أو ضيق الصوت المزدوج حسب الحاجة","Use balance controls to adjust left/right levels":"استخدام التحكم في التوازن لضبط المستويات اليسرى واليمنى","Problem diagnosed successfully":"تم تشخيص المشكلة بنجاح","Small rooms benefit from reduced bass to prevent boomy sound":"تستفيد الغرف الصغيرة من خفض الأساس لتجنب الصوت المضخم","Add slight high frequency boost for clarity":"إضافة تعزيز ترددات الوسط العالية بقليل لتحسين الوضوح","Balanced settings work well for medium rooms":"تعمل الإعدادات المتوازنة بشكل جيد في الغرف المتوسطة","Large rooms may need enhanced bass response":"قد تحتاج الغرف الكبيرة إلى تعزيز استجابة الأساس","Consider slight high frequency roll-off":"اعتبار تقليل ترددات الوسط العالية بقليل","Outdoor environments need enhanced mid-range clarity":"تحتاج البيئات الخارجية إلى وضوح ترددات الوسط العالية","Bass frequencies may need boost due to open space":"قد تحتاج ترددات الأساس إلى تعزيز بسبب المساحة المفتوحة","Parameters optimized successfully":"تم تحسين المعلمات بنجاح","Please enter a calibration name":"من فضلك أدخل اسم التسجيل","Calibration saved successfully":"تم حفظ التسجيل بنجاح","__title__":"مساعد ضبط الصوت"},"hi":{"Audio Calibration Assistant":"ऑडियो कैलिब्रेशन असिस्टेंट","Optimize your audio experience for immersive sound in your phone space":"अपने फोन स्पेस में डीपीबी साउंड के लिए आडियो अनुभव को ऑप्टिमाइज करें","Audio Analysis":"ऑडियो विश्लेषण","Quality Adjustment":"किस्म समायोजन","Problem Diagnosis":"समस्या निदान","Parameter Optimization":"पैरामीटर ऑप्टिमाइजेशन","Save Calibration":"कैलिब्रेशन सहेजें","Audio File Upload":"ऑडियो फ़ाइल अपलोड","Click to upload audio file or drag and drop":"ऑडियो फ़ाइल अपलोड करने के लिए क्लिक करें या ड्रैग एंड ड्रॉप करें","Analyze Audio":"ऑडियो का विश्लेषण करें","Analysis Results":"विश्लेषण परिणाम","Current Audio Settings":"वर्तमान ऑडियो सेटिंग","Bass Level":"बास स्तर","Treble Level":"ट्रेबल स्तर","Volume Level":"आवाज स्तर","Sound Mode":"साउंड मोड","Normal":"सामान्य","B Boost":"बी बूस्ट","Vocal":"वोकल","T Boost":"टी बूस्ट","Adjust Audio Quality":"ऑडियो किस्म समायोजित करें","Optimization Results":"ऑप्टिमाइजेशन परिणाम","Audio Problem Description":"ऑडियो समस्या वर्णन","Problem Type":"समस्या क़िस्म","Distortion":"विकृति","Noise":"शोर","Volume Issues":"आवाज समस्या","Clarity Issues":"स्पष्टता समस्या","Balance Issues":"संतुलन समस्या","Describe the Problem":"समस्या का वर्णन करें","Diagnose Problem":"समस्या निदान","Diagnosis Results":"निदान परिणाम","Audio Parameters":"ऑडियो पैरामीटर","EQ Low (Hz)":"EQ लो (Hz)","EQ Mid (Hz)":"EQ मिड (Hz)","EQ High (Hz)":"EQ हाई (Hz)","Low Gain (dB)":"लो गेन (dB)","Mid Gain (dB)":"मिड गेन (dB)","High Gain (dB)":"हाई गेन (dB)","Room Type":"रूम टाइप","Small Room":"छोटा कमरा","Medium Room":"मध्यम कमरा","Large Room":"बड़ा कमरा","Outdoor":"आउटडोर","Optimize Parameters":"पैरामीटर ऑप्टिमाइज करें","Calibration Results":"कैलिब्रेशन परिणाम","Calibration Name":"कैलिब्रेशन नाम","Notes":"नोट्स","Saved Calibrations":"सहेजे गए कैलिब्रेशन","Delete":"मिटाएं","Please describe the audio issue you're experiencing...":"कृपया आपकी अनुभव की ऑडियो समस्या का वर्णन करें...","Enter a name for this calibration":"इस कैलिब्रेशन के लिए एक नाम दर्ज करें","Add any notes about this calibration...":"इस कैलिब्रेशन के बारे में कोई नोट जोड़ें...","Please upload an audio file first":"कृपया पहले ऑडियो फ़ाइल अपलोड करें","Enhanced bass for deeper low frequencies":"गहरे नीचे की आवाज के लिए उन्नत बास","Enhanced treble for clearer vocals":"स्पष्ट वोकल के लिए उन्नत ट्रेबल","Enhanced treble for brighter sound":"उज्जवल आवाज के लिए उन्नत ट्रेबल","Balanced sound profile":"संतुलित साउंड प्रोफाइल","Increased volume for better audibility":"बेहतर सुनने के लिए बढ़ी हुई आवाज","Reduced volume to prevent distortion":"विकृति रोकने के लिए कम हुई आवाज","Audio quality optimized successfully":"ऑडियो गुणवत्ता सफलतापूर्वक सुधारी गयी","Please describe the audio problem":"कृपया ऑडियो समस्या का वर्णन करें","Audio distortion detected - signals are clipping or being over-amplified":"ऑडियो विकृति दिसा - सिग्नल्स क्लिपिंग या ओवर-एम्प्लीफाइड हैं","Reduce volume levels to prevent clipping":"ऑडियो स्तर को कम करके क्लिपिंग को रोकें","Check speaker or headphone connections":"स्पीकर या हेडफोन कनेक्शन की जाँच करें","Apply a soft limiter to dynamic range":"डायनेमिक रेंज पर एक सॉफ्ट लिमिटर लगाएं","Adjust EQ to reduce harsh frequencies":"EQ को समायोजित करके खराब तरंगदृश्य कम करें","Ensure audio source is not overloaded":"यकीन करें कि ऑडियो स्रोत ओवरलोड नहीं है","Unwanted noise detected - background hum, hiss, or interference present":"अवांछित शोर दिसा - पृष्ठभूमि गुरगुराहट, हिस्स या हस्तक्षेप मौजूद","Check for electromagnetic interference sources":"इलेक्ट्रोमैग्नेटिक हस्तक्षेप स्रोत की जाँच करें","Ensure proper grounding of audio equipment":"ऑडियो उपकरण के उचित जमीनीकरण करें","Apply noise reduction filter":"शोर कम करने वाला फिल्टर लगाएं","Try different audio cables or connections":"विभिन्न ऑडियो केबल या कनेक्शन को प्रयास करें","Use a high-pass filter to remove low-frequency rumble":"निम्न आवृत्ति के गुरगुराहट को हटाने के लिए हाई-पास फिल्टर का उपयोग करें","Volume inconsistency detected - uneven volume levels across content":"ऑडियो स्तर की असंगतता दिसा - सामग्री के अलग-अलग स्तर","Apply normalization to standardize volume":"ऑडियो स्तर को सामान्यकरण करने के लिए लगाएं","Use dynamic range compression":"डायनेमिक रेंज कंप्रेशन का उपयोग करें","Check source material volume levels":"स्रोत सामग्री के ऑडियो स्तर की जाँच करें","Enable loudness equalization":"व्ययामान तरंगदृश्य समायोजन सक्षम करें","Adjust volume matching between different tracks":"विभिन्न ट्रैकों के बीच ऑडियो स्तर को समायोजित करें","Audio clarity issues detected - muffled or unclear sound":"ऑडियो स्पष्टता समस्याएँ दिसा - अस्पष्ट या गुमटा आवाज","Enhance mid-range frequencies":"मध्य आवृत्ति को बढ़ाएं","Apply de-essing to reduce sibilance":"डी-एसिंग का उपयोग करके सिबिलेंस कम करें","Use equalization to enhance vocal clarity":"आवाज की स्पष्टता बढ़ाने के लिए इक्वलाइजेशन का उपयोग करें","Adjust microphone positioning or settings":"माइक्रोफोन के स्थानांतरण या सेटिंग को समायोजित करें","Apply clarity enhancement processing":"स्पष्टता बढ़ाने वाली प्रोसेसिंग का उपयोग करें","Audio balance issues detected - uneven frequency distribution":"ऑडियो संतुलन समस्याएँ दिसा - असमान आवृत्ति वितरण","Adjust bass and treble levels":"बेस और ट्रेबल स्तर को समायोजित करें","Use stereo enhancement tools":"स्टेरियो बढ़ावा उपकरणों का उपयोग करें","Check speaker placement and alignment":"स्पीकर के स्थानांतरण और निर्देशन की जाँच करें","Apply stereo widening or narrowing as needed":"आवश्यकता प्रति स्टेरियो विस्तार या संकुचन का उपयोग करें","Use balance controls to adjust left/right levels":"बैलेंस नियंत्रण का उपयोग करके बाएँ/दाएँ स्तर को समायोजित करें","Problem diagnosed successfully":"समस्या सफलतापूर्वक जाँच की गई","Small rooms benefit from reduced bass to prevent boomy sound":"छोटे कमरों को बेस कम करके गुरगुराहट रोकने का लाभ होता है","Add slight high frequency boost for clarity":"स्पष्टता के लिए थोड़ी उच्च आवृत्ति की बढ़ावा जोड़ें","Balanced settings work well for medium rooms":"समतुल्य सेटिंग मध्यम कमरों के लिए अच्छी रूप से काम करते हैं","Large rooms may need enhanced bass response":"बड़े कमरों को बेस आवृत्ति की बढ़ी हुई प्रतिक्रिया की जरूरत हो सकती है","Consider slight high frequency roll-off":"थोड़ी उच्च आवृत्ति के रोल-ऑफ को सोचिए","Outdoor environments need enhanced mid-range clarity":"बाहरी पर्यावरण में मध्य आवृत्ति की स्पष्टता की बढ़ी हुई जरूरत है","Bass frequencies may need boost due to open space":"खुले जगह के कारण बेस आवृत्ति को बढ़ावा जोड़ने की जरूरत हो सकती है","Parameters optimized successfully":"पारामीटर्स सफलतापूर्वक सुधारी गए","Please enter a calibration name":"कृपया एक कैलिब्रेशन नाम दर्ज करें","Calibration saved successfully":"कैलिब्रेशन सफलतापूर्वक सहेजी गई","__title__":"ऑडियो कैलिब्रेशन असिस्टेंट"},"id":{"Audio Calibration Assistant":"Penjaga Kinerja Audio","Optimize your audio experience for immersive sound in your phone space":"Optimalisir pengalaman audio anda untuk suara imersif di ruang ponsel anda","Audio Analysis":"Analisis Audio","Quality Adjustment":"Penyesuaian Kualitas","Problem Diagnosis":"Diagnosis Masalah","Parameter Optimization":"Optimalisasi Parameter","Save Calibration":"Simpan Kalibrasi","Audio File Upload":"Unggah Berkas Audio","Click to upload audio file or drag and drop":"Klik untuk unggah berkas audio atau seret dan lepas","Analyze Audio":"Analisis Audio","Analysis Results":"Hasil Analisis","Current Audio Settings":"Pengaturan Audio saat Ini","Bass Level":"Tingkat Bass","Treble Level":"Tingkat Treble","Volume Level":"Tingkat Volume","Sound Mode":"Mode Suara","Adjust Audio Quality":"Sesuaikan Kualitas Audio","Optimization Results":"Hasil Optimalisasi","Audio Problem Description":"Deskripsi Masalah Audio","Problem Type":"Tipe Masalah","Distortion":"Distorsi","Noise":"Bising","Volume Issues":"Masalah Volume","Clarity Issues":"Masalah Klaritas","Balance Issues":"Masalah Keseimbangan","Describe the Problem":"Deskripsikan Masalah","Diagnose Problem":"Diagnosis Masalah","Diagnosis Results":"Hasil Diagnosis","Audio Parameters":"Parameter Audio","EQ Low (Hz)":"EQ Rendah (Hz)","EQ Mid (Hz)":"EQ Menengah (Hz)","EQ High (Hz)":"EQ Tinggi (Hz)","Low Gain (dB)":"Gampang Rendah (dB)","Mid Gain (dB)":"Gampang Menengah (dB)","High Gain (dB)":"Gampang Tinggi (dB)","Room Type":"Tipe Ruang","Small Room":"Ruang Kecil","Medium Room":"Ruang Menengah","Large Room":"Ruang Besar","Outdoor":"Luar Ruangan","Optimize Parameters":"Optimalisasi Parameter","Calibration Results":"Hasil Kalibrasi","Calibration Name":"Nama Kalibrasi","Notes":"Catatan","Saved Calibrations":"Kalibrasi Disimpan","Delete":"Hapus","Please describe the audio issue you're experiencing...":"Harap deskripsikan masalah audio yang anda alami...","Enter a name for this calibration":"Masukkan nama untuk kalibrasi ini","Add any notes about this calibration...":"Tambahkan catatan apapun tentang kalibrasi ini...","Please upload an audio file first":"Harap unggah berkas audio terlebih dahulu","Enhanced bass for deeper low frequencies":"Bass yang dipertahankan untuk frekuensi rendah yang lebih mendalam","Enhanced treble for clearer vocals":"Treble yang dipertahankan untuk vokal yang lebih jelas","Enhanced treble for brighter sound":"Treble yang dipertahankan untuk suara yang lebih terang","Balanced sound profile":"Profil suara yang seimbang","Increased volume for better audibility":"Volume yang di tingkatkan untuk kejelasan yang lebih baik","Reduced volume to prevent distortion":"Volume yang diurangi untuk mencegah gangguan","Audio quality optimized successfully":"Kualitas audio disesuaikan sukses","Please describe the audio problem":"Silakan deskripsikan masalah audio","Audio distortion detected - signals are clipping or being over-amplified":"Deteksi gangguan audio - sinyal sedang dipotong atau dipeka","Reduce volume levels to prevent clipping":"Kurangi tingkat volume untuk mencegah potongan","Check speaker or headphone connections":"Periksa koneksi speaker atau headphon","Apply a soft limiter to dynamic range":"Terapkan batas lembut untuk jalur dinamis","Adjust EQ to reduce harsh frequencies":"Sesuaikan EQ untuk mengurangi frekuensi keras","Ensure audio source is not overloaded":"Pastikan sumber audio tidak terlebih-bagi","Unwanted noise detected - background hum, hiss, or interference present":"Deteksi suara gangguan yang tidak diinginkan - guritan latar, gurgur, atau gangguan hadir","Check for electromagnetic interference sources":"Periksa sumber gangguan elektromagnetik","Ensure proper grounding of audio equipment":"Pastikan penyanggaan alat audio yang benar","Apply noise reduction filter":"Terapkan penurunan gangguan suara","Try different audio cables or connections":"Coba kabel audio atau koneksi yang berbeda","Use a high-pass filter to remove low-frequency rumble":"Gunakan pengecualian tinggi untuk menghilangkan guncangan frekuensi rendah","Volume inconsistency detected - uneven volume levels across content":"Deteksi ketidak konsistensi volume - tingkat volume yang tidak seimbang di seluruh konten","Apply normalization to standardize volume":"Terapkan normalisasi untuk standarisasi volume","Use dynamic range compression":"Gunakan pengeompokan jalur dinamis","Check source material volume levels":"Periksa tingkat volume material sumber","Enable loudness equalization":"Aktifkan pengekuatan suara","Adjust volume matching between different tracks":"Sesuaikan penggabungan volume antara trek yang berbeda","Audio clarity issues detected - muffled or unclear sound":"Deteksi masalah klaritas audio - bunyi yang mati atau tidak jelas","Enhance mid-range frequencies":"Tingkatkan frekuensi menengah","Apply de-essing to reduce sibilance":"Terapkan pengurangan sibil untuk mengurangi sibilan","Use equalization to enhance vocal clarity":"Gunakan equalisasi untuk meningkatkan klaritas suara","Adjust microphone positioning or settings":"Sesuaikan posisi mikrofon atau pengaturan","Apply clarity enhancement processing":"Terapkan pemrosesan peningkatan klaritas","Audio balance issues detected - uneven frequency distribution":"Deteksi masalah keseimbangan audio - distribusi frekuensi yang tidak seimbang","Adjust bass and treble levels":"Sesuaikan tingkat bass dan treble","Use stereo enhancement tools":"Gunakan alat peningkatan stereo","Check speaker placement and alignment":"Periksa letak dan alineasi speaker","Apply stereo widening or narrowing as needed":"Terapkan perluasan atau perkecilan stereo seperti yang dibutuhkan","Use balance controls to adjust left/right levels":"Gunakan kontrol keseimbangan untuk menyesuaikan tingkat kiri/kanan","Problem diagnosed successfully":"Masalah diagnosa sukses","Small rooms benefit from reduced bass to prevent boomy sound":"Ruang kecil mendapat keuntungan dari penurunan bass untuk mencegah bunyi yang gendut","Add slight high frequency boost for clarity":"Tambahkan peningkatan frekuensi tinggi ringan untuk klaritas","Balanced settings work well for medium rooms":"Pengaturan keseimbangan berfungsi baik untuk ruang menengah","Large rooms may need enhanced bass response":"Ruang besar mungkin memerlukan tanggap balas bass yang dipeningkatan","Consider slight high frequency roll-off":"Berhati-hatilah penurunan frekuensi tinggi ringan","Outdoor environments need enhanced mid-range clarity":" lingkungan luar memerlukan klaritas menengah yang dipeningkatan","Bass frequencies may need boost due to open space":"Frekuensi bass mungkin memerlukan peningkatan karena ruang terbuka","Parameters optimized successfully":"Parameter disesuaikan sukses","Please enter a calibration name":"Silakan masukkan nama kalibrasi","Calibration saved successfully":"Kalibrasi disimpan sukses","__title__":"Penjaga Kinerja Audio"},"vi":{"Audio Calibration Assistant":"Trợ lý Calibrate Âm thanh","Optimize your audio experience for immersive sound in your phone space":"Tối ưu hóa trải nghiệm âm thanh của bạn cho âm thanh đắm chìm trong không gian điện thoại của bạn","Audio Analysis":"Phân tích Âm thanh","Quality Adjustment":"Cân chỉnh Chất lượng","Problem Diagnosis":"Chẩn đoán Vấn đề","Parameter Optimization":"Tối ưu hóa Tham số","Save Calibration":"Lưu Calibrate","Audio File Upload":"Tải lên Tệp Âm thanh","Click to upload audio file or drag and drop":"Nhấp để tải lên tệp âm thanh hoặc kéo và thả","Analyze Audio":"Phân tích Âm thanh","Analysis Results":"Kết quả Phân tích","Current Audio Settings":"Cài đặt Âm thanh Hiện tại","Bass Level":"Cấp độ Bass","Treble Level":"Cấp độ Treble","Volume Level":"Cấp độ Âm lượng","Sound Mode":"Chế độ Âm thanh","Normal":"Bình thường","Adjust Audio Quality":"Cân chỉnh Chất lượng Âm thanh","Optimization Results":"Kết quả Tối ưu hóa","Audio Problem Description":"Mô tả Vấn đề Âm thanh","Problem Type":"Loại Vấn đề","Distortion":"Pha ứng","Noise":"Tiếng ồn","Volume Issues":"Vấn đề Âm lượng","Clarity Issues":"Vấn đề Sạch sẽ","Balance Issues":"Vấn đề Cân bằng","Describe the Problem":"Mô tả Vấn đề","Diagnose Problem":"Chẩn đoán Vấn đề","Diagnosis Results":"Kết quả Chẩn đoán","Audio Parameters":"Tham số Âm thanh","EQ Low (Hz)":"EQ Thấp (Hz)","EQ Mid (Hz)":"EQ Trung (Hz)","EQ High (Hz)":"EQ Cao (Hz)","Low Gain (dB)":"Gain Thấp (dB)","Mid Gain (dB)":"Gain Trung (dB)","High Gain (dB)":"Gain Cao (dB)","Room Type":"Loại Phòng","Small Room":"Phòng Nhỏ","Medium Room":"Phòng Trung","Large Room":"Phòng Lớn","Outdoor":"Ngoại thất","Optimize Parameters":"Tối ưu hóa Tham số","Calibration Results":"Kết quả Calibrate","Calibration Name":"Tên Calibrate","Notes":"Ghi chú","Saved Calibrations":"Calibrate Đã Lưu","Delete":"Xóa","Please describe the audio issue you're experiencing...":"Vui lòng mô tả vấn đề âm thanh bạn đang gặp...","Enter a name for this calibration":"Nhập tên cho calibrate này","Add any notes about this calibration...":"Thêm bất kỳ ghi chú nào về calibrate này...","Please upload an audio file first":"Vui lòng tải lên tệp âm thanh trước","Enhanced bass for deeper low frequencies":"Bass được tăng cường cho tần số thấp sâu hơn","Enhanced treble for clearer vocals":"Treble được tăng cường cho giọng hát rõ ràng hơn","Enhanced treble for brighter sound":"Treble được tăng cường cho âm thanh sáng hơn","Balanced sound profile":"Hồ sơ âm thanh cân bằng","Increased volume for better audibility":"Tăng âm lượng để nghe rõ hơn","Reduced volume to prevent distortion":"Giảm âm lượng để ngăn chặn pha ứng","Audio quality optimized successfully":"Chất lượng âm thanh đã được tối ưu hóa thành công","Please describe the audio problem":"Vui lòng mô tả vấn đề âm thanh","Audio distortion detected - signals are clipping or being over-amplified":"Đã phát hiện méo âm thanh - các tín hiệu đang bị cắt hoặc tăng cường quá mức","Reduce volume levels to prevent clipping":"Giảm mức âm lượng để tránh cắt","Check speaker or headphone connections":"Kiểm tra kết nối loa hoặc tai nghe","Apply a soft limiter to dynamic range":"Áp dụng giới hạn mềm cho dải động","Adjust EQ to reduce harsh frequencies":"Chỉnh chỉnh EQ để giảm tần số mạnh","Ensure audio source is not overloaded":"Đảm bảo nguồn âm thanh không bị tải quá mức","Unwanted noise detected - background hum, hiss, or interference present":"Đã phát hiện tiếng ồn không mong muốn - tiếng ồn nền, tiếng rít hoặc sự can thiệp","Check for electromagnetic interference sources":"Kiểm tra nguồn sự can thiệp từ điện từ","Ensure proper grounding of audio equipment":"Đảm bảo grounding đúng cách cho thiết bị âm thanh","Apply noise reduction filter":"Áp dụng bộ lọc giảm tiếng ồn","Try different audio cables or connections":"Thử các cáp âm thanh hoặc kết nối khác","Use a high-pass filter to remove low-frequency rumble":"Sử dụng bộ lọc tần số cao để loại bỏ tiếng ồn tần số thấp","Volume inconsistency detected - uneven volume levels across content":"Đã phát hiện sự không nhất quán về mức âm lượng - mức âm lượng không đều trong nội dung","Apply normalization to standardize volume":"Áp dụng chuẩn hóa để tiêu chuẩn hóa mức âm lượng","Use dynamic range compression":"Sử dụng nén dải động","Check source material volume levels":"Kiểm tra mức âm lượng của vật liệu nguồn","Enable loudness equalization":"Bật cân bằng độ lớn","Adjust volume matching between different tracks":"Chỉnh chỉnh sự phù hợp về mức âm lượng giữa các bài hát khác nhau","Audio clarity issues detected - muffled or unclear sound":"Đã phát hiện vấn đề rõ ràng của âm thanh - tiếng ồn mờ hoặc không rõ ràng","Enhance mid-range frequencies":"Tăng cường tần số trung","Apply de-essing to reduce sibilance":"Áp dụng giảm sibilance","Use equalization to enhance vocal clarity":"Sử dụng cân bằng để tăng cường rõ ràng của giọng nói","Adjust microphone positioning or settings":"Chỉnh chỉnh vị trí hoặc cài đặt micro","Apply clarity enhancement processing":"Áp dụng xử lý tăng cường rõ ràng","Audio balance issues detected - uneven frequency distribution":"Đã phát hiện vấn đề cân bằng âm thanh - phân phối tần số không đều","Adjust bass and treble levels":"Chỉnh chỉnh mức trầm và cao","Use stereo enhancement tools":"Sử dụng công cụ tăng cường âm thanh stereo","Check speaker placement and alignment":"Kiểm tra vị trí và chỉnh hướng loa","Apply stereo widening or narrowing as needed":"Áp dụng mở rộng hoặc thu hẹp âm thanh stereo theo nhu cầu","Use balance controls to adjust left/right levels":"Sử dụng điều khiển cân bằng để chỉnh mức trái/phải","Problem diagnosed successfully":"Vấn đề đã được chẩn đoán thành công","Small rooms benefit from reduced bass to prevent boomy sound":"Phòng nhỏ được lợi từ việc giảm trầm để tránh tiếng ồn ầm ầm","Add slight high frequency boost for clarity":"Thêm tăng cường tần số cao nhẹ để rõ ràng","Balanced settings work well for medium rooms":"Cài đặt cân bằng hoạt động tốt cho phòng trung bình","Large rooms may need enhanced bass response":"Phòng lớn có thể cần phản hồi trầm được tăng cường","Consider slight high frequency roll-off":"Đánh giá giảm tần số cao nhẹ","Outdoor environments need enhanced mid-range clarity":"Môi trường ngoài trời cần rõ ràng tần số trung được tăng cường","Bass frequencies may need boost due to open space":"Tần số trầm có thể cần tăng cường do không gian mở","Parameters optimized successfully":"Các tham số đã được tối ưu hóa thành công","Please enter a calibration name":"Vui lòng nhập tên cân chỉnh","Calibration saved successfully":"Cân chỉnh đã được lưu thành công","__title__":"Trợ lý Calibrate Âm thanh"},"th":{"Optimize your audio experience for immersive sound in your phone space":"ปรับปรุงประสบการณ์เสียงของคุณให้เข้ากันดีกับเสียงที่ท่วมทำให้มีประสบการณ์เสียงดีขึ้นในพื้นที่โทรศัพท์ของคุณ","Quality Adjustment":"ปรับปรุงคุณภาพ","Problem Diagnosis":"การวินิจฉัยปัญหา","Parameter Optimization":"ปรับปรุงตัวเลข","Save Calibration":"บันทึกการปรับปรุง","Audio File Upload":"อัพโหลดไฟล์เสียง","Click to upload audio file or drag and drop":"คลิกเพื่ออัพโหลดไฟล์เสียง หรือลากและปล่อย","Analyze Audio":"วิเคราะห์เสียง","Analysis Results":"ผลการวิเคราะห์","Current Audio Settings":"การตั้งค่าเสียงปัจจุบัน","Bass Level":"ระดับเบส","Treble Level":"ระดับเทิร์น","Volume Level":"ระดับเสียง","Sound Mode":"โหมดเสียง","Normal":"ปกติ","B Boost":"เพิ่มเบส","Vocal":"เสียงร้อง","T Boost":"เพิ่มเทิร์น","Adjust Audio Quality":"ปรับปรุงคุณภาพเสียง","Optimization Results":"ผลการปรับปรุง","Audio Problem Description":"รายละเอียดปัญหาเสียง","Problem Type":"ประเภทปัญหา","Distortion":"การบิดทอน","Noise":"เสียงหายนะ","Volume Issues":"ปัญหาระดับเสียง","Clarity Issues":"ปัญหาความชัดเจน","Balance Issues":"ปัญหาการสมดุล","Describe the Problem":"บรรยายปัญหา","Diagnose Problem":"วินิจฉัยปัญหา","Diagnosis Results":"ผลการวินิจฉัย","Audio Parameters":"ตัวเลขเสียง","EQ Low (Hz)":"EQ ต่ำ (Hz)","EQ Mid (Hz)":"EQ กลาง (Hz)","EQ High (Hz)":"EQ สูง (Hz)","Room Type":"ประเภทห้อง","Small Room":"ห้องเล็ก","Medium Room":"ห้องกลาง","Large Room":"ห้องใหญ่","Outdoor":"หลังบ้าน","Optimize Parameters":"ปรับปรุงตัวเลข","Calibration Results":"ผลการปรับปรุง","Calibration Name":"ชื่อการปรับปรุง","Notes":"บันทึก","Saved Calibrations":"การบันทึกการปรับปรุง","Delete":"ลบ","Please describe the audio issue you're experiencing...":"กรุณาบรรยายปัญหาเสียงที่คุณประสบ...","Enter a name for this calibration":"ใส่ชื่อการปรับปรุงนี้...","Add any notes about this calibration...":"เพิ่มบันทึกเกี่ยวกับการปรับปรุงนี้...","Please upload an audio file first":"กรุณาอัพโหลดไฟล์เสียงก่อน...","Enhanced bass for deeper low frequencies":"เพิ่มเบสเพื่อให้เสียงต่ำมีความลึก","Enhanced treble for clearer vocals":"เพิ่มเทิร์นเพื่อให้เสียงร้องชัดเจน","Enhanced treble for brighter sound":"เพิ่มเทิร์นเพื่อให้เสียงมีความสว่าง","Balanced sound profile":"โปรไฟล์เสียงที่สมดุล","Increased volume for better audibility":"เพิ่มระดับเสียงเพื่อให้เสียงชัดเจน","Reduced volume to prevent distortion":"ลดระดับเสียงเพื่อป้องกันการบิดทอน","__title__":"Audio Calibration Assistant"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
