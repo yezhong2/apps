@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -46,14 +47,76 @@
   .analysis, .solution, .document, .performance {
     margin-top: 20px;
   }
+  .step-indicator {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    color: #888;
+  }
+  .step.active {
+    color: #0095ff;
+  }
+  .step-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+  }
+  .step.active .step-number {
+    background-color: #0095ff;
+  }
+  .free-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #00cc66;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+  }
+  .main-header {
+    position: relative;
+    margin-bottom: 20px;
+  }
 </style>
 <script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
 <body>
 <div class="container">
-  <h1>Welcome to SmartCodeChecker</h1>
+  <div class="main-header">
+    <h1>Welcome to SmartCodeChecker</h1>
+    <div class="free-badge">Free Forever</div>
+  </div>
+  
+  <div class="step-indicator">
+    <div class="step active">
+      <div class="step-number">1</div>
+      <span>Enter Code</span>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <span>Compile & Analyze</span>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <span>View Results</span>
+    </div>
+  </div>
+  
   <h2>Enter your code here:</h2>
   <textarea id="codeInput" rows="10" cols="50"></textarea>
+  
+  <button id="formatButton">Format Code</button>
   <button id="compileButton">Compile Code</button>
+  
   <div id="errorOutput" class="error"></div>
   <h2>Code Style Analysis and Optimization Suggestions</h2>
   <div id="analysisOutput" class="analysis"></div>
@@ -67,14 +130,60 @@
 
 <script>
   const compileButton = document.getElementById('compileButton');
+  const formatButton = document.getElementById('formatButton');
   const codeInput = document.getElementById('codeInput');
   const errorOutput = document.getElementById('errorOutput');
   const analysisOutput = document.getElementById('analysisOutput');
   const solutionOutput = document.getElementById('solutionOutput');
   const documentOutput = document.getElementById('documentOutput');
   const performanceOutput = document.getElementById('performanceOutput');
-
+  
+  // Code formatting function
+  formatButton.addEventListener('click', function() {
+    const code = codeInput.value;
+    if (!code) {
+      errorOutput.textContent = 'Please enter code to format';
+      return;
+    }
+    
+    // Basic code formatting
+    let formattedCode = code
+      .replace(/\s*\n\s*/g, '\n') // Remove extra whitespace and newlines
+      .replace(/;\s*/g, ';\n') // Add newline after semicolons
+      .replace(/{\s*/g, ' {\n') // Add newline before opening braces
+      .replace(/\s*}/g, '\n}') // Add newline before closing braces
+      .replace(/,\s*/g, ', '); // Add space after commas
+    
+    // Indent code
+    const lines = formattedCode.split('\n');
+    let indentLevel = 0;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].trim() === '') continue;
+      
+      // Decrease indent for closing braces
+      if (lines[i].trim() === '}') {
+        indentLevel = Math.max(0, indentLevel - 1);
+      }
+      
+      // Add indentation
+      lines[i] = '  '.repeat(indentLevel) + lines[i];
+      
+      // Increase indent for opening braces
+      if (lines[i].trim().endsWith('{')) {
+        indentLevel++;
+      }
+    }
+    
+    formattedCode = lines.join('\n');
+    codeInput.value = formattedCode;
+    errorOutput.textContent = 'Code formatted successfully';
+  });
+  
   compileButton.addEventListener('click', function() {
+    // Update step indicator
+    document.querySelectorAll('.step')[1].classList.add('active');
+    document.querySelectorAll('.step')[2].classList.add('active');
+    
     const code = codeInput.value;
     // Real-time code compilation and error display
     try {
@@ -121,7 +230,117 @@
       });
   });
 </script>
-<!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"SmartCodeChecker":"SmartCodeChecker","Welcome to SmartCodeChecker":"Welcome to SmartCodeChecker","Free Forever":"Free Forever","Enter Code":"Enter Code","Compile \u0026 Analyze":"Compile \u0026 Analyze","View Results":"View Results","Enter your code here:":"Enter your code here:","Format Code":"Format Code","Compile Code":"Compile Code","Code Style Analysis and Optimization Suggestions":"Code Style Analysis and Optimization Suggestions","Code Solution and Example":"Code Solution and Example","Code Documentation":"Code Documentation","Performance Analysis and Bottleneck Identification":"Performance Analysis and Bottleneck Identification","Please enter code to format":"Please enter code to format","Code formatted successfully":"Code formatted successfully","__title__":"SmartCodeChecker"},"zh-CN":{"Welcome to SmartCodeChecker":"欢迎使用SmartCodeChecker","Free Forever":"永久免费","Enter Code":"输入代码","Compile \u0026 Analyze":"编译与分析","View Results":"查看结果","Enter your code here:":"在此处输入您的代码：","Format Code":"格式化代码","Compile Code":"编译代码","Code Style Analysis and Optimization Suggestions":"代码风格分析和优化建议","Code Solution and Example":"代码解决方案和示例","Code Documentation":"代码文档","Performance Analysis and Bottleneck Identification":"性能分析和瓶颈识别","Please enter code to format":"请输入代码以进行格式化","Code formatted successfully":"代码格式化成功","__title__":"SmartCodeChecker"},"es":{"Welcome to SmartCodeChecker":"Bienvenido a SmartCodeChecker","Free Forever":"Gratis para siempre","Enter Code":"Ingresar código","Compile \u0026 Analyze":"Compilar y analizar","View Results":"Ver resultados","Enter your code here:":"Ingrese su código aquí:","Format Code":"Formatear código","Compile Code":"Compilar código","Code Style Analysis and Optimization Suggestions":"Análisis de estilo de código y sugerencias de optimización","Code Solution and Example":"Solución de código y ejemplo","Code Documentation":"Documentación de código","Performance Analysis and Bottleneck Identification":"Análisis de rendimiento e identificación de cuellos de botella","Please enter code to format":"Por favor, ingrese el código para formatearlo","Code formatted successfully":"Código formateado con éxito","__title__":"SmartCodeChecker"},"ko":{"SmartCodeChecker":"스마트코드체커","Welcome to SmartCodeChecker":"스마트코드체커에 오신 것을 환영합니다","Free Forever":"무료로 영원히","Enter Code":"코드 입력","Compile \u0026 Analyze":"컴파일 및 분석","View Results":"결과 보기","Enter your code here:":"여기에 코드를 입력하세요:","Format Code":"코드 포맷","Compile Code":"코드 컴파일","Code Style Analysis and Optimization Suggestions":"코드 스타일 분석 및 최적화 제안","Code Solution and Example":"코드 솔루션 및 예제","Code Documentation":"코드 문서화","Performance Analysis and Bottleneck Identification":"성능 분석 및 블랙홀 식별","Please enter code to format":"포맷할 코드를 입력하세요","Code formatted successfully":"코드 포맷 성공","__title__":"스마트코드체커"},"fr":{"Welcome to SmartCodeChecker":"Bienvenue à SmartCodeChecker","Free Forever":"Gratuit à vie","Enter Code":"Entrer le code","Compile \u0026 Analyze":"Compiler et analyser","View Results":"Voir les résultats","Enter your code here:":"Entrez votre code ici :","Format Code":"Formater le code","Compile Code":"Compiler le code","Code Style Analysis and Optimization Suggestions":"Analyse de style de code et suggestions d'optimisation","Code Solution and Example":"Solution de code et exemple","Code Documentation":"Documentation du code","Performance Analysis and Bottleneck Identification":"Analyse des performances et identification des goulets d'étranglement","Please enter code to format":"Veuillez entrer le code à formater","Code formatted successfully":"Code formaté avec succès","__title__":"SmartCodeChecker"},"de":{"Welcome to SmartCodeChecker":"Willkommen bei SmartCodeChecker","Free Forever":"Kostenlos für immer","Enter Code":"Code eingeben","Compile \u0026 Analyze":"Kompilieren \u0026 Analysieren","View Results":"Ergebnisse anzeigen","Enter your code here:":"Geben Sie hier Ihren Code ein:","Format Code":"Code formatieren","Compile Code":"Code kompilieren","Code Style Analysis and Optimization Suggestions":"Code-Style-Analyse und Optimierungsvorschläge","Code Solution and Example":"Code-Lösung und Beispiel","Code Documentation":"Code-Dokumentation","Performance Analysis and Bottleneck Identification":"Leistungsanalyse und Engpasserkennung","Please enter code to format":"Bitte geben Sie Code zum Formatieren ein","Code formatted successfully":"Code erfolgreich formatiert","__title__":"SmartCodeChecker"},"ru":{"Welcome to SmartCodeChecker":"Добро пожаловать в SmartCodeChecker","Free Forever":"Бесплатно навсегда","Enter Code":"Ввести код","Compile \u0026 Analyze":"Компилировать и анализировать","View Results":"Просмотреть результаты","Enter your code here:":"Введите ваш код здесь:","Format Code":"Форматировать код","Compile Code":"Компилировать код","Code Style Analysis and Optimization Suggestions":"Анализ стиля кода и предложения по оптимизации","Code Solution and Example":"Решение кода и пример","Code Documentation":"Документация кода","Performance Analysis and Bottleneck Identification":"Анализ производительности и определение узких мест","Please enter code to format":"Пожалуйста, введите код для форматирования","Code formatted successfully":"Код успешно отформатирован","__title__":"SmartCodeChecker"},"pt":{"Welcome to SmartCodeChecker":"Bem-vindo ao SmartCodeChecker","Free Forever":"Grátis para Sempre","Enter Code":"Insira o Código","Compile \u0026 Analyze":"Compilar e Analisar","View Results":"Ver Resultados","Enter your code here:":"Insira seu código aqui:","Format Code":"Formatar Código","Compile Code":"Compilar Código","Code Style Analysis and Optimization Suggestions":"Análise de Estilo de Código e Sugestões de Otimização","Code Solution and Example":"Solução de Código e Exemplo","Code Documentation":"Documentação de Código","Performance Analysis and Bottleneck Identification":"Análise de Desempenho e Identificação de gargalos","Please enter code to format":"Por favor, insira o código para formatar","Code formatted successfully":"Código formatado com sucesso","__title__":"SmartCodeChecker"},"ar":{"Welcome to SmartCodeChecker":"مرحبًا بكم في SmartCodeChecker","Free Forever":"مجاني إلى الأبد","Enter Code":"أدخل الكود","Compile \u0026 Analyze":"جمع وتحليل","View Results":"عرض النتائج","Enter your code here:":"أدخل كودك هنا:","Format Code":"تنسيق الكود","Compile Code":"جمع الكود","Code Style Analysis and Optimization Suggestions":"تحليل أسلوب الكود وتقديم نصائح لتحسينه","Code Solution and Example":"حلول الكود ومثال","Code Documentation":"توثيق الكود","Performance Analysis and Bottleneck Identification":"تحليل الأداء وتحديد العوائق","Please enter code to format":"الرجاء إدخال الكود لتنسيقه","Code formatted successfully":"تم تنسيق الكود بنجاح","__title__":"SmartCodeChecker"},"hi":{"SmartCodeChecker":"स्मार्टकोडचेकर","Welcome to SmartCodeChecker":"स्मार्टकोडचेकर में आपका स्वागत है","Free Forever":"फ्री फॉरएवर","Enter Code":"कोड भरें","Compile \u0026 Analyze":"कम्पाइल और विश्लेषण","View Results":"परिणाम देखें","Enter your code here:":"अपना कोड यहाँ भरें:","Format Code":"कोड को फॉर्मेट करें","Compile Code":"कोड को कम्पाइल करें","Code Style Analysis and Optimization Suggestions":"कोड स्टाइल विश्लेषण और अच्छाई सुझाव","Code Solution and Example":"कोड समाधान और उदाहरण","Code Documentation":"कोड दस्तावेज","Performance Analysis and Bottleneck Identification":"प्रदर्शन विश्लेषण और बोटल्नेक पहचान","Please enter code to format":"कृपया फॉर्मेट करने के लिए कोड भरें","Code formatted successfully":"कोड सफलता से फॉर्मेट किया गया","__title__":"स्मार्टकोडचेकर"},"id":{"Welcome to SmartCodeChecker":"Selamat datang di SmartCodeChecker","Free Forever":"Gratis Selamanya","Enter Code":"Masukkan Kode","Compile \u0026 Analyze":"Kompilasi \u0026 Analisis","View Results":"Lihat Hasil","Enter your code here:":"Masukkan kode anda disini:","Format Code":"Format Kode","Compile Code":"Kompilasi Kode","Code Style Analysis and Optimization Suggestions":"Analisis Gaya Kode dan Sugerensi Optimasi","Code Solution and Example":"Lösung und Beispiel für Code","Code Documentation":"Dokumentation des Codes","Performance Analysis and Bottleneck Identification":"Analisis Performansi dan Identifikasi Sempitnya","Please enter code to format":"Silakan masukkan kode untuk disusun","Code formatted successfully":"Kode disusun dengan sukses","__title__":"SmartCodeChecker"},"vi":{"Welcome to SmartCodeChecker":"Chào mừng bạn đến với SmartCodeChecker","Free Forever":"Miễn phí vĩnh viễn","Enter Code":"Nhập mã","Compile \u0026 Analyze":"Biên dịch và phân tích","View Results":"Xem kết quả","Enter your code here:":"Nhập mã của bạn ở đây:","Format Code":"Định dạng mã","Compile Code":"Biên dịch mã","Code Style Analysis and Optimization Suggestions":"Phân tích phong cách mã và gợi ý tối ưu hóa","Code Solution and Example":"Giải pháp mã và ví dụ","Code Documentation":"Tài liệu mã","Performance Analysis and Bottleneck Identification":"Phân tích hiệu suất và xác định điểm nghẽn","Please enter code to format":"Vui lòng nhập mã để định dạng","Code formatted successfully":"Mã đã được định dạng thành công","__title__":"SmartCodeChecker"},"th":{"Welcome to SmartCodeChecker":"ยินดีต้อนรับสู่ SmartCodeChecker","Free Forever":"ฟรีตลอดชีวิต","Enter Code":"ใส่รหัส","Compile \u0026 Analyze":"รวบรวมและวิเคราะห์","View Results":"ดูผลลัพธ์","Enter your code here:":"ใส่รหัสของคุณที่นี่:","Format Code":"จัดรูปแบบรหัส","Compile Code":"รวบรวมรหัส","Code Style Analysis and Optimization Suggestions":"วิเคราะห์รูปแบบรหัสและข้อเสนอที่จะปรับปรุง","Code Solution and Example":"แนะนำและตัวอย่างของรหัส","Code Documentation":"เอกสารรหัส","Performance Analysis and Bottleneck Identification":"วิเคราะห์ประสิทธิภาพและระบุจุดบรรทราง","Please enter code to format":"กรุณาใส่รหัสเพื่อจัดรูปแบบ","Code formatted successfully":"รหัสถูกจัดรูปแบบเรียบร้อย","__title__":"SmartCodeChecker"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
    调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
    task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
    失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
@@ -283,115 +502,5 @@
         window.__AIChannel = API;
         try { refresh(false); } catch (e) {}
     } catch (e) {}
-})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"SmartCodeChecker":"SmartCodeChecker","Welcome to SmartCodeChecker":"Welcome to SmartCodeChecker","Enter your code here:":"Enter your code here:","Compile Code":"Compile Code","Code Style Analysis and Optimization Suggestions":"Code Style Analysis and Optimization Suggestions","Code Solution and Example":"Code Solution and Example","Code Documentation":"Code Documentation","Performance Analysis and Bottleneck Identification":"Performance Analysis and Bottleneck Identification","job error":"job error","no payload":"no payload","frame error":"frame error","no result in time":"no result in time","no jid":"no jid","__title__":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Free online tool: SmartCodeChecker. No signup, no payment — free forever.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"zh-CN":{"Welcome to SmartCodeChecker":"欢迎使用SmartCodeChecker","Enter your code here:":"请在此处输入您的代码：","Compile Code":"编译代码","Code Style Analysis and Optimization Suggestions":"代码风格分析和优化建议","Code Solution and Example":"代码解决方案和示例","Code Documentation":"代码文档","Performance Analysis and Bottleneck Identification":"性能分析和瓶颈识别","job error":"作业错误","no payload":"无有效负载","frame error":"帧错误","no result in time":"未在规定时间内得到结果","no jid":"无作业ID","__title__":"SmartCodeChecker","SmartCodeChecker":"智能代码检查器","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"免费在线工具：SmartCodeChecker。无需注册，无需付费 — 永久免费。","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"es":{"Welcome to SmartCodeChecker":"Bienvenido a SmartCodeChecker","Enter your code here:":"Ingrese su código aquí:","Compile Code":"Compilar Código","Code Style Analysis and Optimization Suggestions":"Análisis de Estilo de Código y Sugerencias de Optimización","Code Solution and Example":"Solución de Código y Ejemplo","Code Documentation":"Documentación de Código","Performance Analysis and Bottleneck Identification":"Análisis de Rendimiento e Identificación de Cuellos de Botella","job error":"error de trabajo","no payload":"sin carga","frame error":"error de cuadro","no result in time":"sin resultado a tiempo","no jid":"sin jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Herramienta gratuita en línea: SmartCodeChecker. Sin registro, sin pago — gratis para siempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"ko":{"SmartCodeChecker":"스마트코드체커","Welcome to SmartCodeChecker":"스마트코드체커에 오신 것을 환영합니다","Enter your code here:":"여기에 코드를 입력하세요:","Compile Code":"코드 컴파일","Code Style Analysis and Optimization Suggestions":"코드 스타일 분석 및 최적화 제안","Code Solution and Example":"코드 솔루션 및 예제","Code Documentation":"코드 문서화","Performance Analysis and Bottleneck Identification":"성능 분석 및 부딪침점 식별","job error":"작업 오류","no payload":"데이터 없음","frame error":"프레임 오류","no result in time":"시간 내에 결과 없음","no jid":"jid 없음","__title__":"스마트코드체커","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"무료 온라인 도구: SmartCodeChecker. 가입 없음, 결제 없음 — 영원히 무료입니다.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"fr":{"Welcome to SmartCodeChecker":"Bienvenue dans SmartCodeChecker","Enter your code here:":"Entrez votre code ici :","Compile Code":"Compiler le Code","Code Style Analysis and Optimization Suggestions":"Analyse de Style du Code et Suggestions d'Optimisation","Code Solution and Example":"Solution de Code et Exemple","Code Documentation":"Documentation du Code","Performance Analysis and Bottleneck Identification":"Analyse de Performance et Identification des goulets d'étranglement","job error":"erreur job","no payload":"pas de charge utile","frame error":"erreur de trame","no result in time":"pas de résultat à temps","no jid":"pas de jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Outil en ligne gratuit : SmartCodeChecker. Pas d'inscription, pas de paiement — gratuit à jamais.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"de":{"Welcome to SmartCodeChecker":"Willkommen bei SmartCodeChecker","Enter your code here:":"Geben Sie hier Ihren Code ein:","Compile Code":"Code kompilieren","Code Style Analysis and Optimization Suggestions":"Code-Style-Analyse und Optimierungsvorschläge","Code Solution and Example":"Code-Lösung und Beispiel","Code Documentation":"Code-Dokumentation","Performance Analysis and Bottleneck Identification":"Leistungsanalyse und Engpasserkennung","job error":"Job-Fehler","no payload":"kein Payload","frame error":"Fehler im Rahmen","no result in time":"kein Ergebnis in der Zeit","no jid":"keine jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Kostenloses Online-Tool: SmartCodeChecker. Keine Anmeldung, keine Zahlung — für immer kostenlos.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"ru":{"Welcome to SmartCodeChecker":"Добро пожаловать в SmartCodeChecker","Enter your code here:":"Введи свой код здесь:","Compile Code":"Компилировать код","Code Style Analysis and Optimization Suggestions":"Анализ стиля кода и рекомендации по оптимизации","Code Solution and Example":"Решение кода и пример","Code Documentation":"Документация кода","Performance Analysis and Bottleneck Identification":"Анализ производительности и определение узких мест","job error":"ошибка работы","no payload":"нет полезной нагрузки","frame error":"ошибка кадра","no result in time":"нет результата в срок","no jid":"нет jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Бесплатный онлайн-инструмент: SmartCodeChecker. Без регистрации, без оплаты — бесплатно всегда.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"pt":{"Welcome to SmartCodeChecker":"Bem-vindo ao SmartCodeChecker","Enter your code here:":"Insira seu código aqui:","Compile Code":"Compilar Código","Code Style Analysis and Optimization Suggestions":"Análise de Estilo de Código e Sugestões de Otimização","Code Solution and Example":"Solução de Código e Exemplo","Code Documentation":"Documentação de Código","Performance Analysis and Bottleneck Identification":"Análise de Desempenho e Identificação de gargalos","job error":"erro de job","no payload":"sem carga","frame error":"erro de frame","no result in time":"sem resultado no tempo","no jid":"sem jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Ferramenta online gratuita: SmartCodeChecker. Sem cadastro, sem pagamento — gratuito para sempre.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"ar":{"Welcome to SmartCodeChecker":"مرحبًا بكم في SmartCodeChecker","Enter your code here:":"ادخل كودك هنا:","Compile Code":"جمع الكود","Code Style Analysis and Optimization Suggestions":"تحليل أسلوب الكود وتقديم مقترحات التكامل","Code Solution and Example":"حلول الكود ومثال","Code Documentation":"توثيق الكود","Performance Analysis and Bottleneck Identification":"تحليل الأداء وتحديد النقاط الساخنة","job error":"خطأ في الوظيفة","no payload":"لا يوجد حمولة","frame error":"خطأ في الإطار","no result in time":"لا يوجد نتيجة في الوقت المحدد","no jid":"لا يوجد جيدي","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"أداة مجانية على الإنترنت: SmartCodeChecker. بدون تسجيل، بدون دفع — مجانية إلى الأبد.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"hi":{"SmartCodeChecker":"स्मार्टकोडचेकर","Welcome to SmartCodeChecker":"स्मार्टकोडचेकर में आपका स्वागत है","Enter your code here:":"यहाँ आपका कोड दर्ज करें:","Compile Code":"कोड कम्पाइल करें","Code Style Analysis and Optimization Suggestions":"कोड स्टाइल विश्लेषण और अच्छाई सुझाव","Code Solution and Example":"कोड समाधान और उदाहरण","Code Documentation":"कोड दस्तावेज","Performance Analysis and Bottleneck Identification":"प्रदर्शन विश्लेषण और बोटल्नेक पहचान","job error":"जॉब त्रुटि","no payload":"पायलोड नहीं","frame error":"फ्रेम त्रुटि","no result in time":"समय में कोई परिणाम नहीं","no jid":"जिड नहीं","__title__":"स्मार्टकोडचेकर","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"फ्री ऑनलाइन टूल: स्मार्टकोडचेकर. कोई साइनअप नहीं, कोई भुगतान नहीं — हमेशा फ्री.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"id":{"Welcome to SmartCodeChecker":"Selamat datang di SmartCodeChecker","Enter your code here:":"Masukkan kode anda disini:","Compile Code":"Kompilasi Kode","Code Style Analysis and Optimization Suggestions":"Analisis Gaya Kode dan Sugerensi Optimasi","Code Solution and Example":"Lösung und Beispiel für den Code","Code Documentation":"Dokumentation des Codes","Performance Analysis and Bottleneck Identification":"Analisis Performansi dan Identifikasi Sempit","job error":"kesalahan pekerjaan","no payload":"tidak ada muatan","frame error":"kesalahan bingkai","no result in time":"tidak ada hasil dalam waktu","no jid":"tidak ada jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Alat online gratis: SmartCodeChecker. Tanpa pendaftaran, tanpa pembayaran — gratis selamanya.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"vi":{"Welcome to SmartCodeChecker":"Chào mừng bạn đến với SmartCodeChecker","Enter your code here:":"Nhập mã của bạn ở đây:","Compile Code":"Biên dịch mã","Code Style Analysis and Optimization Suggestions":"Phân tích phong cách mã và gợi ý tối ưu hóa","Code Solution and Example":"Giải pháp mã và ví dụ","Code Documentation":"Tài liệu mã","Performance Analysis and Bottleneck Identification":"Phân tích hiệu suất và xác định điểm nghẽn","job error":"lỗi công việc","no payload":"không có payload","frame error":"lỗi khung","no result in time":"không có kết quả trong thời gian","no jid":"không có jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"Công cụ trực tuyến miễn phí: SmartCodeChecker. Không đăng ký, không thanh toán — miễn phí vĩnh viễn.","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"},"th":{"Welcome to SmartCodeChecker":"ยินดีต้อนรับสู่ SmartCodeChecker","Enter your code here:":"ใส่รหัสของคุณที่นี่:","Compile Code":"รวบรวมรหัส","Code Style Analysis and Optimization Suggestions":"วิเคราะห์รูปแบบรหัสและข้อเสนอที่จะปรับปรุง","Code Solution and Example":"แนวทางและตัวอย่างรหัส","Code Documentation":"เอกสารรหัส","Performance Analysis and Bottleneck Identification":"วิเคราะห์ประสิทธิภาพและระบบหยุดยั้ง","job error":"ข้อผิดพลาดงาน","no payload":"ไม่มี payload","frame error":"ข้อผิดพลาดแบบ","no result in time":"ไม่มีผลลัพธ์ในเวลา","no jid":"ไม่มี jid","__title__":"SmartCodeChecker","SmartCodeChecker":"SmartCodeChecker","UTF-8":"UTF-8","Free online tool: SmartCodeChecker. No signup, no payment — free forever.":"เครื่องมือออนไลน์ฟรี: SmartCodeChecker. ไม่ต้องลงทะเบียน ไม่ต้องจ่ายค่าใช้จ่าย — ฟรีตลอดชีวิต","og:title":"og:title","og:description":"og:description","og:type":"og:type","og:url":"og:url","LA_COLLECT":"LA_COLLECT"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
-var LS="radar-lang";
-var PACKS=window.__I18N_PACKS||{};
-var FIXED=window.__I18N_FIXED||{};
-var GEO=window.__I18N_GEO||{};
-var RES_VER="20261003b";
-var busy=false;
-function norm(s){return (s||"").replace(/\s+/g," ").trim();}
-function navLang(){
-var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
-if(l.indexOf("zh")===0)return "zh-CN";
-if(l.indexOf("es")===0)return "es";
-if(l.indexOf("ja")===0)return "ja";
-if(l.indexOf("ko")===0)return "ko";
-if(l.indexOf("fr")===0)return "fr";
-if(l.indexOf("de")===0)return "de";
-if(l.indexOf("ru")===0)return "ru";
-if(l.indexOf("pt")===0)return "pt";
-if(l.indexOf("ar")===0)return "ar";
-if(l.indexOf("hi")===0)return "hi";
-if(l.indexOf("id")===0)return "id";
-if(l.indexOf("vi")===0)return "vi";
-if(l.indexOf("th")===0)return "th";
-if(l.indexOf("en")===0)return "en";
-return "";
-}
-function applyTexts(lang,fromEn){
-if(busy)return;
-busy=true;
-try{
-if(!PACKS[lang])lang="en";
-var map=PACKS[lang]||{};
-var enMap=PACKS.en||{};
-var fix=FIXED[lang]||{};
-var els=document.querySelectorAll("[data-i18n-id]");
-for(var i=0;i<els.length;i++){
-var id=els[i].getAttribute("data-i18n-id");
-if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
-}
-var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
-for(var j=0;j<nodes.length;j++){
-var el=nodes[j];
-if(el.getAttribute("data-i18n-id"))continue;
-if(el.closest&&el.closest("#lang-switch"))continue;
-if(el.closest&&el.closest("#adSlot"))continue;
-if(el.children&&el.children.length)continue;
-var cur=norm(el.textContent);
-var key=null;
-if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
-else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
-else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
-if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
-}
-if(map.__title__)document.title=map.__title__;
-}finally{busy=false;}
-}
-function apply(lang,persist){
-applyTexts(lang,false);
-try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
-if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
-}
-function geoApply(){
-try{
-var x=new XMLHttpRequest();
-x.open("GET","https://ipwho.is/",true);
-x.timeout=4000;
-x.onreadystatechange=function(){
-if(x.readyState!==4)return;
-var cc="";
-try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
-var l=GEO[cc]||"en";
-apply(PACKS[l]?l:"en");
-};
-x.onerror=function(){apply("en");};
-x.send();
-}catch(e){apply("en");}
-}
-function watchMutations(){
-if(typeof MutationObserver==="undefined")return;
-try{
-var t=null;
-var obs=new MutationObserver(function(){
-if(busy)return;
-if(t)clearTimeout(t);
-t=setTimeout(function(){
-var sel=document.getElementById("lang-select");
-if(!sel)return;
-applyTexts(sel.value,true);
-},50);
-});
-obs.observe(document.body,{subtree:true,childList:true,characterData:true});
-}catch(e){}
-}
-function init(){
-var sel=document.getElementById("lang-select");
-if(!sel)return;
-sel.onchange=function(){apply(sel.value,true);};
-var saved="";
-try{saved=localStorage.getItem(LS)||"";}catch(e){}
-if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
-var nv=navLang();
-if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
-geoApply();
-}
-if(document.readyState==="loading"){
-document.addEventListener("DOMContentLoaded",init);
-}else{
-init();
-}
-watchMutations();
-})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script></body>
+})();</script><!-- radar-aichannel-end --></body>
 </html>
