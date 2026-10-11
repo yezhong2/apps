@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindFlow - Thinking Tools</title><meta name="description" content="Free online tool: MindFlow - Thinking Tools. No signup, no payment — free forever.">
+<meta property="og:title" content="MindFlow - Thinking Tools">
+<meta property="og:description" content="Free online tool: MindFlow - Thinking Tools. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-12_013528_思维训练工具.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #6366f1;
+            --accent-hover: #818cf8;
+            --border: #333333;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--bg-secondary);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-box input {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border-radius: 20px;
+            color: var(--text-primary);
+            width: 200px;
+        }
+        
+        .search-box button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        /* Navigation Styles */
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-list {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+        
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-link.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+        
+        /* Main Content Styles */
+        main {
+            padding: 2rem 0;
+        }
+        
+        .tool-section {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            border-radius: 5px;
+            color: var(--text-primary);
+            resize: vertical;
+        }
+        
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .result-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--bg-tertiary);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result-container.show {
+            display: block;
+        }
+        
+        /* Mind Map Styles */
+        .mind-map-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .mind-map-node {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            min-width: 150px;
+            position: relative;
+        }
+        
+        .mind-map-node.main {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .mind-map-node.primary {
+            background-color: #4f46e5;
+            color: white;
+        }
+        
+        /* Learning Resources Styles */
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .resource-card {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .resource-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resource-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .resource-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        /* Footer Styles */
+        footer {
+            background-color: var(--bg-secondary);
+            padding: 2rem 0;
+            margin-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .footer-link {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-link:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .nav-list {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .mind-map-container {
+                flex-direction: column;
+            }
+            
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo">MindFlow</a>
+                <div class="search-box">
+                    <input type="text" placeholder="Search tools...">
+                    <button>🔍</button>
+                </div>
+                <div class="user-menu">
+                    <div class="user-avatar">U</div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <nav>
+        <div class="container">
+            <ul class="nav-list">
+                <li><a href="#" class="nav-link active">Thinking Tools</a></li>
+                <li><a href="#" class="nav-link">Learning Resources</a></li>
+                <li><a href="#" class="nav-link">About Us</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main class="container">
+        <!-- Mind Map Drawing Tool -->
+        <section class="tool-section">
+            <h2 class="section-title">Mind Map Drawing</h2>
+            <div class="input-group">
+                <label for="keyword-input">Enter keyword</label>
+                <textarea id="keyword-input" rows="3" placeholder="Enter a keyword to generate a mind map..."></textarea>
+            </div>
+            <button id="generate-mindmap" class="btn">Generate Mind Map</button>
+            <div id="mindmap-result" class="result-container">
+                <div id="mindmap-display" class="mind-map-container"></div>
+            </div>
+        </section>
+        
+        <!-- Mind Path Planning Tool -->
+        <section class="tool-section">
+            <h2 class="section-title">Mind Path Planning</h2>
+            <div class="input-group">
+                <label for="goal-input">Enter your goal</label>
+                <textarea id="goal-input" rows="3" placeholder="Describe what you want to achieve..."></textarea>
+            </div>
+            <button id="plan-path" class="btn">Get Path Planning</button>
+            <div id="path-result" class="result-container">
+                <div id="path-display"></div>
+            </div>
+        </section>
+        
+        <!-- Problem Solving Tool -->
+        <section class="tool-section">
+            <h2 class="section-title">Problem Solving Analysis</h2>
+            <div class="input-group">
+                <label for="problem-input">Describe your problem</label>
+                <textarea id="problem-input" rows="3" placeholder="Enter the problem you need help solving..."></textarea>
+            </div>
+            <button id="analyze-problem" class="btn">Analyze Problem</button>
+            <div id="problem-result" class="result-container">
+                <div id="problem-display"></div>
+            </div>
+        </section>
+        
+        <!-- Creative Thinking Tool -->
+        <section class="tool-section">
+            <h2 class="section-title">Creative Thinking Inspiration</h2>
+            <div class="input-group">
+                <label for="idea-input">Enter your idea</label>
+                <textarea id="idea-input" rows="3" placeholder="Share your initial idea for creative expansion..."></textarea>
+            </div>
+            <button id="get-inspiration" class="btn">Get Creative Ideas</button>
+            <div id="inspiration-result" class="result-container">
+                <div id="inspiration-display"></div>
+            </div>
+        </section>
+        
+        <!-- Learning Resources Tool -->
+        <section class="tool-section">
+            <h2 class="section-title">Learning Resources Recommendation</h2>
+            <div class="input-group">
+                <label for="field-input">Enter learning field</label>
+                <input type="text" id="field-input" placeholder="e.g., Web Development, Data Science...">
+            </div>
+            <button id="get-resources" class="btn">Find Resources</button>
+            <div id="resources-result" class="result-container">
+                <div id="resources-display" class="resource-list"></div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <a href="#" class="footer-link">Email: support@mindflow.com</a>
+                    <a href="#" class="footer-link">Twitter: @mindflow</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <a href="#" class="footer-link">Documentation</a>
+                    <a href="#" class="footer-link">Blog</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Feedback</h3>
+                    <a href="#" class="footer-link">Send Feedback</a>
+                    <a href="#" class="footer-link">Report Issues</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Navigation functionality
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Mind Map Drawing Functionality
+        document.getElementById('generate-mindmap').addEventListener('click', function() {
+            const keyword = document.getElementById('keyword-input').value.trim();
+            const resultContainer = document.getElementById('mindmap-result');
+            const mindmapDisplay = document.getElementById('mindmap-display');
+            
+            if (!keyword) {
+                alert('Please enter a keyword');
+                return;
+            }
+            
+            // Show loading state
+            resultContainer.classList.add('show');
+            mindmapDisplay.innerHTML = '<div class="loading"></div> Generating mind map...';
+            
+            // Call AI service for mind map
+            window.__AIChannel.submit('story', keyword).then(function(response) {
+                const data = response.text;
+                
+                // Parse and display mind map
+                mindmapDisplay.innerHTML = '';
+                
+                // Main concept
+                const mainNode = document.createElement('div');
+                mainNode.className = 'mind-map-node main';
+                mainNode.textContent = keyword;
+                mindmapDisplay.appendChild(mainNode);
+                
+                // Parse related concepts (simplified for this example)
+                const relatedConcepts = data.split('\n').slice(0, 5);
+                
+                relatedConcepts.forEach((concept, index) => {
+                    if (concept.trim()) {
+                        const node = document.createElement('div');
+                        node.className = 'mind-map-node primary';
+                        node.textContent = concept.trim();
+                        mindmapDisplay.appendChild(node);
+                        
+                        // Add sub-concepts
+                        if (index < 3) {
+                            for (let i = 0; i < 2; i++) {
+                                const subNode = document.createElement('div');
+                                subNode.className = 'mind-map-node';
+                                subNode.textContent = `${concept.trim()} - Point ${i + 1}`;
+                                mindmapDisplay.appendChild(subNode);
+                            }
+                        }
+                    }
+                });
+            }).catch(function(error) {
+                mindmapDisplay.innerHTML = `<p>Error generating mind map. <a href="${error.url}" target="_blank">Learn more</a></p>`;
+            });
+        });
+        
+        // Mind Path Planning Functionality
+        document.getElementById('plan-path').addEventListener('click', function() {
+            const goal = document.getElementById('goal-input').value.trim();
+            const resultContainer = document.getElementById('path-result');
+            const pathDisplay = document.getElementById('path-display');
+            
+            if (!goal) {
+                alert('Please enter your goal');
+                return;
+            }
+            
+            // Show loading state
+            resultContainer.classList.add('show');
+            pathDisplay.innerHTML = '<div class="loading"></div> Planning your path...';
+            
+            // Call AI service for path planning
+            window.__AIChannel.submit('plot', goal).then(function(response) {
+                const data = response.text;
+                
+                // Format and display path
+                pathDisplay.innerHTML = `
+                    <h3>Your Path to Success</h3>
+                    <div>${data}</div>
+                `;
+            }).catch(function(error) {
+                pathDisplay.innerHTML = `<p>Error planning your path. <a href="${error.url}" target="_blank">Learn more</a></p>`;
+            });
+        });
+        
+        // Problem Solving Functionality
+        document.getElementById('analyze-problem').addEventListener('click', function() {
+            const problem = document.getElementById('problem-input').value.trim();
+            const resultContainer = document.getElementById('problem-result');
+            const problemDisplay = document.getElementById('problem-display');
+            
+            if (!problem) {
+                alert('Please describe your problem');
+                return;
+            }
+            
+            // Show loading state
+            resultContainer.classList.add('show');
+            problemDisplay.innerHTML = '<div class="loading"></div> Analyzing your problem...';
+            
+            // Call AI service for problem analysis
+            window.__AIChannel.submit('conflict', problem).then(function(response) {
+                const data = response.text;
+                
+                // Format and display problem analysis
+                problemDisplay.innerHTML = `
+                    <h3>Problem Analysis</h3>
+                    <div>${data}</div>
+                `;
+            }).catch(function(error) {
+                problemDisplay.innerHTML = `<p>Error analyzing your problem. <a href="${error.url}" target="_blank">Learn more</a></p>`;
+            });
+        });
+        
+        // Creative Thinking Functionality
+        document.getElementById('get-inspiration').addEventListener('click', function() {
+            const idea = document.getElementById('idea-input').value.trim();
+            const resultContainer = document.getElementById('inspiration-result');
+            const inspirationDisplay = document.getElementById('inspiration-display');
+            
+            if (!idea) {
+                alert('Please enter your idea');
+                return;
+            }
+            
+            // Show loading state
+            resultContainer.classList.add('show');
+            inspirationDisplay.innerHTML = '<div class="loading"></div> Generating creative ideas...';
+            
+            // Call AI service for creative thinking
+            window.__AIChannel.submit('refine', idea).then(function(response) {
+                const data = response.text;
+                
+                // Format and display creative ideas
+                inspirationDisplay.innerHTML = `
+                    <h3>Creative Expansion</h3>
+                    <div>${data}</div>
+                `;
+            }).catch(function(error) {
+                inspirationDisplay.innerHTML = `<p>Error generating creative ideas. <a href="${error.url}" target="_blank">Learn more</a></p>`;
+            });
+        });
+        
+        // Learning Resources Functionality
+        document.getElementById('get-resources').addEventListener('click', function() {
+            const field = document.getElementById('field-input').value.trim();
+            const resultContainer = document.getElementById('resources-result');
+            const resourcesDisplay = document.getElementById('resources-display');
+            
+            if (!field) {
+                alert('Please enter a learning field');
+                return;
+            }
+            
+            // Show loading state
+            resultContainer.classList.add('show');
+            resourcesDisplay.innerHTML = '<div class="loading"></div> Finding resources...';
+            
+            // Call AI service for resource recommendations
+            window.__AIChannel.submit('tips', field).then(function(response) {
+                const data = response.text;
+                
+                // Parse and display resources
+                resourcesDisplay.innerHTML = '';
+                
+                // Split resources into array
+                const resources = data.split('\n').filter(r => r.trim());
+                
+                // Create resource cards
+                resources.forEach((resource, index) => {
+                    if (index < 6) { // Limit to 6 resources
+                        const card = document.createElement('div');
+                        card.className = 'resource-card';
+                        card.innerHTML = `
+                            <div class="resource-title">${field} Resource ${index + 1}</div>
+                            <div class="resource-description">${resource}</div>
+                            <a href="#" class="resource-link">Learn more →</a>
+                        `;
+                        resourcesDisplay.appendChild(card);
+                    }
+                });
+            }).catch(function(error) {
+                resourcesDisplay.innerHTML = `<p>Error finding resources. <a href="${error.url}" target="_blank">Learn more</a></p>`;
+            });
+        });
+        
+        // User menu functionality
+        document.querySelector('.user-avatar').addEventListener('click', function() {
+            alert('User menu functionality would go here');
+        });
+        
+        // Search functionality
+        document.querySelector('.search-box button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-box input').value.trim();
+            if (searchTerm) {
+                alert(`Searching for: ${searchTerm}`);
+            }
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"MindFlow - Thinking Tools":"MindFlow - Thinking Tools","MindFlow":"MindFlow","Thinking Tools":"Thinking Tools","Learning Resources":"Learning Resources","About Us":"About Us","Mind Map Drawing":"Mind Map Drawing","Enter keyword":"Enter keyword","Generate Mind Map":"Generate Mind Map","Mind Path Planning":"Mind Path Planning","Enter your goal":"Enter your goal","Get Path Planning":"Get Path Planning","Problem Solving Analysis":"Problem Solving Analysis","Describe your problem":"Describe your problem","Analyze Problem":"Analyze Problem","Creative Thinking Inspiration":"Creative Thinking Inspiration","Enter your idea":"Enter your idea","Get Creative Ideas":"Get Creative Ideas","Learning Resources Recommendation":"Learning Resources Recommendation","Enter learning field":"Enter learning field","Find Resources":"Find Resources","Contact Us":"Contact Us","Resources":"Resources","Documentation":"Documentation","Blog":"Blog","Feedback":"Feedback","Send Feedback":"Send Feedback","Report Issues":"Report Issues","Error generating mind map.":"Error generating mind map.","Learn more":"Learn more","Your Path to Success":"Your Path to Success","Error planning your path.":"Error planning your path.","Problem Analysis":"Problem Analysis","Error analyzing your problem.":"Error analyzing your problem.","Creative Expansion":"Creative Expansion","Error generating creative ideas.":"Error generating creative ideas.","Learn more →":"Learn more →","Error finding resources.":"Error finding resources.","Search tools...":"Search tools...","Enter a keyword to generate a mind map...":"Enter a keyword to generate a mind map...","Describe what you want to achieve...":"Describe what you want to achieve...","Enter the problem you need help solving...":"Enter the problem you need help solving...","Share your initial idea for creative expansion...":"Share your initial idea for creative expansion...","e.g., Web Development, Data Science...":"e.g., Web Development, Data Science...","Please enter a keyword":"Please enter a keyword","mind-map-node main":"mind-map-node main","mind-map-node primary":"mind-map-node primary","Please enter your goal":"Please enter your goal","Please describe your problem":"Please describe your problem","Please enter your idea":"Please enter your idea","Please enter a learning field":"Please enter a learning field","User menu functionality would go here":"User menu functionality would go here","__title__":"MindFlow - Thinking Tools"},"zh-CN":{"MindFlow - Thinking Tools":"MindFlow - 思维工具","Thinking Tools":"思维工具","Learning Resources":"学习资源","About Us":"关于我们","Mind Map Drawing":"思维导图绘制","Enter keyword":"输入关键词","Generate Mind Map":"生成思维导图","Mind Path Planning":"思维路径规划","Enter your goal":"输入您的目标","Get Path Planning":"获取路径规划","Problem Solving Analysis":"问题解决分析","Describe your problem":"描述您的问题","Analyze Problem":"分析问题","Creative Thinking Inspiration":"创意思维灵感","Enter your idea":"输入您的想法","Get Creative Ideas":"获取创意想法","Learning Resources Recommendation":"学习资源推荐","Enter learning field":"输入学习领域","Find Resources":"查找资源","Contact Us":"联系我们","Resources":"资源","Documentation":"文档","Blog":"博客","Feedback":"反馈","Send Feedback":"发送反馈","Report Issues":"报告问题","Error generating mind map.":"生成思维导图时出错。","Learn more":"了解更多","Your Path to Success":"您的成功之路","Error planning your path.":"规划您的路径时出错。","Problem Analysis":"问题分析","Error analyzing your problem.":"分析您的问题时出错。","Creative Expansion":"创意扩展","Error generating creative ideas.":"生成创意想法时出错。","Learn more →":"了解更多 →","Error finding resources.":"查找资源时出错。","Search tools...":"搜索工具...","Enter a keyword to generate a mind map...":"输入关键词以生成思维导图...","Describe what you want to achieve...":"描述您想要实现的目标...","Enter the problem you need help solving...":"输入您需要帮助解决的问题...","Share your initial idea for creative expansion...":"分享您创意扩展的初步想法...","e.g., Web Development, Data Science...":"例如，Web开发，数据科学...","Please enter a keyword":"请输入一个关键词","mind-map-node main":"思维导图节点 主","mind-map-node primary":"思维导图节点 主要","Please enter your goal":"请输入您的目标","Please describe your problem":"请描述您的问题","Please enter your idea":"请输入您的想法","Please enter a learning field":"请输入一个学习领域","User menu functionality would go here":"用户菜单功能将在这里显示","__title__":"MindFlow - 思维工具"},"es":{"MindFlow - Thinking Tools":"MindFlow - Herramientas de Pensamiento","Thinking Tools":"Herramientas de Pensamiento","Learning Resources":"Recursos de Aprendizaje","About Us":"Acerca de Nosotros","Mind Map Drawing":"Dibujo de Mapa Mental","Enter keyword":"Ingrese una palabra clave","Generate Mind Map":"Generar Mapa Mental","Mind Path Planning":"Planificación de Ruta Mental","Enter your goal":"Ingrese su objetivo","Get Path Planning":"Obtener Planificación de Ruta","Problem Solving Analysis":"Análisis de Solución de Problemas","Describe your problem":"Describa su problema","Analyze Problem":"Analizar Problema","Creative Thinking Inspiration":"Inspiración para el Pensamiento Creativo","Enter your idea":"Ingrese su idea","Get Creative Ideas":"Obtener Ideas Creativas","Learning Resources Recommendation":"Recomendación de Recursos de Aprendizaje","Enter learning field":"Ingrese el campo de aprendizaje","Find Resources":"Encontrar Recursos","Contact Us":"Contactarnos","Resources":"Recursos","Documentation":"Documentación","Feedback":"Enviar Retroalimentación","Send Feedback":"Enviar Retroalimentación","Report Issues":"Reportar Problemas","Error generating mind map.":"Error generando el mapa mental.","Learn more":"Aprender más","Your Path to Success":"Su Camino al Éxito","Error planning your path.":"Error planificando su ruta.","Problem Analysis":"Análisis de Problema","Error analyzing your problem.":"Error analizando su problema.","Creative Expansion":"Expansión Creativa","Error generating creative ideas.":"Error generando ideas creativas.","Learn more →":"Aprender más →","Error finding resources.":"Error encontrando recursos.","Search tools...":"Herramientas de búsqueda...","Enter a keyword to generate a mind map...":"Ingrese una palabra clave para generar un mapa mental...","Describe what you want to achieve...":"Describa lo que desea lograr...","Enter the problem you need help solving...":"Ingrese el problema que necesita resolver...","Share your initial idea for creative expansion...":"Compartir su idea inicial para la expansión creativa...","e.g., Web Development, Data Science...":"por ejemplo, Desarrollo Web, Ciencia de Datos...","Please enter a keyword":"Por favor, ingrese una palabra clave","mind-map-node main":"mind-map-node principal","mind-map-node primary":"mind-map-node primario","Please enter your goal":"Por favor, ingrese su objetivo","Please describe your problem":"Por favor, describa su problema","Please enter your idea":"Por favor, ingrese su idea","Please enter a learning field":"Por favor, ingrese un campo de aprendizaje","User menu functionality would go here":"Aquí iría la funcionalidad del menú de usuario","__title__":"MindFlow - Herramientas de Pensamiento"},"ja":{"MindFlow - Thinking Tools":"MindFlow - 思考ツール","Thinking Tools":"思考ツール","Learning Resources":"学習リソース","About Us":"关于我们","Mind Map Drawing":"マインドマップ描画","Enter keyword":"キーワードを入力","Generate Mind Map":"マインドマップの生成","Mind Path Planning":"マインドパス計画","Enter your goal":"あなたの目標を入力","Get Path Planning":"パス計画の取得","Problem Solving Analysis":"問題解決分析","Describe your problem":"あなたの問題を説明","Analyze Problem":"問題の分析","Creative Thinking Inspiration":"創造的な思考のインスピレーション","Enter your idea":"あなたのアイデアを入力","Get Creative Ideas":"創造的なアイデアの取得","Learning Resources Recommendation":"学習リソースの推薦","Enter learning field":"学習分野を入力","Find Resources":"リソースの検索","Contact Us":"お問い合わせ","Resources":"リソース","Documentation":"ドキュメント","Blog":"ブログ","Feedback":"フィードバック","Send Feedback":"フィードバックの送信","Report Issues":"問題の報告","Error generating mind map.":"マインドマップの生成中にエラーが発生しました。","Learn more":"もっと学ぶ","Your Path to Success":"あなたの成功への道","Error planning your path.":"パスの計画中にエラーが発生しました。","Problem Analysis":"問題分析","Error analyzing your problem.":"問題の分析中にエラーが発生しました。","Creative Expansion":"創造的拡張","Error generating creative ideas.":"創造的なアイデアの生成中にエラーが発生しました。","Learn more →":"もっと学ぶ →","Error finding resources.":"リソースの検索中にエラーが発生しました。","Search tools...":"検索ツール...","Enter a keyword to generate a mind map...":"マインドマップの生成に使用するキーワードを入力...","Describe what you want to achieve...":"達成したいことを説明...","Enter the problem you need help solving...":"解決したい問題を入力...","Share your initial idea for creative expansion...":"創造的拡張のための最初のアイデアを共有...","e.g., Web Development, Data Science...":"例：Web開発、データサイエンス...","Please enter a keyword":"キーワードを入力してください","Please enter your goal":"あなたの目標を入力してください","Please describe your problem":"あなたの問題を説明してください","Please enter your idea":"あなたのアイデアを入力してください","Please enter a learning field":"学習分野を入力してください","User menu functionality would go here":"ユーザーメニュー機能がここに表示されます","__title__":"MindFlow - 思考ツール"},"ko":{"MindFlow - Thinking Tools":"마인드플로우 - 사고 도구","MindFlow":"마인드플로우","Thinking Tools":"사고 도구","Learning Resources":"학습 자료","About Us":"우리에 대해","Mind Map Drawing":"마인드맵 그리기","Enter keyword":"키워드 입력","Generate Mind Map":"마인드맵 생성","Mind Path Planning":"마인드 패스 계획","Enter your goal":"목표 입력","Get Path Planning":"패스 계획 가져오기","Problem Solving Analysis":"문제 해결 분석","Describe your problem":"문제 설명","Analyze Problem":"문제 분석","Creative Thinking Inspiration":"창의적 사고 영감","Enter your idea":"아이디어 입력","Get Creative Ideas":"창의적 아이디어 가져오기","Learning Resources Recommendation":"학습 자료 추천","Enter learning field":"학습 분야 입력","Find Resources":"자료 찾기","Contact Us":"연락처","Resources":"자료","Documentation":"문서","Blog":"블로그","Feedback":" 피드백","Send Feedback":"피드백 전송","Report Issues":"문제보고","Error generating mind map.":"마인드맵 생성 오류.","Learn more":"더 알아보기","Your Path to Success":"성공의 길","Error planning your path.":"패스 계획 오류.","Problem Analysis":"문제 분석","Error analyzing your problem.":"문제 분석 오류.","Creative Expansion":"창의적 확장","Error generating creative ideas.":"창의적 아이디어 생성 오류.","Learn more →":"더 알아보기 →","Error finding resources.":"자료 찾기 오류.","Search tools...":"검색 도구...","Enter a keyword to generate a mind map...":"마인드맵 생성을 위해 키워드 입력...","Describe what you want to achieve...":"달성하고 싶은 것을 설명...","Enter the problem you need help solving...":"해결해야 할 문제를 입력...","Share your initial idea for creative expansion...":"창의적 확장을 위한 초기 아이디어를 공유...","e.g., Web Development, Data Science...":"예를 들어, 웹 개발, 데이터 과학...","Please enter a keyword":"키워드 입력해 주세요","mind-map-node main":"마인드맵 노드 메인","mind-map-node primary":"마인드맵 노드 주요","Please enter your goal":"목표 입력해 주세요","Please describe your problem":"문제 설명해 주세요","Please enter your idea":"아이디어 입력해 주세요","Please enter a learning field":"학습 분야 입력해 주세요","User menu functionality would go here":"사용자 메뉴 기능이 여기에 들어갈 예정입니다","__title__":"마인드플로우 - 사고 도구"},"fr":{"MindFlow - Thinking Tools":"MindFlow - Outils de Pensée","Thinking Tools":"Outils de Pensée","Learning Resources":"Ressources d'Apprentissage","About Us":"À Propos de Nous","Mind Map Drawing":"Dessin de Carte Mentale","Enter keyword":"Entrer un mot-clé","Generate Mind Map":"Générer une Carte Mentale","Mind Path Planning":"Planification de Chemin de la Pensée","Enter your goal":"Entrer votre objectif","Get Path Planning":"Obtenir la Planification de Chemin","Problem Solving Analysis":"Analyse de Résolution de Problèmes","Describe your problem":"Décrivez votre problème","Analyze Problem":"Analyser le Problème","Creative Thinking Inspiration":"Inspiration de Pensée Créative","Enter your idea":"Entrer votre idée","Get Creative Ideas":"Obtenir des Idées Créatives","Learning Resources Recommendation":"Recommandation de Ressources d'Apprentissage","Enter learning field":"Entrer le domaine d'apprentissage","Find Resources":"Trouver des Ressources","Contact Us":"Nous Contacter","Resources":"Ressources","Feedback":"Retour d'Information","Send Feedback":"Envoyer un Retour d'Information","Report Issues":"Rapporter des Problèmes","Error generating mind map.":"Erreur lors de la génération de la carte mentale.","Learn more":"En Savoir Plus","Your Path to Success":"Votre Chemin vers le Succès","Error planning your path.":"Erreur lors de la planification de votre chemin.","Problem Analysis":"Analyse de Problème","Error analyzing your problem.":"Erreur lors de l'analyse de votre problème.","Creative Expansion":"Expansion Créative","Error generating creative ideas.":"Erreur lors de la génération d'idées créatives.","Learn more →":"En Savoir Plus →","Error finding resources.":"Erreur lors de la recherche de ressources.","Search tools...":"Outils de Recherche...","Enter a keyword to generate a mind map...":"Entrer un mot-clé pour générer une carte mentale...","Describe what you want to achieve...":"Décrivez ce que vous souhaitez réaliser...","Enter the problem you need help solving...":"Entrer le problème que vous avez besoin de résoudre...","Share your initial idea for creative expansion...":"Partagez votre idée initiale pour l'expansion créative...","e.g., Web Development, Data Science...":"par exemple, Développement Web, Science des Données...","Please enter a keyword":"Veuillez entrer un mot-clé","mind-map-node main":"mind-map-node principal","mind-map-node primary":"mind-map-node primaire","Please enter your goal":"Veuillez entrer votre objectif","Please describe your problem":"Veuillez décrire votre problème","Please enter your idea":"Veuillez entrer votre idée","Please enter a learning field":"Veuillez entrer un domaine d'apprentissage","User menu functionality would go here":"La fonctionnalité du menu utilisateur irait ici","__title__":"MindFlow - Outils de Pensée"},"de":{"MindFlow - Thinking Tools":"MindFlow - Denkartwerkzeuge","Thinking Tools":"Denkartwerkzeuge","Learning Resources":"Lernressourcen","About Us":"Über uns","Mind Map Drawing":"Mind-Map-Zeichnung","Enter keyword":"Geben Sie einen Suchbegriff ein","Generate Mind Map":"Erstellen Sie ein Mind-Map","Mind Path Planning":"Mind-Pfad-Planung","Enter your goal":"Geben Sie Ihr Ziel ein","Get Path Planning":"Erhalten Sie Pfade-Planung","Problem Solving Analysis":"Problemlösungsanalyse","Describe your problem":"Beschreiben Sie Ihr Problem","Analyze Problem":"Problem analysieren","Creative Thinking Inspiration":"Kreativdenk-Ideen","Enter your idea":"Geben Sie Ihre Idee ein","Get Creative Ideas":"Erhalten Sie kreative Ideen","Learning Resources Recommendation":"Lernressourcen-Empfehlung","Enter learning field":"Geben Sie Ihren Lernbereich ein","Find Resources":"Finden Sie Ressourcen","Contact Us":"Kontaktieren Sie uns","Resources":"Ressourcen","Documentation":"Dokumentation","Feedback":"Rückmeldung","Send Feedback":"Rückmeldung senden","Report Issues":"Fehler melden","Error generating mind map.":"Fehler beim Erstellen des Mind-Maps.","Learn more":"Mehr erfahren","Your Path to Success":"Ihr Weg zum Erfolg","Error planning your path.":"Fehler beim Planen Ihres Weges.","Problem Analysis":"Problemanalyse","Error analyzing your problem.":"Fehler bei der Analyse Ihres Problems.","Creative Expansion":"Kreative Erweiterung","Error generating creative ideas.":"Fehler beim Erstellen kreativer Ideen.","Learn more →":"Mehr erfahren →","Error finding resources.":"Fehler beim Finden von Ressourcen.","Search tools...":"Suchwerkzeuge...","Enter a keyword to generate a mind map...":"Geben Sie einen Suchbegriff ein, um ein Mind-Map zu erstellen...","Describe what you want to achieve...":"Beschreiben Sie, was Sie erreichen möchten...","Enter the problem you need help solving...":"Geben Sie das Problem ein, das Sie lösen möchten...","Share your initial idea for creative expansion...":"Teilen Sie Ihre erste Idee für kreative Erweiterung...","e.g., Web Development, Data Science...":"z.B., Web-Entwicklung, Datenwissenschaft...","Please enter a keyword":"Bitte geben Sie einen Suchbegriff ein","Please enter your goal":"Bitte geben Sie Ihr Ziel ein","Please describe your problem":"Bitte beschreiben Sie Ihr Problem","Please enter your idea":"Bitte geben Sie Ihre Idee ein","Please enter a learning field":"Bitte geben Sie einen Lernbereich ein","User menu functionality would go here":"Hier würde die Funktionalität des Benutzermenüs sein","__title__":"MindFlow - Denkartwerkzeuge"},"ru":{"MindFlow - Thinking Tools":"MindFlow - Инструменты для мышления","Thinking Tools":"Инструменты для мышления","Learning Resources":"Ресурсы для обучения","About Us":"О нас","Mind Map Drawing":"Рисование ментальной карты","Enter keyword":"Ввести ключевое слово","Generate Mind Map":"Создать ментальную карту","Mind Path Planning":"Планирование пути ума","Enter your goal":"Ввести вашу цель","Get Path Planning":"Получить планирование пути","Problem Solving Analysis":"Анализ решения проблем","Describe your problem":"Опишите вашу проблему","Analyze Problem":"Анализировать проблему","Creative Thinking Inspiration":"Идеи для креативного мышления","Enter your idea":"Ввести вашу идею","Get Creative Ideas":"Получить креативные идеи","Learning Resources Recommendation":"Рекомендации по ресурсам для обучения","Enter learning field":"Ввести сферу обучения","Find Resources":"Найти ресурсы","Contact Us":"Свяжитесь с нами","Resources":"Ресурсы","Documentation":"Документация","Blog":"Блог","Feedback":"Обратная связь","Send Feedback":"Отправить обратную связь","Report Issues":"Отчет о проблемах","Error generating mind map.":"Ошибка при создании ментальной карты.","Learn more":"Узнать больше","Your Path to Success":"Ваш путь к успеху","Error planning your path.":"Ошибка при планировании вашего пути.","Problem Analysis":"Анализ проблемы","Error analyzing your problem.":"Ошибка при анализе вашей проблемы.","Creative Expansion":"Креативное расширение","Error generating creative ideas.":"Ошибка при создании креативных идей.","Learn more →":"Узнать больше →","Error finding resources.":"Ошибка при поиске ресурсов.","Search tools...":"Инструменты поиска...","Enter a keyword to generate a mind map...":"Ввести ключевое слово для создания ментальной карты...","Describe what you want to achieve...":"Опишите, что вы хотите достичь...","Enter the problem you need help solving...":"Ввести проблему, которую вам нужно решить...","Share your initial idea for creative expansion...":"Поделитесь своей первой идеей для креативного расширения...","e.g., Web Development, Data Science...":"например, Разработка веб-сайтов, Научные данные...","Please enter a keyword":"Пожалуйста, введите ключевое слово","mind-map-node main":"mind-map-node основная","mind-map-node primary":"mind-map-node основная","Please enter your goal":"Пожалуйста, введите вашу цель","Please describe your problem":"Пожалуйста, опишите вашу проблему","Please enter your idea":"Пожалуйста, введите вашу идею","Please enter a learning field":"Пожалуйста, введите сферу обучения","User menu functionality would go here":"Здесь будет функция меню пользователя","__title__":"MindFlow - Инструменты для мышления"},"pt":{"MindFlow - Thinking Tools":"MindFlow - Ferramentas de Pensamento","Thinking Tools":"Ferramentas de Pensamento","Learning Resources":"Recursos de Aprendizado","About Us":"Sobre Nós","Mind Map Drawing":"Desenho de Mapa Mental","Enter keyword":"Insira uma palavra-chave","Generate Mind Map":"Gerar Mapa Mental","Mind Path Planning":"Planejamento de Caminho Mental","Enter your goal":"Insira seu objetivo","Get Path Planning":"Obter Planejamento de Caminho","Problem Solving Analysis":"Análise de Solução de Problemas","Describe your problem":"Descreva seu problema","Analyze Problem":"Analisar Problema","Creative Thinking Inspiration":"Inspiração para Pensamento Criativo","Enter your idea":"Insira sua ideia","Get Creative Ideas":"Obter Ideias Criativas","Learning Resources Recommendation":"Recomendação de Recursos de Aprendizado","Enter learning field":"Insira o campo de aprendizado","Find Resources":"Encontrar Recursos","Contact Us":"Entre em Contato conosco","Resources":"Recursos","Documentation":"Documentação","Send Feedback":"Enviar Feedback","Report Issues":"Relatar Problemas","Error generating mind map.":"Erro ao gerar o mapa mental.","Learn more":"Saiba mais","Your Path to Success":"Seu Caminho para o Sucesso","Error planning your path.":"Erro ao planejar seu caminho.","Problem Analysis":"Análise de Problema","Error analyzing your problem.":"Erro ao analisar seu problema.","Creative Expansion":"Expansão Criativa","Error generating creative ideas.":"Erro ao gerar ideias criativas.","Learn more →":"Saiba mais →","Error finding resources.":"Erro ao encontrar recursos.","Search tools...":"Ferramentas de busca...","Enter a keyword to generate a mind map...":"Insira uma palavra-chave para gerar um mapa mental...","Describe what you want to achieve...":"Descreva o que você deseja alcançar...","Enter the problem you need help solving...":"Insira o problema que você precisa resolver...","Share your initial idea for creative expansion...":"Compartilhe sua ideia inicial para expansão criativa...","e.g., Web Development, Data Science...":"por exemplo, Desenvolvimento Web, Ciência de Dados...","Please enter a keyword":"Por favor, insira uma palavra-chave","mind-map-node main":"mind-map-node principal","mind-map-node primary":"mind-map-node primário","Please enter your goal":"Por favor, insira seu objetivo","Please describe your problem":"Por favor, descreva seu problema","Please enter your idea":"Por favor, insira sua ideia","Please enter a learning field":"Por favor, insira um campo de aprendizado","User menu functionality would go here":"Aqui ficaria a funcionalidade do menu de usuário","__title__":"MindFlow - Ferramentas de Pensamento"},"ar":{"MindFlow - Thinking Tools":"MindFlow - أدوات التفكير","Thinking Tools":"أدوات التفكير","Learning Resources":"موارد التعلم","About Us":"عننا","Mind Map Drawing":"رسم خريطة العقل","Enter keyword":"ادخل الكلمة المفتاحية","Generate Mind Map":"إنشاء خريطة العقل","Mind Path Planning":"تخطيط مسار العقل","Enter your goal":"ادخل هدفك","Get Path Planning":"الحصول على تخطيط المسار","Problem Solving Analysis":"تحليل حل المشكلات","Describe your problem":"وصف مشكلتك","Analyze Problem":"تحليل المشكلة","Creative Thinking Inspiration":"إلهام التفكير الإبداعي","Enter your idea":"ادخل فكرتك","Get Creative Ideas":"الحصول على أفكار إبداعية","Learning Resources Recommendation":"توصيات موارد التعلم","Enter learning field":"ادخل مجال التعلم","Find Resources":"البحث عن الموارد","Contact Us":"اتصل بنا","Resources":"الموارد","Documentation":"الوثائق","Blog":"المجلة","Feedback":"ملاحظات","Send Feedback":"إرسال ملاحظات","Report Issues":"تقديم مشاكل","Error generating mind map.":"خطأ في إنشاء خريطة العقل.","Learn more":"تعلم المزيد","Your Path to Success":"مسارك إلى النجاح","Error planning your path.":"خطأ في تخطيط مسارك.","Problem Analysis":"تحليل المشكلة","Error analyzing your problem.":"خطأ في تحليل مشكلتك.","Creative Expansion":"التوسع الإبداعي","Error generating creative ideas.":"خطأ في إنشاء الأفكار الإبداعية.","Learn more →":"تعلم المزيد →","Error finding resources.":"خطأ في العثور على الموارد.","Search tools...":"أدوات البحث...","Enter a keyword to generate a mind map...":"ادخل كلمة مفتاحية لإنشاء خريطة العقل...","Describe what you want to achieve...":"وصف ما تريد تحقيقه...","Enter the problem you need help solving...":"ادخل المشكلة التي تحتاج إلى مساعدة لحلها...","Share your initial idea for creative expansion...":"شارك فكرتك الأولية للتوسع الإبداعي...","e.g., Web Development, Data Science...":"مثلاً، تطوير الويب، علم البيانات...","Please enter a keyword":"من فضلك أدخل كلمة مفتاحية","mind-map-node main":"mind-map-node رئيسي","mind-map-node primary":"mind-map-node رئيسي","Please enter your goal":"من فضلك أدخل هدفك","Please describe your problem":"من فضلك وصف مشكلتك","Please enter your idea":"من فضلك أدخل فكرتك","Please enter a learning field":"من فضلك أدخل مجال التعلم","User menu functionality would go here":"سيتم وضع وظيفة قائمة المستخدم هنا","__title__":"MindFlow - أدوات التفكير"},"hi":{"MindFlow - Thinking Tools":"मिंडफ्लो - विचार उपकरण","MindFlow":"मिंडफ्लो","Thinking Tools":"विचार उपकरण","Learning Resources":"शिक्षण संसाधन","About Us":"हम के बारे में","Mind Map Drawing":"माइंड मैप ड्राइंग","Enter keyword":"कीवर्ड भरें","Generate Mind Map":"माइंड मैप बनाएं","Mind Path Planning":"माइंड पैथ प्लानिंग","Enter your goal":"अपना लक्ष्य भरें","Get Path Planning":"पैथ प्लानिंग प्राप्त करें","Problem Solving Analysis":"समस्या सुलझाने का विश्लेषण","Describe your problem":"अपनी समस्या वर्णन करें","Analyze Problem":"समस्या का विश्लेषण करें","Creative Thinking Inspiration":"सृजनात्मक विचार की प्रेरणा","Enter your idea":"अपना विचार भरें","Get Creative Ideas":"सृजनात्मक विचार प्राप्त करें","Learning Resources Recommendation":"शिक्षण संसाधन सिफारिश","Enter learning field":"शिक्षण क्षेत्र भरें","Find Resources":"संसाधन ढूंढें","Contact Us":"हमसे संपर्क करें","Resources":"संसाधन","Documentation":"दस्तावेज","Blog":"ब्लॉग","Feedback":"फ़ीडबैक","Send Feedback":"फ़ीडबैक भेजें","Report Issues":"समस्याएँ रिपोर्ट करें","Error generating mind map.":"माइंड मैप बनाने में त्रुटि.","Learn more":"और जानें","Your Path to Success":"आपका सफलता का मार्ग","Error planning your path.":"आपके मार्ग का नियोजन करते समय त्रुटि.","Problem Analysis":"समस्या विश्लेषण","Error analyzing your problem.":"आपकी समस्या का विश्लेषण करते समय त्रुटि.","Creative Expansion":"सृजनात्मक विस्तार","Error generating creative ideas.":"सृजनात्मक विचार बनाने में त्रुटि.","Learn more →":"और जानें →","Error finding resources.":"संसाधन ढूंढते समय त्रुटि.","Search tools...":"खोज उपकरण...","Enter a keyword to generate a mind map...":"माइंड मैप बनाने के लिए एक कीवर्ड भरें...","Describe what you want to achieve...":"वर्णन करें कि आप क्या प्राप्त करना चाहते हैं...","Enter the problem you need help solving...":"आपकी समस्या जिसे आपकी मदद से सुलझाना चाहते हैं, उसे भरें...","Share your initial idea for creative expansion...":"सृजनात्मक विस्तार के लिए आपका प्रारंभिक विचार साझा करें...","e.g., Web Development, Data Science...":"उदाहरण के लिए, वेब डेवलपमेंट, डेटा साइंस...","Please enter a keyword":"कृपया एक कीवर्ड भरें","mind-map-node main":"माइंड-मैप-नोड मुख्य","mind-map-node primary":"माइंड-मैप-नोड प्राथमिक","Please enter your goal":"कृपया अपना लक्ष्य भरें","Please describe your problem":"कृपया अपनी समस्या वर्णन करें","Please enter your idea":"कृपया अपना विचार भरें","Please enter a learning field":"कृपया एक शिक्षण क्षेत्र भरें","User menu functionality would go here":"यूज़र मेनू की कार्यक्षमता यहाँ जाएगी","__title__":"मिंडफ्लो - विचार उपकरण"},"id":{"MindFlow - Thinking Tools":"MindFlow - Alat Pemikiran","Thinking Tools":"Alat Pemikiran","Learning Resources":"Sumber Belajar","About Us":"Tentang Kita","Mind Map Drawing":"Menggambar Peta pikiran","Enter keyword":"Masukkan kata kunci","Generate Mind Map":"Buat Peta pikiran","Mind Path Planning":"Perencanaan jalur pikiran","Enter your goal":"Masukkan tujuannya","Get Path Planning":"Dapatkan Perencanaan jalur","Problem Solving Analysis":"Analisis Penyelesaian Masalah","Describe your problem":"Deskripsikan masalah anda","Analyze Problem":"Analisis Masalah","Creative Thinking Inspiration":"Inspirasi Pemikiran Kreatif","Enter your idea":"Masukkan ide anda","Get Creative Ideas":"Dapatkan Ide Kreatif","Learning Resources Recommendation":"Rekomendasi Sumber Belajar","Enter learning field":"Masukkan bidang belajar","Find Resources":"Cari Sumber","Contact Us":"Hubungi Kita","Resources":"Sumber","Documentation":"Dokumentasi","Send Feedback":"Kirim Feedback","Report Issues":"Laporkan Masalah","Error generating mind map.":"Kesalahan dalam pembuatan peta pikiran.","Learn more":"Belajar Lebih Banyak","Your Path to Success":"Jalur Sukses Anda","Error planning your path.":"Kesalahan dalam merancang jalur anda.","Problem Analysis":"Analisis Masalah","Error analyzing your problem.":"Kesalahan dalam menganalisis masalah anda.","Creative Expansion":"Ekspansi Kreatif","Error generating creative ideas.":"Kesalahan dalam pembuatan ide kreatif.","Learn more →":"Belajar Lebih Banyak →","Error finding resources.":"Kesalahan dalam mencari sumber.","Search tools...":"Alat pencari...","Enter a keyword to generate a mind map...":"Masukkan kata kunci untuk membuat peta pikiran...","Describe what you want to achieve...":"Deskripsikan apa yang ingin anda lakukan...","Enter the problem you need help solving...":"Masukkan masalah yang anda butuhkan bantuan untuk diselesaikan...","Share your initial idea for creative expansion...":"Bagikan ide awal anda untuk ekspansi kreatif...","e.g., Web Development, Data Science...":"contoh, Pengembangan Web, Ilmu Data...","Please enter a keyword":"Silakan masukkan kata kunci","mind-map-node main":"mind-map-node utama","mind-map-node primary":"mind-map-node utama","Please enter your goal":"Silakan masukkan tujuannya","Please describe your problem":"Silakan deskripsikan masalah anda","Please enter your idea":"Silakan masukkan ide anda","Please enter a learning field":"Silakan masukkan bidang belajar","User menu functionality would go here":"Fungsi menu pengguna akan berada di sini","__title__":"MindFlow - Alat Pemikiran"},"vi":{"MindFlow - Thinking Tools":"MindFlow - Công cụ suy nghĩ","Thinking Tools":"Công cụ suy nghĩ","Learning Resources":"Tài nguyên học tập","About Us":"Về Chúng Tôi","Mind Map Drawing":"Vẽ bản đồ思维","Enter keyword":"Nhập từ khóa","Generate Mind Map":"Tạo bản đồ思维","Mind Path Planning":"Lập kế hoạch đường思维","Enter your goal":"Nhập mục tiêu của bạn","Get Path Planning":"Lấy kế hoạch đường思维","Problem Solving Analysis":"Phân tích giải quyết vấn đề","Describe your problem":"Miêu tả vấn đề của bạn","Analyze Problem":"Phân tích vấn đề","Creative Thinking Inspiration":"Khí泡 sáng tạo","Enter your idea":"Nhập ý tưởng của bạn","Get Creative Ideas":"Lấy ý tưởng sáng tạo","Learning Resources Recommendation":" 推荐 tài nguyên học tập","Enter learning field":"Nhập lĩnh vực học tập","Find Resources":"Tìm tài nguyên","Contact Us":"Liên hệ với chúng tôi","Resources":"Tài nguyên","Documentation":"Tài liệu","Feedback":"Phản hồi","Send Feedback":"Gửi phản hồi","Report Issues":"Báo cáo vấn đề","Error generating mind map.":"Lỗi khi tạo bản đồ思维.","Learn more":"Tìm hiểu thêm","Your Path to Success":"Con đường thành công của bạn","Error planning your path.":"Lỗi khi lập kế hoạch đường.","Problem Analysis":"Phân tích vấn đề","Error analyzing your problem.":"Lỗi khi phân tích vấn đề của bạn.","Creative Expansion":"Phát triển sáng tạo","Error generating creative ideas.":"Lỗi khi tạo ý tưởng sáng tạo.","Learn more →":"Tìm hiểu thêm →","Error finding resources.":"Lỗi khi tìm tài nguyên.","Search tools...":"Công cụ tìm kiếm...","Enter a keyword to generate a mind map...":"Nhập từ khóa để tạo bản đồ思维...","Describe what you want to achieve...":"Miêu tả điều bạn muốn đạt được...","Enter the problem you need help solving...":"Nhập vấn đề bạn cần giúp giải quyết...","Share your initial idea for creative expansion...":"Chia sẻ ý tưởng ban đầu của bạn cho việc phát triển sáng tạo...","e.g., Web Development, Data Science...":"ví dụ: Phát triển web, Khoa học dữ liệu...","Please enter a keyword":"Vui lòng nhập từ khóa","mind-map-node main":"mind-map-node chính","mind-map-node primary":"mind-map-node chính","Please enter your goal":"Vui lòng nhập mục tiêu của bạn","Please describe your problem":"Vui lòng miêu tả vấn đề của bạn","Please enter your idea":"Vui lòng nhập ý tưởng của bạn","Please enter a learning field":"Vui lòng nhập lĩnh vực học tập","User menu functionality would go here":"Chức năng menu người dùng sẽ đi vào đây","__title__":"MindFlow - Công cụ suy nghĩ"},"th":{"MindFlow - Thinking Tools":"MindFlow - ยนต์ความคิด","Thinking Tools":"ยนต์ความคิด","Learning Resources":"ทรัพยากรการเรียนรู้","About Us":"เกี่ยวกับเรา","Mind Map Drawing":"การวาดแผนที่สมอง","Enter keyword":"ใส่คำที่ต้องการค้นหา","Generate Mind Map":"สร้างแผนที่สมอง","Mind Path Planning":"การวางแผนเส้นทางสมอง","Enter your goal":"ใส่เป้าหมายของคุณ","Get Path Planning":"รับการวางแผนเส้นทาง","Problem Solving Analysis":"การวิเคราะห์ปัญหาและแก้ปัญหา","Describe your problem":"บรรยายปัญหาของคุณ","Analyze Problem":"วิเคราะห์ปัญหา","Creative Thinking Inspiration":"แรงบันดาลใจในการคิดทางครีเอทีฟ","Enter your idea":"ใส่ความคิดของคุณ","Get Creative Ideas":"รับความคิดทางครีเอทีฟ","Learning Resources Recommendation":"ข้อแนะนำทรัพยากรการเรียนรู้","Enter learning field":"ใส่สาขาการเรียนรู้","Find Resources":"หาทรัพยากร","Contact Us":"ติดต่อเรา","Resources":"ทรัพยากร","Documentation":"เอกสาร","Blog":"บล็อก","Feedback":"ความเห็น","Send Feedback":"ส่งความเห็น","Report Issues":"รายงานปัญหา","Error generating mind map.":"ข้อผิดพลาดในการสร้างแผนที่สมอง.","Learn more":"เรียนรู้เพิ่มเติม","Your Path to Success":"เส้นทางของคุณสู่ความสำเร็จ","Error planning your path.":"ข้อผิดพลาดในการวางแผนเส้นทาง.","Problem Analysis":"การวิเคราะห์ปัญหา","Error analyzing your problem.":"ข้อผิดพลาดในการวิเคราะห์ปัญหาของคุณ.","Creative Expansion":"การขยายความคิดทางครีเอทีฟ","Error generating creative ideas.":"ข้อผิดพลาดในการสร้างความคิดทางครีเอทีฟ.","Learn more →":"เรียนรู้เพิ่มเติม →","Error finding resources.":"ข้อผิดพลาดในการหาทรัพยากร.","Search tools...":"เครื่องมือการค้นหา...","Enter a keyword to generate a mind map...":"ใส่คำที่ต้องการค้นหาเพื่อสร้างแผนที่สมอง...","Describe what you want to achieve...":"บรรยายอะไรที่คุณต้องการทำ...","Enter the problem you need help solving...":"ใส่ปัญหาที่คุณต้องการช่วยแก้...","Share your initial idea for creative expansion...":"แบ่งปันความคิดของคุณเพื่อการขยายความคิดทางครีเอทีฟ...","e.g., Web Development, Data Science...":"ตัวอย่าง: การพัฒนาเว็บ, วิทยาศาสตร์ข้อมูล...","Please enter a keyword":"กรุณาใส่คำที่ต้องการค้นหา","Please enter your goal":"กรุณาใส่เป้าหมายของคุณ","Please describe your problem":"กรุณาบรรยายปัญหาของคุณ","Please enter your idea":"กรุณาใส่ความคิดของคุณ","Please enter a learning field":"กรุณาใส่สาขาการเรียนรู้","User menu functionality would go here":"ฟังก์ชันเมนูผู้ใช้จะได้มาตรงนี้","__title__":"MindFlow - ยนต์ความคิด"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
