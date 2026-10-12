@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Index Optimizer</title><meta name="description" content="Free online tool: Code Index Optimizer. No signup, no payment — free forever.">
+<meta property="og:title" content="Code Index Optimizer">
+<meta property="og:description" content="Free online tool: Code Index Optimizer. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-13_005125_代码索引优化器.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4a9eff;
+            --accent-hover: #6bb1ff;
+            --border: #333333;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --error: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 16px;
+            color: var(--accent);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-block;
+        }
+
+        button:hover {
+            background-color: var(--accent-hover);
+        }
+
+        button.full-width {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .result-box {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .code-block {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+            border: 1px solid var(--border);
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .diff-added {
+            background-color: rgba(76, 175, 80, 0.2);
+            border-left: 3px solid var(--success);
+        }
+
+        .diff-removed {
+            background-color: rgba(244, 67, 54, 0.2);
+            border-left: 3px solid var(--error);
+        }
+
+        .diff-changed {
+            background-color: rgba(255, 152, 0, 0.2);
+            border-left: 3px solid var(--warning);
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s, opacity 0.3s;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--error);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        .style-result {
+            margin-top: 16px;
+        }
+
+        .style-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .style-item:last-child {
+            border-bottom: none;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .status-icon.success {
+            background-color: var(--success);
+        }
+
+        .status-icon.error {
+            background-color: var(--error);
+        }
+
+        .status-icon.warning {
+            background-color: var(--warning);
+        }
+
+        .code-example {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Code Index Optimizer</h1>
+            <p class="subtitle">Improve your code search and navigation efficiency with offline tools</p>
+        </header>
+
+        <!-- Search Section -->
+        <section class="section">
+            <h2 class="section-title">Code Keyword Search</h2>
+            <div class="input-group">
+                <label for="search-keyword">Enter keywords to search in code:</label>
+                <input type="text" id="search-keyword" placeholder="e.g., function, loop, variable">
+            </div>
+            <button class="full-width" id="search-btn">Search Code</button>
+            <div id="search-results" class="result-box" style="display: none;"></div>
+        </section>
+
+        <!-- Sorting Section -->
+        <section class="section">
+            <h2 class="section-title">Code Snippet Sorter</h2>
+            <div class="input-group">
+                <label for="sort-code">Paste code to sort:</label>
+                <textarea id="sort-code" rows="6" placeholder="Paste your code here..."></textarea>
+            </div>
+            <button class="full-width" id="sort-btn">Sort Code</button>
+            <div id="sort-result" class="result-box" style="display: none;"></div>
+        </section>
+
+        <!-- Comment Generation Section -->
+        <section class="section">
+            <h2 class="section-title">Comment Generator</h2>
+            <div class="input-group">
+                <label for="comment-code">Paste code to generate comments:</label>
+                <textarea id="comment-code" rows="6" placeholder="Paste your code here..."></textarea>
+            </div>
+            <button class="full-width" id="comment-btn">Generate Comments</button>
+            <div id="comment-result" class="result-box" style="display: none;"></div>
+        </section>
+
+        <!-- Style Check Section -->
+        <section class="section">
+            <h2 class="section-title">Code Style Checker</h2>
+            <div class="input-group">
+                <label for="style-code">Paste code to check style:</label>
+                <textarea id="style-code" rows="6" placeholder="Paste your code here..."></textarea>
+            </div>
+            <button class="full-width" id="style-btn">Check Style</button>
+            <div id="style-result" class="style-result" style="display: none;"></div>
+        </section>
+
+        <!-- Code Comparison Section -->
+        <section class="section">
+            <h2 class="section-title">Code Comparison Tool</h2>
+            <div class="two-column">
+                <div>
+                    <div class="input-group">
+                        <label for="compare-code1">First code snippet:</label>
+                        <textarea id="compare-code1" rows="8" placeholder="Paste first code here..."></textarea>
+                    </div>
+                </div>
+                <div>
+                    <div class="input-group">
+                        <label for="compare-code2">Second code snippet:</label>
+                        <textarea id="compare-code2" rows="8" placeholder="Paste second code here..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="full-width" id="compare-btn">Compare Code</button>
+            <div id="compare-result" class="result-box" style="display: none;"></div>
+        </section>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Sample code database for demonstration
+        const codeDatabase = [
+            {
+                id: 1,
+                title: "Array Sorting Function",
+                keywords: ["array", "sort", "function"],
+                code: `function sortArray(arr) {
+    return arr.sort((a, b) => a - b);
+}`
+            },
+            {
+                id: 2,
+                title: "Object Filter",
+                keywords: ["object", "filter", "array"],
+                code: `function filterObject(obj, predicate) {
+    return Object.keys(obj).filter(key => predicate(obj[key], key));
+}`
+            },
+            {
+                id: 3,
+                title: "API Request Handler",
+                keywords: ["api", "request", "fetch", "async"],
+                code: `async function fetchData(url) {
+    try {
+        const response = await fetch(url);
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}`
+            },
+            {
+                id: 4,
+                title: "DOM Element Creation",
+                keywords: ["dom", "element", "create", "append"],
+                code: `function createElement(tag, attributes, content) {
+    const element = document.createElement(tag);
+    
+    for (const key in attributes) {
+        element.setAttribute(key, attributes[key]);
+    }
+    
+    if (content) {
+        element.textContent = content;
+    }
+    
+    return element;
+}`
+            },
+            {
+                id: 5,
+                title: "Debounce Function",
+                keywords: ["debounce", "function", "performance"],
+                code: `function debounce(func, delay) {
+    let timeoutId;
+    
+    return function(...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}`
+            }
+        ];
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 5000);
+        }
+
+        // Code keyword search
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const keyword = document.getElementById('search-keyword').value.trim().toLowerCase();
+            const resultsDiv = document.getElementById('search-results');
+            
+            if (!keyword) {
+                showNotification('Please enter a keyword to search', 'warning');
+                return;
+            }
+            
+            const results = codeDatabase.filter(item => 
+                item.keywords.some(kw => kw.includes(keyword)) || 
+                item.code.toLowerCase().includes(keyword) ||
+                item.title.toLowerCase().includes(keyword)
+            );
+            
+            if (results.length === 0) {
+                resultsDiv.textContent = 'No matching code found. Try different keywords.';
+                showNotification('No results found', 'warning');
+            } else {
+                resultsDiv.innerHTML = results.map(item => 
+                    `<div class="code-block">
+                        <h4>${item.title}</h4>
+                        <pre>${item.code}</pre>
+                    </div>`
+                ).join('');
+                showNotification(`Found ${results.length} matching code snippets`, 'success');
+            }
+            
+            resultsDiv.style.display = 'block';
+        });
+
+        // Code sorting
+        document.getElementById('sort-btn').addEventListener('click', function() {
+            const codeInput = document.getElementById('sort-code').value.trim();
+            const resultDiv = document.getElementById('sort-result');
+            
+            if (!codeInput) {
+                showNotification('Please paste code to sort', 'warning');
+                return;
+            }
+            
+            // Split code into lines and filter out empty lines
+            const lines = codeInput.split('\n').filter(line => line.trim() !== '');
+            
+            // Sort lines alphabetically
+            const sortedLines = [...lines].sort((a, b) => a.localeCompare(b));
+            
+            resultDiv.textContent = sortedLines.join('\n');
+            resultDiv.style.display = 'block';
+            showNotification('Code sorted successfully', 'success');
+        });
+
+        // Comment generation
+        document.getElementById('comment-btn').addEventListener('click', function() {
+            const codeInput = document.getElementById('comment-code').value.trim();
+            const resultDiv = document.getElementById('comment-result');
+            
+            if (!codeInput) {
+                showNotification('Please paste code to generate comments', 'warning');
+                return;
+            }
+            
+            // Simple comment generation based on code patterns
+            const lines = codeInput.split('\n');
+            const commentedLines = lines.map(line => {
+                const trimmed = line.trim();
+                
+                // Skip empty lines
+                if (!trimmed) return line;
+                
+                // Check if line already has comment
+                if (trimmed.startsWith('//') || trimmed.includes('/*')) {
+                    return line;
+                }
+                
+                // Add comment based on code pattern
+                if (trimmed.includes('function')) {
+                    return `// Function definition: ${trimmed}\n${line}`;
+                } else if (trimmed.includes('const') || trimmed.includes('let') || trimmed.includes('var')) {
+                    return `// Variable declaration: ${trimmed}\n${line}`;
+                } else if (trimmed.includes('if')) {
+                    return `// Conditional statement: ${trimmed}\n${line}`;
+                } else if (trimmed.includes('for') || trimmed.includes('while')) {
+                    return `// Loop statement: ${trimmed}\n${line}`;
+                } else if (trimmed.includes('return')) {
+                    return `// Return statement: ${trimmed}\n${line}`;
+                } else if (trimmed.includes('//') === false && trimmed.includes('/*') === false) {
+                    return `// Code line: ${trimmed}\n${line}`;
+                }
+                
+                return line;
+            });
+            
+            resultDiv.textContent = commentedLines.join('\n');
+            resultDiv.style.display = 'block';
+            showNotification('Comments generated successfully', 'success');
+        });
+
+        // Style checking
+        document.getElementById('style-btn').addEventListener('click', function() {
+            const codeInput = document.getElementById('style-code').value.trim();
+            const resultDiv = document.getElementById('style-result');
+            
+            if (!codeInput) {
+                showNotification('Please paste code to check style', 'warning');
+                return;
+            }
+            
+            const issues = [];
+            
+            // Check for semicolons
+            const lines = codeInput.split('\n');
+            lines.forEach((line, index) => {
+                const trimmed = line.trim();
+                if (trimmed && !trimmed.startsWith('//') && !trimmed.startsWith('/*') && 
+                    !trimmed.includes('if') && !trimmed.includes('for') && !trimmed.includes('while') &&
+                    !trimmed.includes('function') && !trimmed.includes('return') && 
+                    !trimmed.includes('else') && !trimmed.includes('catch') && 
+                    !trimmed.includes('finally') && !trimmed.endsWith(';') && 
+                    !trimmed.includes('=>') && !trimmed.includes('{') && !trimmed.includes('}')) {
+                    issues.push({
+                        line: index + 1,
+                        message: 'Missing semicolon',
+                        type: 'warning'
+                    });
+                }
+            });
+            
+            // Check for consistent indentation
+            let indentSize = null;
+            lines.forEach((line, index) => {
+                const match = line.match(/^(\s+)/);
+                if (match) {
+                    const currentIndent = match[1].length;
+                    if (indentSize === null) {
+                        indentSize = currentIndent;
+                    } else if (currentIndent % indentSize !== 0) {
+                        issues.push({
+                            line: index + 1,
+                            message: 'Inconsistent indentation',
+                            type: 'error'
+                        });
+                    }
+                }
+            });
+            
+            // Check for spacing around operators
+            lines.forEach((line, index) => {
+                if (line.includes('=') && !line.includes('==') && !line.includes('===') && 
+                    !line.includes('!=') && !line.includes('!==') && 
+                    !line.includes('>=') && !line.includes('<=') && 
+                    !line.includes('+=') && !line.includes('-=') && 
+                    !line.includes('*=') && !line.includes('/=')) {
+                    
+                    if (!line.match(/\s=\s/) && !line.match(/\s\+=\s/) && 
+                        !line.match(/\s-=\s/) && !line.match(/\s\*\s/) && 
+                        !line.match(/\s\/\s/)) {
+                        issues.push({
+                            line: index + 1,
+                            message: 'Missing spaces around operator',
+                            type: 'warning'
+                        });
+                    }
+                }
+            });
+            
+            // Display results
+            if (issues.length === 0) {
+                resultDiv.innerHTML = `
+                    <div class="style-item">
+                        <div class="status-icon success">✓</div>
+                        <div>No style issues found</div>
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = issues.map(issue => 
+                    `<div class="style-item">
+                        <div class="status-icon ${issue.type}">${issue.type === 'error' ? '✗' : '⚠'}</div>
+                        <div>
+                            <strong>Line ${issue.line}:</strong> ${issue.message}
+                        </div>
+                    </div>`
+                ).join('');
+            }
+            
+            resultDiv.style.display = 'block';
+            showNotification(`Style check completed with ${issues.length} issues found`, issues.length > 0 ? 'warning' : 'success');
+        });
+
+        // Code comparison
+        document.getElementById('compare-btn').addEventListener('click', function() {
+            const code1 = document.getElementById('compare-code1').value.trim();
+            const code2 = document.getElementById('compare-code2').value.trim();
+            const resultDiv = document.getElementById('compare-result');
+            
+            if (!code1 || !code2) {
+                showNotification('Please paste both code snippets to compare', 'warning');
+                return;
+            }
+            
+            const lines1 = code1.split('\n');
+            const lines2 = code2.split('\n');
+            const maxLines = Math.max(lines1.length, lines2.length);
+            const diff = [];
+            
+            for (let i = 0; i < maxLines; i++) {
+                const line1 = lines1[i] || '';
+                const line2 = lines2[i] || '';
+                
+                if (line1 !== line2) {
+                    if (line1 === '') {
+                        diff.push({
+                            line: i + 1,
+                            type: 'added',
+                            content: line2
+                        });
+                    } else if (line2 === '') {
+                        diff.push({
+                            line: i + 1,
+                            type: 'removed',
+                            content: line1
+                        });
+                    } else {
+                        diff.push({
+                            line: i + 1,
+                            type: 'changed',
+                            content1: line1,
+                            content2: line2
+                        });
+                    }
+                }
+            }
+            
+            if (diff.length === 0) {
+                resultDiv.textContent = 'No differences found between the code snippets';
+                showNotification('Code snippets are identical', 'success');
+            } else {
+                resultDiv.innerHTML = diff.map(item => {
+                    if (item.type === 'added') {
+                        return `<div class="code-block diff-added">+ ${item.content}</div>`;
+                    } else if (item.type === 'removed') {
+                        return `<div class="code-block diff-removed">- ${item.content}</div>`;
+                    } else {
+                        return `
+                            <div class="code-block diff-changed">
+                                <div>- ${item.content1}</div>
+                                <div>+ ${item.content2}</div>
+                            </div>
+                        `;
+                    }
+                }).join('');
+                showNotification(`Found ${diff.length} differences between code snippets`, 'success');
+            }
+            
+            resultDiv.style.display = 'block';
+        });
+
+        // Initialize with sample code
+        document.getElementById('sort-code').value = `const b = 2;
+const a = 1;
+const c = 3;`;
+
+        document.getElementById('comment-code').value = `function calculateSum(a, b) {
+    const result = a + b;
+    return result;
+}`;
+
+        document.getElementById('style-code').value = `function greet(name){
+    return "Hello, "+name;
+}`;
+
+        document.getElementById('compare-code1').value = `function add(a, b) {
+    return a + b;
+}
+
+function subtract(a, b) {
+    return a - b;
+}`;
+
+        document.getElementById('compare-code2').value = `function add(a, b) {
+    const result = a + b;
+    return result;
+}
+
+function multiply(a, b) {
+    return a * b;
+}`;
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Code Index Optimizer":"Code Index Optimizer","Improve your code search and navigation efficiency with offline tools":"Improve your code search and navigation efficiency with offline tools","Code Keyword Search":"Code Keyword Search","Enter keywords to search in code:":"Enter keywords to search in code:","Search Code":"Search Code","Code Snippet Sorter":"Code Snippet Sorter","Paste code to sort:":"Paste code to sort:","Sort Code":"Sort Code","Comment Generator":"Comment Generator","Paste code to generate comments:":"Paste code to generate comments:","Generate Comments":"Generate Comments","Code Style Checker":"Code Style Checker","Paste code to check style:":"Paste code to check style:","Check Style":"Check Style","Code Comparison Tool":"Code Comparison Tool","First code snippet:":"First code snippet:","Second code snippet:":"Second code snippet:","Compare Code":"Compare Code","No style issues found":"No style issues found","issues found":"issues found","e.g., function, loop, variable":"e.g., function, loop, variable","Paste your code here...":"Paste your code here...","Paste first code here...":"Paste first code here...","Paste second code here...":"Paste second code here...","Array Sorting Function":"Array Sorting Function","Object Filter":"Object Filter","API Request Handler":"API Request Handler","Error fetching data:":"Error fetching data:","DOM Element Creation":"DOM Element Creation","Debounce Function":"Debounce Function","Please enter a keyword to search":"Please enter a keyword to search","No matching code found. Try different keywords.":"No matching code found. Try different keywords.","No results found":"No results found","Please paste code to sort":"Please paste code to sort","Code sorted successfully":"Code sorted successfully","Please paste code to generate comments":"Please paste code to generate comments","Comments generated successfully":"Comments generated successfully","Please paste code to check style":"Please paste code to check style","Missing semicolon":"Missing semicolon","Inconsistent indentation":"Inconsistent indentation","Missing spaces around operator":"Missing spaces around operator","status-icon success":"status-icon success","Please paste both code snippets to compare":"Please paste both code snippets to compare","No differences found between the code snippets":"No differences found between the code snippets","Code snippets are identical":"Code snippets are identical","code-block diff-added":"code-block diff-added","code-block diff-removed":"code-block diff-removed","code-block diff-changed":"code-block diff-changed","Hello,":"Hello,","__title__":"Code Index Optimizer"},"zh-CN":{"Code Index Optimizer":"代码索引优化器","Improve your code search and navigation efficiency with offline tools":"使用离线工具提高您的代码搜索和导航效率","Code Keyword Search":"代码关键词搜索","Enter keywords to search in code:":"在代码中输入搜索关键词：","Search Code":"搜索代码","Code Snippet Sorter":"代码片段排序器","Paste code to sort:":"粘贴代码以排序：","Sort Code":"排序代码","Comment Generator":"注释生成器","Paste code to generate comments:":"粘贴代码以生成注释：","Generate Comments":"生成注释","Code Style Checker":"代码风格检查器","Paste code to check style:":"粘贴代码以检查样式：","Check Style":"检查风格","Code Comparison Tool":"代码比较工具","First code snippet:":"第一个代码片段：","Second code snippet:":"第二个代码片段：","Compare Code":"比较代码","No style issues found":"未发现风格问题","issues found":"发现问题","e.g., function, loop, variable":"例如，函数、循环、变量","Paste your code here...":"在此粘贴您的代码...","Paste first code here...":"在此粘贴第一个代码...","Paste second code here...":"在此粘贴第二个代码...","Array Sorting Function":"数组排序函数","Object Filter":"对象过滤器","API Request Handler":"API请求处理器","Error fetching data:":"数据获取错误：","DOM Element Creation":"DOM元素创建","Debounce Function":"防抖函数","Please enter a keyword to search":"请输入搜索关键词","No matching code found. Try different keywords.":"未找到匹配的代码。尝试不同的关键词。","No results found":"未找到结果","Please paste code to sort":"请粘贴代码进行排序","Code sorted successfully":"代码排序成功","Please paste code to generate comments":"请粘贴代码生成注释","Comments generated successfully":"注释生成成功","Please paste code to check style":"请粘贴代码检查风格","Missing semicolon":"缺少分号","Inconsistent indentation":"不一致的缩进","Missing spaces around operator":"操作符周围缺少空格","status-icon success":"状态图标 成功","Please paste both code snippets to compare":"请粘贴两个代码片段进行比较","No differences found between the code snippets":"代码片段之间没有差异","Code snippets are identical":"代码片段相同","code-block diff-added":"代码块 差异已添加","code-block diff-removed":"代码块 差异已移除","code-block diff-changed":"代码块 差异已更改","Hello,":"你好，","__title__":"代码索引优化器"},"es":{"Code Index Optimizer":"Optimizador de Índice de Código","Improve your code search and navigation efficiency with offline tools":"Mejora tu eficiencia en la búsqueda y navegación de código con herramientas sin conexión","Code Keyword Search":"Búsqueda de Palabras Clave de Código","Enter keywords to search in code:":"Ingresa palabras clave para buscar en el código:","Search Code":"Buscar Código","Code Snippet Sorter":"Organizador de Fragmentos de Código","Paste code to sort:":"Pega el código para organizar:","Sort Code":"Organizar Código","Comment Generator":"Generador de Comentarios","Paste code to generate comments:":"Pega el código para generar comentarios:","Generate Comments":"Generar Comentarios","Code Style Checker":"Comprobador de Estilo de Código","Paste code to check style:":"Pega el código para verificar el estilo:","Check Style":"Verificar Estilo","Code Comparison Tool":"Herramienta de Comparación de Código","First code snippet:":"Primer fragmento de código:","Second code snippet:":"Segundo fragmento de código:","Compare Code":"Comparar Código","No style issues found":"No se encontraron problemas de estilo","issues found":"problemas encontrados","e.g., function, loop, variable":"por ejemplo, función, bucle, variable","Paste your code here...":"Pega tu código aquí...","Paste first code here...":"Pega el primer código aquí...","Paste second code here...":"Pega el segundo código aquí...","Array Sorting Function":"Función de Ordenamiento de Arreglo","Object Filter":"Filtro de Objeto","API Request Handler":"Manejador de Solicitudes de API","Error fetching data:":"Error al recuperar datos:","DOM Element Creation":"Creación de Elementos DOM","Debounce Function":"Función de Debounce","Please enter a keyword to search":"Por favor, ingresa una palabra clave para buscar","No matching code found. Try different keywords.":"No se encontró código coincidente. Intenta con palabras clave diferentes.","No results found":"No se encontraron resultados","Please paste code to sort":"Por favor, pega el código para organizar","Code sorted successfully":"Código organizado con éxito","Please paste code to generate comments":"Por favor, pega el código para generar comentarios","Comments generated successfully":"Comentarios generados con éxito","Please paste code to check style":"Por favor, pega el código para verificar el estilo","Missing semicolon":"Falta punto y coma","Inconsistent indentation":"Indentación incoherente","Missing spaces around operator":"Faltan espacios alrededor del operador","status-icon success":"icono de estado éxito","Please paste both code snippets to compare":"Por favor, pega ambos fragmentos de código para comparar","No differences found between the code snippets":"No se encontraron diferencias entre los fragmentos de código","Code snippets are identical":"Los fragmentos de código son identicos","code-block diff-added":"bloque de código diff-agregado","code-block diff-removed":"bloque de código diff-eliminado","code-block diff-changed":"bloque de código diff-cambiado","Hello,":"Hola,","__title__":"Optimizador de Índice de Código"},"ja":{"Code Index Optimizer":"コードインデックス最適化","Improve your code search and navigation efficiency with offline tools":"オフラインツールを使用してコードの検索とナビゲーション効率を向上させます","Code Keyword Search":"コード内で検索するキーワードを入力してください","Enter keywords to search in code:":"コード内で検索するキーワードを入力してください：","Search Code":"コード検索","Code Snippet Sorter":"ソートするコードをペーストしてください","Paste code to sort:":"並べ替えるコードを貼り付けてください：","Sort Code":"コードをソート","Comment Generator":"コメントを生成するためにコードをペーストしてください","Paste code to generate comments:":"コメントを生成するコードを貼り付けてください：","Generate Comments":"コメントを生成","Code Style Checker":"スタイルをチェックするためにコードをペーストしてください","Paste code to check style:":"スタイルを確認するコードを貼り付けてください：","Check Style":"スタイルをチェック","Code Comparison Tool":"コード比較ツール","First code snippet:":"最初のコードスニペット：","Second code snippet:":"第二のコードスニペット：","Compare Code":"コードを比較","No style issues found":"スタイルの問題は見つかりませんでした","issues found":"問題が見つかりました","e.g., function, loop, variable":"例：function、loop、variable","Paste your code here...":"ここにコードをペーストしてください...","Paste first code here...":"最初のコードをここにペーストしてください...","Paste second code here...":"二つ目のコードをここにペーストしてください...","Array Sorting Function":"配列ソート関数","Object Filter":"オブジェクトフィルタ","API Request Handler":"APIリクエストハンドラ","Error fetching data:":"データ取得中にエラーが発生しました：","DOM Element Creation":"DOM要素の作成","Debounce Function":"デバンス関数","Please enter a keyword to search":"検索するキーワードを入力してください","No matching code found. Try different keywords.":"一致するコードが見つかりませんでした。異なるキーワードを試してください。","No results found":"結果が見つかりませんでした","Please paste code to sort":"ソートするためにコードをペーストしてください","Code sorted successfully":"コードが成功してソートされました","Please paste code to generate comments":"コメントを生成するためにコードをペーストしてください","Comments generated successfully":"コメントが成功して生成されました","Please paste code to check style":"スタイルをチェックするためにコードをペーストしてください","Missing semicolon":"セミコロンが不足しています","Inconsistent indentation":"インデントが一貫していません","Missing spaces around operator":"演算子の周りにスペースが不足しています","Please paste both code snippets to compare":"比較するために両方のコードスニペットをペーストしてください","No differences found between the code snippets":"コードスニペット間に差は見つかりませんでした","Code snippets are identical":"コードスニペットは同一です","Hello,":"こんにちは、","__title__":"コードインデックス最適化"},"ko":{"Code Index Optimizer":"코드 인덱스 최적화기","Improve your code search and navigation efficiency with offline tools":"오프라인 도구를 사용하여 코드 검색 및 탐색 효율성을 향상시키세요","Code Keyword Search":"코드 키워드 검색","Enter keywords to search in code:":"코드에서 검색할 키워드를 입력하세요:","Search Code":"코드 검색","Code Snippet Sorter":"코드 스니펫 정렬기","Paste code to sort:":"정렬할 코드를 붙여넣으세요:","Sort Code":"코드 정렬","Comment Generator":"댓글 생성기","Paste code to generate comments:":"댓글을 생성할 코드를 붙여넣으세요:","Generate Comments":"댓글 생성","Code Style Checker":"코드 스타일 체커","Paste code to check style:":"스타일을 확인할 코드를 붙여넣으세요:","Check Style":"스타일 확인","Code Comparison Tool":"코드 비교 도구","First code snippet:":"첫 번째 코드 스니펫:","Second code snippet:":"두 번째 코드 스니펫:","Compare Code":"코드 비교","No style issues found":"스타일 문제가 발견되지 않았습니다","issues found":"문제가 발견되었습니다","e.g., function, loop, variable":"예: 함수, 루프, 변수","Paste your code here...":"여기에 코드를 붙여넣으세요...","Paste first code here...":"여기에 첫 번째 코드를 붙여넣으세요...","Paste second code here...":"여기에 두 번째 코드를 붙여넣으세요...","Array Sorting Function":"배열 정렬 함수","Object Filter":"객체 필터","API Request Handler":"API 요청 처리자","Error fetching data:":"데이터 가져오는 중 오류:","DOM Element Creation":"DOM 요소 생성","Debounce Function":"디베이스 함수","Please enter a keyword to search":"검색할 키워드를 입력하세요","No matching code found. Try different keywords.":"일치하는 코드가 없습니다. 다른 키워드를 시도하세요.","No results found":"결과가 없습니다","Please paste code to sort":"정렬할 코드를 붙여넣으세요","Code sorted successfully":"코드 정렬 성공","Please paste code to generate comments":"댓글을 생성할 코드를 붙여넣으세요","Comments generated successfully":"댓글 생성 성공","Please paste code to check style":"스타일을 확인할 코드를 붙여넣으세요","Missing semicolon":"쉼표가 빠졌습니다","Inconsistent indentation":"일관성 없는 들여쓰기","Missing spaces around operator":"연산자 주위 공백이 빠졌습니다","status-icon success":"상태아이콘 성공","Please paste both code snippets to compare":"비교할 코드 스니펫을 모두 붙여넣으세요","No differences found between the code snippets":"코드 스니펫 사이에 차이가 없습니다","Code snippets are identical":"코드 스니펫이 일치합니다","code-block diff-added":"code-block 추가된 차이","code-block diff-removed":"code-block 제거된 차이","code-block diff-changed":"code-block 변경된 차이","Hello,":"안녕하세요,","__title__":"코드 인덱스 최적화기"},"fr":{"Code Index Optimizer":"Optimiseur d'Index de Code","Improve your code search and navigation efficiency with offline tools":"Améliorez l'efficacité de la recherche et de la navigation dans votre code avec des outils hors ligne","Code Keyword Search":"Recherche de Mots-clés de Code","Enter keywords to search in code:":"Entrez des mots-clés pour rechercher dans le code :","Search Code":"Rechercher le Code","Code Snippet Sorter":"Classificateur de Blocs de Code","Paste code to sort:":"Coller le code pour le classer :","Sort Code":"Classer le Code","Comment Generator":"Générateur de Commentaires","Paste code to generate comments:":"Coller le code pour générer des commentaires :","Generate Comments":"Générer des Commentaires","Code Style Checker":"Vérificateur de Style de Code","Paste code to check style:":"Coller le code pour vérifier le style :","Check Style":"Vérifier le Style","Code Comparison Tool":"Outil de Comparaison de Code","First code snippet:":"Premier extrait de code :","Second code snippet:":"Deuxième extrait de code :","Compare Code":"Comparer le Code","No style issues found":"Aucun problème de style trouvé","issues found":"Problèmes trouvés","e.g., function, loop, variable":"par exemple, fonction, boucle, variable","Paste your code here...":"Coller votre code ici...","Paste first code here...":"Coller le premier code ici...","Paste second code here...":"Coller le second code ici...","Array Sorting Function":"Fonction de Tri d'Array","Object Filter":"Filtre d'Objet","API Request Handler":"Gestionnaire de Requêtes API","Error fetching data:":"Erreur lors de la récupération des données :","DOM Element Creation":"Création d'Élément DOM","Debounce Function":"Fonction Debounce","Please enter a keyword to search":"Veuillez entrer un mot-clé pour la recherche","No matching code found. Try different keywords.":"Aucun code correspondant trouvé. Essayez des mots-clés différents.","No results found":"Aucun résultat trouvé","Please paste code to sort":"Veuillez coller le code pour le classer","Code sorted successfully":"Code classé avec succès","Please paste code to generate comments":"Veuillez coller le code pour générer des commentaires","Comments generated successfully":"Commentaires générés avec succès","Please paste code to check style":"Veuillez coller le code pour vérifier le style","Missing semicolon":"Point-virgule manquant","Inconsistent indentation":"Indentation incohérente","Missing spaces around operator":"Espaces manquants autour de l'opérateur","status-icon success":"Icône d'état succès","Please paste both code snippets to compare":"Veuillez coller les deux extraits de code pour comparer","No differences found between the code snippets":"Aucune différence trouvée entre les extraits de code","Code snippets are identical":"Les extraits de code sont identiques","code-block diff-added":"code-block ajouté","code-block diff-removed":"code-block supprimé","code-block diff-changed":"code-block modifié","Hello,":"Bonjour,","__title__":"Optimiseur d'Index de Code"},"de":{"Improve your code search and navigation efficiency with offline tools":"Verbessern Sie Ihre Code-Suche und Navigationseffizienz mit Offline-Tools","Code Keyword Search":"Code-Suchwort-Suche","Enter keywords to search in code:":"Geben Sie Suchwörter ein, um im Code zu suchen:","Search Code":"Code durchsuchen","Code Snippet Sorter":"Code-Snippet-Sortierer","Paste code to sort:":"Fügen Sie Code zum Sortieren ein:","Sort Code":"Code sortieren","Comment Generator":"Kommentar-Generator","Paste code to generate comments:":"Fügen Sie Code zum Generieren von Kommentaren ein:","Generate Comments":"Kommentare generieren","Code Style Checker":"Code-Style-Prüfer","Paste code to check style:":"Fügen Sie Code zum Überprüfen des Stils ein:","Check Style":"Stil überprüfen","Code Comparison Tool":"Code-Vergleichs-Tool","First code snippet:":"Erster Code-Snippet:","Second code snippet:":"Zweites Code-Snippet:","Compare Code":"Code vergleichen","No style issues found":"Keine Stile probleme gefunden","issues found":"Probleme gefunden","e.g., function, loop, variable":"z.B., Funktion, Schleife, Variable","Paste your code here...":"Fügen Sie hier Ihren Code ein...","Paste first code here...":"Fügen Sie hier den ersten Code ein...","Paste second code here...":"Fügen Sie hier den zweiten Code ein...","Array Sorting Function":"Array-Sortierfunktion","Object Filter":"Objektfilter","API Request Handler":"API-Anfrage-Handler","Error fetching data:":"Fehler beim Abrufen von Daten:","DOM Element Creation":"DOM-Element-Erstellung","Debounce Function":"Debounce-Funktion","Please enter a keyword to search":"Bitte geben Sie ein Suchwort ein","No matching code found. Try different keywords.":"Kein passender Code gefunden. Versuchen Sie andere Suchwörter.","No results found":"Keine Ergebnisse gefunden","Please paste code to sort":"Bitte fügen Sie Code zum Sortieren ein","Code sorted successfully":"Code erfolgreich sortiert","Please paste code to generate comments":"Bitte fügen Sie Code zum Generieren von Kommentaren ein","Comments generated successfully":"Kommentare erfolgreich generiert","Please paste code to check style":"Bitte fügen Sie Code zum Überprüfen des Stils ein","Missing semicolon":"Fehlendes Semikolon","Inconsistent indentation":"Inkonsequente Einrückung","Missing spaces around operator":"Fehlende Leerzeichen um Operator","Please paste both code snippets to compare":"Bitte fügen Sie beide Code-Snippets zum Vergleichen ein","No differences found between the code snippets":"Keine Unterschiede zwischen den Code-Snippets gefunden","Code snippets are identical":"Code-Snippets sind identisch","Hello,":"Hallo,","__title__":"Code Index Optimizer"},"ru":{"Code Index Optimizer":"Оптимизатор индекса кода","Improve your code search and navigation efficiency with offline tools":"Улучшите эффективность поиска и навигации по коду с помощью офлайн-инструментов","Code Keyword Search":"Поиск ключевых слов в коде","Enter keywords to search in code:":"Введите ключевые слова для поиска в коде:","Search Code":"Поиск кода","Code Snippet Sorter":"Сортировщик фрагментов кода","Paste code to sort:":"Вставьте код для сортировки:","Sort Code":"Сортировать код","Comment Generator":"Генератор комментариев","Paste code to generate comments:":"Вставьте код для генерации комментариев:","Generate Comments":"Генерировать комментарии","Code Style Checker":"Проверщик стиля кода","Paste code to check style:":"Вставьте код для проверки стиля:","Check Style":"Проверить стиль","Code Comparison Tool":"Инструмент сравнения кода","First code snippet:":"Первый фрагмент кода:","Second code snippet:":"Второй фрагмент кода:","Compare Code":"Сравнить код","No style issues found":"Ни одного стилистического нарушения не найдено","issues found":"Найдены проблемы","e.g., function, loop, variable":"например, функция, цикл, переменная","Paste your code here...":"Вставьте ваш код здесь...","Paste first code here...":"Вставьте первый код здесь...","Paste second code here...":"Вставьте второй код здесь...","Array Sorting Function":"Функция сортировки массива","Object Filter":"Фильтр объекта","API Request Handler":"Обработчик запросов API","Error fetching data:":"Ошибка получения данных:","DOM Element Creation":"Создание элемента DOM","Debounce Function":"Функция отложенного вызова","Please enter a keyword to search":"Пожалуйста, введите ключевое слово для поиска","No matching code found. Try different keywords.":"Не найден соответствующий код. Попробуйте другие ключевые слова.","No results found":"Не найдено результатов","Please paste code to sort":"Пожалуйста, вставьте код для сортировки","Code sorted successfully":"Код успешно отсортирован","Please paste code to generate comments":"Пожалуйста, вставьте код для генерации комментариев","Comments generated successfully":"Комментарии успешно сгенерированы","Please paste code to check style":"Пожалуйста, вставьте код для проверки стиля","Missing semicolon":"Утрачена точка с запятой","Inconsistent indentation":"Ненормированный отступ","Missing spaces around operator":"Пропущены пробелы вокруг оператора","status-icon success":"status-icon успех","Please paste both code snippets to compare":"Пожалуйста, вставьте оба фрагмента кода для сравнения","No differences found between the code snippets":"Не найдено различий между фрагментами кода","Code snippets are identical":"Фрагменты кода идентичны","code-block diff-added":"code-block добавлен","code-block diff-removed":"code-block удален","code-block diff-changed":"code-block изменен","Hello,":"Привет,","__title__":"Оптимизатор индекса кода"},"pt":{"Improve your code search and navigation efficiency with offline tools":"Melhore a eficiência da sua busca e navegação no código com ferramentas offline","Code Keyword Search":"Busca de Palavras-chave no Código","Enter keywords to search in code:":"Insira palavras-chave para buscar no código:","Search Code":"Buscar Código","Code Snippet Sorter":"Organizador de Trechos de Código","Paste code to sort:":"Cole o código para organizar:","Sort Code":"Organizar Código","Comment Generator":"Gerador de Comentarios","Paste code to generate comments:":"Cole o código para gerar comentários:","Generate Comments":"Gerar Comentarios","Code Style Checker":"Verificador de Estilo de Código","Paste code to check style:":"Cole o código para verificar estilo:","Check Style":"Verificar Estilo","Code Comparison Tool":"Ferramenta de Comparação de Código","First code snippet:":"Primeiro trecho de código:","Second code snippet:":"Segundo trecho de código:","Compare Code":"Comparar Código","No style issues found":"Nenhum problema de estilo encontrado","issues found":"problemas encontrados","e.g., function, loop, variable":"por exemplo, função, loop, variável","Paste your code here...":"Cole seu código aqui...","Paste first code here...":"Cole o primeiro código aqui...","Paste second code here...":"Cole o segundo código aqui...","Array Sorting Function":"Função de Organização de Array","Object Filter":"Filtro de Objeto","API Request Handler":"Gerenciador de Requisições de API","Error fetching data:":"Erro ao buscar dados:","DOM Element Creation":"Criação de Elemento DOM","Debounce Function":"Função Debounce","Please enter a keyword to search":"Por favor, insira uma palavra-chave para buscar","No matching code found. Try different keywords.":"Nenhum código correspondente encontrado. Tente palavras-chave diferentes.","No results found":"Nenhum resultado encontrado","Please paste code to sort":"Por favor, cole o código para organizar","Code sorted successfully":"Código organizado com sucesso","Please paste code to generate comments":"Por favor, cole o código para gerar comentários","Comments generated successfully":"Comentários gerados com sucesso","Please paste code to check style":"Por favor, cole o código para verificar estilo","Missing semicolon":"Faltando ponto e vírgula","Inconsistent indentation":"Recuo inconsistente","Missing spaces around operator":"Faltando espaços ao redor do operador","status-icon success":"status-icon sucesso","Please paste both code snippets to compare":"Por favor, cole ambos os trechos de código para comparar","No differences found between the code snippets":"Nenhuma diferença encontrada entre os trechos de código","Code snippets are identical":"Os trechos de código são idênticos","code-block diff-added":"code-block diff-adicionado","code-block diff-removed":"code-block diff-removido","code-block diff-changed":"code-block diff-modificado","Hello,":"Olá,","__title__":"Code Index Optimizer"},"ar":{"Code Index Optimizer":"مزود تحسين مؤشر الكود","Improve your code search and navigation efficiency with offline tools":"تحسين دقة البحث والتنقل في الكود باستخدام أدوات غير متصلة بالإنترنت","Code Keyword Search":"البحث عن كلمات مفتاحية في الكود","Enter keywords to search in code:":"ادخل الكلمات المفتاحية للبحث في الكود:","Search Code":"البحث في الكود","Code Snippet Sorter":"مزود ترتيب قطع الكود","Paste code to sort:":"ألصق الكود للترتيب:","Sort Code":"ترتيب الكود","Comment Generator":"مزود إنشاء التعليقات","Paste code to generate comments:":"ألصق الكود لإنشاء التعليقات:","Generate Comments":"إنشاء التعليقات","Code Style Checker":"مزود فحص أسلوب الكود","Paste code to check style:":"ألصق الكود للتحقق من الأسلوب:","Check Style":"تحقق من الأسلوب","Code Comparison Tool":"أداة مقارنة الكود","First code snippet:":"قطعة الكود الأولى:","Second code snippet:":"قطعة الكود الثانية:","Compare Code":"مقارنة الكود","No style issues found":"لم يتم العثور على أي مشاكل في الأسلوب","issues found":"تم العثور على مشاكل","e.g., function, loop, variable":"مثلاً، function، loop، variable","Paste your code here...":"ألصق كودك هنا...","Paste first code here...":"ألصق الكود الأول هنا...","Paste second code here...":"ألصق الكود الثاني هنا...","Array Sorting Function":"وظيفة ترتيب المجموعات","Object Filter":"مرشح الأشياء","API Request Handler":"مزود معالجة طلبات API","Error fetching data:":"خطأ في استرجاع البيانات:","DOM Element Creation":"إنشاء عنصر DOM","Debounce Function":"وظيفة التأخير","Please enter a keyword to search":"الرجاء إدخال كلمة مفتاحية للبحث","No matching code found. Try different keywords.":"لم يتم العثور على كود متطابق. حاول استخدام كلمات مفتاحية مختلفة.","No results found":"لم يتم العثور على أي نتائج","Please paste code to sort":"الرجاء ألصق الكود للترتيب","Code sorted successfully":"تم ترتيب الكود بنجاح","Please paste code to generate comments":"الرجاء ألصق الكود لإنشاء التعليقات","Comments generated successfully":"تم إنشاء التعليقات بنجاح","Please paste code to check style":"الرجاء ألصق الكود للتحقق من الأسلوب","Missing semicolon":"فاقد نقطة السطر","Inconsistent indentation":"التشذيب غير المتسق","Missing spaces around operator":"فاقد الفراغ حول الميزة","status-icon success":"إشارة الحالة الناجحة","Please paste both code snippets to compare":"الرجاء ألصق كلا قطع الكود للمقارنة","No differences found between the code snippets":"لم يتم العثور على أي اختلافات بين قطع الكود","Code snippets are identical":"قطع الكود متطابقة","code-block diff-added":"أضيفت إلى الكود","code-block diff-removed":"تم إزالة الكود","code-block diff-changed":"تم تغيير الكود","Hello,":"مرحباً,","__title__":"مزود تحسين مؤشر الكود"},"hi":{"Code Index Optimizer":"कोड इंडेक्स ऑप्टिमाइजर","Improve your code search and navigation efficiency with offline tools":"ऑफलाइन टूल्स के साथ आपके कोड सर्च और नेविगेशन की दक्षता बेहतर करें","Code Keyword Search":"कोड वर्णांक सर्च","Enter keywords to search in code:":"कोड में खोजने के लिए वर्णांक भरें:","Search Code":"कोड खोजें","Code Snippet Sorter":"कोड स्निपेट सॉर्टर","Paste code to sort:":"सॉर्ट करने के लिए कोड पेस्ट करें:","Sort Code":"कोड सॉर्ट करें","Comment Generator":"कमेंट जेनरेटर","Paste code to generate comments:":"कमेंट जनरेट करने के लिए कोड पेस्ट करें:","Generate Comments":"कमेंट जनरेट करें","Code Style Checker":"कोड स्टाइल चेकर","Paste code to check style:":"स्टाइल चेक करने के लिए कोड पेस्ट करें:","Check Style":"स्टाइल चेक करें","Code Comparison Tool":"कोड कंपैरिसन टूल","First code snippet:":"पहला कोड स्निपेट:","Second code snippet:":"दूसरा कोड स्निपेट:","Compare Code":"कोड की तुलना करें","No style issues found":"कोई स्टाइल मुद्दे नहीं मिले","issues found":"मुद्दे मिले","e.g., function, loop, variable":"उदाहरण के लिए, function, loop, variable","Paste your code here...":"आपका कोड यहाँ पेस्ट करें...","Paste first code here...":"पहला कोड यहाँ पेस्ट करें...","Paste second code here...":"दूसरा कोड यहाँ पेस्ट करें...","Array Sorting Function":"एरेरे सॉर्टिंग फ़ंक्शन","Object Filter":"ऑब्जैक्ट फिल्टर","API Request Handler":"API रिक्वेस्ट हैंडलर","Error fetching data:":"डाटा फेचिंग में त्रुटि:","DOM Element Creation":"DOM एलीमेंट क्रिएशन","Debounce Function":"डेबॉन्स फ़ंक्शन","Please enter a keyword to search":"कृपया खोजने के लिए एक वर्णांक भरें","No matching code found. Try different keywords.":"कोई मेल खाने वाला कोड नहीं मिला. अलग वर्णांकों को प्रयास करें.","No results found":"कोई परिणाम नहीं मिला","Please paste code to sort":"कृपया सॉर्ट करने के लिए कोड पेस्ट करें","Code sorted successfully":"कोड सफलता से सॉर्ट किया गया","Please paste code to generate comments":"कृपया कमेंट जनरेट करने के लिए कोड पेस्ट करें","Comments generated successfully":"कमेंट सफलता से जनरेट किए गए","Please paste code to check style":"कृपया स्टाइल चेक करने के लिए कोड पेस्ट करें","Missing semicolon":"सेमीकॉलन लापत","Inconsistent indentation":"असंगत इंडेंशन","Missing spaces around operator":"ऑपरेटर के चारों ओर खाली जगह लापत","status-icon success":"स्टेटस-आइकन सफल","Please paste both code snippets to compare":"कृपया तुलना करने के लिए दोनों कोड स्निपेट पेस्ट करें","No differences found between the code snippets":"कोड स्निपेटों के बीच कोई अंतर नहीं मिला","Code snippets are identical":"कोड स्निपेट एक-दूसरे से समान हैं","Hello,":"हैलो,","__title__":"कोड इंडेक्स ऑप्टिमाइजर"},"id":{"Code Index Optimizer":"Pemantau Indeks Kode","Improve your code search and navigation efficiency with offline tools":"Tingkatkan efisiensi pencarian dan navigasi kode Anda dengan alat offline","Code Keyword Search":"Masukkan kata kunci untuk mencari di kode:","Enter keywords to search in code:":"Masukkan kata kunci untuk mencari di kode:","Search Code":"Cari Kode","Code Snippet Sorter":"Tempel kode untuk mengurutkan:","Paste code to sort:":"Tempel kode untuk diurutkan:","Sort Code":"Urutkan Kode","Comment Generator":"Tempel kode untuk menghasilkan komentar:","Paste code to generate comments:":"Tempel kode untuk membuat komentar:","Generate Comments":"Hasilkan Komentar","Code Style Checker":"Tempel kode untuk memeriksa gaya:","Paste code to check style:":"Tempel kode untuk memeriksa gaya:","Check Style":"Periksa Gaya","Code Comparison Tool":"Alat Perbandingan Kode","First code snippet:":"Kode potongan pertama:","Second code snippet:":"Kode potongan kedua:","Compare Code":"Bandingkan Kode","No style issues found":"Tidak ada masalah gaya","issues found":"Ditemukan masalah","e.g., function, loop, variable":"contoh, fungsi, perulangan, variabel","Paste your code here...":"Tempel kode Anda di sini...","Paste first code here...":"Tempel kode pertama di sini...","Paste second code here...":"Tempel kode kedua di sini...","Array Sorting Function":"Fungsi Pengurutan Array","Object Filter":"Penyaring Objek","API Request Handler":"Penanganan Permintaan API","Error fetching data:":"Kesalahan dalam mengambil data:","DOM Element Creation":"Pembuatan Elemen DOM","Debounce Function":"Fungsi Debounce","Please enter a keyword to search":"Silakan masukkan kata kunci untuk mencari","No matching code found. Try different keywords.":"Tidak ditemukan kode yang cocok. Coba kata kunci yang berbeda.","No results found":"Tidak ditemukan hasil","Please paste code to sort":"Silakan tempel kode untuk diurutkan","Code sorted successfully":"Kode diurutkan dengan sukses","Please paste code to generate comments":"Silakan tempel kode untuk menghasilkan komentar","Comments generated successfully":"Komentar dihasilkan dengan sukses","Please paste code to check style":"Silakan tempel kode untuk memeriksa gaya","Missing semicolon":"Terdapat kurung koma yang hilang","Inconsistent indentation":"Indentasi yang tak konsisten","Missing spaces around operator":"Terdapat spasi yang hilang di sekitar operator","status-icon success":"status-icon sukses","Please paste both code snippets to compare":"Silakan tempel kedua kode potongan untuk dibandingkan","No differences found between the code snippets":"Tidak ditemukan perbedaan di antara kode potongan","Code snippets are identical":"Kode potongan adalah identik","code-block diff-added":"code-block tambahan","code-block diff-removed":"code-block dihapus","code-block diff-changed":"code-block diubah","Hello,":"Halo,","__title__":"Pemantau Indeks Kode"},"vi":{"Code Index Optimizer":"Tối ưu hóa chỉ mục mã","Improve your code search and navigation efficiency with offline tools":"Cải thiện hiệu quả tìm kiếm và điều hướng mã bằng các công cụ ngoại tuyến","Code Keyword Search":"Tìm kiếm từ khóa trong mã","Enter keywords to search in code:":"Nhập từ khóa để tìm kiếm trong mã:","Search Code":"Tìm mã","Code Snippet Sorter":"Sắp xếp đoạn mã","Paste code to sort:":"Dán mã để sắp xếp:","Sort Code":"Sắp xếp mã","Comment Generator":"Tạo bình luận","Paste code to generate comments:":"Dán mã để tạo bình luận:","Generate Comments":"Tạo bình luận","Code Style Checker":"Kiểm tra phong cách mã","Paste code to check style:":"Dán mã để kiểm tra phong cách:","Check Style":"Kiểm tra phong cách","Code Comparison Tool":"Công cụ so sánh mã","First code snippet:":"Đoạn mã đầu tiên:","Second code snippet:":"Đoạn mã thứ hai:","Compare Code":"So sánh mã","No style issues found":"Không tìm thấy vấn đề phong cách","issues found":"tìm thấy vấn đề","e.g., function, loop, variable":"ví dụ: hàm, vòng lặp, biến","Paste your code here...":"Dán mã của bạn ở đây...","Paste first code here...":"Dán đoạn mã đầu tiên ở đây...","Paste second code here...":"Dán đoạn mã thứ hai ở đây...","Array Sorting Function":"Chức năng sắp xếp mảng","Object Filter":"Bộ lọc đối tượng","API Request Handler":"Bộ xử lý yêu cầu API","Error fetching data:":"Lỗi khi lấy dữ liệu:","DOM Element Creation":"Tạo phần tử DOM","Debounce Function":"Chức năng Debounce","Please enter a keyword to search":"Vui lòng nhập từ khóa để tìm kiếm","No matching code found. Try different keywords.":"Không tìm thấy mã phù hợp. Hãy thử từ khóa khác.","No results found":"Không có kết quả nào được tìm thấy","Please paste code to sort":"Vui lòng dán mã để sắp xếp","Code sorted successfully":"Mã đã được sắp xếp thành công","Please paste code to generate comments":"Vui lòng dán mã để tạo bình luận","Comments generated successfully":"Bình luận đã được tạo thành công","Please paste code to check style":"Vui lòng dán mã để kiểm tra phong cách","Missing semicolon":"Thiếu dấu chấm phẩy","Inconsistent indentation":"Canh chỉnh không nhất quán","Missing spaces around operator":"Thiếu khoảng trống xung quanh toán tử","status-icon success":"status-icon thành công","Please paste both code snippets to compare":"Vui lòng dán cả hai đoạn mã để so sánh","No differences found between the code snippets":"Không có sự khác biệt nào giữa các đoạn mã","Code snippets are identical":"Các đoạn mã là tương tự","code-block diff-added":"code-block đã thêm","code-block diff-removed":"code-block đã xóa","code-block diff-changed":"code-block đã thay đổi","Hello,":"Chào,","__title__":"Tối ưu hóa chỉ mục mã"},"th":{"Improve your code search and navigation efficiency with offline tools":"ปรับปรุงประสิทธิภาพการค้นหาและเลื่อนตำแหน่งรหัสด้วยเครื่องมือออฟไลน์","Code Keyword Search":"การค้นหาโดยใช้คำถามรหัส","Enter keywords to search in code:":"ใส่คำถามเพื่อค้นหาในรหัส","Search Code":"ค้นหารหัส","Code Snippet Sorter":"เครื่องมือจัดลำดับส่วนของรหัส","Paste code to sort:":"แปลงรหัสเพื่อจัดลำดับ","Sort Code":"จัดลำดับรหัส","Comment Generator":"เครื่องมือสร้างความคิดเห็น","Paste code to generate comments:":"แปลงรหัสเพื่อสร้างความคิดเห็น","Generate Comments":"สร้างความคิดเห็น","Code Style Checker":"เครื่องมือตรวจสอบรูปแบบรหัส","Paste code to check style:":"แปลงรหัสเพื่อตรวจสอบรูปแบบ","Check Style":"ตรวจสอบรูปแบบ","Code Comparison Tool":"เครื่องมือเปรียบเทียบรหัส","First code snippet:":"ส่วนรหัสแรก:","Second code snippet:":"ส่วนรหัสที่สอง:","Compare Code":"เปรียบเทียบรหัส","No style issues found":"ไม่พบปัญหารูปแบบ","issues found":"พบปัญหา","e.g., function, loop, variable":"ตัวอย่างเช่น function, loop, variable","Paste your code here...":"แปลงรหัสของคุณที่นี่...","Paste first code here...":"แปลงรหัสแรกที่นี่...","Paste second code here...":"แปลงรหัสที่สองที่นี่...","Array Sorting Function":"ฟังก์ชันจัดลำดับแบบแรงจัดลำดับ","Object Filter":"ตัวกรองออบเจกต์","API Request Handler":"เครื่องมือจัดการคำขอ API","Error fetching data:":"ข้อผิดพลาดในการหาข้อมูล:","DOM Element Creation":"สร้างองค์ประกอบ DOM","Debounce Function":"ฟังก์ชัน Debounce","Please enter a keyword to search":"กรุณาใส่คำถามเพื่อค้นหา","No matching code found. Try different keywords.":"ไม่พบรหัสที่ตรงกัน ลองใช้คำถามที่ต่างออกไป","No results found":"ไม่พบผลลัพธ์","Please paste code to sort":"กรุณาแปลงรหัสเพื่อจัดลำดับ","Code sorted successfully":"จัดลำดับรหัสสำเร็จ","Please paste code to generate comments":"กรุณาแปลงรหัสเพื่อสร้างความคิดเห็น","Comments generated successfully":"สร้างความคิดเห็นสำเร็จ","Please paste code to check style":"กรุณาแปลงรหัสเพื่อตรวจสอบรูปแบบ","Missing semicolon":"ขาดสemicolon","Inconsistent indentation":"การจัดวางระดับที่ไม่สม่ำสมอ","Missing spaces around operator":"ขาดช่องว่างรอบตัวประกอบ","Please paste both code snippets to compare":"กรุณาแปลงส่วนรหัสทั้งสองเพื่อเปรียบเทียบ","No differences found between the code snippets":"ไม่พบความแตกต่างระหว่างส่วนรหัส","Code snippets are identical":"ส่วนรหัสเป็นหนึ่งตัวเดียวกัน","__title__":"Code Index Optimizer"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
