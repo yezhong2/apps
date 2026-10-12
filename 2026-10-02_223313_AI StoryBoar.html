@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     
@@ -95,184 +96,75 @@
         // Add smart zoom functionality
         const smartZoomBtn = document.getElementById('smartZoomBtn');
         smartZoomBtn.addEventListener('click', () => {
-            const zoomLevel = prompt('Enter the desired zoom level (e.g., 1.5, 2):');
-            if (zoomLevel) {
-                const zoomFactor = parseFloat(zoomLevel);
-                if (!isNaN(zoomFactor)) {
+            // Create zoom level options
+            const zoomOptions = document.createElement('div');
+            zoomOptions.className = 'zoom-options';
+            zoomOptions.style.position = 'absolute';
+            zoomOptions.style.top = '50px';
+            zoomOptions.style.left = '50px';
+            zoomOptions.style.backgroundColor = 'white';
+            zoomOptions.style.padding = '10px';
+            zoomOptions.style.borderRadius = '5px';
+            zoomOptions.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            zoomOptions.style.zIndex = '1000';
+            
+            // Add zoom options
+            const zoomLevels = [1, 1.25, 1.5, 1.75, 2, 2.5, 3];
+            zoomLevels.forEach(level => {
+                const zoomOption = document.createElement('div');
+                zoomOption.textContent = `${level}x`;
+                zoomOption.style.padding = '5px 10px';
+                zoomOption.style.cursor = 'pointer';
+                zoomOption.style.borderRadius = '3px';
+                zoomOption.style.margin = '3px 0';
+                zoomOption.style.backgroundColor = '#f0f0f0';
+                
+                zoomOption.addEventListener('mouseover', () => {
+                    zoomOption.style.backgroundColor = '#e0e0e0';
+                });
+                
+                zoomOption.addEventListener('mouseout', () => {
+                    zoomOption.style.backgroundColor = '#f0f0f0';
+                });
+                
+                zoomOption.addEventListener('click', () => {
                     document.querySelectorAll('.storyboard-item img').forEach(img => {
-                        img.style.transform = `scale(${zoomFactor})`;
+                        img.style.transform = `scale(${level})`;
                     });
-                } else {
-                    showNotification('Please enter a valid number for zoom level.', 'error');
-                }
-            }
+                    document.body.removeChild(zoomOptions);
+                    showNotification(`Zoom level set to ${level}x`, 'success');
+                });
+                
+                zoomOptions.appendChild(zoomOption);
+            });
+            
+            // Add cancel option
+            const cancelOption = document.createElement('div');
+            cancelOption.textContent = 'Cancel';
+            cancelOption.style.padding = '5px 10px';
+            cancelOption.style.cursor = 'pointer';
+            cancelOption.style.borderRadius = '3px';
+            cancelOption.style.margin = '3px 0';
+            cancelOption.style.backgroundColor = '#ff6b6b';
+            cancelOption.style.color = 'white';
+            cancelOption.style.textAlign = 'center';
+            
+            cancelOption.addEventListener('click', () => {
+                document.body.removeChild(zoomOptions);
+            });
+            
+            zoomOptions.appendChild(cancelOption);
+            document.body.appendChild(zoomOptions);
+            
+            // Position dropdown near button
+            const btnRect = smartZoomBtn.getBoundingClientRect();
+            zoomOptions.style.left = `${btnRect.left}px`;
+            zoomOptions.style.top = `${btnRect.bottom + 5}px`;
         });
 
         // ... rest of the JavaScript remains unchanged ...
     </script>
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
-   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
-   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
-   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
-(function () {
-    try {
-        if (window.__AIChannel) { return; }
-        var LOCAL = "http://127.0.0.1:8787";
-        var DEF = [
-            "https://10b1c7b861b449.lhr.life",
-            "https://tuning-geneva-bowling-bracelets.trycloudflare.com",
-            "https://isyex-111-55-145-97.run.pinggy-free.link"
-        ];
-        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
-        var lastRefresh = 0;
-        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
-        function mapLang(v) {
-            v = String(v || "");
-            if (KNOWN.indexOf(v) >= 0) { return v; }
-            var b = v.slice(0, 2).toLowerCase();
-            if (b === "zh") { return "zh-CN"; }
-            for (var i = 0; i < KNOWN.length; i++) {
-                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
-            }
-            return "en";
-        }
-        function lang() {
-            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
-            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
-            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
-            try { return mapLang(navigator.language); } catch (e) {}
-            return "en";
-        }
-        var refreshInflight = null;
-        function refresh(force) {
-            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
-            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
-            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
-            if (refreshInflight) { return refreshInflight; }
-            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
-            lastRefresh = Date.now();
-            refreshInflight = (async function () {
-                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
-                for (var i = 0; i < urls.length; i++) {
-                    try {
-                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
-                        var r = await fetch(u, { cache: "no-store" });
-                        if (!r || !r.ok) { continue; }
-                        var j = await r.json();
-                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
-                        if (nl.length >= 2) { EPS = nl; return; }
-                    } catch (e) {}
-                }
-            })();
-            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
-            return refreshInflight;
-        }
-        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
-        function blind(j, task, input) {
-            var l = lang();
-            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
-            for (var i = 0; i < EPS.length; i++) {
-                var e = EPS[i];
-                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
-                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
-            }
-            blindJsonp(j, q);
-        }
-        function blindJsonp(j, q) {
-            for (var i = 0; i < EPS.length; i++) {
-                var e = EPS[i];
-                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
-                try {
-                    var sc = document.createElement("script");
-                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
-                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
-                    sc.src = e + "/?callback=" + nm + q.slice(1);
-                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
-                    document.head.appendChild(sc);
-                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
-                } catch (er) {}
-            }
-        }
-        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
-        function iframeOne(j, ms) {
-            return new Promise(function (resolve, reject) {
-                var fr = document.createElement("iframe");
-                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
-                var done = false;
-                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
-                fr.onload = function () {
-                    if (done) { return; }
-                    var txt = "";
-                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
-                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
-                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
-                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
-                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
-                    reject(new Error("no payload"));
-                };
-                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
-                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
-                document.body.appendChild(fr);
-            });
-        }
-        async function poll(j, deadline) {
-            var seg = "aijobs/" + j + ".json";
-            var t0 = Date.now();
-            while (Date.now() - t0 < deadline) {
-                var bust = "?t=" + Date.now();
-                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
-                var sources = [
-                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
-                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
-                    seg + bust
-                ];
-                for (var i = 0; i < sources.length; i++) {
-                    var jj = null;
-                    try {
-                        var r = await fetch(sources[i], { cache: "no-store" });
-                        if (!r || !r.ok) { continue; }
-                        var o = await r.json();
-                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
-                    } catch (e) { continue; }
-                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
-                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
-                }
-                await new Promise(function (r2) { setTimeout(r2, 2600); });
-            }
-            throw new Error("no result in time");
-        }
-        var API = {
-            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
-            lang: lang,
-            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
-            submit: function (task, input, opts) {
-                opts = opts || {};
-                var j = jid();
-                var txt = String(input || "");
-                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
-                blind(j, task, txt);
-                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
-                return poll(j, opts.timeoutMs || 150000).then(function (text) {
-                    return { text: text, jid: j, url: API.jobUrl(j) };
-                }, function (err) {
-                    err = err || new Error("failed");
-                    err.jid = j; err.url = API.jobUrl(j);
-                    throw err;
-                });
-            },
-            resume: function (j, timeoutMs) {
-                var jj = j || "";
-                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
-                if (!jj) { return Promise.reject(new Error("no jid")); }
-                return poll(jj, timeoutMs || 20000).then(function (text) {
-                    return { text: text, jid: jj, url: API.jobUrl(jj) };
-                });
-            }
-        };
-        window.__AIChannel = API;
-        try { refresh(false); } catch (e) {}
-    } catch (e) {}
-})();</script><!-- radar-aichannel-end --><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","StoryBoarder":"StoryBoarder","How to Use":"How to Use","Storyboard Tool":"Storyboard Tool","AI StoryBoarder":"AI StoryBoarder","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.","Start Using":"Start Using","Storyboard example":"Storyboard example","Upload your media to create your storyboard":"Upload your media to create your storyboard","Drag \u0026 drop your images or videos here":"Drag \u0026 drop your images or videos here","Browse Files":"Browse Files","Generate Storyboard":"Generate Storyboard","Batch Edit":"Batch Edit","Smart Zoom":"Smart Zoom","Export Storyboard":"Export Storyboard","Save Project":"Save Project","Please enter a valid number for zoom level.":"Please enter a valid number for zoom level.","job error":"job error","no payload":"no payload","frame error":"frame error","no result in time":"no result in time","no jid":"no jid","__title__":"StoryBoarder · Storyboard Builder"},"zh-CN":{"StoryBoarder · Storyboard Builder":"故事板器 · 故事板构建器","StoryBoarder":"故事板器","How to Use":"如何使用","Storyboard Tool":"故事板工具","AI StoryBoarder":"AI故事板器","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"将您的图片和视频转换为专业的故事板。上传您的内容，构建您的镜头列表，编辑标题和备注，然后导出或保存您的项目，所有操作都在浏览器中本地完成。","Start Using":"开始使用","Storyboard example":"故事板示例","Upload your media to create your storyboard":"上传您的媒体内容以创建故事板","Drag \u0026 drop your images or videos here":"在此处拖放您的图片或视频","Browse Files":"浏览文件","Generate Storyboard":"生成故事板","Batch Edit":"批量编辑","Smart Zoom":"智能缩放","Export Storyboard":"导出故事板","Save Project":"保存项目","Please enter a valid number for zoom level.":"请输入有效的缩放级别数字。","job error":"作业错误","no payload":"无有效负载","frame error":"帧错误","no result in time":"未在规定时间内返回结果","no jid":"无JID","__title__":"故事板器 · 故事板构建器"},"es":{"How to Use":"Cómo usar","Storyboard Tool":"Herramienta de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transforma tus imágenes y videos en un storyboard profesional. Sube tu contenido, crea tu lista de tomas, edita títulos y notas, luego exporta o guarda tu proyecto, todo localmente en tu navegador.","Start Using":"Comienza a usar","Storyboard example":"Ejemplo de Storyboard","Upload your media to create your storyboard":"Sube tus archivos multimedia para crear tu storyboard","Drag \u0026 drop your images or videos here":"Arrastra y suelta tus imágenes o videos aquí","Browse Files":"Explorar archivos","Generate Storyboard":"Generar Storyboard","Batch Edit":"Edición por lotes","Smart Zoom":"Zoom inteligente","Export Storyboard":"Exportar Storyboard","Save Project":"Guardar proyecto","Please enter a valid number for zoom level.":"Por favor, introduce un número válido para el nivel de zoom.","job error":"error de trabajo","no payload":"sin carga útil","frame error":"error de cuadro","no result in time":"sin resultado a tiempo","no jid":"sin jid","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · Constructor de Storyboard","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"},"ja":{"StoryBoarder · Storyboard Builder":"ストーリーボードダー · ストーリーボードビルダー","StoryBoarder":"ストーリーボードダー","How to Use":"使い方","Storyboard Tool":"ストーリーボードツール","AI StoryBoarder":"AIストーリーボードダー","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"あなたの画像や動画をプロフェッショナルなストーリーボードに変換します。コンテンツをアップロードし、ショットリストを作成し、タイトルやノートを編集し、プロジェクトをエクスポートまたは保存します。すべてブラウザ内でローカルに実行できます。","Start Using":"使用を開始する","Storyboard example":"ストーリーボードの例","Upload your media to create your storyboard":"メディアをアップロードしてストーリーボードを作成します","Drag \u0026 drop your images or videos here":"画像や動画をここにドラッグ＆ドロップしてください","Browse Files":"ファイルをブラウズ","Generate Storyboard":"ストーリーボードの生成","Batch Edit":"一括編集","Smart Zoom":"スマートズーム","Export Storyboard":"ストーリーボードのエクスポート","Save Project":"プロジェクトの保存","Please enter a valid number for zoom level.":"ズームレベルの有効な数字を入力してください。","job error":"ジョブエラー","no payload":"ペイロードなし","frame error":"フレームエラー","no result in time":"時間内に結果なし","no jid":"jidなし","__title__":"ストーリーボードダー · ストーリーボードビルダー"},"ko":{"StoryBoarder · Storyboard Builder":"스토리보드어 · 스토리보드 빌더","StoryBoarder":"스토리보드어","How to Use":"이용 방법","Storyboard Tool":"스토리보드 도구","AI StoryBoarder":"AI 스토리보드어","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"이미지와 비디오를 전문적인 스토리보드로 변환하세요. 내용을 업로드하고 촬영 목록을 작성하고 제목 및 메모를 편집한 후, 브라우저 내에서 프로젝트를 내보내거나 저장하세요.","Start Using":"사용 시작","Storyboard example":"스토리보드 예제","Upload your media to create your storyboard":"미디어를 업로드하여 스토리보드를 만들어보세요","Drag \u0026 drop your images or videos here":"이미지나 비디오를 여기에 드래그 앤 드롭하세요","Browse Files":"파일 탐색","Generate Storyboard":"스토리보드 생성","Batch Edit":"批量编辑","Smart Zoom":"스마트 줌","Export Storyboard":"스토리보드 내보내기","Save Project":"프로젝트 저장","Please enter a valid number for zoom level.":"줌 레벨에 대한 유효한 숫자를 입력하세요.","job error":"작업 오류","no payload":"데이터 없음","frame error":"프레임 오류","no result in time":"시간 내에 결과 없음","no jid":"jid 없음","__title__":"스토리보드어 · 스토리보드 빌더"},"fr":{"How to Use":"Comment utiliser","Storyboard Tool":"Outil de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformez vos images et vidéos en storyboard professionnel. Téléchargez votre contenu, créez votre liste de prises, éditez les titres et les notes, puis exportez ou sauvegardez votre projet, tout cela localement dans votre navigateur.","Start Using":"Commencer à utiliser","Storyboard example":"Exemple de storyboard","Upload your media to create your storyboard":"Téléchargez vos médias pour créer votre storyboard","Drag \u0026 drop your images or videos here":"Glissez-déposez vos images ou vidéos ici","Browse Files":"Parcourir les fichiers","Generate Storyboard":"Générer un storyboard","Batch Edit":"Édition par lot","Smart Zoom":"Zoom intelligent","Export Storyboard":"Exporter le storyboard","Save Project":"Sauvegarder le projet","Please enter a valid number for zoom level.":"Veuillez saisir un nombre valide pour le niveau de zoom.","job error":"erreur de tâche","no payload":"pas de charge utile","frame error":"erreur de cadre","no result in time":"pas de résultat à temps","no jid":"pas de jid","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · Constructeur de Storyboard","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"},"de":{"How to Use":"Wie man verwendet","Storyboard Tool":"Storyboard-Tool","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformieren Sie Ihre Bilder und Videos in ein professionelles Storyboard. Laden Sie Ihre Inhalte hoch, erstellen Sie Ihre Bildliste, bearbeiten Sie Titel und Notizen, exportieren oder speichern Sie dann Ihr Projekt, alles lokal in Ihrem Browser.","Start Using":"Beginnen Sie mit der Nutzung","Storyboard example":"Storyboard-Beispiel","Upload your media to create your storyboard":"Laden Sie Ihre Medien hoch, um Ihr Storyboard zu erstellen","Drag \u0026 drop your images or videos here":"Ziehen und legen Sie Ihre Bilder oder Videos hier ab","Browse Files":"Dateien durchsuchen","Generate Storyboard":"Storyboard generieren","Batch Edit":"BATCH-BEARBEITEN","Smart Zoom":"Intelligenter Zoom","Export Storyboard":"Storyboard exportieren","Save Project":"Projekt speichern","Please enter a valid number for zoom level.":"Bitte geben Sie eine gültige Nummer für den Zoom-Level ein.","job error":"Job-Fehler","no payload":"kein Payload","frame error":"Fehler im Frame","no result in time":"kein Ergebnis in der Zeit","no jid":"kein JID","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"},"ru":{"StoryBoarder · Storyboard Builder":"Студия рассказа · Создатель рассказа","StoryBoarder":"Студия рассказа","How to Use":"Как использовать","Storyboard Tool":"Инструмент для рассказа","AI StoryBoarder":"AI Студия рассказа","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Преобразуйте свои изображения и видео в профессиональный рассказ. Загрузите ваше содержимое, создайте список кадров, отредактируйте заголовки и заметки, затем экспортируйте или сохраните проект, всеlocally в вашем браузере.","Start Using":"Начать использование","Storyboard example":"Пример рассказа","Upload your media to create your storyboard":"Загрузите ваши медиафайлы для создания рассказа","Drag \u0026 drop your images or videos here":"Перетащите свои изображения или видео сюда","Browse Files":"Просмотр файлов","Generate Storyboard":"Создать рассказ","Batch Edit":"Массовая правка","Smart Zoom":"Умное увеличение","Export Storyboard":"Экспортировать рассказ","Save Project":"Сохранить проект","Please enter a valid number for zoom level.":"Пожалуйста, введите действительное число для уровня увеличения.","job error":"ошибка работы","no payload":"нет полезной нагрузки","frame error":"ошибка кадра","no result in time":"нет результата в срок","no jid":"нет jid","__title__":"Студия рассказа · Создатель рассказа"},"pt":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Construtor de Storyboard","How to Use":"Como Usar","Storyboard Tool":"Ferramenta de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transforme suas imagens e vídeos em um storyboard profissional. Envie seu conteúdo, crie sua lista de cenas, edite títulos e notas, em seguida, exporte ou salve seu projeto, tudo localmente no seu navegador.","Start Using":"Comece a Usar","Storyboard example":"Exemplo de Storyboard","Upload your media to create your storyboard":"Envie seus mídias para criar seu storyboard","Drag \u0026 drop your images or videos here":"Arraste e solte suas imagens ou vídeos aqui","Browse Files":"Navegue pelos Arquivos","Generate Storyboard":"Gerar Storyboard","Batch Edit":"Edição em Lote","Smart Zoom":"Zoom Inteligente","Export Storyboard":"Exportar Storyboard","Save Project":"Salvar Projeto","Please enter a valid number for zoom level.":"Por favor, insira um número válido para o nível de zoom.","job error":"erro de job","no payload":"sem payload","frame error":"erro de frame","no result in time":"sem resultado no tempo","no jid":"sem jid","__title__":"StoryBoarder · Construtor de Storyboard","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"},"ar":{"StoryBoarder · Storyboard Builder":"مدير السيناريو · بناء السيناريو","StoryBoarder":"مدير السيناريو","How to Use":"كيفية الاستخدام","Storyboard Tool":"أداة السيناريو","AI StoryBoarder":"مدير السيناريو الذكاء الاصطناعي","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"تحويل صورك وأفلامك إلى سيناريو محترف. قم بتحميل محتواك، بناء قائمة التصوير، تعديل العناوين والملاحظات، ثم قم بتصدير أو حفظ مشروعك، كل ذلك محليًا في متصفحك.","Start Using":"ابدأ في الاستخدام","Storyboard example":"مثال على سيناريو","Upload your media to create your storyboard":"تحميل مادتك لإنشاء سيناريوك","Drag \u0026 drop your images or videos here":"سحب وإفلات صورك أو أفلامك هنا","Browse Files":"استعرض الملفات","Generate Storyboard":"توليد سيناريو","Batch Edit":"تعديل جماعي","Smart Zoom":"تكبير ذكي","Export Storyboard":"تصدير سيناريو","Save Project":"حفظ المشروع","Please enter a valid number for zoom level.":"من فضلك أدخل عدد صالح لمستوى التكبير.","job error":"خطأ في العمل","no payload":"لا يوجد حمولة","frame error":"خطأ في الإطار","no result in time":"لا يوجد نتيجة في الوقت المحدد","no jid":"لا يوجد جيدي","__title__":"مدير السيناريو · بناء السيناريو"},"hi":{"StoryBoarder · Storyboard Builder":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर","StoryBoarder":"स्टोरीबोर्डर","How to Use":"कैसे इस्तेमाल करें","Storyboard Tool":"स्टोरीबोर्ड टूल","AI StoryBoarder":"एआई स्टोरीबोर्डर","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"अपनी छवियों और वीडियो को पेशेवर स्टोरीबोर्ड में बदलें। अपनी सामग्री अपलोड करें, अपनी शॉट लिस्ट बनाएं, शीर्षक और नोट्स संपादित करें, फिर प्रोजेक्ट को एक्सपोर्ट या सहेजें, सभी स्थानीय रूप से अपने ब्राउज़र में.","Start Using":"इस्तेमाल शुरू करें","Storyboard example":"स्टोरीबोर्ड उदाहरण","Upload your media to create your storyboard":"अपनी मीडिया अपलोड करके अपना स्टोरीबोर्ड बनाएं","Drag \u0026 drop your images or videos here":"अपनी छवियों या वीडियो को यहाँ ड्रैग एंड ड्रॉप करें","Browse Files":"फाइलें ब्राउज़ करें","Generate Storyboard":"स्टोरीबोर्ड जनरेट करें","Batch Edit":"बैच संपादन","Smart Zoom":"स्मार्ट ज़ूम","Export Storyboard":"स्टोरीबोर्ड एक्सपोर्ट करें","Save Project":"प्रोजेक्ट सहेजें","Please enter a valid number for zoom level.":"ज़ूम स्तर के लिए एक वैध संख्या दर्ज करें。","job error":"जॉब एरर","no payload":"पायलोड नहीं","frame error":"फ्रेम एरर","no result in time":"समय में कोई परिणाम नहीं","no jid":"नो जिड","__title__":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर"},"id":{"How to Use":"Bagaimana Cara Menggunakan","Storyboard Tool":"Alat Storyboard","AI StoryBoarder":"Transformasikan gambar dan video Anda menjadi storyboard profesional. Unggah konten Anda, buat daftar gambar, sunting judul dan catatan, lalu ekspor atau simpan proyek Anda, semua secara lokal di browser Anda.","Start Using":"Mulai Menggunakan","Storyboard example":"Contoh Storyboard","Upload your media to create your storyboard":"Unggah media Anda untuk membuat storyboard","Drag \u0026 drop your images or videos here":"Seret dan lepas gambar atau video Anda disini","Browse Files":"Buka Berkas","Generate Storyboard":"Buat Storyboard","Batch Edit":"Edit Massal","Smart Zoom":"Perbesaran Pintar","Export Storyboard":"Ekspor Storyboard","Save Project":"Simpan Proyek","Please enter a valid number for zoom level.":"Silakan masukkan angka yang valid untuk tingkat perbesaran.","job error":"kesalahan pekerjaan","no payload":"tidak ada muatan","frame error":"kesalahan bingkai","no result in time":"tidak ada hasil dalam waktu","no jid":"tidak ada jid","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · PembuatStoryboard","StoryBoarder":"StoryBoarder","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformasikan gambar dan video anda menjadi storyboard profesional. Uploud konten anda, buat daftar peta syuting, edit judul dan catatan, lalu ekspor atau simpan proyek anda, semua secara lokal di browser anda."},"vi":{"How to Use":"Cách sử dụng","Storyboard Tool":"Công cụ Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Chuyển đổi hình ảnh và video của bạn thành storyboard chuyên nghiệp. Tải lên nội dung của bạn, xây dựng danh sách cảnh, chỉnh sửa tiêu đề và ghi chú, sau đó xuất hoặc lưu dự án của bạn, tất cả đều tại địa phương trong trình duyệt của bạn.","Start Using":"Bắt đầu sử dụng","Storyboard example":"Ví dụ về Storyboard","Upload your media to create your storyboard":"Tải lên phương tiện của bạn để tạo storyboard","Drag \u0026 drop your images or videos here":"Kéo và thả hình ảnh hoặc video của bạn vào đây","Browse Files":"Duyệt tệp","Generate Storyboard":"Tạo Storyboard","Batch Edit":"Chỉnh sửa hàng loạt","Smart Zoom":"Phóng to thông minh","Export Storyboard":"Xuất Storyboard","Save Project":"Lưu Dự án","Please enter a valid number for zoom level.":"Vui lòng nhập một số hợp lệ cho mức phóng to.","job error":"lỗi công việc","no payload":"không có payload","frame error":"lỗi khung","no result in time":"không có kết quả trong thời gian","no jid":"không có jid","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · Công cụ Tạo Storyboard","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"},"th":{"How to Use":"ฝากใช้งาน","Storyboard Tool":"เครื่องมือ Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"แปลงรูปภาพและวิดีโอของคุณเป็น Storyboard อาชีพ อัพโหลดเนื้อหาของคุณ สร้างรายการภาพที่ต้องการ แก้ไขชื่อและหมายเหตุ จากนั้นส่งออกหรือบันทึกโครงการของคุณ ทั้งหมดท้องถิ่นในเบราวเซอร์ของคุณ","Start Using":"เริ่มใช้งาน","Storyboard example":"ตัวอย่าง Storyboard","Upload your media to create your storyboard":"อัพโหลดสื่อของคุณเพื่อสร้าง Storyboard","Drag \u0026 drop your images or videos here":"ลากและปล่อยรูปภาพหรือวิดีโอของคุณที่นี่","Browse Files":"เลือกไฟล์","Generate Storyboard":"สร้าง Storyboard","Batch Edit":"แก้ไขแบบกระจาย","Smart Zoom":"การเซ็ทซูมอัตโนมัติ","Export Storyboard":"ส่งออก Storyboard","Save Project":"บันทึกโครงการ","Please enter a valid number for zoom level.":"โปรดใส่ตัวเลขที่ถูกต้องสำหรับระดับซูม","job error":"ข้อผิดพลาดงาน","no payload":"ไม่มี payload","frame error":"ข้อผิดพลาดภาพ","no result in time":"ไม่มีผลลัพธ์ในเวลาที่กำหนด","no jid":"ไม่มี jid","__title__":"StoryBoarder · Storyboard Builder","StoryBoarder · Storyboard Builder":"StoryBoarder · ตัวสร้างตอนเรื่อง","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","StoryBoarder":"StoryBoarder","How to Use":"How to Use","Storyboard Tool":"Storyboard Tool","AI StoryBoarder":"AI StoryBoarder","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.","Start Using":"Start Using","Storyboard example":"Storyboard example","Upload your media to create your storyboard":"Upload your media to create your storyboard","Drag \u0026 drop your images or videos here":"Drag \u0026 drop your images or videos here","Browse Files":"Browse Files","Generate Storyboard":"Generate Storyboard","Batch Edit":"Batch Edit","Smart Zoom":"Smart Zoom","Export Storyboard":"Export Storyboard","Save Project":"Save Project","Cancel":"Cancel","__title__":"StoryBoarder · Storyboard Builder"},"zh-CN":{"StoryBoarder · Storyboard Builder":"故事板器 · 故事板构建器","StoryBoarder":"故事板器","How to Use":"如何使用","Storyboard Tool":"故事板工具","AI StoryBoarder":"AI故事板器","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"将您的图片和视频转换为专业的故事板。上传您的内容，构建您的镜头列表，编辑标题和备注，然后导出或保存您的项目，所有操作都在浏览器中本地完成。","Start Using":"开始使用","Storyboard example":"故事板示例","Upload your media to create your storyboard":"上传您的媒体内容以创建故事板","Drag \u0026 drop your images or videos here":"在此处拖放您的图片或视频","Browse Files":"浏览文件","Generate Storyboard":"生成故事板","Batch Edit":"批量编辑","Smart Zoom":"智能缩放","Export Storyboard":"导出故事板","Save Project":"保存项目","Cancel":"取消","Please enter a valid number for zoom level.":"请输入有效的缩放级别数字。","job error":"作业错误","no payload":"无有效负载","frame error":"帧错误","no result in time":"未在规定时间内返回结果","no jid":"无JID","__title__":"故事板器 · 故事板构建器"},"es":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Constructor de Storyboard","How to Use":"Cómo usar","Storyboard Tool":"Herramienta de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transforma tus imágenes y videos en un storyboard profesional. Sube tu contenido, crea tu lista de tomas, edita títulos y notas, luego exporta o guarda tu proyecto, todo localmente en tu navegador.","Start Using":"Comienza a usar","Storyboard example":"Ejemplo de Storyboard","Upload your media to create your storyboard":"Sube tus archivos multimedia para crear tu storyboard","Drag \u0026 drop your images or videos here":"Arrastra y suelta tus imágenes o videos aquí","Browse Files":"Explorar archivos","Generate Storyboard":"Generar Storyboard","Batch Edit":"Edición por lotes","Smart Zoom":"Zoom inteligente","Export Storyboard":"Exportar Storyboard","Save Project":"Guardar proyecto","Cancel":"Cancelar","Please enter a valid number for zoom level.":"Por favor, introduce un número válido para el nivel de zoom.","job error":"error de trabajo","no payload":"sin carga útil","frame error":"error de cuadro","no result in time":"sin resultado a tiempo","no jid":"sin jid","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · Constructor de Storyboard"},"ja":{"StoryBoarder · Storyboard Builder":"ストーリーボードダー · ストーリーボードビルダー","StoryBoarder":"ストーリーボードダー","How to Use":"使い方","Storyboard Tool":"ストーリーボードツール","AI StoryBoarder":"AIストーリーボードダー","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"あなたの画像や動画をプロフェッショナルなストーリーボードに変換します。コンテンツをアップロードし、ショットリストを作成し、タイトルやノートを編集し、プロジェクトをエクスポートまたは保存します。すべてブラウザ内でローカルに実行できます。","Start Using":"使用を開始する","Storyboard example":"ストーリーボードの例","Upload your media to create your storyboard":"メディアをアップロードしてストーリーボードを作成します","Drag \u0026 drop your images or videos here":"画像や動画をここにドラッグ＆ドロップしてください","Browse Files":"ファイルをブラウズ","Generate Storyboard":"ストーリーボードの生成","Batch Edit":"一括編集","Smart Zoom":"スマートズーム","Export Storyboard":"ストーリーボードのエクスポート","Save Project":"プロジェクトの保存","Cancel":"キャンセル","Please enter a valid number for zoom level.":"ズームレベルの有効な数字を入力してください。","job error":"ジョブエラー","no payload":"ペイロードなし","frame error":"フレームエラー","no result in time":"時間内に結果なし","no jid":"jidなし","__title__":"ストーリーボードダー · ストーリーボードビルダー"},"ko":{"StoryBoarder · Storyboard Builder":"스토리보드어 · 스토리보드 빌더","StoryBoarder":"스토리보드어","How to Use":"이용 방법","Storyboard Tool":"스토리보드 도구","AI StoryBoarder":"AI 스토리보드어","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"이미지와 비디오를 전문적인 스토리보드로 변환하세요. 내용을 업로드하고 촬영 목록을 작성하고 제목 및 메모를 편집한 후, 브라우저 내에서 프로젝트를 내보내거나 저장하세요.","Start Using":"사용 시작","Storyboard example":"스토리보드 예제","Upload your media to create your storyboard":"미디어를 업로드하여 스토리보드를 만들어보세요","Drag \u0026 drop your images or videos here":"이미지나 비디오를 여기에 드래그 앤 드롭하세요","Browse Files":"파일 탐색","Generate Storyboard":"스토리보드 생성","Batch Edit":"批量编辑","Smart Zoom":"스마트 줌","Export Storyboard":"스토리보드 내보내기","Save Project":"프로젝트 저장","Cancel":"취소","Please enter a valid number for zoom level.":"줌 레벨에 대한 유효한 숫자를 입력하세요.","job error":"작업 오류","no payload":"데이터 없음","frame error":"프레임 오류","no result in time":"시간 내에 결과 없음","no jid":"jid 없음","__title__":"스토리보드어 · 스토리보드 빌더"},"fr":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Constructeur de Storyboard","How to Use":"Comment utiliser","Storyboard Tool":"Outil de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformez vos images et vidéos en storyboard professionnel. Téléchargez votre contenu, créez votre liste de prises, éditez les titres et les notes, puis exportez ou sauvegardez votre projet, tout cela localement dans votre navigateur.","Start Using":"Commencer à utiliser","Storyboard example":"Exemple de storyboard","Upload your media to create your storyboard":"Téléchargez vos médias pour créer votre storyboard","Drag \u0026 drop your images or videos here":"Glissez-déposez vos images ou vidéos ici","Browse Files":"Parcourir les fichiers","Generate Storyboard":"Générer un storyboard","Batch Edit":"Édition par lot","Smart Zoom":"Zoom intelligent","Export Storyboard":"Exporter le storyboard","Save Project":"Sauvegarder le projet","Cancel":"Annuler","Please enter a valid number for zoom level.":"Veuillez saisir un nombre valide pour le niveau de zoom.","job error":"erreur de tâche","no payload":"pas de charge utile","frame error":"erreur de cadre","no result in time":"pas de résultat à temps","no jid":"pas de jid","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · Constructeur de Storyboard"},"de":{"How to Use":"Wie man verwendet","Storyboard Tool":"Storyboard-Tool","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformieren Sie Ihre Bilder und Videos in ein professionelles Storyboard. Laden Sie Ihre Inhalte hoch, erstellen Sie Ihre Bildliste, bearbeiten Sie Titel und Notizen, exportieren oder speichern Sie dann Ihr Projekt, alles lokal in Ihrem Browser.","Start Using":"Beginnen Sie mit der Nutzung","Storyboard example":"Storyboard-Beispiel","Upload your media to create your storyboard":"Laden Sie Ihre Medien hoch, um Ihr Storyboard zu erstellen","Drag \u0026 drop your images or videos here":"Ziehen und legen Sie Ihre Bilder oder Videos hier ab","Browse Files":"Dateien durchsuchen","Generate Storyboard":"Storyboard generieren","Batch Edit":"BATCH-BEARBEITEN","Smart Zoom":"Intelligenter Zoom","Export Storyboard":"Storyboard exportieren","Save Project":"Projekt speichern","Cancel":"Abbrechen","Please enter a valid number for zoom level.":"Bitte geben Sie eine gültige Nummer für den Zoom-Level ein.","job error":"Job-Fehler","no payload":"kein Payload","frame error":"Fehler im Frame","no result in time":"kein Ergebnis in der Zeit","no jid":"kein JID","StoryBoarder · Storyboard Builder":"StoryBoarder · Storyboard Builder","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · Storyboard Builder"},"ru":{"StoryBoarder · Storyboard Builder":"Студия рассказа · Создатель рассказа","StoryBoarder":"Студия рассказа","How to Use":"Как использовать","Storyboard Tool":"Инструмент для рассказа","AI StoryBoarder":"AI Студия рассказа","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Преобразуйте свои изображения и видео в профессиональный рассказ. Загрузите ваше содержимое, создайте список кадров, отредактируйте заголовки и заметки, затем экспортируйте или сохраните проект, всеlocally в вашем браузере.","Start Using":"Начать использование","Storyboard example":"Пример рассказа","Upload your media to create your storyboard":"Загрузите ваши медиафайлы для создания рассказа","Drag \u0026 drop your images or videos here":"Перетащите свои изображения или видео сюда","Browse Files":"Просмотр файлов","Generate Storyboard":"Создать рассказ","Batch Edit":"Массовая правка","Smart Zoom":"Умное увеличение","Export Storyboard":"Экспортировать рассказ","Save Project":"Сохранить проект","Cancel":"Отменить","Please enter a valid number for zoom level.":"Пожалуйста, введите действительное число для уровня увеличения.","job error":"ошибка работы","no payload":"нет полезной нагрузки","frame error":"ошибка кадра","no result in time":"нет результата в срок","no jid":"нет jid","__title__":"Студия рассказа · Создатель рассказа"},"pt":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Construtor de Storyboard","How to Use":"Como Usar","Storyboard Tool":"Ferramenta de Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transforme suas imagens e vídeos em um storyboard profissional. Envie seu conteúdo, crie sua lista de cenas, edite títulos e notas, em seguida, exporte ou salve seu projeto, tudo localmente no seu navegador.","Start Using":"Comece a Usar","Storyboard example":"Exemplo de Storyboard","Upload your media to create your storyboard":"Envie seus mídias para criar seu storyboard","Drag \u0026 drop your images or videos here":"Arraste e solte suas imagens ou vídeos aqui","Browse Files":"Navegue pelos Arquivos","Generate Storyboard":"Gerar Storyboard","Batch Edit":"Edição em Lote","Smart Zoom":"Zoom Inteligente","Export Storyboard":"Exportar Storyboard","Save Project":"Salvar Projeto","Cancel":"Cancelar","Please enter a valid number for zoom level.":"Por favor, insira um número válido para o nível de zoom.","job error":"erro de job","no payload":"sem payload","frame error":"erro de frame","no result in time":"sem resultado no tempo","no jid":"sem jid","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · Construtor de Storyboard"},"ar":{"StoryBoarder · Storyboard Builder":"مدير السيناريو · بناء السيناريو","StoryBoarder":"مدير السيناريو","How to Use":"كيفية الاستخدام","Storyboard Tool":"أداة السيناريو","AI StoryBoarder":"مدير السيناريو الذكاء الاصطناعي","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"تحويل صورك وأفلامك إلى سيناريو محترف. قم بتحميل محتواك، بناء قائمة التصوير، تعديل العناوين والملاحظات، ثم قم بتصدير أو حفظ مشروعك، كل ذلك محليًا في متصفحك.","Start Using":"ابدأ في الاستخدام","Storyboard example":"مثال على سيناريو","Upload your media to create your storyboard":"تحميل مادتك لإنشاء سيناريوك","Drag \u0026 drop your images or videos here":"سحب وإفلات صورك أو أفلامك هنا","Browse Files":"استعرض الملفات","Generate Storyboard":"توليد سيناريو","Batch Edit":"تعديل جماعي","Smart Zoom":"تكبير ذكي","Export Storyboard":"تصدير سيناريو","Save Project":"حفظ المشروع","Cancel":"إلغاء","Please enter a valid number for zoom level.":"من فضلك أدخل عدد صالح لمستوى التكبير.","job error":"خطأ في العمل","no payload":"لا يوجد حمولة","frame error":"خطأ في الإطار","no result in time":"لا يوجد نتيجة في الوقت المحدد","no jid":"لا يوجد جيدي","__title__":"مدير السيناريو · بناء السيناريو"},"hi":{"StoryBoarder · Storyboard Builder":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर","StoryBoarder":"स्टोरीबोर्डर","How to Use":"कैसे इस्तेमाल करें","Storyboard Tool":"स्टोरीबोर्ड टूल","AI StoryBoarder":"एआई स्टोरीबोर्डर","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"अपनी छवियों और वीडियो को पेशेवर स्टोरीबोर्ड में बदलें। अपनी सामग्री अपलोड करें, अपनी शॉट लिस्ट बनाएं, शीर्षक और नोट्स संपादित करें, फिर प्रोजेक्ट को एक्सपोर्ट या सहेजें, सभी स्थानीय रूप से अपने ब्राउज़र में.","Start Using":"इस्तेमाल शुरू करें","Storyboard example":"स्टोरीबोर्ड उदाहरण","Upload your media to create your storyboard":"अपनी मीडिया अपलोड करके अपना स्टोरीबोर्ड बनाएं","Drag \u0026 drop your images or videos here":"अपनी छवियों या वीडियो को यहाँ ड्रैग एंड ड्रॉप करें","Browse Files":"फाइलें ब्राउज़ करें","Generate Storyboard":"स्टोरीबोर्ड जनरेट करें","Batch Edit":"बैच संपादन","Smart Zoom":"स्मार्ट ज़ूम","Export Storyboard":"स्टोरीबोर्ड एक्सपोर्ट करें","Save Project":"प्रोजेक्ट सहेजें","Cancel":"रद्द करें","Please enter a valid number for zoom level.":"ज़ूम स्तर के लिए एक वैध संख्या दर्ज करें。","job error":"जॉब एरर","no payload":"पायलोड नहीं","frame error":"फ्रेम एरर","no result in time":"समय में कोई परिणाम नहीं","no jid":"नो जिड","__title__":"स्टोरीबोर्डर · स्टोरीबोर्ड बिल्डर"},"id":{"StoryBoarder · Storyboard Builder":"StoryBoarder · PembuatStoryboard","How to Use":"Bagaimana Cara Menggunakan","Storyboard Tool":"Alat Storyboard","AI StoryBoarder":"Transformasikan gambar dan video Anda menjadi storyboard profesional. Unggah konten Anda, buat daftar gambar, sunting judul dan catatan, lalu ekspor atau simpan proyek Anda, semua secara lokal di browser Anda.","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Transformasikan gambar dan video anda menjadi storyboard profesional. Uploud konten anda, buat daftar peta syuting, edit judul dan catatan, lalu ekspor atau simpan proyek anda, semua secara lokal di browser anda.","Start Using":"Mulai Menggunakan","Storyboard example":"Contoh Storyboard","Upload your media to create your storyboard":"Unggah media Anda untuk membuat storyboard","Drag \u0026 drop your images or videos here":"Seret dan lepas gambar atau video Anda disini","Browse Files":"Buka Berkas","Generate Storyboard":"Buat Storyboard","Batch Edit":"Edit Massal","Smart Zoom":"Perbesaran Pintar","Export Storyboard":"Ekspor Storyboard","Save Project":"Simpan Proyek","Cancel":"Batal","Please enter a valid number for zoom level.":"Silakan masukkan angka yang valid untuk tingkat perbesaran.","job error":"kesalahan pekerjaan","no payload":"tidak ada muatan","frame error":"kesalahan bingkai","no result in time":"tidak ada hasil dalam waktu","no jid":"tidak ada jid","StoryBoarder":"StoryBoarder","__title__":"StoryBoarder · PembuatStoryboard"},"vi":{"StoryBoarder · Storyboard Builder":"StoryBoarder · Công cụ Tạo Storyboard","How to Use":"Cách sử dụng","Storyboard Tool":"Công cụ Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"Chuyển đổi hình ảnh và video của bạn thành storyboard chuyên nghiệp. Tải lên nội dung của bạn, xây dựng danh sách cảnh, chỉnh sửa tiêu đề và ghi chú, sau đó xuất hoặc lưu dự án của bạn, tất cả đều tại địa phương trong trình duyệt của bạn.","Start Using":"Bắt đầu sử dụng","Storyboard example":"Ví dụ về Storyboard","Upload your media to create your storyboard":"Tải lên phương tiện của bạn để tạo storyboard","Drag \u0026 drop your images or videos here":"Kéo và thả hình ảnh hoặc video của bạn vào đây","Browse Files":"Duyệt tệp","Generate Storyboard":"Tạo Storyboard","Batch Edit":"Chỉnh sửa hàng loạt","Smart Zoom":"Phóng to thông minh","Export Storyboard":"Xuất Storyboard","Save Project":"Lưu Dự án","Cancel":"Hủy","Please enter a valid number for zoom level.":"Vui lòng nhập một số hợp lệ cho mức phóng to.","job error":"lỗi công việc","no payload":"không có payload","frame error":"lỗi khung","no result in time":"không có kết quả trong thời gian","no jid":"không có jid","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · Công cụ Tạo Storyboard"},"th":{"StoryBoarder · Storyboard Builder":"StoryBoarder · ตัวสร้างตอนเรื่อง","How to Use":"ฝากใช้งาน","Storyboard Tool":"เครื่องมือ Storyboard","Transform your images and videos into a professional storyboard. Upload your content, build your shot list, edit titles and notes, then export or save your project, all locally in your browser.":"แปลงรูปภาพและวิดีโอของคุณเป็น Storyboard อาชีพ อัพโหลดเนื้อหาของคุณ สร้างรายการภาพที่ต้องการ แก้ไขชื่อและหมายเหตุ จากนั้นส่งออกหรือบันทึกโครงการของคุณ ทั้งหมดท้องถิ่นในเบราวเซอร์ของคุณ","Start Using":"เริ่มใช้งาน","Storyboard example":"ตัวอย่าง Storyboard","Upload your media to create your storyboard":"อัพโหลดสื่อของคุณเพื่อสร้าง Storyboard","Drag \u0026 drop your images or videos here":"ลากและปล่อยรูปภาพหรือวิดีโอของคุณที่นี่","Browse Files":"เลือกไฟล์","Generate Storyboard":"สร้าง Storyboard","Batch Edit":"แก้ไขแบบกระจาย","Smart Zoom":"การเซ็ทซูมอัตโนมัติ","Export Storyboard":"ส่งออก Storyboard","Save Project":"บันทึกโครงการ","Please enter a valid number for zoom level.":"โปรดใส่ตัวเลขที่ถูกต้องสำหรับระดับซูม","job error":"ข้อผิดพลาดงาน","no payload":"ไม่มี payload","frame error":"ข้อผิดพลาดภาพ","no result in time":"ไม่มีผลลัพธ์ในเวลาที่กำหนด","no jid":"ไม่มี jid","StoryBoarder":"StoryBoarder","AI StoryBoarder":"AI StoryBoarder","__title__":"StoryBoarder · ตัวสร้างตอนเรื่อง"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
 var LS="radar-lang";
 var PACKS=window.__I18N_PACKS||{};
 var FIXED=window.__I18N_FIXED||{};
@@ -382,5 +274,167 @@ document.addEventListener("DOMContentLoaded",init);
 init();
 }
 watchMutations();
-})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script></body>
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --></body>
 </html>
