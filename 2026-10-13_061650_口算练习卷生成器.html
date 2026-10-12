@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>口算练习卷生成器 - 免费打印小学数学口算题</title>
+<meta name="description" content="免费在线生成小学数学口算练习卷：选好题型和题量，一键生成可打印的 A4 口算卷和答案页，手机电脑都能用，无需注册。">
+<meta property="og:title" content="口算练习卷生成器 - 免费打印小学数学口算题">
+<meta property="og:description" content="选好题型和题量，一键生成可打印的 A4 口算卷和答案页，手机电脑都能用，无需注册。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-13_061650_口算练习卷生成器.html">
+<meta name="theme-color" content="#e8642c">
+<style>
+:root{
+  --ink:#26303e;
+  --muted:#6b7a90;
+  --accent:#e8642c;
+  --accent-dark:#c94f1d;
+  --green:#2f9e6e;
+  --bg:#f6f3ec;
+  --card:#ffffff;
+  --line:#e6e0d4;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,Roboto,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+}
+.site-head{padding:26px 16px 8px;text-align:center;}
+.brand{font-size:26px;font-weight:800;letter-spacing:1px;}
+.brand .dot{color:var(--accent);}
+.head-sub{margin-top:6px;color:var(--muted);font-size:14px;}
+.pill{display:inline-block;margin-left:8px;padding:1px 10px;border-radius:999px;background:#fdeee6;color:var(--accent-dark);font-size:12px;font-weight:600;vertical-align:2px;}
+.wrap{max-width:920px;margin:0 auto;padding:10px 16px 30px;}
+.panel{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:16px 18px;
+  box-shadow:0 2px 10px rgba(70,50,20,.05);
+}
+.ctrl-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 14px;}
+.ctrl label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px;font-weight:600;}
+.ctrl select{
+  width:100%;padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);
+  background:#fbfaf7;color:var(--ink);font-size:15px;outline:none;
+}
+.ctrl select:focus{border-color:var(--accent);}
+.ctrl-vs{display:flex;align-items:flex-end;}
+.vs-box{display:flex;align-items:center;gap:8px;padding:9px 0;font-size:14px;color:var(--ink);}
+.vs-box input{width:18px;height:18px;accent-color:var(--accent);}
+.vs-note{font-size:12px;color:var(--muted);}
+.btn-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.btn{
+  border:none;border-radius:11px;padding:11px 20px;font-size:15.5px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(232,100,44,.28);}
+.btn-primary:active{background:var(--accent-dark);}
+.btn-outline{background:#fff;color:var(--ink);border:1.5px solid #c9c2b4;}
+.btn-outline:active{background:#f3efe7;}
+.btn-ghost{background:#eef6f1;color:#1d7a52;}
+.status{font-size:13px;color:var(--muted);margin-left:auto;}
+.tip{margin-top:12px;font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:10px;}
+.tip b{color:var(--ink);}
+.paper{
+  background:#fff;border:1px solid var(--line);border-radius:12px;
+  max-width:880px;margin:18px auto 0;padding:26px 30px 30px;
+  box-shadow:0 3px 14px rgba(70,50,20,.07);
+  --cols:3;--blkw:46px;--vsmin:5em;
+}
+.paper-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2.5px solid #223;padding-bottom:10px;margin-bottom:12px;}
+.paper-title{font-size:19px;font-weight:800;letter-spacing:.5px;}
+.paper-count{font-size:13.5px;color:#555;}
+.fill-row{display:flex;flex-wrap:wrap;gap:10px 26px;font-size:14px;color:#333;margin-bottom:16px;}
+.fill-row b{font-weight:600;}
+.fill{display:inline-block;min-width:86px;border-bottom:1.4px solid #333;height:1.1em;vertical-align:-2px;}
+.fill.s{min-width:56px;}
+.grid{display:grid;grid-template-columns:repeat(var(--cols),1fr);gap:14px 16px;}
+.prob{font-size:19px;display:flex;align-items:center;gap:6px;color:#1c2431;}
+.prob .idx{font-size:12.5px;color:#9aa3b0;min-width:1.7em;text-align:right;}
+.prob .expr{font-variant-numeric:tabular-nums;letter-spacing:.3px;white-space:nowrap;}
+.prob .blk{display:inline-block;width:var(--blkw);border-bottom:1.6px solid #333;height:1.05em;margin-left:3px;}
+.prob.vs{min-height:5.6em;}
+.prob.vs .idx{align-self:flex-start;margin-top:.2em;}
+.vsbox{
+  display:inline-flex;flex-direction:column;align-items:stretch;text-align:right;
+  font-family:Menlo,Consolas,"Courier New",monospace;
+  font-size:18px;line-height:1.6;min-width:var(--vsmin);white-space:pre;
+  color:#1c2431;
+}
+.vsrule{border-top:1.6px solid #333;margin-top:1px;}
+.vswrite{height:1.65em;}
+.ans-wrap{display:none;margin:20px auto 0;max-width:880px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 24px;box-shadow:0 3px 14px rgba(70,50,20,.07);}
+.ans-wrap.on{display:block;}
+.ans-head{font-size:16px;font-weight:800;margin-bottom:12px;border-bottom:2px dashed #b9b2a5;padding-bottom:8px;}
+.ans-list{display:grid;grid-template-columns:repeat(8,1fr);gap:7px 12px;font-size:14.5px;color:#1c2431;font-variant-numeric:tabular-nums;}
+.ans-list .ai{color:#9aa3b0;font-size:12px;margin-right:2px;}
+.ans-tip{font-size:12.5px;color:var(--muted);margin-top:10px;}
+@media (max-width:640px){
+  .ctrl-grid{grid-template-columns:repeat(2,1fr);}
+  .paper{padding:18px 14px 22px;}
+  .paper .grid{grid-template-columns:repeat(2,1fr);}
+  .ans-list{grid-template-columns:repeat(4,1fr);}
+  .status{width:100%;margin-left:0;}
+}
+@media print{
+  @page{size:A4;margin:13mm 11mm;}
+  body{background:#fff;}
+  .no-print{display:none !important;}
+  .page-footer{display:none !important;}
+  .wrap{max-width:none;padding:0;}
+  .paper{max-width:none;margin:0;padding:0;border:none;border-radius:0;box-shadow:none;}
+  .paper .grid{grid-template-columns:repeat(var(--cols),1fr);gap:16px 18px;}
+  .prob{font-size:19px;break-inside:avoid;}
+  .prob.vs{min-height:6em;}
+  .ans-wrap{page-break-before:always;max-width:none;margin:0;padding:0;border:none;box-shadow:none;}
+  .ans-list{grid-template-columns:repeat(8,1fr);}
+}
+</style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script>
+</head>
+<body>
+<header class="site-head no-print">
+  <div class="brand">口算小卷<span class="dot">。</span><span class="pill">免费 · 免注册</span></div>
+  <div class="head-sub">给小学生家长的口算练习卷生成器：选好题型，一键生成，A4 打印就能练。</div>
+</header>
+
+<div class="wrap">
+  <section class="panel no-print">
+    <div class="ctrl-grid">
+      <div class="ctrl">
+        <label for="typeSel">题型</label>
+        <select id="typeSel">
+          <option value="t10">10以内加减法</option>
+          <option value="t20">20以内加减法（进位退位）</option>
+          <option value="t100" selected>100以内加减法</option>
+          <option value="mul">表内乘法</option>
+          <option value="div">表内除法</option>
+          <option value="muldiv">乘除混合</option>
+          <option value="t1000">三位数加减法</option>
+          <option value="mix2">两步混合运算</option>
+        </select>
+      </div>
+      <div class="ctrl">
+        <label for="countSel">题量</label>
+        <select id="countSel">
+          <option value="20">20 题</option>
+          <option value="30">30 题</option>
+          <option value="40">40 题</option>
+          <option value="50" selected>50 题</option>
+          <option value="60">60 题</option>
+          <option value="80">80 题</option>
+          <option value="100">100 题</option>
+        </select>
+      </div>
+      <div class="ctrl">
+        <label for="colSel">每行列数</label>
+        <select id="colSel">
+          <option value="2">2 列（字大）</option>
+          <option value="3" selected>3 列</option>
+          <option value="4">4 列（省纸）</option>
+        </select>
+      </div>
+      <div class="ctrl ctrl-vs">
+        <div class="vs-box">
+          <input type="checkbox" id="vsCheck">
+          <label for="vsCheck" style="margin:0;font-size:14px;color:var(--ink);">竖式排版</label>
+          <span class="vs-note" id="vsHint">（仅加减乘可用）</span>
+        </div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="genBtn" type="button">生成新卷子</button>
+      <button class="btn btn-outline" id="printBtn" type="button">打印</button>
+      <button class="btn btn-ghost" id="ansBtn" type="button">显示答案页</button>
+      <span class="status" id="statusLine"></span>
+    </div>
+    <p class="tip">用法：<b>选题型 → 点「生成新卷子」→ 点「打印」</b>。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。</p>
+  </section>
+
+  <section class="paper" id="paper"></section>
+  <section class="ans-wrap" id="ansPage"></section>
+</div>
+
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #e2ddd2;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#1d7a52;text-decoration:none;}.page-footer .fb-btn{background:#1d7a52;color:#fff;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #d8d2c6;border-radius:8px;background:#faf8f4;margin-bottom:4px;color:#8b93a3;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span>广告</span></div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div>
+
+<script>
+// ===== SHEET_CORE_START =====
+// 口算小卷 · 纯本地生成核心（无 DOM 依赖；页面渲染与自动化测试共用同一份逻辑）
+var SHEET = (function () {
+    function rndInt(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+    function pickOne(arr) { return arr[rndInt(0, arr.length - 1)]; }
+
+    var TYPES = [
+        { key: "t10", name: "10以内加减法", vs: true },
+        { key: "t20", name: "20以内加减法（进位退位）", vs: true },
+        { key: "t100", name: "100以内加减法", vs: true },
+        { key: "mul", name: "表内乘法", vs: true },
+        { key: "div", name: "表内除法", vs: false },
+        { key: "muldiv", name: "乘除混合", vs: false },
+        { key: "t1000", name: "三位数加减法", vs: true },
+        { key: "mix2", name: "两步混合运算", vs: false }
+    ];
+    function byKey(key) {
+        for (var i = 0; i < TYPES.length; i++) { if (TYPES[i].key === key) return TYPES[i]; }
+        return TYPES[2];
+    }
+
+    function genT10() {
+        if (rndInt(0, 1) === 0) {
+            var a = rndInt(1, 9), b = rndInt(1, 10 - a);
+            return { a: a, b: b, op: "+", ans: a + b, text: a + " + " + b };
+        }
+        var c = rndInt(3, 10), d = rndInt(1, c - 1);
+        return { a: c, b: d, op: "−", ans: c - d, text: c + " − " + d };
+    }
+    function genT20() {
+        for (var t = 0; t < 80; t++) {
+            if (rndInt(0, 1) === 0) {
+                var a = rndInt(5, 15), b = rndInt(5, 15);
+                if (a + b <= 20 && (a % 10 + b % 10) >= 10) return { a: a, b: b, op: "+", ans: a + b, text: a + " + " + b };
+            } else {
+                var c = rndInt(11, 19), d = rndInt(2, 9);
+                if (c % 10 < d && c - d > 0) return { a: c, b: d, op: "−", ans: c - d, text: c + " − " + d };
+            }
+        }
+        var e = rndInt(4, 12), f = rndInt(3, 8);
+        return { a: e, b: f, op: "+", ans: e + f, text: e + " + " + f };
+    }
+    function genT100() {
+        if (rndInt(0, 1) === 0) {
+            var a = rndInt(11, 89), b = rndInt(11, 100 - a);
+            return { a: a, b: b, op: "+", ans: a + b, text: a + " + " + b };
+        }
+        var c = rndInt(21, 99), d = rndInt(11, c - 1);
+        return { a: c, b: d, op: "−", ans: c - d, text: c + " − " + d };
+    }
+    function genMul() {
+        var a = rndInt(2, 9), b = rndInt(2, 9);
+        return { a: a, b: b, op: "×", ans: a * b, text: a + " × " + b };
+    }
+    function genDiv() {
+        var q = rndInt(2, 9), d = rndInt(2, 9);
+        return { a: q * d, b: d, op: "÷", ans: q, text: (q * d) + " ÷ " + d };
+    }
+    function genMulDiv() { return rndInt(0, 1) === 0 ? genMul() : genDiv(); }
+    function genT1000() {
+        if (rndInt(0, 1) === 0) {
+            var a = rndInt(101, 898), b = rndInt(101, 999 - a);
+            return { a: a, b: b, op: "+", ans: a + b, text: a + " + " + b };
+        }
+        var c = rndInt(211, 999), d = rndInt(101, c - 1);
+        return { a: c, b: d, op: "−", ans: c - d, text: c + " − " + d };
+    }
+    function genMix2() {
+        var form = rndInt(0, 3);
+        if (form === 0) {
+            var a = rndInt(2, 9), b = rndInt(2, 9), c = rndInt(1, 20);
+            return { form: "mulAdd", a: a, b: b, c: c, ans: a * b + c, text: a + " × " + b + " + " + c };
+        }
+        if (form === 1) {
+            var a2 = rndInt(2, 9), b2 = rndInt(2, 9), c2 = rndInt(1, a2 * b2 - 1);
+            return { form: "mulSub", a: a2, b: b2, c: c2, ans: a2 * b2 - c2, text: a2 + " × " + b2 + " − " + c2 };
+        }
+        if (form === 2) {
+            var c3 = rndInt(1, 20), a3 = rndInt(2, 9), b3 = rndInt(2, 9);
+            return { form: "addMul", a: a3, b: b3, c: c3, ans: c3 + a3 * b3, text: c3 + " + " + a3 + " × " + b3 };
+        }
+        var c4 = rndInt(30, 99), a4 = rndInt(2, 9);
+        var b4 = rndInt(2, Math.min(9, Math.floor((c4 - 1) / a4)));
+        return { form: "subMul", a: a4, b: b4, c: c4, ans: c4 - a4 * b4, text: c4 + " − " + a4 + " × " + b4 };
+    }
+
+    function one(key) {
+        if (key === "t10") return genT10();
+        if (key === "t20") return genT20();
+        if (key === "t100") return genT100();
+        if (key === "mul") return genMul();
+        if (key === "div") return genDiv();
+        if (key === "muldiv") return genMulDiv();
+        if (key === "t1000") return genT1000();
+        if (key === "mix2") return genMix2();
+        return genT100();
+    }
+    // 生成一套卷子：同一张卷子内尽量不出重复题（题量大、组合空间小时允许少量重复）
+    function genSet(key, n) {
+        var out = [], seen = {}, i, t, cand, got;
+        for (i = 0; i < n; i++) {
+            got = null;
+            for (t = 0; t < 40; t++) {
+                cand = one(key);
+                if (!seen[cand.text]) { got = cand; seen[cand.text] = 1; break; }
+            }
+            if (!got) got = one(key);
+            out.push(got);
+        }
+        return out;
+    }
+    return { rndInt: rndInt, pickOne: pickOne, TYPES: TYPES, byKey: byKey, one: one, genSet: genSet };
+})();
+// ===== SHEET_CORE_END =====
+
+// ===== 页面渲染与交互 =====
+(function () {
+    function $(id) { return document.getElementById(id); }
+    var typeSel = $("typeSel"), countSel = $("countSel"), colSel = $("colSel"),
+        vsCheck = $("vsCheck"), vsHint = $("vsHint"), genBtn = $("genBtn"),
+        printBtn = $("printBtn"), ansBtn = $("ansBtn"), paper = $("paper"),
+        ansPage = $("ansPage"), statusLine = $("statusLine");
+
+    var ansShown = false, cur = null;
+
+    function esc(s) { return String(s); }
+
+    function paperHTML(probs, t, n, vs, cols) {
+        var tinfo = SHEET.byKey(t);
+        var h = '<div class="paper-head"><div class="paper-title">' + esc(tinfo.name) + ' 练习卷</div><div class="paper-count">共 ' + n + ' 题</div></div>';
+        h += '<div class="fill-row"><span><b>姓名：</b><span class="fill"></span></span><span><b>日期：</b><span class="fill"></span></span><span><b>用时：</b><span class="fill s"></span></span><span><b>得分：</b><span class="fill s"></span></span></div>';
+        h += '<div class="grid">';
+        for (var i = 0; i < probs.length; i++) {
+            var p = probs[i], idx = (i + 1) + ".";
+            if (vs) {
+                h += '<div class="prob vs"><span class="idx">' + idx + '</span><span class="vsbox">'
+                   + '<span class="vsline">' + p.a + '</span>'
+                   + '<span class="vsline">' + p.op + ' ' + p.b + '</span>'
+                   + '<span class="vsrule"></span><span class="vswrite"></span></span></div>';
+            } else {
+                h += '<div class="prob"><span class="idx">' + idx + '</span><span class="expr">' + p.text + ' =</span><span class="blk"></span></div>';
+            }
+        }
+        h += '</div>';
+        return h;
+    }
+    function ansHTML(probs, t, n) {
+        var h = '<div class="ans-head">答案页（' + SHEET.byKey(t).name + ' · 共 ' + n + ' 题）</div><div class="ans-list">';
+        for (var i = 0; i < probs.length; i++) {
+            h += '<div><span class="ai">' + (i + 1) + '.</span>' + probs[i].ans + '</div>';
+        }
+        h += '</div><div class="ans-tip">打印时答案自动另起一页；不想要答案页就先点「隐藏答案页」再打印。</div>';
+        return h;
+    }
+
+    function setVars(t, cols) {
+        paper.style.setProperty("--cols", String(cols));
+        var wide = (t === "t1000" || t === "mix2");
+        paper.style.setProperty("--blkw", wide ? "64px" : "46px");
+        paper.style.setProperty("--vsmin", t === "t1000" ? "6.4em" : "5em");
+    }
+
+    function hasVs(t) { return !!SHEET.byKey(t).vs; }
+
+    function regenerate() {
+        var t = typeSel.value, n = parseInt(countSel.value, 10), cols = parseInt(colSel.value, 10);
+        var ok = hasVs(t);
+        vsCheck.disabled = !ok;
+        if (!ok) vsCheck.checked = false;
+        vsHint.textContent = ok ? "（勾选后每题竖排，留白更大）" : "（当前题型不支持竖式）";
+        var vs = ok && vsCheck.checked;
+        cur = { t: t, n: n, cols: cols, vs: vs, probs: SHEET.genSet(t, n) };
+        setVars(t, cols);
+        paper.innerHTML = paperHTML(cur.probs, t, n, vs, cols);
+        ansPage.innerHTML = ansHTML(cur.probs, t, n);
+        ansPage.className = "ans-wrap" + (ansShown ? " on" : "");
+        ansBtn.textContent = ansShown ? "隐藏答案页" : "显示答案页";
+        statusLine.textContent = "已生成：" + SHEET.byKey(t).name + " · " + n + " 题 · " + cols + " 列 · " + (vs ? "竖式" : "横式");
+        saveSettings();
+    }
+
+    function saveSettings() {
+        try {
+            localStorage.setItem("ksj_settings", JSON.stringify({ t: typeSel.value, n: countSel.value, c: colSel.value, v: vsCheck.checked ? 1 : 0 }));
+        } catch (e) {}
+    }
+    function loadSettings() {
+        try {
+            var j = JSON.parse(localStorage.getItem("ksj_settings") || "");
+            if (!j) return;
+            if (j.t) typeSel.value = j.t;
+            if (j.n) countSel.value = j.n;
+            if (j.c) colSel.value = j.c;
+            vsCheck.checked = !!j.v;
+        } catch (e) {}
+    }
+
+    genBtn.addEventListener("click", function () { regenerate(); try { paper.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {} });
+    printBtn.addEventListener("click", function () { try { window.print(); } catch (e) {} });
+    ansBtn.addEventListener("click", function () { ansShown = !ansShown; if (cur) { ansPage.className = "ans-wrap" + (ansShown ? " on" : ""); ansBtn.textContent = ansShown ? "隐藏答案页" : "显示答案页"; } });
+    typeSel.addEventListener("change", regenerate);
+    countSel.addEventListener("change", regenerate);
+    colSel.addEventListener("change", regenerate);
+    vsCheck.addEventListener("change", regenerate);
+
+    loadSettings();
+    regenerate();
+})();
+</script>
+</body>
+</html>
