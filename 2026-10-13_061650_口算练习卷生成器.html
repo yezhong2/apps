@@ -99,6 +99,8 @@ body{
 .ans-list{display:grid;grid-template-columns:repeat(8,1fr);gap:7px 12px;font-size:14.5px;color:#1c2431;font-variant-numeric:tabular-nums;}
 .ans-list .ai{color:#9aa3b0;font-size:12px;margin-right:2px;}
 .ans-tip{font-size:12.5px;color:var(--muted);margin-top:10px;}
+.ksj-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);background:rgba(30,36,48,.94);color:#fff;font-size:13.5px;line-height:1.55;padding:10px 16px;border-radius:10px;max-width:86vw;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:99;text-align:left;}
+.ksj-toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 @media (max-width:640px){
   .ctrl-grid{grid-template-columns:repeat(2,1fr);}
   .paper{padding:18px 14px 22px;}
@@ -111,6 +113,7 @@ body{
   body{background:#fff;}
   .no-print{display:none !important;}
   .page-footer{display:none !important;}
+  .ksj-toast{display:none !important;}
   .wrap{max-width:none;padding:0;}
   .paper{max-width:none;margin:0;padding:0;border:none;border-radius:0;box-shadow:none;}
   .paper .grid{grid-template-columns:repeat(var(--cols),1fr);gap:16px 18px;}
@@ -184,9 +187,7 @@ body{
   <section class="paper" id="paper"></section>
   <section class="ans-wrap" id="ansPage"></section>
 </div>
-
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #e2ddd2;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#1d7a52;text-decoration:none;}.page-footer .fb-btn{background:#1d7a52;color:#fff;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #d8d2c6;border-radius:8px;background:#faf8f4;margin-bottom:4px;color:#8b93a3;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span>广告</span></div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div>
-
+<div class="ksj-toast" id="toastTip"></div>
 <script>
 // ===== SHEET_CORE_START =====
 // 口算小卷 · 纯本地生成核心（无 DOM 依赖；页面渲染与自动化测试共用同一份逻辑）
@@ -309,9 +310,17 @@ var SHEET = (function () {
     var typeSel = $("typeSel"), countSel = $("countSel"), colSel = $("colSel"),
         vsCheck = $("vsCheck"), vsHint = $("vsHint"), genBtn = $("genBtn"),
         printBtn = $("printBtn"), ansBtn = $("ansBtn"), paper = $("paper"),
-        ansPage = $("ansPage"), statusLine = $("statusLine");
+        ansPage = $("ansPage"), statusLine = $("statusLine"), toastTip = $("toastTip");
 
-    var ansShown = false, cur = null;
+    var ansShown = false, cur = null, toastTimer = null;
+
+    function showToast(msg) {
+        if (!toastTip) return;
+        toastTip.textContent = msg;
+        toastTip.className = "ksj-toast on";
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toastTip.className = "ksj-toast"; }, 6000);
+    }
 
     function esc(s) { return String(s); }
 
@@ -386,7 +395,10 @@ var SHEET = (function () {
     }
 
     genBtn.addEventListener("click", function () { regenerate(); try { paper.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {} });
-    printBtn.addEventListener("click", function () { try { window.print(); } catch (e) {} });
+    printBtn.addEventListener("click", function () {
+        try { window.print(); } catch (e) {}
+        showToast("已调用打印。如果打印窗口没有弹出（部分 App 内置浏览器不支持打印），请点右上角「…」→「在浏览器打开」后再打印。");
+    });
     ansBtn.addEventListener("click", function () { ansShown = !ansShown; if (cur) { ansPage.className = "ans-wrap" + (ansShown ? " on" : ""); ansBtn.textContent = ansShown ? "隐藏答案页" : "显示答案页"; } });
     typeSel.addEventListener("change", regenerate);
     countSel.addEventListener("change", regenerate);
@@ -397,5 +409,9 @@ var SHEET = (function () {
     regenerate();
 })();
 </script>
+
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #e2ddd2;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#1d7a52;text-decoration:none;}.page-footer .fb-btn{background:#1d7a52;color:#fff;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #d8d2c6;border-radius:8px;background:#faf8f4;margin-bottom:4px;color:#8b93a3;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span>广告</span></div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div>
+
+
 </body>
 </html>
