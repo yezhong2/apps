@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Code Assistant</title><meta name="description" content="Free online tool: AI Code Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Code Assistant">
+<meta property="og:description" content="Free online tool: AI Code Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-14_013817_AI代码生成助手.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        :root {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #4f46e5;
+            --accent-hover: #6366f1;
+            --error: #ef4444;
+            --success: #10b981;
+            --border: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background-color: var(--bg-secondary);
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px 16px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .search-button {
+            padding: 12px 24px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        nav {
+            background-color: var(--bg-secondary);
+            padding: 15px 0;
+            margin-bottom: 30px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .nav-button {
+            padding: 10px 20px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .nav-button.active {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .section {
+            display: none;
+            margin-bottom: 40px;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        
+        .input-container {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .button {
+            padding: 12px 24px;
+            background-color: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        
+        .output-container {
+            background-color: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .output-title {
+            font-weight: 500;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+        
+        .output-content {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-block {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .code-language {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .copy-button {
+            padding: 6px 12px;
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-button:hover {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .explanation {
+            background-color: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .explanation-title {
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+        
+        .explanation-content {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            color: var(--error);
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .error-message.active {
+            display: block;
+        }
+        
+        .success-message {
+            color: var(--success);
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(16, 185, 129, 0.1);
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .success-message.active {
+            display: block;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>AI Code Assistant</h1>
+                <p class="subtitle">Generate, debug, optimize, test and learn code with AI</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-input" id="globalSearch" placeholder="Search for code examples or help...">
+            <button class="search-button" id="globalSearchButton">Search</button>
+        </div>
+        
+        <nav>
+            <div class="nav-container">
+                <button class="nav-button active" data-section="generate">Code Generator</button>
+                <button class="nav-button" data-section="debug">Code Debugger</button>
+                <button class="nav-button" data-section="optimize">Code Optimizer</button>
+                <button class="nav-button" data-section="test">Code Tester</button>
+                <button class="nav-button" data-section="learn">Code Learning</button>
+            </div>
+        </nav>
+        
+        <section id="generate" class="section active">
+            <h2 class="section-title">Generate Code</h2>
+            <div class="input-container">
+                <label class="input-label" for="generateInput">Describe what you want to code:</label>
+                <textarea id="generateInput" placeholder="e.g., Create a function that calculates the factorial of a number"></textarea>
+                <button class="button" id="generateButton">Generate Code</button>
+                <div class="error-message" id="generateError"></div>
+            </div>
+            
+            <div class="loading" id="generateLoading">
+                <div class="spinner"></div>
+                <p>Generating code...</p>
+            </div>
+            
+            <div class="output-container" id="generateOutput" style="display: none;">
+                <h3 class="output-title">Generated Code:</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">JavaScript</span>
+                        <button class="copy-button" id="copyGenerateCode">Copy</button>
+                    </div>
+                    <div class="output-content" id="generateCodeOutput"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="debug" class="section">
+            <h2 class="section-title">Debug Code</h2>
+            <div class="input-container">
+                <label class="input-label" for="debugInput">Paste your code with errors:</label>
+                <textarea id="debugInput" placeholder="e.g., function factorial(n) { return n * factorial(n-1); }"></textarea>
+                <button class="button" id="debugButton">Debug Code</button>
+                <div class="error-message" id="debugError"></div>
+            </div>
+            
+            <div class="loading" id="debugLoading">
+                <div class="spinner"></div>
+                <p>Analyzing code errors...</p>
+            </div>
+            
+            <div class="output-container" id="debugOutput" style="display: none;">
+                <h3 class="output-title">Debug Results:</h3>
+                <div class="explanation">
+                    <h4 class="explanation-title">Error Analysis:</h4>
+                    <div class="explanation-content" id="debugAnalysis"></div>
+                </div>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Fixed Code</span>
+                        <button class="copy-button" id="copyDebugCode">Copy</button>
+                    </div>
+                    <div class="output-content" id="debugCodeOutput"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="optimize" class="section">
+            <h2 class="section-title">Optimize Code</h2>
+            <div class="input-container">
+                <label class="input-label" for="optimizeInput">Paste your code to optimize:</label>
+                <textarea id="optimizeInput" placeholder="e.g., function fibonacci(n) { if (n <= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }"></textarea>
+                <button class="button" id="optimizeButton">Optimize Code</button>
+                <div class="error-message" id="optimizeError"></div>
+            </div>
+            
+            <div class="loading" id="optimizeLoading">
+                <div class="spinner"></div>
+                <p>Optimizing code...</p>
+            </div>
+            
+            <div class="output-container" id="optimizeOutput" style="display: none;">
+                <h3 class="output-title">Optimized Code:</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-language">Optimized Code</span>
+                        <button class="copy-button" id="copyOptimizeCode">Copy</button>
+                    </div>
+                    <div class="output-content" id="optimizeCodeOutput"></div>
+                </div>
+                <div class="explanation">
+                    <h4 class="explanation-title">Optimization Details:</h4>
+                    <div class="explanation-content" id="optimizeDetails"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="test" class="section">
+            <h2 class="section-title">Test Code</h2>
+            <div class="input-container">
+                <label class="input-label" for="testInput">Paste your code to test:</label>
+                <textarea id="testInput" placeholder="e.g., function add(a, b) { return a + b; }"></textarea>
+                <button class="button" id="testButton">Test Code</button>
+                <div class="error-message" id="testError"></div>
+            </div>
+            
+            <div class="loading" id="testLoading">
+                <div class="spinner"></div>
+                <p>Testing code...</p>
+            </div>
+            
+            <div class="output-container" id="testOutput" style="display: none;">
+                <h3 class="output-title">Test Results:</h3>
+                <div class="explanation">
+                    <h4 class="explanation-title">Execution Results:</h4>
+                    <div class="explanation-content" id="testResults"></div>
+                </div>
+                <div class="explanation">
+                    <h4 class="explanation-title">Test Cases:</h4>
+                    <div class="explanation-content" id="testCases"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="learn" class="section">
+            <h2 class="section-title">Learn Code</h2>
+            <div class="input-container">
+                <label class="input-label" for="learnInput">Enter keywords to learn about:</label>
+                <textarea id="learnInput" placeholder="e.g., array methods, loops, objects"></textarea>
+                <button class="button" id="learnButton">Learn Code</button>
+                <div class="error-message" id="learnError"></div>
+            </div>
+            
+            <div class="loading" id="learnLoading">
+                <div class="spinner"></div>
+                <p>Learning resources...</p>
+            </div>
+            
+            <div class="output-container" id="learnOutput" style="display: none;">
+                <h3 class="output-title">Learning Resources:</h3>
+                <div id="learnResults"></div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // Navigation functionality
+        const navButtons = document.querySelectorAll('.nav-button');
+        const sections = document.querySelectorAll('.section');
+        
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetSection = button.getAttribute('data-section');
+                
+                // Update active button
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                // Update active section
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === targetSection) {
+                        section.classList.add('active');
+                    }
+                });
+            });
+        });
+        
+        // Global search functionality
+        const globalSearchInput = document.getElementById('globalSearch');
+        const globalSearchButton = document.getElementById('globalSearchButton');
+        
+        globalSearchButton.addEventListener('click', () => {
+            const searchTerm = globalSearchInput.value.trim();
+            if (searchTerm) {
+                // Set the search term in the learning section
+                document.getElementById('learnInput').value = searchTerm;
+                
+                // Switch to learning section
+                navButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('[data-section="learn"]').classList.add('active');
+                sections.forEach(section => section.classList.remove('active'));
+                document.getElementById('learn').classList.add('active');
+                
+                // Trigger learn functionality
+                handleLearn();
+            }
+        });
+        
+        globalSearchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                globalSearchButton.click();
+            }
+        });
+        
+        // Copy to clipboard functionality
+        function copyToClipboard(text, buttonId) {
+            const button = document.getElementById(buttonId);
+            button.textContent = 'Copied!';
+            
+            navigator.clipboard.writeText(text).then(() => {
+                setTimeout(() => {
+                    button.textContent = 'Copy';
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                button.textContent = 'Copy';
+            });
+        }
+        
+        // Generate code functionality
+        const generateInput = document.getElementById('generateInput');
+        const generateButton = document.getElementById('generateButton');
+        const generateLoading = document.getElementById('generateLoading');
+        const generateOutput = document.getElementById('generateOutput');
+        const generateCodeOutput = document.getElementById('generateCodeOutput');
+        const generateError = document.getElementById('generateError');
+        const copyGenerateCode = document.getElementById('copyGenerateCode');
+        
+        generateButton.addEventListener('click', handleGenerate);
+        
+        function handleGenerate() {
+            const input = generateInput.value.trim();
+            
+            if (!input) {
+                generateError.textContent = 'Please enter a description of what you want to code.';
+                generateError.classList.add('active');
+                return;
+            }
+            
+            generateError.classList.remove('active');
+            generateLoading.classList.add('active');
+            generateOutput.style.display = 'none';
+            
+            // Use AI channel to generate code
+            window.__AIChannel.submit('story', `Generate code for: ${input}`).then(response => {
+                generateLoading.classList.remove('active');
+                generateCodeOutput.textContent = response.text;
+                generateOutput.style.display = 'block';
+            }).catch(error => {
+                generateLoading.classList.remove('active');
+                generateError.textContent = 'Failed to generate code. Please try again.';
+                generateError.classList.add('active');
+                console.error('Error generating code:', error);
+            });
+        }
+        
+        copyGenerateCode.addEventListener('click', () => {
+            copyToClipboard(generateCodeOutput.textContent, 'copyGenerateCode');
+        });
+        
+        // Debug code functionality
+        const debugInput = document.getElementById('debugInput');
+        const debugButton = document.getElementById('debugButton');
+        const debugLoading = document.getElementById('debugLoading');
+        const debugOutput = document.getElementById('debugOutput');
+        const debugAnalysis = document.getElementById('debugAnalysis');
+        const debugCodeOutput = document.getElementById('debugCodeOutput');
+        const debugError = document.getElementById('debugError');
+        const copyDebugCode = document.getElementById('copyDebugCode');
+        
+        debugButton.addEventListener('click', handleDebug);
+        
+        function handleDebug() {
+            const input = debugInput.value.trim();
+            
+            if (!input) {
+                debugError.textContent = 'Please enter code to debug.';
+                debugError.classList.add('active');
+                return;
+            }
+            
+            debugError.classList.remove('active');
+            debugLoading.classList.add('active');
+            debugOutput.style.display = 'none';
+            
+            // Use AI channel to debug code
+            window.__AIChannel.submit('explain', `Debug this code and explain the errors: ${input}`).then(response => {
+                debugLoading.classList.remove('active');
+                
+                // Parse the response to extract error analysis and fixed code
+                const responseText = response.text;
+                const errorMatch = responseText.match(/Error Analysis:\s*([\s\S]*?)(?=Fixed Code:|$)/);
+                const codeMatch = responseText.match(/Fixed Code:\s*([\s\S]*?)(?=Optimization:|$)/);
+                
+                if (errorMatch) {
+                    debugAnalysis.textContent = errorMatch[1].trim();
+                }
+                
+                if (codeMatch) {
+                    debugCodeOutput.textContent = codeMatch[1].trim();
+                }
+                
+                debugOutput.style.display = 'block';
+            }).catch(error => {
+                debugLoading.classList.remove('active');
+                debugError.textContent = 'Failed to debug code. Please try again.';
+                debugError.classList.add('active');
+                console.error('Error debugging code:', error);
+            });
+        }
+        
+        copyDebugCode.addEventListener('click', () => {
+            copyToClipboard(debugCodeOutput.textContent, 'copyDebugCode');
+        });
+        
+        // Optimize code functionality
+        const optimizeInput = document.getElementById('optimizeInput');
+        const optimizeButton = document.getElementById('optimizeButton');
+        const optimizeLoading = document.getElementById('optimizeLoading');
+        const optimizeOutput = document.getElementById('optimizeOutput');
+        const optimizeCodeOutput = document.getElementById('optimizeCodeOutput');
+        const optimizeDetails = document.getElementById('optimizeDetails');
+        const optimizeError = document.getElementById('optimizeError');
+        const copyOptimizeCode = document.getElementById('copyOptimizeCode');
+        
+        optimizeButton.addEventListener('click', handleOptimize);
+        
+        function handleOptimize() {
+            const input = optimizeInput.value.trim();
+            
+            if (!input) {
+                optimizeError.textContent = 'Please enter code to optimize.';
+                optimizeError.classList.add('active');
+                return;
+            }
+            
+            optimizeError.classList.remove('active');
+            optimizeLoading.classList.add('active');
+            optimizeOutput.style.display = 'none';
+            
+            // Use AI channel to optimize code
+            window.__AIChannel.submit('refine', `Optimize this code and explain the improvements: ${input}`).then(response => {
+                optimizeLoading.classList.remove('active');
+                
+                // Parse the response to extract optimized code and details
+                const responseText = response.text;
+                const codeMatch = responseText.match(/Optimized Code:\s*([\s\S]*?)(?=Optimization Details:|$)/);
+                const detailsMatch = responseText.match(/Optimization Details:\s*([\s\S]*?)(?=|$)/);
+                
+                if (codeMatch) {
+                    optimizeCodeOutput.textContent = codeMatch[1].trim();
+                }
+                
+                if (detailsMatch) {
+                    optimizeDetails.textContent = detailsMatch[1].trim();
+                }
+                
+                optimizeOutput.style.display = 'block';
+            }).catch(error => {
+                optimizeLoading.classList.remove('active');
+                optimizeError.textContent = 'Failed to optimize code. Please try again.';
+                optimizeError.classList.add('active');
+                console.error('Error optimizing code:', error);
+            });
+        }
+        
+        copyOptimizeCode.addEventListener('click', () => {
+            copyToClipboard(optimizeCodeOutput.textContent, 'copyOptimizeCode');
+        });
+        
+        // Test code functionality
+        const testInput = document.getElementById('testInput');
+        const testButton = document.getElementById('testButton');
+        const testLoading = document.getElementById('testLoading');
+        const testOutput = document.getElementById('testOutput');
+        const testResults = document.getElementById('testResults');
+        const testCases = document.getElementById('testCases');
+        const testError = document.getElementById('testError');
+        
+        testButton.addEventListener('click', handleTest);
+        
+        function handleTest() {
+            const input = testInput.value.trim();
+            
+            if (!input) {
+                testError.textContent = 'Please enter code to test.';
+                testError.classList.add('active');
+                return;
+            }
+            
+            testError.classList.remove('active');
+            testLoading.classList.add('active');
+            testOutput.style.display = 'none';
+            
+            // Use AI channel to test code
+            window.__AIChannel.submit('tips', `Test this code and provide test cases: ${input}`).then(response => {
+                testLoading.classList.remove('active);
+                
+                // Parse the response to extract test results and cases
+                const responseText = response.text;
+                const resultsMatch = responseText.match(/Execution Results:\s*([\s\S]*?)(?=Test Cases:|$)/);
+                const casesMatch = responseText.match(/Test Cases:\s*([\s\S]*?)(?=|$)/);
+                
+                if (resultsMatch) {
+                    testResults.textContent = resultsMatch[1].trim();
+                }
+                
+                if (casesMatch) {
+                    testCases.textContent = casesMatch[1].trim();
+                }
+                
+                testOutput.style.display = 'block';
+            }).catch(error => {
+                testLoading.classList.remove('active');
+                testError.textContent = 'Failed to test code. Please try again.';
+                testError.classList.add('active');
+                console.error('Error testing code:', error);
+            });
+        }
+        
+        // Learn code functionality
+        const learnInput = document.getElementById('learnInput');
+        const learnButton = document.getElementById('learnButton');
+        const learnLoading = document.getElementById('learnLoading');
+        const learnOutput = document.getElementById('learnOutput');
+        const learnResults = document.getElementById('learnResults');
+        const learnError = document.getElementById('learnError');
+        
+        learnButton.addEventListener('click', handleLearn);
+        
+        function handleLearn() {
+            const input = learnInput.value.trim();
+            
+            if (!input) {
+                learnError.textContent = 'Please enter keywords to learn about.';
+                learnError.classList.add('active');
+                return;
+            }
+            
+            learnError.classList.remove('active');
+            learnLoading.classList.add('active');
+            learnOutput.style.display = 'none';
+            
+            // Use AI channel to get learning resources
+            window.__AIChannel.submit('textsum', `Provide learning resources and examples for: ${input}`).then(response => {
+                learnLoading.classList.remove('active();
+                
+                // Parse the response to extract learning resources
+                const responseText = response.text;
+                learnResults.innerHTML = responseText.split('\n').map(line => {
+                    if (line.startsWith('Example:')) {
+                        return `<div class="code-block">
+                            <div class="code-header">
+                                <span class="code-language">Code Example</span>
+                            </div>
+                            <div class="output-content">${line.substring(8).trim()}</div>
+                        </div>`;
+                    } else if (line.startsWith('Explanation:')) {
+                        return `<div class="explanation">
+                            <h4 class="explanation-title">${line.substring(12).trim()}</h4>
+                            <div class="explanation-content">${line.substring(12).trim()}</div>
+                        </div>`;
+                    } else if (line.trim()) {
+                        return `<div class="explanation">
+                            <div class="explanation-content">${line.trim()}</div>
+                        </div>`;
+                    }
+                    return '';
+                }).join('');
+                
+                learnOutput.style.display = 'block';
+            }).catch(error => {
+                learnLoading.classList.remove('active');
+                learnError.textContent = 'Failed to retrieve learning resources. Please try again.';
+                learnError.classList.add('active');
+                console.error('Error retrieving learning resources:', error);
+            });
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Code Assistant":"AI Code Assistant","Generate, debug, optimize, test and learn code with AI":"Generate, debug, optimize, test and learn code with AI","Search":"Search","Code Generator":"Code Generator","Code Debugger":"Code Debugger","Code Optimizer":"Code Optimizer","Code Tester":"Code Tester","Code Learning":"Code Learning","Generate Code":"Generate Code","Describe what you want to code:":"Describe what you want to code:","Generating code...":"Generating code...","Generated Code:":"Generated Code:","JavaScript":"JavaScript","Copy":"Copy","Debug Code":"Debug Code","Paste your code with errors:":"Paste your code with errors:","Analyzing code errors...":"Analyzing code errors...","Debug Results:":"Debug Results:","Error Analysis:":"Error Analysis:","Fixed Code":"Fixed Code","Optimize Code":"Optimize Code","Paste your code to optimize:":"Paste your code to optimize:","if (n":"if (n","Optimizing code...":"Optimizing code...","Optimized Code:":"Optimized Code:","Optimized Code":"Optimized Code","Optimization Details:":"Optimization Details:","Test Code":"Test Code","Paste your code to test:":"Paste your code to test:","Testing code...":"Testing code...","Test Results:":"Test Results:","Execution Results:":"Execution Results:","Test Cases:":"Test Cases:","Learn Code":"Learn Code","Enter keywords to learn about:":"Enter keywords to learn about:","Learning resources...":"Learning resources...","Learning Resources:":"Learning Resources:","Code Example":"Code Example","Search for code examples or help...":"Search for code examples or help...","e.g., Create a function that calculates the factorial of a number":"e.g., Create a function that calculates the factorial of a number","e.g., function factorial(n) { return n * factorial(n-1); }":"e.g., function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"e.g., function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"e.g., array methods, loops, objects","Enter":"Enter","Copied!":"Copied!","Failed to copy:":"Failed to copy:","Please enter a description of what you want to code.":"Please enter a description of what you want to code.","Failed to generate code. Please try again.":"Failed to generate code. Please try again.","Error generating code:":"Error generating code:","Please enter code to debug.":"Please enter code to debug.","Failed to debug code. Please try again.":"Failed to debug code. Please try again.","Error debugging code:":"Error debugging code:","Please enter code to optimize.":"Please enter code to optimize.","Failed to optimize code. Please try again.":"Failed to optimize code. Please try again.","Error optimizing code:":"Error optimizing code:","Please enter code to test.":"Please enter code to test.","Failed to test code. Please try again.":"Failed to test code. Please try again.","Error testing code:":"Error testing code:","Please enter keywords to learn about.":"Please enter keywords to learn about.","Example:":"Example:","Explanation:":"Explanation:","Failed to retrieve learning resources. Please try again.":"Failed to retrieve learning resources. Please try again.","Error retrieving learning resources:":"Error retrieving learning resources:","__title__":"AI Code Assistant"},"zh-CN":{"AI Code Assistant":"AI代码助手","Generate, debug, optimize, test and learn code with AI":"使用AI生成、调试、优化、测试和学习代码","Search":"搜索","Code Generator":"代码生成器","Code Debugger":"代码调试器","Code Optimizer":"代码优化器","Code Tester":"代码测试器","Code Learning":"代码学习","Generate Code":"生成代码","Describe what you want to code:":"描述您想要编写的代码：","Generating code...":"正在生成代码...","Generated Code:":"生成的代码：","Copy":"复制","Debug Code":"调试代码","Paste your code with errors:":"粘贴带有错误的代码：","Analyzing code errors...":"正在分析代码错误...","Debug Results:":"调试结果：","Error Analysis:":"错误分析：","Fixed Code":"修复后的代码","Optimize Code":"优化代码","Paste your code to optimize:":"粘贴您的代码以进行优化：","Optimizing code...":"正在优化代码...","Optimized Code:":"优化后的代码：","Optimized Code":"优化后的代码","Optimization Details:":"优化详情：","Test Code":"测试代码","Paste your code to test:":"粘贴您的代码以进行测试：","Testing code...":"正在测试代码...","Test Results:":"测试结果：","Execution Results:":"执行结果：","Test Cases:":"测试用例：","Learn Code":"学习代码","Enter keywords to learn about:":"输入关键词以了解：","Learning resources...":"学习资源...","Learning Resources:":"学习资源：","Code Example":"代码示例","Search for code examples or help...":"搜索代码示例或帮助...","e.g., Create a function that calculates the factorial of a number":"例如，创建一个计算数字阶乘的函数","e.g., function factorial(n) { return n * factorial(n-1); }":"例如，function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"例如，function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"例如，function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"例如，数组方法、循环、对象","Enter":"输入","Copied!":"已复制！","Failed to copy:":"复制失败：","Please enter a description of what you want to code.":"请输入您想要编写的代码的描述。","Failed to generate code. Please try again.":"代码生成失败。请重试。","Error generating code:":"代码生成错误：","Please enter code to debug.":"请输入要调试的代码。","Failed to debug code. Please try again.":"代码调试失败。请重试。","Error debugging code:":"代码调试错误：","Please enter code to optimize.":"请输入要优化的代码。","Failed to optimize code. Please try again.":"代码优化失败。请重试。","Error optimizing code:":"代码优化错误：","Please enter code to test.":"请输入要测试的代码。","Failed to test code. Please try again.":"代码测试失败。请重试。","Error testing code:":"代码测试错误：","Please enter keywords to learn about.":"请输入要了解的关键词。","Failed to retrieve learning resources. Please try again.":"无法检索学习资源。请重试。","Error retrieving learning resources:":"检索学习资源时出错：","__title__":"AI代码助手"},"es":{"AI Code Assistant":"Asistente de Código AI","Generate, debug, optimize, test and learn code with AI":"Generar, depurar, optimizar, probar y aprender código con IA","Search":"Búsqueda","Code Generator":"Generador de Código","Code Debugger":"Depurador de Código","Code Optimizer":"Optimizador de Código","Code Tester":"Probador de Código","Code Learning":"Aprendizaje de Código","Generate Code":"Generar Código","Describe what you want to code:":"Describa lo que desea codificar:","Generating code...":"Generando código...","Generated Code:":"Código Generado:","Copy":"Copiar","Debug Code":"Depurar Código","Paste your code with errors:":"Pegue su código con errores:","Analyzing code errors...":"Analizando errores de código...","Debug Results:":"Resultados de la Depuración:","Error Analysis:":"Análisis de Error:","Fixed Code":"Código Arreglado","Optimize Code":"Optimizar Código","Paste your code to optimize:":"Pegue su código para optimizar:","Optimizing code...":"Optimizando código...","Optimized Code:":"Código Optimizado:","Optimized Code":"Código Optimizado","Optimization Details:":"Detalles de la Optimización:","Test Code":"Probar Código","Paste your code to test:":"Pegue su código para probar:","Testing code...":"Probando código...","Test Results:":"Resultados de la Prueba:","Execution Results:":"Resultados de la Ejecución:","Test Cases:":"Casos de Prueba:","Learn Code":"Aprender Código","Enter keywords to learn about:":"Ingrese palabras clave para aprender:","Learning resources...":"Recursos de aprendizaje...","Learning Resources:":"Recursos de aprendizaje:","Code Example":"Ejemplo de Código","Search for code examples or help...":"Búsqueda de ejemplos de código o ayuda...","e.g., Create a function that calculates the factorial of a number":"por ejemplo, crear una función que calcule el factorial de un número","e.g., function factorial(n) { return n * factorial(n-1); }":"por ejemplo, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"por ejemplo, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"por ejemplo, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"por ejemplo, métodos de array, bucles, objetos","Enter":"Ingrese","Copied!":"Copiado!","Failed to copy:":"Fallo al copiar:","Please enter a description of what you want to code.":"Por favor, introduce una descripción de lo que deseas codificar.","Failed to generate code. Please try again.":"Fallo al generar código. Por favor, inténtelo de nuevo.","Error generating code:":"Error generando código:","Please enter code to debug.":"Por favor, ingrese código para depurar.","Failed to debug code. Please try again.":"Fallo al depurar código. Por favor, inténtelo de nuevo.","Error debugging code:":"Error depurando código:","Please enter code to optimize.":"Por favor, ingrese código para optimizar.","Failed to optimize code. Please try again.":"Fallo al optimizar código. Por favor, inténtelo de nuevo.","Error optimizing code:":"Error optimizando código:","Please enter code to test.":"Por favor, ingrese código para probar.","Failed to test code. Please try again.":"Fallo al probar código. Por favor, inténtelo de nuevo.","Error testing code:":"Error probando código:","Please enter keywords to learn about.":"Por favor, ingrese palabras clave para aprender.","__title__":"Asistente de Código AI"},"ja":{"AI Code Assistant":"AIコードアシスタント","Generate, debug, optimize, test and learn code with AI":"AIを使ってコードを生成、デバッグ、最適化、テスト、学習","Search":"検索","Code Generator":"コード生成器","Code Debugger":"コードデバッガ","Code Optimizer":"コード最適化ツール","Code Tester":"コードテスター","Code Learning":"コード学習","Generate Code":"コード生成","Describe what you want to code:":"生成したいコードの説明を入力してください：","Generating code...":"コード生成中...","Generated Code:":"生成されたコード：","Copy":"コピー","Debug Code":"デバッグコードを貼り付けてください：","Paste your code with errors:":"エラーを含むコードを貼り付けてください：","Analyzing code errors...":"コードエラーの分析中...","Debug Results:":"デバッグ結果：","Error Analysis:":"エラー分析：","Fixed Code":"修正されたコード","Optimize Code":"コード最適化","Paste your code to optimize:":"最適化するコードを貼り付けてください：","Optimizing code...":"コード最適化中...","Optimized Code:":"最適化されたコード：","Optimized Code":"最適化されたコード","Optimization Details:":"最適化詳細：","Test Code":"テストコードを貼り付けてください：","Paste your code to test:":"コードを貼り付けてテストしてください:","Testing code...":"コードテスト中...","Test Results:":"テスト結果：","Execution Results:":"実行結果：","Test Cases:":"テストケース：","Learn Code":"コードを学習","Enter keywords to learn about:":"学びたいキーワードを入力してください：","Learning resources...":"学習リソース...","Learning Resources:":"学習リソース：","Code Example":"コード例","Search for code examples or help...":"コード例やヘルプを検索...","e.g., Create a function that calculates the factorial of a number":"例：数の階乗を計算する関数を作成","e.g., function factorial(n) { return n * factorial(n-1); }":"例：function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"例：function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"例：function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"例：配列メソッド、ループ、オブジェクト","Enter":"入力","Copied!":"コピーしました！","Failed to copy:":"コピーに失敗しました：","Please enter a description of what you want to code.":"生成したいコードの説明を入力してください。","Failed to generate code. Please try again.":"コード生成に失敗しました。もう一度試してください。","Error generating code:":"コード生成中にエラーが発生しました：","Please enter code to debug.":"デバッグするコードを入力してください。","Failed to debug code. Please try again.":"コードデバッグに失敗しました。もう一度試してください。","Error debugging code:":"コードデバッグ中にエラーが発生しました：","Please enter code to optimize.":"最適化するコードを入力してください。","Failed to optimize code. Please try again.":"コード最適化に失敗しました。もう一度試してください。","Error optimizing code:":"コード最適化中にエラーが発生しました：","Please enter code to test.":"テストするコードを入力してください。","Failed to test code. Please try again.":"コードテストに失敗しました。もう一度試してください。","Error testing code:":"コードテスト中にエラーが発生しました：","Please enter keywords to learn about.":"学びたいキーワードを入力してください。","Example:":"例：","Explanation:":"説明：","Failed to retrieve learning resources. Please try again.":"学習リソースの取得に失敗しました。もう一度試してください。","Error retrieving learning resources:":"学習リソースの取得中にエラーが発生しました：","__title__":"AIコードアシスタント"},"ko":{"AI Code Assistant":"AI 코드 어시스턴트","Generate, debug, optimize, test and learn code with AI":"AI와 함께 코드를 생성, 디버그, 최적화, 테스트하고 배우세요","Search":"검색","Code Generator":"코드 생성기","Code Debugger":"코드 디버거","Code Optimizer":"코드 최적화기","Code Tester":"코드 테스터","Code Learning":"코드 학습","Generate Code":"코드 생성","Describe what you want to code:":"코드를 작성하고 싶은 것을 설명하세요:","Generating code...":"코드 생성 중...","Generated Code:":"생성된 코드:","Copy":"복사","Debug Code":"디버그 코드","Paste your code with errors:":"에러가 있는 코드를 붙여넣어 주세요:","Analyzing code errors...":"코드 에러 분석 중...","Debug Results:":"디버그 결과:","Error Analysis:":"에러 분석:","Fixed Code":"수정된 코드","Optimize Code":"코드 최적화","Paste your code to optimize:":"최적화할 코드를 붙여넣어 주세요:","Optimizing code...":"코드 최적화 중...","Optimized Code:":"최적화된 코드:","Optimized Code":"최적화된 코드","Optimization Details:":"최적화 세부 정보:","Test Code":"코드 테스트","Paste your code to test:":"테스트할 코드를 붙여넣어 주세요:","Testing code...":"코드 테스트 중...","Test Results:":"테스트 결과:","Execution Results:":"실행 결과:","Test Cases:":"테스트 케이스:","Learn Code":"코드 배우기","Enter keywords to learn about:":"학습할 키워드를 입력하세요:","Learning resources...":"학습 자료...","Learning Resources:":"학습 자료:","Code Example":"코드 예제","Search for code examples or help...":"코드 예제나 도움을 검색하세요...","e.g., Create a function that calculates the factorial of a number":"예를 들어, 수의 팩토리얼을 계산하는 함수를 생성하세요","e.g., function factorial(n) { return n * factorial(n-1); }":"예를 들어, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"예를 들어, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"예를 들어, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"예를 들어, 배열 메서드, 루프, 객체","Enter":"입력","Copied!":"복사되었습니다!","Failed to copy:":"복사에 실패했습니다:","Please enter a description of what you want to code.":"코드를 작성하고 싶은 것에 대한 설명을 입력하세요.","Failed to generate code. Please try again.":"코드 생성에 실패했습니다. 다시 시도해 주세요.","Error generating code:":"코드 생성 중 오류가 발생했습니다:","Please enter code to debug.":"디버그할 코드를 입력하세요.","Failed to debug code. Please try again.":"코드 디버그에 실패했습니다. 다시 시도해 주세요.","Error debugging code:":"코드 디버그 중 오류가 발생했습니다:","Please enter code to optimize.":"최적화할 코드를 입력하세요.","Failed to optimize code. Please try again.":"코드 최적화에 실패했습니다. 다시 시도해 주세요.","Error optimizing code:":"코드 최적화 중 오류가 발생했습니다:","Please enter code to test.":"테스트할 코드를 입력하세요.","Failed to test code. Please try again.":"코드 테스트에 실패했습니다. 다시 시도해 주세요.","Error testing code:":"코드 테스트 중 오류가 발생했습니다:","Please enter keywords to learn about.":"학습할 키워드를 입력하세요.","__title__":"AI 코드 어시스턴트"},"fr":{"AI Code Assistant":"Assistant de Code IA","Generate, debug, optimize, test and learn code with AI":"Générer, déboguer, optimiser, tester et apprendre du code avec l'IA","Search":"Recherche","Code Generator":"Générateur de Code","Code Debugger":"Débogueur de Code","Code Optimizer":"Optimiseur de Code","Code Tester":"Testeur de Code","Code Learning":"Apprentissage de Code","Generate Code":"Générer du Code","Describe what you want to code:":"Décrivez ce que vous souhaitez coder :","Generating code...":"Génération du code...","Generated Code:":"Code généré :","Copy":"Copier","Debug Code":"Déboguer le Code","Paste your code with errors:":"Coller votre code avec des erreurs :","Analyzing code errors...":"Analyse des erreurs de code...","Debug Results:":"Résultats du Débogage :","Error Analysis:":"Analyse des Erreurs :","Fixed Code":"Code Corrigé","Optimize Code":"Optimiser le Code","Paste your code to optimize:":"Coller votre code à optimiser :","Optimizing code...":"Optimisation du code...","Optimized Code:":"Code Optimisé :","Optimized Code":"Code Optimisé","Optimization Details:":"Détails de l'Optimisation :","Test Code":"Tester le Code","Paste your code to test:":"Coller votre code à tester :","Testing code...":"Test du code...","Test Results:":"Résultats du Test :","Execution Results:":"Résultats de l'Exécution :","Test Cases:":"Cas de Test :","Learn Code":"Apprendre le Code","Enter keywords to learn about:":"Entrez des mots-clés pour en apprendre davantage :","Learning resources...":"Ressources d'apprentissage...","Learning Resources:":"Ressources d'Apprentissage :","Code Example":"Exemple de Code","Search for code examples or help...":"Recherche d'exemples de code ou d'aide...","e.g., Create a function that calculates the factorial of a number":"par exemple, créer une fonction qui calcule le factoriel d'un nombre","e.g., function factorial(n) { return n * factorial(n-1); }":"par exemple, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"par exemple, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"par exemple, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"par exemple, méthodes d'array, boucles, objets","Enter":"Entrer","Copied!":"Copié !","Failed to copy:":"Échec de la copie :","Please enter a description of what you want to code.":"Veuillez entrer une description de ce que vous souhaitez coder.","Failed to generate code. Please try again.":"Échec de la génération de code. Veuillez réessayer.","Error generating code:":"Erreur lors de la génération de code :","Please enter code to debug.":"Veuillez entrer du code à déboguer.","Failed to debug code. Please try again.":"Échec du débogage du code. Veuillez réessayer.","Error debugging code:":"Erreur lors du débogage du code :","Please enter code to optimize.":"Veuillez entrer du code à optimiser.","Failed to optimize code. Please try again.":"Échec de l'optimisation du code. Veuillez réessayer.","Error optimizing code:":"Erreur lors de l'optimisation du code :","Please enter code to test.":"Veuillez entrer du code à tester.","Failed to test code. Please try again.":"Échec du test du code. Veuillez réessayer.","Error testing code:":"Erreur lors du test du code :","Please enter keywords to learn about.":"Veuillez entrer des mots-clés pour en apprendre davantage.","__title__":"Assistant de Code IA"},"de":{"Example:":"Beispiel:","Explanation:":"Erklärung:","Failed to retrieve learning resources. Please try again.":"Fehler beim Abrufen der Lernressourcen. Bitte versuchen Sie es erneut.","Error retrieving learning resources:":"Fehler beim Abrufen der Lernressourcen:","__title__":"AI Code Assistant"},"ru":{"Generate, debug, optimize, test and learn code with AI":"Создавать, отладку, оптимизацию, тестирование и обучение коду с помощью AI","Search":"Поиск","Code Generator":"Генератор кода","Code Debugger":"Отладчик кода","Code Optimizer":"Оптимизатор кода","Code Tester":"Тестер кода","Code Learning":"Обучение коду","Generate Code":"Создать код","Describe what you want to code:":"Опишите, что вы хотите кодировать:","Generating code...":"Генерация кода...","Generated Code:":"Созданный код:","Copy":"Копировать","Debug Code":"Отладка кода","Paste your code with errors:":"Вставьте ваш код с ошибками:","Analyzing code errors...":"Анализ ошибок кода...","Debug Results:":"Результаты отладки:","Error Analysis:":"Анализ ошибки:","Fixed Code":"Исправленный код","Optimize Code":"Оптимизация кода","Paste your code to optimize:":"Вставьте ваш код для оптимизации:","Optimizing code...":"Оптимизация кода...","Optimized Code:":"Оптимизированный код:","Optimized Code":"Оптимизированный код","Optimization Details:":"Подробности оптимизации:","Test Code":"Тестирование кода","Paste your code to test:":"Вставьте ваш код для тестирования:","Testing code...":"Тестирование кода...","Test Results:":"Результаты тестирования:","Execution Results:":"Результаты выполнения:","Test Cases:":"Тестовые случаи:","Learn Code":"Обучение коду","Enter keywords to learn about:":"Введите ключевые слова для обучения:","Learning resources...":"Ресурсы обучения...","Learning Resources:":"Ресурсы обучения:","Code Example":"Пример кода","Search for code examples or help...":"Поиск примеров кода или помощи...","e.g., Create a function that calculates the factorial of a number":"например, создать функцию, которая вычисляет факториал числа","e.g., function factorial(n) { return n * factorial(n-1); }":"например, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"например, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"например, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"например, методы массивов, циклы, объекты","Enter":"Ввести","Copied!":"Скопировано!","Failed to copy:":"Не удалось скопировать:","Please enter a description of what you want to code.":"Пожалуйста, введите описание того, что вы хотите кодировать.","Failed to generate code. Please try again.":"Не удалось сгенерировать код. Пожалуйста, попробуйте еще раз.","Error generating code:":"Ошибка при генерации кода:","Please enter code to debug.":"Пожалуйста, введите код для отладки.","Failed to debug code. Please try again.":"Не удалось отладить код. Пожалуйста, попробуйте еще раз.","Error debugging code:":"Ошибка при отладке кода:","Please enter code to optimize.":"Пожалуйста, введите код для оптимизации.","Failed to optimize code. Please try again.":"Не удалось оптимизировать код. Пожалуйста, попробуйте еще раз.","Error optimizing code:":"Ошибка при оптимизации кода:","Please enter code to test.":"Пожалуйста, введите код для тестирования.","Failed to test code. Please try again.":"Не удалось протестировать код. Пожалуйста, попробуйте еще раз.","Error testing code:":"Ошибка при тестировании кода:","Please enter keywords to learn about.":"Пожалуйста, введите ключевые слова для обучения.","__title__":"AI Code Assistant"},"pt":{"AI Code Assistant":"Assistente de Código de IA","Generate, debug, optimize, test and learn code with AI":"Gerar, depurar, otimizar, testar e aprender código com IA","Search":"Pesquisa","Code Generator":"Gerador de Código","Code Debugger":"Depurador de Código","Code Optimizer":"Otimizador de Código","Code Tester":"Testador de Código","Code Learning":"Aprendizado de Código","Generate Code":"Gerar Código","Describe what you want to code:":"Descreva o que você quer codificar:","Generating code...":"Gerando código...","Generated Code:":"Código Gerado:","Copy":"Copiar","Debug Code":"Depurar Código","Paste your code with errors:":"Cole seu código com erros:","Analyzing code errors...":"Analisando erros de código...","Debug Results:":"Resultados da Depuração:","Error Analysis:":"Análise de Erros:","Fixed Code":"Código Corrigido","Optimize Code":"Otimizar Código","Paste your code to optimize:":"Cole seu código para otimizar:","Optimizing code...":"Otimizando código...","Optimized Code:":"Código Otimizado:","Optimized Code":"Código Otimizado","Optimization Details:":"Detalhes da Otimização:","Test Code":"Testar Código","Paste your code to test:":"Cole seu código para testar:","Testing code...":"Testando código...","Test Results:":"Resultados do Teste:","Execution Results:":"Resultados da Execução:","Test Cases:":"Casos de Teste:","Learn Code":"Aprender Código","Enter keywords to learn about:":"Insira palavras-chave para aprender sobre:","Learning resources...":"Recursos de aprendizado...","Learning Resources:":"Recursos de Aprendizado:","Code Example":"Exemplo de Código","Search for code examples or help...":"Pesquisar exemplos de código ou ajuda...","e.g., Create a function that calculates the factorial of a number":"por exemplo, crie uma função que calcula o fatorial de um número","e.g., function factorial(n) { return n * factorial(n-1); }":"por exemplo, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"por exemplo, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"por exemplo, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"por exemplo, métodos de array, loops, objetos","Enter":"Entrar","Copied!":"Copiado!","Failed to copy:":"Falha ao copiar:","Please enter a description of what you want to code.":"Por favor, insira uma descrição do que você quer codificar.","Failed to generate code. Please try again.":"Falha ao gerar código. Por favor, tente novamente.","Error generating code:":"Erro ao gerar código:","Please enter code to debug.":"Por favor, insira código para depurar.","Failed to debug code. Please try again.":"Falha ao depurar código. Por favor, tente novamente.","Error debugging code:":"Erro ao depurar código:","Please enter code to optimize.":"Por favor, insira código para otimizar.","Failed to optimize code. Please try again.":"Falha ao otimizar código. Por favor, tente novamente.","Error optimizing code:":"Erro ao otimizar código:","Please enter code to test.":"Por favor, insira código para testar.","Failed to test code. Please try again.":"Falha ao testar código. Por favor, tente novamente.","Error testing code:":"Erro ao testar código:","Please enter keywords to learn about.":"Por favor, insira palavras-chave para aprender sobre.","Example:":"Exemplo:","Explanation:":"Explicação:","Failed to retrieve learning resources. Please try again.":"Não foi possível recuperar os recursos de aprendizado. Por favor, tente novamente.","Error retrieving learning resources:":"Erro ao recuperar os recursos de aprendizado:","__title__":"Assistente de Código de IA"},"ar":{"AI Code Assistant":"مساعد الكود الذكي","Generate, debug, optimize, test and learn code with AI":"إنشاء، تصحيح، تحسين، اختبار وتعلم الكود باستخدام الذكاء الاصطناعي","Search":"البحث","Code Generator":"مولد الكود","Code Debugger":"مصحح الكود","Code Optimizer":"محسن الكود","Code Tester":"مختبئ الكود","Code Learning":"تعلم الكود","Generate Code":"إنشاء كود","Describe what you want to code:":"وصف ما تريد كتابته من كود:","Generating code...":"إنشاء الكود...","Generated Code:":"الكود المُنتج:","JavaScript":"جافا سكريبت","Copy":"نسخ","Debug Code":"تصحيح الكود","Paste your code with errors:":"ألصق كودك الذي يحتوي على أخطاء:","Analyzing code errors...":"تحليل أخطاء الكود...","Debug Results:":"نتائج التصحيح:","Error Analysis:":"تحليل الأخطاء:","Fixed Code":"الكود المُصحح","Optimize Code":"تحسين الكود","Paste your code to optimize:":"ألصق كودك لتحسينه:","if (n":"إذا (n","Optimizing code...":"تحسين الكود...","Optimized Code:":"الكود المحسن:","Optimized Code":"الكود المحسن","Optimization Details:":"تفاصيل التحسين:","Test Code":"اختبار الكود","Paste your code to test:":"ألصق كودك للاختبار:","Testing code...":"اختبار الكود...","Test Results:":"نتائج الاختبار:","Execution Results:":"نتائج التنفيذ:","Test Cases:":"حالات الاختبار:","Learn Code":"تعلم الكود","Enter keywords to learn about:":"ادخل الكلمات المفتاحية لمعرفة المزيد عنها:","Learning resources...":"موارد التعلم...","Learning Resources:":"موارد التعلم:","Code Example":"مثال على الكود","Search for code examples or help...":"البحث عن أمثلة على الكود أو المساعدة...","e.g., Create a function that calculates the factorial of a number":"مثلاً، أنشئ دالة لحساب مضاعف التكرار لعدد","e.g., function factorial(n) { return n * factorial(n-1); }":"مثلاً، function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"مثلاً، function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"مثلاً، function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"مثلاً، طرق اللوحة، الدورات، الأشياء","Enter":"ادخل","Copied!":"نسخت!","Failed to copy:":"فشل في النسخ:","Please enter a description of what you want to code.":"يرجى إدخال وصف ما تريد كتابته من كود.","Failed to generate code. Please try again.":"فشل في إنشاء الكود. يرجى المحاولة مجدداً.","Error generating code:":"خطأ أثناء إنشاء الكود:","Please enter code to debug.":"يرجى إدخال الكود للتصحيح.","Failed to debug code. Please try again.":"فشل في تصحيح الكود. يرجى المحاولة مجدداً.","Error debugging code:":"خطأ أثناء تصحيح الكود:","Please enter code to optimize.":"يرجى إدخال الكود لتحسينه.","Failed to optimize code. Please try again.":"فشل في تحسين الكود. يرجى المحاولة مجدداً.","Error optimizing code:":"خطأ أثناء تحسين الكود:","Please enter code to test.":"يرجى إدخال الكود للاختبار.","Failed to test code. Please try again.":"فشل في اختبار الكود. يرجى المحاولة مجدداً.","Error testing code:":"خطأ أثناء اختبار الكود:","Please enter keywords to learn about.":"يرجى إدخال الكلمات المفتاحية لمعرفة المزيد عنها.","Example:":"مثال:","Explanation:":"توضيح:","Failed to retrieve learning resources. Please try again.":"لم يتم استرجاع موارد التعلم. يرجى المحاولة مجدداً.","Error retrieving learning resources:":"خطأ في استرجاع موارد التعلم:","__title__":"مساعد الكود الذكي"},"hi":{"AI Code Assistant":"एआई कोड असिस्टेंट","Generate, debug, optimize, test and learn code with AI":"एआई के साथ कोड जनरेट, डिबग, ऑप्टिमाइज, टेस्ट और सीखें","Search":"खोज","Code Generator":"कोड जनरेटर","Code Debugger":"कोड डिबगर","Code Optimizer":"कोड ऑप्टिमाइजर","Code Tester":"कोड टेस्टर","Code Learning":"कोड सीखना","Generate Code":"कोड जनरेट करें","Describe what you want to code:":"आप चाहते हैं कि क्या कोड लिखना है: ","Generating code...":"कोड जनरेट किया जा रहा है... ","Generated Code:":"जनरेट किया गया कोड: ","JavaScript":"जैवास्क्रिप्ट","Copy":"कॉपी करें","Debug Code":"डिबग कोड","Paste your code with errors:":"त्रुटियों सहित आपका कोड पेस्ट करें: ","Analyzing code errors...":"कोड त्रुटियों का विश्लेषण किया जा रहा है... ","Debug Results:":"डिबग नतीजे: ","Error Analysis:":"त्रुटि विश्लेषण: ","Fixed Code":"ठीक किया गया कोड","Optimize Code":"कोड ऑप्टिमाइज करें","Paste your code to optimize:":"ऑप्टिमाइज करने के लिए आपका कोड पेस्ट करें: ","if (n":"अगर (n","Optimizing code...":"कोड ऑप्टिमाइज किया जा रहा है... ","Optimized Code:":"ऑप्टिमाइज किया गया कोड: ","Optimized Code":"ऑप्टिमाइज किया गया कोड","Optimization Details:":"ऑप्टिमाइजेशन विवरण: ","Test Code":"कोड टेस्ट करें","Paste your code to test:":"टेस्ट करने के लिए आपका कोड पेस्ट करें: ","Testing code...":"कोड टेस्ट किया जा रहा है... ","Test Results:":"टेस्ट नतीजे: ","Execution Results:":"अंजाम नतीजे: ","Test Cases:":"टेस्ट केस: ","Learn Code":"कोड सीखें","Enter keywords to learn about:":"सीखने के लिए खोजवृत्तियाँ भरें: ","Learning resources...":"सीखने के साधन... ","Learning Resources:":"सीखने के साधन: ","Code Example":"कोड उदाहरण","Search for code examples or help...":"कोड उदाहरण या मदद के लिए खोजें... ","e.g., Create a function that calculates the factorial of a number":"उदाहरण के लिए, एक फ़ंक्शन बनाएं जो एक संख्या का फैक्टोरियल गणना करता है","e.g., function factorial(n) { return n * factorial(n-1); }":"उदाहरण के लिए, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"उदाहरण के लिए, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"उदाहरण के लिए, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"उदाहरण के लिए, array methods, loops, objects","Enter":"भरें","Copied!":"कॉपी किया!","Failed to copy:":"कॉपी करने में असफल: ","Please enter a description of what you want to code.":"कृपया आप चाहते हैं कि क्या कोड लिखना है का वर्णन भरें.","Failed to generate code. Please try again.":"कोड जनरेट करने में असफल. कृपया फिर से प्रयास करें.","Error generating code:":"कोड जनरेट करते समय त्रुटि: ","Please enter code to debug.":"कृपया डिबग करने के लिए कोड भरें.","Failed to debug code. Please try again.":"कोड डिबग करने में असफल. कृपया फिर से प्रयास करें.","Error debugging code:":"कोड डिबग करते समय त्रुटि: ","Please enter code to optimize.":"कृपया ऑप्टिमाइज करने के लिए कोड भरें.","Failed to optimize code. Please try again.":"कोड ऑप्टिमाइज करने में असफल. कृपया फिर से प्रयास करें.","Error optimizing code:":"कोड ऑप्टिमाइज करते समय त्रुटि: ","Please enter code to test.":"कृपया टेस्ट करने के लिए कोड भरें.","Failed to test code. Please try again.":"कोड टेस्ट करने में असफल. कृपया फिर से प्रयास करें.","Error testing code:":"कोड टेस्ट करते समय त्रुटि: ","Please enter keywords to learn about.":"कृपया सीखने के लिए खोजवृत्तियाँ भरें.","Example:":"उदाहरण:","Explanation:":"व्याख्या:","Failed to retrieve learning resources. Please try again.":"शिक्षण संसाधन प्राप्त करने में असफल. कृपया फिर से प्रयास करें.","Error retrieving learning resources:":"शिक्षण संसाधन प्राप्त करते समय त्रुटि:","__title__":"एआई कोड असिस्टेंट"},"id":{"AI Code Assistant":"AI Asisten Kode","Generate, debug, optimize, test and learn code with AI":"Buat, debug, optimalkan, uji dan belajar kode dengan AI","Search":"Cari","Code Generator":"Pembuat Kode","Code Debugger":"Pemantau Kode","Code Optimizer":"Pemenuh Kode","Code Tester":"Penguji Kode","Code Learning":"Pembelajaran Kode","Generate Code":"Buat Kode","Describe what you want to code:":"Deskripsikan kode yang ingin Anda buat:","Generating code...":"Membuat kode...","Generated Code:":"Kode yang Dibuat:","Copy":"Salin","Debug Code":"Debug Kode","Paste your code with errors:":"Lipat kode Anda dengan kesalahan:","Analyzing code errors...":"Menganalisis kesalahan kode...","Debug Results:":"Hasil Debug:","Error Analysis:":"Analisis Kesalahan:","Fixed Code":"Kode yang Diperbaiki","Optimize Code":"Optimalisir Kode","Paste your code to optimize:":"Lipat kode Anda untuk dioptimalisir:","Optimizing code...":"Mengoptimalisir kode...","Optimized Code:":"Kode yang Diorangin:","Optimized Code":"Kode yang Diorangin","Optimization Details:":"Detil Optimalisasi:","Test Code":"Uji Kode","Paste your code to test:":"Lipat kode Anda untuk diuji:","Testing code...":"Menguji kode...","Test Results:":"Hasil Uji:","Execution Results:":"Hasil Eksekusi:","Test Cases:":"Kasus Uji:","Learn Code":"Belajar Kode","Enter keywords to learn about:":"Masukkan kata kunci untuk belajar tentang:","Learning resources...":"Sumber belajar...","Learning Resources:":"Sumber Belajar:","Code Example":"Contoh Kode","Search for code examples or help...":"Cari contoh kode atau bantuan...","e.g., Create a function that calculates the factorial of a number":"contoh., Buat fungsi yang menghitung faktorial dari sebuah bilangan","e.g., function factorial(n) { return n * factorial(n-1); }":"contoh., function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"contoh., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"contoh., function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"contoh., metode array, loop, objek","Enter":"Masukkan","Copied!":"Disalin!","Failed to copy:":"Gagal disalin:","Please enter a description of what you want to code.":"Silakan masukkan deskripsi tentang apa yang Anda inginkan untuk dikodekan.","Failed to generate code. Please try again.":"Gagal membuat kode. Silakan coba lagi.","Error generating code:":"Kesalahan saat membuat kode:","Please enter code to debug.":"Silakan masukkan kode untuk debug.","Failed to debug code. Please try again.":"Gagal debug kode. Silakan coba lagi.","Error debugging code:":"Kesalahan saat debug kode:","Please enter code to optimize.":"Silakan masukkan kode untuk dioptimalisir.","Failed to optimize code. Please try again.":"Gagal optimalisir kode. Silakan coba lagi.","Error optimizing code:":"Kesalahan saat optimalisir kode:","Please enter code to test.":"Silakan masukkan kode untuk diuji.","Failed to test code. Please try again.":"Gagal uji kode. Silakan coba lagi.","Error testing code:":"Kesalahan saat uji kode:","Please enter keywords to learn about.":"Silakan masukkan kata kunci untuk belajar tentang.","Example:":"Contoh:","Explanation:":"Pengertian:","Failed to retrieve learning resources. Please try again.":"Gagal mengambil sumber belajar. Silakan coba lagi.","Error retrieving learning resources:":"Kesalahan dalam mengambil sumber belajar:","__title__":"AI Asisten Kode"},"vi":{"AI Code Assistant":"AI Trợ lý mã","Generate, debug, optimize, test and learn code with AI":"Tạo, gỡ lỗi, tối ưu hóa, kiểm thử và học mã với AI","Search":"Tìm kiếm","Code Generator":"Trình tạo mã","Code Debugger":"Trình gỡ lỗi mã","Code Optimizer":"Trình tối ưu hóa mã","Code Tester":"Trình kiểm thử mã","Code Learning":"Học mã","Generate Code":"Tạo mã","Describe what you want to code:":"Miêu tả mã bạn muốn tạo:","Generating code...":"Đang tạo mã...","Generated Code:":"Mã đã tạo:","Copy":"Sao chép","Debug Code":"Gỡ lỗi mã","Paste your code with errors:":"Dán mã của bạn có lỗi:","Analyzing code errors...":"Đang phân tích lỗi mã...","Debug Results:":"Kết quả gỡ lỗi:","Error Analysis:":"Phân tích lỗi:","Fixed Code":"Mã đã sửa","Optimize Code":"Tối ưu hóa mã","Paste your code to optimize:":"Dán mã của bạn để tối ưu hóa:","Optimizing code...":"Đang tối ưu hóa mã...","Optimized Code:":"Mã đã tối ưu:","Optimized Code":"Mã đã tối ưu","Optimization Details:":"Chi tiết tối ưu hóa:","Test Code":"Kiểm thử mã","Paste your code to test:":"Dán mã của bạn để kiểm thử:","Testing code...":"Đang kiểm thử mã...","Test Results:":"Kết quả kiểm thử:","Execution Results:":"Kết quả thực thi:","Test Cases:":"Trường hợp kiểm thử:","Learn Code":"Học mã","Enter keywords to learn about:":"Nhập từ khóa để học về:","Learning resources...":"Nguyên liệu học...","Learning Resources:":"Nguyên liệu học:","Code Example":"Ví dụ mã","Search for code examples or help...":"Tìm kiếm ví dụ mã hoặc trợ giúp...","e.g., Create a function that calculates the factorial of a number":"ví dụ, tạo một hàm tính giá trị nhân của một số","e.g., function factorial(n) { return n * factorial(n-1); }":"ví dụ, function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"ví dụ, function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"ví dụ, function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"ví dụ, phương pháp mảng, vòng lặp, đối tượng","Enter":"Nhập","Copied!":"Đã sao chép!","Failed to copy:":"Không thể sao chép:","Please enter a description of what you want to code.":"Vui lòng nhập mô tả về điều bạn muốn mã hóa.","Failed to generate code. Please try again.":"Không thể tạo mã. Vui lòng thử lại.","Error generating code:":"Lỗi khi tạo mã:","Please enter code to debug.":"Vui lòng nhập mã để gỡ lỗi.","Failed to debug code. Please try again.":"Không thể gỡ lỗi mã. Vui lòng thử lại.","Error debugging code:":"Lỗi khi gỡ lỗi mã:","Please enter code to optimize.":"Vui lòng nhập mã để tối ưu hóa.","Failed to optimize code. Please try again.":"Không thể tối ưu hóa mã. Vui lòng thử lại.","Error optimizing code:":"Lỗi khi tối ưu hóa mã:","Please enter code to test.":"Vui lòng nhập mã để kiểm tra.","Failed to test code. Please try again.":"Không thể kiểm thử mã. Vui lòng thử lại.","Error testing code:":"Lỗi khi kiểm thử mã:","Please enter keywords to learn about.":"Vui lòng nhập từ khóa để học về.","Example:":"Ví dụ:","Explanation:":"Giải thích:","Failed to retrieve learning resources. Please try again.":"Không thể lấy tài nguyên học tập. Vui lòng thử lại.","Error retrieving learning resources:":"Lỗi khi lấy tài nguyên học tập:","__title__":"AI Trợ lý mã"},"th":{"AI Code Assistant":"AI ช่วยเขียนโค้ด","Generate, debug, optimize, test and learn code with AI":"สร้าง ตรวจปัญหา ปรับปรุง ทดสอบ และเรียนรู้โค้ดด้วย AI","Search":"ค้นหา","Code Generator":"สร้างโค้ด","Code Debugger":"ตรวจปัญหาโค้ด","Code Optimizer":"ปรับปรุงโค้ด","Code Tester":"ทดสอบโค้ด","Code Learning":"เรียนรู้โค้ด","Generate Code":"สร้างโค้ด","Describe what you want to code:":"บรรยายว่าคุณต้องการเขียนโค้ดอะไร:","Generating code...":"กำลังสร้างโค้ด...","Generated Code:":"โค้ดที่สร้างขึ้น:","Copy":"คัดลอก","Debug Code":"ตรวจปัญหาโค้ด","Paste your code with errors:":"แปะโค้ดของคุณที่มีความผิดพลาด:","Analyzing code errors...":"กำลังตรวจสอบความผิดพลาดในโค้ด...","Debug Results:":"ผลลัพธ์การตรวจปัญหา:","Error Analysis:":"การวิเคราะห์ความผิดพลาด:","Fixed Code":"โค้ดที่แก้ไขแล้ว","Optimize Code":"ปรับปรุงโค้ด","Paste your code to optimize:":"แปะโค้ดของคุณเพื่อปรับปรุง:","Optimizing code...":"กำลังปรับปรุงโค้ด...","Optimized Code:":"โค้ดที่ปรับปรุงแล้ว:","Optimized Code":"โค้ดที่ปรับปรุงแล้ว","Optimization Details:":"รายละเอียดการปรับปรุง:","Test Code":"ทดสอบโค้ด","Paste your code to test:":"แปะโค้ดของคุณเพื่อทดสอบ:","Testing code...":"กำลังทดสอบโค้ด...","Test Results:":"ผลลัพธ์การทดสอบ:","Execution Results:":"ผลลัพธ์การปฏิบัติการ:","Test Cases:":"กรณีทดสอบ:","Learn Code":"เรียนรู้โค้ด","Enter keywords to learn about:":"ใส่คำกำกับเพื่อเรียนรู้เกี่ยวกับ:","Learning resources...":"ทรัพยากรการเรียนรู้...","Learning Resources:":"ทรัพยากรการเรียนรู้:","Code Example":"ตัวอย่างโค้ด","Search for code examples or help...":"ค้นหาตัวอย่างโค้ด หรือความช่วยเหลือ...","e.g., Create a function that calculates the factorial of a number":"ตัวอย่าง: สร้างฟังก์ชันที่คำนวณค่าเฟกทอเรียลของตัวเลข","e.g., function factorial(n) { return n * factorial(n-1); }":"ตัวอย่าง: function factorial(n) { return n * factorial(n-1); }","e.g., function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }":"ตัวอย่าง: function fibonacci(n) { if (n \u003c= 1) return n; return fibonacci(n-1) + fibonacci(n-2); }","e.g., function add(a, b) { return a + b; }":"ตัวอย่าง: function add(a, b) { return a + b; }","e.g., array methods, loops, objects":"ตัวอย่าง: วิธีการใช้ array, loops, objects","Enter":"ใส่","Copied!":"คัดลอกแล้ว!","Failed to copy:":"ไม่สามารถคัดลอกได้:","Please enter a description of what you want to code.":"กรุณาใส่บรรยายว่าคุณต้องการเขียนโค้ดอะไร:","Failed to generate code. Please try again.":"ไม่สามารถสร้างโค้ดได้. กรุณาลองใหม่:","Error generating code:":"ข้อผิดพลาดในการสร้างโค้ด:","Please enter code to debug.":"กรุณาใส่โค้ดเพื่อตรวจปัญหา:","Failed to debug code. Please try again.":"ไม่สามารถตรวจปัญหาโค้ดได้. กรุณาลองใหม่:","Error debugging code:":"ข้อผิดพลาดในการตรวจปัญหาโค้ด:","Please enter code to optimize.":"กรุณาใส่โค้ดเพื่อปรับปรุง:","Failed to optimize code. Please try again.":"ไม่สามารถปรับปรุงโค้ดได้. กรุณาลองใหม่:","Error optimizing code:":"ข้อผิดพลาดในการปรับปรุงโค้ด:","Please enter code to test.":"กรุณาใส่โค้ดเพื่อทดสอบ:","Failed to test code. Please try again.":"ไม่สามารถทดสอบโค้ดได้. กรุณาลองใหม่:","Error testing code:":"ข้อผิดพลาดในการทดสอบโค้ด:","Please enter keywords to learn about.":"กรุณาใส่คำกำกับเพื่อเรียนรู้เกี่ยวกับ.","Example:":"ตัวอย่าง:","Explanation:":"ชี้แจง:","Failed to retrieve learning resources. Please try again.":"ไม่สามารถดึงข้อมูลทรัพยากรเรียนการ์นได้ กรุณาลองใหม่อีกครั้ง。","Error retrieving learning resources:":"ข้อผิดพลาดในการดึงข้อมูลทรัพยากรเรียนการ์น:","__title__":"AI ช่วยเขียนโค้ด"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
