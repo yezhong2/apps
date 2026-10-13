@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>口算练习卷生成器 - 免费打印小学数学口算题</title>
-<meta name="description" content="免费在线生成小学数学口算练习卷：选好题型和题量，一键生成可打印的 A4 口算卷和答案页，手机电脑都能用，无需注册。">
-<meta property="og:title" content="口算练习卷生成器 - 免费打印小学数学口算题">
-<meta property="og:description" content="选好题型和题量，一键生成可打印的 A4 口算卷和答案页，手机电脑都能用，无需注册。">
+<title>口算小卷 - 在线做题 + 免费打印口算练习卷生成器</title>
+<meta name="description" content="免费口算练习工具：在线逐题作答、即时判分、自动错题清单；也能一键生成可打印的 A4 口算卷和答案页，手机电脑都能用，无需注册。">
+<meta property="og:title" content="口算小卷 - 在线做题 + 免费打印口算练习卷生成器">
+<meta property="og:description" content="在线逐题作答、即时判分、自动错题清单；也能一键生成可打印的 A4 口算卷，手机电脑都能用，无需注册。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-13_061650_口算练习卷生成器.html">
 <meta name="theme-color" content="#e8642c">
@@ -101,6 +101,31 @@ body{
 .ans-tip{font-size:12.5px;color:var(--muted);margin-top:10px;}
 .ksj-toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(8px);background:rgba(30,36,48,.94);color:#fff;font-size:13.5px;line-height:1.55;padding:10px 16px;border-radius:10px;max-width:86vw;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:99;text-align:left;}
 .ksj-toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.mode-tabs{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 12px;}
+.tab-btn{border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:9px 22px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;}
+.tab-btn.on{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 3px 10px rgba(232,100,44,.25);}
+.hide{display:none !important;}
+.stage{display:none;}
+.stage.on{display:block;}
+.quiz-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:14px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+.quiz-q{font-size:32px;font-size:clamp(30px,7vw,42px);font-weight:800;text-align:center;letter-spacing:1px;font-variant-numeric:tabular-nums;margin:16px 0 4px;color:#1c2431;}
+.ans-line{text-align:center;margin:4px 0 14px;min-height:56px;}
+.ans-val{display:inline-block;min-width:140px;padding:0 18px 6px;border-bottom:3px solid var(--accent);font-size:40px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--accent-dark);line-height:1.25;}
+.ans-val.empty{color:#c3bcae;}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:420px;margin:0 auto;}
+.key{padding:15px 0;border-radius:12px;border:1.5px solid var(--line);background:#fff;font-size:24px;font-weight:700;color:var(--ink);cursor:pointer;font-family:inherit;line-height:1.2;}
+.key:active{background:#f3efe7;}
+.key-fn{font-size:17px;color:var(--muted);}
+.btn-wide{width:100%;max-width:420px;display:block;margin:14px auto 0;}
+.fb{text-align:center;font-size:16.5px;font-weight:700;min-height:28px;margin-top:12px;}
+.fb.ok{color:var(--green);}
+.fb.bad{color:#c0392b;}
+.res-head{font-size:21px;font-weight:800;margin-bottom:10px;}
+.res-line{font-size:15px;color:var(--ink);margin-bottom:6px;font-variant-numeric:tabular-nums;}
+.res-score b{font-size:22px;color:var(--accent-dark);}
+.wr-title{font-size:15px;font-weight:800;margin:14px 0 6px;border-top:1px dashed var(--line);padding-top:12px;}
+.wr-row{font-size:14.5px;color:#1c2431;padding:6px 0;border-bottom:1px dashed #efe9dd;font-variant-numeric:tabular-nums;}
+.wr-row .wr-you{color:#c0392b;font-weight:700;}
 @media (max-width:640px){
   .ctrl-grid{grid-template-columns:repeat(2,1fr);}
   .paper{padding:18px 14px 22px;}
@@ -128,11 +153,85 @@ body{
 <body>
 <header class="site-head no-print">
   <div class="brand">口算小卷<span class="dot">。</span><span class="pill">免费 · 免注册</span></div>
-  <div class="head-sub">给小学生家长的口算练习卷生成器：选好题型，一键生成，A4 打印就能练。</div>
+  <div class="head-sub">给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。</div>
 </header>
 
 <div class="wrap">
-  <section class="panel no-print">
+  <div class="mode-tabs no-print">
+    <button class="tab-btn on" id="tabOnline" type="button">在线做题</button>
+    <button class="tab-btn" id="tabPrint" type="button">打印练习卷</button>
+  </div>
+
+  <section class="panel no-print" id="onlinePanel">
+    <div class="stage on" id="stageSetup">
+      <div class="ctrl-grid">
+        <div class="ctrl">
+          <label for="onlineTypeSel">题型</label>
+          <select id="onlineTypeSel">
+            <option value="t10">10以内加减法</option>
+            <option value="t20">20以内加减法（进位退位）</option>
+            <option value="t100" selected>100以内加减法</option>
+            <option value="mul">表内乘法</option>
+            <option value="div">表内除法</option>
+            <option value="muldiv">乘除混合</option>
+            <option value="t1000">三位数加减法</option>
+            <option value="mix2">两步混合运算</option>
+          </select>
+        </div>
+        <div class="ctrl">
+          <label for="onlineCountSel">题量</label>
+          <select id="onlineCountSel">
+            <option value="10">10 题</option>
+            <option value="15">15 题</option>
+            <option value="20" selected>20 题</option>
+            <option value="30">30 题</option>
+            <option value="50">50 题</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="startBtn" type="button">开始练习</button>
+        <span class="status" id="onlineStatus">选好题型和题量，点「开始练习」</span>
+      </div>
+      <p class="tip">在线做题：<b>选题型题量 → 点「开始练习」→ 用大键盘逐题作答</b>，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。想打印卷子，点上方「打印练习卷」。</p>
+    </div>
+
+    <div class="stage" id="stageQuiz">
+      <div class="quiz-head"><span id="quizProg"></span><span id="quizScore"></span></div>
+      <div class="quiz-q" id="quizQ"></div>
+      <div class="ans-line"><span class="ans-val empty" id="ansVal">?</span></div>
+      <div class="keypad" id="keypad">
+        <button class="key" id="kp1" type="button">1</button>
+        <button class="key" id="kp2" type="button">2</button>
+        <button class="key" id="kp3" type="button">3</button>
+        <button class="key" id="kp4" type="button">4</button>
+        <button class="key" id="kp5" type="button">5</button>
+        <button class="key" id="kp6" type="button">6</button>
+        <button class="key" id="kp7" type="button">7</button>
+        <button class="key" id="kp8" type="button">8</button>
+        <button class="key" id="kp9" type="button">9</button>
+        <button class="key key-fn" id="kpBack" type="button">退格</button>
+        <button class="key" id="kp0" type="button">0</button>
+        <button class="key key-fn" id="kpClear" type="button">清空</button>
+      </div>
+      <button class="btn btn-primary btn-wide" id="actBtn" type="button">提交答案</button>
+      <div class="fb" id="fbBox"></div>
+    </div>
+
+    <div class="stage" id="stageResult">
+      <div class="res-head" id="resHead"></div>
+      <div class="res-line res-score" id="resScore"></div>
+      <div class="res-line" id="resTime"></div>
+      <div class="wr-title" id="wrTitle"></div>
+      <div id="wrList"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="againBtn" type="button">再来一组</button>
+        <button class="btn btn-outline" id="setupBtn" type="button">返回设置</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel no-print hide" id="printPanel">
     <div class="ctrl-grid">
       <div class="ctrl">
         <label for="typeSel">题型</label>
@@ -181,10 +280,10 @@ body{
       <button class="btn btn-ghost" id="ansBtn" type="button">显示答案页</button>
       <span class="status" id="statusLine"></span>
     </div>
-    <p class="tip">用法：<b>选题型 → 点「生成新卷子」→ 点「打印」</b>。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。</p>
+    <p class="tip">打印用法：<b>选题型 → 点「生成新卷子」→ 点「打印」</b>。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。</p>
   </section>
 
-  <section class="paper" id="paper"></section>
+  <section class="paper hide" id="paper"></section>
   <section class="ans-wrap" id="ansPage"></section>
 </div>
 <div class="ksj-toast" id="toastTip"></div>
@@ -410,6 +509,220 @@ var SHEET = (function () {
 
     loadSettings();
     regenerate();
+})();
+
+// ===== 在线做题模式（默认入口）=====
+// 与打印模式共用上方 SHEET 出题核：每道题的答案都由算式确定计算（本地判分，不依赖外部接口），
+// 作答只做整数输入比对；随机出题是功能本身（每次点「开始练习」生成新一组题）。
+(function () {
+    function $(id) { return document.getElementById(id); }
+
+    var ONLINE = {
+        t: "t100", n: 20, state: "idle",
+        probs: null, i: 0, entered: "", correct: 0, wrongs: [],
+        t0: 0, tEnd: 0, timer: null, toastTimer: null
+    };
+
+    var tabOnline = $("tabOnline"), tabPrint = $("tabPrint"),
+        onlinePanel = $("onlinePanel"), printPanel = $("printPanel"),
+        paperEl = $("paper"), ansEl = $("ansPage"),
+        stageSetup = $("stageSetup"), stageQuiz = $("stageQuiz"), stageResult = $("stageResult"),
+        onlineTypeSel = $("onlineTypeSel"), onlineCountSel = $("onlineCountSel"),
+        startBtn = $("startBtn"), onlineStatus = $("onlineStatus"),
+        quizProg = $("quizProg"), quizScore = $("quizScore"), quizQ = $("quizQ"),
+        ansVal = $("ansVal"), actBtn = $("actBtn"), fbBox = $("fbBox"),
+        resHead = $("resHead"), resScore = $("resScore"), resTime = $("resTime"),
+        wrTitle = $("wrTitle"), wrList = $("wrList"),
+        againBtn = $("againBtn"), setupBtn = $("setupBtn");
+
+    function toast(msg) {
+        var tip = $("toastTip");
+        if (!tip) return;
+        tip.textContent = msg;
+        tip.className = "ksj-toast on";
+        if (ONLINE.toastTimer) clearTimeout(ONLINE.toastTimer);
+        ONLINE.toastTimer = setTimeout(function () { tip.className = "ksj-toast"; }, 6000);
+    }
+
+    function setStage(name) {
+        stageSetup.className = "stage" + (name === "setup" ? " on" : "");
+        stageQuiz.className = "stage" + (name === "quiz" ? " on" : "");
+        stageResult.className = "stage" + (name === "result" ? " on" : "");
+    }
+
+    function showOnline() {
+        tabOnline.className = "tab-btn on";
+        tabPrint.className = "tab-btn";
+        onlinePanel.className = "panel no-print";
+        printPanel.className = "panel no-print hide";
+        paperEl.className = "paper hide";
+        var hadOn = ansEl.className.indexOf(" on") >= 0;
+        ansEl.className = "ans-wrap" + (hadOn ? " on" : "") + " hide";
+    }
+    function showPrint() {
+        tabOnline.className = "tab-btn";
+        tabPrint.className = "tab-btn on";
+        onlinePanel.className = "panel no-print hide";
+        printPanel.className = "panel no-print";
+        paperEl.className = "paper";
+        ansEl.className = ansEl.className.replace(/\bhide\b\s*/, "").replace(/\s+$/, "");
+    }
+
+    function fmtDur(ms) {
+        var s = Math.max(0, Math.round(ms / 1000)), m = Math.floor(s / 60), r = s % 60;
+        return m > 0 ? (m + " 分 " + r + " 秒") : (r + " 秒");
+    }
+    function renderEntered() {
+        if (ONLINE.entered) { ansVal.className = "ans-val"; ansVal.textContent = ONLINE.entered; }
+        else { ansVal.className = "ans-val empty"; ansVal.textContent = "?"; }
+    }
+    function renderQuestion() {
+        var p = ONLINE.probs[ONLINE.i];
+        quizProg.textContent = "第 " + (ONLINE.i + 1) + " / " + ONLINE.probs.length + " 题";
+        quizScore.textContent = "已答对 " + ONLINE.correct + " 题";
+        quizQ.textContent = p.text + " =";
+        ONLINE.entered = "";
+        renderEntered();
+        fbBox.className = "fb";
+        fbBox.textContent = "";
+        actBtn.textContent = "提交答案";
+        ONLINE.state = "ask";
+    }
+
+    function saveOnlineSettings() {
+        try { localStorage.setItem("ksj_online", JSON.stringify({ t: ONLINE.t, n: ONLINE.n })); } catch (e) {}
+    }
+    function readSelN() {
+        var n = parseInt(onlineCountSel.value, 10);
+        if (!n || n < 5 || n > 100) n = 20;
+        return n;
+    }
+    function startQuiz() {
+        ONLINE.t = onlineTypeSel.value || "t100";
+        ONLINE.n = readSelN();
+        saveOnlineSettings();
+        ONLINE.probs = SHEET.genSet(ONLINE.t, ONLINE.n);
+        ONLINE.i = 0; ONLINE.correct = 0; ONLINE.wrongs = []; ONLINE.entered = "";
+        ONLINE.t0 = Date.now();
+        setStage("quiz");
+        renderQuestion();
+        onlineStatus.textContent = "答题中：" + SHEET.byKey(ONLINE.t).name + " · " + ONLINE.n + " 题";
+        try { onlinePanel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
+    }
+
+    function pressKey(ch) {
+        if (ONLINE.state !== "ask") return;
+        if (ONLINE.entered.length >= 10) return;
+        ONLINE.entered += ch;
+        renderEntered();
+    }
+    function pressBack() {
+        if (ONLINE.state !== "ask" || !ONLINE.entered) return;
+        ONLINE.entered = ONLINE.entered.slice(0, -1);
+        renderEntered();
+    }
+    function pressClear() {
+        if (ONLINE.state !== "ask" || !ONLINE.entered) return;
+        ONLINE.entered = "";
+        renderEntered();
+    }
+
+    function submit() {
+        if (ONLINE.state === "idle" || ONLINE.state === "done") { toast("先点「开始练习」开始一组题"); return; }
+        if (ONLINE.state === "fbCorrect" || ONLINE.state === "fbWrong") { advance(); return; }
+        if (!ONLINE.entered) { toast("先用下面的键盘输入答案，再点「提交答案」"); return; }
+        var p = ONLINE.probs[ONLINE.i];
+        var got = parseInt(ONLINE.entered, 10);
+        if (got === p.ans) {
+            ONLINE.correct++;
+            quizScore.textContent = "已答对 " + ONLINE.correct + " 题";
+            fbBox.className = "fb ok";
+            fbBox.textContent = "✓ 答对了！";
+            ONLINE.state = "fbCorrect";
+            actBtn.textContent = "下一题";
+            ONLINE.timer = setTimeout(function () { if (ONLINE.state === "fbCorrect") advance(); }, 950);
+        } else {
+            ONLINE.wrongs.push({ idx: ONLINE.i + 1, text: p.text, ans: p.ans, got: got });
+            fbBox.className = "fb bad";
+            fbBox.textContent = "✗ 正确答案是 " + p.ans + "（你答 " + got + "）";
+            ONLINE.state = "fbWrong";
+            actBtn.textContent = "下一题";
+        }
+    }
+
+    function advance() {
+        if (ONLINE.timer) { clearTimeout(ONLINE.timer); ONLINE.timer = null; }
+        if (ONLINE.state !== "fbCorrect" && ONLINE.state !== "fbWrong") return;
+        ONLINE.i++;
+        if (ONLINE.i >= ONLINE.probs.length) { finish(); return; }
+        renderQuestion();
+    }
+
+    function finish() {
+        ONLINE.state = "done";
+        ONLINE.tEnd = Date.now();
+        var n = ONLINE.probs.length, c = ONLINE.correct;
+        var pct = n ? Math.round(c * 100 / n) : 0;
+        setStage("result");
+        resHead.textContent = pct === 100 ? "全对！太厉害了！" : (pct >= 80 ? "这组做完了，表现不错！" : "这组做完了，继续加油！");
+        resScore.innerHTML = "答对 <b>" + c + " / " + n + "</b> 题（" + pct + " 分）· " + SHEET.byKey(ONLINE.t).name;
+        resTime.textContent = "用时 " + fmtDur(ONLINE.tEnd - ONLINE.t0);
+        if (!ONLINE.wrongs.length) {
+            wrTitle.textContent = "真棒，这组没有错题";
+            wrList.innerHTML = "";
+        } else {
+            wrTitle.textContent = "错题清单（" + ONLINE.wrongs.length + " 题，建议重做一遍）";
+            var h = "";
+            for (var i = 0; i < ONLINE.wrongs.length; i++) {
+                var w = ONLINE.wrongs[i];
+                h += '<div class="wr-row">第 ' + w.idx + ' 题：' + w.text + ' = ' + w.ans + ' ｜ <span class="wr-you">你答：' + w.got + '</span></div>';
+            }
+            wrList.innerHTML = h;
+        }
+        onlineStatus.textContent = "上一组：答对 " + c + " / " + n + " 题 · 用时 " + fmtDur(ONLINE.tEnd - ONLINE.t0);
+        try { onlinePanel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
+    }
+
+    function again() {
+        if (ONLINE.state === "done") { startQuiz(); return; }
+        toast("先完成当前这组练习，再开新一组");
+    }
+    function backSetup() {
+        if (ONLINE.timer) { clearTimeout(ONLINE.timer); ONLINE.timer = null; }
+        ONLINE.state = "idle";
+        setStage("setup");
+        onlineStatus.textContent = "选好题型和题量，点「开始练习」";
+    }
+
+    var kpIds = ["kp1", "kp2", "kp3", "kp4", "kp5", "kp6", "kp7", "kp8", "kp9", "kp0"];
+    for (var ki = 0; ki < kpIds.length; ki++) {
+        (function (id) {
+            var el = $(id);
+            if (!el) return;
+            var ch = id === "kp0" ? "0" : id.slice(2);
+            el.addEventListener("click", function () { pressKey(ch); });
+        })(kpIds[ki]);
+    }
+    if ($("kpBack")) $("kpBack").addEventListener("click", pressBack);
+    if ($("kpClear")) $("kpClear").addEventListener("click", pressClear);
+    if (startBtn) startBtn.addEventListener("click", startQuiz);
+    if (actBtn) actBtn.addEventListener("click", submit);
+    if (againBtn) againBtn.addEventListener("click", again);
+    if (setupBtn) setupBtn.addEventListener("click", backSetup);
+    if (tabOnline) tabOnline.addEventListener("click", showOnline);
+    if (tabPrint) tabPrint.addEventListener("click", showPrint);
+    if (onlineTypeSel) onlineTypeSel.addEventListener("change", function () { ONLINE.t = onlineTypeSel.value; saveOnlineSettings(); });
+    if (onlineCountSel) onlineCountSel.addEventListener("change", function () { ONLINE.n = readSelN(); saveOnlineSettings(); });
+
+    try {
+        var saved = JSON.parse(localStorage.getItem("ksj_online") || "");
+        if (saved && saved.t) onlineTypeSel.value = saved.t;
+        if (saved && saved.n) onlineCountSel.value = String(saved.n);
+    } catch (e) {}
+    ONLINE.t = onlineTypeSel.value || "t100";
+    ONLINE.n = readSelN();
+    setStage("setup");
+    showOnline();
 })();
 </script>
 
