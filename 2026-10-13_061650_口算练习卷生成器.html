@@ -193,7 +193,11 @@ body{
         <button class="btn btn-primary" id="startBtn" type="button">开始练习</button>
         <span class="status" id="onlineStatus">选好题型和题量，点「开始练习」</span>
       </div>
-      <p class="tip">在线做题：<b>选题型题量 → 点「开始练习」→ 用大键盘逐题作答</b>，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。想打印卷子，点上方「打印练习卷」。</p>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="wrongBtn" type="button">只练错题</button>
+        <span class="status" id="bookLine">错题本：0 题 · 累计 ⭐ 0 颗</span>
+      </div>
+      <p class="tip">在线做题：<b>选题型题量 → 点「开始练习」→ 用大键盘逐题作答</b>，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。</p>
     </div>
 
     <div class="stage" id="stageQuiz">
@@ -222,6 +226,8 @@ body{
       <div class="res-head" id="resHead"></div>
       <div class="res-line res-score" id="resScore"></div>
       <div class="res-line" id="resTime"></div>
+      <div class="res-line" id="resStars"></div>
+      <div class="res-line" id="resBookInfo"></div>
       <div class="wr-title" id="wrTitle"></div>
       <div id="wrList"></div>
       <div class="btn-row">
@@ -518,8 +524,9 @@ var SHEET = (function () {
     function $(id) { return document.getElementById(id); }
 
     var ONLINE = {
-        t: "t100", n: 20, state: "idle",
+        t: "t100", n: 20, state: "idle", mode: "random",
         probs: null, i: 0, entered: "", correct: 0, wrongs: [],
+        streak: 0, maxStreak: 0, starsRound: 0,
         t0: 0, tEnd: 0, timer: null, toastTimer: null
     };
 
@@ -533,7 +540,9 @@ var SHEET = (function () {
         ansVal = $("ansVal"), actBtn = $("actBtn"), fbBox = $("fbBox"),
         resHead = $("resHead"), resScore = $("resScore"), resTime = $("resTime"),
         wrTitle = $("wrTitle"), wrList = $("wrList"),
-        againBtn = $("againBtn"), setupBtn = $("setupBtn");
+        againBtn = $("againBtn"), setupBtn = $("setupBtn"),
+        wrongBtn = $("wrongBtn"), bookLine = $("bookLine"),
+        resStars = $("resStars"), resBookInfo = $("resBookInfo");
 
     function toast(msg) {
         var tip = $("toastTip");
@@ -579,7 +588,7 @@ var SHEET = (function () {
     function renderQuestion() {
         var p = ONLINE.probs[ONLINE.i];
         quizProg.textContent = "第 " + (ONLINE.i + 1) + " / " + ONLINE.probs.length + " 题";
-        quizScore.textContent = "已答对 " + ONLINE.correct + " 题";
+        updateScoreLine();
         quizQ.textContent = p.text + " =";
         ONLINE.entered = "";
         renderEntered();
@@ -597,17 +606,83 @@ var SHEET = (function () {
         if (!n || n < 5 || n > 100) n = 20;
         return n;
     }
-    function startQuiz() {
-        ONLINE.t = onlineTypeSel.value || "t100";
-        ONLINE.n = readSelN();
-        saveOnlineSettings();
-        ONLINE.probs = SHEET.genSet(ONLINE.t, ONLINE.n);
+
+    // ===== 错题本（本地保存）与连对计星 =====
+    function bookLoad() {
+        try {
+            var a = JSON.parse(localStorage.getItem("ksj_wrongbook") || "[]");
+            if (!a || !a.length) return [];
+            var out = [];
+            for (var i = 0; i < a.length; i++) {
+                var e = a[i];
+                if (e && typeof e.text === "string" && e.text && typeof e.ans === "number" && e.ans >= 0) {
+                    out.push({ t: String(e.t || "t100"), text: e.text, ans: e.ans, w: Math.max(1, e.w | 0), s: Math.max(0, e.s | 0) });
+                }
+            }
+            return out;
+        } catch (e) { return []; }
+    }
+    function bookSave(a) {
+        try { localStorage.setItem("ksj_wrongbook", JSON.stringify(a.slice(-200))); } catch (e) {}
+    }
+    function bookAdd(p) {
+        var a = bookLoad(), found = null;
+        for (var i = 0; i < a.length; i++) { if (a[i].text === p.text) { found = a[i]; break; } }
+        if (found) { found.w++; found.s = 0; }
+        else a.push({ t: ONLINE.t, text: p.text, ans: p.ans, w: 1, s: 0 });
+        bookSave(a);
+        refreshBookLine();
+    }
+    function bookTouch(p) {
+        // 错题专练答对：连对 +1，连对满 2 次移出错题本；返回 {found, streak, removed}
+        var a = bookLoad(), found = null;
+        for (var i = 0; i < a.length; i++) { if (a[i].text === p.text) { found = a[i]; break; } }
+        if (!found) return { found: false, streak: 0, removed: false };
+        found.s++;
+        var removed = false;
+        if (found.s >= 2) {
+            a.splice(a.indexOf(found), 1);
+            removed = true;
+        }
+        bookSave(a);
+        refreshBookLine();
+        return { found: true, streak: found.s, removed: removed };
+    }
+    function starsLoad() {
+        try { var v = parseInt(localStorage.getItem("ksj_stars") || "0", 10); return v > 0 ? v : 0; } catch (e) { return 0; }
+    }
+    function starsSave(v) { try { localStorage.setItem("ksj_stars", String(v)); } catch (e) {} }
+    function refreshBookLine() {
+        if (!bookLine) return;
+        bookLine.textContent = "错题本：" + bookLoad().length + " 题 · 累计 ⭐ " + starsLoad() + " 颗";
+    }
+    function startQuiz(mode) {
+        mode = mode === "wrong" ? "wrong" : "random";
+        if (mode === "wrong") {
+            var a = bookLoad();
+            if (!a.length) { toast("错题本还是空的：答错的题会自动收进来"); return; }
+            a.sort(function () { return Math.random() - 0.5; });
+            if (a.length > 20) a = a.slice(0, 20);
+            ONLINE.probs = a;
+            ONLINE.n = a.length;
+        } else {
+            ONLINE.t = onlineTypeSel.value || "t100";
+            ONLINE.n = readSelN();
+            saveOnlineSettings();
+            ONLINE.probs = SHEET.genSet(ONLINE.t, ONLINE.n);
+        }
+        ONLINE.mode = mode;
         ONLINE.i = 0; ONLINE.correct = 0; ONLINE.wrongs = []; ONLINE.entered = "";
+        ONLINE.streak = 0; ONLINE.maxStreak = 0; ONLINE.starsRound = 0;
         ONLINE.t0 = Date.now();
         setStage("quiz");
         renderQuestion();
-        onlineStatus.textContent = "答题中：" + SHEET.byKey(ONLINE.t).name + " · " + ONLINE.n + " 题";
+        onlineStatus.textContent = (mode === "wrong" ? "错题专练中" : "答题中") + "：" + (mode === "wrong" ? "共 " + ONLINE.n + " 题" : SHEET.byKey(ONLINE.t).name + " · " + ONLINE.n + " 题");
         try { onlinePanel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
+    }
+    function startWrongPractice() {
+        if (ONLINE.state === "ask" || ONLINE.state === "fbCorrect" || ONLINE.state === "fbWrong") { toast("先完成当前这组练习，再开错题专练"); return; }
+        startQuiz("wrong");
     }
 
     function pressKey(ch) {
@@ -627,6 +702,9 @@ var SHEET = (function () {
         renderEntered();
     }
 
+    function updateScoreLine() {
+        quizScore.textContent = "已答对 " + ONLINE.correct + " 题 · 连对 " + ONLINE.streak;
+    }
     function submit() {
         if (ONLINE.state === "idle" || ONLINE.state === "done") { toast("先点「开始练习」开始一组题"); return; }
         if (ONLINE.state === "fbCorrect" || ONLINE.state === "fbWrong") { advance(); return; }
@@ -635,14 +713,30 @@ var SHEET = (function () {
         var got = parseInt(ONLINE.entered, 10);
         if (got === p.ans) {
             ONLINE.correct++;
-            quizScore.textContent = "已答对 " + ONLINE.correct + " 题";
+            ONLINE.streak++;
+            if (ONLINE.streak > ONLINE.maxStreak) ONLINE.maxStreak = ONLINE.streak;
+            var fbText = "✓ 答对了！";
+            if (ONLINE.mode === "wrong") {
+                var res = bookTouch(p);
+                if (res.removed) fbText = "✓ 答对了！连对 2 次，已移出错题本";
+                else if (res.found) fbText = "✓ 答对了！再连对 1 次就移出错题本";
+            }
+            if (ONLINE.streak % 5 === 0) {
+                ONLINE.starsRound++;
+                starsSave(starsLoad() + 1);
+                toast("连对 " + ONLINE.streak + " 题，得 1 颗星 ⭐（累计 " + starsLoad() + " 颗）");
+            }
+            updateScoreLine();
             fbBox.className = "fb ok";
-            fbBox.textContent = "✓ 答对了！";
+            fbBox.textContent = fbText;
             ONLINE.state = "fbCorrect";
             actBtn.textContent = "下一题";
             ONLINE.timer = setTimeout(function () { if (ONLINE.state === "fbCorrect") advance(); }, 950);
         } else {
+            ONLINE.streak = 0;
             ONLINE.wrongs.push({ idx: ONLINE.i + 1, text: p.text, ans: p.ans, got: got });
+            bookAdd(p);
+            updateScoreLine();
             fbBox.className = "fb bad";
             fbBox.textContent = "✗ 正确答案是 " + p.ans + "（你答 " + got + "）";
             ONLINE.state = "fbWrong";
@@ -667,6 +761,12 @@ var SHEET = (function () {
         resHead.textContent = pct === 100 ? "全对！太厉害了！" : (pct >= 80 ? "这组做完了，表现不错！" : "这组做完了，继续加油！");
         resScore.innerHTML = "答对 <b>" + c + " / " + n + "</b> 题（" + pct + " 分）· " + SHEET.byKey(ONLINE.t).name;
         resTime.textContent = "用时 " + fmtDur(ONLINE.tEnd - ONLINE.t0);
+        resStars.textContent = "本组最高连对 " + ONLINE.maxStreak + " 题" + (ONLINE.starsRound > 0 ? " · 本组得 ⭐ " + ONLINE.starsRound + " 颗（累计 " + starsLoad() + " 颗）" : "");
+        var bk = bookLoad().length;
+        resBookInfo.textContent = ONLINE.mode === "wrong"
+            ? (bk ? "错题本还剩 " + bk + " 题，可再练一轮" : "错题本已清空，这类题都练过关了")
+            : (bk ? "错题本现存 " + bk + " 题：到设置页点「只练错题」可以重练" : "这组没有错题，错题本空着");
+        refreshBookLine();
         if (!ONLINE.wrongs.length) {
             wrTitle.textContent = "真棒，这组没有错题";
             wrList.innerHTML = "";
@@ -684,14 +784,20 @@ var SHEET = (function () {
     }
 
     function again() {
-        if (ONLINE.state === "done") { startQuiz(); return; }
-        toast("先完成当前这组练习，再开新一组");
+        if (ONLINE.state !== "done") { toast("先完成当前这组练习，再开新一组"); return; }
+        if (ONLINE.mode === "wrong" && !bookLoad().length) {
+            toast("错题本已清空，换一组新题继续");
+            startQuiz("random");
+            return;
+        }
+        startQuiz(ONLINE.mode);
     }
     function backSetup() {
         if (ONLINE.timer) { clearTimeout(ONLINE.timer); ONLINE.timer = null; }
         ONLINE.state = "idle";
         setStage("setup");
         onlineStatus.textContent = "选好题型和题量，点「开始练习」";
+        refreshBookLine();
     }
 
     var kpIds = ["kp1", "kp2", "kp3", "kp4", "kp5", "kp6", "kp7", "kp8", "kp9", "kp0"];
@@ -706,6 +812,7 @@ var SHEET = (function () {
     if ($("kpBack")) $("kpBack").addEventListener("click", pressBack);
     if ($("kpClear")) $("kpClear").addEventListener("click", pressClear);
     if (startBtn) startBtn.addEventListener("click", startQuiz);
+    if (wrongBtn) wrongBtn.addEventListener("click", startWrongPractice);
     if (actBtn) actBtn.addEventListener("click", submit);
     if (againBtn) againBtn.addEventListener("click", again);
     if (setupBtn) setupBtn.addEventListener("click", backSetup);
@@ -722,6 +829,7 @@ var SHEET = (function () {
     ONLINE.t = onlineTypeSel.value || "t100";
     ONLINE.n = readSelN();
     setStage("setup");
+    refreshBookLine();
     showOnline();
 })();
 </script>
