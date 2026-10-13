@@ -160,6 +160,7 @@ body{
   <div class="mode-tabs no-print">
     <button class="tab-btn on" id="tabOnline" type="button">在线做题</button>
     <button class="tab-btn" id="tabPrint" type="button">打印练习卷</button>
+    <button class="tab-btn" id="tabPhoto" type="button">拍照批改</button>
   </div>
 
   <section class="panel no-print" id="onlinePanel">
@@ -289,6 +290,29 @@ body{
     <p class="tip">打印用法：<b>选题型 → 点「生成新卷子」→ 点「打印」</b>。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。</p>
   </section>
 
+  <section class="panel no-print hide" id="photoPanel">
+    <div class="ctrl-grid">
+      <div class="ctrl" style="grid-column:1/-1;">
+        <label>批改流程</label>
+        <div class="tip" style="margin:0;">孩子做完打印卷 → 拍下<b>整页</b>照片（画面题号和字都要清楚）→ 点「开始智能批改」。系统按卷面右上「卷号」复原题目、逐题对答案；看不准的数字会列出来请你过目。</div>
+      </div>
+      <div class="ctrl">
+        <label for="photoFile">① 选择/拍摄照片</label>
+        <input type="file" id="photoFile" accept="image/*" style="font-size:14px;">
+      </div>
+      <div class="ctrl">
+        <label for="jnFix">② 卷号没读出来？手动输入（8 位数字）</label>
+        <input type="text" id="jnFix" inputmode="numeric" maxlength="8" placeholder="例：23742645" style="padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:15px;font-variant-numeric:tabular-nums;">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="gradeBtn" type="button" disabled>开始智能批改</button>
+      <span class="status" id="photoStatus">先选一张照片</span>
+    </div>
+    <div id="photoPrevWrap" class="hide" style="margin-top:10px;"><img id="photoPrev" alt="卷面预览" style="max-width:100%;max-height:340px;border-radius:10px;border:1.5px solid var(--line);"></div>
+    <div id="photoResult"></div>
+    <p class="tip">照片仅用于识别、不做留存；识别不准的答案可在明细里直接改、改完自动重判（判分本身 100% 精确——题目由卷号复原，不靠 AI 猜）。</p>
+  </section>
   <section class="paper hide" id="paper"></section>
   <section class="ans-wrap" id="ansPage"></section>
 </div>
@@ -297,7 +321,19 @@ body{
 // ===== SHEET_CORE_START =====
 // 口算小卷 · 纯本地生成核心（无 DOM 依赖；页面渲染与自动化测试共用同一份逻辑）
 var SHEET = (function () {
-    function rndInt(lo, hi) { return lo + Math.floor(Math.random() * (hi - lo + 1)); }
+    // 可播种随机（拍照批改：卷号=种子，同卷号复原同题；未播种时退回 Math.random，在线模式不受影响）
+    var _seed = 0, _hasSeed = false;
+    function setSeed(s) { _seed = (s >>> 0) || 1; _hasSeed = true; }
+    function clearSeed() { _hasSeed = false; }
+    function _rnd() {
+        if (!_hasSeed) return Math.random();
+        _seed = (_seed + 0x6D2B79F5) >>> 0;
+        var t = _seed;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    }
+    function rndInt(lo, hi) { return lo + Math.floor(_rnd() * (hi - lo + 1)); }
     function pickOne(arr) { return arr[rndInt(0, arr.length - 1)]; }
 
     var TYPES = [
@@ -408,9 +444,37 @@ var SHEET = (function () {
         }
         return out;
     }
-    return { rndInt: rndInt, pickOne: pickOne, TYPES: TYPES, byKey: byKey, one: one, genSet: genSet };
+    return { rndInt: rndInt, pickOne: pickOne, TYPES: TYPES, byKey: byKey, one: one, genSet: genSet, setSeed: setSeed, clearSeed: clearSeed };
 })();
 // ===== SHEET_CORE_END =====
+
+// ===== 卷号编解码（拍照批改用）=====
+// 8 位数字：题型位 + 题量位 + 5 位随机种子 + 1 位校验位（和 mod 10）
+var JH = (function () {
+    var TYPE_ORDER = ["t10", "t20", "t100", "mul", "div", "muldiv", "t1000", "mix2"];
+    var COUNT_ORDER = [20, 30, 40, 50, 60, 80, 100];
+    function make(t, n) {
+        var ti = TYPE_ORDER.indexOf(t); if (ti < 0) ti = 2;
+        var ci = COUNT_ORDER.indexOf(n); if (ci < 0) ci = 3;
+        var r = "";
+        for (var i = 0; i < 5; i++) r += String(Math.floor(Math.random() * 10));
+        var head = String(ti) + String(ci) + r;
+        var sum = 0;
+        for (var k = 0; k < head.length; k++) sum += parseInt(head.charAt(k), 10);
+        return head + String(sum % 10);
+    }
+    function parse(s) {
+        s = String(s || "").replace(/\D/g, "");
+        if (s.length !== 8) return null;
+        var sum = 0;
+        for (var k = 0; k < 7; k++) sum += parseInt(s.charAt(k), 10);
+        if (sum % 10 !== parseInt(s.charAt(7), 10)) return null;
+        var ti = parseInt(s.charAt(0), 10), ci = parseInt(s.charAt(1), 10);
+        if (ti > 7 || ci > 6) return null;
+        return { t: TYPE_ORDER[ti], n: COUNT_ORDER[ci], seed: parseInt(s.slice(2, 7), 10) + 1 };
+    }
+    return { make: make, parse: parse, TYPE_ORDER: TYPE_ORDER, COUNT_ORDER: COUNT_ORDER };
+})();
 
 // ===== 页面渲染与交互 =====
 (function () {
@@ -432,9 +496,9 @@ var SHEET = (function () {
 
     function esc(s) { return String(s); }
 
-    function paperHTML(probs, t, n, vs, cols) {
+    function paperHTML(probs, t, n, vs, cols, jn) {
         var tinfo = SHEET.byKey(t);
-        var h = '<div class="paper-head"><div class="paper-title">' + esc(tinfo.name) + ' 练习卷</div><div class="paper-count">共 ' + n + ' 题</div></div>';
+        var h = '<div class="paper-head"><div class="paper-title">' + esc(tinfo.name) + ' 练习卷</div><div class="paper-count">共 ' + n + ' 题 · 卷号 <b style="letter-spacing:1px">' + esc(jn || '') + '</b></div></div>';
         h += '<div class="fill-row"><span><b>姓名：</b><span class="fill"></span></span><span><b>日期：</b><span class="fill"></span></span><span><b>用时：</b><span class="fill s"></span></span><span><b>得分：</b><span class="fill s"></span></span></div>';
         h += '<div class="grid">';
         for (var i = 0; i < probs.length; i++) {
@@ -476,9 +540,13 @@ var SHEET = (function () {
         if (!ok) vsCheck.checked = false;
         vsHint.textContent = ok ? "（勾选后每题竖排，留白更大）" : "（当前题型不支持竖式）";
         var vs = ok && vsCheck.checked;
-        cur = { t: t, n: n, cols: cols, vs: vs, probs: SHEET.genSet(t, n) };
+        var jn = JH.make(t, n), pinfo = JH.parse(jn);
+        SHEET.setSeed(pinfo ? pinfo.seed : ((Date.now() % 90000) + 1));
+        var _probs = SHEET.genSet(t, n);
+        SHEET.clearSeed();
+        cur = { t: t, n: n, cols: cols, vs: vs, jn: jn, probs: _probs };
         setVars(t, cols);
-        paper.innerHTML = paperHTML(cur.probs, t, n, vs, cols);
+        paper.innerHTML = paperHTML(cur.probs, t, n, vs, cols, cur.jn);
         ansPage.innerHTML = ansHTML(cur.probs, t, n);
         ansPage.className = "ans-wrap" + (ansShown ? " on" : "");
         ansBtn.textContent = ansShown ? "隐藏答案页" : "显示答案页";
@@ -491,21 +559,6 @@ var SHEET = (function () {
             localStorage.setItem("ksj_settings", JSON.stringify({ t: typeSel.value, n: countSel.value, c: colSel.value, v: vsCheck.checked ? 1 : 0 }));
         } catch (e) {}
     }
-    
-    function saveProgress() {
-        try {
-            if (cur) {
-                localStorage.setItem("ksj_progress", JSON.stringify({
-                    t: cur.t,
-                    n: cur.n,
-                    cols: cur.cols,
-                    vs: cur.vs,
-                    timestamp: Date.now()
-                }));
-                showToast("进度已自动保存");
-            }
-        } catch (e) {}
-    }
     function loadSettings() {
         try {
             var j = JSON.parse(localStorage.getItem("ksj_settings") || "");
@@ -516,20 +569,6 @@ var SHEET = (function () {
             vsCheck.checked = !!j.v;
         } catch (e) {}
     }
-    
-    function loadProgress() {
-        try {
-            var j = JSON.parse(localStorage.getItem("ksj_progress") || "");
-            if (!j || !j.timestamp) return;
-            // 如果保存超过24小时，不恢复进度
-            if (Date.now() - j.timestamp > 24 * 60 * 60 * 1000) return;
-            if (j.t) typeSel.value = j.t;
-            if (j.n) countSel.value = j.n;
-            if (j.c) colSel.value = j.c;
-            vsCheck.checked = !!j.v;
-            showToast("已恢复上次保存的练习进度");
-        } catch (e) {}
-    }
 
     genBtn.addEventListener("click", function () { regenerate(); try { paper.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {} });
     printBtn.addEventListener("click", function () {
@@ -537,13 +576,12 @@ var SHEET = (function () {
         showToast("已调用打印。如果打印窗口没有弹出（部分 App 内置浏览器不支持打印），请点右上角「…」→「在浏览器打开」后再打印。");
     });
     ansBtn.addEventListener("click", function () { ansShown = !ansShown; if (cur) { ansPage.className = "ans-wrap" + (ansShown ? " on" : ""); ansBtn.textContent = ansShown ? "隐藏答案页" : "显示答案页"; } });
-    typeSel.addEventListener("change", function() { regenerate(); saveProgress(); });
-    countSel.addEventListener("change", function() { regenerate(); saveProgress(); });
-    colSel.addEventListener("change", function() { regenerate(); saveProgress(); });
-    vsCheck.addEventListener("change", function() { regenerate(); saveProgress(); });
+    typeSel.addEventListener("change", regenerate);
+    countSel.addEventListener("change", regenerate);
+    colSel.addEventListener("change", regenerate);
+    vsCheck.addEventListener("change", regenerate);
 
     loadSettings();
-    loadProgress();
     regenerate();
 })();
 
@@ -560,7 +598,7 @@ var SHEET = (function () {
         t0: 0, tEnd: 0, timer: null, toastTimer: null
     };
 
-    var tabOnline = $("tabOnline"), tabPrint = $("tabPrint"),
+    var tabOnline = $("tabOnline"), tabPrint = $("tabPrint"), tabPhoto = $("tabPhoto"), photoPanel = $("photoPanel"),
         onlinePanel = $("onlinePanel"), printPanel = $("printPanel"),
         paperEl = $("paper"), ansEl = $("ansPage"),
         stageSetup = $("stageSetup"), stageQuiz = $("stageQuiz"), stageResult = $("stageResult"),
@@ -592,8 +630,10 @@ var SHEET = (function () {
     function showOnline() {
         tabOnline.className = "tab-btn on";
         tabPrint.className = "tab-btn";
+        if (tabPhoto) tabPhoto.className = "tab-btn";
         onlinePanel.className = "panel no-print";
         printPanel.className = "panel no-print hide";
+        if (photoPanel) photoPanel.className = "panel no-print hide";
         paperEl.className = "paper hide";
         var hadOn = ansEl.className.indexOf(" on") >= 0;
         ansEl.className = "ans-wrap" + (hadOn ? " on" : "") + " hide";
@@ -601,10 +641,22 @@ var SHEET = (function () {
     function showPrint() {
         tabOnline.className = "tab-btn";
         tabPrint.className = "tab-btn on";
+        if (tabPhoto) tabPhoto.className = "tab-btn";
         onlinePanel.className = "panel no-print hide";
         printPanel.className = "panel no-print";
+        if (photoPanel) photoPanel.className = "panel no-print hide";
         paperEl.className = "paper";
         ansEl.className = ansEl.className.replace(/\bhide\b\s*/, "").replace(/\s+$/, "");
+    }
+    function showPhoto() {
+        tabOnline.className = "tab-btn";
+        tabPrint.className = "tab-btn";
+        if (tabPhoto) tabPhoto.className = "tab-btn on";
+        onlinePanel.className = "panel no-print hide";
+        printPanel.className = "panel no-print hide";
+        if (photoPanel) photoPanel.className = "panel no-print";
+        paperEl.className = "paper hide";
+        ansEl.className = "ans-wrap hide";
     }
 
     function fmtDur(ms) {
@@ -655,11 +707,11 @@ var SHEET = (function () {
     function bookSave(a) {
         try { localStorage.setItem("ksj_wrongbook", JSON.stringify(a.slice(-200))); } catch (e) {}
     }
-    function bookAdd(p) {
+    function bookAdd(p, tOverride) {
         var a = bookLoad(), found = null;
         for (var i = 0; i < a.length; i++) { if (a[i].text === p.text) { found = a[i]; break; } }
         if (found) { found.w++; found.s = 0; }
-        else a.push({ t: ONLINE.t, text: p.text, ans: p.ans, w: 1, s: 0 });
+        else a.push({ t: String(tOverride || ONLINE.t), text: p.text, ans: p.ans, w: 1, s: 0 });
         bookSave(a);
         refreshBookLine();
     }
@@ -705,18 +757,6 @@ var SHEET = (function () {
         ONLINE.i = 0; ONLINE.correct = 0; ONLINE.wrongs = []; ONLINE.entered = "";
         ONLINE.streak = 0; ONLINE.maxStreak = 0; ONLINE.starsRound = 0;
         ONLINE.t0 = Date.now();
-        
-        // 保存当前练习进度
-        try {
-            localStorage.setItem("ksj_online_progress", JSON.stringify({
-                t: ONLINE.t,
-                n: ONLINE.n,
-                mode: mode,
-                i: ONLINE.i,
-                timestamp: Date.now()
-            }));
-        } catch (e) {}
-        
         setStage("quiz");
         renderQuestion();
         onlineStatus.textContent = (mode === "wrong" ? "错题专练中" : "答题中") + "：" + (mode === "wrong" ? "共 " + ONLINE.n + " 题" : SHEET.byKey(ONLINE.t).name + " · " + ONLINE.n + " 题");
@@ -822,12 +862,6 @@ var SHEET = (function () {
             wrList.innerHTML = h;
         }
         onlineStatus.textContent = "上一组：答对 " + c + " / " + n + " 题 · 用时 " + fmtDur(ONLINE.tEnd - ONLINE.t0);
-        
-        // 练习完成，清除进度
-        try {
-            localStorage.removeItem("ksj_online_progress");
-        } catch (e) {}
-        
         try { onlinePanel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
     }
 
@@ -846,20 +880,6 @@ var SHEET = (function () {
         setStage("setup");
         onlineStatus.textContent = "选好题型和题量，点「开始练习」";
         refreshBookLine();
-        
-        // 保存当前进度
-        try {
-            if (ONLINE.i > 0 && ONLINE.i < ONLINE.probs.length) {
-                localStorage.setItem("ksj_online_progress", JSON.stringify({
-                    t: ONLINE.t,
-                    n: ONLINE.n,
-                    mode: ONLINE.mode,
-                    i: ONLINE.i,
-                    timestamp: Date.now()
-                }));
-                showToast("练习进度已保存，可随时恢复");
-            }
-        } catch (e) {}
     }
 
     var kpIds = ["kp1", "kp2", "kp3", "kp4", "kp5", "kp6", "kp7", "kp8", "kp9", "kp0"];
@@ -880,6 +900,8 @@ var SHEET = (function () {
     if (setupBtn) setupBtn.addEventListener("click", backSetup);
     if (tabOnline) tabOnline.addEventListener("click", showOnline);
     if (tabPrint) tabPrint.addEventListener("click", showPrint);
+    if (tabPhoto) tabPhoto.addEventListener("click", showPhoto);
+    try { window.__ksjBookAdd = bookAdd; } catch (e) {}
     if (onlineTypeSel) onlineTypeSel.addEventListener("change", function () { ONLINE.t = onlineTypeSel.value; saveOnlineSettings(); });
     if (onlineCountSel) onlineCountSel.addEventListener("change", function () { ONLINE.n = readSelN(); saveOnlineSettings(); });
 
@@ -893,314 +915,292 @@ var SHEET = (function () {
     setStage("setup");
     refreshBookLine();
     showOnline();
-    
-    // 检查是否有未完成的练习
-    try {
-        var progress = JSON.parse(localStorage.getItem("ksj_online_progress") || "");
-        if (progress && progress.timestamp) {
-            // 如果保存超过24小时，不恢复进度
-            if (Date.now() - progress.timestamp > 24 * 60 * 60 * 1000) {
-                localStorage.removeItem("ksj_online_progress");
-                return;
-            }
-            
-            // 询问用户是否恢复进度
-            if (confirm("检测到您有未完成的练习，是否恢复进度？")) {
-                ONLINE.t = progress.t;
-                ONLINE.n = progress.n;
-                ONLINE.mode = progress.mode;
-                ONLINE.i = progress.i;
-                
-                // 重新生成题目
-                ONLINE.probs = SHEET.genSet(ONLINE.t, ONLINE.n);
-                
-                // 设置状态
-                setStage("quiz");
-                renderQuestion();
-                onlineStatus.textContent = "恢复的练习：" + (ONLINE.mode === "wrong" ? "错题专练中" : SHEET.byKey(ONLINE.t).name) + " · 第 " + (ONLINE.i + 1) + " / " + ONLINE.n + " 题";
-                
-                // 滚动到练习区域
-                try { onlinePanel.scrollIntoView({ behavior: "smooth", block: "start" }); } catch (e) {}
-            } else {
-                // 用户选择不恢复，清除进度
-                localStorage.removeItem("ksj_online_progress");
-            }
+})();
+
+// ===== 拍照批改模块（移动端拍照 → AI 只读手写数字 → 卷号复原题目 → 精确判分）=====
+// 通道复用 AI 产品已验证的「jid 盲发 + GitHub 回读」模板；照片仅用于识别、不留存。
+(function () {
+    function $(id) { return document.getElementById(id); }
+
+    // —— 端点（读 ai_endpoints.json；兜底从线上 AI 页源码抠常量）——
+    var AI_ENDPOINT_LOCAL = 'http://127.0.0.1:8787';
+    var EPS = [];
+    var __lastRefresh = 0;
+    async function refreshEndpoints(force) {
+        if (!force && Date.now() - __lastRefresh < 8000) { return; }
+        __lastRefresh = Date.now();
+        var jurls = ['ai_endpoints.json', 'https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json'];
+        for (var i = 0; i < jurls.length; i++) {
+            try {
+                var actl = new AbortController(); var at = setTimeout(function () { actl.abort(); }, 6000);
+                var r = null;
+                try { r = await fetch(jurls[i] + (jurls[i].indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store', signal: actl.signal }); } finally { clearTimeout(at); }
+                if (!r || !r.ok) { continue; }
+                var j = await r.json();
+                var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, AI_ENDPOINT_LOCAL].filter(Boolean);
+                if (nl.length >= 2) { EPS = nl; return; }
+            } catch (e) {}
         }
-    } catch (e) {}
+        var urls = ['https://raw.githubusercontent.com/yezhong2/apps/main/2026-10-02_181320_AI.html'];
+        for (var k = 0; k < urls.length; k++) {
+            try {
+                var r2 = await fetch(urls[k] + '?t=' + Date.now(), { cache: 'no-store' });
+                var txt = await r2.text();
+                var m1 = txt.match(/const AI_ENDPOINT = '([^']+)'/);
+                var m2 = txt.match(/const AI_ENDPOINT_2 = '([^']+)'/);
+                var m3 = txt.match(/const AI_ENDPOINT_3 = '([^']+)'/);
+                var nl2 = [m2 && m2[1], m1 && m1[1], m3 && m3[1], AI_ENDPOINT_LOCAL].filter(Boolean);
+                if (nl2.length >= 2) { EPS = nl2; return; }
+            } catch (e) {}
+        }
+    }
+    function jidMake() { return 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+    function blindVisionSubmit(jid, img) {
+        for (var i = 0; i < EPS.length; i++) {
+            var e = EPS[i];
+            if (!e || e.indexOf('127.0.0.1') >= 0) { continue; }
+            try {
+                fetch(e + '/', { method: 'POST', mode: 'no-cors', cache: 'no-store', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ task: 'shitu', jid: jid, img: img, input: '' }) }).catch(function () {});
+            } catch (er) {}
+        }
+    }
+    function b64utf8(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ''; } } }
+    function iframePoll(jid, ms) {
+        return new Promise(function (resolve, reject) {
+            var src = 'aijobs/' + jid + '.json?t=' + Date.now();
+            var fr = document.createElement('iframe');
+            fr.style.cssText = 'position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0';
+            var done = false;
+            var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error('iframe: timeout')); } }, ms);
+            fr.onload = function () {
+                if (done) { return; }
+                var txt = '';
+                try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || '') : ''; } catch (e) { txt = ''; }
+                done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                var j = null; try { j = JSON.parse(txt); } catch (e) { j = null; }
+                if (j && j.state === 'done' && typeof j.result === 'string') { resolve(j); return; }
+                if (j && j.state === 'error') { reject(new Error(j.error || 'job error')); return; }
+                reject(new Error('iframe: no payload'));
+            };
+            fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error('iframe: error')); } };
+            fr.src = src;
+            document.body.appendChild(fr);
+        });
+    }
+    async function pollResult(jid, deadlineMs) {
+        var seg = 'aijobs/' + jid + '.json';
+        var t0 = Date.now();
+        while (Date.now() - t0 < deadlineMs) {
+            var bust = '?t=' + Date.now();
+            var sources = [
+                'https://api.github.com/repos/yezhong2/apps/contents/' + seg + bust,
+                'https://raw.githubusercontent.com/yezhong2/apps/main/' + seg + bust,
+                seg + bust
+            ];
+            try { var ij = await iframePoll(jid, 6000); return ij.result; } catch (eif) {}
+            for (var i = 0; i < sources.length; i++) {
+                var j = null;
+                try {
+                    var r = await fetch(sources[i], { cache: 'no-store' });
+                    if (!r.ok) { continue; }
+                    var o = await r.json();
+                    if (o && o.content && o.encoding) { j = JSON.parse(b64utf8(String(o.content).replace(/\s+/g, ''))); }
+                    else { j = o; }
+                } catch (e) { continue; }
+                if (j && j.state === 'done' && typeof j.result === 'string') { return j.result; }
+                if (j && j.state === 'error') { throw new Error(j.error || 'job error'); }
+            }
+            await new Promise(function (r) { setTimeout(r, 2500); });
+        }
+        throw new Error('等结果超时');
+    }
+    async function visionCall(img) {
+        await refreshEndpoints(false);
+        if (!EPS.length) { await refreshEndpoints(true); }
+        if (!EPS.length) { throw new Error('无法获取服务器地址（网络不通或端点文件缺失）'); }
+        var jid = jidMake();
+        blindVisionSubmit(jid, img);
+        setTimeout(function () { blindVisionSubmit(jid, img); }, 1600);
+        return await pollResult(jid, 180000);
+    }
+
+    // —— 图片压缩 ——
+    function fileToDataUrl(file, maxSide, quality) {
+        return new Promise(function (resolve, reject) {
+            var fr = new FileReader();
+            fr.onload = function () {
+                var img = new Image();
+                img.onload = function () {
+                    try {
+                        var w = img.naturalWidth, h = img.naturalHeight;
+                        var sc = Math.min(1, maxSide / Math.max(w, h));
+                        var cw = Math.max(1, Math.round(w * sc)), chh = Math.max(1, Math.round(h * sc));
+                        var cv = document.createElement('canvas'); cv.width = cw; cv.height = chh;
+                        cv.getContext('2d').drawImage(img, 0, 0, cw, chh);
+                        resolve(cv.toDataURL('image/jpeg', quality));
+                    } catch (e) { reject(e); }
+                };
+                img.onerror = function () { reject(new Error('图片读取失败')); };
+                img.src = String(fr.result || '');
+            };
+            fr.onerror = function () { reject(new Error('文件读取失败')); };
+            fr.readAsDataURL(file);
+        });
+    }
+
+    // —— 判分（纯本地、确定性）——
+    function normAns(s) { return String(s == null ? '' : s).trim().replace(/[^0-9-]/g, ''); }
+    function gradeOne(given, correct) {
+        var g = normAns(given);
+        if (g === '') { return null; }
+        if (g === String(correct)) { return true; }
+        var gn = parseInt(g, 10), cn = Number(correct);
+        if (!isNaN(gn) && gn === cn) { return true; }
+        return false;
+    }
+    function gradeAll(probs, answers) {
+        var rows = [];
+        for (var i = 0; i < probs.length; i++) {
+            var given = answers[i] == null ? '' : String(answers[i]);
+            rows.push({ i: i, prob: probs[i], given: given, verdict: gradeOne(given, probs[i].ans) });
+        }
+        return rows;
+    }
+    function reconstruct(jnStr) {
+        var info = JH.parse(jnStr);
+        if (!info) { return null; }
+        SHEET.setSeed(info.seed);
+        var probs = SHEET.genSet(info.t, info.n);
+        SHEET.clearSeed();
+        return { info: info, probs: probs };
+    }
+
+    // —— 状态与渲染 ——
+    var PH = { img: null, busy: false, rows: null, jn: null, info: null, note: '' };
+    function setStatus(s) { try { var el = $('photoStatus'); if (el) { el.textContent = s; } } catch (e) {} }
+
+    function renderResult() {
+        var box = $('photoResult');
+        if (!box) { return; }
+        if (!PH.rows) { box.innerHTML = ''; return; }
+        var rows = PH.rows;
+        var ok = 0, bad = 0, unk = 0;
+        for (var i = 0; i < rows.length; i++) { if (rows[i].verdict === true) { ok++; } else if (rows[i].verdict === false) { bad++; } else { unk++; } }
+        var h = '<div class="res-line" style="font-size:18px;font-weight:800;margin-top:12px;">批改结果：对 <b style="color:#1d7a52">' + ok + '</b> / 错 <b style="color:#c0392b">' + bad + '</b>' + (unk ? ' / 没看清 <b style="color:#b7791f">' + unk + '</b>' : '') + ' <span style="color:#8b93a3;font-weight:600;font-size:13px;">（卷号 ' + PH.jn + '）</span></div>';
+        if (PH.note) { h += '<div class="res-line" style="color:#b7791f">备注：' + PH.note + '</div>'; }
+        h += '<div class="wr-title" style="margin-top:12px;">逐题明细（看不准/判错的可以直接改，改完自动重判）</div>';
+        for (var k = 0; k < rows.length; k++) {
+            var r = rows[k];
+            var mark = r.verdict === true ? '✓' : (r.verdict === false ? '✗' : '?');
+            var col = r.verdict === true ? '#1d7a52' : (r.verdict === false ? '#c0392b' : '#b7791f');
+            h += '<div class="wr-row">' + (k + 1) + '. ' + r.prob.text + ' = ' +
+                 '<input data-i="' + k + '" class="ph-fix" value="' + r.given + '" inputmode="numeric" style="width:76px;padding:3px 8px;border:1.5px solid ' + col + ';border-radius:7px;font-size:14.5px;font-variant-numeric:tabular-nums;">' +
+                 ' <span style="color:' + col + ';font-weight:800;">' + mark + '</span> <span style="color:#8b93a3;font-size:13px;">正确答案 ' + r.prob.ans + '</span></div>';
+        }
+        var wrongN = 0;
+        for (var m = 0; m < rows.length; m++) { if (rows[m].verdict === false) { wrongN++; } }
+        h += '<div class="btn-row" style="margin-top:12px;">';
+        if (wrongN) { h += '<button class="btn btn-primary" id="phBook" type="button">把 ' + wrongN + ' 道错题存进错题本</button>'; }
+        h += '<button class="btn btn-outline" id="phAgain" type="button">再拍一张</button></div>';
+        box.innerHTML = h;
+        var inputs = box.querySelectorAll('.ph-fix');
+        for (var q = 0; q < inputs.length; q++) {
+            (function (inp) {
+                inp.addEventListener('change', function () {
+                    var idx = parseInt(inp.getAttribute('data-i'), 10);
+                    PH.rows[idx].given = inp.value;
+                    PH.rows[idx].verdict = gradeOne(inp.value, PH.rows[idx].prob.ans);
+                    renderResult();
+                });
+            })(inputs[q]);
+        }
+        var bk = $('phBook');
+        if (bk) { bk.addEventListener('click', function () {
+            var n = 0;
+            for (var z = 0; z < PH.rows.length; z++) {
+                var r2 = PH.rows[z];
+                if (r2.verdict === false && r2.prob.ans >= 0 && typeof window.__ksjBookAdd === 'function') {
+                    window.__ksjBookAdd({ text: r2.prob.text, ans: r2.prob.ans }, PH.info && PH.info.t);
+                    n++;
+                }
+            }
+            setStatus('已存入错题本 ' + n + ' 题');
+        }); }
+        var ag = $('phAgain');
+        if (ag) { ag.addEventListener('click', function () { resetPhoto(); }); }
+    }
+
+    function resetPhoto() {
+        PH.rows = null; PH.jn = null; PH.info = null; PH.note = ''; PH.img = null;
+        try { $('photoResult').innerHTML = ''; $('photoPrevWrap').className = 'hide'; $('photoFile').value = ''; $('jnFix').value = ''; } catch (e) {}
+        var gb = $('gradeBtn'); if (gb) { gb.disabled = true; }
+        setStatus('先选一张照片');
+    }
+
+    // —— 主流程 ——
+    async function doGrade() {
+        if (PH.busy) { return; }
+        PH.busy = true;
+        var gb = $('gradeBtn'); if (gb) { gb.disabled = true; }
+        try {
+            var jnManual = normAns(($('jnFix') || {}).value || '');
+            if (!PH.img) { setStatus('请先在①里选择/拍摄一张卷面照片'); return; }
+            setStatus('压缩并上传照片…');
+            var dataUrl = await fileToDataUrl(PH.img, 1500, 0.82);
+            if (dataUrl.length > 7000000) { dataUrl = await fileToDataUrl(PH.img, 1100, 0.7); }
+            setStatus('AI 识别中（约 10~60 秒，请稍候，别关页面）…');
+            var resultText = await visionCall(dataUrl);
+            var obj = null;
+            var m = String(resultText).match(/\{[\s\S]*\}/);
+            if (m) { try { obj = JSON.parse(m[0]); } catch (e) {} }
+            if (!obj) { setStatus('识别返回无法解析，请重拍再试'); return; }
+            if (obj.retake) { setStatus('照片不够清晰（' + (obj.note || '') + '），请重拍一张整页清晰的'); return; }
+            var jn = normAns(obj.juanhao || '');
+            if (!jn && jnManual) { jn = jnManual; }
+            var rec = reconstruct(jn);
+            if (!rec) { setStatus('卷号没读出来（读到：' + (jn || '空') + '）。请在②里手动输入卷面上的 8 位卷号后再点批改'); return; }
+            var answers = Array.isArray(obj.answers) ? obj.answers : [];
+            while (answers.length < rec.probs.length) { answers.push(''); }
+            PH.jn = jn; PH.info = rec.info; PH.note = obj.note || '';
+            PH.rows = gradeAll(rec.probs, answers.slice(0, rec.probs.length));
+            setStatus('批改完成 ✓');
+            renderResult();
+            try { $('photoResult').scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) {}
+        } catch (e) {
+            setStatus('出错了：' + ((e && e.message) || e) + '（可重试或换张照片）');
+        } finally {
+            PH.busy = false;
+            var gb2 = $('gradeBtn'); if (gb2) { gb2.disabled = !PH.img; }
+        }
+    }
+
+    function init() {
+        var file = $('photoFile');
+        if (file) { file.addEventListener('change', function () {
+            var f = file.files && file.files[0];
+            if (!f) { return; }
+            PH.img = f;
+            try {
+                var url = URL.createObjectURL(f);
+                $('photoPrev').src = url;
+                $('photoPrevWrap').className = '';
+            } catch (e) {}
+            var gb = $('gradeBtn'); if (gb) { gb.disabled = false; }
+            setStatus('照片已选好，点「开始智能批改」');
+        }); }
+        var gb = $('gradeBtn');
+        if (gb) { gb.addEventListener('click', doGrade); }
+        var jf = $('jnFix');
+        if (jf) { jf.addEventListener('input', function () { jf.value = normAns(jf.value).slice(0, 8); }); }
+    }
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
+
+    try { window.__KSJ_PHOTO = { JH: JH, gradeOne: gradeOne, gradeAll: gradeAll, normAns: normAns, reconstruct: reconstruct, PH: PH, renderResult: renderResult, doGrade: doGrade, resetPhoto: resetPhoto, visionCall: visionCall, fileToDataUrl: fileToDataUrl, jidMake: jidMake, setStatus: setStatus, pollResult: pollResult, blindVisionSubmit: blindVisionSubmit }; } catch (e) {}
 })();
 </script>
 
-<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div><!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"口算小卷 - Online Practice + Free printable arithmetic worksheet generator","口算小卷":"Arithmetic worksheet","免费 · 免注册":"Free · No registration required","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Arithmetic practice tool for elementary school parents: online practice with instant scoring; also one-click to generate A4 printout.","在线做题":"Online practice","打印练习卷":"Print practice sheet","题型":"Question types","10以内加减法":"Addition and subtraction within 10","20以内加减法（进位退位）":"Addition and subtraction within 20 (carrying and borrowing)","100以内加减法":"Addition and subtraction within 100","表内乘法":"Multiplication within the table","表内除法":"Division within the table","乘除混合":"Mixed multiplication and division","三位数加减法":"Addition and subtraction of three-digit numbers","两步混合运算":"Two-step mixed operations","题量":"Number of questions","10 题":"10 questions","15 题":"15 questions","20 题":"20 questions","30 题":"30 questions","50 题":"50 questions","开始练习":"Start practice","选好题型和题量，点「开始练习」":"Select the question type and quantity, click 'Start practice'","只练错题":"Only practice wrong questions","错题本：0 题 · 累计 ⭐ 0 颗":"Wrong question notebook: 0 questions · Total ⭐ 0 stars","在线做题：":"Online practice:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Select question type and quantity → Click 'Start practice' → Answer each question one by one using the large keyboard","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"After submission, the correctness is immediately judged; a summary page appears after completing the set (score / time / list of wrong questions). Wrong answers are automatically added to the wrong question notebook, and you can click 'Only practice wrong questions' to retake (the notebook automatically appears after 2 consecutive correct answers); get 1 star for 5 consecutive correct answers. To print the worksheet, click 'Print practice sheet' at the top.","退格":"Backspace","清空":"Clear","提交答案":"Submit answer","再来一组":"Do another set","返回设置":"Return to settings","40 题":"40 questions","60 题":"60 questions","80 题":"80 questions","100 题":"100 questions","每行列数":"Number of columns per row","2 列（字大）":"2 columns (large text)","3 列":"3 columns","4 列（省纸）":"4 columns (save paper)","竖式排版":"Vertical layout","（仅加减乘可用）":"(Only available for addition, subtraction, and multiplication)","生成新卷子":"Generate new worksheet","打印":"Print","显示答案页":"Show answer page","打印用法：":"Printing instructions:","选题型 → 点「生成新卷子」→ 点「打印」":"Select question type → Click 'Generate new worksheet' → Click 'Print'","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":". Click 'Generate' again to change a set of questions; print using A4 paper, select default or minimum page margins, and turn off the browser's built-in header and footer to get the closest effect to the school-issued practice sheets.","ksj-toast on":"ksj-toast on","fill s":"fill s","隐藏答案页":"Hide answer page","竖式":"Vertical format","横式":"Horizontal format","进度已自动保存":"Progress has been automatically saved","已恢复上次保存的练习进度":"Progress from the last saved practice has been restored","tab-btn on":"tab-btn on","panel no-print":"panel no-print","panel no-print hide":"panel no-print hide","paper hide":"paper hide","ans-val empty":"ans-val empty","错题专练中":"Practice wrong questions in progress","答题中":"Answering in progress","已答对":"Answered correctly","连对":"Consecutive correct answers","fb ok":"fb ok","下一题":"Next question","fb bad":"fb bad","用时":"Time used","本组最高连对":"Highest consecutive correct answers in this group","错题本还剩":"Remaining wrong questions in the wrong question book","错题本现存":"Current wrong questions in the wrong question book","__title__":"口算小卷 - Online Practice + Free printable arithmetic worksheet generator"},"zh-CN":{"竖式排版":"（仅加减乘可用）","ans-val empty":"ans-val 空值","fb ok":"fb 正确","fb bad":"fb 错误","__title__":"口算小卷 - 在线做题 + 免费打印口算练习卷生成器"},"es":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"口算小卷 - En línea resolver problemas + Generador gratuito de hojas de práctica de cálculo mental","免费 · 免注册":"Gratis · Sin registro","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Herramienta de práctica de cálculo mental para padres de primaria: resolver problemas en línea con calificación instantánea; también se puede generar un folio de impresión A4 con un solo clic.","在线做题":"Resolver problemas en línea","打印练习卷":"Imprimir hojas de práctica","题型":"Tipos de preguntas","10以内加减法":"Suma y resta de números de 10 en adelante","20以内加减法（进位退位）":"Suma y resta de números de 20 en adelante (carreras y retrocesos)","100以内加减法":"Suma y resta de números de 100 en adelante","表内乘法":"Multiplicación de tablas","表内除法":"División de tablas","乘除混合":"Mixto de multiplicación y división","三位数加减法":"Suma y resta de números de tres dígitos","两步混合运算":"Operaciones mixtas de dos pasos","题量":"Cantidad de preguntas","10 题":"10 preguntas","15 题":"15 preguntas","20 题":"20 preguntas","30 题":"30 preguntas","50 题":"50 preguntas","开始练习":"Comenzar práctica","选好题型和题量，点「开始练习」":"Elija el tipo de pregunta y la cantidad de preguntas, haga clic en「Comenzar práctica」","只练错题":"Practicar solo errores","错题本：0 题 · 累计 ⭐ 0 颗":"Cuaderno de errores: 0 preguntas · Total ⭐ 0 estrellas","在线做题：":"Resolver problemas en línea:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Elija el tipo de pregunta y la cantidad de preguntas → Haga clic en「Comenzar práctica」→ Responda a cada pregunta usando el teclado grande","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，después de enviar se juzgará inmediatamente si está correcto o no; después de que se complete todo el grupo, se mostrará una página de liquidación (puntuación / tiempo / lista de preguntas erróneas). Las preguntas erróneas se agregarán automáticamente al cuaderno de errores, puede hacer clic en「Practicar solo errores」para practicar de nuevo (saldrá automáticamente después de 2 preguntas correctas consecutivas); obtener 1 estrella después de 5 preguntas correctas consecutivas. Si desea imprimir el folio, haga clic en「Imprimir hojas de práctica」en la parte superior.","退格":"Borrar","清空":"Borrar todo","提交答案":"Enviar respuesta","再来一组":"Nueva serie","返回设置":"Volver a la configuración","40 题":"40 preguntas","60 题":"60 preguntas","80 题":"80 preguntas","100 题":"100 preguntas","每行列数":"Número de columnas por línea","2 列（字大）":"2 columnas (letras grandes)","3 列":"3 columnas","4 列（省纸）":"4 columnas (ahorro de papel)","竖式排版":"Formateo en vertical","（仅加减乘可用）":"(solo se puede usar para suma, resta y multiplicación)","生成新卷子":"Generar nuevo folio","打印":"Imprimir","显示答案页":"Mostrar página de respuestas","打印用法：":"Uso de impresión:","选题型 → 点「生成新卷子」→ 点「打印」":"Elija el tipo de pregunta → Haga clic en「Generar nuevo folio」→ Haga clic en「Imprimir」","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。Si desea cambiar por otro conjunto de preguntas, haga clic en el generador otra vez; use papel A4, seleccione el margen predeterminado o el más pequeño, desactive la cabecera y el pie de página del navegador, el efecto de impresión será el más cercano al folio de práctica que envía la escuela.","fill s":"relleno s","隐藏答案页":"Ocultar página de respuestas","竖式":"Vertical","横式":"Horizontal","进度已自动保存":"El progreso se ha guardado automáticamente","已恢复上次保存的练习进度":"Se ha restaurado el progreso de práctica guardado anteriormente","ans-val empty":"ans-val vacío","错题专练中":"práctica de problemas fallados en curso","答题中":"respondiendo","已答对":"respondido correctamente","连对":"correcto consecutivo","fb ok":"fb correcto","下一题":"siguiente pregunta","fb bad":"fb incorrecto","用时":"tiempo utilizado","本组最高连对":"mejor racha consecutiva de este grupo","错题本还剩":"quedan problemas fallados en el cuaderno","错题本现存":"problemas fallados actuales en el cuaderno","__title__":"口算小卷 - En línea resolver problemas + Generador gratuito de hojas de práctica de cálculo mental"},"ja":{"免费 · 免注册":"無料 · 免登録","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"小学生の保護者向けの口算練習ツール：オンラインで解答し即座に採点；A4印刷用の練習用紙を一括で生成もできます。","在线做题":"オンラインで做题","打印练习卷":"練習用紙を印刷","题型":"問題タイプ","10以内加减法":"10以内の加減法","20以内加减法（进位退位）":"20以内の加減法（進位・退位）","100以内加减法":"100以内の加減法","表内乘法":"表内の乘法","表内除法":"表内の除法","三位数加减法":"三位数の加減法","两步混合运算":"二段階混合運算","题量":"問題数","10 题":"10 問","15 题":"15 問","20 题":"20 問","30 题":"30 問","50 题":"50 問","开始练习":"練習を開始","选好题型和题量，点「开始练习」":"問題タイプと問題数を選んで、[練習を開始]をクリック","只练错题":"間違った問題だけ練習","错题本：0 题 · 累计 ⭐ 0 颗":"間違った問題ノート：0 問 · 累計 ⭐ 0 項","在线做题：":"オンラインで做题：","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"問題タイプと問題数を選択 → [練習を開始]をクリック → 大キーボードで一問ずつ解答","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"、提出後すぐに正誤を判定；全問終了後、結果ページ（得点 / 時間 / 間違った問題リスト）が出ます。間違った問題は自動的に間違った問題ノートに移動し、「間違った問題だけ練習」をクリックで再練習できます（連続で2回正解すると自動的にノートに追加）；連続で5問正解すると1つ星がもらえます。練習用紙を印刷したい場合は、上側の「練習用紙を印刷」をクリック","退格":"戻る","清空":"クリア","提交答案":"解答を提出","再来一组":"もう一組やる","返回设置":"設定に戻る","40 题":"40 問","60 题":"60 問","80 题":"80 問","100 题":"100 問","每行列数":"每行の列数","2 列（字大）":"2 列（文字が大きい）","4 列（省纸）":"4 列（紙を節約）","竖式排版":"縦式レイアウト","（仅加减乘可用）":"（加減乗のみ使用可能）","生成新卷子":"新しい練習用紙を生成","打印":"印刷","显示答案页":"解答ページを表示","打印用法：":"印刷方法：","选题型 → 点「生成新卷子」→ 点「打印」":"問題タイプを選択 → [新しい練習用紙を生成]をクリック → [印刷]をクリック","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。もう一問のセットを生成する場合はもう一度クリック；印刷用紙はA4用紙を使用し、ページエッジはデフォルトまたは最小に設定し、ブラウザの標準的なページヘッダーとフッターをオフにして、学校から配布された練習用紙に最も近い出卷効果が得られます。","隐藏答案页":"解答ページを隠す","竖式":"縦式","进度已自动保存":"進捗が自動的に保存されました","已恢复上次保存的练习进度":"最後に保存された練習進捗が復元されました","错题专练中":"错題専練中","答题中":"答題中","连对":"連对","下一题":"次の問題","用时":"使用時間","本组最高连对":"本グループの最高連对","错题本还剩":"錯題本に残る","错题本现存":"錯題本に現存","__title__":"口算小卷 - 在线做题 + 免费打印口算练习卷生成器"},"ko":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"구산 소문제 - 온라인 문제 풀이 + 무료 구산 연습 문제 출력 생성기","口算小卷":"구산 소문제","免费 · 免注册":"무료 · 등록 없음","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"초등학생 학부모님을 위한 구산 연습 도구: 온라인으로 문제를 풀고 즉시 점수를 확인할 수 있으며,一键으로 A4 출력 문제지를 생성할 수 있습니다。","在线做题":"온라인으로 문제 풀기","打印练习卷":"연습 문제 출력","题型":"문제 유형","10以内加减法":"10 이내의 덧셈과 뺄셈","20以内加减法（进位退位）":"20 이내의 덧셈과 뺄셈（进位退位）","100以内加减法":"100 이내의 덧셈과 뺄셈","表内乘法":"표 내 곱셈","表内除法":"표 내 나눗셈","乘除混合":"곱셈 나눗셈 혼합","三位数加减法":"3자리수 덧셈과 뺄셈","两步混合运算":"2단계 혼합 계산","题量":"문제 수","10 题":"10 문제","15 题":"15 문제","20 题":"20 문제","30 题":"30 문제","50 题":"50 문제","开始练习":"연습 시작","选好题型和题量，点「开始练习」":"문제 유형과 문제 수를 선택한 후,「연습 시작」을 누르세요","只练错题":"오답 연습만","错题本：0 题 · 累计 ⭐ 0 颗":"오답笔记本：0 문제 · 총 ⭐ 0 개","在线做题：":"온라인으로 문제 풀기：","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"문제 유형과 문제 수 선택 →「연습 시작」을 누르기 → 대 키보드로 문제를 하나씩 풀기","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"제출 후 즉시 맞는지 틀린지 판정합니다；모든 문제를 다 풀면 결산 페이지가 나타납니다（점수 / 소요 시간 / 틀린 문제 목록）。틀린 문제는 자동으로 오답笔记本에 추가되며，「오답 연습만」을 눌러 다시 연습할 수 있습니다（연속 2 번 맞으면 자동으로 추가됩니다）；연속 5 개 맞으면 1 개의 별을 얻습니다。문제지를 출력하려면 상단의「연습 문제 출력」을 누릅니다。","退格":"되돌리기","清空":"비우기","提交答案":"답안 제출","再来一组":"다시 한 번 풀기","返回设置":"설정으로 돌아가기","40 题":"40 문제","60 题":"60 문제","80 题":"80 문제","100 题":"100 문제","每行列数":"행당 열 수","2 列（字大）":"2 열（글자 크게）","3 列":"3 열","4 列（省纸）":"4 열（지를 절약）","竖式排版":"세로식 정렬","（仅加减乘可用）":"(덧셈, 뺄셈, 곱셈만 사용 가능)","生成新卷子":"새 문제지 생성","打印":"출력","显示答案页":"답안 페이지 표시","打印用法：":"출력 방법：","选题型 → 点「生成新卷子」→ 点「打印」":"문제 유형 선택 →「새 문제지 생성」을 누르기 →「출력」을 누르기","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":". 다시 한 번 문제를 바꾸고 싶으면 다시 한 번 생성을 누릅니다；출력용 A4용지를 사용하고, 페이지 마argins을 기본 설정이나 가장 작게 선택하고, 브라우저가 제공하는 헤더와 푸터를 끄고, 학교에서 주는 연습지와 가장 가까운 출력 효과를 얻을 수 있습니다。","隐藏答案页":"답안 페이지 숨기기","竖式":"세로식","横式":"가로식","进度已自动保存":"진행 상황이 자동으로 저장되었습니다","已恢复上次保存的练习进度":"마지막으로 저장한 연습 진행 상황을 복원했습니다","错题专练中":"오답 문제 전용 연습 중","答题中":"응답 중","已答对":"정답","连对":"연속 정답","下一题":"다음 문제","用时":"사용 시간","本组最高连对":"본 그룹 최고 연속 정답","错题本还剩":"오답笔记本에 남은","错题本现存":"오답笔记本에 현재 있는","__title__":"구산 소문제 - 온라인 문제 풀이 + 무료 구산 연습 문제 출력 생성기"},"fr":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"口算小卷 - En ligne faire des exercices + Générateur de feuilles d'exercices de calcul mental gratuites à imprimer","口算小卷":"Calcul mental","免费 · 免注册":"Gratuit · Sans inscription","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Outil d'exercices de calcul mental pour les parents d'élèves de primaire : répondre aux questions en ligne et obtenir des résultats immédiats ; il peut également générer des feuilles d'exercices A4 à imprimer en un clic.","在线做题":"Faire des exercices en ligne","打印练习卷":"Imprimer des feuilles d'exercices","题型":"Type d'exercice","10以内加减法":"Addition et soustraction de 10 en dessous","20以内加减法（进位退位）":"Addition et soustraction de 20 avec avancement et recul","100以内加减法":"Addition et soustraction de 100 en dessous","表内乘法":"Multiplication dans la table","表内除法":"Division dans la table","乘除混合":"Multiplication et division mélangées","三位数加减法":"Addition et soustraction de nombres à trois chiffres","两步混合运算":"Opérations mixtes en deux étapes","题量":"Nombre de questions","10 题":"10 questions","15 题":"15 questions","20 题":"20 questions","30 题":"30 questions","50 题":"50 questions","开始练习":"Commencer l'exercice","选好题型和题量，点「开始练习」":"Choisir le type d'exercice et le nombre de questions, cliquer sur « Commencer l'exercice »","只练错题":"Nur üben, was falsch ist","错题本：0 题 · 累计 ⭐ 0 颗":"Cahier des erreurs : 0 questions · Total ⭐ 0 étoiles","在线做题：":"Faire des exercices en ligne :","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Sélectionner le type et le nombre de questions → Cliquer sur « Commencer l'exercice » → Répondre aux questions une par une avec le grand clavier","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，Soumettre et obtenir immédiatement les résultats; après avoir terminé tout le groupe, une page de récapitulatif apparaît (points / temps / liste des erreurs). Les questions mal répondues sont automatiquement ajoutées au cahier des erreurs, cliquer sur « Nur üben, was falsch ist » pour refaire (sortie automatique après 2 réponses correctes consécutives); obtenir une étoile pour 5 réponses correctes consécutives. Pour imprimer le试卷, cliquer sur « Imprimer des feuilles d'exercices » en haut.","退格":"Retour arrière","清空":"Effacer","提交答案":"Soumettre la réponse","再来一组":"Faire un autre groupe","返回设置":"Retour aux paramètres","40 题":"40 questions","60 题":"60 questions","80 题":"80 questions","100 题":"100 questions","每行列数":"Nombre de colonnes par ligne","2 列（字大）":"2 colonnes (grand texte)","3 列":"3 colonnes","4 列（省纸）":"4 colonnes (économiser du papier)","竖式排版":"Agencement en colonnes verticales","（仅加减乘可用）":"(Seulement pour l'addition, la soustraction et la multiplication)","生成新卷子":"Générer un nouveau试卷","打印":"Imprimer","显示答案页":"Afficher la page des réponses","打印用法：":"Utilisation de l'impression :","选题型 → 点「生成新卷子」→ 点「打印」":"Sélectionner le type → Cliquer sur « Générer un nouveau试卷 » → Cliquer sur « Imprimer »","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。Pour obtenir un nouveau ensemble de questions, cliquer à nouveau sur le bouton de génération ; imprimer sur du papier A4, choisir la marge par défaut ou minimale, désactiver les en-têtes et les pieds de page intégrés au navigateur, le résultat de l'impression est le plus proche des feuilles d'exercices distribuées par l'école.","fill s":"Remplir s","隐藏答案页":"Masquer la page des réponses","竖式":"Colonnes verticales","横式":"Colonnes horizontales","进度已自动保存":"Le progrès a été sauvegardé automatiquement","已恢复上次保存的练习进度":"Le progrès de l'exercice sauvegardé précédemment a été restauré","ans-val empty":"ans-val vide","错题专练中":"entraînement de questions fausses en cours","答题中":"répondre en cours","已答对":"répondu correctement","连对":"suite de réponses correctes","下一题":"prochain problème","fb bad":"fb mauvais","用时":"durée","本组最高连对":"meilleure suite de réponses correctes de ce groupe","错题本还剩":"questions fausses restantes dans le cahier","错题本现存":"questions fausses existantes dans le cahier","__title__":"口算小卷 - En ligne faire des exercices + Générateur de feuilles d'exercices de calcul mental gratuites à imprimer"},"de":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"Kalkulationsübungsbogen - Online üben + Kostenlose Druckerzeugnis-Generator für Kalkulationsübungen","口算小卷":"Kalkulationsübungsbogen","免费 · 免注册":"Kostenlos · Ohne Registrierung","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Kalkulationsübungsinstrument für Eltern von Schülern der Grundschule: Online antworten und sofortige Bewertung; auch kann ein Klick ein A4-Druckblatt generieren.","在线做题":"Online üben","打印练习卷":"Drucke Übungsbogen","题型":"Typ der Aufgaben","10以内加减法":"Addition und Subtraktion unter 10","20以内加减法（进位退位）":"Addition und Subtraktion unter 20 (Vergroßerung und Verkleinerung)","100以内加减法":"Addition und Subtraktion unter 100","表内乘法":"Tafelmultiplikation","表内除法":"Tafeldivision","乘除混合":"Multiplikation und Division gemischt","三位数加减法":"Addition und Subtraktion von Drei-stelligen Zahlen","两步混合运算":"Zwei-stufige gemischte Operationen","题量":"Anzahl der Aufgaben","10 题":"10 Aufgaben","15 题":"15 Aufgaben","20 题":"20 Aufgaben","30 题":"30 Aufgaben","50 题":"50 Aufgaben","开始练习":"Beginne mit dem Üben","选好题型和题量，点「开始练习」":"Wähle den Typ der Aufgaben und die Anzahl der Aufgaben, klicke auf「Beginne mit dem Üben」","只练错题":"Nur falsche Aufgaben üben","错题本：0 题 · 累计 ⭐ 0 颗":"Falsche Aufgaben-Buch: 0 Aufgaben · Insgesamt ⭐ 0 Sterne","在线做题：":"Online üben:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Wähle den Typ der Aufgaben und die Anzahl der Aufgaben → Klicke auf「Beginne mit dem Üben」→ Antworte mit der großen Tastatur auf jede Aufgabe","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，Nach der Einreichung wird sofort die Richtigkeit beurteilt; nach Abschluss der gesamten Gruppe wird eine Zusammenfassungspage angezeigt (Punkte / Zeit / Liste der falschen Aufgaben). Falsche Aufgaben werden automatisch in das falsche Aufgaben-Buch eingefügt und können durch Klicken auf「Nur falsche Aufgaben üben」wiederholt werden (automatisch abgelegt, wenn 2 Mal in Folge korrekt sind); 5 aufeinanderfolgende richtige Antworten bringen 1 Stern. Wenn du das Blatt drucken möchtest, klicke oben auf「Drucke Übungsbogen」.","退格":"Rückgängig","清空":"Leeren","提交答案":"Antwort einreichen","再来一组":"Eine weitere Gruppe","返回设置":"Zurück zur Einstellung","40 题":"40 Aufgaben","60 题":"60 Aufgaben","80 题":"80 Aufgaben","100 题":"100 Aufgaben","每行列数":"Anzahl der Zeilen pro Spalte","2 列（字大）":"2 Spalten (große Schrift)","3 列":"3 Spalten","4 列（省纸）":"4 Spalten (Papier sparen)","竖式排版":"Spaltenstil-Layout","（仅加减乘可用）":"(Nur Addition, Subtraktion und Multiplikation verfügbar)","生成新卷子":"Erstelle ein neues Blatt","打印":"Drucken","显示答案页":"Antworten-Seite anzeigen","打印用法：":"Druckanweisung:","选题型 → 点「生成新卷子」→ 点「打印」":"Wähle den Typ der Aufgaben → Klicke auf「Erstelle ein neues Blatt」→ Klicke auf「Drucken」","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":". Wenn du eine neue Gruppe von Aufgaben möchtest, generiere sie noch einmal; drucke mit A4-Papier, wähle den Standard- oder den kleinsten Seitenabstand, schalte die Standard-Kopf- und Fußzeile des Browsers aus, um das beste Aussehen der Übungsbögen zu erzielen, die von der Schule verteilt werden.","ksj-toast on":"ksj-toast an","fill s":"füllen s","隐藏答案页":"Antworten-Seite verbergen","竖式":"Spaltenstil","横式":"Reihenstil","进度已自动保存":"Fortschritt wurde automatisch gespeichert","已恢复上次保存的练习进度":"Zuletzt gespeicherten Übungsfortschritt wiederhergestellt","tab-btn on":"tab-btn an","panel no-print":"panel ohne Druck","panel no-print hide":"panel ohne Druck verbergen","paper hide":"paper verbergen","错题专练中":"Fehlertipps üben","答题中":"Antworten","已答对":"Richtig","连对":"In Folge richtig","下一题":"Nächste Frage","用时":"Dauer","本组最高连对":"Höchste Folge in dieser Gruppe","错题本还剩":"Verbleibende Fehlertipps im Fehlerbuch","错题本现存":"Vorhandene Fehlertipps im Fehlerbuch","__title__":"Kalkulationsübungsbogen - Online üben + Kostenlose Druckerzeugnis-Generator für Kalkulationsübungen"},"ru":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"Калькуляторные листы - Онлайн задачи + Бесплатный генератор для печати练习 листов","口算小卷":"Калькуляторные листы","免费 · 免注册":"Бесплатно · Без регистрации","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Инструмент для родителей учеников начальной школы по решению задач на вычисления: онлайн ответы с мгновенной оценкой; также можно одним кликом создать A4 распечатку.","在线做题":"Онлайн задачи","打印练习卷":"Печать练习 листов","题型":"Типы задач","10以内加减法":"Сложение и вычитание в пределах 10","20以内加减法（进位退位）":"Сложение и вычитание в пределах 20 (перенос и возврат)","100以内加减法":"Сложение и вычитание в пределах 100","表内乘法":"Множение в таблице","表内除法":"Деление в таблице","乘除混合":"Сложение, вычитание, умножение и деление","三位数加减法":"Сложение и вычитание трёхзначных чисел","两步混合运算":"Двухступенчатые混合运算","题量":"Количество задач","10 题":"10 задач","15 题":"15 задач","20 题":"20 задач","30 题":"30 задач","50 题":"50 задач","开始练习":"Начать练习","选好题型和题量，点「开始练习」":"Выберите тип задачи и количество, нажмите «Начать练习»","只练错题":"Только неправильные задачи","错题本：0 题 · 累计 ⭐ 0 颗":"Задачи для повторения: 0 задач · Общее количество ⭐ 0","在线做题：":"Онлайн задачи:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Выберите тип задачи и количество → Нажмите «Начать练习» → Ответьте на задачи по одному с помощью клавиатуры","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，После отправки сразу получите оценку правильности; после выполнения всех задач появится страница подведения итогов (баллы / время / список неправильных задач). Неправильные задачи автоматически добавляются в раздел для повторения, можно нажать «Только неправильные задачи» для повторения (автоматически добавляется после 2 правильных ответов); за 5 правильных ответов получите 1 звезду. Если хотите распечатать лист, нажмите «Печать练习 листов» вверху.","退格":"Отменить ввод","清空":"Очистить","提交答案":"Подтвердить ответ","再来一组":"Начать новую партию","返回设置":"Вернуться к настройкам","40 题":"40 задач","60 题":"60 задач","80 题":"80 задач","100 题":"100 задач","每行列数":"Количество строк в строке","2 列（字大）":"2 строки (большой шрифт)","3 列":"3 строки","4 列（省纸）":"4 строки (экономия бумаги)","竖式排版":"Вертикальная раскладка","（仅加减乘可用）":"(только для сложения, вычитания и умножения)","生成新卷子":"Создать новый лист","打印":"Печать","显示答案页":"Показать страницу с ответами","打印用法：":"Инструкция по печати:","选题型 → 点「生成新卷子」→ 点「打印」":"Выберите тип → Нажмите «Создать новый лист» → Нажмите «Печать»","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":". Если хотите изменить набор задач, нажмите «Создать новый лист» еще раз; для печати используйте бумагу формата A4, выберите стандартные или минимальные поля, отключите заголовки и подзаголовки браузера, чтобы результат был как у练习ных листов, которые выдаются в школе.","ksj-toast on":"ksj-toast включен","隐藏答案页":"Скрыть страницу с ответами","竖式":"Вертикальная раскладка","横式":"Горизонтальная раскладка","进度已自动保存":"Прогресс автоматически сохранен","已恢复上次保存的练习进度":"Восстановлен прогресс последнего сохранения练习","tab-btn on":"tab-btn включен","ans-val empty":"пустое значение ans-val","错题专练中":"занятие по исправлению ошибок","答题中":"ответ на вопрос","已答对":"ответ дан верно","连对":"подряд верно","fb ok":"fb хорошо","下一题":"следующее задание","fb bad":"fb плохо","用时":"время","本组最高连对":"максимальная серия правильных ответов в этой группе","错题本还剩":"в ошибках осталось","错题本现存":"текущие ошибки","__title__":"Калькуляторные листы - Онлайн задачи + Бесплатный генератор для печати练习 листов"},"pt":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"Calculadora Mental - Fazer Testes Online + Gerador de Folhas de Exercícios de Calculadora Mental Gratuita","口算小卷":"Calculadora Mental","免费 · 免注册":"Grátis · Sem Registo","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Ferramenta de exercícios de calculadora mental para pais de alunos de primária: responder online e obter feedback imediato; também pode gerar folhas de exercícios A4 com um clique.","在线做题":"Fazer Testes Online","打印练习卷":"Imprimir Folhas de Exercícios","题型":"Tipos de Questões","10以内加减法":"Adição e Subtração de Números até 10","20以内加减法（进位退位）":"Adição e Subtração de Números até 20 (Comprimento e Retirada)","100以内加减法":"Adição e Subtração de Números até 100","表内乘法":"Multiplicação de Tabela","表内除法":"Divisão de Tabela","乘除混合":"Misto de Multiplicação e Divisão","三位数加减法":"Adição e Subtração de Números de Três Dígitos","两步混合运算":"Operações Mistas em Dois Passos","题量":"Quantidade de Questões","10 题":"10 Questões","15 题":"15 Questões","20 题":"20 Questões","30 题":"30 Questões","50 题":"50 Questões","开始练习":"Iniciar Exercícios","选好题型和题量，点「开始练习」":"Escolha o tipo de questão e a quantidade, clique em「Iniciar Exercícios」","只练错题":"Pratique Apenas as Questões Erradas","错题本：0 题 · 累计 ⭐ 0 颗":"Caderno de Questões Erradas: 0 Questões · Total ⭐ 0 Estrelas","在线做题：":"Fazer Testes Online:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Escolher o tipo e a quantidade de questões → Clique em「Iniciar Exercícios」→ Responder cada questão usando o teclado grande","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，após entregar, obter imediatamente o resultado correto ou errado; após concluir o conjunto, aparecerá a página de resumo (pontuação / tempo gasto / lista de questões erradas). As questões erradas serão automaticamente adicionadas ao caderno de questões erradas, clique em「Pratique Apenas as Questões Erradas」para repetir (ao acertar consecutivamente 2 vezes, será adicionado automaticamente); acertar consecutivamente 5 questões ganha 1 estrela. Quer imprimir a folha, clique no botão「Imprimir Folhas de Exercícios」no topo.","退格":"Retornar","清空":"Limpar","提交答案":"Enviar Respostas","再来一组":"Nova Sequência","返回设置":"Voltar aos Ajustes","40 题":"40 Questões","60 题":"60 Questões","80 题":"80 Questões","100 题":"100 Questões","每行列数":"Número de Linhas por Coluna","2 列（字大）":"2 Colunas (Letras Grandes)","3 列":"3 Colunas","4 列（省纸）":"4 Colunas (Econômico)","竖式排版":"Formatação em Vertical","（仅加减乘可用）":"(Apenas Adição, Subtração e Multiplicação)","生成新卷子":"Gerar Nova Folha","打印":"Imprimir","显示答案页":"Mostrar Página de Respostas","打印用法：":"Uso de Impressão:","选题型 → 点「生成新卷子」→ 点「打印」":"Escolher o tipo → Clique em「Gerar Nova Folha」→ Clique em「Imprimir»","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。Quer trocar um novo conjunto de perguntas, clique novamente no botão de geração; use papel A4, selecione margem padrão ou mínima, desative a cabeçalho e rodapé do navegador, o efeito da folha de teste será o mais próximo da folha de exercícios enviada pela escola.","隐藏答案页":"Ocultar Página de Respostas","竖式":"Vertical","横式":"Horizontal","进度已自动保存":"O progresso foi salvo automaticamente","已恢复上次保存的练习进度":"Progresso de prática salvo anteriormente restaurado","ans-val empty":"ans-val vazio","错题专练中":"treinamento de questões erradas em andamento","答题中":"respondendo","已答对":"respondido corretamente","连对":"consecutive","下一题":"próxima questão","用时":"tempo gasto","本组最高连对":"maior série consecutiva deste grupo","错题本还剩":"restam questões erradas no caderno de questões erradas","错题本现存":"há questões erradas no caderno de questões erradas","__title__":"Calculadora Mental - Fazer Testes Online + Gerador de Folhas de Exercícios de Calculadora Mental Gratuita"},"ar":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"كتاب حسابات بسيطة - إجراء التمارين عبر الإنترنت + مولد مجاني للطباعة","口算小卷":"كتاب حسابات بسيطة","免费 · 免注册":"مجاني · بدون تسجيل","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"أداة تمارين حسابات بسيطة للأولاد والبنات: إجراء التمارين عبر الإنترنت وتقييمها فوراً؛ يمكن أيضًا إنشاء بطاقات الطباعة A4 بلمسة واحدة.","在线做题":"إجراء التمارين عبر الإنترنت","打印练习卷":"طباعة بطاقات التمارين","题型":"نوع التمرين","10以内加减法":"الجمع والطرح حتى 10","20以内加减法（进位退位）":"الجمع والطرح حتى 20 (الإضافة والطرح)","100以内加减法":"الجمع والطرح حتى 100","表内乘法":"الضرب في جدول","表内除法":"القسمة في جدول","乘除混合":"الضرب والقسمة المختلطة","三位数加减法":"الجمع والطرح للأرقام الثلاثية الأرقام","两步混合运算":"العمليات المختلطة في خطوتين","题量":"عدد الأسئلة","10 题":"10 سؤال","15 题":"15 سؤال","20 题":"20 سؤال","30 题":"30 سؤال","50 题":"50 سؤال","开始练习":"بدء التمرين","选好题型和题量，点「开始练习」":"اختر نوع التمرين وعدد الأسئلة، اضغط على「بدء التمرين」","只练错题":"تمرين فقط الأسئلة الخاطئة","错题本：0 题 · 累计 ⭐ 0 颗":"كتاب الأسئلة الخاطئة: 0 سؤال · مجموع ⭐ 0 نجمة","在线做题：":"إجراء التمارين عبر الإنترنت:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"اختر نوع التمرين وعدد الأسئلة → اضغط على「بدء التمرين」→ اجب على الأسئلة باستخدام لوحة المفاتيح الكبيرة","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"، بعد تقديم الإجابات، سيتم تقييمها فورًا؛ بعد انتهاء مجموعة الأسئلة، سيظهر صفحة الإقفال (النقاط / الوقت / قائمة الأسئلة الخاطئة). سيتم إضافة الأسئلة الخاطئة تلقائيًا إلى كتاب الأسئلة الخاطئة، يمكنك الضغط على «تمرين فقط الأسئلة الخاطئة» لإعادة التمرين (سيتم إزالة الكتاب تلقائيًا عند الحصول على 2 إجابة صحيحة متتالية)； الحصول على 5 إجابات صحيحة متتالية يعطي نجمة واحدة. إذا كنت ترغب في طباعة البطاقات، اضغط على «طباعة بطاقات التمارين».","退格":"التراجع","清空":"الإزالة","提交答案":"تقديم الإجابة","再来一组":"أعاد مجموعة أخرى","返回设置":"العودة إلى الإعدادات","40 题":"40 سؤال","60 题":"60 سؤال","80 题":"80 سؤال","100 题":"100 سؤال","每行列数":"عدد السطور في كل صف","2 列（字大）":"2 عمود (حجم الكتابة الكبير)","3 列":"3 عمود","4 列（省纸）":"4 عمود (توفير الورق)","竖式排版":"تنسيق العمودي","（仅加减乘可用）":"(يمكن استخدام الجمع والطرح والضرب فقط)","生成新卷子":"إنشاء ورقة جديدة","打印":"طباعة","显示答案页":"إظهار صفحة الإجابات","打印用法：":"طريقة الطباعة:","选题型 → 点「生成新卷子」→ 点「打印」":"اختيار نوع الأسئلة → النقر على «إنشاء ورقة جديدة» → النقر على «طباعة»","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。أريد تغيير مجموعة الأسئلة مرة أخرى وأضغط مرة أخرى على إنشاء؛ استخدم ورق A4 للطباعة، اختر الهوامش الافتراضية أو الأدنى، أغلق رأس الصفحة وأسفل الصفحة المدمجين في المتصفح، والنتيجة ستكون أقرب إلى ورقة التمرين التي توزعها المدرسة.","ksj-toast on":"ksj-toast مفعلة","fill s":"ملء s","隐藏答案页":"إخفاء صفحة الإجابات","竖式":"تنسيق العمودي","横式":"تنسيق الأفقية","进度已自动保存":"تم حفظ التقدم تلقائيًا","已恢复上次保存的练习进度":"تم استعادة تقدم التمرين المحدد مسبقًا","tab-btn on":"tab-btn مفعلة","panel no-print":"panel بدون طباعة","panel no-print hide":"panel بدون طباعة مخفي","paper hide":"ورق مخفي","ans-val empty":"القيمة الافتراضية فارغة","错题专练中":"تمارس التدريب على الأسئلة الخاطئة","答题中":"تسليم الإجابات","已答对":"تم الإجابة بشكل صحيح","连对":"التسلسل المتواصل","fb ok":"fb جيد","下一题":"السؤال التالي","fb bad":"fb سيء","用时":"الوقت المستخدم","本组最高连对":"أعلى تسلسل متواصل في هذا المجموعة","错题本还剩":"بقيت في دفتر الأسئلة الخاطئة","错题本现存":"الأسئلة الخاطئة الحالية في الدفتر","__title__":"كتاب حسابات بسيطة - إجراء التمارين عبر الإنترنت + مولد مجاني للطباعة"},"hi":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"काउंटिंग स्क्रिप्ट - ऑनलाइन प्रशिक्षण + मुफ्त अभ्यास काउंटिंग पेपर बनाने का उपकरण","口算小卷":"काउंटिंग स्क्रिप्ट","免费 · 免注册":"मुफ्त · नया रजिस्टर करें नहीं","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"छात्रावृत्ति अभ्यास के लिए काउंटिंग टूल: ऑनलाइन प्रशिक्षण तुरंत निर्णय; एक बटन से A4 प्रिंट पेपर भी बनाया जा सकता है。","在线做题":"ऑनलाइन प्रशिक्षण","打印练习卷":"प्रिंट पेपर","题型":"प्रकार","10以内加减法":"10 के भीतर जोड़ना और घटाना","20以内加减法（进位退位）":"20 के भीतर जोड़ना और घटाना (भांति जोड़ना और घटाना)","100以内加减法":"100 के भीतर जोड़ना और घटाना","表内乘法":"पट्टी गुणा","表内除法":"पट्टी विभाजन","乘除混合":"गुणा विभाजन मिश्रित","三位数加减法":"तीन अंक का जोड़ना और घटाना","两步混合运算":"दो चरण का मिश्रित गणित","题量":"सवालों की संख्या","10 题":"10 सवाल","15 题":"15 सवाल","20 题":"20 सवाल","30 题":"30 सवाल","50 题":"50 सवाल","开始练习":"प्रशिक्षण शुरू करें","选好题型和题量，点「开始练习」":"प्रकार और सवालों की संख्या चुनें, 'प्रशिक्षण शुरू करें' पर क्लिक करें","只练错题":"केवल गलत सवाल का प्रशिक्षण","错题本：0 题 · 累计 ⭐ 0 颗":"गलत सवाल का बुक: 0 सवाल · कुल ⭐ 0 तारा","在线做题：":"ऑनलाइन प्रशिक्षण:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"चयन करें → 'प्रशिक्षण शुरू करें' पर क्लिक करें → बड़े किबोर का उपयोग करके प्रत्येक सवाल का उत्तर दें","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":", प्रस्तुत करने के बाद तुरंत सही/गलत निर्णय; सबका समापन पृष्ठ आयेगा (स्कोर / समय / गलत सवाल सूची). गलत सवाल को आगे गलत सवाल के बुक में जायेगा, 'केवल गलत सवाल का प्रशिक्षण' पर क्लिक करके फिर से प्रशिक्षण कर सकते हैं (2 बार लगातार सही करने पर आगे आयेगा); 5 बार लगातार सही करने पर 1 तारा पायेगा. पेपर प्रिंट करना चाहते हैं, ऊपर 'प्रिंट पेपर' पर क्लिक करें.","退格":"बगैर लिखना","清空":"सब कुछ साफ करें","提交答案":"उत्तर प्रस्तुत करें","再来一组":"एक बार फिर एक समूह","返回设置":"सेटिंग में वापस जाएं","40 题":"40 सवाल","60 题":"60 सवाल","80 题":"80 सवाल","100 题":"100 सवाल","每行列数":"प्रत्येक पंक्ति की संख्या","2 列（字大）":"2 स्तम्भ (अक्षर बड़े)","3 列":"3 स्तम्भ","4 列（省纸）":"4 स्तम्भ (कागज बचाने के लिए)","竖式排版":"स्तंभाकार रेखांकन","（仅加减乘可用）":"(केवल जोड़ना, घटाना, गुणा के लिए उपयोगी)","生成新卷子":"नया पेपर बनाएं","打印":"प्रिंट करें","显示答案页":"उत्तर पृष्ठ दिखाएं","打印用法：":"प्रिंट के उपयोग के लिए:","选题型 → 点「生成新卷子」→ 点「打印」":"चयन करें → 'नया पेपर बनाएं' पर क्लिक करें → 'प्रिंट' पर क्लिक करें","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":". एक बार फिर एक बार चयन करके फिर से बनाएं; A4 कागज का उपयोग करके प्रिंट करें, पृष्ठ किनारा चयन करें (डिफ़ॉल्ट या न्यूनतम), ब्राउज़र के सहित पृष्ठशीर्ष और पृष्ठपाद बंद करें, पेपर का उत्पादन स्कूल से मिलने वाले प्रशिक्षण पेपर के समान होगा.","隐藏答案页":"उत्तर पृष्ठ छुपाएं","竖式":"स्तंभाकार","横式":"सरल रूप","进度已自动保存":"प्रगति स्वचालित रूप से सहेजी गई है","已恢复上次保存的练习进度":"पिछली बार सहेजी गई प्रशिक्षण प्रगति वापस ली गई है","ans-val empty":"एन्स-वैल खाली","错题专练中":"गलत विषय विशेष अभ्यास में","答题中":"प्रश्न उत्तर में","已答对":"उत्तर दिया है","连对":"बार-बार सही","fb ok":"एफबी ठीक","下一题":"अगला प्रश्न","fb bad":"एफबी खराब","用时":"समय लगा","本组最高连对":"इस समूह का सर्वोच्च बार-बार सही","错题本还剩":"गलत विषय की पुस्तक में अभी बचा","错题本现存":"गलत विषय की पुस्तक में अभी है","__title__":"काउंटिंग स्क्रिप्ट - ऑनलाइन प्रशिक्षण + मुफ्त अभ्यास काउंटिंग पेपर बनाने का उपकरण"},"id":{"竖式排版":"（仅加减乘可用）","（仅加减乘可用）":"（Hanya boleh menggunakan penambahan, pengurangan, perkalian dan pengurangan kali）","ans-val empty":"ans-val kosong","错题专练中":"latihan soal yang salah berjalan","答题中":"menjawab soal","已答对":"telah dijawab benar","连对":"beruntun benar","下一题":"soal berikutnya","用时":"waktu digunakan","本组最高连对":"terpanjang beruntun di grup ini","错题本还剩":"masih ada soal yang salah di buku soal yang salah","错题本现存":"soal yang salah saat ini di buku soal yang salah","__title__":"口算小卷 - 在线做题 + 免费打印口算练习卷生成器"},"vi":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"口算小卷 - Trực tuyến làm bài + Tạo miễn phí bài tập cộng trừ tính toán in A4","免费 · 免注册":"Miễn phí · Miễn đăng ký","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"Công cụ bài tập cộng trừ tính toán cho phụ huynh học sinh tiểu học: Trực tuyến làm bài và chấm điểm ngay lập tức; cũng có thể tạo bài tập in A4 một cú nhấn","在线做题":"Trực tuyến làm bài","打印练习卷":"In bài tập","题型":"Loại bài","10以内加减法":"Cộng trừ trong 10","20以内加减法（进位退位）":"Cộng trừ trong 20 (tiến vị, rút vị)","100以内加减法":"Cộng trừ trong 100","表内乘法":"Nhân trong bảng","表内除法":"Chia trong bảng","乘除混合":"Nhân chia hỗn hợp","三位数加减法":"Cộng trừ số 3 chữ số","两步混合运算":"Toán học hỗn hợp 2 bước","题量":"Số lượng bài","10 题":"10 bài","15 题":"15 bài","20 题":"20 bài","30 题":"30 bài","50 题":"50 bài","开始练习":"Bắt đầu làm bài","选好题型和题量，点「开始练习」":"Chọn loại bài và số lượng bài, nhấn「Bắt đầu làm bài」","只练错题":"Chỉ luyện bài sai","错题本：0 题 · 累计 ⭐ 0 颗":"Sách bài sai: 0 bài · Tính đến ⭐ 0 ngôi sao","在线做题：":"Trực tuyến làm bài:","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"Chọn loại bài và số lượng bài → Nhấn「Bắt đầu làm bài」→ Dùng phím số lớn trả lời từng bài","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，nộp bài xong sẽ chấm đúng sai ngay lập tức; khi làm xong cả nhóm sẽ xuất trang tổng kết (điểm số / thời gian / danh sách bài sai). Các bài sai sẽ tự động vào sách bài sai, có thể nhấn「Chỉ luyện bài sai」để luyện lại (kết nối đúng 2 lần tự động xuất sách); kết nối đúng 5 bài được 1 ngôi sao. Muốn in bài tập, nhấn ở trên「In bài tập」.","退格":"Xóa lùi","清空":"Xóa sạch","提交答案":"Nộp câu trả lời","再来一组":"Làm lại một nhóm","返回设置":"Quay lại thiết lập","40 题":"40 bài","60 题":"60 bài","80 题":"80 bài","100 题":"100 bài","每行列数":"Số hàng mỗi cột","2 列（字大）":"2 cột (ký tự lớn)","3 列":"3 cột","4 列（省纸）":"4 cột (tiết giấy)","竖式排版":"Thiết kế dọc","（仅加减乘可用）":"(Chỉ có thể sử dụng cộng, trừ, nhân)","生成新卷子":"Tạo bài tập mới","打印":"In","显示答案页":"Hiển thị trang câu trả lời","打印用法：":"Cách in:","选题型 → 点「生成新卷子」→ 点「打印」":"Chọn loại bài → Nhấn「Tạo bài tập mới」→ Nhấn「In","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。Muốn thay đổi lượt bài khác, nhấn lại một lần tạo; in bằng giấy A4, chọn lề trang mặc định hoặc nhỏ nhất, tắt tiêu đề và chân trang của trình duyệt, hiệu quả in bài tập gần nhất với bài tập phát từ trường.","隐藏答案页":"Ẩn trang câu trả lời","竖式":"Thiết kế dọc","横式":"Thiết kế ngang","进度已自动保存":"Tiến độ đã tự động lưu","已恢复上次保存的练习进度":"Đã khôi phục tiến độ luyện tập đã lưu trước đó","ans-val empty":"ans-val trống","错题专练中":"đang chuyên luyện sai lầm","答题中":"đang trả lời","已答对":"đã trả lời đúng","连对":"liên tiếp trả lời đúng","下一题":"câu hỏi tiếp theo","用时":"thời gian sử dụng","本组最高连对":"liên tiếp trả lời đúng cao nhất của nhóm này","错题本还剩":"còn lại trong sổ chép sai","错题本现存":"hiện có trong sổ chép sai","__title__":"口算小卷 - Trực tuyến làm bài + Tạo miễn phí bài tập cộng trừ tính toán in A4"},"th":{"口算小卷 - 在线做题 + 免费打印口算练习卷生成器":"口算小卷 - ออนไลน์ทำข้อทดสอบ + โปรแกรมสร้างบัตรฝึกสอบคำนวณฟรี","免费 · 免注册":"ฟรี · ไม่ต้องลงทะเบียน","给小学生家长的口算练习工具：在线答题即时判分；也能一键生成 A4 打印卷。":"เครื่องมือฝึกสอบคำนวณสำหรับพ่อแม่นักเรียนประถม ทำข้อทดสอบออนไลน์ ตัดสินความถูกต้องทันที; ยังสามารถสร้างบัตรฝึกสอบ A4 พิมพ์เดียวทันที","在线做题":"ทำข้อทดสอบออนไลน์","打印练习卷":"พิมพ์บัตรฝึกสอบ","题型":"รูปแบบข้อทดสอบ","10以内加减法":"การเพิ่มลบในระยะ 10 ต่อไป","20以内加减法（进位退位）":"การเพิ่มลบในระยะ 20 ต่อไป (เลื่อนเล็ก หรือ ลดมาก)","100以内加减法":"การเพิ่มลบในระยะ 100 ต่อไป","表内乘法":"การคูณในตาราง","表内除法":"การแบ่งในตาราง","乘除混合":"การคูณและแบ่งเชิงรวม","三位数加减法":"การเพิ่มลบเลขสาวร้อย","两步混合运算":"การคำนวณเชิงรวมสองขั้น","题量":"จำนวนข้อทดสอบ","10 题":"10 ข้อ","15 题":"15 ข้อ","20 题":"20 ข้อ","30 题":"30 ข้อ","50 题":"50 ข้อ","开始练习":"เริ่มทำแบบทดสอบ","选好题型和题量，点「开始练习」":"เลือกรูปแบบและจำนวนข้อทดสอบ คลิก「เริ่มทำแบบทดสอบ」","只练错题":"ฝึกแค่ข้อที่ผิด","错题本：0 题 · 累计 ⭐ 0 颗":"บันทึกข้อที่ผิด：0 ข้อ · สะสม ⭐ 0 ดาว","在线做题：":"ทำข้อทดสอบออนไลน์：","选题型题量 → 点「开始练习」→ 用大键盘逐题作答":"เลือกรูปแบบและจำนวนข้อทดสอบ → คลิก「เริ่มทำแบบทดสอบ」→ ตอบข้อทดสอบโดยใช้แป้นพิมพ์ใหญ่","，提交后立刻判对错；整组做完出结算页（得分 / 用时 / 错题清单）。答错的题自动进错题本，可点「只练错题」重练（连对 2 次自动出本）；连对 5 题得 1 颗星。想打印卷子，点上方「打印练习卷」。":"，ส่งคำตอบแล้วตัดสินความถูกต้องทันที; ทำเสร็จทั้งหมดออกหน้าสรุปผล (คะแนน / ระยะเวลา / รายชื่อข้อที่ผิด)。ข้อที่ผิดจะเข้าบันทึกข้อที่ผิดโดยอัตโนมัติ สามารถคลิก「ฝึกแค่ข้อที่ผิด」เพื่อฝึกใหม่ (ตอบถูก 2 ครั้งติดกันจะเข้าบันทึกโดยอัตโนมัติ); ตอบถูก 5 ข้อได้ดาว 1 ดาว。ต้องการพิมพ์บัตรฝึกสอบ คลิกที่ด้านบน「พิมพ์บัตรฝึกสอบ」。","退格":"กดถอยหลัง","清空":"ล้างทั้งหมด","提交答案":"ส่งคำตอบ","再来一组":"ทำแบบทดสอบอีกครั้ง","返回设置":"กลับไปที่การตั้งค่า","40 题":"40 ข้อ","60 题":"60 ข้อ","80 题":"80 ข้อ","100 题":"100 ข้อ","每行列数":"จำนวนข้อในแถวต่อหนึ่ง","2 列（字大）":"2 ลำดับ (ตัวใหญ่)","3 列":"3 ลำดับ","4 列（省纸）":"4 ลำดับ (บริการกระดาษ)","竖式排版":"การจัดเรียงแบบตั้ง","（仅加减乘可用）":"(สามารถใช้เฉพาะการเพิ่มลบ คูณ และแบ่ง)","生成新卷子":"สร้างบัตรฝึกสอบใหม่","打印":"พิมพ์","显示答案页":"แสดงหน้าคำตอบ","打印用法：":"วิธีการพิมพ์：","选题型 → 点「生成新卷子」→ 点「打印」":"เลือกรูปแบบ → คลิก「สร้างบัตรฝึกสอบใหม่」→ คลิก「พิมพ์」","。想换一批题再点一次生成；打印用 A4 纸，页面边距选默认或最小，关掉浏览器自带的页眉页脚，出卷效果最接近学校发的练习卷。":"。ต้องการเปลี่ยนข้อทดสอบอีกครั้ง คลิกอีกครั้งเพื่อสร้าง; พิมพ์ด้วยกระดาษ A4 เลือกขอบหน้าที่เริ่มต้นหรือเล็กที่สุด ปิดหัวเวลาหรือท้ายเวลาที่มาตรฐานของเว็บเบราเซอร์ ผลลัพธ์การพิมพ์ใกล้เคียงกับบัตรฝึกสอบที่โรงเรียนจัดส่ง","隐藏答案页":"ซ่อนหน้าคำตอบ","竖式":"แบบตั้ง","横式":"แบบนอน","进度已自动保存":"ความคืบหน้าได้ถูกบันทึกอัตโนมัติ","已恢复上次保存的练习进度":"ได้กู้คืนความคืบหน้าที่บันทึกล่าสุด","ans-val empty":"ans-val ว่าง","错题专练中":"ออกแบบฝึกแบบความผิด","答题中":"ทำแบบทดสอบ","已答对":"ตอบต่อไปแล้ว","连对":"ต่อเนื่องตอบต่อไป","fb ok":"fb ดี","下一题":"ข้อต่อไป","fb bad":"fb แย่","用时":"เวลาใช้","本组最高连对":"สูงสุดของกลุ่มนี้","错题本还剩":"คงเหลือในสมุดความผิด","错题本现存":"มีในสมุดความผิด","__title__":"口算小卷 - ออนไลน์ทำข้อทดสอบ + โปรแกรมสร้างบัตรฝึกสอบคำนวณฟรี"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
-var LS="radar-lang";
-var PACKS=window.__I18N_PACKS||{};
-var FIXED=window.__I18N_FIXED||{};
-var GEO=window.__I18N_GEO||{};
-var RES_VER="20261003b";
-var busy=false;
-function norm(s){return (s||"").replace(/\s+/g," ").trim();}
-function navLang(){
-var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
-if(l.indexOf("zh")===0)return "zh-CN";
-if(l.indexOf("es")===0)return "es";
-if(l.indexOf("ja")===0)return "ja";
-if(l.indexOf("ko")===0)return "ko";
-if(l.indexOf("fr")===0)return "fr";
-if(l.indexOf("de")===0)return "de";
-if(l.indexOf("ru")===0)return "ru";
-if(l.indexOf("pt")===0)return "pt";
-if(l.indexOf("ar")===0)return "ar";
-if(l.indexOf("hi")===0)return "hi";
-if(l.indexOf("id")===0)return "id";
-if(l.indexOf("vi")===0)return "vi";
-if(l.indexOf("th")===0)return "th";
-if(l.indexOf("en")===0)return "en";
-return "";
-}
-function applyTexts(lang,fromEn){
-if(busy)return;
-busy=true;
-try{
-if(!PACKS[lang])lang="en";
-var map=PACKS[lang]||{};
-var enMap=PACKS.en||{};
-var fix=FIXED[lang]||{};
-var els=document.querySelectorAll("[data-i18n-id]");
-for(var i=0;i<els.length;i++){
-var id=els[i].getAttribute("data-i18n-id");
-if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
-}
-var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
-for(var j=0;j<nodes.length;j++){
-var el=nodes[j];
-if(el.getAttribute("data-i18n-id"))continue;
-if(el.closest&&el.closest("#lang-switch"))continue;
-if(el.closest&&el.closest("#adSlot"))continue;
-if(el.children&&el.children.length)continue;
-var cur=norm(el.textContent);
-var key=null;
-if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
-else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
-else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
-if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
-}
-if(map.__title__)document.title=map.__title__;
-}finally{busy=false;}
-}
-function apply(lang,persist){
-applyTexts(lang,false);
-try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
-if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
-}
-function geoApply(){
-try{
-var x=new XMLHttpRequest();
-x.open("GET","https://ipwho.is/",true);
-x.timeout=4000;
-x.onreadystatechange=function(){
-if(x.readyState!==4)return;
-var cc="";
-try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
-var l=GEO[cc]||"en";
-apply(PACKS[l]?l:"en");
-};
-x.onerror=function(){apply("en");};
-x.send();
-}catch(e){apply("en");}
-}
-function watchMutations(){
-if(typeof MutationObserver==="undefined")return;
-try{
-var t=null;
-var obs=new MutationObserver(function(){
-if(busy)return;
-if(t)clearTimeout(t);
-t=setTimeout(function(){
-var sel=document.getElementById("lang-select");
-if(!sel)return;
-applyTexts(sel.value,true);
-},50);
-});
-obs.observe(document.body,{subtree:true,childList:true,characterData:true});
-}catch(e){}
-}
-function init(){
-var sel=document.getElementById("lang-select");
-if(!sel)return;
-sel.onchange=function(){apply(sel.value,true);};
-var saved="";
-try{saved=localStorage.getItem(LS)||"";}catch(e){}
-if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
-var nv=navLang();
-if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
-geoApply();
-}
-if(document.readyState==="loading"){
-document.addEventListener("DOMContentLoaded",init);
-}else{
-init();
-}
-watchMutations();
-})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
-   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
-   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
-   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
-(function () {
-    try {
-        if (window.__AIChannel) { return; }
-        var LOCAL = "http://127.0.0.1:8787";
-        var DEF = [
-            "https://5f4cef459ee3a0.lhr.life",
-            "https://one-adjustment-expanded-joyce.trycloudflare.com",
-            "https://lgrsj-111-55-145-6.free.pinggy.net"
-        ];
-        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
-        var lastRefresh = 0;
-        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
-        function mapLang(v) {
-            v = String(v || "");
-            if (KNOWN.indexOf(v) >= 0) { return v; }
-            var b = v.slice(0, 2).toLowerCase();
-            if (b === "zh") { return "zh-CN"; }
-            for (var i = 0; i < KNOWN.length; i++) {
-                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
-            }
-            return "en";
-        }
-        function lang() {
-            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
-            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
-            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
-            try { return mapLang(navigator.language); } catch (e) {}
-            return "en";
-        }
-        var refreshInflight = null;
-        function refresh(force) {
-            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
-            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
-            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
-            if (refreshInflight) { return refreshInflight; }
-            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
-            lastRefresh = Date.now();
-            refreshInflight = (async function () {
-                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
-                for (var i = 0; i < urls.length; i++) {
-                    try {
-                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
-                        var r = await fetch(u, { cache: "no-store" });
-                        if (!r || !r.ok) { continue; }
-                        var j = await r.json();
-                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
-                        if (nl.length >= 2) { EPS = nl; return; }
-                    } catch (e) {}
-                }
-            })();
-            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
-            return refreshInflight;
-        }
-        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
-        function blind(j, task, input) {
-            var l = lang();
-            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
-            for (var i = 0; i < EPS.length; i++) {
-                var e = EPS[i];
-                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
-                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
-            }
-            blindJsonp(j, q);
-        }
-        function blindJsonp(j, q) {
-            for (var i = 0; i < EPS.length; i++) {
-                var e = EPS[i];
-                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
-                try {
-                    var sc = document.createElement("script");
-                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
-                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
-                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
-                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
-                    document.head.appendChild(sc);
-                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
-                } catch (er) {}
-            }
-        }
-        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
-        function iframeOne(j, ms) {
-            return new Promise(function (resolve, reject) {
-                var fr = document.createElement("iframe");
-                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
-                var done = false;
-                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
-                fr.onload = function () {
-                    if (done) { return; }
-                    var txt = "";
-                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
-                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
-                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
-                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
-                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
-                    reject(new Error("no payload"));
-                };
-                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
-                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
-                document.body.appendChild(fr);
-            });
-        }
-        async function poll(j, deadline) {
-            var seg = "aijobs/" + j + ".json";
-            var t0 = Date.now();
-            while (Date.now() - t0 < deadline) {
-                var bust = "?t=" + Date.now();
-                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
-                var sources = [
-                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
-                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
-                    seg + bust
-                ];
-                for (var i = 0; i < sources.length; i++) {
-                    var jj = null;
-                    try {
-                        var r = await fetch(sources[i], { cache: "no-store" });
-                        if (!r || !r.ok) { continue; }
-                        var o = await r.json();
-                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
-                    } catch (e) { continue; }
-                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
-                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
-                }
-                await new Promise(function (r2) { setTimeout(r2, 2600); });
-            }
-            throw new Error("no result in time");
-        }
-        var API = {
-            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
-            lang: lang,
-            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
-            submit: function (task, input, opts) {
-                opts = opts || {};
-                var j = jid();
-                var txt = String(input || "");
-                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
-                blind(j, task, txt);
-                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
-                return poll(j, opts.timeoutMs || 150000).then(function (text) {
-                    return { text: text, jid: j, url: API.jobUrl(j) };
-                }, function (err) {
-                    err = err || new Error("failed");
-                    err.jid = j; err.url = API.jobUrl(j);
-                    throw err;
-                });
-            },
-            resume: function (j, timeoutMs) {
-                var jj = j || "";
-                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
-                if (!jj) { return Promise.reject(new Error("no jid")); }
-                return poll(jj, timeoutMs || 20000).then(function (text) {
-                    return { text: text, jid: jj, url: API.jobUrl(jj) };
-                });
-            }
-        };
-        window.__AIChannel = API;
-        try { refresh(false); } catch (e) {}
-    } catch (e) {}
-})();</script><!-- radar-aichannel-end --></body>
+<!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #e2ddd2;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#1d7a52;text-decoration:none;}.page-footer .fb-btn{background:#1d7a52;color:#fff;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #d8d2c6;border-radius:8px;background:#faf8f4;margin-bottom:4px;color:#8b93a3;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span>广告</span></div><span>完全免费</span><a href="about.html">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener">提意见</a></div>
+
+
+</body>
 </html>
