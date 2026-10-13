@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI result</title><style>body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;max-width:720px;margin:0 auto;padding:20px;line-height:1.75;background:#0f1115;color:#e6e9ef}h3{color:#22c55e}pre{white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:15px}</style></head><body><h3>&#10004; Done</h3><pre>Para generar un código de prueba (test) depende del contexto y el lenguaje de programación que estés utilizando. A continuación, te proporciono ejemplos en diferentes lenguajes de programación:
+
+### Python
+Un simple ejemplo de un test en Python utilizando la biblioteca `unittest`:
+
+```python
+import unittest
+
+class MiClaseTest(unittest.TestCase):
+    def test_suma(self):
+        self.assertEqual(1 + 1, 2)
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+### JavaScript
+Un ejemplo de un test en JavaScript utilizando la biblioteca `Jest`:
+
+```javascript
+// suma.js
+function suma(a, b) {
+    return a + b;
+}
+
+module.exports = suma;
+
+// suma.test.js
+const suma = require('./suma');
+
+test('suma de 1 y 1 es 2', () =&gt; {
+    expect(suma(1, 1)).toBe(2);
+});
+```
+
+### Java
+Un ejemplo de un test en Java utilizando JUnit:
+
+```java
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+public class MiClaseTest {
+    @Test
+    public void testSuma() {
+        assertEquals(2, new MiClase().suma(1, 1));
+    }
+}
+
+class MiClase {
+    public int suma(int a, int b) {
+        return a + b;
+    }
+}
+```
+
+### C#
+Un ejemplo de un test en C# utilizando NUnit:
+
+```csharp
+using NUnit.Framework;
+
+[TestFixture]
+public class MiClaseTest {
+    [Test]
+    public void TestSuma() {
+        var miClase = new MiClase();
+        Assert.AreEqual(2, miClase.Suma(1, 1));
+    }
+}
+
+public class MiClase {
+    public int Suma(int a, int b) {
+        return a + b;
+    }
+}
+```
+
+Elige el ejemplo que más se ajuste a tus necesidades y adapta el código según tu proyecto.</pre></body></html>
