@@ -958,10 +958,22 @@
         
         // Load data from localStorage
         function loadData() {
-            const savedData = localStorage.getItem('budgetData');
-            if (savedData) {
-                budgetData = JSON.parse(savedData);
-                updateUI();
+            try {
+                const savedData = localStorage.getItem('budgetData');
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    if (parsed && typeof parsed === 'object') {
+                        budgetData = Object.assign(budgetData, parsed);
+                        // settings 深一层合并：缺字段回默认，防旧版/残缺数据把 thresholdPercentage 等冲成 undefined
+                        budgetData.settings = Object.assign({ budgetAlerts: true, dailySummary: false, thresholdPercentage: 80 }, parsed.settings || {});
+                        updateUI();
+                    }
+                }
+            } catch (e) {
+                // 2026-10-15 加固（ccode）：存储数据损坏（旧版结构/部分写入/非 JSON）时保持默认数据、
+                // 清除脏数据，绝不向外抛异常——此前 JSON.parse 无保护，一处脏数据会中断本行之后的
+                // 全部初始化（导航/表单/按钮事件绑定都在其后），表现为「页面渲染正常但所有按钮哑火」。
+                try { localStorage.removeItem('budgetData'); } catch (e2) {}
             }
         }
         
