@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI result</title><style>body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;max-width:720px;margin:0 auto;padding:20px;line-height:1.75;background:#0f1115;color:#e6e9ef}h3{color:#22c55e}pre{white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:15px}</style></head><body><h3>&#10004; Done</h3><pre>以下是一个简单的Python函数，用于计算一个非负整数的阶乘：
+
+```python
+def factorial(n):
+    if n == 0:
+        return 1
+    else:
+        return n * factorial(n - 1)
+
+# 示例使用
+number = 5
+result = factorial(number)
+print(f"{number}的阶乘是：{result}")
+```
+
+这个函数使用递归的方式来计算阶乘。当传入的参数`n`等于0时，阶乘的值为1（因为0的阶乘定义为1）。否则，函数会递归地调用自身来计算`n * (n-1) * (n-2) * ... * 1`。需要注意的是，递归深度过大可能会导致栈溢出错误，因此在实际应用中需要考虑递归深度的限制。</pre></body></html>
