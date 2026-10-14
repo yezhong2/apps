@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Sound Anomaly Detector</title><meta name="description" content="Free online tool: Device Sound Anomaly Detector. No signup, no payment — free forever.">
+<meta property="og:title" content="Device Sound Anomaly Detector">
+<meta property="og:description" content="Free online tool: Device Sound Anomaly Detector. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-15_044715_设备声音异常检测器.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .upload-section {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .upload-area {
+            border: 2px dashed #4a4a4a;
+            border-radius: 8px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+        
+        .upload-area:hover {
+            border-color: #5e9eff;
+            background-color: rgba(94, 158, 255, 0.05);
+        }
+        
+        .upload-area.drag-over {
+            border-color: #5e9eff;
+            background-color: rgba(94, 158, 255, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            color: #5e9eff;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            background-color: #5e9eff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 16px;
+        }
+        
+        .btn:hover {
+            background-color: #4388e9;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .results-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        @media (min-width: 768px) {
+            .results-section {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .result-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 16px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .result-card h2 .icon {
+            color: #5e9eff;
+        }
+        
+        .result-content {
+            min-height: 100px;
+        }
+        
+        .anomaly-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .status-normal {
+            background-color: #4caf50;
+        }
+        
+        .status-warning {
+            background-color: #ff9800;
+        }
+        
+        .status-error {
+            background-color: #f44336;
+        }
+        
+        .waveform-container {
+            width: 100%;
+            height: 200px;
+            background-color: #0a0a0a;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .frequency-chart {
+            width: 100%;
+            height: 200px;
+            background-color: #0a0a0a;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        
+        .keyword-section {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .keyword-input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .keyword-input {
+            flex: 1;
+            padding: 12px;
+            background-color: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            color: #ffffff;
+            font-size: 16px;
+        }
+        
+        .keyword-input:focus {
+            outline: none;
+            border-color: #5e9eff;
+        }
+        
+        .analysis-info {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #a0a0a0;
+        }
+        
+        .info-value {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .waveform-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .frequency-bars {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 100%;
+            padding: 8px;
+        }
+        
+        .frequency-bar {
+            background-color: #5e9eff;
+            width: 2%;
+            border-radius: 2px 2px 0 0;
+            transition: height 0.3s ease;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #5e9eff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <h1>Device Sound Anomaly Detector</h1>
+        
+        <div class="upload-section">
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">🎵</div>
+                <p>Drag & drop your audio file here or click to browse</p>
+                <p style="font-size: 0.9rem; color: #a0a0a0; margin-top: 8px;">Supported formats: MP3, WAV, OGG</p>
+                <input type="file" id="fileInput" class="file-input" accept="audio/*">
+            </div>
+            <button class="btn" id="uploadBtn">Select Audio File</button>
+        </div>
+        
+        <div class="results-section">
+            <div class="result-card">
+                <h2><span class="icon">🔍</span> Anomaly Detection</h2>
+                <div class="result-content" id="anomalyResult">
+                    <p style="color: #a0a0a0;">Upload an audio file to analyze for anomalies</p>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h2><span class="icon">📊</span> Waveform Visualization</h2>
+                <div class="waveform-container" id="waveformContainer">
+                    <canvas class="waveform-canvas" id="waveformCanvas"></canvas>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h2><span class="icon">📈</span> Frequency Distribution</h2>
+                <div class="frequency-chart" id="frequencyChart">
+                    <div class="frequency-bars" id="frequencyBars"></div>
+                </div>
+            </div>
+            
+            <div class="result-card">
+                <h2><span class="icon">⏱️</span> Audio Properties</h2>
+                <div class="result-content" id="audioProperties">
+                    <p style="color: #a0a0a0;">Upload an audio file to view properties</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="keyword-section">
+            <h2 style="margin-bottom: 16px;"><span class="icon">🔤</span> Keyword Detection</h2>
+            <div class="keyword-input-group">
+                <input type="text" class="keyword-input" id="keywordInput" placeholder="Enter keyword to detect in audio">
+                <button class="btn" id="detectKeywordBtn">Detect</button>
+            </div>
+            <div class="result-content" id="keywordResult">
+                <p style="color: #a0a0a0;">Upload an audio file and enter a keyword to detect</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Global variables
+        let audioContext;
+        let audioBuffer;
+        let audioElement;
+        let audioSource;
+        
+        // Initialize audio context
+        function initAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+        
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        
+        uploadBtn.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('click', () => fileInput.click());
+        
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('drag-over');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('drag-over');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+        
+        // Handle uploaded file
+        function handleFile(file) {
+            if (!file.type.startsWith('audio/')) {
+                updateAnomalyResult('Error: Please upload an audio file');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                initAudioContext();
+                
+                audioContext.decodeAudioData(e.target.result, function(buffer) {
+                    audioBuffer = buffer;
+                    analyzeAudio();
+                    visualizeWaveform();
+                    analyzeFrequency();
+                    displayAudioProperties();
+                }, function(error) {
+                    updateAnomalyResult('Error: Could not decode audio file');
+                });
+            };
+            
+            reader.readAsArrayBuffer(file);
+        }
+        
+        // Analyze audio for anomalies
+        function analyzeAudio() {
+            const resultDiv = document.getElementById('anomalyResult');
+            resultDiv.innerHTML = '<div class="loading"></div> Analyzing audio...';
+            
+            setTimeout(() => {
+                // Simple anomaly detection based on volume and frequency changes
+                const channelData = audioBuffer.getChannelData(0);
+                const sampleRate = audioBuffer.sampleRate;
+                const windowSize = Math.floor(sampleRate * 0.5); // 0.5 second windows
+                
+                let anomalies = [];
+                let previousVolume = 0;
+                
+                for (let i = 0; i < channelData.length; i += windowSize) {
+                    const window = channelData.slice(i, i + windowSize);
+                    const volume = calculateVolume(window);
+                    
+                    // Detect sudden volume changes
+                    if (previousVolume > 0) {
+                        const volumeChange = Math.abs(volume - previousVolume) / previousVolume;
+                        if (volumeChange > 0.5) {
+                            anomalies.push({
+                                time: (i / sampleRate).toFixed(2),
+                                type: 'Volume spike',
+                                severity: volumeChange > 1 ? 'High' : 'Medium'
+                            });
+                        }
+                    }
+                    
+                    // Detect high frequency noise
+                    const highFreqEnergy = calculateHighFrequencyEnergy(window, sampleRate);
+                    if (highFreqEnergy > 0.8) {
+                        anomalies.push({
+                            time: (i / sampleRate).toFixed(2),
+                            type: 'High frequency noise',
+                            severity: 'Medium'
+                        });
+                    }
+                    
+                    previousVolume = volume;
+                }
+                
+                // Display results
+                let resultHTML = '';
+                if (anomalies.length === 0) {
+                    resultHTML = `
+                        <div class="anomaly-status">
+                            <div class="status-indicator status-normal"></div>
+                            <span>No anomalies detected</span>
+                        </div>
+                        <p style="color: #4caf50; margin-top: 8px;">The audio appears to be normal.</p>
+                    `;
+                } else {
+                    resultHTML = `
+                        <div class="anomaly-status">
+                            <div class="status-indicator status-warning"></div>
+                            <span>${anomalies.length} anomaly${anomalies.length > 1 ? 's' : ''} detected</span>
+                        </div>
+                        <div style="margin-top: 16px;">
+                            <h3 style="font-size: 1rem; margin-bottom: 8px;">Detected anomalies:</h3>
+                            <ul style="padding-left: 20px;">
+                    `;
+                    
+                    anomalies.forEach(anomaly => {
+                        const colorClass = anomaly.severity === 'High' ? 'status-error' : 'status-warning';
+                        resultHTML += `
+                            <li style="margin-bottom: 8px;">
+                                <span style="color: #a0a0a0;">${anomaly.time}s:</span> 
+                                ${anomaly.type} 
+                                <span class="status-indicator ${colorClass}" style="display: inline-block; width: 8px; height: 8px; margin-left: 8px;"></span>
+                                <span style="color: ${anomaly.severity === 'High' ? '#f44336' : '#ff9800'};">${anomaly.severity}</span>
+                            </li>
+                        `;
+                    });
+                    
+                    resultHTML += `
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                resultDiv.innerHTML = resultHTML;
+            }, 1000);
+        }
+        
+        // Calculate volume of audio buffer
+        function calculateVolume(buffer) {
+            let sum = 0;
+            for (let i = 0; i < buffer.length; i++) {
+                sum += buffer[i] * buffer[i];
+            }
+            return Math.sqrt(sum / buffer.length);
+        }
+        
+        // Calculate high frequency energy
+        function calculateHighFrequencyEnergy(buffer, sampleRate) {
+            const nyquist = sampleRate / 2;
+            const highFreqThreshold = nyquist * 0.8; // Top 20% of frequencies
+            
+            // Simple FFT approximation
+            let highFreqEnergy = 0;
+            let totalEnergy = 0;
+            
+            for (let i = 0; i < buffer.length; i++) {
+                // This is a simplified approximation - in a real implementation, you'd use FFT
+                const freq = Math.abs(buffer[i]) * (i / buffer.length) * sampleRate;
+                const energy = buffer[i] * buffer[i];
+                
+                totalEnergy += energy;
+                
+                if (freq > highFreqThreshold) {
+                    highFreqEnergy += energy;
+                }
+            }
+            
+            return totalEnergy > 0 ? highFreqEnergy / totalEnergy : 0;
+        }
+        
+        // Visualize waveform
+        function visualizeWaveform() {
+            const canvas = document.getElementById('waveformCanvas');
+            const ctx = canvas.getContext('2d');
+            const container = document.getElementById('waveformContainer');
+            
+            // Set canvas size
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+            
+            // Get audio data
+            const channelData = audioBuffer.getChannelData(0);
+            const step = Math.ceil(channelData.length / canvas.width);
+            const amp = canvas.height / 2;
+            
+            // Clear canvas
+            ctx.fillStyle = '#0a0a0a';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw waveform
+            ctx.beginPath();
+            ctx.moveTo(0, amp);
+            ctx.strokeStyle = '#5e9eff';
+            ctx.lineWidth = 1;
+            
+            for (let i = 0; i < canvas.width; i++) {
+                let min = 1.0;
+                let max = -1.0;
+                
+                for (let j = 0; j < step; j++) {
+                    const datum = channelData[(i * step) + j];
+                    if (datum < min) min = datum;
+                    if (datum > max) max = datum;
+                }
+                
+                ctx.lineTo(i, (1 + min) * amp);
+                ctx.lineTo(i, (1 + max) * amp);
+            }
+            
+            ctx.stroke();
+        }
+        
+        // Analyze frequency distribution
+        function analyzeFrequency() {
+            const frequencyBars = document.getElementById('frequencyBars');
+            frequencyBars.innerHTML = '';
+            
+            // Create frequency bars
+            const barCount = 50;
+            const channelData = audioBuffer.getChannelData(0);
+            const sampleRate = audioBuffer.sampleRate;
+            const binSize = Math.floor(channelData.length / barCount);
+            
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'frequency-bar';
+                
+                // Calculate average amplitude for this frequency range
+                let sum = 0;
+                for (let j = 0; j < binSize; j++) {
+                    const index = i * binSize + j;
+                    if (index < channelData.length) {
+                        sum += Math.abs(channelData[index]);
+                    }
+                }
+                
+                const avgAmplitude = sum / binSize;
+                const height = Math.min(avgAmplitude * 100, 100); // Scale to max 100%
+                
+                bar.style.height = `${height}%`;
+                frequencyBars.appendChild(bar);
+            }
+        }
+        
+        // Display audio properties
+        function displayAudioProperties() {
+            const propertiesDiv = document.getElementById('audioProperties');
+            const duration = audioBuffer.duration.toFixed(2);
+            const sampleRate = audioBuffer.sampleRate;
+            const channels = audioBuffer.numberOfChannels;
+            const bitDepth = 16; // Assuming 16-bit PCM
+            
+            propertiesDiv.innerHTML = `
+                <div class="info-item">
+                    <span class="info-label">Duration:</span>
+                    <span class="info-value">${duration} seconds</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Sample Rate:</span>
+                    <span class="info-value">${sampleRate} Hz</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Channels:</span>
+                    <span class="info-value">${channels}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Bit Depth:</span>
+                    <span class="info-value">${bitDepth}-bit</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">File Size:</span>
+                    <span class="info-value">${(audioBuffer.length * channels * bitDepth / 8 / 1024).toFixed(2)} KB</span>
+                </div>
+            `;
+        }
+        
+        // Keyword detection
+        const keywordInput = document.getElementById('keywordInput');
+        const detectKeywordBtn = document.getElementById('detectKeywordBtn');
+        const keywordResult = document.getElementById('keywordResult');
+        
+        detectKeywordBtn.addEventListener('click', () => {
+            const keyword = keywordInput.value.trim();
+            if (!keyword) {
+                keywordResult.innerHTML = '<p style="color: #f44336;">Please enter a keyword to detect</p>';
+                return;
+            }
+            
+            if (!audioBuffer) {
+                keywordResult.innerHTML = '<p style="color: #f44336;">Please upload an audio file first</p>';
+                return;
+            }
+            
+            keywordResult.innerHTML = '<div class="loading"></div> Analyzing audio for keyword...';
+            
+            setTimeout(() => {
+                // Simple keyword detection using speech recognition API
+                if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                    const recognition = new SpeechRecognition();
+                    
+                    recognition.continuous = false;
+                    recognition.lang = 'en-US';
+                    recognition.interimResults = false;
+                    
+                    recognition.onresult = (event) => {
+                        const transcript = event.results[0][0].transcript.toLowerCase();
+                        const keywordLower = keyword.toLowerCase();
+                        
+                        const found = transcript.includes(keywordLower);
+                        
+                        keywordResult.innerHTML = `
+                            <div class="anomaly-status">
+                                <div class="status-indicator ${found ? 'status-error' : 'status-normal'}"></div>
+                                <span>${found ? 'Keyword found' : 'Keyword not found'}</span>
+                            </div>
+                            <p style="margin-top: 16px;">
+                                <strong>Transcript:</strong> ${transcript}
+                            </p>
+                            <p style="margin-top: 8px;">
+                                <strong>Keyword:</strong> ${keyword}
+                            </p>
+                        `;
+                    };
+                    
+                    recognition.onerror = (event) => {
+                        keywordResult.innerHTML = `
+                            <p style="color: #f44336;">Speech recognition error: ${event.error}</p>
+                            <p style="color: #a0a0a0; margin-top: 8px;">Transcription is not available in this browser. Please try Chrome or Edge.</p>
+                        `;
+                    };
+                    
+                    // Convert audio buffer to blob for speech recognition
+                    const blob = new Blob([audioBufferToWav(audioBuffer)], { type: 'audio/wav' });
+                    const audioUrl = URL.createObjectURL(blob);
+                    
+                    const audio = new Audio(audioUrl);
+                    audio.onloadeddata = () => {
+                        recognition.start();
+                        audio.play();
+                    };
+                    
+                    audio.onended = () => {
+                        recognition.stop();
+                    };
+                    
+                } else {
+                    keywordResult.innerHTML = `
+                        <p style="color: #f44336;">Speech recognition is not supported in this browser</p>
+                        <p style="color: #a0a0a0; margin-top: 8px;">Please try Chrome or Edge for keyword detection.</p>
+                    `;
+                }
+            }, 1000);
+        });
+        
+        // Convert audio buffer to WAV format
+        function audioBufferToWav(buffer) {
+            const length = buffer.length + buffer.numberOfChannels * 44;
+            const arrayBuffer = new ArrayBuffer(length);
+            const view = new DataView(arrayBuffer);
+            const channels = [];
+            let offset = 0;
+            let pos = 0;
+            
+            // Write WAV header
+            setUint32(0x46464952); // "RIFF"
+            setUint32(length - 8); // file length - 8
+            setUint32(0x45564157); // "WAVE"
+            
+            setUint32(0x20746d66); // "fmt " chunk
+            setUint32(16); // length = 16
+            setUint16(1); // PCM
+            setUint16(buffer.numberOfChannels);
+            setUint32(buffer.sampleRate);
+            setUint32(buffer.sampleRate * 2 * buffer.numberOfChannels); // avg. bytes/sec
+            setUint16(buffer.numberOfChannels * 2); // block-align
+            setUint16(16); // 16-bit
+            setUint32(0x61746164); // "data" - chunk
+            setUint32(length - pos - 4); // chunk length
+            
+            // Write interleaved data
+            for (let i = 0; i < buffer.numberOfChannels; i++) {
+                channels.push(buffer.getChannelData(i));
+            }
+            
+            while (pos < length) {
+                for (let i = 0; i < buffer.numberOfChannels; i++) {
+                    let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    view.setInt16(pos, sample, true);
+                    pos += 2;
+                }
+                offset++;
+            }
+            
+            return arrayBuffer;
+            
+            function setUint16(data) {
+                view.setUint16(pos, data, true);
+                pos += 2;
+            }
+            
+            function setUint32(data) {
+                view.setUint32(pos, data, true);
+                pos += 4;
+            }
+        }
+        
+        // Update anomaly result
+        function updateAnomalyResult(message) {
+            document.getElementById('anomalyResult').innerHTML = `<p style="color: #f44336;">${message}</p>`;
+        }
+        
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            if (audioBuffer) {
+                visualizeWaveform();
+            }
+        });
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"Device Sound Anomaly Detector":"Device Sound Anomaly Detector","Drag \u0026 drop your audio file here or click to browse":"Drag \u0026 drop your audio file here or click to browse","Supported formats: MP3, WAV, OGG":"Supported formats: MP3, WAV, OGG","Select Audio File":"Select Audio File","Anomaly Detection":"Anomaly Detection","Upload an audio file to analyze for anomalies":"Upload an audio file to analyze for anomalies","Waveform Visualization":"Waveform Visualization","Frequency Distribution":"Frequency Distribution","Audio Properties":"Audio Properties","Upload an audio file to view properties":"Upload an audio file to view properties","Keyword Detection":"Keyword Detection","Detect":"Detect","Upload an audio file and enter a keyword to detect":"Upload an audio file and enter a keyword to detect","No anomalies detected":"No anomalies detected","The audio appears to be normal.":"The audio appears to be normal.","Detected anomalies:":"Detected anomalies:","s:":"s:","Duration:":"Duration:","Sample Rate:":"Sample Rate:","Hz":"Hz","Channels:":"Channels:","Bit Depth:":"Bit Depth:","-bit":"-bit","File Size:":"File Size:","KB":"KB","Transcript:":"Transcript:","Keyword:":"Keyword:","Transcription is not available in this browser. Please try Chrome or Edge.":"Transcription is not available in this browser. Please try Chrome or Edge.","Speech recognition is not supported in this browser":"Speech recognition is not supported in this browser","Please try Chrome or Edge for keyword detection.":"Please try Chrome or Edge for keyword detection.","Enter keyword to detect in audio":"Enter keyword to detect in audio","Error: Please upload an audio file":"Error: Please upload an audio file","Error: Could not decode audio file":"Error: Could not decode audio file","Volume spike":"Volume spike","High":"High","Medium":"Medium","High frequency noise":"High frequency noise","status-indicator status-normal":"status-indicator status-normal","status-indicator status-warning":"status-indicator status-warning","margin-top: 16px;":"margin-top: 16px;","font-size: 1rem; margin-bottom: 8px;":"font-size: 1rem; margin-bottom: 8px;","padding-left: 20px;":"padding-left: 20px;","margin-bottom: 8px;":"margin-bottom: 8px;","display: inline-block; width: 8px; height: 8px; margin-left: 8px;":"display: inline-block; width: 8px; height: 8px; margin-left: 8px;","SpeechRecognition":"SpeechRecognition","Keyword found":"Keyword found","Keyword not found":"Keyword not found","margin-top: 8px;":"margin-top: 8px;","RIFF":"RIFF","WAVE":"WAVE","__title__":"Device Sound Anomaly Detector"},"zh-CN":{"Device Sound Anomaly Detector":"设备声音异常检测器","Drag \u0026 drop your audio file here or click to browse":"将音频文件拖放到此处或点击浏览","Supported formats: MP3, WAV, OGG":"支持的格式：MP3, WAV, OGG","Select Audio File":"选择音频文件","Anomaly Detection":"异常检测","Upload an audio file to analyze for anomalies":"上传音频文件以分析异常","Waveform Visualization":"波形可视化","Frequency Distribution":"频率分布","Audio Properties":"音频属性","Upload an audio file to view properties":"上传音频文件以查看属性","Keyword Detection":"关键词检测","Detect":"检测","Upload an audio file and enter a keyword to detect":"上传音频文件并输入要检测的关键词","No anomalies detected":"未检测到异常","The audio appears to be normal.":"音频看起来是正常的。","Detected anomalies:":"检测到的异常：","s:":"s：","Duration:":"时长：","Sample Rate:":"采样率：","Channels:":"通道：","Bit Depth:":"比特深度：","-bit":"-位","File Size:":"文件大小：","Transcript:":"字幕：","Keyword:":"关键词：","Transcription is not available in this browser. Please try Chrome or Edge.":"此浏览器中不可用字幕。请尝试使用Chrome或Edge。","Speech recognition is not supported in this browser":"此浏览器不支持语音识别","Please try Chrome or Edge for keyword detection.":"请尝试使用Chrome或Edge进行关键词检测。","Enter keyword to detect in audio":"输入音频中要检测的关键词","Error: Please upload an audio file":"错误：请上传音频文件","Error: Could not decode audio file":"错误：无法解码音频文件","Volume spike":"音量峰值","High":"高","Medium":"中","High frequency noise":"高频噪声","status-indicator status-normal":"状态指示器 状态正常","status-indicator status-warning":"状态指示器 状态警告","SpeechRecognition":"语音识别","Keyword found":"找到关键词","Keyword not found":"未找到关键词","__title__":"设备声音异常检测器"},"es":{"Device Sound Anomaly Detector":"Detector de Anomalías de Sonido de Dispositivo","Drag \u0026 drop your audio file here or click to browse":"Arrastra y suelta tu archivo de audio aquí o haz clic para buscar","Supported formats: MP3, WAV, OGG":"Formatos compatibles: MP3, WAV, OGG","Select Audio File":"Seleccionar Archivo de Audio","Anomaly Detection":"Detección de Anomalías","Upload an audio file to analyze for anomalies":"Sube un archivo de audio para analizarlo en busca de anomalías","Waveform Visualization":"Visualización de la Forma de Onda","Frequency Distribution":"Distribución de Frecuencia","Audio Properties":"Propiedades de Audio","Upload an audio file to view properties":"Sube un archivo de audio para ver las propiedades","Keyword Detection":"Detección de Palabras Clave","Detect":"Detectar","Upload an audio file and enter a keyword to detect":"Sube un archivo de audio e introduce una palabra clave para detectar","No anomalies detected":"No se detectaron anomalías","The audio appears to be normal.":"El audio parece ser normal.","Detected anomalies:":"Anomalías detectadas:","Duration:":"Duración:","Sample Rate:":"Tasa de Muestreo:","Channels:":"Canales:","Bit Depth:":"Profundidad de Bit:","File Size:":"Tamaño de Archivo:","Transcript:":"Transcripción:","Keyword:":"Palabra Clave:","Transcription is not available in this browser. Please try Chrome or Edge.":"La transcripción no está disponible en este navegador. Por favor, intenta con Chrome o Edge.","Speech recognition is not supported in this browser":"Este navegador no admite el reconocimiento de voz","Please try Chrome or Edge for keyword detection.":"Por favor, intenta con Chrome o Edge para la detección de palabras clave.","Enter keyword to detect in audio":"Introduce la palabra clave para detectar en el audio","Error: Please upload an audio file":"Error: Por favor, sube un archivo de audio","Error: Could not decode audio file":"Error: No se pudo decodificar el archivo de audio","Volume spike":"Pico de Volumen","High":"Alto","Medium":"Medio","High frequency noise":"Ruido de Alta Frecuencia","status-indicator status-normal":"indicador-de-estado estado-normal","status-indicator status-warning":"indicador-de-estado estado-advertencia","SpeechRecognition":"Reconocimiento de Voz","Keyword found":"Palabra clave encontrada","Keyword not found":"Palabra clave no encontrada","__title__":"Detector de Anomalías de Sonido de Dispositivo"},"ja":{"Device Sound Anomaly Detector":"デバイス音異常検出器","Drag \u0026 drop your audio file here or click to browse":"ここにオーディオファイルをドラッグ＆ドロップまたはクリックしてブラウズ","Supported formats: MP3, WAV, OGG":"サポートされる形式: MP3, WAV, OGG","Select Audio File":"オーディオファイルを選択","Anomaly Detection":"異常検出","Upload an audio file to analyze for anomalies":"異常を分析するためにオーディオファイルをアップロード","Waveform Visualization":"波形可視化","Frequency Distribution":"周波数分布","Audio Properties":"オーディオプロパティ","Upload an audio file to view properties":"プロパティを表示するためにオーディオファイルをアップロード","Keyword Detection":"キーワード検出","Detect":"検出","Upload an audio file and enter a keyword to detect":"オーディオファイルをアップロードして検出するキーワードを入力","No anomalies detected":"異常が検出されませんでした","The audio appears to be normal.":"オーディオは正常に見えます。","Detected anomalies:":"検出された異常:","Duration:":"duration:","Sample Rate:":"サンプルレート:","Channels:":"チャンネル:","Bit Depth:":"ビット深度:","-bit":"-ビット","File Size:":"ファイルサイズ:","Transcript:":"トランスクリプト:","Keyword:":"キーワード:","Transcription is not available in this browser. Please try Chrome or Edge.":"このブラウザではトランスクリプトが利用できません。ChromeやEdgeを試してください。","Speech recognition is not supported in this browser":"このブラウザでは音声認識がサポートされていません","Please try Chrome or Edge for keyword detection.":"キーワード検出にはChromeやEdgeを試してください。","Enter keyword to detect in audio":"オーディオで検出するキーワードを入力","Error: Please upload an audio file":"エラー: オーディオファイルをアップロードしてください","Error: Could not decode audio file":"エラー: オーディオファイルをデコードできませんでした","Volume spike":"音量のピーク","High":"高い","Medium":"中程度","High frequency noise":"高周波ノイズ","Keyword found":"キーワードが見つかりました","Keyword not found":"キーワードが見つかりませんでした","__title__":"デバイス音異常検出器"},"ko":{"Device Sound Anomaly Detector":"장비 소리 이상 감지기","Drag \u0026 drop your audio file here or click to browse":"여기에 오디오 파일을 드래그 앤 드롭하거나 클릭하여 탐색하세요","Supported formats: MP3, WAV, OGG":"지원되는 형식: MP3, WAV, OGG","Select Audio File":"오디오 파일 선택","Anomaly Detection":"이상 감지","Upload an audio file to analyze for anomalies":"이상을 분석하기 위해 오디오 파일을 업로드하세요","Waveform Visualization":"파동형 시각화","Frequency Distribution":"주파수 분포","Audio Properties":"오디오 속성","Upload an audio file to view properties":"속성을 보기 위해 오디오 파일을 업로드하세요","Keyword Detection":"키워드 감지","Detect":"감지","Upload an audio file and enter a keyword to detect":"오디오 파일을 업로드하고 감지할 키워드를 입력하세요","No anomalies detected":"이상이 감지되지 않았습니다","The audio appears to be normal.":"오디오는 정상적으로 보입니다.","Detected anomalies:":"감지된 이상:","Duration:":"지속 시간:","Sample Rate:":" 샘플 rate:","Channels:":"채널:","Bit Depth:":"비트 깊이:","-bit":"-비트","File Size:":"파일 크기:","Transcript:":"트랜스크립트:","Keyword:":"키워드:","Transcription is not available in this browser. Please try Chrome or Edge.":"이 브라우저에서 트랜스크립트가 사용할 수 없습니다. Chrome나 Edge를 사용해 주세요.","Speech recognition is not supported in this browser":"이 브라우저에서 음성 인식이 지원되지 않습니다","Please try Chrome or Edge for keyword detection.":"키워드 감지를 위해 Chrome나 Edge를 사용해 주세요.","Enter keyword to detect in audio":"오디오에서 감지할 키워드를 입력하세요","Error: Please upload an audio file":"오류: 오디오 파일을 업로드하세요","Error: Could not decode audio file":"오류: 오디오 파일을 디코딩할 수 없습니다","Volume spike":"음량 폭주","High":"높음","Medium":"중간","High frequency noise":"고주파 노이즈","Keyword found":"키워드 발견","Keyword not found":"키워드 발견되지 않음","__title__":"장비 소리 이상 감지기"},"fr":{"Device Sound Anomaly Detector":"Détecteur d'anomalies sonores de l'appareil","Drag \u0026 drop your audio file here or click to browse":"Glissez-déposez votre fichier audio ici ou cliquez pour parcourir","Supported formats: MP3, WAV, OGG":"Formats pris en charge : MP3, WAV, OGG","Select Audio File":"Sélectionnez un fichier audio","Anomaly Detection":"Détection d'anomalies","Upload an audio file to analyze for anomalies":"Téléchargez un fichier audio pour analyser les anomalies","Waveform Visualization":"Visualisation de l'onde","Frequency Distribution":"Distribution de fréquence","Audio Properties":"Propriétés audio","Upload an audio file to view properties":"Téléchargez un fichier audio pour voir les propriétés","Keyword Detection":"Détection de mots-clés","Detect":"Détecter","Upload an audio file and enter a keyword to detect":"Téléchargez un fichier audio et entrez un mot-clé à détecter","No anomalies detected":"Aucune anomalie détectée","The audio appears to be normal.":"L'audio semble normal.","Detected anomalies:":"Anomalies détectées :","s:":"s :","Duration:":"Durée :","Sample Rate:":"Taux d'échantillonnage :","Channels:":"Canaux :","Bit Depth:":"Profondeur de bit :","File Size:":"Taille du fichier :","Transcript:":"Transcription :","Keyword:":"Mots-clés :","Transcription is not available in this browser. Please try Chrome or Edge.":"La transcription n'est pas disponible dans ce navigateur. Veuillez essayer Chrome ou Edge.","Speech recognition is not supported in this browser":"La reconnaissance vocale n'est pas prise en charge dans ce navigateur","Please try Chrome or Edge for keyword detection.":"Veuillez essayer Chrome ou Edge pour la détection de mots-clés.","Enter keyword to detect in audio":"Entrez le mot-clé à détecter dans l'audio","Error: Please upload an audio file":"Erreur : Veuillez télécharger un fichier audio","Error: Could not decode audio file":"Erreur : Impossible de déchiffrer le fichier audio","Volume spike":"Pic de volume","High":"Haute","Medium":"Moyenne","High frequency noise":"Bruit à haute fréquence","status-indicator status-normal":"indicateur d'état status-normal","status-indicator status-warning":"indicateur d'état status-warning","margin-top: 16px;":"margin-top : 16px ;","font-size: 1rem; margin-bottom: 8px;":"font-size : 1rem ; margin-bottom : 8px ;","padding-left: 20px;":"padding-left : 20px ;","margin-bottom: 8px;":"margin-bottom : 8px ;","display: inline-block; width: 8px; height: 8px; margin-left: 8px;":"display : inline-block ; width : 8px ; height : 8px ; margin-left : 8px ;","SpeechRecognition":"Reconnaissance vocale","Keyword found":"Mot-clé trouvé","Keyword not found":"Mot-clé non trouvé","margin-top: 8px;":"margin-top : 8px ;","__title__":"Détecteur d'anomalies sonores de l'appareil"},"de":{"Device Sound Anomaly Detector":"Geräusch-Anomalie-Detektor","Drag \u0026 drop your audio file here or click to browse":"Ziehen Sie Ihre Audiodatei hierher oder klicken Sie zum Durchsuchen","Supported formats: MP3, WAV, OGG":"Unterstützte Formate: MP3, WAV, OGG","Select Audio File":"Wählen Sie eine Audiodatei aus","Anomaly Detection":"Anomalieerkennung","Upload an audio file to analyze for anomalies":"Laden Sie eine Audiodatei hoch, um Anomalien zu analysieren","Waveform Visualization":"Wavform-Darstellung","Frequency Distribution":"Frequenzverteilung","Audio Properties":"Audieigenschaften","Upload an audio file to view properties":"Laden Sie eine Audiodatei hoch, um Eigenschaften anzuzeigen","Keyword Detection":"Schlüsselworterkennung","Detect":"Erkennen","Upload an audio file and enter a keyword to detect":"Laden Sie eine Audiodatei hoch und geben Sie ein Schlüsselwort ein, um zu erkennen","No anomalies detected":"Keine Anomalien erkannt","The audio appears to be normal.":"Das Audio scheint normal zu sein.","Detected anomalies:":"Erkannte Anomalien:","Duration:":"Dauer:","Sample Rate:":"Abtastrate:","Channels:":"Kanäle:","Bit Depth:":"Bit Tiefe:","-bit":"-Bit","File Size:":"Dateigröße:","Transcript:":"Transkript:","Keyword:":"Schlüsselwort:","Transcription is not available in this browser. Please try Chrome or Edge.":"Transkription ist in diesem Browser nicht verfügbar. Bitte verwenden Sie Chrome oder Edge.","Speech recognition is not supported in this browser":"Spracherkennung wird in diesem Browser nicht unterstützt","Please try Chrome or Edge for keyword detection.":"Bitte verwenden Sie Chrome oder Edge für die Schlüsselworterkennung.","Enter keyword to detect in audio":"Geben Sie das Schlüsselwort ein, das im Audio erkannt werden soll","Error: Please upload an audio file":"Fehler: Bitte laden Sie eine Audiodatei hoch","Error: Could not decode audio file":"Fehler: Audiodatei konnte nicht decodiert werden","Volume spike":"Lautstärkespitze","High":"Hoch","Medium":"Mittel","High frequency noise":"Hochfrequenzgeräusch","Keyword found":"Schlüsselwort gefunden","Keyword not found":"Schlüsselwort nicht gefunden","__title__":"Geräusch-Anomalie-Detektor"},"ru":{"Device Sound Anomaly Detector":"Детектор аномалий звука устройства","Drag \u0026 drop your audio file here or click to browse":"Перетащите файл аудио сюда или нажмите, чтобы выбрать","Supported formats: MP3, WAV, OGG":"Поддерживаемые форматы: MP3, WAV, OGG","Select Audio File":"Выберите аудиофайл","Anomaly Detection":"Обнаружение аномалий","Upload an audio file to analyze for anomalies":"Загрузите аудиофайл для анализа на аномалии","Waveform Visualization":"Визуализация волны","Frequency Distribution":"Распределение частот","Audio Properties":"Свойства аудио","Upload an audio file to view properties":"Загрузите аудиофайл для просмотра свойств","Keyword Detection":"Обнаружение ключевых слов","Detect":"Обнаружить","Upload an audio file and enter a keyword to detect":"Загрузите аудиофайл и введите ключевые слова для обнаружения","No anomalies detected":"Аномалий не обнаружено","The audio appears to be normal.":"Аудиофайл wygląda na normalny.","Detected anomalies:":"Обнаруженные аномалии:","Duration:":"Длительность:","Sample Rate:":"Частота дискретизации:","Hz":"Гц","Channels:":"Каналы:","Bit Depth:":"Глубина цвета:","-bit":"-бит","File Size:":"Размер файла:","KB":"КБ","Transcript:":"Текстовая запись:","Keyword:":"Ключевое слово:","Transcription is not available in this browser. Please try Chrome or Edge.":"Текстовая запись недоступна в этом браузере. Пожалуйста, попробуйте Chrome или Edge.","Speech recognition is not supported in this browser":"Розпізнавання мови не підтримується в цьому браузері","Please try Chrome or Edge for keyword detection.":"Пожалуйста, попробуйте Chrome или Edge для обнаружения ключевых слов.","Enter keyword to detect in audio":"Введите ключевые слова для обнаружения в аудио","Error: Please upload an audio file":"Ошибка: Пожалуйста, загрузите аудиофайл","Error: Could not decode audio file":"Ошибка: Не удалось декодировать аудиофайл","Volume spike":"Пиковый уровень громкости","High":"Высокий","Medium":"Средний","High frequency noise":"Шум высоких частот","Keyword found":"Ключевое слово найдено","Keyword not found":"Ключевое слово не найдено","__title__":"Детектор аномалий звука устройства"},"pt":{"Device Sound Anomaly Detector":"Detector de Anomalias de Som de Dispositivo","Drag \u0026 drop your audio file here or click to browse":"Arraste e solte seu arquivo de áudio aqui ou clique para navegar","Supported formats: MP3, WAV, OGG":"Formatos suportados: MP3, WAV, OGG","Select Audio File":"Selecione o Arquivo de Áudio","Anomaly Detection":"Detecção de Anomalias","Upload an audio file to analyze for anomalies":"Carregue um arquivo de áudio para analisar por anomalias","Waveform Visualization":"Visualização de Formato de Onda","Frequency Distribution":"Distribuição de Frequência","Audio Properties":"Propriedades de Áudio","Upload an audio file to view properties":"Carregue um arquivo de áudio para visualizar as propriedades","Keyword Detection":"Detecção de Palavra-chave","Detect":"Detectar","Upload an audio file and enter a keyword to detect":"Carregue um arquivo de áudio e insira uma palavra-chave para detectar","No anomalies detected":"Nenhuma anomalia detectada","The audio appears to be normal.":"O áudio parece normal.","Detected anomalies:":"Anomalias detectadas:","Duration:":"Duração:","Sample Rate:":"Taxa de Amostragem:","Channels:":"Canais:","Bit Depth:":"Profundidade de Bit:","File Size:":"Tamanho do Arquivo:","Transcript:":"Transcrição:","Keyword:":"Palavra-chave:","Transcription is not available in this browser. Please try Chrome or Edge.":"A transcrição não está disponível neste navegador. Por favor, tente Chrome ou Edge.","Speech recognition is not supported in this browser":"Reconhecimento de fala não é suportado neste navegador","Please try Chrome or Edge for keyword detection.":"Por favor, tente Chrome ou Edge para deteção de palavra-chave.","Enter keyword to detect in audio":"Insira a palavra-chave para detectar no áudio","Error: Please upload an audio file":"Erro: Por favor, carregue um arquivo de áudio","Error: Could not decode audio file":"Erro: Não foi possível decodificar o arquivo de áudio","Volume spike":"Spike de Volume","High":"Alto","Medium":"Médio","High frequency noise":"Ruído de Alta Frequência","Keyword found":"Palavra-chave encontrada","Keyword not found":"Palavra-chave não encontrada","__title__":"Detector de Anomalias de Som de Dispositivo"},"ar":{"Device Sound Anomaly Detector":"مكشف التشويه الصوتي للجهاز","Drag \u0026 drop your audio file here or click to browse":"سحب وإفلات ملف الصوت الخاص بك هنا أو انقر للتصفح","Supported formats: MP3, WAV, OGG":"تنسيقات الدعم: MP3, WAV, OGG","Select Audio File":"اختر ملف الصوت","Anomaly Detection":"كشف التشويه","Upload an audio file to analyze for anomalies":"رفع ملف الصوت لتحليل التشويهات","Waveform Visualization":"تصوير شكل الموجة","Frequency Distribution":"توزيع التردد","Audio Properties":"خصائص الصوت","Upload an audio file to view properties":"رفع ملف الصوت لعرض الخصائص","Keyword Detection":"كشف الكلمات المفتاحية","Detect":"كشف","Upload an audio file and enter a keyword to detect":"رفع ملف الصوت وإدخال كلمة مفتاحية للكشف عنها","No anomalies detected":"لم يتم اكتشاف أي تشويهات","The audio appears to be normal.":"يبدو أن الصوت طبيعيًا.","Detected anomalies:":"التشويهات المكتشفة:","Duration:":"المدة:","Sample Rate:":"تردد العينة:","Channels:":"المسارات:","Bit Depth:":"عمق البت:","-bit":"-بت","File Size:":"حجم الملف:","KB":"كب","Transcript:":"المسودة:","Keyword:":"الكلمة المفتاحية:","Transcription is not available in this browser. Please try Chrome or Edge.":"المسودة غير متاحة في هذا المتصفح. يرجى تجربة Chrome أو Edge.","Speech recognition is not supported in this browser":"لا يدعم هذا المتصفح التعرف على الكلام","Please try Chrome or Edge for keyword detection.":"يرجى تجربة Chrome أو Edge للكشف عن الكلمات المفتاحية.","Enter keyword to detect in audio":"ادخل كلمة مفتاحية للكشف عنها في الصوت","Error: Please upload an audio file":"خطأ: يرجى رفع ملف الصوت","Error: Could not decode audio file":"خطأ: لم يتمكن من فك تشفير ملف الصوت","Volume spike":"تسونامي الصوت","High":"عالي","Medium":"متوسط","High frequency noise":"ضجيج تردد عالي","status-indicator status-normal":"مؤشر الحالة - الحالة الطبيعية","status-indicator status-warning":"مؤشر الحالة - تحذير","SpeechRecognition":"تعرف الكلام","Keyword found":"تم العثور على الكلمة المفتاحية","Keyword not found":"لم يتم العثور على الكلمة المفتاحية","__title__":"مكشف التشويه الصوتي للجهاز"},"hi":{"Device Sound Anomaly Detector":"डिवाइस साउंड अनॉमली डिटेक्टर","Drag \u0026 drop your audio file here or click to browse":"यहाँ अपना ऑडियो फ़ाइल ड्रैग एंड ड्रॉप करें या क्लिक करके ब्राउज़ करें","Supported formats: MP3, WAV, OGG":"समर्थित फॉर्मेट: MP3, WAV, OGG","Select Audio File":"ऑडियो फ़ाइल चुनें","Anomaly Detection":"अनॉमली डिटेक्शन","Upload an audio file to analyze for anomalies":"अनॉमलीज़ के लिए एनालाइज़ करने के लिए एक ऑडियो फ़ाइल अपलोड करें","Waveform Visualization":"वेवफॉर्म विज़ुअलाइज़ेशन","Frequency Distribution":"फ्रीक्वेंसी डिस्ट्रीब्यूशन","Audio Properties":"ऑडियो गुण","Upload an audio file to view properties":"गुण देखने के लिए एक ऑडियो फ़ाइल अपलोड करें","Keyword Detection":"कीवर्ड डिटेक्शन","Detect":"डिटेक्ट करें","Upload an audio file and enter a keyword to detect":"एक ऑडियो फ़ाइल अपलोड करें और डिटेक्ट करने के लिए कीवर्ड भरें","No anomalies detected":"कोई अनॉमली नहीं दिखाई","The audio appears to be normal.":"ऑडियो नर्मल लगता है。","Detected anomalies:":"दिखाई देने वाली अनॉमलीज़:","Duration:":"अवधि:","Sample Rate:":"सैम्पल रेट:","Channels:":"चैनल:","Bit Depth:":"बिट गहराई:","-bit":"-बिट","File Size:":"फ़ाइल आकार:","Transcript:":"पाठ:","Keyword:":"कीवर्ड:","Transcription is not available in this browser. Please try Chrome or Edge.":"इस ब्राउज़र में पाठ रिकॉर्डिंग उपलब्ध नहीं है। कृपया क्रोम या एज का प्रयोग करें。","Speech recognition is not supported in this browser":"इस ब्राउज़र में वाक विद्यान का समर्थन नहीं है","Please try Chrome or Edge for keyword detection.":"कीवर्ड डिटेक्शन के लिए कृपया क्रोम या एज का प्रयोग करें。","Enter keyword to detect in audio":"ऑडियो में डिटेक्ट करने के लिए कीवर्ड भरें","Error: Please upload an audio file":"एरर: कृपया एक ऑडियो फ़ाइल अपलोड करें","Error: Could not decode audio file":"एरर: ऑडियो फ़ाइल को डिकोड नहीं किया जा सका","Volume spike":"आवाज़ आक्रमण","High":"उच्च","Medium":"मध्यम","High frequency noise":"उच्च आवृत्ति शोर","Keyword found":"कीवर्ड पाया","Keyword not found":"कीवर्ड नहीं पाया","__title__":"डिवाइस साउंड अनॉमली डिटेक्टर"},"id":{"Device Sound Anomaly Detector":"Detektor Anomali Suara Perangkat","Drag \u0026 drop your audio file here or click to browse":"Seret dan lepas berkas audio anda disini atau klik untuk menggulir","Supported formats: MP3, WAV, OGG":"Format yang didukung: MP3, WAV, OGG","Select Audio File":"Pilih Berkas Audio","Anomaly Detection":"Deteksi Anomali","Upload an audio file to analyze for anomalies":"Unggah berkas audio untuk menganalisis anomali","Waveform Visualization":"Visualisasi Bentuk Gelombang","Frequency Distribution":"Distribusi Frekuensi","Audio Properties":"Properti Audio","Upload an audio file to view properties":"Unggah berkas audio untuk melihat properti","Keyword Detection":"Deteksi Kata Kunci","Detect":"Deteksi","Upload an audio file and enter a keyword to detect":"Unggah berkas audio dan masukkan kata kunci untuk deteksi","No anomalies detected":"Tidak ada anomali yang dideteksi","The audio appears to be normal.":"Suara ini tampak normal.","Detected anomalies:":"Anomali yang dideteksi:","Duration:":"Durasi:","Sample Rate:":"Laju Sample:","Channels:":"Kanal:","Bit Depth:":"Kedalaman Bit:","File Size:":"Ukuran Berkas:","Transcript:":"Transkrip:","Keyword:":"Kata Kunci:","Transcription is not available in this browser. Please try Chrome or Edge.":"Transkrip tidak tersedia di browser ini. Silakan coba Chrome atau Edge.","Speech recognition is not supported in this browser":"Pengenalan suara tidak didukung di browser ini","Please try Chrome or Edge for keyword detection.":"Silakan coba Chrome atau Edge untuk deteksi kata kunci.","Enter keyword to detect in audio":"Masukkan kata kunci untuk deteksi di audio","Error: Please upload an audio file":"Error: Silakan unggah berkas audio","Error: Could not decode audio file":"Error: Tidak dapat dekoder berkas audio","Volume spike":"Tingginya volume","High":"Tinggi","Medium":"Menengah","High frequency noise":"Bunyi kerikil tinggi frekuensi","Keyword found":"Kata kunci ditemukan","Keyword not found":"Kata kunci tidak ditemukan","__title__":"Detektor Anomali Suara Perangkat"},"vi":{"Device Sound Anomaly Detector":"Trình phát hiện bất thường âm thanh thiết bị","Drag \u0026 drop your audio file here or click to browse":"Kéo và thả tệp âm thanh của bạn vào đây hoặc nhấp để duyệt","Supported formats: MP3, WAV, OGG":"Định dạng hỗ trợ: MP3, WAV, OGG","Select Audio File":"Chọn tệp âm thanh","Anomaly Detection":"Phát hiện bất thường","Upload an audio file to analyze for anomalies":"Tải lên tệp âm thanh để phân tích bất thường","Waveform Visualization":"Hiển thị hình ảnh sóng","Frequency Distribution":"Phân phối tần số","Audio Properties":"Thuộc tính âm thanh","Upload an audio file to view properties":"Tải lên tệp âm thanh để xem thuộc tính","Keyword Detection":"Phát hiện từ khóa","Detect":"Phát hiện","Upload an audio file and enter a keyword to detect":"Tải lên tệp âm thanh và nhập từ khóa để phát hiện","No anomalies detected":"Không phát hiện bất thường","The audio appears to be normal.":"Âm thanh có vẻ bình thường.","Detected anomalies:":"Bất thường được phát hiện:","Duration:":"Thời gian:","Sample Rate:":"Tỷ lệ mẫu:","Channels:":"Kênh:","Bit Depth:":"Độ sâu bit:","File Size:":"Kích thước tệp:","Transcript:":"Bản dịch:","Keyword:":"Từ khóa:","Transcription is not available in this browser. Please try Chrome or Edge.":"Bản dịch không có sẵn trong trình duyệt này. Vui lòng thử Chrome hoặc Edge.","Speech recognition is not supported in this browser":"Trình duyệt này không hỗ trợ công nghệ nhận diện giọng nói","Please try Chrome or Edge for keyword detection.":"Vui lòng thử Chrome hoặc Edge để phát hiện từ khóa.","Enter keyword to detect in audio":"Nhập từ khóa để phát hiện trong âm thanh","Error: Please upload an audio file":"Lỗi: Vui lòng tải lên tệp âm thanh","Error: Could not decode audio file":"Lỗi: Không thể giải mã tệp âm thanh","Volume spike":"Sự tăng vọt về âm lượng","High":"Cao","Medium":"Trung bình","High frequency noise":"Tiếng ồn tần số cao","SpeechRecognition":"Nhận diện giọng nói","Keyword found":"Từ khóa được tìm thấy","Keyword not found":"Từ khóa không được tìm thấy","__title__":"Trình phát hiện bất thường âm thanh thiết bị"},"th":{"Device Sound Anomaly Detector":"ตัวตรวจหาอาการผิดปกติของเสียงอุปกรณ์","Drag \u0026 drop your audio file here or click to browse":"ลากและปล่อยไฟล์เสียงของคุณที่นี่ หรือคลิกเพื่อเลือก","Supported formats: MP3, WAV, OGG":"รองรับรูปแบบ: MP3, WAV, OGG","Select Audio File":"เลือกไฟล์เสียง","Anomaly Detection":"ตรวจหาอาการผิดปกติ","Upload an audio file to analyze for anomalies":"อัพโหลดไฟล์เสียงเพื่อวิเคราะห์อาการผิดปกติ","Waveform Visualization":"การแสดงทางภาพของรูปทรงคลื่น","Frequency Distribution":"การแจกแจงความเร็ว","Audio Properties":"คุณสมบัติของเสียง","Upload an audio file to view properties":"อัพโหลดไฟล์เสียงเพื่อดูคุณสมบัติ","Keyword Detection":"ตรวจหาคำเกี่ยว","Detect":"ตรวจหา","Upload an audio file and enter a keyword to detect":"อัพโหลดไฟล์เสียงและใส่คำเกี่ยวเพื่อตรวจหา","No anomalies detected":"ไม่พบอาการผิดปกติ","The audio appears to be normal.":"เสียงดูเหมือนจะปกติ","Detected anomalies:":"อาการผิดปกติที่ตรวจพบ:","Duration:":"ระยะเวลา:","Sample Rate:":"อัตราตัวอย่าง:","Channels:":"ช่อง","Bit Depth:":"ความลึกของบิต:","File Size:":"ขนาดไฟล์:","Transcript:":"บันทึก","Keyword:":"คำเกี่ยว","Transcription is not available in this browser. Please try Chrome or Edge.":"บันทึกไม่สามารถใช้งานได้ในเว็บเบราว์เซอร์นี้ โปรดลองใช้ Chrome หรือ Edge","Speech recognition is not supported in this browser":"การรับรู้เสียงไม่ได้รับการสนับสนุนในเว็บเบราว์เซอร์นี้","Please try Chrome or Edge for keyword detection.":"โปรดลองใช้ Chrome หรือ Edge สำหรับการตรวจหาคำเกี่ยว","Enter keyword to detect in audio":"ใส่คำเกี่ยวที่ต้องการตรวจหาในเสียง","Error: Please upload an audio file":"ข้อผิดพลาด: โปรดอัพโหลดไฟล์เสียง","Error: Could not decode audio file":"ข้อผิดพลาด: ไม่สามารถแปลงรูปแบบไฟล์เสียง","Volume spike":"การกระแทกปริมาณเสียง","High":"สูง","Medium":"ปานกลาง","High frequency noise":"เสียงดังที่มีความเร็วสูง","Keyword found":"คำเกี่ยวถูกพบ","Keyword not found":"คำเกี่ยวไม่ถูกพบ","__title__":"ตัวตรวจหาอาการผิดปกติของเสียงอุปกรณ์"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
