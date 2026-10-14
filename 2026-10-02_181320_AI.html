@@ -235,6 +235,34 @@
             transform: scale(0.98);
         }
         
+        /* 2026-10-15 ccode 定点修补：主按钮下方内联结果区（补视觉缺口：点按钮后内容就地显示） */
+        .tool-result {
+            margin-top: 12px;
+            background-color: var(--bg-primary);
+            border-radius: 10px;
+            padding: 12px;
+            min-height: 84px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .search-result {
+            margin-top: 14px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 14px;
+            min-height: 64px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.7;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+        
         .bottom-nav {
             position: fixed;
             bottom: 0;
@@ -538,6 +566,7 @@
             <input type="text" class="search-input" id="keywordInput" placeholder="Enter keywords to generate story ideas...">
             <button class="search-button" id="generateButton">Generate Story</button>
         </div>
+        <div class="search-result" id="searchResult">Your generated story content will appear here...</div>
         
         <div class="tutorial-note">
             <h4>How to use AI StoryWeaver:</h4>
@@ -598,6 +627,7 @@
                 <p class="tool-description">Get AI suggestions for advancing your story plot</p>
                 <textarea class="text-area" id="plotInput" placeholder="Enter your current plot point..."></textarea>
                 <button class="tool-button" id="plotButton">Get Suggestions</button>
+                <div class="tool-result" id="plotResult">Your generated story content will appear here...</div>
             </div>
             
             <div class="tool-card">
@@ -605,12 +635,14 @@
                 <p class="tool-description">Improve your writing with AI-powered enhancements</p>
                 <textarea class="text-area" id="textInput" placeholder="Paste your text here to refine..."></textarea>
                 <button class="tool-button" id="refineButton">Refine Text</button>
+                <div class="tool-result" id="refineResult">Your generated story content will appear here...</div>
             </div>
             
             <div class="tool-card">
                 <h3 class="tool-title">🔍 Conflict Generator</h3>
                 <p class="tool-description">Create compelling conflicts to drive your story forward</p>
                 <button class="tool-button" id="conflictButton">Generate Conflict</button>
+                <div class="tool-result" id="conflictResult">Your generated story content will appear here...</div>
             </div>
             
             <div class="tool-card">
@@ -618,6 +650,7 @@
                 <p class="tool-description">Make your character conversations more engaging</p>
                 <textarea class="text-area" id="dialogueInput" placeholder="Enter dialogue to enhance..."></textarea>
                 <button class="tool-button" id="dialogueButton">Enhance Dialogue</button>
+                <div class="tool-result" id="dialogueResult">Your generated story content will appear here...</div>
             </div>
         </section>
     </main>
@@ -721,6 +754,13 @@
         const conflictButton = document.getElementById('conflictButton');
         const dialogueInput = document.getElementById('dialogueInput');
         const dialogueButton = document.getElementById('dialogueButton');
+        
+        // 2026-10-15 ccode 定点修补：各主按钮下方的内联结果区
+        const searchResult = document.getElementById('searchResult');
+        const plotResult = document.getElementById('plotResult');
+        const refineResult = document.getElementById('refineResult');
+        const conflictResult = document.getElementById('conflictResult');
+        const dialogueResult = document.getElementById('dialogueResult');
         
         const characterModal = document.getElementById('characterModal');
         const closeCharacterModal = document.getElementById('closeCharacterModal');
@@ -1045,21 +1085,24 @@
             throw (firstErr || new Error('AI service is not connected yet — please refresh the page (a newer version is available)'));
         }
 
-        // 通用按钮流程：转圈 → 真调用后端 → 渲染真实结果或如实报错
-        async function runAI(btn, btnText, task, input, titleText, emptyMsg) {
+        // 通用按钮流程：转圈 → 真调用后端 → 渲染真实结果或如实报错（2026-10-15 ccode 定点修补：结果同时写到按钮下方内联结果区）
+        async function runAI(btn, btnText, task, input, titleText, emptyMsg, resEl) {
             if (!input) { showToast(emptyMsg); return; }
             btn.innerHTML = '<span class="loader"></span> ' + uiMsg('work');
             btn.disabled = true;
+            if (resEl) { resEl.style.display = 'block'; resEl.textContent = uiMsg('work'); }
             try { var _ebp = document.getElementById('errBanner'); if (_ebp) { _ebp.style.display = 'none'; _ebp.textContent = ''; } } catch (e2) {}
             try {
                 const result = await aiCall(task, input);
                 workspaceContent.textContent = result;
                 workspaceTitle.textContent = titleText;
                 currentContent = result;
+                if (resEl) { resEl.textContent = result; }
                 showToast(uiMsg('done') + ' [v19]');
             } catch (e) {
                 window.__aiBanner = uiMsg('fail') + (e && e.message ? e.message : e) + uiMsg('again');
                 showToast(window.__aiBanner);
+                if (resEl) { resEl.textContent = window.__aiBanner; }
             } finally {
                 btn.innerHTML = btnText;
                 btn.disabled = false;
@@ -1068,7 +1111,7 @@
 
         // Event listeners
         generateButton.addEventListener('click', () => {
-            runAI(generateButton, 'Generate Story', 'story', keywordInput.value.trim(), 'Generated Story', 'Please enter keywords to generate a story');
+            runAI(generateButton, 'Generate Story', 'story', keywordInput.value.trim(), 'Generated Story', 'Please enter keywords to generate a story', searchResult);
         });
 
         saveButton.addEventListener('click', () => {
@@ -1092,23 +1135,24 @@
             workspaceTitle.textContent = 'Story Workspace';
             currentContent = '';
             keywordInput.value = '';
+            [searchResult, plotResult, refineResult, conflictResult, dialogueResult].forEach(function (el) { try { if (el) el.textContent = 'Your generated story content will appear here...'; } catch (e) {} });
             showToast('Workspace cleared');
         });
 
         plotButton.addEventListener('click', () => {
-            runAI(plotButton, 'Get Suggestions', 'plot', plotInput.value.trim(), 'Plot Suggestions', 'Please enter a plot point');
+            runAI(plotButton, 'Get Suggestions', 'plot', plotInput.value.trim(), 'Plot Suggestions', 'Please enter a plot point', plotResult);
         });
 
         refineButton.addEventListener('click', () => {
-            runAI(refineButton, 'Refine Text', 'refine', textInput.value.trim(), 'Refined Text', 'Please enter text to refine');
+            runAI(refineButton, 'Refine Text', 'refine', textInput.value.trim(), 'Refined Text', 'Please enter text to refine', refineResult);
         });
 
         conflictButton.addEventListener('click', () => {
-            runAI(conflictButton, 'Generate Conflict', 'conflict', 'an original story conflict', 'Generated Conflict', '');
+            runAI(conflictButton, 'Generate Conflict', 'conflict', 'an original story conflict', 'Generated Conflict', '', conflictResult);
         });
 
         dialogueButton.addEventListener('click', () => {
-            runAI(dialogueButton, 'Enhance Dialogue', 'dialogue', dialogueInput.value.trim(), 'Enhanced Dialogue', 'Please enter dialogue to enhance');
+            runAI(dialogueButton, 'Enhance Dialogue', 'dialogue', dialogueInput.value.trim(), 'Enhanced Dialogue', 'Please enter dialogue to enhance', dialogueResult);
         });
         
         // Character modal
