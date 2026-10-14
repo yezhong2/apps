@@ -1,0 +1,19 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI result</title><style>body{font-family:-apple-system,PingFang SC,Microsoft YaHei,sans-serif;max-width:720px;margin:0 auto;padding:20px;line-height:1.75;background:#0f1115;color:#e6e9ef}h3{color:#22c55e}pre{white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:15px}</style></head><body><h3>&#10004; Done</h3><pre>要编写一个计算阶乘的函数，我们可以使用Python语言来实现。以下是一个简单的阶乘函数，它接受一个整数作为输入，并返回该整数的阶乘：
+
+```python
+def factorial(n):
+    if n &lt; 0:
+        return "Factorial not defined for negative numbers"
+    elif n == 0:
+        return 1
+    else:
+        result = 1
+        for i in range(1, n + 1):
+            result *= i
+        return result
+
+# 测试函数
+print(factorial(5))  # 应该输出120，因为5的阶乘是5 * 4 * 3 * 2 * 1 = 120
+```
+
+这个函数首先检查输入的数是否为负数，因为负数的阶乘在数学上是没有定义的。然后，它检查是否为0，因为0的阶乘定义为1。对于正整数，函数使用一个循环从1乘到n，计算出阶乘的结果。</pre></body></html>
