@@ -8,7 +8,7 @@
     <meta property="og:title" content="AI StoryWeaver - AI-Powered Story Generator">
     <meta property="og:description" content="Online tool: AI StoryWeaver - Generate creative stories, characters, and plots. No signup required - just start writing.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://yezhong2.github.io/apps/2026-10-02_181320_AI.html">
+    <meta property="og:url" content="https://aiqj.xin/2026-10-02_181320_AI.html">
     <meta name="theme-color" content="#333333">
     
     <style>
@@ -818,10 +818,10 @@
         }
         
         // ===== AI 后端配置：部署 Worker 后把地址填到下面（留空时按钮会明确提示未接通，绝不演假结果）=====
-        const AI_ENDPOINT = 'https://external-feof-toner-way.trycloudflare.com'; // 公网隧道（手机服务器；地址若漂移由守护自动更新）
+        const AI_ENDPOINT = 'https://protect-charlotte-gibson-alexandria.trycloudflare.com'; // 公网隧道（手机服务器；地址若漂移由守护自动更新）
         const AI_ENDPOINT_LOCAL = 'http://127.0.0.1:8787'; // 兜底：在本手机上打开时直连本机服务器（浏览器允许 https 页访问 127.0.0.1）
-        const AI_ENDPOINT_2 = 'https://c5ef6cacea55d1.lhr.life'; // 备用隧道（localhost.run，不同服务商→绕部分网络封锁）
-        const AI_ENDPOINT_3 = 'https://isgxv-2409-8962-47-4ec-303d-92ff-fef0-14d2.run.pinggy-free.link'; // 备用隧道2：pinggy.io（第三家服务商）
+        const AI_ENDPOINT_2 = 'https://fbde0b489bc4a8.lhr.life'; // 备用隧道（localhost.run，不同服务商→绕部分网络封锁）
+        const AI_ENDPOINT_3 = 'https://iprhx-2409-8962-7b7-3f4-4ee-48ff-fe86-2be4.run.pinggy-free.link'; // 备用隧道2：pinggy.io（第三家服务商）
 
         // 【诊察探针·2026-10-05】失败时快速探测各路径可达性（no-cors，任何 HTTP 响应即算通；结果附入错误提示便于远程定位）
         // [v9-版本自证] 右下角徽标自动显示当前端点（报障附徽标文字即可定位版本）
@@ -1077,7 +1077,7 @@
             try {
                 const pr = await Promise.all([
                     probe(AI_ENDPOINT, 6000), probe(AI_ENDPOINT_2, 6000), probe(AI_ENDPOINT_LOCAL, 6000),
-                    probe('https://yezhong2.github.io/apps/index.html', 6000), probe('https://www.baidu.com/favicon.ico', 6000), probeC(AI_ENDPOINT, 6000), probeC(AI_ENDPOINT_2, 6000), probeJ(AI_ENDPOINT), probeJ(AI_ENDPOINT_2), probeJ(AI_ENDPOINT_3)
+                    probe('https://aiqj.xin/index.html', 6000), probe('https://www.baidu.com/favicon.ico', 6000), probeC(AI_ENDPOINT, 6000), probeC(AI_ENDPOINT_2, 6000), probeJ(AI_ENDPOINT), probeJ(AI_ENDPOINT_2), probeJ(AI_ENDPOINT_3)
                 ]);
                 probeLine = '［probe t1=' + (pr[0] ? 'OK' : 'FAIL') + ' t2=' + (pr[1] ? 'OK' : 'FAIL') + ' t1c=' + (pr[5] ? 'OK' : 'FAIL') + ' t2c=' + (pr[6] ? 'OK' : 'FAIL') + ' t1j=' + (pr[7] ? 'OK' : 'FAIL') + ' t2j=' + (pr[8] ? 'OK' : 'FAIL') + ' t3j=' + (pr[9] ? 'OK' : 'FAIL') + ' l=' + (pr[2] ? 'OK' : 'FAIL') + ' gh=' + (pr[3] ? 'OK' : 'FAIL') + ' bd=' + (pr[4] ? 'OK' : 'FAIL') + '］';
             } catch (e) { }
@@ -1483,7 +1483,7 @@
         var API = {
             tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
             lang: lang,
-            jobUrl: function (j) { return "https://yezhong2.github.io/apps/aijobs/" + j + ".html"; },
+            jobUrl: function (j) { return "https://aiqj.xin/aijobs/" + j + ".html"; },
             submit: function (task, input, opts) {
                 opts = opts || {};
                 var j = jid();
