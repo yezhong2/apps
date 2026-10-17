@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Training Assistant</title><meta name="description" content="Free online tool: AI Fitness Training Assistant. No signup, no payment — free forever.">
+<meta property="og:title" content="AI Fitness Training Assistant">
+<meta property="og:description" content="Free online tool: AI Fitness Training Assistant. No signup, no payment — free forever.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aiqj.xin/2026-10-17_085626_AI健身训练助手.html">
+<meta name="theme-color" content="#333333">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #009688;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #009688;
+            color: white;
+            font-size: 16px;
+        }
+        input[type="text"], input[type="number"], input[type="textarea"] {
+            background-color: #555;
+            color: white;
+        }
+        .video-container {
+            margin-top: 20px;
+            background-color: #555;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .result-container {
+            margin-top: 20px;
+            background-color: #555;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .nutrition-container {
+            margin-top: 20px;
+            background-color: #555;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+<script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script>if(typeof LA!=="undefined"&&LA.init)LA.init({id:"3RLp6VMUHAGLIGjc",ck:"3RLp6VMUHAGLIGjc"});</script></head>
+<body>
+    <div class="container">
+        <h1>Welcome to AI Fitness Training Assistant</h1>
+        <div>
+            <h2>Set Fitness Goal</h2>
+            <input type="text" id="fitnessGoal" placeholder="Enter your fitness goal">
+            <button onclick="generatePlan()">Generate Plan</button>
+        </div>
+        <div>
+            <h2>Watch Exercise Demonstration</h2>
+            <input type="text" id="exerciseDescription" placeholder="Enter exercise description">
+            <button onclick="watchVideo()">Watch Video</button>
+        </div>
+        <div>
+            <h2>Recommend Exercise Intensity</h2>
+            <input type="number" id="exerciseDuration" placeholder="Enter exercise duration (minutes)">
+            <button onclick="recommendIntensity()">Recommend Intensity</button>
+        </div>
+        <div>
+            <h2>Calculate Basal Metabolic Rate</h2>
+            <input type="number" id="height" placeholder="Enter height (cm)">
+            <input type="number" id="weight" placeholder="Enter weight (kg)">
+            <button onclick="calculateBMR()">Calculate BMR</button>
+        </div>
+        <div>
+            <h2>Get Nutrition Advice</h2>
+            <input type="text" id="dietPreference" placeholder="Enter diet preference">
+            <button onclick="getNutritionAdvice()">Get Nutrition Advice</button>
+        </div>
+        <div class="video-container" id="videoContainer"></div>
+        <div class="result-container" id="resultContainer"></div>
+        <div class="nutrition-container" id="nutritionContainer"></div>
+    </div>
+    <script>
+        function generatePlan() {
+            const goal = document.getElementById('fitnessGoal').value;
+            if (goal) {
+                window.__AIChannel.submit('story', { goal: goal }).then(function(r) {
+                    document.getElementById('resultContainer').innerText = r.text;
+                }).catch(function(e) {
+                    document.getElementById('resultContainer').innerText = "Error: " + e.message;
+                });
+            }
+        }
+
+        function watchVideo() {
+            const description = document.getElementById('exerciseDescription').value;
+            if (description) {
+                window.__AIChannel.submit('plot', { description: description }).then(function(r) {
+                    const videoContainer = document.getElementById('videoContainer');
+                    videoContainer.innerHTML = '<video controls><source src="' + r.url + '" type="video/mp4"></video>';
+                }).catch(function(e) {
+                    document.getElementById('videoContainer').innerText = "Error: " + e.message;
+                });
+            }
+        }
+
+        function recommendIntensity() {
+            const duration = document.getElementById('exerciseDuration').value;
+            if (duration) {
+                window.__AIChannel.submit('refine', { duration: duration }).then(function(r) {
+                    document.getElementById('resultContainer').innerText = r.text;
+                }).catch(function(e) {
+                    document.getElementById('resultContainer').innerText = "Error: " + e.message;
+                });
+            }
+        }
+
+        function calculateBMR() {
+            const height = document.getElementById('height').value;
+            const weight = document.getElementById('weight').value;
+            if (height && weight) {
+                window.__AIChannel.submit('conflict', { height: height, weight: weight }).then(function(r) {
+                    document.getElementById('resultContainer').innerText = r.text;
+                }).catch(function(e) {
+                    document.getElementById('resultContainer').innerText = "Error: " + e.message;
+                });
+            }
+        }
+
+        function getNutritionAdvice() {
+            const preference = document.getElementById('dietPreference').value;
+            if (preference) {
+                window.__AIChannel.submit('dialogue', { preference: preference }).then(function(r) {
+                    document.getElementById('nutritionContainer').innerText = r.text;
+                }).catch(function(e) {
+                    document.getElementById('nutritionContainer').innerText = "Error: " + e.message;
+                });
+            }
+        }
+    </script>
+<!-- radar-i18n-start --><script>window.__I18N_PACKS={"en":{"AI Fitness Training Assistant":"AI Fitness Training Assistant","Welcome to AI Fitness Training Assistant":"Welcome to AI Fitness Training Assistant","Set Fitness Goal":"Set Fitness Goal","Generate Plan":"Generate Plan","Watch Exercise Demonstration":"Watch Exercise Demonstration","Watch Video":"Watch Video","Recommend Exercise Intensity":"Recommend Exercise Intensity","Recommend Intensity":"Recommend Intensity","Calculate Basal Metabolic Rate":"Calculate Basal Metabolic Rate","Calculate BMR":"Calculate BMR","Get Nutrition Advice":"Get Nutrition Advice","Enter your fitness goal":"Enter your fitness goal","Enter exercise description":"Enter exercise description","Enter exercise duration (minutes)":"Enter exercise duration (minutes)","Enter height (cm)":"Enter height (cm)","Enter weight (kg)":"Enter weight (kg)","Enter diet preference":"Enter diet preference","Error:":"Error:","__title__":"AI Fitness Training Assistant"},"zh-CN":{"AI Fitness Training Assistant":"AI健身训练助手","Welcome to AI Fitness Training Assistant":"欢迎使用AI健身训练助手","Set Fitness Goal":"设置健身目标","Generate Plan":"生成计划","Watch Exercise Demonstration":"观看锻炼演示","Watch Video":"观看视频","Recommend Exercise Intensity":"推荐锻炼强度","Recommend Intensity":"推荐强度","Calculate Basal Metabolic Rate":"计算基础代谢率","Calculate BMR":"计算BMR","Get Nutrition Advice":"获取营养建议","Enter your fitness goal":"输入您的健身目标","Enter exercise description":"输入锻炼描述","Enter exercise duration (minutes)":"输入锻炼时长（分钟）","Enter height (cm)":"输入身高（厘米）","Enter weight (kg)":"输入体重（千克）","Enter diet preference":"输入饮食偏好","Error:":"错误：","__title__":"AI健身训练助手"},"es":{"AI Fitness Training Assistant":"Asistente de Entrenamiento de Fitness con IA","Welcome to AI Fitness Training Assistant":"Bienvenido al Asistente de Entrenamiento de Fitness con IA","Set Fitness Goal":"Establecer Objetivo de Fitness","Generate Plan":"Generar Plan","Watch Exercise Demonstration":"Ver Demostración de Ejercicio","Watch Video":"Ver Vídeo","Recommend Exercise Intensity":"Recomendar Intensidad de Ejercicio","Recommend Intensity":"Recomendar Intensidad","Calculate Basal Metabolic Rate":"Calcular Tasa Metabólica Básica","Calculate BMR":"Calcular BMR","Get Nutrition Advice":"Obtener Consejos de Nutrición","Enter your fitness goal":"Ingrese su objetivo de fitness","Enter exercise description":"Ingrese descripción del ejercicio","Enter exercise duration (minutes)":"Ingrese duración del ejercicio (minutos)","Enter height (cm)":"Ingrese altura (cm)","Enter weight (kg)":"Ingrese peso (kg)","Enter diet preference":"Ingrese preferencias de dieta","__title__":"Asistente de Entrenamiento de Fitness con IA"},"ja":{"AI Fitness Training Assistant":"AIフィットネストレーニングアシスタント","Welcome to AI Fitness Training Assistant":"AIフィットネストレーニングアシスタントへようこそ","Set Fitness Goal":"フィットネスクールを設定する","Generate Plan":"プランを生成する","Watch Exercise Demonstration":"エクササイズデモンストレーションを見る","Watch Video":"ビデオを見る","Recommend Exercise Intensity":"エクササイズの強度を推奨する","Recommend Intensity":"強度を推奨する","Calculate Basal Metabolic Rate":"基礎代謝量を計算する","Calculate BMR":"BMRを計算する","Get Nutrition Advice":"栄養指導を受ける","Enter your fitness goal":"フィットネスクールを入力する","Enter exercise description":"エクササイズの説明を入力する","Enter exercise duration (minutes)":"エクササイズの時間（分）を入力する","Enter height (cm)":"身長（cm）を入力する","Enter weight (kg)":"体重（kg）を入力する","Enter diet preference":"食事の好みを入力する","__title__":"AIフィットネストレーニングアシスタント"},"ko":{"AI Fitness Training Assistant":"AI 체력 훈련 어시스턴트","Welcome to AI Fitness Training Assistant":"AI 체력 훈련 어시스턴트에 오신 것을 환영합니다","Set Fitness Goal":"체력 목표 설정","Generate Plan":"계획 생성","Watch Exercise Demonstration":"운동 시연 보기","Watch Video":"비디오 보기","Recommend Exercise Intensity":"운동 강도 추천","Recommend Intensity":"강도 추천","Calculate Basal Metabolic Rate":"기본 대사량 계산","Calculate BMR":"BMR 계산","Get Nutrition Advice":"영양 상담 받기","Enter your fitness goal":"체력 목표 입력","Enter exercise description":"운동 설명 입력","Enter exercise duration (minutes)":"운동 지속 시간 (분) 입력","Enter height (cm)":"키 (cm) 입력","Enter weight (kg)":"체중 (kg) 입력","Enter diet preference":"식단 선호 입력","__title__":"AI 체력 훈련 어시스턴트"},"fr":{"AI Fitness Training Assistant":"Assistant de Formation Physique IA","Welcome to AI Fitness Training Assistant":"Bienvenue à l'Assistant de Formation Physique IA","Set Fitness Goal":"Définir l'Objectif de Formation Physique","Generate Plan":"Générer un Plan","Watch Exercise Demonstration":"Regarder la Démonstration d'Exercice","Watch Video":"Regarder la Vidéo","Recommend Exercise Intensity":"Recommander l'Intensité de l'Exercice","Recommend Intensity":"Recommander l'Intensité","Calculate Basal Metabolic Rate":"Calculer le Taux de Métabolisme de Base","Calculate BMR":"Calculer le BMR","Get Nutrition Advice":"Obtenir des Conseils Nutritionnels","Enter your fitness goal":"Saisir votre Objectif de Formation Physique","Enter exercise description":"Saisir la Description de l'Exercice","Enter exercise duration (minutes)":"Saisir la Durée de l'Exercice (minutes)","Enter height (cm)":"Saisir la Hauteur (cm)","Enter weight (kg)":"Saisir le Poids (kg)","Enter diet preference":"Saisir vos Préférences Alimentaires","__title__":"Assistant de Formation Physique IA"},"de":{"Welcome to AI Fitness Training Assistant":"Willkommen beim AI Fitness Training Assistant","Set Fitness Goal":"Fitnessziel setzen","Generate Plan":"Plan generieren","Watch Exercise Demonstration":"Übungsdemonstration ansehen","Watch Video":"Video ansehen","Recommend Exercise Intensity":"Übungsdauer empfehlen","Recommend Intensity":"Intensität empfehlen","Calculate Basal Metabolic Rate":"Basalmetabolismus berechnen","Calculate BMR":"BMR berechnen","Get Nutrition Advice":"Ernährungsberatung erhalten","Enter your fitness goal":"Ihr Fitnessziel eingeben","Enter exercise description":"Übungsbeschreibung eingeben","Enter exercise duration (minutes)":"Übungsdauer (Minuten) eingeben","Enter height (cm)":"Größe (cm) eingeben","Enter weight (kg)":"Gewicht (kg) eingeben","Enter diet preference":"Ernährungspräferenz eingeben","__title__":"AI Fitness Training Assistant"},"ru":{"Welcome to AI Fitness Training Assistant":"Добро пожаловать в AI Fitness Training Assistant","Set Fitness Goal":"Установить цель фитнеса","Generate Plan":"Создать план","Watch Exercise Demonstration":"Смотреть демонстрацию упражнения","Watch Video":"Смотреть видео","Recommend Exercise Intensity":"Рекомендовать интенсивность упражнения","Recommend Intensity":"Рекомендовать интенсивность","Calculate Basal Metabolic Rate":"Рассчитать базальный метаболический率","Calculate BMR":"Рассчитать BMR","Get Nutrition Advice":"Получить советы по питанию","Enter your fitness goal":"Ввести вашу цель фитнеса","Enter exercise description":"Ввести описание упражнения","Enter exercise duration (minutes)":"Ввести продолжительность упражнения (минуты)","Enter height (cm)":"Ввести рост (см)","Enter weight (kg)":"Ввести вес (кг)","Enter diet preference":"Ввести предпочтения в питании","__title__":"AI Fitness Training Assistant"},"pt":{"AI Fitness Training Assistant":"Assistente de Treinamento de Fitness por IA","Welcome to AI Fitness Training Assistant":"Bem-vindo ao Assistente de Treinamento de Fitness por IA","Set Fitness Goal":"Definir Objetivo de Fitness","Generate Plan":"Gerar Plano","Watch Exercise Demonstration":"Assistir à Demonstração de Exercício","Watch Video":"Assistir ao Vídeo","Recommend Exercise Intensity":"Recomendar Intensidade de Exercício","Recommend Intensity":"Recomendar Intensidade","Calculate Basal Metabolic Rate":"Calcular Taxa Metabólica Básica","Calculate BMR":"Calcular BMR","Get Nutrition Advice":"Obter Conselhos Nutricionais","Enter your fitness goal":"Insira seu objetivo de fitness","Enter exercise description":"Insira a descrição do exercício","Enter exercise duration (minutes)":"Insira a duração do exercício (minutos)","Enter height (cm)":"Insira sua altura (cm)","Enter weight (kg)":"Insira seu peso (kg)","Enter diet preference":"Insira suas preferências de dieta","Error:":"Erro:","__title__":"Assistente de Treinamento de Fitness por IA"},"ar":{"AI Fitness Training Assistant":"مساعد تدريب لياقة الذكاء الاصطناعي","Welcome to AI Fitness Training Assistant":"مرحبًا بكم في مساعد تدريب لياقة الذكاء الاصطناعي","Set Fitness Goal":"ضبط هدف لياقة","Generate Plan":"إنشاء خطة","Watch Exercise Demonstration":"مراقبة عرض التمرين","Watch Video":"مراقبة الفيديو","Recommend Exercise Intensity":"توصية شدة التمرين","Recommend Intensity":"توصية الشدة","Calculate Basal Metabolic Rate":"حساب معدل الأيض الأساسي","Calculate BMR":"حساب BMR","Get Nutrition Advice":"الحصول على نصائح التغذية","Enter your fitness goal":"ادخل هدف لياقتك","Enter exercise description":"ادخل وصف التمرين","Enter exercise duration (minutes)":"ادخل فترة التمرين (الدقائق)","Enter height (cm)":"ادخل الطول (سم)","Enter weight (kg)":"ادخل الوزن (كجم)","Enter diet preference":"ادخل تفضيلاتك الغذائية","__title__":"مساعد تدريب لياقة الذكاء الاصطناعي"},"hi":{"AI Fitness Training Assistant":"एआई फिटनेस ट्रेनिंग असिस्टेंट","Welcome to AI Fitness Training Assistant":"एआई फिटनेस ट्रेनिंग असिस्टेंट को स्वागत करें","Set Fitness Goal":"फिटनेस लक्ष्य निर्धारित करें","Generate Plan":"प्लान बनाएं","Watch Exercise Demonstration":"अभ्यास प्रदर्शन देखें","Watch Video":"वीडियो देखें","Recommend Exercise Intensity":"अभ्यास तीव्रता सिफारिश करें","Recommend Intensity":"तीव्रता सिफारिश करें","Calculate Basal Metabolic Rate":"बेसल मेटाबोलिक रेट की गणना करें","Calculate BMR":"BMR की गणना करें","Get Nutrition Advice":"पोषण सलाह प्राप्त करें","Enter your fitness goal":"अपना फिटनेस लक्ष्य भरें","Enter exercise description":"अभ्यास वर्णन भरें","Enter exercise duration (minutes)":"अभ्यास अवधि (मिनट) भरें","Enter height (cm)":"ऊंचाई (सेमी) भरें","Enter weight (kg)":"भार (किलोग्राम) भरें","Enter diet preference":"आहार पसंद भरें","__title__":"एआई फिटनेस ट्रेनिंग असिस्टेंट"},"id":{"AI Fitness Training Assistant":"Asisten Pelatihan Kesehatan AI","Welcome to AI Fitness Training Assistant":"Selamat datang di Asisten Pelatihan Kesehatan AI","Set Fitness Goal":"Atur Tujuan Kesehatan","Generate Plan":"Buat Rencana","Watch Exercise Demonstration":"Tonton Demo Pelatihan","Watch Video":"Tonton Video","Recommend Exercise Intensity":"Rekomendasikan Intensitas Pelatihan","Recommend Intensity":"Rekomendasikan Intensitas","Calculate Basal Metabolic Rate":"Menghitung Laju Metabolisme Dasar","Calculate BMR":"Menghitung BMR","Get Nutrition Advice":"Dapatkan Pertimbangan Gizi","Enter your fitness goal":"Masukkan tujuan kesehatan anda","Enter exercise description":"Masukkan deskripsi pelatihan","Enter exercise duration (minutes)":"Masukkan durasi pelatihan (menit)","Enter height (cm)":"Masukkan tinggi (cm)","Enter weight (kg)":"Masukkan berat (kg)","Enter diet preference":"Masukkan preferensi makanan","__title__":"Asisten Pelatihan Kesehatan AI"},"vi":{"AI Fitness Training Assistant":"Trợ lý đào tạo thể dục trí tuệ nhân tạo","Welcome to AI Fitness Training Assistant":"Chào mừng bạn đến với Trợ lý đào tạo thể dục trí tuệ nhân tạo","Set Fitness Goal":"Đặt mục tiêu thể dục","Generate Plan":"Tạo kế hoạch","Watch Exercise Demonstration":"Xem演示运动","Watch Video":"Xem video","Recommend Exercise Intensity":"Khuyến nghị cường độ tập luyện","Recommend Intensity":"Khuyến nghị cường độ","Calculate Basal Metabolic Rate":"Tính toán tốc độ trao đổi chất cơ bản","Calculate BMR":"Tính toán BMR","Get Nutrition Advice":"Nhận lời khuyên về dinh dưỡng","Enter your fitness goal":"Nhập mục tiêu thể dục của bạn","Enter exercise description":"Nhập mô tả bài tập","Enter exercise duration (minutes)":"Nhập thời gian bài tập (phút)","Enter height (cm)":"Nhập chiều cao (cm)","Enter weight (kg)":"Nhập cân nặng (kg)","Enter diet preference":"Nhập sở thích chế độ ăn","__title__":"Trợ lý đào tạo thể dục trí tuệ nhân tạo"},"th":{"Welcome to AI Fitness Training Assistant":"ยินดีต้อนรับสู่ AI Fitness Training Assistant","Set Fitness Goal":"ตั้งเป้าหมายด้านสุขภาพ","Generate Plan":"สร้างแผน","Watch Exercise Demonstration":"ดูการแสดงการกระทำออกกำลังกาย","Watch Video":"ดูวิดีโอ","Recommend Exercise Intensity":"แนะนำระดับความรุนแรงในการกระทำออกกำลังกาย","Recommend Intensity":"แนะนำระดับความรุนแรง","Calculate Basal Metabolic Rate":"คำนวณอัตราการเกิดเชื้อเพลิงพื้นฐาน","Calculate BMR":"คำนวณ BMR","Get Nutrition Advice":"รับคำแนะนำด้านอาหาร","Enter your fitness goal":"ใส่เป้าหมายด้านสุขภาพของคุณ","Enter exercise description":"ใส่คำอธิบายการกระทำออกกำลังกาย","Enter exercise duration (minutes)":"ใส่ระยะเวลาการกระทำออกกำลังกาย (นาที)","Enter height (cm)":"ใส่ความสูง (เซนติเมตร)","Enter weight (kg)":"ใส่น้ำหนัก (กิโลกรัม)","Enter diet preference":"ใส่ความชอบด้านอาหาร","Error:":"ข้อผิดพลาด:","__title__":"AI Fitness Training Assistant"}};window.__I18N_FIXED={"en":{"footer-ad":"Ad","footer-free":"100% Free","footer-about":"About","footer-fb":"Feedback","footer-apps":"Apps"},"zh-CN":{"footer-ad":"广告","footer-free":"完全免费","footer-about":"关于","footer-fb":"提意见","footer-apps":"App 下载"},"es":{"footer-ad":"Anuncio","footer-free":"100% Gratis","footer-about":"Acerca de","footer-fb":"Comentarios"},"ja":{"footer-ad":"広告","footer-free":"完全無料","footer-about":"このサイトについて","footer-fb":"フィードバック"},"ko":{"footer-ad":"광고","footer-free":"완전 무료","footer-about":"소개","footer-fb":"의견 제출"},"fr":{"footer-ad":"Publicité","footer-free":"Complètement gratuit","footer-about":"À propos","footer-fb":"Faire des suggestions"},"de":{"footer-ad":"Werbung","footer-free":"komplett kostenlos","footer-about":"Über","footer-fb":"Vorschläge einreichen"},"ru":{"footer-ad":"Реклама","footer-free":"Полностью бесплатно","footer-about":"О сайте","footer-fb":"Предложить идею"},"pt":{"footer-ad":"Anúncio","footer-free":"Grátis","footer-about":"Sobre","footer-fb":"Dar sugestão"},"ar":{"footer-ad":"إعلان","footer-free":"مجاني بالكامل","footer-about":"عن","footer-fb":"قدم اقتراح"},"hi":{"footer-ad":"विज्ञापन","footer-free":"पूर्णतः मुफ्त","footer-about":"बारे में","footer-fb":"सुझाव दें"},"id":{"footer-ad":"Iklan","footer-free":"Gratis","footer-about":"Tentang","footer-fb":"Beri Tanggapan"},"vi":{"footer-ad":"Quảng cáo","footer-free":"Miễn phí hoàn toàn","footer-about":"Về chúng tôi","footer-fb":"Gửi ý kiến"},"th":{"footer-ad":"การโฆษณา","footer-free":"ฟรีทุกอย่าง","footer-about":"เกี่ยวกับ","footer-fb":"ส่งความคิดเห็น"}};window.__I18N_GEO={"US":"en","GB":"en","CA":"en","AU":"en","NZ":"en","IE":"en","ZA":"en","SG":"en","CN":"zh-CN","HK":"zh-CN","TW":"zh-CN","MO":"zh-CN","ES":"es","MX":"es","AR":"es","CO":"es","CL":"es","PE":"es","VE":"es","EC":"es","GT":"es","CU":"es","BO":"es","DO":"es","HN":"es","PY":"es","SV":"es","NI":"es","CR":"es","PA":"es","UY":"es","JP":"ja","KR":"ko","KP":"ko","FR":"fr","MC":"fr","CI":"fr","SN":"fr","ML":"fr","NE":"fr","BF":"fr","TG":"fr","BJ":"fr","DE":"de","AT":"de","CH":"de","LI":"de","LU":"fr","RU":"ru","BY":"ru","KZ":"ru","UZ":"ru","KG":"ru","UA":"ru","PT":"pt","BR":"pt","AO":"pt","MZ":"pt","CV":"pt","GW":"pt","SA":"ar","AE":"ar","EG":"ar","IQ":"ar","JO":"ar","KW":"ar","QA":"ar","BH":"ar","OM":"ar","LB":"ar","SY":"ar","YE":"ar","SD":"ar","LY":"ar","TN":"ar","DZ":"ar","MA":"ar","MR":"ar","PS":"ar","IN":"hi","NP":"hi","ID":"id","VN":"vi","TH":"th"};</script><div id="lang-switch" style="position:fixed;top:8px;right:8px;z-index:9999;"><select id="lang-select" style="background:#1f232b;color:#e6e9ef;border:1px solid #3a4152;border-radius:8px;padding:4px 8px;font-size:12px;cursor:pointer;"><option value="en">English</option><option value="zh-CN">中文</option><option value="es">Español</option><option value="ja">日本語</option><option value="ko">한국어</option><option value="fr">Français</option><option value="de">Deutsch</option><option value="ru">Русский</option><option value="pt">Português</option><option value="ar">العربية</option><option value="hi">हिन्दी</option><option value="id">Bahasa Indonesia</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option></select></div><script>(function(){
+var LS="radar-lang";
+var PACKS=window.__I18N_PACKS||{};
+var FIXED=window.__I18N_FIXED||{};
+var GEO=window.__I18N_GEO||{};
+var RES_VER="20261003b";
+var busy=false;
+function norm(s){return (s||"").replace(/\s+/g," ").trim();}
+function navLang(){
+var l=(navigator.language||navigator.userLanguage||"").toLowerCase();
+if(l.indexOf("zh")===0)return "zh-CN";
+if(l.indexOf("es")===0)return "es";
+if(l.indexOf("ja")===0)return "ja";
+if(l.indexOf("ko")===0)return "ko";
+if(l.indexOf("fr")===0)return "fr";
+if(l.indexOf("de")===0)return "de";
+if(l.indexOf("ru")===0)return "ru";
+if(l.indexOf("pt")===0)return "pt";
+if(l.indexOf("ar")===0)return "ar";
+if(l.indexOf("hi")===0)return "hi";
+if(l.indexOf("id")===0)return "id";
+if(l.indexOf("vi")===0)return "vi";
+if(l.indexOf("th")===0)return "th";
+if(l.indexOf("en")===0)return "en";
+return "";
+}
+function applyTexts(lang,fromEn){
+if(busy)return;
+busy=true;
+try{
+if(!PACKS[lang])lang="en";
+var map=PACKS[lang]||{};
+var enMap=PACKS.en||{};
+var fix=FIXED[lang]||{};
+var els=document.querySelectorAll("[data-i18n-id]");
+for(var i=0;i<els.length;i++){
+var id=els[i].getAttribute("data-i18n-id");
+if(fix[id]&&fix[id]!==els[i].textContent)els[i].textContent=fix[id];
+}
+var nodes=document.querySelectorAll("h1,h2,h3,h4,h5,h6,p,button,a,span,label,td,th,li,option,figcaption,summary,legend");
+for(var j=0;j<nodes.length;j++){
+var el=nodes[j];
+if(el.getAttribute("data-i18n-id"))continue;
+if(el.closest&&el.closest("#lang-switch"))continue;
+if(el.closest&&el.closest("#adSlot"))continue;
+if(el.children&&el.children.length)continue;
+var cur=norm(el.textContent);
+var key=null;
+if(enMap[cur]!==undefined){key=cur;if(el.__i18nBase===undefined)el.__i18nBase=cur;}
+else if(el.__i18nCur!==undefined&&cur===el.__i18nCur&&el.__i18nBase!==undefined){key=el.__i18nBase;}
+else if(el.__i18nBase===undefined){el.__i18nBase=cur;}
+if(key!==null&&map[key]&&map[key]!==el.textContent){el.textContent=map[key];el.__i18nCur=map[key];}
+}
+if(map.__title__)document.title=map.__title__;
+}finally{busy=false;}
+}
+function apply(lang,persist){
+applyTexts(lang,false);
+try{document.documentElement.setAttribute("dir",lang==="ar"?"rtl":"ltr");}catch(e){}
+if(persist){try{localStorage.setItem(LS,lang);}catch(e){}}
+}
+function geoApply(){
+try{
+var x=new XMLHttpRequest();
+x.open("GET","https://ipwho.is/",true);
+x.timeout=4000;
+x.onreadystatechange=function(){
+if(x.readyState!==4)return;
+var cc="";
+try{cc=(JSON.parse(x.responseText)||{}).country_code||"";}catch(e){}
+var l=GEO[cc]||"en";
+apply(PACKS[l]?l:"en");
+};
+x.onerror=function(){apply("en");};
+x.send();
+}catch(e){apply("en");}
+}
+function watchMutations(){
+if(typeof MutationObserver==="undefined")return;
+try{
+var t=null;
+var obs=new MutationObserver(function(){
+if(busy)return;
+if(t)clearTimeout(t);
+t=setTimeout(function(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+applyTexts(sel.value,true);
+},50);
+});
+obs.observe(document.body,{subtree:true,childList:true,characterData:true});
+}catch(e){}
+}
+function init(){
+var sel=document.getElementById("lang-select");
+if(!sel)return;
+sel.onchange=function(){apply(sel.value,true);};
+var saved="";
+try{saved=localStorage.getItem(LS)||"";}catch(e){}
+if(saved&&PACKS[saved]){sel.value=saved;apply(saved);return;}
+var nv=navLang();
+if(nv&&PACKS[nv]){sel.value=nv;apply(nv);return;}
+geoApply();
+}
+if(document.readyState==="loading"){
+document.addEventListener("DOMContentLoaded",init);
+}else{
+init();
+}
+watchMutations();
+})();</script><!-- radar-i18n-end --><!-- radar-i18n-enhance-20261004 --><script>(function(){try{if(window.__RADAR_I18N_ENH)return;window.__RADAR_I18N_ENH=1;var P=window.__I18N_PACKS||{};function norm(s){return String(s||"").replace(/\s+/g," ").trim();}function cur(){try{var s=document.getElementById("lang-select");if(s&&s.value)return s.value;var l=localStorage.getItem("radar-lang");if(l)return l;}catch(e){}var n=(navigator.language||"").toLowerCase();if(n.indexOf("zh")===0)return "zh-CN";return "en";}function tr(s,lang){var en=P.en||{},map=P[lang]||{},k=norm(s);if(!k)return null;if(en[k]===undefined)return null;var v=map[k];if(v&&v!==k)return v;return null;}function tx(n){try{if(n.parentElement&&/^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentElement.tagName))return;var s=String(n.data||""),t=norm(s);if(!t||t.length>120)return;var v=tr(t,cur());if(v&&v!==t)n.data=s.replace(s.trim(),v);}catch(e){}}function walk(el){try{if(el.nodeType===3){tx(el);return;}if(el.nodeType!==1)return;if(el.closest&&el.closest("#lang-switch"))return;if(/^(SCRIPT|STYLE)$/.test(el.tagName))return;var w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false),q;while(q=w.nextNode()){tx(q);}var ae=el.querySelectorAll?el.querySelectorAll("[placeholder],[title]"):[];for(var i=0;i<ae.length;i++){var A=["placeholder","title"];for(var j=0;j<2;j++){var val=ae[i].getAttribute(A[j]);if(val){var v2=tr(val,cur());if(v2&&v2!==val)ae[i].setAttribute(A[j],v2);}}}}catch(e){}}var t=null;var mo=new MutationObserver(function(ms){if(t)clearTimeout(t);t=setTimeout(function(){for(var i=0;i<ms.length;i++){var m=ms[i];if(m.type==="characterData"){tx(m.target);}else{for(var j=0;j<m.addedNodes.length;j++){walk(m.addedNodes[j]);}}}},40);});mo.observe(document.documentElement,{subtree:true,childList:true,characterData:true});document.addEventListener("change",function(e){if(e.target&&e.target.id==="lang-select"){setTimeout(function(){walk(document.body);},80);}},true);setTimeout(function(){walk(document.body);},300);}catch(e){}})();</script><!-- radar-aichannel-start --><script>/* radar-aichannel v1 (2026-10-07) — 灵感雷达系统注入的 AI 通道模块（产品页真 AI 能力底座）。
+   调用: window.__AIChannel.submit(task, input).then(function(r){ r.text 为真实 AI 结果; r.url 为结果直链 })
+   task 八选一: story / plot / refine / conflict / dialogue / textsum / explain / tips
+   失败时 catch 到的 err 带 err.url（结果直链，请展示给用户作兜底）；window.__AIChannel.resume() 可恢复本机上次结果。 */
+(function () {
+    try {
+        if (window.__AIChannel) { return; }
+        var LOCAL = "http://127.0.0.1:8787";
+        var DEF = [
+            "https://5f4cef459ee3a0.lhr.life",
+            "https://one-adjustment-expanded-joyce.trycloudflare.com",
+            "https://lgrsj-111-55-145-6.free.pinggy.net"
+        ];
+        var EPS = [DEF[0], DEF[1], DEF[2], LOCAL];
+        var lastRefresh = 0;
+        var KNOWN = ["zh-CN", "en", "es", "ja", "ko", "fr", "de", "vi", "th", "ar", "hi", "id"];
+        function mapLang(v) {
+            v = String(v || "");
+            if (KNOWN.indexOf(v) >= 0) { return v; }
+            var b = v.slice(0, 2).toLowerCase();
+            if (b === "zh") { return "zh-CN"; }
+            for (var i = 0; i < KNOWN.length; i++) {
+                if (KNOWN[i].slice(0, 2) === b) { return KNOWN[i]; }
+            }
+            return "en";
+        }
+        function lang() {
+            try { var s = document.getElementById("lang-select"); if (s && s.value) { return mapLang(s.value); } } catch (e) {}
+            try { var l = localStorage.getItem("radar-lang"); if (l) { return mapLang(l); } } catch (e) {}
+            try { var l2 = localStorage.getItem("__ai_lang"); if (l2) { return mapLang(l2); } } catch (e) {}
+            try { return mapLang(navigator.language); } catch (e) {}
+            return "en";
+        }
+        var refreshInflight = null;
+        function refresh(force) {
+            // 修复（2026-10-07 ccode）：刷新在途时复用在途 promise——此前「页面刚加载（预刷新未落地）就提交」时，
+            // 8 秒节流窗内 refresh 空返回 undefined，submit 的 .then(重发) 既没等待、又因对 undefined 调 .then 抛错被吞，
+            // 重发永远不执行 → 全部盲发打在旧 DEF 端点上 → 首提交静默失联（实测 node E2E 复现：服务器零到达）。
+            if (refreshInflight) { return refreshInflight; }
+            if (!force && Date.now() - lastRefresh < 8000) { return Promise.resolve(); }
+            lastRefresh = Date.now();
+            refreshInflight = (async function () {
+                var urls = ["ai_endpoints.json", "https://raw.githubusercontent.com/yezhong2/apps/main/ai_endpoints.json"];
+                for (var i = 0; i < urls.length; i++) {
+                    try {
+                        var u = urls[i] + (urls[i].indexOf("?") >= 0 ? "&" : "?") + "t=" + Date.now();
+                        var r = await fetch(u, { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var j = await r.json();
+                        var nl = [j && j.tunnel2, j && j.tunnel1, j && j.tunnel3, LOCAL].filter(Boolean);
+                        if (nl.length >= 2) { EPS = nl; return; }
+                    } catch (e) {}
+                }
+            })();
+            refreshInflight.then(function () { refreshInflight = null; }, function () { refreshInflight = null; });
+            return refreshInflight;
+        }
+        function jid() { return "u" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+        function blind(j, task, input) {
+            var l = lang();
+            var q = "?jid=" + j + "&task=" + encodeURIComponent(task) + "&input=" + encodeURIComponent(input) + "&lang=" + encodeURIComponent(l);
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try { fetch(e + "/" + q, { mode: "no-cors", cache: "no-store" }).catch(function () {}); } catch (er) {}
+            }
+            blindJsonp(j, q);
+        }
+        function blindJsonp(j, q) {
+            for (var i = 0; i < EPS.length; i++) {
+                var e = EPS[i];
+                if (!e || e.indexOf("127.0.0.1") >= 0) { continue; }
+                try {
+                    var sc = document.createElement("script");
+                    var nm = "__aiChanCB" + Math.floor(Math.random() * 1e9);
+                    window[nm] = function () { try { delete window[nm]; } catch (x) {} };
+                    sc.src = e + "/?callback=" + nm + "&" + q.slice(1);
+                    sc.onload = sc.onerror = function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} };
+                    document.head.appendChild(sc);
+                    setTimeout(function () { try { if (sc.parentNode) { sc.parentNode.removeChild(sc); } } catch (x) {} }, 9000);
+                } catch (er) {}
+            }
+        }
+        function b64(t) { try { return decodeURIComponent(escape(atob(t))); } catch (e) { try { return atob(t); } catch (e2) { return ""; } } }
+        function iframeOne(j, ms) {
+            return new Promise(function (resolve, reject) {
+                var fr = document.createElement("iframe");
+                fr.style.cssText = "position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0;border:0";
+                var done = false;
+                var timer = setTimeout(function () { if (!done) { done = true; try { fr.remove(); } catch (e) {} reject(new Error("timeout")); } }, ms);
+                fr.onload = function () {
+                    if (done) { return; }
+                    var txt = "";
+                    try { txt = (fr.contentDocument && fr.contentDocument.body) ? (fr.contentDocument.body.innerText || fr.contentDocument.body.textContent || "") : ""; } catch (e) { txt = ""; }
+                    done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {}
+                    var jj = null; try { jj = JSON.parse(txt); } catch (e) { jj = null; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { resolve(jj); return; }
+                    if (jj && jj.state === "error") { reject(new Error(jj.error || "job error")); return; }
+                    reject(new Error("no payload"));
+                };
+                fr.onerror = function () { if (!done) { done = true; clearTimeout(timer); try { fr.remove(); } catch (e) {} reject(new Error("frame error")); } };
+                fr.src = "aijobs/" + j + ".json?t=" + Date.now();
+                document.body.appendChild(fr);
+            });
+        }
+        async function poll(j, deadline) {
+            var seg = "aijobs/" + j + ".json";
+            var t0 = Date.now();
+            while (Date.now() - t0 < deadline) {
+                var bust = "?t=" + Date.now();
+                try { var ij = await iframeOne(j, 6000); return ij.result; } catch (e0) {}
+                var sources = [
+                    "https://api.github.com/repos/yezhong2/apps/contents/" + seg + bust,
+                    "https://raw.githubusercontent.com/yezhong2/apps/main/" + seg + bust,
+                    seg + bust
+                ];
+                for (var i = 0; i < sources.length; i++) {
+                    var jj = null;
+                    try {
+                        var r = await fetch(sources[i], { cache: "no-store" });
+                        if (!r || !r.ok) { continue; }
+                        var o = await r.json();
+                        if (o && o.content && o.encoding) { jj = JSON.parse(b64(String(o.content).replace(/\s+/g, ""))); } else { jj = o; }
+                    } catch (e) { continue; }
+                    if (jj && jj.state === "done" && typeof jj.result === "string") { return jj.result; }
+                    if (jj && jj.state === "error") { throw new Error(jj.error || "job error"); }
+                }
+                await new Promise(function (r2) { setTimeout(r2, 2600); });
+            }
+            throw new Error("no result in time");
+        }
+        var API = {
+            tasks: ["story", "plot", "refine", "conflict", "dialogue", "textsum", "explain", "tips"],
+            lang: lang,
+            jobUrl: function (j) { return "https://aiqj.xin/aijobs/" + j + ".html"; },
+            submit: function (task, input, opts) {
+                opts = opts || {};
+                var j = jid();
+                var txt = String(input || "");
+                try { localStorage.setItem("__ai_last_jid", j); } catch (e) {}
+                blind(j, task, txt);
+                try { refresh(false).then(function () { blind(j, task, txt); }); } catch (e) {}
+                return poll(j, opts.timeoutMs || 150000).then(function (text) {
+                    return { text: text, jid: j, url: API.jobUrl(j) };
+                }, function (err) {
+                    err = err || new Error("failed");
+                    err.jid = j; err.url = API.jobUrl(j);
+                    throw err;
+                });
+            },
+            resume: function (j, timeoutMs) {
+                var jj = j || "";
+                if (!jj) { try { jj = localStorage.getItem("__ai_last_jid") || ""; } catch (e) {} }
+                if (!jj) { return Promise.reject(new Error("no jid")); }
+                return poll(jj, timeoutMs || 20000).then(function (text) {
+                    return { text: text, jid: jj, url: API.jobUrl(jj) };
+                });
+            }
+        };
+        window.__AIChannel = API;
+        try { refresh(false); } catch (e) {}
+    } catch (e) {}
+})();</script><!-- radar-aichannel-end --><!-- free-ad-standard-2026 --><style>.page-footer{max-width:960px;margin:20px auto 0;padding:12px 16px;border-top:1px solid #262b36;font-size:12px;color:#8b93a3;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}.page-footer a{color:#00a884;text-decoration:none;}.page-footer .fb-btn{background:#00a884;color:#0f1115;border-radius:8px;padding:5px 14px;font-weight:600;}.page-footer .ad-mini{width:100%;text-align:center;padding:8px;border:1px dashed #3a4152;border-radius:8px;background:#0c0e13;margin-bottom:4px;color:#6b7280;}</style><div class="page-footer"><div class="ad-mini" id="adSlot"><span data-i18n-id="footer-ad">广告</span></div><span data-i18n-id="footer-free">完全免费</span><a href="about.html" data-i18n-id="footer-about">关于</a><a class="fb-btn" href="https://github.com/yezhong2/apps/issues/new?labels=%E6%84%8F%E8%A7%81&title=%E3%80%90%E6%84%8F%E8%A7%81%E3%80%91&body=%E6%88%91%E7%9A%84%E6%84%8F%E8%A7%81%EF%BC%88%E5%B0%BD%E9%87%8F%E5%85%B7%E4%BD%93%EF%BC%9A%E5%93%AA%E4%B8%AA%E4%BA%A7%E5%93%81%E3%80%81%E5%B8%8C%E6%9C%9B%E6%80%8E%E4%B9%88%E6%94%B9%E3%80%81%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%EF%BC%89%EF%BC%9A%0A" target="_blank" rel="noopener" data-i18n-id="footer-fb">提意见</a></div></body>
+</html>
