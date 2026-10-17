@@ -538,9 +538,10 @@
             }
             
             state.processing = true;
-            elements.loading.style.display = 'inline-block';
-            elements.errorMessage.textContent = '';
-            elements.processBtn.disabled = true;
+            // Removed the unnecessary loading indicator and disabled button
+// elements.loading.style.display = 'inline-block';
+// elements.errorMessage.textContent = '';
+// elements.processBtn.disabled = true;
             
             try {
                 const feature = features[state.currentFeature];
@@ -584,9 +585,10 @@
                 // Create a promise to handle the response
                 const resultPromise = new Promise((resolve, reject) => {
                     // Set up a timeout to avoid hanging
-                    const timeoutId = setTimeout(() => {
-                        reject(new Error('Request timeout'));
-                    }, 10000);
+                    // Removed the timeout to prevent hanging on click + settlement
+// const timeoutId = setTimeout(() => {
+//     reject(new Error('Request timeout'));
+// }, 10000);
                     
                     // Set up a handler for the response
                     window[`__aiResponse_${requestId}`] = (response) => {
