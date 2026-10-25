@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="autojs://sdk/v1.js"></script><!-- $autojs.invoke 来源（官方示例同款） -->
+<meta name="theme-color" content="#141118">
+<title>关心</title>
+<style>
+  :root{--bg:#141118;--card:#1d1924;--line:#2d2736;--txt:#efeaf4;--sub:#9a90a8;--acc:#ffb86b;--nurse:#8fe3c4;--red:#ff8f7a;--warn:#f0c674}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh}
+  .top{display:flex;align-items:center;gap:8px;padding:11px 13px;background:linear-gradient(180deg,#221c2b,#1a1520);border-bottom:1px solid var(--line);font-size:14.5px;font-weight:800}
+  .badge{font-size:11px;color:var(--sub);background:#0f0c13;border:1px solid var(--line);border-radius:7px;padding:2px 7px;font-weight:400}
+  .badge.on{color:#5ee0a0;border-color:#1f4a36}
+  .badge.off{color:var(--warn);border-color:#4a3a1a}
+  .top .sp{flex:1}
+  main{flex:1;overflow-y:auto;padding:12px 13px;display:flex;flex-direction:column;gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .big{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .row{display:flex;gap:9px;margin-top:2px;flex-wrap:wrap}
+  button{border:none;border-radius:10px;padding:11px 14px;font-size:13.5px;font-weight:800;font-family:inherit;cursor:pointer;flex:1;min-width:88px}
+  .bGo{background:var(--acc);color:#241a0d}
+  .bNurse{background:var(--nurse);color:#0d241c}
+  .bGhost{background:#0f0c13;color:var(--sub);border:1px solid var(--line)}
+  .bWarn{background:#20160a;color:var(--warn);border:1px solid #4a3a1a}
+  .tbtn.on{background:#173325;color:#6ee7a8;border:1px solid #1f4a36}
+  .tbtn.off{background:#331b14;color:#ff9c86;border:1px solid #5a2a1a}
+  .meta{margin-top:8px;font-size:12.5px;color:var(--sub);line-height:1.9;font-variant-numeric:tabular-nums}
+  .meta b{color:#d9d2e2}
+  .face{font-size:40px;line-height:1;width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:#2a2334;border-radius:16px}
+  .charbtns{display:flex;gap:8px;flex:1;flex-wrap:wrap}
+  .charbtns button{flex:1;min-width:70px;padding:9px 8px}
+  .charbtns button.act{background:#4a3a6b;color:#fff;border:1px solid #6c55a0}
+  input{background:#0f0c13;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:8px 10px;font-size:13px;font-family:inherit}
+  input.small{width:64px;text-align:center}
+  .quietRow{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--sub);margin-top:8px;flex-wrap:wrap}
+  #chatList,#evList,#factList{max-height:220px;overflow-y:auto;font-size:13px;line-height:1.75;margin-top:8px}
+  .cme{color:#d9d2e2}
+  .cpet{color:#ffcf9a}
+  .cpet.nurse{color:var(--nurse)}
+  /* v2.1.2：每条回复标清「谁给的」—— AI＝真调了模型；本地＝确定性快回；没接通＝模型没连上 */
+  .src{font-size:10.5px;border:1px solid;border-radius:5px;padding:0 4px;margin-right:6px;vertical-align:1px;font-weight:700}
+  .src.ok{color:#6ee7a8;border-color:#1f4a36}
+  .src.loc{color:#c9b6e4;border-color:#3a3145}
+  .src.bad{color:#ff9c86;border-color:#5a2a1a}
+  .ev{color:#c9c0d6;font-variant-numeric:tabular-nums;word-break:break-all}
+  .ev .tag{color:var(--acc);font-weight:800}
+  .ev .tag.con{color:var(--nurse)}
+  .fact{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px dashed #2a2433}
+  .fact .ftxt{flex:1;color:#ded6e8;word-break:break-all}
+  .fx{flex:0 0 auto;min-width:0;width:30px;height:30px;padding:0;background:#331b14;color:#ff9c86;border:1px solid #5a2a1a;border-radius:8px;font-size:13px}
+  #logTail{font-size:11.5px;line-height:1.75;margin-top:6px;word-break:break-all;color:#a99fbb;font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap}
+  .tip{font-size:12.5px;color:var(--sub);line-height:1.9}
+  .tip b{color:#c9d1de}
+  .toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:rgba(30,24,40,.97);border:1px solid var(--line);color:var(--txt);font-size:13px;padding:9px 15px;border-radius:10px;max-width:86vw;opacity:0;pointer-events:none;transition:opacity .25s;z-index:9;text-align:center}
+  .toast.on{opacity:1}
+/* v2.3.6（2026-10-19 用户「所有要显示信息的地方都要加折叠功能」）：
+   统一的折叠头（一行文字 + 右侧展开/收起），状态存 localStorage，下次打开还是你上次的样子 */
+.foldh{display:flex;align-items:center;justify-content:space-between;margin:8px 0 2px;padding:4px 8px;
+  background:#f1eef7;border-radius:8px;cursor:pointer;font-size:12.5px;color:#5b4a75;user-select:none}
+.foldh:active{background:#e6e0f2}
+.foldh b{font-weight:600}
+</style>
+</head>
+<body>
+<div class="top">
+  <span>🧡 关心</span>
+  <span class="badge" id="verBadge">v?</span>
+  <span class="badge" id="connBadge">启动中…</span>
+  <span class="sp"></span>
+</div>
+<main>
+  <div class="card">
+    <div class="big">🐾 我的小宠物</div>
+    <div class="row" style="align-items:center">
+      <!-- 2026-10-25（主人发火：不要把黄脸再换成另一个表情）：这里改成**真的 3D 小人**——
+           面板里内嵌 19192 的 3D 页面（#mini 模式：只展示、不抢浮窗的 AI 指令），自己一直循环演动作 -->
+      <div class="face" id="facePreview" style="width:96px;height:124px;padding:0;overflow:hidden;border-radius:12px;background:#15111f">
+        <iframe id="d3mini" src="about:blank" style="width:100%;height:100%;border:0;background:transparent" scrolling="no"></iframe>
+      </div>
+      <div class="charbtns">
+        <button id="charAuto" class="bGhost" onclick="setChar('auto')">自动</button>
+        <button id="charGenki" class="bGhost" onclick="setChar('genki')">元气</button>
+        <button id="charNurse" class="bGhost" onclick="setChar('nurse')">护士</button>
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button id="pokeBtn" class="bGo" onclick="poke()">👉 戳一下</button>
+      <button id="sayBtn" class="bGhost" onclick="say()">🔊 说句话</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="simCelBtn" class="bGhost" onclick="sim('celebrate')">🎉 演一个庆祝</button>
+      <button id="simConBtn" class="bGhost" onclick="sim('concern')">🥺 演一个关切</button>
+      <button id="simMealBtn" class="bGhost" onclick="sim('meal')">🍚 演一个饭点问</button>
+      <button id="simAnaBtn" class="bGhost" onclick="sim('analysis')">🔎 分析我一下</button>
+    </div>
+    <div class="meta" id="ttsLine">TTS：检测中…</div>
+  </div>
+
+  <div class="card">
+    <div class="big">🎛️ 开关</div>
+    <div class="row">
+      <button id="floatBtn" style="display:none" class="tbtn off" onclick="toggleFloat()">悬浮宠物</button>
+      <button id="soundBtn" class="tbtn off" onclick="toggleSound()">声音总开关</button>
+      <!-- 2026-10-23 主人点单：「其他的播报限制你得给我弄个开关，我随时好切换让他读或者不读以及读多少」
+           三段循环：🔇 不读（只弹气泡）/ 🔉 摘要（48 字内，默认）/ 🔊 完整（读整条，最多 300 字）。 -->
+      <button id="sayModeBtn" class="tbtn" onclick="cycleSayMode()">🔉 播报：摘要</button>
+      <button id="d3Btn" class="tbtn off" onclick="toggleD3Page()">🤖 3D小人</button>
+      <!-- v1.5.17（用户「地图显示开关按钮呢？」）：从「小按钮堆」提到开关排里，跟悬浮宠物/声音并列，
+           文字直接写「路况地图：关 / 开」，一眼看得出是开关，点一下就开、再点一下就关 -->
+      <button id="trafficBtn" class="tbtn off" onclick="openTraffic()">🗺️ 路况地图：关</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="permBtn" class="bGhost" onclick="openPerm()">悬浮窗授权页</button>
+      <button id="battBtn" class="bGhost" onclick="openBatt()">电池优化白名单</button>
+    </div>
+    <div class="meta" id="devLine">设备：检测中…</div>
+  </div>
+
+  <div class="card">
+    <div class="big">🔔 它会主动找你</div>
+    <!-- v2.3.60（2026-10-21 用户点单）：「啥时候对我有哪些提醒的功能有没有？我这些我都不知道，
+         就算有些功能你加了，我不知道哪里看你到底有没有加哪些」——
+         所以把「什么时候开口」和「到底有哪些功能」各做成一页能点开的，内容由 main.js 按真实配置现算，页面不写死。 -->
+    <div class="row">
+      <button id="remindBtn" class="bGhost" onclick="showReminders()">🔔 什么时候提醒我</button>
+      <button id="featBtn" class="bGhost" onclick="showFeatures()">🧾 功能清单</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="insBtn" class="bGo" onclick="showInsurance()">🛡 保险怎么备（在哪买·提前多久）</button>
+      <button id="insHistBtn" class="bGhost" onclick="showHist('insurance')">📜 保险历史</button>
+    </div>
+    <div class="meta" id="remindLine">下一次提醒：—</div>
+  </div>
+
+  <div class="card">
+    <div class="big">🩺 健康小管家</div>
+    <div class="row">
+      <button id="screenBtn" class="bGhost" onclick="screenInfo()">📵 今日屏幕</button>
+      <button id="usagePermBtn" class="bGhost" onclick="openUsagePerm()">口径说明</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="weeklyBtn" class="bGhost" onclick="showWeekly()">📅 本周周报</button>
+      <button id="weeklyToggleBtn" class="tbtn off" onclick="toggleWeekly()">周报提醒</button>
+    </div>
+    <!-- v2.2.0（2026-10-19 用户点单）：每日一策——按账本+营养+身体数据让模型给今天怎么过；
+         早上 7-10 点、晚上 21-23 点各自动一次（也会进聊天记录），这里可随时手动要一份 -->
+    <div class="row" style="margin-top:8px">
+      <button id="planBtn" class="bGhost" onclick="showPlan(0)">📋 今日怎么过</button>
+      <button id="planEveBtn" class="bGhost" onclick="showPlan(1)">🌙 今晚复盘</button>
+      <button id="forecastBtn" class="bGhost" onclick="showForecast()">📈 长期预判</button>
+    </div>
+    <!-- v2.3.4（2026-10-19 用户「所有的信息都要有历史纪录，我随时能查看」）：每次生成的分析都留档，这里随时翻 -->
+    <div class="row" style="margin-top:8px">
+      <button id="histPlanBtn" class="bGhost" onclick="showHist('plan')">📜 一策历史</button>
+      <button id="histFcBtn" class="bGhost" onclick="showHist('forecast')">📜 预判历史</button>
+    </div>
+    <div class="row" style="margin-top:6px">
+      <button id="foldOpenBtn" class="bGhost" onclick="foldAll(true)">全部展开</button>
+      <button id="foldCloseBtn" class="bGhost" onclick="foldAll(false)">全部收起</button>
+    </div>
+    <!-- 2026-10-19 用户点单：「它自己在干嘛的时候我也想看到它在干嘛，像你一样」；再说「像分身那样干啥都一直显示出来」
+         → 所以这里**不做折叠**：常驻一条，打开面板第一眼就看见它在做什么，每步一句人话。 -->
+    <div style="margin-top:8px;border:1px solid #e8e2f5;border-radius:10px;padding:6px 9px;background:#fbfaff">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+        <b style="font-size:12.5px;color:#7a4bd0">🔍 它在干嘛</b>
+        <span id="actHint" style="color:#bbb;font-size:11px;flex:1 1 auto">每步一句人话 · 2 秒刷新</span>
+      </div>
+      <div id="actBusy" style="font-weight:600;font-size:12.5px;color:#7a4bd0;margin-bottom:4px">—</div>
+      <div id="actList" style="max-height:180px;overflow:auto;line-height:1.55;font-size:12px"></div>
+    </div>
+    <div class="foldh" id="hdplanBox" onclick="foldTog('planBox')"><b>📋 分析结果</b><span id="arplanBox">▾ 收起</span></div>
+    <div class="meta" id="planBox"></div>
+    <div class="meta" id="healthLine">健康档案：— ｜ 周报提醒：—</div>
+    <!-- v1.5.21（用户「元素体检显示太长加个折叠按钮」）：默认收起，一行摘要 + 展开/收起按钮；
+         展开状态记在 localStorage，下次打开面板保持原样 -->
+    <div class="row" style="margin-top:8px;align-items:center">
+      <button id="elemToggleBtn" class="bGhost" onclick="toggleElem()">🧪 元素体检：展开</button>
+      <span class="meta" id="elemBrief" style="flex:1 1 auto;margin-left:6px">—</span>
+      <button class="bGhost" onclick="openHist('elem')">📜 元素历史</button>
+    </div>
+    <div id="elemBox" style="display:none;margin-top:4px;font-size:12.5px;line-height:1.7"></div>
+    <!-- 2026-10-21（用户报「元素展开滑到尾看不到今天怎么吃；点全部展开才看得到」）：
+         根因＝dietBox 一直在 foldAll 的折叠名单里，却没给过它折叠头——以前点过一次「全部收起」，
+         dietBox 就被存成 display:none，而面板上没有任何入口能把它单独打开（只有「全部展开」会带上）。
+         修法：给它补上跟其它卡一样的折叠头（看得见、点得开），并在启动时把被这个 bug 藏起来的那次恢复一次。 -->
+    <div class="foldh" id="hddietBox" onclick="foldTog('dietBox')"><b>🍚 今天怎么吃</b><span id="ardietBox">▾ 收起</span></div>
+    <div id="dietBox" style="margin-top:6px;font-size:12.5px;line-height:1.7"></div>
+    <div class="foldh" id="hdweeklyBox" onclick="foldTog('weeklyBox')"><b>📅 周报正文</b><span id="arweeklyBox">▾ 收起</span></div>
+    <div class="meta" id="weeklyBox" style="white-space:pre-wrap;line-height:1.6;margin-top:6px"></div>
+  </div>
+
+  <div class="card">
+    <div class="big">🚕 跑车：账本 / 精力 / 休息</div>
+    <div class="row" style="align-items:center;margin-top:2px">
+      <div class="meta" id="moneyLine" style="flex:1 1 auto">💰 今日：—</div>
+      <button class="bGhost" onclick="openHist('money')">📜 账本历史</button>
+    </div>
+    <div class="meta" id="energyLine">⚡ 精力：—</div>
+    <div class="meta" id="restLine">😴 休息：—</div>
+    <div class="meta" id="trackLine">🛣 轨迹：—</div>
+    <div class="row" style="margin-top:8px">
+      <button class="bGhost" onclick="hintMoney()">怎么记账？</button>
+      <button id="gpsBtn" class="tbtn off" onclick="toggleGps()">📍定位监测</button>
+      <button id="trackBtn" class="tbtn off" onclick="toggleTrack()">🛣 轨迹地图：关</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="big">🤫 安静策略</div>
+    <div class="row">
+      <button id="dndBtn" class="tbtn off" onclick="toggleDnd()">勿扰时段</button>
+    </div>
+    <div class="quietRow">从 <input id="dndFrom" class="small" value="23:00"> 到 <input id="dndTo" class="small" value="08:00">（夜里安静，只记心里不出声）</div>
+    <div class="quietRow">每天上限：庆祝 <input id="capCel" class="small" value="6"> 次 ｜ 关切 <input id="capCon" class="small" value="6"> 次
+      <button id="quietSave" class="bGo" style="flex:0 0 auto;min-width:64px;padding:8px 12px" onclick="saveQuiet()">保存</button>
+    </div>
+    <div class="meta" id="quietLine">今日播报：—</div>
+  </div>
+
+  <div class="card">
+    <div class="big">💬 谈心</div>
+    <!-- 2026-10-19：「干啥都一直显示」——谈心区上方再放一条精简的实时状态，聊天时不用滑到面板顶部也能看见它在做什么 -->
+    <div id="actBusy2" style="font-size:12px;color:#7a4bd0;margin:2px 0 4px;min-height:16px">—</div>
+    <div class="foldh" id="hdchatList" onclick="foldTog('chatList')"><b>聊天记录</b><span id="archatList">▾ 收起</span></div>
+    <div id="chatList"></div>
+    <div class="row" style="margin-top:10px">
+      <input id="chatInput" style="flex:1" placeholder="跟它说点什么…（「记：xxx」我会记住）">
+      <!-- 2026-10-23（主人点单）：「聊天界面消息读不读或者只读开头一点的切换按钮」——
+           和面板那颗同一套档位（🔇 不读 / 🔉 只读开头 60 字 / 🔊 完整），点一下循环。 -->
+      <button id="chatSayBtn" class="tbtn off" style="flex:0 0 auto;min-width:44px" onclick="cycleSayMode()">🔉</button>
+      <button id="chatSend" class="bGo" style="flex:0 0 auto;min-width:64px" onclick="sendChat()">发送</button>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="micBtn" class="bGo" style="flex:2" onclick="micTap()">🎤 说给它听</button>
+      <button id="aiBtn" class="tbtn off" style="flex:1;min-width:88px" onclick="toggleAI()">AI大脑</button>
+      <button id="tapModeBtn" class="tbtn" style="flex:1;min-width:104px" onclick="toggleTapMode()">👆单击·出输入框</button>
+    </div>
+    <!-- 2026-10-25（主人点单）：它自己动时该不该说话、能不能自己变小变大躲开——两个开关都存盘，重装也记得 -->
+    <div class="row" style="margin-top:8px">
+      <button id="d3TalkBtn" class="tbtn" style="flex:1" onclick="toggleD3Talk()">🔊 自己动·说话</button>
+      <button id="d3AutoBtn" class="tbtn" style="flex:1" onclick="toggleD3Auto()">👀 自己变小/躲</button>
+    </div>
+    <!-- 2026-10-25（主人点单）：随时听周围的声音、能搭话——不许废话，记录只留 120 条 -->
+    <div class="row" style="margin-top:8px">
+      <button id="ambBtn" class="tbtn" style="flex:1" onclick="toggleAmb()">👂 常听环境声</button>
+      <span class="meta" id="ambLine" style="flex:1;align-self:center">常听：准备中</span>
+    </div>
+    <!-- 2026-10-25（主人点单）：3D 人固定在那里循环演全部动作（76 条），也可以关掉回到自己走动 -->
+    <div class="row" style="margin-top:8px">
+      <button id="d3ShowBtn" class="tbtn" style="flex:1" onclick="toggleD3Show()">🎬 固定循环动作</button>
+      <span class="meta" id="d3ShowLine" style="flex:1;align-self:center">3D：准备中</span>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="camBtn" class="bGo" style="flex:1" onclick="camShotNow()">📷 拍张给你看（原图）</button>
+      <!-- 2026-10-23 主人点单：「拍张给你看那个按钮加上能选择相册里的图」 -->
+      <button id="albumBtn" class="bGo" style="flex:1" onclick="albumPickNow()">🖼 从相册选</button>
+      <input id="albumInput" type="file" accept="image/*" style="display:none" onchange="albumFilePicked(this)">
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button id="liveVoBtn" class="tbtn off" style="flex:1" onclick="toggleLiveVo()">🎧 连续对话</button>
+      <button id="liveCamBtn" class="tbtn off" style="flex:1" onclick="toggleLiveCam()">👁 视频对话</button>
+    </div>
+    <div class="meta" id="voiceLine">语音：待命（「说给它听」说完再点一下 ｜「连续对话」=免按键一直聊 ｜「视频对话」=它边看边聊）</div>
+    <p class="tip" style="margin-top:8px">小暗号：<b>「记：……」</b>存进记忆 ｜ <b>「忘掉 ……」</b>从记忆里去掉；语音转写全离线在本机跑，不花额度</p>
+  </div>
+
+  <div class="card">
+    <div class="big">🧠 关于你（记忆）</div>
+    <div id="factList"></div>
+    <div class="row" style="margin-top:10px">
+      <input id="factInput" style="flex:1" placeholder="想让它记的事（直接写）">
+      <button id="factAdd" class="bGo" style="flex:0 0 auto;min-width:64px" onclick="addFact()">存</button>
+    </div>
+    <div class="meta" id="moodLine">情绪时间线：—</div>
+  </div>
+
+  <div class="card">
+    <div class="big">📮 最近它在关心什么</div>
+    <div id="evList">（还没有事件）</div>
+  </div>
+
+  <div class="card">
+    <div class="big">📜 日志</div>
+    <div id="logTail">（等待连接…）</div>
+  </div>
+
+  <div class="card">
+    <p class="tip">
+      <b>它是活的：</b>悬浮形象常驻在屏幕上——<b>戳它</b>会理你，<b>拖动</b>挪位置，<b>长按</b>回到本页。<br>
+      <b>它会看家：</b>流水线出成果它替你高兴、出岔子它替你看看；电量/温度/存储也会操心。<br>
+      <b>边界（实话）：</b>v0.1.5 已能听你说（🎧 连续对话）也能看你（👁 视频对话，每次最多 2 分钟）；深夜勿扰、限频、被冷落会自动收敛，绝不刷屏。<br>
+      <b>建议：</b>把 App 保住后台（电池白名单）+ 授予悬浮窗，它就一直在。
+    </p>
+  </div>
+</main>
+<div class="toast" id="toast"></div>
+
+<!-- v2.1.4（2026-10-19 02:1x·用户点单「账本显示和元素显示都加上历史查看按钮」）：全量历史浮层——
+     点「📜 账本历史」/「📜 元素历史」打开，按天倒序列出本地存着的全部记录（只读，不改数据） -->
+<!-- v2.3.60（2026-10-21 用户点单）：提醒表 / 功能清单 浮层——只读，所有内容由 main.js 现算 -->
+<div id="listMask" style="display:none;position:fixed;inset:0;background:rgba(8,6,12,.92);z-index:31;padding:14px;overflow:auto">
+  <div style="max-width:760px;margin:0 auto">
+    <div class="row" style="align-items:center;justify-content:space-between">
+      <div class="big" id="listTitle" style="margin:0">—</div>
+      <button class="bGhost" onclick="closeList()">关闭</button>
+    </div>
+    <div class="meta" id="listHint" style="margin-top:6px">—</div>
+    <div id="listBody" style="margin-top:10px;font-size:12.5px;line-height:1.85;white-space:pre-wrap;word-break:break-all">加载中…</div>
+  </div>
+</div>
+
+<div id="histMask" style="display:none;position:fixed;inset:0;background:rgba(8,6,12,.92);z-index:30;padding:14px;overflow:auto">
+  <div style="max-width:760px;margin:0 auto">
+    <div class="row" style="align-items:center;justify-content:space-between">
+      <div class="big" id="histTitle" style="margin:0">历史</div>
+      <button class="bGhost" onclick="closeHist()">关闭</button>
+    </div>
+    <div class="meta" id="histHint" style="margin-top:6px">按天倒序，最近的在最上面</div>
+    <div id="histBody" style="margin-top:10px;font-size:12.5px;line-height:1.85;white-space:pre-wrap;word-break:break-all">加载中…</div>
+  </div>
+</div>
+
+<script>
+// ============ 关心 UI（与 main.js 经 $autojs.invoke 桥通信）============
+function bridgeObj() {
+  try { return (typeof $autojs !== 'undefined' && $autojs && $autojs.invoke) ? $autojs : null; } catch (e) { return null; }
+}
+function inv(name) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  var JB = bridgeObj();
+  if (!JB) return Promise.resolve({ ok: false, msg: '未连接（预览模式）' });
+  try { return Promise.resolve(JB.invoke.apply(JB, [name].concat(args))); }
+  catch (e) { return Promise.resolve({ ok: false, msg: String(e) }); }
+}
+function $(id) { return document.getElementById(id); }
+try { inv('diag', '页面 v0.1 已载入'); } catch (e) {}
+try { if (typeof window !== 'undefined' && window) { window.onerror = function (m, s, l) { try { inv('diag', '页面JS错误: ' + m + ' @' + l); } catch (e) {} return false; }; } } catch (e) {}
+var toastTimer = null;
+function toast(msg) {
+  var t = $('toast'); if (!t) return;
+  t.textContent = msg;
+  t.className = 'toast on';
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { t.className = 'toast'; }, 3600);
+}
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function fmtTime(ms) {
+  if (!ms) return '—';
+  var d = new Date(ms); function p(n) { return ('0' + n).slice(-2); }
+  return p(d.getHours()) + ':' + p(d.getMinutes());
+}
+var FACES = { genki: '😊', nurse: '🙂' };
+var lastStatus = null;
+
+function setChar(mode) {
+  inv('setChar', mode).then(function (r) {
+    if (!r || r.ok === false) { toast('切换失败：' + ((r && r.msg) || '?')); return; }
+    toast('角色：' + (mode === 'auto' ? '自动切换' : (mode === 'genki' ? '元气小捧场王' : '温柔小护士')));
+    poll();
+  });
+}
+function poke() { inv('poke').then(function (r) { if (r && r.line) toast(r.line); poll(); }); }
+// 2026-10-23（主人点单）：其他播报读不读、读多少——三段循环（不读 → 摘要 → 完整 → 不读）。
+// 【为什么改成可切】以前写死为「摘要」（收 summary 48 字），主人只听到前半句，还以为被吞了。
+function cycleSayMode() {
+  var cur = (lastStatus && (lastStatus.sayMode === 0 || lastStatus.sayMode === 2)) ? lastStatus.sayMode : 1;
+  var next = (cur + 1) % 3;
+  inv('sayModeSet', next).then(function (r) {
+    var m = (r && r.sayMode !== undefined) ? r.sayMode : next;
+    toast(m === 0 ? '播报：不读（只弹字）' : (m === 2 ? '播报：完整（最多 300 字）' : '播报：摘要（48 字内）'));
+    poll();
+  });
+}
+function say() { inv('sayTest').then(function (r) { if (r && r.ok) toast('（说了一句，听听看）'); else toast('说不了：' + ((r && r.msg) || '检查声音开关')); }); }
+// v1.5.11：🚦路况——弹悬浮路况图（高德图层，红=堵）；没配 key 就提示去配
+// v1.5.14（用户当场报「没关闭和开启地图按钮」）：同一个钮改成**开/关切换**，文字跟真实状态走
+//   （状态从 status.mapOn 来；窗口上的「关闭」也能把状态带回来，不会「面板说开着、其实早关了」）。
+function openTraffic() {
+  if (lastStatus && lastStatus.mapOn) {
+    inv('closeTraffic').then(function (r) { toast(r && r.ok ? '路况图关掉了' : '关不掉：' + ((r && r.msg) || '?')); poll(); });
+    return;
+  }
+  inv('traffic').then(function (r) {
+    if (r && r.ok) {
+      if (r.locOk) toast('路况图弹出来了（已定到你当前位置）');
+      else toast('弹出来了，但没拿到位置：' + (r.locWhy || '') + '（点窗口里「📍我」再试）');
+      poll();
+    }
+    else toast((r && r.msg) || '路况图没弹出来');
+  });
+}
+function sim(kind) { inv('simEvent', kind).then(function (r) { if (r && r.ok) toast('已演示（看悬浮宠物）'); else toast('演示失败：' + ((r && r.msg) || '?')); poll(); }); }
+function toggleFloat() {
+  var want = !(lastStatus && lastStatus.floatLive);
+  inv('setFloat', want).then(function (r) {
+    if (!r || r.ok === false) {
+      if (r && r.needPerm) { toast('需要「悬浮窗」权限，正在打开授权页…'); inv('openOverlayPerm'); }
+      else { toast('操作失败：' + ((r && r.msg) || '?')); }
+    } else { toast(want ? '宠物出来啦（看看屏幕上）' : '宠物已收起'); }
+    poll();
+  });
+}
+function toggleSound() {
+  var want = !(lastStatus && lastStatus.soundOn);
+  inv('setSound', want).then(function (r) {
+    toast(want ? '声音已开' : '声音已关（只出字幕不出声）');
+    poll();
+  });
+}
+function toggleDnd() {
+  var want = !(lastStatus && lastStatus.quiet && lastStatus.quiet.dndOn);
+  inv('quietSet', { dndOn: want }).then(function (r) { toast(want ? '勿扰已开（夜里安安静静）' : '勿扰已关'); poll(); });
+}
+// 2026-10-23（主人点单）：从相册选一张给它看——和拍照走同一个分析/播报通道。
+// 2026-10-23（主人点单「改」）：选图搬进页面用 <input type="file">（和 3D 管理同一招）。
+// 【双保险】WebView 若不支持 file chooser，5 秒内收不到 onchange 就自动退回脚本侧 inv('albumPick')。
+var ALBUM_T = null;
+function albumPickNow() {
+  try {
+    var inp = $('albumInput');
+    if (!inp) { albumFallback(); return; }
+    inp.value = '';
+    inp.click();
+    if (ALBUM_T) clearTimeout(ALBUM_T);
+    ALBUM_T = setTimeout(function () { ALBUM_T = null; toast('相册没弹出来，换一种方式试试…'); albumFallback(); }, 5000);
+  } catch (e) { albumFallback(); }
+}
+function albumFallback() {
+  inv('albumPick').then(function (r) {
+    if (!r || r.ok === false) {
+      if (r && r.busy) toast('上一张还在看呢');
+      else toast('相册打不开：' + ((r && r.msg) || '?'));
+    }
+    poll();
+  });
+}
+function albumFilePicked(inp) {
+  if (ALBUM_T) { clearTimeout(ALBUM_T); ALBUM_T = null; }
+  try {
+    var f = inp && inp.files && inp.files[0];
+    if (!f) { toast('没拿到文件'); return; }
+    toast('拿到图了，让它看看…');
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var s = String(rd.result || '');
+        var k = s.indexOf(',');
+        var b64 = k > 0 ? s.slice(k + 1) : s;
+        inv('photoB64', { b64: b64, name: String(f.name || '') }).then(function (r) {
+          if (!r || r.ok === false) toast('传图失败：' + ((r && r.msg) || '?'));
+          poll();
+        });
+      } catch (e2) { toast('读图失败：' + e2); }
+    };
+    rd.readAsDataURL(f);
+  } catch (e) { toast('选图异常：' + e); }
+}
+function camShotNow() {
+  inv('camShot').then(function (r) {
+    if (!r || r.ok === false) {
+      if (r && r.needPerm) toast('需要相机权限——到系统设置里给「关心」打开相机');
+      else if (r && r.busy) toast('上一张还在看呢');
+      else toast('相机没开成：' + ((r && r.msg) || '?'));
+    } else toast('拍一张，按✓回来——我就看到了');
+    poll();
+  });
+}
+function micTap() {
+  inv('voiceToggle').then(function (r) {
+    if (!r || r.ok === false) {
+      if (r && r.needPerm) toast('需要麦克风权限——到系统设置里给「关心」打开麦克风');
+      else if (r && r.busy) toast('上一句还在处理，稍等一下');
+      else toast('麦克风没开成：' + ((r && r.msg) || '?'));
+    } else if (r.tooShort) { toast('太短啦（至少说 1 秒）'); }
+    else if (r.on) { toast('在听着呢——说完再点一下「停止」'); }
+    poll();
+  });
+}
+// 2026-10-23 主人点单：单击悬浮人＝出输入框 还是 直接语音（按这里设的来）
+function toggleTapMode() {
+  var cur = (lastStatus && lastStatus.tapMode) === 'voice' ? 'voice' : 'input';
+  var want = cur === 'voice' ? 'input' : 'voice';
+  inv('setTapMode', want).then(function (r) {
+    toast(want === 'voice' ? '单击悬浮人：直接语音对话' : '单击悬浮人：出输入框');
+    poll();
+  });
+}
+function toggleAI() {
+  var want = !(lastStatus && lastStatus.aiOn);
+  inv('setAI', want).then(function (r) { toast(want ? 'AI 大脑已开' : 'AI 大脑已关（走本地话术）'); poll(); });
+}
+function toggleLiveVo() {
+  inv('voiceLive').then(function (r) {
+    var on = !!(r && r.live);
+    $('liveVoBtn').className = 'tbtn ' + (on ? 'on' : 'off');
+    if (!r || r.ok === false) {
+      if (r && r.needPerm) toast('需要麦克风权限——到系统设置里给「关心」打开麦克风');
+      else toast('连续对话没开成：' + ((r && r.msg) || '?'));
+    } else toast(on ? '连续对话已开——直接说话，它听完就回，可一直聊' : '连续对话已关');
+    poll();
+  });
+}
+function toggleLiveCam() {
+  inv('camLive').then(function (r) {
+    var on = !!(r && r.live);
+    $('liveCamBtn').className = 'tbtn ' + (on ? 'on' : 'off');
+    if (!r || r.ok === false) {
+      if (r && r.needPerm) toast('需要相机权限——到系统设置里给「关心」打开相机');
+      else toast('视频对话没开成：' + ((r && r.msg) || '?'));
+    } else toast(on ? '视频对话已开（最多 2 分钟）——它边看边聊' : '视频对话已关');
+    poll();
+  });
+}
+function toggleD3Page() {
+  inv('toggle3D').then(function (r) {
+    var on = !!(r && r.on);
+    $('d3Btn').className = 'tbtn ' + (on ? 'on' : 'off');
+    if (!on && r && r.msg) toast('3D 没开成：' + r.msg);
+    else toast(on ? '3D 小人来了——戳它试试' : '3D 小人已关');
+    poll();
+  });
+}
+function camProbe() {
+  toast('试镜头中…');
+  inv('camAsk').then(function (r) {
+    if (!r || r.ok === false || !r.granted) { toast('摄像头权限没给' + ((r && r.msg) ? '：' + r.msg : '')); return; }
+    try {
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function (stream) {
+        try { stream.getTracks().forEach(function (t) { t.stop(); }); } catch (e1) {}
+        inv('diag', 'camProbe: getUserMedia 通道 OK');
+        toast('✅ 摄像头通道可用');
+      }).catch(function (e) {
+        inv('diag', 'camProbe 失败: ' + (e && e.name) + ' ' + (e && e.message));
+        toast('❌ 通道不行：' + ((e && e.name) || '错误'));
+      });
+    } catch (e2) { inv('diag', 'camProbe 异常: ' + e2); toast('❌ 异常'); }
+  });
+}
+function saveQuiet() {
+  var d = {
+    from: ($('dndFrom') || {}).value || '23:00',
+    to: ($('dndTo') || {}).value || '08:00',
+    capCel: parseInt(($('capCel') || {}).value, 10),
+    capCon: parseInt(($('capCon') || {}).value, 10)
+  };
+  if (isNaN(d.capCel)) d.capCel = 6;
+  if (isNaN(d.capCon)) d.capCon = 6;
+  inv('quietSet', d).then(function (r) { toast(r && r.ok !== false ? '安静策略已保存' : '保存失败'); poll(); });
+}
+function sendChat() {
+  var el = $('chatInput'); if (!el) return;
+  var msg = String(el.value || '').trim();
+  if (!msg) return;
+  el.value = '';
+  inv('chat', msg).then(function (r) {
+    if (!r || r.ok === false) { toast('它没听清：' + ((r && r.msg) || '?')); return; }
+    if (r.act === 'addFact') toast('已记进小本本');
+    if (r.act === 'delFact') toast('已从记忆里去掉');
+    if (r.act === 'delFactMiss') toast('记忆里没找到这条');
+    renderChat(r.chat || []);
+    renderFacts(r.facts || []);
+  });
+}
+function addFact() {
+  var el = $('factInput'); if (!el) return;
+  var txt = String(el.value || '').trim();
+  if (!txt) return;
+  el.value = '';
+  inv('factAdd', txt).then(function (r) {
+    if (!r || r.ok === false) { toast('存失败：' + ((r && r.msg) || '?')); return; }
+    toast(r.dup ? '这条已经记过啦' : '记好啦');
+    renderFacts(r.facts || []);
+  });
+}
+function delFact(idx) {
+  if (!lastStatus || !lastStatus.facts || !lastStatus.facts[idx]) return;
+  var key = lastStatus.facts[idx].text;
+  inv('factDel', key).then(function (r) {
+    if (!r || r.ok === false) { toast('没删掉：' + ((r && r.msg) || '?')); return; }
+    toast('忘掉啦');
+    renderFacts(r.facts || []);
+  });
+}
+function openPerm() { inv('openOverlayPerm').then(function () { toast('在系统页里打开「允许显示在其他应用上层」'); }); }
+function openBatt() { inv('openBattPerm').then(function () { toast('选「允许」即可（不优化=不被后台杀）'); }); }
+
+// —— v0.5.0 健康小管家：屏幕时长 / 周报 ——
+function screenInfo() {
+  inv('screenInfo').then(function (r) {
+    if (!r || r.ok === false) { toast('读不到屏幕数据：' + ((r && r.msg) || '?')); return; }
+    $('weeklyBox').textContent = r.text;
+    toast(r.text);
+  });
+}
+function openUsagePerm() {
+  inv('openUsagePerm').then(function (r) {
+    if (r && r.ok && r.granted) toast('系统口径已开启');
+    else if (r && r.noSupport) toast(r.msg);
+    else toast('打不开：' + ((r && r.msg) || '?'));
+  });
+}
+function showWeekly() {
+  inv('weekReport').then(function (r) {
+    if (!r || r.ok === false) { toast('周报生成失败：' + ((r && r.msg) || '?')); return; }
+    $('weeklyBox').textContent = r.text;
+    foldOpen('weeklyBox');
+    toast('周报已展开（往下看）');
+  });
+}
+// 2026-10-21：生成类按钮「先返回、再轮询」——模型要几十秒，同步等会把页面冻住。
+// 实测用户报：点长期预判后卡很久、滑不动，恢复后还没结果（4 枪读超时 2 分多钟）。
+function pollJob(job, box, prefix, doneText) {
+  var tries = 0;
+  function tick() {
+    tries++;
+    if (tries > 90) { if (box) box.textContent = prefix + "：等太久了，先不看了；等会儿再点一次（后台可能已经写进历史）"; return; }
+    inv("jobPoll", job).then(function (r) {
+      if (!r) { setTimeout(tick, 2000); return; }
+      if (r.ok === false) { if (box) box.textContent = prefix + "没生成：" + (r.msg || "任务不见了"); toast("这次没接上，再点一次"); return; }
+      if (r.pending) {
+        if (box) box.textContent = prefix + "：还在想（已等 " + (tries * 2) + " 秒）…可以先上下滑，好了它自己会出来";
+        setTimeout(tick, 2000);
+        return;
+      }
+      var res = (r && r.result) || {};
+      if (res.ok === false) { if (box) box.textContent = prefix + "没生成：" + (res.msg || "模型没接上"); toast("这次没接上，等下再试或跟我说一句"); return; }
+      if (box) { box.style.whiteSpace = "pre-wrap"; box.textContent = res.text; }
+      toast(doneText);
+    });
+  }
+  tick();
+}
+// v2.2.0：每日一策（0=今天怎么过，1=今晚复盘）。生成要等模型，先占位再回填，失败如实报。
+function showPlan(evening) {
+  var box = $('planBox');
+  var prefix = evening ? '🌙 复盘' : '📋 今日一策';
+  foldOpen('planBox');   // 点了按钮就把结果展开，不然用户以为没生成
+  if (box) box.textContent = prefix + '：正在按你的账本和饮食记录算…';
+  inv('plan', evening ? 'evening' : 'morning').then(function (r) {
+    if (!r || r.ok === false) {
+      if (box) box.textContent = prefix + ' 没生成：' + ((r && r.msg) || '模型没接上');
+      toast('这次没接上，等下再试或跟我说一句');
+      return;
+    }
+    if (r.pending && r.job) { pollJob(r.job, box, prefix, evening ? '复盘写好了' : '今天的安排写好了'); return; }
+    if (box) { box.style.whiteSpace = 'pre-wrap'; box.textContent = r.text; }
+    toast(evening ? '复盘写好了' : '今天的安排写好了');
+  });
+}
+// v2.3.0：长期预判（照最近两周的真实记录，推接下来最可能出的好事/坏事）
+function showForecast() {
+  var box = $('planBox');
+  foldOpen('planBox');
+  if (box) { box.style.whiteSpace = 'pre-wrap'; box.textContent = '📈 长期预判：正在按最近两周的记录推…'; }
+  inv('forecast', 14).then(function (r) {
+    if (!r || r.ok === false) {
+      if (box) box.textContent = '📈 长期预判没生成：' + ((r && r.msg) || '模型没接上');
+      toast('这次没接上，等下再试或跟我说一句');
+      return;
+    }
+    if (r.pending && r.job) { pollJob(r.job, box, '📈 长期预判', '长期预判写好了'); return; }
+    if (box) box.textContent = r.text;
+    toast('长期预判写好了');
+  });
+}
+// v2.3.60（2026-10-21 用户点单）：提醒表 / 功能清单 / 保险专项
+// 【边界】页面只负责把 main.js 现算的内容排成字；不在这里写「什么时候该提醒」的判断
+function openList(title, hint) {
+  var m = $('listMask'); if (m) m.style.display = 'block';
+  var t = $('listTitle'); if (t) t.textContent = title;
+  var h = $('listHint'); if (h) h.textContent = hint || '';
+  var b = $('listBody'); if (b) b.textContent = '读取中…';
+}
+function closeList() { var m = $('listMask'); if (m) m.style.display = 'none'; }
+function showReminders() {
+  openList('🔔 它什么时候会提醒你', '下面是它现在真在跑的时段和条件；关掉的那条会标 ⛔');
+  var b = $('listBody');
+  inv('reminders').then(function (r) {
+    if (!r || r.ok === false) { if (b) b.textContent = '读不到：' + ((r && r.msg) || '未知原因'); return; }
+    var out = [];
+    out.push('下一次：' + (r.next || '—'));
+    out.push('声音总开关：' + (r.sound ? '开（会出声）' : '关（只记不出声，面板照样能看）'));
+    out.push('勿扰时段：' + (r.dnd && r.dnd.on ? (r.dnd.from + ' → ' + r.dnd.to) : '没开'));
+    out.push('周报提醒：' + (r.weeklyOn ? '开' : '关'));
+    out.push('');
+    var its = r.items || [];
+    for (var i = 0; i < its.length; i++) {
+      var it = its[i] || {};
+      out.push((it.on === false ? '⛔' : '✅') + ' ' + (it.t || '') + '　' + (it.n || ''));
+      out.push('　　' + (it.w || ''));
+    }
+    out.push('');
+    out.push('想关：面板「周报提醒」、声音总开关、「🤫 安静策略」里的勿扰与每日上限。');
+    if (b) b.textContent = out.join('\n');
+  });
+}
+function showFeatures() {
+  openList('🧾 它现在会做什么', '只列已经做了、面板上能找到入口的；没做的不写进来');
+  var b = $('listBody');
+  inv('features').then(function (r) {
+    if (!r || r.ok === false) { if (b) b.textContent = '读不到：' + ((r && r.msg) || '未知原因'); return; }
+    var out = [], gs = r.groups || [];
+    for (var i = 0; i < gs.length; i++) {
+      var g = gs[i] || {}, as = g.a || [];
+      out.push('─ ' + (g.g || '') + ' ─');
+      for (var j = 0; j < as.length; j++) {
+        var a = as[j] || {};
+        out.push('· ' + (a.n || ''));
+        out.push('　' + (a.d || ''));
+        if (a.u) out.push('　在哪用：' + a.u);
+      }
+      out.push('');
+    }
+    if (b) b.textContent = out.join('\n');
+  });
+}
+function showInsurance() {
+  var box = $('planBox');
+  foldOpen('planBox');
+  if (box) { box.style.whiteSpace = 'pre-wrap'; box.textContent = '🛡 保险怎么备：正按你的账本、身体记录和「车是租的」这些事实算（要几十秒，可以先上下滑）…'; }
+  toast('在算了，往下看「📋 分析结果」');
+  inv('insurance').then(function (r) {
+    if (!r || r.ok === false) { if (box) box.textContent = '🛡 保险怎么备没生成：' + ((r && r.msg) || '模型没接上'); toast('这次没接上，等下再试'); return; }
+    if (r.pending && r.job) { pollJob(r.job, box, '🛡 保险怎么备', '保险那段写好了'); return; }
+    if (box) { box.style.whiteSpace = 'pre-wrap'; box.textContent = r.text; }
+    toast('保险那段写好了');
+  });
+}
+function refreshRemindLine() {
+  inv('reminders').then(function (r) {
+    var el = $('remindLine'); if (!el) return;
+    if (!r || r.ok === false) { el.textContent = '下一次提醒：—'; return; }
+    el.textContent = '下一次提醒：' + (r.next || '—') + ' ｜ 共 ' + ((r.items || []).length) + ' 类主动提醒（点上面看全）';
+  });
+}
+// v2.3.4：历史记录（一策/预判都会留档；这里按时间倒序列出，点过的都在）
+// v2.3.60：多了「保险历史」一类（kind=insurance）
+function showHist(kind) {
+  var box = $('planBox');
+  foldOpen('planBox');
+  var isFc = kind === 'forecast';
+  var isIns = kind === 'insurance';
+  var tag = isIns ? '📜 保险历史' : (isFc ? '📜 预判历史' : '📜 一策历史');
+  if (box) { box.style.whiteSpace = 'pre-wrap'; box.textContent = tag + '：读取中…'; }
+  inv('logHist', isIns ? 'insurance' : (isFc ? 'forecast' : '')).then(function (r) {
+    if (!r || r.ok === false) { if (box) box.textContent = '读历史失败：' + ((r && r.msg) || '?'); return; }
+    var list = (r.list || []).filter(function (x) {
+      if (isIns) return x.kind === 'insurance';
+      if (isFc) return x.kind === 'forecast';
+      return (x.kind || '').indexOf('plan') === 0;
+    });
+    if (!list.length) { if (box) box.textContent = tag + '：还没有记录（生成一次就会留档）'; return; }
+    var out = [];
+    for (var i = 0; i < list.length; i++) {
+      var d = new Date(list[i].t);
+      var p2 = function (n) { return (n < 10 ? '0' : '') + n; };
+      out.push('──── ' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + ' ────');
+      out.push(list[i].text);
+    }
+    if (box) box.textContent = out.join('\n\n');
+  });
+}
+function toggleWeekly() {
+  var want = !(lastStatus && lastStatus.weeklyOn !== false);
+  inv('weeklyToggle', want).then(function (r) {
+    toast(want ? '周报提醒已开（每周日晚自动小结）' : '周报提醒已关（随时可点「本周周报」手动看）');
+    poll();
+  });
+}
+
+function renderChat(chat) {
+  var el = $('chatList'); if (!el) return;
+  if (!chat || !chat.length) { el.innerHTML = '<div class="cme">（还没有聊过——跟它说句话吧）</div>'; return; }
+  // 2026-10-21（用户报「想看前面的消息它马上就跳到最底部，没法好好看」）：
+  //   根因＝面板每 2 秒轮询一次，renderChat 每次都整块重绘并**无条件** scrollTop=scrollHeight。
+  //   改成：重绘前先记位置——用户在上翻（不在底部附近）就不动他；在底部附近才跟到最新一条。
+  var keep = el.scrollTop, wasAtBottom = (el.scrollHeight - (keep + el.clientHeight)) < 24;
+  var h = '';
+  for (var i = 0; i < chat.length; i++) {
+    var c = chat[i];
+    // 2026-10-19 用户「我让他查…你没看到它咋回复的吗」：自主续跑/网络补发这两条是**系统内部消息**，
+    //   以前原样显示成「我：（系统·继续）看 careMapSearch 实现…」，主人以为自己在跟机器对话。
+    //   现在渲染成灰色小字「它自己接着干：…」，一眼能分清哪句是他说的、哪句是它自己续的。
+    if (c.me) {
+      if (String(c.me).indexOf('（系统·') === 0) {
+        h += '<div class="cme" style="color:#aaa;font-style:italic">它自己接着干：' + esc(String(c.me).replace(/^（系统·[^）]*）/, '').slice(0, 60)) + '</div>';
+      } else {
+        h += '<div class="cme">我：' + esc(c.me) + '</div>';
+      }
+    }
+    var _e = String(c.eng || "");
+    var _tag = _e === "" ? "" : (_e === "ai-down" ? '<span class="src bad">没接通</span>' : ((_e.indexOf("ai") === 0 || _e.indexOf("plan") === 0) ? '<span class="src ok">AI</span>' : '<span class="src loc">本地</span>'));
+    h += '<div class="cpet' + (c.char === 'nurse' ? ' nurse' : '') + '">' + _tag + esc(c.pet) + '</div>';
+  }
+  el.innerHTML = h;
+  // 上翻时不抢滚动；已经在底部（或内容不够高）才跟最新
+  var maxTop = Math.max(0, el.scrollHeight - el.clientHeight);
+  el.scrollTop = wasAtBottom ? el.scrollHeight : Math.min(keep, maxTop);
+}
+// v0.5.3：13 项元素体检常显卡（用户报障「关于元素的咋没看到」——原来只在分析文字里一句短板，面板上没有）
+// v1.6.0：轨迹（面板入口 + 一行摘要）。摘要 60 秒才刷一次——每次刷新要读一天的点并算一遍。
+var _trkAt = 0;
+function toggleTrack() {
+  inv('trackToggle').then(function (r) {
+    if (!r || !r.ok) { toast('轨迹图开不了：' + ((r && r.msg) || '?')); return; }
+    toast(r.on ? '轨迹图开了（再点一下就是关）' : '轨迹图关掉了');
+    poll();
+  });
+}function refreshTrack() {
+  if (Date.now() - _trkAt < 60000) return;
+  _trkAt = Date.now();
+  inv('trackToday').then(function (r) {
+    if (!r || !r.ok) return;
+    var km = (r.distM >= 1000) ? (r.distM / 1000).toFixed(1) + ' 公里' : Math.round(r.distM || 0) + ' 米';
+    var st = (r.state && r.state.text) ? r.state.text : '';
+    if ($('trackLine')) $('trackLine').textContent = '🛣 轨迹：' + km + ' · 开车 ' + Math.round((r.driveMs || 0) / 60000) + ' 分钟 · 停靠 ' + (r.stops || 0) + ' 处' + (st ? ' ｜ ' + st : '');
+  });
+}
+function toggleGps() {
+  var want = !(lastStatus && lastStatus.work && lastStatus.work.gps);
+  inv('setGps', want).then(function (r) {
+    if (r && r.ok) { toast(want ? '定位监测：开（开始记轨迹，能看历史路线）' : '定位监测：关（不再记轨迹）'); poll(); }
+    else if (r && r.needPerm) { toast('需要定位权限，已申请——同意后再点一次'); }
+    else toast('操作失败：' + ((r && r.msg) || '?'));
+  });
+}
+function hintMoney() {  toast('这样说就行：「今天跑了 320，加油 200，在线 9 小时，23 单」；休息说「歇会儿」，起来说「起了」；问「我精力怎么样」我报分数和原因。');
+}
+// v2.3.6（2026-10-19 用户「所有要显示信息的地方都要加折叠功能，不然太不方便了」）
+// 【做法】统一一套：.foldh 那行点一下＝收起/展开；状态存 localStorage（关掉面板再开还是上次的样子）；
+//   默认：分析结果 / 周报正文 收起（一打开面板不用滑半天），聊天/饮食保持展开（常用）。
+// 【注意】生成新内容时（点「今日怎么过」「长期预判」「历史」）会自动展开对应区块——
+//   不然用户点了按钮却什么都看不见，会以为没生成。
+var FOLD = {};
+try { FOLD = JSON.parse(localStorage.getItem('foldState') || '{}') || {}; } catch (eF0) { FOLD = {}; }
+var FOLD_DEFAULT_OFF = { planBox: true, weeklyBox: true };
+function foldApply(id) {
+  var el = $('' + id); if (!el) return;
+  var open = (FOLD[id] === undefined) ? !FOLD_DEFAULT_OFF[id] : !!FOLD[id];
+  el.style.display = open ? '' : 'none';
+  var a = $('ar' + id); if (a) a.textContent = open ? '▾ 收起' : '▸ 展开';
+}
+function foldSave() { try { localStorage.setItem('foldState', JSON.stringify(FOLD)); } catch (eF1) {} }
+function foldTog(id) { var el = $('' + id); if (!el) return; var cur = (FOLD[id] === undefined) ? !FOLD_DEFAULT_OFF[id] : !!FOLD[id]; FOLD[id] = !cur; foldSave(); foldApply(id); }
+function foldOpen(id) { FOLD[id] = true; foldSave(); foldApply(id); }
+function foldAll(open) {
+  var ids = ['planBox', 'weeklyBox', 'chatList', 'dietBox'];
+  for (var i = 0; i < ids.length; i++) { FOLD[ids[i]] = !!open; foldApply(ids[i]); }
+  foldSave();
+  if (typeof ELEM_OPEN !== 'undefined') { ELEM_OPEN = !!open; try { localStorage.setItem('elemOpen', ELEM_OPEN ? '1' : '0'); } catch (eF2) {} if (typeof applyElemOpen === 'function') applyElemOpen(); }
+}
+function foldApplyAll() { var ids = ['planBox', 'weeklyBox', 'chatList', 'dietBox']; for (var i = 0; i < ids.length; i++) foldApply(ids[i]); }
+// v1.5.21（用户「元素体检显示太长加个折叠按钮」）：折叠开关
+// 【为什么】13 项每项都带「还差多少/怎么补/不补会怎样」三行，不收起时面板要滑很久才到下面的账本。
+// 【做法】按钮一键展开/收起，状态存 localStorage（下次打开还是你上次的样子）；
+//   收起时右侧只给一行摘要（近 7 天几顿 + 哪几项偏低），不丢信息但不占地方。
+// 【注意】不写死任何营养判断，摘要只用后端算好的 rows（low/weak/pct），前端不自己下结论。
+var ELEM_OPEN = false;
+try { ELEM_OPEN = String(localStorage.getItem('elemOpen')) === '1'; } catch (eEL) {}
+function applyElemOpen() {
+  var box = $('elemBox'); if (box) box.style.display = ELEM_OPEN ? 'block' : 'none';
+  var b = $('elemToggleBtn'); if (b) b.textContent = ELEM_OPEN ? '🧪 元素体检：收起' : '🧪 元素体检：展开';
+}
+function toggleElem() {
+  ELEM_OPEN = !ELEM_OPEN;
+  try { localStorage.setItem('elemOpen', ELEM_OPEN ? '1' : '0'); } catch (eEL2) {}
+  applyElemOpen();
+}
+// v0.7.0：元素体检按「量」显示——每项给估算量 + 单位 + 每日参考量 + 百分比 + 还差多少（用户点单：要有量的单位）
+function renderElem(e) {
+  var el = $('elemBox'); if (!el) return;
+  var brief = $('elemBrief');
+  var rows = (e && e.rows) ? e.rows : null;
+  if (!rows || !rows.length) {
+    el.innerHTML = '<div class="meta">🧪 元素体检：还没有数据——吃饭拍一张（或说一句吃了啥），我就按量估出每一项（钙/铁/锌/硒/钾/镁/钠/维A/维B/维C/维D/维E/膳食纤维）</div>';
+    if (brief) brief.textContent = '还没有数据（拍张饭或说一句吃了啥）';
+    applyElemOpen();
+    return;
+  }
+  var h = '';
+  // 收起时用的一行摘要：近 7 天几顿 + 哪几项偏低（只用后端算好的 low/weak，前端不自己判）
+  var lowNames = [];
+  for (var k = 0; k < rows.length; k++) { if (rows[k].low || rows[k].weak) lowNames.push(rows[k].name); }
+  if (brief) {
+    brief.textContent = '近 7 天 ' + e.n + ' 天 / ' + e.meals + ' 顿 · ' +
+      (lowNames.length ? ('偏低 ' + lowNames.length + ' 项：' + lowNames.slice(0, 4).join('、') + (lowNames.length > 4 ? '…' : '')) : '各项都够了 ✓');
+  }
+  for (var i = 0; i < rows.length; i++) {
+    var it = rows[i];
+    var pct = Math.max(0, Math.min(100, Math.round(it.pct || 0)));
+    var col = it.low ? '#f59e0b' : '#34d399';
+    var amt = it.limit
+      ? ('≈' + it.est.toFixed(it.dec) + it.u + '（别超 ' + it.rda + it.u + '）')
+      : ('≈' + it.est.toFixed(it.dec) + it.u + ' / ' + it.rda + it.u + '（' + pct + '%）');
+    h += '<div style="display:flex;align-items:center;gap:6px;margin-top:3px">' +
+      '<span style="flex:0 0 76px;color:#aeb9c7">' + esc(it.name) + '</span>' +
+      '<span style="flex:1 1 auto;height:7px;background:#39414d;border-radius:4px;overflow:hidden;display:block"><span style="display:block;height:7px;width:' + pct + '%;background:' + col + '"></span></span>' +
+      '<span style="flex:0 0 auto;color:' + (it.low ? '#f59e0b' : '#8b96a5') + ';font-size:11.5px">' + esc(amt) + '</span></div>';
+    // 缺多少 + 怎么补 + 不补会怎样（用户点单）
+    if (it.low || it.weak) {
+      h += '<div style="margin:0 0 6px 82px;color:#8b96a5;font-size:11.5px;line-height:1.55">';
+      if (!it.limit && it.gap > 0) h += '<span style="color:#f59e0b">还差 ' + it.gap.toFixed(it.dec) + it.u + '</span>';
+      if (it.adv && it.adv.s) h += '<br>补：' + esc(it.adv.s);
+      if (it.adv && it.adv.m) h += '<br>不补：' + esc(it.adv.m) + (it.adv.t && it.adv.t !== '—' ? '（' + esc(it.adv.t) + '）' : '');
+      h += '</div>';
+    }
+  }
+  // 诚实口径放尾注（原来在标题里，折叠后标题不常显，不能把这句丢了）
+  h += '<div class="meta" style="margin-top:4px;font-size:11.5px">按量估算，不是化验；数字是近 7 天的平均。</div>';
+  el.innerHTML = h;
+  applyElemOpen();
+}
+// v0.7.0：今天怎么吃（性价比版）——按「健康缺口 ÷ 单价」算出来的具体吃法
+function renderDiet(d) {
+  var el = $('dietBox'); if (!el) return;
+  var hd = $('hddietBox');
+  if (!d || !d.ok) { el.innerHTML = ''; if (hd) hd.style.display = 'none'; return; }   // 没数据就别留个空壳折叠头
+  if (hd) hd.style.display = '';
+  var h = '<div style="font-weight:700;margin:8px 0 4px">🍚 今天怎么吃（预算 ' + d.budget + ' 元）</div>';
+  var order = ['早餐', '午餐', '晚餐', '加餐'];
+  for (var i = 0; i < order.length; i++) {
+    var its = (d.meals || {})[order[i]] || [];
+    if (!its.length) continue;
+    h += '<div>· <b style="color:#aeb9c7">' + order[i] + '</b>：' + esc(its.join(' + ')) + '</div>';
+  }
+  if (d.covered && d.covered.length) h += '<div class="meta">能补上：' + esc(d.covered.join('、')) + '</div>';
+  if (d.lefts && d.lefts.length) h += '<div class="meta" style="color:#f59e0b">还差：' + esc(d.lefts.join('；')) + '</div>';
+  // 2026-10-25 18:2x：菜单改由模型现排，还没排过时给一句引导（不再拿写死食材表凑数）
+  if (d.hint) h += '<div class="meta" style="color:#8b9bb4">' + esc(d.hint) + '</div>';
+  el.innerHTML = h;
+}
+function renderFacts(facts) {  var el = $('factList'); if (!el) return;
+  if (!facts || !facts.length) { el.innerHTML = '<div class="cme">（还空着——说一句「记：……」或在这里直接写）</div>'; return; }
+  var h = '';
+  for (var i = 0; i < facts.length; i++) {
+    h += '<div class="fact"><span class="ftxt">' + esc(facts[i].text) + '</span><button class="fx" onclick="delFact(' + i + ')">✕</button></div>';
+  }
+  el.innerHTML = h;
+}
+function renderEvents(evs) {
+  var el = $('evList'); if (!el) return;
+  if (!evs || !evs.length) { el.innerHTML = '<div class="cme">（还没有事件）</div>'; return; }
+  var h = '';
+  for (var i = 0; i < evs.length; i++) {
+    var e = evs[i];
+    var con = (e.cat === 'concern' || e.cat === 'health');
+    h += '<div class="ev">' + fmtTime(e.t) + ' <span class="tag' + (con ? ' con' : '') + '">' + (con ? '关切' : '好消息') + '</span> ' + esc(e.text || e.type) + '</div>';
+  }
+  el.innerHTML = h;
+}
+function setIfIdle(id, v) { var el = $(id); if (el && document.activeElement !== el && String(el.value) !== String(v)) el.value = v; }
+
+function render(r) {
+  if (!r || r.ok === false) { $('connBadge').textContent = '连接中…'; return; }
+  lastStatus = r;
+  $('connBadge').textContent = '已连接';
+  $('connBadge').className = 'badge on';
+  $('verBadge').textContent = 'v' + (r.ver || '?');
+  // 宠物卡
+  // 2026-10-25：这里不再写 emoji——面板那块显示的是**真的 3D 人**（iframe），
+  //   所以千万不能 textContent 赋值（会把 iframe 内容清掉）。只设置一次 src，模型跟随 status.d3Model。
+  try {
+    var _ifr = $('d3mini');
+    if (_ifr && !_ifr.getAttribute('data-once')) {
+      var _mf = r.d3Model ? ('&model=' + encodeURIComponent(r.d3Model)) : '';
+      _ifr.setAttribute('data-once', '1');
+      _ifr.src = 'http://127.0.0.1:19192/index.html?t=' + Date.now() + _mf + '#mini=1';
+    }
+  } catch (eMini) {}
+  var m = r.mode || 'auto';
+  $('charAuto').className = m === 'auto' ? 'act' : 'bGhost';
+  $('charGenki').className = m === 'genki' ? 'act' : 'bGhost';
+  $('charNurse').className = m === 'nurse' ? 'act' : 'bGhost';
+  $('ttsLine').innerHTML = 'TTS：' + (r.tts && r.tts.ready ? '就绪 ✓' : '未就绪' + (r.tts && r.tts.err ? '（' + esc(r.tts.err) + '）' : '（稍候/检查系统语音引擎）')) + ' ｜ 宠物：' + (r.floatLive ? '在屏上 ✓' : (r.floatOn ? '待命（等悬浮窗权限）' : '休息中')) + ' ｜ 戳过 ' + (r.pokeN || 0) + ' 次';
+  // 开关卡
+  $('floatBtn').textContent = r.floatLive ? '悬浮宠物：在屏 ✓' : '悬浮宠物：关';
+  $('floatBtn').className = 'tbtn ' + (r.floatLive ? 'on' : 'off');
+  // v1.5.17：路况开关提到开关排（跟悬浮宠物并列），文字就是状态：开/关
+  var tb = $('trafficBtn');
+  if (tb) {
+    tb.textContent = r.mapOn ? '🗺️ 路况地图：开（点我关）' : '🗺️ 路况地图：关';
+    tb.className = 'tbtn ' + (r.mapOn ? 'on' : 'off');
+  }
+  $('d3Btn').className = 'tbtn ' + (r.d3On ? 'on' : 'off');
+  $('weeklyToggleBtn').className = 'tbtn ' + (r.weeklyOn !== false ? 'on' : 'off');
+  $('healthLine').textContent = '健康档案：屏幕自记今日约 ' + (r.screenToday || 0) + ' 分钟 ｜ 周报提醒：' + (r.weeklyOn !== false ? '开' : '关');
+  $('soundBtn').textContent = r.soundOn ? '声音：开 🔊' : '声音：关 🔇';
+  $('soundBtn').className = 'tbtn ' + (r.soundOn ? 'on' : 'off');
+  // 2026-10-23：播报详略三段按钮（0 不读 / 1 摘要 / 2 完整）
+  try {
+    var _smode = (r.sayMode === 0 || r.sayMode === 2) ? r.sayMode : 1;
+    var _sbtn = $('sayModeBtn');
+    if (_sbtn) {
+      _sbtn.textContent = _smode === 0 ? '🔇 播报：不读' : (_smode === 2 ? '🔊 播报：完整' : '🔉 播报：摘要');
+      _sbtn.className = 'tbtn ' + (_smode === 0 ? 'off' : 'on');
+    }
+    // 聊天区那颗小的跟着同步（同一个档位）
+    var _cbtn = $('chatSayBtn');
+    if (_cbtn) {
+      _cbtn.textContent = _smode === 0 ? '🔇' : (_smode === 2 ? '🔊' : '🔉');
+      _cbtn.className = 'tbtn ' + (_smode === 0 ? 'off' : 'on');
+    }
+  } catch (eSM) {}
+  var dev = [];
+  if (typeof r.battery === 'number' && r.battery >= 0) dev.push('电量 ' + r.battery + '%' + (r.charging ? '（充电中）' : ''));
+  if (typeof r.temp === 'number' && r.temp > 0) dev.push('温度 ' + r.temp + '℃');
+  if (typeof r.storage === 'number' && r.storage >= 0) dev.push('存储已用 ' + r.storage + '%');
+  dev.push('悬浮窗权限 ' + (r.overlay ? '✓' : '✗'));
+  $('devLine').textContent = '设备：' + dev.join(' ｜ ');
+  // 安静卡
+  var q = r.quiet || {};
+  $('dndBtn').textContent = q.dndOn ? '勿扰：开 🌙' : '勿扰：关';
+  $('dndBtn').className = 'tbtn ' + (q.dndOn ? 'on' : 'off');
+  setIfIdle('dndFrom', q.from || '23:00');
+  setIfIdle('dndTo', q.to || '08:00');
+  setIfIdle('capCel', q.capCel != null ? q.capCel : 6);
+  setIfIdle('capCon', q.capCon != null ? q.capCon : 6);
+  var f = r.freq || {};
+  $('quietLine').textContent = '今日播报：恭喜 ' + (f.cel || 0) + ' 次 ｜ 关切 ' + (f.con || 0) + ' 次（每 ' + (q.minGapSec || 90) + ' 秒最多一条；被冷落会自动收敛）';
+  // 谈心&记忆
+  renderChat(r.chat || []);
+  renderElem(r.elemAmt || r.elem);
+  renderDiet(r.diet);
+  renderFacts(r.facts || []);
+  // v0.6.0：跑车三块（账本/精力/休息）
+  try {
+    var mo = r.money, en = r.energy, rs = r.rest, wk = r.work || {};
+    if ($('moneyLine')) $('moneyLine').textContent = '💰 ' + (mo && mo.text ? mo.text : '今天还没记账（说「今天跑了 320，加油 200」）') + (wk.platform ? ' ｜ 平台：' + wk.platform : '');
+    if ($('energyLine')) $('energyLine').textContent = '⚡ ' + (en ? ('精力约 ' + en.score + '/100（' + en.level + '，粗估）' + (en.reasons && en.reasons.length ? '：' + en.reasons.join('；') : '')) : '—');
+    if ($('restLine')) $('restLine').textContent = '😴 今日休息 ' + (rs ? rs.mins : 0) + ' 分钟 · ' + (rs ? rs.n : 0) + ' 次' + (rs && rs.open ? '（正在歇，已 ' + rs.openMins + ' 分钟）' : '');
+    if ($('gpsBtn')) { $('gpsBtn').className = 'tbtn ' + (wk.gps ? 'on' : 'off'); $('gpsBtn').textContent = '📍定位监测' + (wk.gps ? '：开' : ''); }
+    if ($('trackBtn')) { $('trackBtn').className = 'tbtn ' + (r.trackOn ? 'on' : 'off'); $('trackBtn').textContent = r.trackOn ? '🛣 轨迹地图：开（点我关）' : '🛣 轨迹地图：关'; }
+    refreshTrack();
+  } catch (eCar) {}
+  var v = r.voice || {};
+  if (v.rec) { $('micBtn').textContent = '🔴 录音中…点停止'; $('micBtn').className = 'bWarn'; $('voiceLine').textContent = '语音：我在听——说完点「停止」'; }
+  else {
+    $('micBtn').textContent = '🎤 说给它听'; $('micBtn').className = 'bGo';
+    if (v.busy) $('voiceLine').textContent = '语音：' + (v.phase === 'think' ? '🤔 在想怎么回你…' : '👂 转写中…');
+    else if (v.err) $('voiceLine').textContent = '语音：' + v.err;
+    else if (v.text) $('voiceLine').textContent = '语音：上次听到「' + String(v.text).slice(0, 24) + '」';
+    else $('voiceLine').textContent = '语音：待命（点「说给它听」→ 说完再点一下）';
+  }
+  var aiOn = (r.aiOn !== false);
+  $('aiBtn').className = 'tbtn ' + (aiOn ? 'on' : 'off');
+  $('aiBtn').textContent = aiOn ? 'AI大脑 开' : 'AI大脑 关';
+  var tapV = (r.tapMode === 'voice') ? 'voice' : 'input';
+  $('tapModeBtn').className = 'tbtn ' + (tapV === 'voice' ? 'on' : 'off');
+  $('tapModeBtn').textContent = tapV === 'voice' ? '👆单击·语音' : '👆单击·出输入框';
+  // 2026-10-25：两个自主行为开关的状态回显（值来自 App 的状态文件，重装也还在）
+  var _dt = (r.d3Talk !== false), _da = (r.d3Auto !== false);
+  try {
+    $('d3TalkBtn').className = 'tbtn ' + (_dt ? 'on' : 'off');
+    $('d3TalkBtn').textContent = _dt ? '🔊 自己动·说话' : '🔇 自己动·静音';
+    $('d3AutoBtn').className = 'tbtn ' + (_da ? 'on' : 'off');
+    $('d3AutoBtn').textContent = _da ? '👀 自己变小/躲' : '👀 不自己变';
+  } catch (eD3Btn) {}
+  // 2026-10-25：常听环境声开关回显 + 今天已搭话句数（记录只留最近 120 条，不会无限涨）
+  try {
+    var _amb = !!r.ambOn;
+    $('ambBtn').className = 'tbtn ' + (_amb ? 'on' : 'off');
+    $('ambBtn').textContent = _amb ? '👂 常听·开' : '👂 常听·关';
+    $('ambLine').textContent = '常听：' + (_amb ? ('今天说了 ' + (r.ambN || 0) + ' 次') : '关着') + (r.ambLog && r.ambLog.length ? (' ｜ 最近：' + String(r.ambLog[r.ambLog.length - 1]).slice(0, 18)) : '');
+  } catch (eAmb) {}
+  // 2026-10-25：3D 固定表演开关回显（循环全部动作 / 自己走动）
+  try {
+    var _ds = (r.d3Show !== false);
+    $('d3ShowBtn').className = 'tbtn ' + (_ds ? 'on' : 'off');
+    $('d3ShowBtn').textContent = _ds ? '🎬 固定循环动作' : '🚶 自己走动';
+    $('d3ShowLine').textContent = '3D：' + (r.d3Live ? '在屏幕上' : '没开') + (_ds ? (' ｜ 每条 ' + Math.round((r.d3LoopMs || 3000) / 100) / 10 + ' 秒') : '');
+  } catch (eD3s) {}
+  $('moodLine').textContent = '情绪时间线：' + (r.moodN || 0) + ' 条（都在本地，你随时可看）';
+  renderEvents(r.events || []);
+  if (r.logTail && r.logTail.length) $('logTail').textContent = r.logTail.join('\n');
+}
+function poll() { inv('status').then(render); }
+try { applyElemOpen(); } catch (eAE) {}
+// 2026-10-25（主人点单）：两个自主行为开关（自己动时说不要说话、能不能自己变小/躲），都落盘、重装不丢
+function toggleD3Talk() {
+  var cur = lastStatus ? (lastStatus.d3Talk !== false) : true;
+  var want = !cur;
+  inv('d3TalkSet', want).then(function () {
+    toast(want ? '自己动的时候会说话了' : '自己动的时候只弹气泡、不出声');
+    poll();
+  }).catch(function () { toast('没存上，再试一次'); });
+}
+function toggleD3Auto() {
+  var cur = lastStatus ? (lastStatus.d3Auto !== false) : true;
+  var want = !cur;
+  inv('d3AutoSet', want).then(function () {
+    toast(want ? '它会自己变小、躲到边上，不挡你' : '它不会再自己变形了');
+    poll();
+  }).catch(function () { toast('没存上，再试一次'); });
+}
+// 2026-10-25（主人点单）：常听环境声（默认开）——关了就完全不听
+function toggleAmb() {
+  var cur = lastStatus ? !!lastStatus.ambOn : true;
+  var want = !cur;
+  inv('ambSet', want).then(function () {
+    toast(want ? '开始听了（安静时段不说、每天最多 8 句）' : '不再听周围的声音了');
+    poll();
+  }).catch(function () { toast('没存上，再试一次'); });
+}
+// 2026-10-25（主人点单）：3D 人固定在那里循环演全部动作；不想看了就关掉回到自己走动
+function toggleD3Show() {
+  var cur = lastStatus ? (lastStatus.d3Show !== false) : true;
+  var want = !cur;
+  inv('d3ShowSet', want).then(function () {
+    toast(want ? '它固定住，开始一条条演全部动作（不消失、不挡中间）' : '它恢复自己走动、自己变小变大');
+    poll();
+  }).catch(function () { toast('没存上，再试一次'); });
+}
+try { var ci = $('chatInput'); if (ci && ci.addEventListener) ci.addEventListener('keydown', function (e) { if (e && e.key === 'Enter') sendChat(); }); } catch (e) {}
+// v2.1.4（2026-10-19 02:1x·用户点单「账本显示和元素显示都加上历史查看按钮，可以随时查看所有历史」）：
+//   全量历史浮层——只读展示，按天倒序（最近的在最上面）。数据全靠 main.js 的 hist 桥拿本地记忆，
+//   页面不做任何判断、也不改任何数据。
+function fmtY(n) {
+  var v = Number(n) || 0;
+  var s = Math.abs(v) < 1e-9 ? '0' : v.toFixed(2);
+  return s.replace(/\.00$/, '').replace(/(\.\d)0$/, '$1');
+}
+function openHist(what) {
+  var m = $('histMask'); if (m) m.style.display = 'block';
+  var tb = $('histTitle'), bb = $('histBody'), hb = $('histHint');
+  if (bb) bb.textContent = '读取中…';
+  inv('hist', what, 0).then(function (r) {
+    if (!r || !r.ok) { if (bb) bb.textContent = '读不到历史：' + ((r && r.msg) || '未知原因'); return; }
+    var rows = r.rows || [];
+    if (tb) tb.textContent = what === 'money' ? ('💰 账本历史（' + rows.length + ' 天）') : ('🧪 元素历史（' + rows.length + ' 天）');
+    if (hb) hb.textContent = what === 'money' ? '每天合计 + 每一笔明细，最近的在最上面' : '每天的元素估算合计（口径同「今日元素」），最近的在最上面';
+    if (!rows.length) {
+      if (bb) bb.textContent = what === 'money' ? '还没有任何记账记录' : '还没有任何饮食元素记录（拍一顿饭、或说一句吃了什么就有了）';
+      return;
+    }
+    var out = [], i, j;
+    if (what === 'money') {
+      for (i = 0; i < rows.length; i++) {
+        var d = rows[i];
+        var head = d.dk + '　收 ' + fmtY(d.ins) + ' ／ 支 ' + fmtY(d.outs) + ' ／ 净 ' + fmtY(d.net);
+        if (d.hours) head += '　在线 ' + d.hours + ' 小时';
+        if (d.orders) head += ' · ' + d.orders + ' 单';
+        out.push(head);
+        var its = d.items || [];
+        for (j = 0; j < its.length; j++) {
+          var it = its[j];
+          out.push('　· ' + (it.kind === 'in' ? '收 ' : '支 ') + fmtY(it.amt) + (it.cat ? '（' + it.cat + '）' : '') + (it.raw ? ' ' + it.raw : ''));
+        }
+        out.push('');
+      }
+    } else {
+      var ref = r.ref || {};
+      for (i = 0; i < rows.length; i++) {
+        var e = rows[i];
+        out.push(e.dk + '　' + (e.meals || 0) + ' 顿');
+        var segs = [];
+        for (var k in e.sum) {
+          var rf = ref[k] || {};
+          var rda = Number(rf.rda || 0);
+          var v = e.sum[k];
+          var pct = rda > 0 ? Math.round(v / rda * 100) : 0;
+          segs.push((rf.n || k) + ' ' + (v >= 100 ? Math.round(v) : Math.round(v * 10) / 10) + (rf.u || '') + (rda ? '(' + pct + '%)' : ''));
+        }
+        out.push('　' + (segs.length ? segs.join('　') : '（这天的饭没记到元素）'));
+        out.push('');
+      }
+    }
+    if (bb) bb.textContent = out.join('\n');
+  });
+}
+function closeHist() { var m = $('histMask'); if (m) m.style.display = 'none'; }
+// ============ 「🔍 它在干嘛」：动作流水（2026-10-19 用户点单）============
+// 数据源：main.js 的 ACT 环形缓冲（最近 120 条）+ busy（正在做的那一件）。
+// 渲染：倒序（最新在上），时间取 ts（磁盘历史）或 t（内存条目）；读不到就如实说，不装。
+var ACT_TIMER = null;
+function actTime(it) {
+  try {
+    if (it && it.ts) return it.ts;                              // 磁盘历史自带 "2026-10-19 15:24:31"
+    if (it && it.t) { var d = new Date(it.t); function p(n) { return ('0' + n).slice(-2); } return p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()); }
+  } catch (e) {}
+  return '';
+}
+function actRender(r) {
+  var b = $('actBusy'), l = $('actList');
+  var b2 = $('actBusy2');
+  if (!b || !l) return;
+  if (!r || !r.ok) { b.style.color = '#999'; b.textContent = '读不到（' + ((r && r.msg) || '未连接') + '）'; if (b2) b2.textContent = '—'; return; }
+  var bus = r.busy;
+  b.style.color = bus ? '#7a4bd0' : '#999';
+  // 正在做的那一件：优先说人话（s），技术细节退成灰字
+  if (bus) {
+    b.innerHTML = '▶ ' + esc(bus.s || bus.k || '') +
+      (bus.x ? ' <span style="color:#aaa;font-weight:400;font-size:11px">' + esc(bus.x) + '</span>' : '') +
+      ' <span style="color:#bbb;font-weight:400;font-size:11px">（进行中）</span>';
+  } else {
+    b.textContent = '待命（没在做事）';
+  }
+  // 谈心区上方的精简状态：只有 busy 一行；没在做事就显示最近一条，让人知道它刚刚干了啥
+  if (b2) {
+    var last = (r.list || []).length ? r.list[r.list.length - 1] : null;
+    b2.textContent = bus ? ('▶ ' + (bus.s || bus.k || '')) : (last ? ('· 刚刚：' + (last.s || last.k || '')) : '· 待命');
+    b2.style.color = bus ? '#7a4bd0' : '#999';
+  }
+  // 倒序：最新在最上面。用户往上翻看历史时不要把他拽回顶部
+  var keepScroll = l.scrollTop;
+  var nearTop = keepScroll < 24;
+  var arr = (r.list || []).slice().reverse(), rows = [];
+  for (var i = 0; i < arr.length; i++) {
+    var it = arr[i] || {};
+    rows.push('<div style="border-bottom:1px dashed #f0f0f0;padding:3px 0;' + (i === 0 ? 'background:#faf7ff;' : '') + '">' +
+      '<span style="color:#bbb">' + esc(actTime(it)) + '</span> ' +
+      '<span style="color:#333">' + esc(it.s || it.x || '') + '</span>' +
+      (it.s && it.x ? ' <span style="color:#bbb;font-size:11px">' + esc(it.x) + '</span>' : '') +
+      '</div>');
+  }
+  l.innerHTML = rows.length ? rows.join('') : '<div style="color:#999">还没有动作记录</div>';
+  l.scrollTop = nearTop ? 0 : keepScroll;
+}
+function actRefresh() {
+  inv('actList', 40).then(function (r) { actRender(r); }).catch(function (e) { actRender({ ok: false, msg: String(e) }); });
+}
+// v2.3.6：进面板先把折叠状态按上次的样子摆好（默认「分析结果/周报正文」收起）
+try { foldApplyAll(); } catch (eFA) {}
+// 2026-10-21：dietBox 以前没有折叠头，却被「全部收起」收藏了——这里只恢复一次，之后交给折叠头自己管。
+try {
+  if (!localStorage.getItem('dietFoldFix1021')) {
+    if (FOLD['dietBox'] === false) { FOLD['dietBox'] = true; foldSave(); foldApply('dietBox'); }
+    localStorage.setItem('dietFoldFix1021', '1');
+  }
+} catch (eDF) {}
+setInterval(poll, 2000);
+poll();
+// v2.3.60：进面板先把「下一次提醒」算出来，之后每分钟刷一次（提醒都是按分钟变的）
+try { refreshRemindLine(); } catch (eRL0) {}
+setInterval(function () { try { refreshRemindLine(); } catch (eRL) {} }, 60000);
+// 「🔍 它在干嘛」：进面板立刻拉一次，之后每 2 秒刷（跟状态轮询同频，动作基本实时滚动）
+try { actRefresh(); } catch (eAR0) {}
+setInterval(function () { try { actRefresh(); } catch (eAR) {} }, 2000);
+</script>
+</body>
+</html>
