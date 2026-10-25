@@ -61,7 +61,7 @@ let web = ui["web"];
 //   打包时只升了 project.json，这行忘了跟着改，于是左上角、启动信标、实例.json 全报旧版本
 //   （1.5.22、2.0.3 已经栽过两次，这次是第三次）。彻底改法：运行时直接读 APK 自己的 versionName，
 //   取不到才退回下面的兜底常量——以后只改 project.json 一处就够，不可能再对不上。
-let VER = "2.6.4";   // 兜底值（与 project.json 的 versionName 保持一致，有测试锁着）
+let VER = "2.6.5";   // 兜底值（与 project.json 的 versionName 保持一致，有测试锁着）
 // 【2026-10-19 实机纠正】上一版写成 app.versionName，结果左上角显示 **6.7.0**——那是宿主 AutoJs6 的版本号，
 // 不是打包后 App 的版本。正确做法：拿本 App 自己的包名去 PackageManager 读 versionName；
 // 只有在 AutoJs6 里直接跑源码（包名是 org.autojs.autojs6）时才用下面的兜底常量。
@@ -1761,7 +1761,7 @@ function careSelfContext() {
             "②b **你自己有一个身体（body_do 工具）**：主人说「走过来／挥个手／坐下／跳一下／转过来看看我／打个拳」这类要你**用身体做动作**的话时，" +
             "**必须调 body_do 让它真做**（光回一句「好呀」等于没做）；不确定当前身体有哪些动作，就把 action 填 list 查一次（法师 76 条；也可以直接填原名如 Spellcast_Long）；" +
             "③饮食：拍饭或说「吃了啥」→ 营养塔＋元素体检（每项按**量**给：估算多少 mg/μg/g、每日参考量、还差多少、怎么补、不补会怎样）；" +
-            "③b 今天怎么吃（diet_plan 工具）：按「健康缺口＋钱包预算」算一日三餐＋加餐的具体吃法与花费，预算按**主人说过的每天净收入的一半**算（他说 30 元/天 → 一天 15 元；没说过才退回日均流水的 25%，主人直接给的数优先）；" +
+            "③b 今天怎么吃（diet_plan 工具）：按「健康缺口＋钱包预算」现排一日三餐＋加餐的具体吃法与花费（菜名由模型排，不是代码里那张固定表），预算按**主人说过的每天净收入的一半**算（他说 30 元/天 → 一天 15 元；没说过才退回日均流水的 25%，主人直接给的数优先）。**diet_plan 回「这次没排出来」就如实告诉主人没排出来，别自己编一份菜单顶上**；" +
             "④健康档案：体重/血压/心率/血氧/血糖/体温/腰围/身高，报数字就记；" +
             "⑤跑车账本：说「今天跑了320，加油200，在线9小时，23单」→ 算净收入、时薪、每单均价；账本会自动分类（加油充电/吃饭/车务/份子租金/生活），问「这周花了多少/钱都花哪了」用 money_report；" +
             "⑤b **每月固定要交的钱**（车租金／房贷／会员费这类「每月/每年固定」的）用 fixed_add 记（name＋amount＋cycle），**千万别当成今天的支出用 money_add 记**——那样今日支出会被凭空拉高；问「每月固定多少」就用 read_data 的账本行看；" +
@@ -5988,36 +5988,16 @@ function moneySummaryText(days) {
     return s;
 }
 
-// ===== v0.7.0 今日怎么吃（性价比最优）——用户 2026-10-18 点单 =====
-// 思路：把「健康缺口」和「钱包」放在一张表上算——每种常见食材给价格与营养（按一份），
-//   缺口/价格 = 性价比，在预算内贪心挑最划算的组合，保证有主食/蛋白/蔬菜/水果奶蛋四类。
-// 诚实边界：营养值是常见食材的公开大致值；价格是普通小城市/县城的常见价（元/份），各地有出入。
-var FOOD_LIB = [
-    { n: "米饭(2两)", p: 1.0, g: "main", cal: 230, pro: 4, fat: 0.5, carb: 50, fib: 0.6, ca: 10, fe: 0.4, zn: 0.6, se: 2, k: 60, mg: 15, na: 2, va: 0, vb: 0.05, vc: 0, vd: 0, ve: 0.1, i: 0 },
-    { n: "馒头(2个)", p: 1.5, g: "main", cal: 280, pro: 8, fat: 1, carb: 58, fib: 1.6, ca: 30, fe: 1, zn: 0.8, se: 6, k: 100, mg: 30, na: 150, va: 0, vb: 0.12, vc: 0, vd: 0, ve: 0.3, i: 0 },
-    { n: "面条(1碗)", p: 2, g: "main", cal: 300, pro: 9, fat: 1.5, carb: 60, fib: 1.5, ca: 20, fe: 1, zn: 0.9, se: 8, k: 80, mg: 25, na: 200, va: 0, vb: 0.1, vc: 0, vd: 0, ve: 0.2, i: 0 },
-    { n: "杂粮粥(1碗)", p: 1.5, g: "main", cal: 150, pro: 4, fat: 1, carb: 30, fib: 2.5, ca: 20, fe: 1, zn: 0.8, se: 3, k: 120, mg: 40, na: 5, va: 0, vb: 0.15, vc: 0, vd: 0, ve: 0.2, i: 0 },
-    { n: "鸡蛋(1个)", p: 1.5, g: "daily", cal: 75, pro: 6.5, fat: 5, carb: 0.5, fib: 0, ca: 25, fe: 1, zn: 0.6, se: 10, k: 70, mg: 6, na: 70, va: 70, vb: 0.1, vc: 0, vd: 1, ve: 0.5, i: 10 },
-    { n: "牛奶(250ml)", p: 3, g: "daily", cal: 160, pro: 8, fat: 8, carb: 12, fib: 0, ca: 300, fe: 0.3, zn: 1, se: 5, k: 380, mg: 30, na: 100, va: 60, vb: 0.4, vc: 2, vd: 1.5, ve: 0.2, i: 15 },
-    { n: "酸奶(200g)", p: 3.5, g: "daily", cal: 140, pro: 6, fat: 5, carb: 18, fib: 0, ca: 240, fe: 0.2, zn: 0.8, se: 4, k: 300, mg: 25, na: 80, va: 40, vb: 0.3, vc: 2, vd: 0.5, ve: 0.1, i: 12 },
-    { n: "豆腐(300g)", p: 2.5, g: "protein", cal: 240, pro: 24, fat: 12, carb: 9, fib: 1.5, ca: 350, fe: 5, zn: 3, se: 6, k: 350, mg: 90, na: 15, va: 0, vb: 0.15, vc: 0, vd: 0, ve: 2, i: 0 },
-    { n: "豆浆(500ml)", p: 2, g: "daily", cal: 160, pro: 15, fat: 8, carb: 10, fib: 1.5, ca: 50, fe: 2.5, zn: 1.5, se: 3, k: 600, mg: 60, na: 10, va: 0, vb: 0.1, vc: 0, vd: 0, ve: 0.5, i: 0 },
-    { n: "瘦肉(100g)", p: 9, g: "protein", cal: 200, pro: 20, fat: 12, carb: 0, fib: 0, ca: 10, fe: 2.5, zn: 2.5, se: 12, k: 300, mg: 22, na: 60, va: 10, vb: 0.5, vc: 0, vd: 0, ve: 0.3, i: 3 },
-    { n: "鸡胸肉(150g)", p: 8, g: "protein", cal: 200, pro: 34, fat: 5, carb: 0, fib: 0, ca: 15, fe: 1.5, zn: 1.5, se: 20, k: 500, mg: 45, na: 80, va: 15, vb: 0.9, vc: 0, vd: 0.2, ve: 0.4, i: 5 },
-    { n: "鱼(150g)", p: 10, g: "protein", cal: 180, pro: 27, fat: 7, carb: 0, fib: 0, ca: 60, fe: 1.5, zn: 1.5, se: 25, k: 500, mg: 50, na: 100, va: 20, vb: 0.2, vc: 0, vd: 5, ve: 1, i: 30 },
-    { n: "猪肝(100g)", p: 6, g: "protein", cal: 130, pro: 19, fat: 4, carb: 5, fib: 0, ca: 15, fe: 22, zn: 5, se: 20, k: 250, mg: 24, na: 70, va: 5000, vb: 0.4, vc: 20, vd: 1, ve: 0.9, i: 15 },
-    { n: "菠菜(300g)", p: 3, g: "veg", cal: 80, pro: 8, fat: 1, carb: 13, fib: 6, ca: 300, fe: 8, zn: 2, se: 3, k: 900, mg: 170, na: 250, va: 1400, vb: 0.2, vc: 100, vd: 0, ve: 6, i: 10 },
-    { n: "青菜/白菜(300g)", p: 2.5, g: "veg", cal: 60, pro: 4, fat: 0.5, carb: 10, fib: 4, ca: 200, fe: 3, zn: 1, se: 2, k: 700, mg: 80, na: 150, va: 600, vb: 0.15, vc: 80, vd: 0, ve: 3, i: 5 },
-    { n: "土豆(300g)", p: 2, g: "veg", cal: 230, pro: 6, fat: 0.6, carb: 50, fib: 5, ca: 30, fe: 2.4, zn: 1, se: 2, k: 1000, mg: 70, na: 15, va: 0, vb: 0.2, vc: 40, vd: 0, ve: 0.5, i: 0 },
-    { n: "西红柿(200g)", p: 2, g: "veg", cal: 40, pro: 2, fat: 0.4, carb: 8, fib: 2, ca: 20, fe: 0.8, zn: 0.4, se: 1, k: 400, mg: 20, na: 10, va: 300, vb: 0.1, vc: 40, vd: 0, ve: 1, i: 2 },
-    { n: "胡萝卜(200g)", p: 1.5, g: "veg", cal: 80, pro: 2, fat: 0.4, carb: 18, fib: 5, ca: 60, fe: 1, zn: 0.5, se: 1, k: 600, mg: 25, na: 150, va: 1600, vb: 0.1, vc: 12, vd: 0, ve: 1, i: 0 },
-    { n: "香蕉(1根)", p: 1.5, g: "fruit", cal: 90, pro: 1, fat: 0.3, carb: 22, fib: 2.5, ca: 8, fe: 0.3, zn: 0.2, se: 1, k: 400, mg: 30, na: 1, va: 10, vb: 0.05, vc: 9, vd: 0, ve: 0.2, i: 0 },
-    { n: "橙子/苹果(1个)", p: 2, g: "fruit", cal: 80, pro: 1, fat: 0.3, carb: 20, fib: 3, ca: 30, fe: 0.3, zn: 0.2, se: 1, k: 200, mg: 20, na: 2, va: 20, vb: 0.06, vc: 50, vd: 0, ve: 0.2, i: 1 },
-    { n: "花生/坚果(30g)", p: 2, g: "fruit", cal: 180, pro: 7, fat: 15, carb: 6, fib: 2.5, ca: 30, fe: 0.6, zn: 1, se: 2, k: 200, mg: 60, na: 5, va: 0, vb: 0.1, vc: 0, vd: 0, ve: 3, i: 0 },
-    { n: "海带/紫菜(1份)", p: 2, g: "veg", cal: 30, pro: 2, fat: 0.3, carb: 6, fib: 3, ca: 100, fe: 3, zn: 1, se: 5, k: 200, mg: 60, na: 300, va: 20, vb: 0.05, vc: 5, vd: 0, ve: 0.5, i: 800 },
-    { n: "青椒(200g)", p: 2, g: "veg", cal: 60, pro: 2, fat: 0.4, carb: 14, fib: 4, ca: 30, fe: 0.8, zn: 0.5, se: 1, k: 400, mg: 25, na: 10, va: 60, vb: 0.1, vc: 140, vd: 0, ve: 1, i: 3 },
-    { n: "食用油(15g)", p: 1, g: "oil", cal: 135, pro: 0, fat: 15, carb: 0, fib: 0, ca: 0, fe: 0, zn: 0, se: 0, k: 0, mg: 0, na: 0, va: 0, vb: 0, vc: 0, vd: 0, ve: 2, i: 0 }
-];
+// ===== 今日怎么吃（2026-10-25 18:2x 主人点单：删掉写死的食材表，菜单交给 AI）=====
+// 【为什么改】原来是代码里一张 24 样食材的价格/营养表 + 「缺口÷单价」贪心挑——池子就 24 样、
+//   预算又只有十几块，排出来的永远是米饭+青菜+鸡蛋那几样。主人当面报「每天显示的都差不多，
+//   那么多菜怎么就分析出这些」。改成：代码只负责**事实**（预算多少、今天吃了什么、还缺哪几项），
+//   菜名与花费由模型按常识排（它知道几千种菜）。
+// 【注意 1】面板 status 被高频轮询，**绝不能在里面调模型**：菜单排好存 MEM.dietMenu，
+//   status 只读缓存（dietCacheView）；换日期、或今天又记了新的一顿 → key 变 → 自动重排。
+// 【注意 2】模型不通/回答不成形 → 返回 ok:false 并如实说「这次没排出来」，绝不伪造菜单，
+//   也不退回旧的写死表（退回去就等于这次白改）。
+// 【失败表现】面板显示「还没排过，跟我说一句『今天怎么吃』」；工具回「这次没排出来：<原因>」。
 // 只参与「补缺口」的营养（钠是限量、热量/脂肪/碳水是能量项，不拿来补）
 var DIET_NEED = [["pro", "蛋白"], ["fib", "纤"], ["ca", "钙"], ["fe", "铁"], ["zn", "锌"], ["se", "硒"], ["k", "钾"], ["mg", "镁"], ["va", "维A"], ["vb", "维B"], ["vc", "维C"], ["vd", "维D"], ["ve", "维E"], ["i", "碘"]];
 // 今天已经吃进去的量（按档位折算，一餐按 1/3 天）
@@ -6043,81 +6023,101 @@ function dietBudgetAuto(ms, statedNet) {
     return { budget: 15, src: "还没收支数据，先按 15 元/天" };
 }
 // 今日吃法：预算 + 缺口 → 贪心挑最划算的组合
-function dietPlan(opt) {
-    opt = opt || {};
-    var ms = moneySummary(7), budget = parseFloat(opt.budget), src = "";
-    // 【2026-10-19 用户两轮点出】面板「🍚 今天怎么吃（预算 41 元）」一直不变——41 = 日均流水 165.9 × 25%，
-    // 而他的真实净收入只有 30 元/天，等于拿流水当消费能力（支出还没记全，账面只会更虚）。
-    // 改：①他嘴里说过的净收入优先（事实里的数），预算＝净收入的 50%（30 → 15 元/天，够吃三顿）；
-    //     ②没说过才退回「日均流水 25%」的老口径，并在文案里写明是按流水估的；
-    //     ③都没有才用兜底值（15 元，不再用 40 元那种一眼就离谱的数）。
+function dietBudgetNow(opt) {
+    var ms = moneySummary(7), budget = parseFloat(opt && opt.budget), src = "";
     var statedNet = 0;
     try { statedNet = careStatedNet(); } catch (eSN) { statedNet = 0; }
-    if (!(budget > 0)) {
-        var bd = dietBudgetAuto(ms, statedNet);
-        budget = bd.budget; src = bd.src;
+    if (!(budget > 0)) { var bd = dietBudgetAuto(ms, statedNet); budget = bd.budget; src = bd.src; }
+    return { budget: budget, src: src };
+}
+function dietNeedNow() {
+    var th = dietTodayHave(), need = {}, i;
+    for (i = 0; i < DIET_NEED.length; i++) {
+        var nm = DIET_NEED[i][1], left = ELEM_REF[nm].rda - (th.have[nm] || 0);
+        need[DIET_NEED[i][0]] = left > 0 ? left : 0;
     }
-    var th = dietTodayHave(), need = {}, i2;
-    for (i2 = 0; i2 < DIET_NEED.length; i2++) {
-        var nm = DIET_NEED[i2][1], left = ELEM_REF[nm].rda - (th.have[nm] || 0);
-        need[DIET_NEED[i2][0]] = left > 0 ? left : 0;
+    return { th: th, need: need };
+}
+function dietMenuKey(budget) {
+    var dd = (MEM.health && MEM.health.diet) || [];
+    return careDayKey(Date.now()) + "|" + budget + "|" + dd.length;
+}
+// 面板用：只读缓存，绝不在这里调模型（status 会被每秒轮询）
+function dietCacheView() {
+    var m = MEM.dietMenu;
+    if (m && m.ok) return m;
+    var b = dietBudgetNow(null);
+    return { ok: true, budget: b.budget, meals: {}, covered: [], lefts: [], hint: "还没排过——跟我说一句「今天怎么吃」，我按你今天的缺口和预算现排" };
+}
+function dietPlan(opt) {
+    opt = opt || {};
+    var b = dietBudgetNow(opt), budget = b.budget, src = b.src;
+    var dn = dietNeedNow(), need = dn.need;
+    var key = dietMenuKey(budget);
+    // 同一份事实当天只排一次（除非显式 refresh）：面板/工具反复调也不烧 token
+    if (!opt.refresh && MEM.dietMenu && MEM.dietMenu.ok && MEM.dietMenu.key === key) return MEM.dietMenu;
+    var dd = (MEM.health && MEM.health.diet) || [], dkey = careDayKey(Date.now()), ate = [], i;
+    for (i = 0; i < dd.length; i++) {
+        var r0 = dd[i];
+        if (!r0 || careDayKey(r0.t) !== dkey) continue;
+        ate.push((r0.meal || "?") + "餐：" + String(r0.s || "").slice(0, 40));
     }
-    // 候选打分：每元能补的缺口比例
-    var cand = [];
-    for (var f = 0; f < FOOD_LIB.length; f++) {
-        var o = FOOD_LIB[f], score = 0;
-        for (i2 = 0; i2 < DIET_NEED.length; i2++) {
-            var kk = DIET_NEED[i2][0], nv = o[kk] || 0;
-            if (nv <= 0 || need[kk] <= 0) continue;
-            score += Math.min(1, nv / need[kk]);
+    var lacks = [];
+    for (i = 0; i < DIET_NEED.length; i++) { if (need[DIET_NEED[i][0]] > 0) lacks.push(DIET_NEED[i][1]); }
+    var ck = careCfgKey("chat") || loadZKey();
+    if (!ck) return { ok: false, budget: budget, meals: {}, covered: [], lefts: lacks, text: "这次没排出来：没有可用的模型密钥" };
+    var prompt = "你是手机主人的生活助手，帮他排今天剩下的伙食。"
+        + "已知事实：一天伙食预算 " + budget + " 元" + (src ? "（" + src + "）" : "") + "；"
+        + "今天已经记了 " + (ate.length ? ate.length + " 顿：" + ate.join("；") : "0 顿") + "；"
+        + "今天还缺的营养：" + (lacks.length ? lacks.join("、") : "基本不缺") + "。"
+        + "要求：①只排还没吃的那几顿（早餐/午餐/晚餐/加餐，已经记过的餐次跳过）；"
+        + "②每顿给具体菜名 + 大概花费（元），写本地能吃到的东西（家常菜/小吃/外卖都行），别只写「米饭+青菜」；"
+        + "③各餐之间别重复同一道菜，尽量覆盖上面缺的营养；④合计不超过预算；⑤不做医疗建议。"
+        + "只输出一行 JSON，不要任何别的字："
+        + "{\"早餐\":[\"菜名 元\"],\"午餐\":[\"菜名 元\"],\"晚餐\":[\"菜名 元\"],\"加餐\":[\"菜名 元\"],\"note\":\"一句话\"}";
+    var budgets = [4000, 8000], lastErr = "";
+    for (var bi = 0; bi < budgets.length; bi++) {
+        var r = httpPostJson(careCfgUrl("chat"),
+            { model: careCfgList("chat")[0], messages: [{ role: "user", content: prompt }], temperature: 0.7, max_tokens: budgets[bi] },
+            { "Authorization": "Bearer " + ck }, 15000, 30000);
+        if (!r.ok) { lastErr = String(r.msg || ""); break; }
+        var ct = "";
+        try {
+            var jj = JSON.parse(String(r.text || ""));
+            ct = String((((jj.choices || [])[0] || {}).message || {}).content || "").trim();
+        } catch (ePj) { ct = ""; }
+        if (!ct) { lastErr = "模型空回复（推理模型的思考吃光预算）"; continue; }
+        var mm = /\{[\s\S]*\}/.exec(ct);
+        if (!mm) { lastErr = "回答不是 JSON"; log("今日吃法：模型回答不是 JSON：「" + ct.slice(0, 60) + "」"); continue; }
+        var obj = null;
+        try { obj = JSON.parse(mm[0]); } catch (eJ) { obj = null; }
+        if (!obj) { lastErr = "JSON 解析失败"; continue; }
+        var meals = { "早餐": [], "午餐": [], "晚餐": [], "加餐": [] }, got = 0, spent = 0, w, q2;
+        var order = ["早餐", "午餐", "晚餐", "加餐"];
+        for (q2 = 0; q2 < order.length; q2++) {
+            var arr = obj[order[q2]];
+            if (!arr || !arr.length) continue;
+            for (w = 0; w < arr.length && w < 6; w++) {
+                var item = String(arr[w] || "").trim();
+                if (!item) continue;
+                meals[order[q2]].push(item); got++;
+                var pm = /([0-9]+(?:\.[0-9]+)?)\s*元/.exec(item);
+                if (pm) spent += parseFloat(pm[1]);
+            }
         }
-        if (score <= 0) continue;
-        cand.push({ o: o, per: score / o.p, score: score });
+        if (!got) { lastErr = "模型没给出任何一道菜"; continue; }
+        var lines2 = [];
+        for (q2 = 0; q2 < order.length; q2++) if (meals[order[q2]].length) lines2.push(order[q2] + "：" + meals[order[q2]].join(" + "));
+        var txt = lines2.join("\n") + "\n合计约 " + spent.toFixed(1) + " 元（预算 " + budget + " 元）";
+        if (obj.note) txt += "\n" + String(obj.note).slice(0, 60);
+        txt += "\n今天还缺：" + (lacks.length ? lacks.join("、") : "基本不缺（别再硬塞）");
+        var pack = { ok: true, key: key, budget: budget, spent: spent, meals: meals, covered: [], lefts: lacks, at: Date.now(), hint: "", text: txt };
+        try { MEM.dietMenu = pack; saveMem(); } catch (eSM) {}
+        log("今日吃法：模型排好 " + got + " 道，合计 " + spent.toFixed(1) + " 元（预算 " + budget + "，档 " + budgets[bi] + "）");
+        return pack;
     }
-    cand.sort(function (a, b) { return b.per - a.per; });
-    // 贪心：每类最多 2 份，总价不超预算的 92%
-    var picked = [], gcnt = {}, gpos = {}, spent = 0, rest = {}, k3;
-    for (k3 in need) rest[k3] = need[k3];
-    for (var x = 0; x < cand.length; x++) {
-        var c = cand[x], g = c.o.g || "other";
-        if ((gcnt[g] || 0) >= 2) continue;
-        if (spent + c.o.p > budget * 0.92) continue;
-        picked.push(c.o); gcnt[g] = (gcnt[g] || 0) + 1; spent += c.o.p;
-        for (i2 = 0; i2 < DIET_NEED.length; i2++) { var kx = DIET_NEED[i2][0]; rest[kx] = Math.max(0, (rest[kx] || 0) - (c.o[kx] || 0)); }
-    }
-    // 分餐（同类第一份给第一时段，第二份给第二时段）
-    var meals = { "早餐": [], "午餐": [], "晚餐": [], "加餐": [] };
-    var gi = { main: ["早餐", "午餐"], protein: ["午餐", "晚餐"], veg: ["午餐", "晚餐"], fruit: ["加餐", "早餐"], daily: ["早餐", "加餐"], oil: ["午餐"], other: ["午餐"] };
-    for (var p = 0; p < picked.length; p++) {
-        var it = picked[p], slot = gi[it.g] || ["午餐"], idx = gpos[it.g] || 0;
-        meals[slot[Math.min(idx, slot.length - 1)]].push(it.n + " " + it.p + "元");
-        gpos[it.g] = idx + 1;
-    }
-    // 能补上的 / 还差的
-    var covered = [], lefts = [];
-    for (i2 = 0; i2 < DIET_NEED.length; i2++) {
-        var kn = DIET_NEED[i2][0], nmn = DIET_NEED[i2][1];
-        if (need[kn] <= 0) continue;
-        if (rest[kn] <= need[kn] * 0.15) covered.push(nmn);
-        else lefts.push(nmn + "还差约 " + rest[kn].toFixed(rest[kn] >= 100 ? 0 : 1) + ELEM_REF[nmn].u);
-    }
-    var lines = [], order = ["早餐", "午餐", "晚餐", "加餐"];
-    for (var q = 0; q < order.length; q++) {
-        if (!meals[order[q]].length) continue;
-        lines.push(order[q] + "：" + meals[order[q]].join(" + "));
-    }
-    if (!lines.length) {
-        var anyNeed = false;
-        for (i2 = 0; i2 < DIET_NEED.length; i2++) { if (need[DIET_NEED[i2][0]] > 0) { anyNeed = true; break; } }
-        lines.push(anyNeed ? ("预算太少，先吃点主食垫一下（" + budget + " 元一天的话，优先米饭+鸡蛋+当季青菜）") : "今天记的这几顿已经把该补的补得差不多了，别再硬塞——剩下的按「蔬菜+蛋白、少油」吃就行");
-    }
-    var sum = "合计约 " + spent.toFixed(1) + " 元（预算 " + budget + " 元，" + (budget - spent > 0 ? "还剩 " + (budget - spent).toFixed(1) + " 元" : "刚好卡住") + (src ? "；" + src : "") + "）";
-    var tail = "";
-    if (covered.length) tail += "\n这套能补上：" + covered.join("、");
-    if (lefts.length) tail += "\n还差一点：" + lefts.join("；");
-    if (th.meals > 0) tail += "\n（今天你已经记了 " + th.meals + " 顿，上面是按「还没吃的部分」算的）";
-    tail += "\n怎么挑的：按「缺口 ÷ 单价」排，先补最缺的、再挑最便宜的；同价位里优先能一餐补多项的（猪肝补铁+维A、豆腐补钙+蛋白、菠菜补铁+维C+纤）。";
-    return { ok: true, budget: budget, spent: spent, meals: meals, covered: covered, lefts: lefts, text: lines.join("\n") + "\n" + sum + tail };
+    log("今日吃法：没排出来（" + String(lastErr).slice(0, 60) + "）");
+    return { ok: false, budget: budget, meals: {}, covered: [], lefts: lacks, text: "这次没排出来：" + String(lastErr || "模型不通") + "（菜单由模型排，我不用旧表凑数）" };
 }
 
 function parseFoodNote(text) {
@@ -9437,7 +9437,8 @@ function buildStatus() {
         screenToday: Math.round(SCR.min),
         elem: careElemAvg(7),
         elemAmt: (function () { try { return careElemAmounts(7); } catch (e) { return null; } })(),
-        diet: (function () { try { return dietPlan({}); } catch (e) { return null; } })(),
+        // 2026-10-25 18:2x：status 被高频轮询，这里只能读缓存（dietCacheView），绝不调模型
+        diet: (function () { try { return dietCacheView(); } catch (e) { return null; } })(),
         money7: (function () { try { return moneySummary(7); } catch (e) { return null; } })(),
         money: (function () { try { ensureWorkMem(); var t = careMoneyToday(); return { inSum: t.inSum, outSum: t.outSum, net: t.net, hours: t.day.hours || 0, orders: t.day.orders || 0, text: careMoneyTodayText() }; } catch (e) { return null; } })(),
         energy: (function () { try { return careEnergy(); } catch (e) { return null; } })(),
