@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 麻宝AI（自用复刻版）· 清单
+     四样必需项都在：①安装能力（REQUEST_INSTALL_PACKAGES + ApkProvider）
+                    ②自更新（MainActivity.checkForceUpdate）
+                    ③设备上报（MainActivity.reportDevice）
+                    ④停用（MainActivity.checkBlocked：onCreate/onResume/前台 30 秒轮询）
+     权限只放必需的：INTERNET 连本机服务与云函数、ACCESS_NETWORK_STATE 判断断网、
+       REQUEST_INSTALL_PACKAGES 自更新装包、WAKE_LOCK 前台轮询时别被休眠掐掉。
+     不申请 MANAGE_EXTERNAL_STORAGE —— 装完不该让主人去设置里开「所有文件访问」。
+     包名用 org.yezhong2.mabao，**故意**不撞原版（原版是加固包，包名撞了会覆盖它）。
+     注意：P4b 要加截图/悬浮窗时再补 FOREGROUND_SERVICE、SYSTEM_ALERT_WINDOW 与
+       MediaProjection 前台服务声明；现在就写上去等于申请用不到的权限。 -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.yezhong2.mabao"
+    android:versionCode="1"
+    android:versionName="0.2.0">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 实时悬浮分析（P4b）用的三条：悬浮窗、前台服务、录屏型前台服务（Android 14 必需） -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <!-- targetSdk 34 时必须声明；否则装包页会被系统拦 -->
+    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="34" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout|smallestScreenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- 实时悬浮分析：前台服务 + mediaProjection 类型。
+             为什么必须是前台服务：Android 10+ 起 MediaProjection 只允许活在前台服务里；
+             为什么必须写 foregroundServiceType：Android 14 起不写就直接抛 SecurityException。 -->
+        <service
+            android:name=".FloatService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
+
+        <!-- 无障碍点牌（P4b）：只在「建议那张牌」的位置点一下，读不到页面内容。
+             为什么 exported=true：系统要跨 App 绑定这个服务；真正把门的是下面那条
+             BIND_ACCESSIBILITY_SERVICE 权限 —— 只有系统能绑，别的 App 绑不了。
+             必须先由主人在系统设置里打开一次；App 自己**不会**去拉无障碍设置页
+             （2026-10-10 明令：不许拉那个界面）。 -->
+        <service
+            android:name=".MjAccess"
+            android:exported="true"
+            android:label="@string/acc_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/mj_access" />
+        </service>
+
+        <!-- 自更新用：把 cacheDir/dl 下的 apk 以 content:// 交给系统安装器 -->
+        <provider
+            android:name=".ApkProvider"
+            android:authorities="org.yezhong2.mabao.files"
+            android:exported="false"
+            android:grantUriPermissions="true" />
+    </application>
+</manifest>
